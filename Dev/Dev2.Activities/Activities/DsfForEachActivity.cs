@@ -44,7 +44,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
         string _previousParentId;
-        readonly Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         
         #region Variables
 

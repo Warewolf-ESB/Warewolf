@@ -30,7 +30,6 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
-using Dev2.Simulation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
@@ -403,7 +402,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 DisplayName = helloWorld
             };
@@ -449,7 +447,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -497,7 +494,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -545,7 +541,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -593,7 +588,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -641,7 +635,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -688,7 +681,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -739,7 +731,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -786,7 +777,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -836,7 +826,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -886,7 +875,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -940,7 +928,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 DisplayName = string.Empty,
                 ServiceName = helloWorld
@@ -986,7 +973,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 DisplayName = string.Empty,
                 FriendlySourceName = "Other Server"
@@ -1494,7 +1480,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
 
@@ -1572,7 +1558,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -1648,7 +1633,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -1720,7 +1704,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>",
                 FriendlySourceName = "www.youtube.com"
@@ -1803,7 +1786,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>",
                 FriendlySourceName = "www.Dev2.com"
@@ -1887,7 +1869,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -1972,7 +1953,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -2072,7 +2052,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -2173,7 +2152,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -2272,7 +2250,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs></Inputs>",
                 OutputMapping = "<Outputs></Outputs>"
             };
@@ -2359,7 +2336,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.Empty.ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -2439,7 +2415,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
 
@@ -2476,7 +2452,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             ISetup<IServerRepository, IServer> setupActiveEnvironment = envRepository.Setup(r => r.ActiveServer);
             setupActiveEnvironment.Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.EnvironmentID), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.EnvironmentID), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
 
@@ -2509,7 +2485,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
@@ -2540,7 +2516,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object) { RunWorkflowAsync = true };
@@ -2573,7 +2549,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
             var resourceType = resourceModel.Object.ServerResourceType;
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), Type = new InArgument<string>(resourceType) };
 
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
@@ -2605,7 +2581,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
             var resourceType = resourceModel.Object.ResourceType.ToString();
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), Type = new InArgument<string>(resourceType) };
 
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
@@ -2870,7 +2846,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
             }
             rootModel.Setup(r => r.UserPermissions).Returns(Permissions.Administrator);
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = name };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), ServiceName = name };
 
             if (type != null)
             {
