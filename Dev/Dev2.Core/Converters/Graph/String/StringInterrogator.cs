@@ -75,10 +75,6 @@ namespace Unlimited.Framework.Converters.Graph.String
             {
                 navigator = new PocoNavigator(data);
             }
-            else if( pathType == typeof(StringPath))
-            {
-                navigator = new StringNavigator(data);
-            }
             else
             {
                 navigator = null;

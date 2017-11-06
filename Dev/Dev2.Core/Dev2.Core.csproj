@@ -180,7 +180,6 @@
     <Compile Include="Converters\Graph\Poco\PocoNavigator.cs" />
     <Compile Include="Converters\Graph\Poco\PocoPath.cs" />
     <Compile Include="Converters\Graph\Poco\PocoPathSegment.cs" />
-    <Compile Include="Converters\Graph\Poco\StringNavigator.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonMapper.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonNavigator.cs" />
     <Compile Include="Converters\Graph\String\Json\JsonPath.cs" />

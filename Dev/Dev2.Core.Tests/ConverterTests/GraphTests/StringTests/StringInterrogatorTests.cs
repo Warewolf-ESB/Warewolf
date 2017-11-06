@@ -107,15 +107,6 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         }
 
         [TestMethod]        
-        public void CreateNavigator_Given_TypeofStringPath_Expected_StringNavigator()
-        {
-            var stringInterrogator = new StringInterrogator();
-            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(StringPath));
-            Assert.IsNotNull(navigator);
-            Assert.IsTrue(navigator.GetType() == typeof(StringNavigator));
-        }
-
-        [TestMethod]        
         public void CreateNavigator_Given_TypeofUnExistingType_Expected_PocoPath()
         {
             var stringInterrogator = new StringInterrogator();
