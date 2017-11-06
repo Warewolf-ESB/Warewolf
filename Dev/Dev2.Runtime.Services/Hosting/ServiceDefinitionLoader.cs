@@ -116,12 +116,6 @@ namespace Dev2.Runtime.Hosting
                 src.Type = !Enum.TryParse(typeOf, out enSourceType sourceType) ? enSourceType.Unknown : sourceType;
 
                 src.ConnectionString = xe.AttributeSafe("ConnectionString");
-                var tmpUri = xe.AttributeSafe("Uri");
-                if(!string.IsNullOrEmpty(tmpUri))
-                {
-                    src.WebServiceUri = new Uri(tmpUri);
-                }
-
                 src.AssemblyName = xe.AttributeSafe("AssemblyName");
                 src.AssemblyLocation = xe.AttributeSafe("AssemblyLocation");
 

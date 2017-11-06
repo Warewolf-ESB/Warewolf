@@ -8,22 +8,14 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 
 namespace Dev2.DynamicServices.Objects.Base
 {
     public abstract class DynamicServiceObjectBase : IDynamicServiceObject
     {
-        #region Private Fields
-
-        private string _errorMsg = string.Empty;
-
-        #endregion
-
         #region Constructors
 
         protected DynamicServiceObjectBase()
@@ -78,38 +70,7 @@ namespace Dev2.DynamicServices.Objects.Base
 
         #region Public Methods
 
-        public virtual bool Compile()
-        {
-            if (string.IsNullOrEmpty(Name))
-            {
-                string objectName = GetType().Name;
-                _errorMsg = string.Format(Resources.CompilerError_MissingName, objectName, objectName);
-                WriteCompileError(_errorMsg);
-            }
-
-            return IsCompiled;
-        }
-
-        public virtual void WriteCompileError(string traceMsg)
-        {
-            string objectName = GetType().Name;
-
-            traceMsg = string.Format(traceMsg, objectName, string.IsNullOrEmpty(Name) ? objectName : Name);
-            CompilerErrors.Add(traceMsg);
-
-            WriteOutput(traceMsg);
-        }
-
-
-        #endregion
-
-        #region Private Methods
-
-        private void WriteOutput(string traceMsg)
-        {
-            Dev2Logger.Info(traceMsg, GlobalConstants.WarewolfInfo);
-            Console.WriteLine(traceMsg);
-        }
+        public virtual bool Compile() => IsCompiled;
 
         #endregion
     }
