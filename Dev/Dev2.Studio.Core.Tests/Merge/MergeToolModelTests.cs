@@ -242,32 +242,6 @@ namespace Dev2.Core.Tests.Merge
             model.UniqueId =new System.Guid();
             Assert.IsTrue(wasCalled);
         }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void CompleteConflict_ActivityType_DefaultConstruction()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            var model = new MergeToolModel();
-            bool wasCalled = false;
-            model.PropertyChanged += (a, b) =>
-            {
-                if (b.PropertyName == "ActivityType")
-                {
-                    wasCalled = true;
-                }
-            };
-
-            //------------Assert Results-------------------------
-            Assert.IsNotNull(model);
-            Assert.IsNotNull(model.Children);
-            Assert.IsFalse(model.IsMergeVisible);
-            model.FlowNode = new FlowStep();
-            Assert.IsTrue(wasCalled);
-        }
-
         
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

@@ -28,7 +28,14 @@ namespace Dev2.Integration.Tests.Merge
             //---------------Set up test pack-------------------
             MergeFactory factory = new MergeFactory();
             //---------------Execute Test ----------------------
-            factory.OpenMergeWindow(null, "", null);
+            try
+            {
+                factory.OpenMergeWindow(null, "", null);
+            }
+            catch (Exception ex)
+            {
+                Assert.IsTrue(ex.Message.Contains("Value cannot be null."));
+            }
         }
 
         [TestMethod]
