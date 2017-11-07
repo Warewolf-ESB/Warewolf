@@ -298,7 +298,7 @@ namespace Dev2.Tests.Runtime.WebServer
             };
             var singleApi4 = new SingleApi
             {
-                Name = "9139Local",
+                Name = "Maintained",
                 Description = "",
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>(),
