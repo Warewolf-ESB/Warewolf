@@ -296,10 +296,33 @@ namespace Dev2.Tests.Runtime.WebServer
                 Type = "Swagger",
                 Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
             };
+            var singleApi4 = new SingleApi
+            {
+                Name = "9139Local",
+                Description = "",
+                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
+                Properties = new List<PropertyApi>(),
+                Contact = new List<MaintainerApi>()
+                {
+                    new MaintainerApi()
+                    {
+                        Fn = "Ashley Lewis",
+                        Email = "ashley.lewis@dev2.co.za",
+                        Url = "https://warewolf.io",
+                        Org = "https://dev2.co.za",
+                        Adr = "Bellevue, Kloof",
+                        XTwitter = "@warewolf",
+                        XGithub = "Warewolf-ESB/Warewolf",
+                        Photo = "https://warewolf.io/images/logo.png",
+                        VCard = "39A03A58-978F-4CFB-B1D1-3EFA6C55E380"
+                    }
+                }
+            };
             singleApi3.Properties.Add(swagger3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
+            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi4);
             return exceptedApisJsonForServerNoSecurity;
         }
 
