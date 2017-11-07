@@ -69,67 +69,29 @@ namespace Dev2.Activities.Specs.Merge
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow with Different Version")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge AssignOnlyWithNoOutput Workflow with Same Version")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("mytag")]
-        public virtual void MergeWorkflowWithDifferentVersion()
+        public virtual void MergeAssignOnlyWithNoOutputWorkflowWithSameVersion()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow with Different Version", new string[] {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge AssignOnlyWithNoOutput Workflow with Same Version", new string[] {
                         "mytag"});
 #line 8
 this.ScenarioSetup(scenarioInfo);
 #line 9
-  testRunner.Given("I have a workflow \"MergeWithVersionAssignTest\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
-#line hidden
-            TechTalk.SpecFlow.Table table1 = new TechTalk.SpecFlow.Table(new string[] {
-                        "variable",
-                        "value"});
-            table1.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "New"});
-            table1.AddRow(new string[] {
-                        "[[rec().a]]",
-                        "Test"});
+  testRunner.Given("I Load workflow \"AssignOnlyWithNoOutput\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 10
-  testRunner.And("\"MergeWithVersionAssignTest\" contains an Assign \"VarsAssign\" as", ((string)(null)), table1, "And ");
+  testRunner.And("I Load workflow \"AssignOnlyWithNoOutput\" from \"Remote Connection Integration\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 11
+  testRunner.When("Merge Window is opened with \"AssignOnlyWithNoOutput\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 12
+  testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 13
+  testRunner.And("Different workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 14
-   testRunner.When("workflow \"MergeWithVersionAssignTest\" is saved \"1\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+  testRunner.And("Merge conflicts count is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
-   testRunner.Then("workflow \"MergeWithVersionAssignTest\" has \"0\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 16
-   testRunner.When("workflow \"MergeWithVersionAssignTest\" is saved \"2\" time", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 17
-   testRunner.Then("workflow \"MergeWithVersionAssignTest\" has \"2\" Versions in explorer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line hidden
-            TechTalk.SpecFlow.Table table2 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Explorer"});
-            table2.AddRow(new string[] {
-                        "MergeWithAssign"});
-            table2.AddRow(new string[] {
-                        "v.2 DateTime"});
-            table2.AddRow(new string[] {
-                        "v.1 DateTime"});
-#line 18
-   testRunner.And("explorer as", ((string)(null)), table2, "And ");
-#line 23
-   testRunner.When("workflow \"MergeWithVersionAssignTest\" merge is opened", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 24
-   testRunner.Then("Current workflow contains \"1\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
-#line 25
-   testRunner.And("Different workflow contains \"2\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line hidden
-            TechTalk.SpecFlow.Table table3 = new TechTalk.SpecFlow.Table(new string[] {
-                        "Explorer"});
-            table3.AddRow(new string[] {
-                        "MergeWithAssign"});
-            table3.AddRow(new string[] {
-                        "v.2 DateTime Save"});
-            table3.AddRow(new string[] {
-                        "v.1 DateTime Save"});
-#line 26
-   testRunner.And("explorer as", ((string)(null)), table3, "And ");
-#line 31
-   testRunner.And("workflow \"MergeWithVersionAssignTest\" is deleted as cleanup", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+  testRunner.And("Merge variable conflicts is \"0\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
