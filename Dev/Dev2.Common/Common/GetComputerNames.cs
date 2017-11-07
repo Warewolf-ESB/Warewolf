@@ -21,11 +21,7 @@ namespace Dev2.Common.Common
     public class GetComputerNames
     {
         private static List<string> _currentComputerNames;
-
-        protected GetComputerNames()
-        {
-        }
-
+        
         public static List<string> ComputerNames
         {
             get
@@ -69,19 +65,15 @@ namespace Dev2.Common.Common
                     {
                         var query = new SelectQuery("Win32_ComputerSystem");
                         var searcher = new ManagementObjectSearcher(query);
-
-                        ManagementObjectCollection tmp = searcher.Get();
-
-                        ManagementObjectCollection.ManagementObjectEnumerator itr = tmp.GetEnumerator();
+                        
+                        ManagementObjectCollection.ManagementObjectEnumerator itr = searcher.Get().GetEnumerator();
 
                         if (itr.MoveNext())
                         {
                             queryStr += itr.Current["Workgroup"] as string;
                         }
-                    }
-                    
-                    catch
-                    
+                    }                    
+                    catch                    
                     {
                         // best effort ;)
                     }
