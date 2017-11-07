@@ -57,18 +57,6 @@ namespace Dev2.Runtime.ServiceModel
             {
                 // Validate URI, ports, etc...
                 new Uri(connection.Address);
-
-
-                var connectResult = ConnectToServer(connection);
-                if (!string.IsNullOrEmpty(connectResult))
-                {
-                    if (connectResult.Contains("FatalError"))
-                    {
-                        var error = XElement.Parse(connectResult);
-                        result.IsValid = false;
-                        result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
-                    }
-                }
             }
             catch (Exception ex)
             {
@@ -105,40 +93,5 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public IHubProxy CreateHubProxy(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.CreateHubProxy(connection);
-
-        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
-        {
-            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
-            var proxy = CreateHubProxy(connection);
-            CheckServerVersion(proxy);
-            return "Success";
-        }
-
-        private static void CheckServerVersion(IHubProxy proxy)
-        {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            var esbExecuteRequest = new EsbExecuteRequest { ServiceName = "GetServerVersion" };
-            Envelope envelope = new Envelope
-            {
-                Content = serializer.Serialize(esbExecuteRequest),
-                Type = typeof(Envelope)
-            };
-            var messageId = Guid.NewGuid();
-            proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).Wait();
-            Task<string> fragmentInvoke = proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId });
-            var serverVersion = fragmentInvoke.Result;
-            if (!string.IsNullOrEmpty(serverVersion))
-            {
-                Version.TryParse(serverVersion, out Version sourceVersionNumber);
-                Version.TryParse("0.0.0.6", out Version destVersionNumber);
-                if (sourceVersionNumber != null && destVersionNumber != null)
-                {
-                    if (sourceVersionNumber < destVersionNumber)
-                    {
-                        throw new VersionConflictException(sourceVersionNumber, destVersionNumber);
-                    }
-                }
-            }
-        }
     }
 }
