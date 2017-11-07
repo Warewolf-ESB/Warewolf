@@ -40,24 +40,6 @@ namespace System.Windows.Controls
         }
 
         private bool _cancel;
-        
-        public bool InCoercion { get; set; }
-        
-        public RoutedPropertyChangingEventArgs(
-            DependencyProperty property,
-            T oldValue,
-            T newValue,
-            bool isCancelable)
-        {
-            Property = property;
-            OldValue = oldValue;
-            NewValue = newValue;
-            IsCancelable = isCancelable;
-            Cancel = false;
-        }
-
-#if !SILVERLIGHT
-
         public RoutedPropertyChangingEventArgs(DependencyProperty property,
             T oldValue, T newValue, bool isCancelable, RoutedEvent routedEvent)
             : base(routedEvent)
@@ -68,7 +50,5 @@ namespace System.Windows.Controls
             IsCancelable = isCancelable;
             Cancel = false;
         }
-
-#endif
     }
 }
