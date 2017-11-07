@@ -351,73 +351,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     HasMergeStarted = true;
                 }
-                if (sender is IMergeToolModel previousToolValue)
-                {
-                    args.Container.IsChecked = args.Container.IsChecked || previousToolValue.IsMergeChecked;
-                    if (!previousToolValue.IsMergeChecked && args.IsMergeChecked)
-                    {
-                        if (args.Container.CurrentViewModel == args)
-                        {
-                            var index = _conflicts.IndexOf(args.Container);
-                            if(index!= -1 && index+1 < _conflicts.Count -1)
-                            {
-                                var restOfItems = _conflicts.Skip(index+1).ToList();
-                                foreach(var conf in restOfItems)
-                                {
-                                    if(conf is IToolConflict tool)
-                                    {
-                                        if (tool.HasConflict)
-                                        {
-                                            if (tool.DiffViewModel != null)
-                                            {
-                                                tool.DiffViewModel.DisableEvents();
-                                                tool.DiffViewModel.IsMergeChecked = false;
-                                                tool.DiffViewModel.EnableEvents();
-                                            }
-                                            if (tool.CurrentViewModel != null)
-                                            {
-                                                tool.CurrentViewModel.DisableEvents();
-                                                tool.CurrentViewModel.IsMergeChecked = false;
-                                                tool.CurrentViewModel.EnableEvents();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
-                        }
-                        if (args.Container.DiffViewModel == args)
-                        {
-                            var index = _conflicts.IndexOf(args.Container);
-                            if (index != -1 && index + 1 < _conflicts.Count - 1)
-                            {
-                                var restOfItems = _conflicts.Skip(index+1).ToList();
-                                foreach(var conf in restOfItems)
-                                {
-                                    if(conf is IToolConflict tool)
-                                    {
-                                        if (tool.HasConflict)
-                                        {
-                                            if (tool.DiffViewModel != null)
-                                            {
-                                                tool.DiffViewModel.DisableEvents();
-                                                tool.DiffViewModel.IsMergeChecked = false;
-                                                tool.DiffViewModel.EnableEvents();
-                                            }
-                                            if (tool.CurrentViewModel != null)
-                                            {
-                                                tool.CurrentViewModel.DisableEvents();
-                                                tool.CurrentViewModel.IsMergeChecked = false;
-                                                tool.CurrentViewModel.EnableEvents();
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
-                        }
-                    }
-                }
+                RemovePreviousTool(sender, args);
                 args.Container.IsMergeExpanderEnabled = args.Container.HasConflict;
                 AddActivity(args);
                 if (!args.Container.IsChecked)
@@ -437,6 +371,46 @@ namespace Dev2.ViewModels.Merge
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, ex.Message);
+            }
+        }
+
+        private void RemovePreviousTool(object sender, IMergeToolModel args)
+        {
+            if (sender is IMergeToolModel previousToolValue)
+            {
+                args.Container.IsChecked = args.Container.IsChecked || previousToolValue.IsMergeChecked;
+                if (!previousToolValue.IsMergeChecked && args.IsMergeChecked)
+                {
+                    if (args.Container.CurrentViewModel == args)
+                    {
+                        ResetToolEvents(args);
+                        WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
+                    }
+                    if (args.Container.DiffViewModel == args)
+                    {
+                        ResetToolEvents(args);
+                        WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
+                    }
+                }
+            }
+        }
+
+        private void ResetToolEvents(IMergeToolModel args)
+        {
+            var index = _conflicts.IndexOf(args.Container);
+            if (index != -1 && index + 1 < _conflicts.Count - 1)
+            {
+                var restOfItems = _conflicts.Skip(index + 1).ToList();
+                foreach (var conf in restOfItems)
+                {
+                    if (conf is IToolConflict tool && tool.HasConflict)
+                    {
+                        tool.DiffViewModel?.DisableEvents();
+                        tool.DiffViewModel?.EnableEvents();
+                        tool.CurrentViewModel?.DisableEvents();
+                        tool.CurrentViewModel?.EnableEvents();
+                    }
+                }
             }
         }
 

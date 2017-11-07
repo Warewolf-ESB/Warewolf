@@ -22,7 +22,7 @@ namespace Dev2.ViewModels.Merge
         private string _parentDescription;
         private bool _hasParent;
         private Guid _uniqueId;
-        private FlowNode _activityType;
+        private FlowNode _flowNode;
         private IMergeToolModel _parent;
         private string _nodeArmDescription;
         private bool _processEvents;
@@ -125,10 +125,10 @@ namespace Dev2.ViewModels.Merge
 
         public FlowNode FlowNode
         {
-            get => _activityType;
+            get => _flowNode;
             set
             {
-                _activityType = value;
+                _flowNode = value;
                 OnPropertyChanged(() => FlowNode);
             }
         }
@@ -168,7 +168,12 @@ namespace Dev2.ViewModels.Merge
 
         public event ModelToolChanged SomethingModelToolChanged;
 
-        public void DisableEvents() => _processEvents = false;
+        public void DisableEvents()
+        {
+            IsMergeChecked = false;
+            _processEvents = false;
+        }
+
         public void EnableEvents() => _processEvents = true;
     }
 }
