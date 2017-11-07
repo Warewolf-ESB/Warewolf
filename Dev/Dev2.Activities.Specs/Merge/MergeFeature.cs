@@ -1,7 +1,10 @@
 ﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
+using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Dev2.Util;
@@ -10,8 +13,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Linq;
+using System.Text;
+using System.Xml.Linq;
 using TechTalk.SpecFlow;
 using Warewolf.MergeParser;
+using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Activities.Specs.Merge
 {
@@ -65,6 +71,33 @@ namespace Dev2.Activities.Specs.Merge
                 _scenarioContext.Add("localResource", localResource);
             }
         }
+
+        [Given(@"I Load workflow version ""(.*)"" of ""(.*)"" from ""(.*)""")]
+        public void GivenILoadWorkflowVersionOfFrom(int versionNo, string resourceName, string serverName)
+        {
+
+            if (!serverName.Equals("localhost", StringComparison.InvariantCultureIgnoreCase))
+            {
+                IServer remoteServer = environmentModel.FindSingle(a => a.DisplayName.Equals(serverName, StringComparison.InvariantCultureIgnoreCase));
+                remoteServer.Connect();
+                remoteServer.ResourceRepository.ForceLoad();
+                var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+                var versions = remoteServer.ExplorerRepository.GetVersions(remoteResource.ID);
+                var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
+                var remoteResourceVersion = version.ToContextualResourceModel(remoteServer, remoteResource.ID);
+                _scenarioContext.Add("remoteResource", remoteResourceVersion);
+            }
+            else
+            {
+                var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+                var versions = localHost.ExplorerRepository.GetVersions(localResource.ID);
+                var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
+                var localResourceVersion = version.ToContextualResourceModel(localHost, localResource.ID);
+                _scenarioContext.Add("localResource", localResourceVersion);
+            }
+        }
+
+
 
         [When(@"Merge Window is opened with ""(.*)""")]
         public void WhenMergeWindowIsOpenedWith(string p0)
