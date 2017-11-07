@@ -21,16 +21,6 @@ namespace Dev2.Common.Common
             var dir = new DirectoryInfo(sourceDirName);
             DirectoryInfo[] dirs = dir.GetDirectories();
 
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(string.Format(ErrorResource.SourceDirectoryDoesNotExist, sourceDirName));
-            }
-
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
             FileInfo[] files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
