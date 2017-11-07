@@ -36,7 +36,6 @@ using Dev2.Instrumentation;
 using Dev2.Interfaces;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
-using Dev2.Simulation;
 using Dev2.Util;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Hosting;
@@ -66,7 +65,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public string ParentServiceName { get; set; }
         public string ParentServiceID { get; set; }
         public string ParentWorkflowInstanceId { get; set; }
-        public SimulationMode SimulationMode { get; set; }
+        public _simulationMode SimulationMode { get; set; }
+        public enum _simulationMode
+        {
+            OnDemand,
+            Never,
+            Always
+        }
         public string ScenarioID { get; set; }
         protected Guid WorkSurfaceMappingId { get; set; }
         public string UniqueID { get; set; }
