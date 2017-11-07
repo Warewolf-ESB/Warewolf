@@ -76,8 +76,8 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenCurrentWorkflowContainsTools(int p0)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
-            //var count = mergeVm.Conflicts.Select(p=>p.)
-            //Assert.AreEqual(p0, count);
+            var count = mergeVm.Conflicts.Cast<ToolConflict>().Select(p => p.CurrentViewModel).Count();
+            Assert.AreEqual(p0, count);
 
         }
 
@@ -85,20 +85,34 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenDifferentWorkflowContainsTools(int p0)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
-            var count = mergeVm.DifferenceConflictModel.Children;
+            var count = mergeVm.Conflicts.Cast<ToolConflict>().Select(p => p.DiffViewModel).Count();
             Assert.AreEqual(p0, count);
         }
 
         [Then(@"Merge conflicts count is ""(.*)""")]
         public void ThenMergeConflictsCountIs(int p0)
         {
-            ScenarioContext.Current.Pending();
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var count = mergeVm.Conflicts.Count;
+            Assert.AreEqual(p0, count);
         }
 
-        [Then(@"Merge variable conflicts is ""(.*)""")]
-        public void ThenMergeVariableConflictsIs(int p0)
+        [Then(@"Merge variable conflicts is false")]
+        public void ThenMergeVariableConflictsIsFalse()
         {
-            ScenarioContext.Current.Pending();
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var a = mergeVm.HasVariablesConflict;
+            Assert.IsFalse(a);
         }
+
+        [Then(@"Merge window has no Conflicting tools")]
+        public void ThenMergeWindowHasNoConflictingTools()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var a = mergeVm.Conflicts.AsEnumerable().All(p => p.HasConflict);
+            Assert.IsFalse(a);
+        }
+
+
     }
 }
