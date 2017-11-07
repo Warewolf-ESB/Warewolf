@@ -293,7 +293,6 @@
     <Compile Include="Activities\Sharepoint\SharepointReadListActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUpdateListItemActivity.cs" />
     <Compile Include="Activities\Sharepoint\SharepointUtils.cs" />
-    <Compile Include="Activities\SimulationMode.cs" />
     <Compile Include="Activities\SqlBulkInsert\ISqlBulkInserter.cs" />
     <Compile Include="Activities\IWebRequestInvoker.cs" />
     <Compile Include="Activities\ModalChecker.cs" />
