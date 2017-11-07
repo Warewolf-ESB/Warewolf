@@ -630,18 +630,6 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             }
         }
 
-        public IStudioCompileMessageRepoFactory StudioCompileMessageRepoFactory
-        {
-            get
-            {
-                return _studioCompileMessageRepoFactory ?? new StudioCompileMessageRepoFactory();
-            }
-            set
-            {
-                _studioCompileMessageRepoFactory = value;
-            }
-        }
-
         public IResourceChangeHandlerFactory ResourceChangeHandlerFactory
         {
             get

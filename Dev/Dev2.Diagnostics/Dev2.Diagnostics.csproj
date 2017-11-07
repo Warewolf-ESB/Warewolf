@@ -86,7 +86,6 @@
     <Compile Include="Debug\DebugMessageRepo.cs" />
     <Compile Include="Debug\DebugMessegaBase.cs" />
     <Compile Include="Debug\DebugState.cs" />
-    <Compile Include="Debug\DirectoryPath.cs" />
     <Compile Include="Debug\FilePath.cs" />
     <Compile Include="Debug\RemoteDebugMessageRepo.cs" />
     <Compile Include="Debug\TestDebugMessageRepo.cs" />

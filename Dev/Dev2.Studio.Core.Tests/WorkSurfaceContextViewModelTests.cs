@@ -500,11 +500,8 @@ namespace Dev2.Core.Tests
 
             // object to work on 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
-
-            var st = new Mock<IStudioCompileMessageRepoFactory>();
+            
             var mr = new Mock<IStudioCompileMessageRepo>();
-            workSurfaceContextViewModel.StudioCompileMessageRepoFactory = st.Object;
-            st.Setup(x => x.Create()).Returns(mr.Object);
             mr.Setup(a => a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>())).Returns(new CompileMessageList());
             var resourceChangedFactory = new Mock<IResourceChangeHandlerFactory>();
             var rsHandler = new Mock<IResourceChangeHandler>();
@@ -552,10 +549,7 @@ namespace Dev2.Core.Tests
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, workSurfaceViewModel.Object);
 
             var lst = new CompileMessageList { MessageList = new List<ICompileMessageTO> { new CompileMessageTO() } };
-            var st = new Mock<IStudioCompileMessageRepoFactory>();
             var mr = new Mock<IStudioCompileMessageRepo>();
-            workSurfaceContextViewModel.StudioCompileMessageRepoFactory = st.Object;
-            st.Setup(x => x.Create()).Returns(mr.Object);
             mr.Setup(a => a.GetCompileMessagesFromServer(It.IsAny<IContextualResourceModel>())).Returns(lst);
             var resourceChangedFactory = new Mock<IResourceChangeHandlerFactory>();
             var rsHandler = new Mock<IResourceChangeHandler>();
