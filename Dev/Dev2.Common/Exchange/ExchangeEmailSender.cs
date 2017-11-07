@@ -17,11 +17,7 @@ namespace Dev2.Common.Exchange
     public class ExchangeEmailSender : IExchangeEmailSender
     {
         private readonly IExchange _source;
-
-        public ExchangeEmailSender()
-        {
-        }
-
+        
         public ExchangeEmailSender(IExchange source)
         {
             _source = source;
