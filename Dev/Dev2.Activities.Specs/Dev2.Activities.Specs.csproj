@@ -68,11 +68,6 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="MergeExecutionSteps.cs" />
-    <Compile Include="Merge\MergeExecution.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>MergeExecution.feature</DependentUpon>
-    </Compile>
     <Compile Include="Composition\SubworkflowExecution.feature.cs">
       <DependentUpon>SubworkflowExecution.feature</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -91,6 +86,12 @@
     <Compile Include="Deploy\DeployFeatureSteps.cs" />
     <Compile Include="Dev2LocalSecurityWrapper.cs" />
     <Compile Include="ISpecExternalProcessExecutor.cs" />
+    <Compile Include="Merge\MergeExecution.feature.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>MergeExecution.feature</DependentUpon>
+    </Compile>
+    <Compile Include="Merge\MergeFeature.cs" />
     <Compile Include="Sources\ServerSource.feature.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -522,6 +523,10 @@
     <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
       <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
       <Name>Warewolf.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
+      <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
+      <Name>Warewolf.MergeParser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.ResourceManagement\Warewolf.ResourceManagement.csproj">
       <Project>{f36b2034-94bf-485c-b584-4e590ccc6dd3}</Project>
