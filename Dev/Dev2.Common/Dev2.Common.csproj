@@ -156,7 +156,6 @@
     <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="FileResource.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />
     <Compile Include="IncludeApi.cs" />
