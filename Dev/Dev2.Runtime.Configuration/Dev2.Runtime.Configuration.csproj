@@ -93,7 +93,6 @@
       <Link>Converters\NullToVisibilityConverter.cs</Link>
     </Compile>
     <Compile Include="ComponentModel\DataListVariable.cs" />
-    <Compile Include="ComponentModel\SettingsObjectAttribute.cs" />
     <Compile Include="ComponentModel\WorkflowDescriptor.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="CustomControls\AutoCompleteBox.cs" />

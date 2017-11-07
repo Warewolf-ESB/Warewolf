@@ -275,19 +275,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
             ErrorsVisible = Errors.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
 
-        private void UpdateSettingsView(SettingsObject settingsObject)
-        {
-            if(!settingsObject.IsSelected)
-            {
-                settingsObject.IsSelected = true;
-            }
-
-            // Instantiate view model
-            var vm = CreateViewModel(settingsObject.ViewModel, settingsObject.Object);
-            Items.Add(vm);
-            ActivateItem(vm);
-        }
-
         private SettingsViewModelBase CreateViewModel(Type viewModelType, object Object)
         {
             SettingsViewModelBase viewModel = null;
