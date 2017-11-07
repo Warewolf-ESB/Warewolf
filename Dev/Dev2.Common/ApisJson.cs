@@ -45,35 +45,6 @@ namespace Dev2.Common
             return Equals((ApisJson)obj);
         }
         
-        public override int GetHashCode()
-        {
-            unchecked
-            {
-                var hashCode = Name?.GetHashCode() ?? 0;
-                hashCode = (hashCode * 397) ^ (Description?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Image?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Url?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Tags?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ Created.GetHashCode();
-                hashCode = (hashCode * 397) ^ Modified.GetHashCode();
-                hashCode = (hashCode * 397) ^ (SpecificationVersion?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Apis?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Include?.GetHashCode() ?? 0);
-                hashCode = (hashCode * 397) ^ (Maintainers?.GetHashCode() ?? 0);
-                return hashCode;
-            }
-        }
-
-        public static bool operator ==(ApisJson left, ApisJson right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ApisJson left, ApisJson right)
-        {
-            return !Equals(left, right);
-        }
-
         public string Name { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
