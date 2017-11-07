@@ -31,7 +31,7 @@ namespace Dev2.Intellisense.Helper
         private readonly IDirectoryEntryFactory _directoryEntryFactory;
         private readonly IShareCollectionFactory _shareCollectionFactory;
 
-        public FileSystemQuery(IDirectory directory,IDirectoryEntryFactory directoryEntryFactory,IShareCollectionFactory shareCollectionFactory)
+        public FileSystemQuery(IDirectory directory, IDirectoryEntryFactory directoryEntryFactory, IShareCollectionFactory shareCollectionFactory)
         {
             VerifyArgument.IsNotNull("Directory",directory);
             VerifyArgument.IsNotNull("DirectoryEntryFactory", directoryEntryFactory);
@@ -40,12 +40,13 @@ namespace Dev2.Intellisense.Helper
             _directoryEntryFactory = directoryEntryFactory;
             _shareCollectionFactory = shareCollectionFactory;
         }
+
         public FileSystemQuery()
         {
             _directory = new DirectoryWrapper();
             _shareCollectionFactory = new ShareCollectionFactory();
-            _directoryEntryFactory = new DirectoryEntryFactory();
         }
+
         public List<string> QueryCollection
         {
             get
@@ -219,9 +220,8 @@ namespace Dev2.Intellisense.Helper
             return queryCollection;
         }
 
-       public List<string> FindNetworkComputers()
+        public List<string> FindNetworkComputers()
         {
-
             var root =  _directoryEntryFactory.Create( "WinNT:");
             return (from IDirectoryEntry dom in root.Children
                     from IDirectoryEntry entry in dom.Children
@@ -229,7 +229,7 @@ namespace Dev2.Intellisense.Helper
                     select @"\\"+entry.Name).ToList();
         }
 
-      public bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
+        public bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
         {
             sServerFolderShare = string.Empty;
             const char cPathDel = SlashC;
