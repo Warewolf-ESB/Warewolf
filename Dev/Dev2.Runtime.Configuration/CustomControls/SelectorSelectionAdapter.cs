@@ -46,10 +46,6 @@ namespace System.Windows.Controls
         public event RoutedEventHandler Commit;
         public event RoutedEventHandler Cancel;
 
-        public SelectorSelectionAdapter()
-        {
-        }
-
         public SelectorSelectionAdapter(Selector selector)
         {
             SelectorControl = selector;
