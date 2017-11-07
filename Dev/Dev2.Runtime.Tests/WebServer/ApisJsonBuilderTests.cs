@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //------------Assert Results-------------------------
             Assert.IsNotNull(apisJson);
             Assert.AreEqual(exceptedApisJson,apisJson);
-            Assert.AreEqual(exceptedApisJson.Apis.Count,apisJson.Apis.Count);
+            Assert.AreEqual(exceptedApisJson.Apis.Count, apisJson.Apis.Count);
             Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl.Contains("secure"), apisJson.Apis[0].BaseUrl.Contains("secure"));
         }
 
@@ -289,18 +289,6 @@ namespace Dev2.Tests.Runtime.WebServer
                 Name = "9139Local",
                 Description = "",
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
-                Properties = new List<PropertyApi>()
-            };
-            var swagger3 = new PropertyApi
-            {
-                Type = "Swagger",
-                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
-            };
-            var singleApi4 = new SingleApi
-            {
-                Name = "Maintained",
-                Description = "",
-                BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
                 Properties = new List<PropertyApi>(),
                 Contact = new List<MaintainerApi>()
                 {
@@ -318,11 +306,15 @@ namespace Dev2.Tests.Runtime.WebServer
                     }
                 }
             };
+            var swagger3 = new PropertyApi
+            {
+                Type = "Swagger",
+                Value = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.api"
+            };
             singleApi3.Properties.Add(swagger3);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi1);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi2);
             exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi3);
-            exceptedApisJsonForServerNoSecurity.Apis.Add(singleApi4);
             return exceptedApisJsonForServerNoSecurity;
         }
 
