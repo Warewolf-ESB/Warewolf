@@ -111,6 +111,7 @@
     <Compile Include="CustomControls\SelectorSelectionAdapter.cs" />
     <Compile Include="CustomControls\VisualStates.cs" />
     <Compile Include="CustomControls\VisualTreeExtensions.cs" />
+    <Compile Include="CustomControls\WeakEventListener.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="IAssemblyMarker.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
