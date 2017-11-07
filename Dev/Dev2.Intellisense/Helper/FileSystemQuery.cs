@@ -34,7 +34,6 @@ namespace Dev2.Intellisense.Helper
         public FileSystemQuery(IDirectory directory, IDirectoryEntryFactory directoryEntryFactory, IShareCollectionFactory shareCollectionFactory)
         {
             VerifyArgument.IsNotNull("Directory",directory);
-            VerifyArgument.IsNotNull("DirectoryEntryFactory", directoryEntryFactory);
             VerifyArgument.IsNotNull("ShareCollectionFactory", shareCollectionFactory);
             _directory = directory;
             _directoryEntryFactory = directoryEntryFactory;

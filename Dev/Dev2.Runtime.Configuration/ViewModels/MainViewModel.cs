@@ -29,8 +29,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
         #region Fields
 
         private ObservableCollection<string> _errors;
-        private List<SettingsObject> _settingsObjects;
-        private SettingsObject _selectedSettingsObjects;
         private UserControl _settingsView;
         private Visibility _errorsVisible;
         private XElement _initConfigXml;
@@ -82,17 +80,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 return false;
             }
 
-            // Try create settings graph
-            try
-            {
-                SettingsObjects = SettingsObject.BuildGraph(Configuration);
-            }
-            catch(Exception)
-            {
-                SetError(string.Format(ErrorResource.ErrorBuildingSettingsGraph, configurationXml));
-                return false;
-            }
-
             _initConfigXml = configurationXml;
             return true;
         }
@@ -127,19 +114,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public List<SettingsObject> SettingsObjects
-        {
-            get
-            {
-                return _settingsObjects;
-            }
-            private set
-            {
-                _settingsObjects = value;
-                NotifyOfPropertyChange(() => SettingsObjects);
-            }
-        }
-
         public ObservableCollection<string> Errors
         {
             get
@@ -153,35 +127,15 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public SettingsObject SelectedSettingsObjects
-        {
-            get
-            {
-                return _selectedSettingsObjects;
-            }
-            set
-            {
-                _selectedSettingsObjects = value;
-                NotifyOfPropertyChange(() => SelectedSettingsObjects);
-                UpdateSettingsView(_selectedSettingsObjects);
-            }
-        }
-
         public UserControl SettingsView
         {
             get
             {
                 return _settingsView;
-            }
-            
-            private set
-            
+            }            
+            private set            
             {
-                if(value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-                _settingsView = value;
+                _settingsView = value ?? throw new ArgumentNullException("value");
                 NotifyOfPropertyChange(() => SettingsView);
             }
         }
