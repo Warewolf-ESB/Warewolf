@@ -531,7 +531,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    $Release = New-Object System.Management.Automation.Host.ChoiceDescription "&Release", `
 		    "Uses these resources for Warewolf releases."
 
-	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&UILoad", `
+	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&Load", `
 		    "Uses these resources for Studio UI Load Testing."
 
 	    $options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest, $Release, $UILoad)
