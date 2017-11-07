@@ -11,7 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -44,7 +43,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
         string _previousParentId;
-        readonly Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
         
         #region Variables
 
