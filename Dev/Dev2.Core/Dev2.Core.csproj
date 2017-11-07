@@ -163,6 +163,7 @@
     <Compile Include="Converters\Graph\DataBrowser.cs" />
     <Compile Include="Converters\Graph\DataBrowserFactory.cs" />
     <Compile Include="Converters\Graph\DataSourceShapeFactory.cs" />
+    <Compile Include="Converters\Graph\DataTable\DataTableInterrogator.cs" />
     <Compile Include="Converters\Graph\DataTable\DataTableMapper.cs" />
     <Compile Include="Converters\Graph\DataTable\DataTablePath.cs" />
     <Compile Include="Converters\Graph\IndexedPathSegmentTreeNode.cs" />
