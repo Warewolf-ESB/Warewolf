@@ -65,8 +65,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            var parser = new DateTimeParser();
-            var expectedDefaultFormat = parser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat,out string error);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             Assert.AreEqual(expectedDefaultFormat, viewModel.InputFormat);
         }
 

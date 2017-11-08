@@ -29,14 +29,12 @@ namespace Dev2.Activities.Designers2.DateTime
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time;
             if (string.IsNullOrEmpty(InputFormat))
             {
-                var parser = DateTimeConverterFactory.CreateParser();
-                InputFormat = parser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error);
+                InputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
 
             }
             if (string.IsNullOrEmpty(OutputFormat))
             {
-                var parser = DateTimeConverterFactory.CreateParser();
-                OutputFormat = parser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error);
+                OutputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             }
         }
 
