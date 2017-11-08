@@ -36,6 +36,13 @@ namespace Dev2.Activities.Specs.Merge
             localHost.Connect();
             localHost.ResourceRepository.ForceLoad();
         }
+        [BeforeScenario]
+        public void InitScenarion()
+        {
+            _scenarioContext.Clear();
+        }
+
+
 
         IServer localHost;
         IServerRepository environmentModel = ServerRepository.Instance;
@@ -64,20 +71,17 @@ namespace Dev2.Activities.Specs.Merge
         {
             var remoteResource = _scenarioContext.Get<IContextualResourceModel>("remoteResource");
             var localResource = _scenarioContext.Get<IContextualResourceModel>("localResource");
-            var containsResource = remoteResource.ResourceName.Equals(p0) && localResource.ResourceName.Equals(p0);
-            if (containsResource)
-            {
-                var mergeVm = new MergeWorkflowViewModel(localResource, remoteResource, true);
-                _scenarioContext.Add("mergeVm", mergeVm);
-            }
+            var mergeVm = new MergeWorkflowViewModel(localResource, remoteResource, true);
+            _scenarioContext.Add("mergeVm", mergeVm);
         }
 
         [Then(@"Current workflow contains ""(.*)"" tools")]
         public void ThenCurrentWorkflowContainsTools(int p0)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
-            //var count = mergeVm.Conflicts.Select(p=>p.)
-            //Assert.AreEqual(p0, count);
+            var count = mergeVm.Conflicts.Where(a => a is ToolConflict).Cast<ToolConflict>().Select(p => p.CurrentViewModel).Count();
+            var count1 = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).Count();
+            Assert.AreEqual(p0, count + count1);
 
         }
 
@@ -85,20 +89,43 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenDifferentWorkflowContainsTools(int p0)
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
-            var count = mergeVm.DifferenceConflictModel.Children;
-            Assert.AreEqual(p0, count);
+            var count = mergeVm.Conflicts.Where(a => a is ToolConflict).Cast<ToolConflict>().Select(p => p.DiffViewModel).Count();
+            var count1 = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict).Cast<ArmConnectorConflict>().Select(p => p.DifferentArmConnector).Count();
+            Assert.AreEqual(p0, count + count1);
         }
 
         [Then(@"Merge conflicts count is ""(.*)""")]
         public void ThenMergeConflictsCountIs(int p0)
         {
-            ScenarioContext.Current.Pending();
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var count = mergeVm.Conflicts.Count;
+            Assert.AreEqual(p0, count);
         }
 
-        [Then(@"Merge variable conflicts is ""(.*)""")]
-        public void ThenMergeVariableConflictsIs(int p0)
+        [Then(@"Merge variable conflicts is false")]
+        public void ThenMergeVariableConflictsIsFalse()
         {
-            ScenarioContext.Current.Pending();
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var a = mergeVm.HasVariablesConflict;
+            Assert.IsFalse(a);
         }
+
+        [Then(@"Merge window has no Conflicting tools")]
+        public void ThenMergeWindowHasNoConflictingTools()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var a = mergeVm.Conflicts.AsEnumerable().All(p => p.HasConflict);
+            Assert.IsFalse(a);
+        }
+
+        [Then(@"Merge window has ""(.*)"" Conflicting tools")]
+        public void ThenMergeWindowHasConflictingTools(int p0)
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>("mergeVm");
+            var a = mergeVm.Conflicts.AsEnumerable().Count(p => p.HasConflict);
+            Assert.AreEqual(p0, a);
+        }
+
+
     }
 }
