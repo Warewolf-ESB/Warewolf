@@ -64,4 +64,38 @@ Scenario: Merge WorkFlowWithOneObject different input mapping
 	 And Merge variable conflicts is false
 	 And Merge window has "1" Conflicting tools
 
+Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second tool count
+	 Given I Load workflow "WorkflowWithDifferentToolSequence" from "localhost"
+	 And I Load workflow "WorkflowWithDifferentToolSequence" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkflowWithDifferentToolSequence"
+	 Then Current workflow contains "2" tools
+	 And Different workflow contains "2" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is "0" 
 
+Scenario: Merge Workflow Containing SequenceTool With Different Children Count
+	 Given I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "localhost"
+	 And I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkflowWithSequenceToolWithDifferentChildren"
+	 Then Current workflow contains "2" tools
+	 And Different workflow contains "2" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is "0" 
+
+Scenario: Merge Workflow Containing SequenceTool With Different Children Sequence
+	 Given I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "localhost"
+	 And I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkflowWithSequenceToolWithChildrenInDifferentOrder"
+	 Then Current workflow contains "2" tools
+	 And Different workflow contains "2" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is "0" 
+
+Scenario: Merge Workflow Containing Same tools But disconnected Arms
+	 Given I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "localhost"
+	 And I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkflowWithAssignToolsWithDisconnectedArms"
+	 Then Current workflow contains "2" tools
+	 And Different workflow contains "2" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is "0" 
