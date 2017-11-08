@@ -5,14 +5,12 @@ using Dev2.Activities.Designers2.Switch;
 using Dev2.Common;
 using Dev2.Communication;
 using Dev2.Data.SystemTemplates.Models;
-using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Interfaces;
 using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
-using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
@@ -94,7 +92,6 @@ namespace Dev2.Core.Tests.Merge
             var adapter = new Mock<IApplicationAdaptor>();
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfMultiAssignActivity();
@@ -102,9 +99,7 @@ namespace Dev2.Core.Tests.Merge
             {
                 Action = value
             };
-            conflictNode.Setup(p => p.Activity).Returns(value);
-            conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
+            node.Setup(p => p.Activity).Returns(value);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -124,7 +119,6 @@ namespace Dev2.Core.Tests.Merge
             var adapter = new Mock<IApplicationAdaptor>();
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfMultiAssignActivity();
@@ -132,9 +126,7 @@ namespace Dev2.Core.Tests.Merge
             {
                 Action = value
             };
-            conflictNode.Setup(p => p.Activity).Returns(value);
-            conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
+            node.Setup(p => p.Activity).Returns(value);
             var assignExample = XML.XmlResource.Fetch("Utility - Assign");
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -158,7 +150,6 @@ namespace Dev2.Core.Tests.Merge
             var adapter = new Mock<IApplicationAdaptor>();
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfMultiAssignActivity();
@@ -166,9 +157,7 @@ namespace Dev2.Core.Tests.Merge
             {
                 Action = value
             };
-            conflictNode.Setup(p => p.Activity).Returns(value);
-            conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
+            node.Setup(p => p.Activity).Returns(value);
             var assignExample = XML.XmlResource.Fetch("AssignOutput");
             Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -193,7 +182,6 @@ namespace Dev2.Core.Tests.Merge
             var adapter = new Mock<IApplicationAdaptor>();
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var dev2DecisionStack = new Dev2DecisionStack()
@@ -218,9 +206,7 @@ namespace Dev2.Core.Tests.Merge
             {
                 Action = value
             };
-            conflictNode.Setup(p => p.Activity).Returns(value);
-            conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
+            node.Setup(p => p.Activity).Returns(value);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
@@ -247,7 +233,6 @@ namespace Dev2.Core.Tests.Merge
             CustomContainer.Register(severRepo.Object);
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfActivity()
@@ -258,9 +243,7 @@ namespace Dev2.Core.Tests.Merge
                 Action = value
             };
             Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            conflictNode.Setup(p => p.Activity).Returns(value);
-            conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
+            node.Setup(p => p.Activity).Returns(value);
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
             //------------Execute Test---------------------------
 
@@ -285,7 +268,6 @@ namespace Dev2.Core.Tests.Merge
             var adapter = new Mock<IApplicationAdaptor>();
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var dev2DecisionStack = new Dev2DecisionStack()
@@ -315,16 +297,14 @@ namespace Dev2.Core.Tests.Merge
             {
                 Action = value
             };
-            conflictNode.Setup(p => p.Activity).Returns(value);
-            conflictNode.Setup(p => p.CurrentActivity).Returns(ModelItemUtils.CreateModelItem(value));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(ModelItemUtils.CreateModelItem(assignStep));
+            node.Setup(p => p.Activity).Returns(value);
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
             Assert.IsNotNull(completeConflict.Model);
-            Assert.AreEqual(2, completeConflict.Model.Children.Count);
+            Assert.AreEqual(0, completeConflict.Model.Children.Count);
             adapter.Verify(p => p.TryFindResource(It.IsAny<object>()));
             var mergeToolModel = completeConflict.Model;
             Assert.AreEqual("bbb", mergeToolModel.MergeDescription);
@@ -340,17 +320,14 @@ namespace Dev2.Core.Tests.Merge
             var adapter = new Mock<IApplicationAdaptor>();
             adapter.Setup(p => p.TryFindResource(It.IsAny<object>())).Returns(new object());
             CustomContainer.Register(adapter.Object);
-            var conflictNode = new Mock<IConflictNode>();
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
 
-            conflictNode.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
-            conflictNode.Setup(p => p.CurrentActivity).Returns(default(ModelItem));
-            conflictNode.Setup(p => p.CurrentFlowStep).Returns(default(ModelItem));
+            node.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
             //------------Assert Results-------------------------
-            Assert.IsNull(completeConflict.Model);
+            Assert.IsNotNull(completeConflict.Model);
 
         }
     }

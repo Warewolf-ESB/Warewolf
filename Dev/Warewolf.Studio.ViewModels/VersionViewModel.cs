@@ -7,6 +7,7 @@ using Dev2.Studio.Core.Models;
 using Dev2.Services.Events;
 using System.Text;
 using Dev2.Common.Interfaces.Security;
+using Dev2.Common.Interfaces.Versioning;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -20,10 +21,10 @@ namespace Warewolf.Studio.ViewModels
 
     public static class VersionViewModelExtenstions
     {
-        public static IContextualResourceModel ToContextualResourceModel(this VersionViewModel versionViewModel, IServer server, Guid? Id)
+        public static IContextualResourceModel ToContextualResourceModel(this IVersionInfo versionViewModel, IServer server, Guid? Id)
         {
             VerifyArgument.IsNotNull(nameof(versionViewModel), versionViewModel);
-            var workflowXaml = server?.ProxyLayer?.GetVersion(versionViewModel.VersionInfo, versionViewModel.ResourceId);
+            var workflowXaml = server?.ProxyLayer?.GetVersion(versionViewModel, versionViewModel.ResourceId);
             if (workflowXaml != null)
             {
                 var resourceModel = server?.ResourceRepository.LoadContextualResourceModel(versionViewModel.ResourceId);
@@ -45,7 +46,7 @@ namespace Warewolf.Studio.ViewModels
                 var resourceVersion = new ResourceModel(server, EventPublishers.Aggregator)
                 {
                     ResourceType = resourceModel.ResourceType,
-                    ResourceName = versionViewModel.ResourceName,
+                    ResourceName = resourceModel.ResourceName,
                     WorkflowXaml = new StringBuilder(xamlString),
                     UserPermissions = Permissions.Contribute,
                     DataList = dataListString,
