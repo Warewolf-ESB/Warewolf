@@ -8,7 +8,7 @@
 			      xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
 			      xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
 			      xmlns:ig="http://schemas.infragistics.com/xaml"
-			      xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+			      xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
 			      xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
 			      xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
 			      xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"

@@ -11,7 +11,7 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:viewModels="clr-namespace:Warewolf.Studio.ViewModels;assembly=Warewolf.Studio.ViewModels"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300"
              d:DataContext="{d:DesignInstance Type=viewModels:ManageOAuthSourceViewModel,
