@@ -24,6 +24,46 @@ Scenario: Merge VersionHelloWorld Workflow
 	 And Merge variable conflicts is false
 	 And Merge window has "0" Conflicting tools
 
+Scenario: Merge WorkFlowWithOneScalar Same VariableList
+	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
+	 And I Load workflow "WorkFlowWithOneScalar" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkFlowWithOneScalar"
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is false
+	 And Merge window has "1" Conflicting tools
+
+Scenario: Merge WorkFlowWithOneScalar different input mapping
+	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
+	 And I Load workflow version "1" of "WorkFlowWithOneScalar" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkFlowWithOneScalar"
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is false
+	 And Merge window has "1" Conflicting tools
+
+Scenario: Merge WorkFlowWithOneRecordSet different input mapping
+	 Given I Load workflow "WorkFlowWithOneRecordSet" from "localhost"
+	 And I Load workflow version "1" of "WorkFlowWithOneRecordSet" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkFlowWithOneRecordSet"
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is false
+	 And Merge window has "1" Conflicting tools
+
+Scenario: Merge WorkFlowWithOneObject different input mapping
+	 Given I Load workflow "WorkFlowWithOneObject" from "localhost"
+	 And I Load workflow version "1" of "WorkFlowWithOneObject" from "Remote Connection Integration"	 
+	 When Merge Window is opened with "WorkFlowWithOneObject"
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
+	 And Merge conflicts count is "1"
+	 And Merge variable conflicts is false
+	 And Merge window has "1" Conflicting tools
+
 Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second tool count
 	 Given I Load workflow "WorkflowWithDifferentToolSequence" from "localhost"
 	 And I Load workflow "WorkflowWithDifferentToolSequence" from "Remote Connection Integration"	 

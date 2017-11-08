@@ -719,7 +719,7 @@ namespace Dev2.Studio.ViewModels
                 var server = selectedMergeItem?.Server;
                 if (selectedMergeItem is VersionViewModel differentResource)
                 {
-                    var resourceVersion = differentResource.ToContextualResourceModel(server, differentResource.ResourceId);
+                    var resourceVersion = differentResource.VersionInfo.ToContextualResourceModel(server, differentResource.ResourceId);
                     var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
 
                     var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
