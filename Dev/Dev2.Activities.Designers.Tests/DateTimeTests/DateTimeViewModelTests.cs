@@ -20,7 +20,6 @@ using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Globalization;
 using Dev2.Common;
-using Dev2.Common.DateAndTime;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
@@ -32,8 +31,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         {
             var modelItem = CreateModelItem();
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var parser = new DateTimeParser();
-            var expectedDefaultFormat = parser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
         }
@@ -54,8 +52,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
         {
             var modelItem = CreateModelItem();
             var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var parser = new DateTimeParser();
-            var expectedDefaultFormat = parser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             var po = new PrivateObject(viewModel);
             Assert.AreEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
         }

@@ -152,8 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
                     }
                     
-                var parser = DateTimeConverterFactory.CreateParser();
-                    var dateTimePattern = string.Format("{0}", parser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error));
+                    var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
 
                     if(string.IsNullOrEmpty(InputFormat))
                     {
