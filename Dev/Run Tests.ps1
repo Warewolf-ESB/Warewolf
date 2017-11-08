@@ -145,6 +145,9 @@ $JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UI.Specs", "WebConnector"
 $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UI.Tests", "Web Sources"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UI.Tests", "Workflow Mocking Tests"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UI.Tests", "Workflow Testing"
+#UI Load Spec
+$JobSpecs["UI Load Spec"]						= "Warewolf.UI.Load.Specs"
+
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
 $ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs,Execution Logging Web UI Tests,No Warewolf Server Web UI Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs"
@@ -187,10 +190,10 @@ $StudioPathSpecs += "Dev2.Studio\bin\Release\" + $StudioExeName
 $StudioPathSpecs += "*Studio.zip"
 
 if ($JobName.Contains(" DotCover")) {
-    $ApplyDotCover = $true
+    [bool]$ApplyDotCover = $True
     $JobName = $JobName.Replace(" DotCover", "")
 } else {
-    $ApplyDotCover = $DotCoverPath -ne ""
+    [bool]$ApplyDotCover = $DotCoverPath -ne ""
 }
 
 
@@ -514,7 +517,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
         $ServerPath = Find-Warewolf-Server-Exe
     }
-    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will backed up to $TestsResultsPath."
+    Write-Warning "Will now stop any currently running Warewolf servers and studios. Resources will be backed up to $TestsResultsPath."
     if ($ResourcesType -eq "") {
 	    $title = "Server Resources"
 	    $message = "What type of resources would you like to install the server with?"
@@ -528,7 +531,10 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    $Release = New-Object System.Management.Automation.Host.ChoiceDescription "&Release", `
 		    "Uses these resources for Warewolf releases."
 
-	    $options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest, $Release)
+	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&UILoad", `
+		    "Uses these resources for Studio UI Load Testing."
+
+	    $options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest, $Release, $UILoad)
 
 	    $result = $host.ui.PromptForChoice($title, $message, $options, 0) 
 
@@ -537,6 +543,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 			    0 {$ResourcesType = "UITests"}
 			    1 {$ResourcesType = "ServerTests"}
 			    2 {$ResourcesType = "Release"}
+			    3 {$ResourcesType = "Load"}
 		    }
     }
 
@@ -938,7 +945,6 @@ if ($TotalNumberOfJobsToRun -gt 0) {
   <Description>Run $JobName With Screen Recording.</Description>
   <NamingScheme baseName="ScreenRecordings" appendTimeStamp="false" useDefault="false" />
   <Execution>
-    <Timeouts testTimeout="360000"/>
     <AgentRule name="LocalMachineDefaultRole">
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
@@ -1081,7 +1087,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             } else {
                 &"$TestRunnerPath"
                 if ($StartServer.IsPresent -or $StartStudio.IsPresent -or ${Startmy.warewolf.io}.IsPresent) {
-                    Cleanup-ServerStudio $ApplyDotCover
+                    Cleanup-ServerStudio (!$ApplyDotCover)
                 }
             }
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
