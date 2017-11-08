@@ -72,13 +72,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<string> GetOutputs()
         {
             return FieldsCollection.Select(dto => dto.FieldName).ToList();
-        }
-
-        
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
+        }          
         
 
         protected override void OnExecute(NativeActivityContext context)
