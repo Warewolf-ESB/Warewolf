@@ -1371,6 +1371,22 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, 1400, 968);
         }
 
+        [Given(@"I Click AssignStep In Debug Output")]
+        [When(@"I Click AssignStep In Debug Output")]
+        [Then(@"I Click AssignStep In Debug Output")]
+        public void Click_AssignStep_InDebugOutput()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.AssignOnDebugOutput);
+        }
+
+        [Given(@"I Click DecisionStep In Debug Output")]
+        [When(@"I Click DecisionStep In Debug Output")]
+        [Then(@"I Click DecisionStep In Debug Output")]
+        public void Click_DesicionStep_InDebugOutput()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.DecisionOnDebugOutput);
+        }
+
         #region UIMaps
 
         UIMap UIMap
