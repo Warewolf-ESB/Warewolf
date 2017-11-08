@@ -19,12 +19,6 @@ namespace Warewolf.Studio.CustomControls
                 typeof(Brush),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty addNoteCommandProperty =
-            DependencyProperty.Register(
-                "AddNoteCommand",
-                typeof(ICommand),
-                typeof(VariableTextBox));
-
         private static DependencyProperty deleteCommandProperty =
             DependencyProperty.Register(
                 "DeleteCommand",
@@ -85,21 +79,6 @@ namespace Warewolf.Studio.CustomControls
             set { SetValue(LabelTextColorProperty, value); }
         }
 
-        public ICommand AddNoteCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(AddNoteCommandProperty);
-            }
-            set
-            {
-                if (AllowNotes)
-                {
-                    SetValue(AddNoteCommandProperty, value);
-                }
-            }
-        }
-
         public ICommand DeleteCommand
         {
             get { return (ICommand)GetValue(DeleteCommandProperty); }
@@ -156,7 +135,6 @@ namespace Warewolf.Studio.CustomControls
         public static DependencyProperty HasTextProperty { get => hasTextProperty; set => hasTextProperty = value; }
         public static DependencyProperty ViewComplexObjectsCommandProperty { get => viewComplexObjectsCommandProperty; set => viewComplexObjectsCommandProperty = value; }
         public static DependencyProperty DeleteCommandProperty { get => deleteCommandProperty; set => deleteCommandProperty = value; }
-        public static DependencyProperty AddNoteCommandProperty { get => addNoteCommandProperty; set => addNoteCommandProperty = value; }
         public static DependencyProperty LabelTextColorProperty { get => labelTextColorProperty; set => labelTextColorProperty = value; }
         public static DependencyProperty LabelTextProperty { get => labelTextProperty; set => labelTextProperty = value; }
     }
