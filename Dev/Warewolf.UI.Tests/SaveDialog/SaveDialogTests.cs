@@ -4,6 +4,7 @@ using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using System.Drawing;
+using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
 
 namespace Warewolf.UI.Tests.SaveDialog
 {
@@ -177,6 +178,26 @@ namespace Warewolf.UI.Tests.SaveDialog
             Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 
+        [TestMethod]
+        [TestCategory("Save Dialog")]
+        public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
+        {
+            WorkflowTabUIMap.Escape_Using_Shortcut();
+
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("ClickSaveEnterSavesServerResource");
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Point point;
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out point), 60000);
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
@@ -248,6 +269,21 @@ namespace Warewolf.UI.Tests.SaveDialog
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        ServerSourceUIMap ServerSourceUIMap
+        {
+            get
+            {
+                if (_ServerSourceUIMap == null)
+                {
+                    _ServerSourceUIMap = new ServerSourceUIMap();
+                }
+
+                return _ServerSourceUIMap;
+            }
+        }
+
+        private ServerSourceUIMap _ServerSourceUIMap;
 
         #endregion
     }
