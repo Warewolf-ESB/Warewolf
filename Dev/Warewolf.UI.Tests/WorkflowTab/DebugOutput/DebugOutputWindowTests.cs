@@ -45,10 +45,10 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             ExplorerUIMap.Filter_Explorer(SelectionHighlightWf);
             ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Press_F6();
-            ExplorerUIMap.Click_AssignStep_InDebugOutput();
+            WorkflowTabUIMap.Click_AssignStep_InDebugOutput();
             var assignFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
             Assert.IsTrue(assignFocus);
-            ExplorerUIMap.Click_DesicionStep_InDebugOutput();
+            WorkflowTabUIMap.Click_DesicionStep_InDebugOutput();
             var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
             Assert.IsTrue(assignHasNoFocus, "Assign tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
@@ -60,10 +60,10 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             ExplorerUIMap.Filter_Explorer(DropboxSelectionHighlightWf);
             ExplorerUIMap.Open_ExplorerFirstItem_From_ExplorerContextMenu();
             UIMap.Press_F6();
-            ExplorerUIMap.Click_AssignStep_InDebugOutput();
+            WorkflowTabUIMap.Click_AssignStep_InDebugOutput();
             var assignFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=True IsSelection=True");
             Assert.IsTrue(assignFocus);
-            ExplorerUIMap.Click_DesicionStep_InDebugOutput();
+            WorkflowTabUIMap.Click_DesicionStep_InDebugOutput();
             var assignHasNoFocus = DataToolsUIMap.MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.ItemStatus.Contains("IsPrimarySelection=False IsSelection=False");
             Assert.IsTrue(assignHasNoFocus, "Dropbox delete tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
