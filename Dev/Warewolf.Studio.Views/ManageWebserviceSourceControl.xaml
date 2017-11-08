@@ -8,7 +8,8 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
-             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:passwordBoxAssistant="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
              xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
@@ -133,8 +134,8 @@
                          Grid.Row="1" 
                          ToolTip="{x:Static languages:Tooltips.ManageWebSourcePasswordTooltip}"
                          Margin="{StaticResource ControlBorderTop}"
-                         customControls:PasswordBoxAssistant.BindPassword="true" 
-                         customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                         passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true" 
+                         passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <i:Interaction.Behaviors>
                     <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                 </i:Interaction.Behaviors>
