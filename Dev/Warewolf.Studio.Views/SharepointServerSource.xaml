@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+             xmlns:doubleClick="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:passwordBoxAssistant="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
@@ -195,7 +196,7 @@
                          Style="{StaticResource ErrorMessageTextboxStyle}"
                          Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
                 <i:Interaction.Behaviors>
-                    <customControls:DoubleClickBehavior/>
+                    <doubleClick:DoubleClickBehavior/>
                 </i:Interaction.Behaviors>
             </TextBox>
         </Grid>
