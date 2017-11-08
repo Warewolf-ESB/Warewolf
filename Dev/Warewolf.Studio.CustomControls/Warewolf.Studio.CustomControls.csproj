@@ -118,15 +118,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityDesignerToggleButton.cs" />
-    <Compile Include="CheckBoxColumn.cs" />
-    <Compile Include="CheckBoxColumnContentProvider.cs" />
-    <Compile Include="DataPresenterHelpers.cs" />
-    <Compile Include="DragDropExtension.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
+    <Compile Include="DragDropExtension.cs" />
     <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />
-    <Compile Include="TextBoxColumn.cs" />
-    <Compile Include="TextColumnContentProvider.cs" />
     <Compile Include="VariableTextBox.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
