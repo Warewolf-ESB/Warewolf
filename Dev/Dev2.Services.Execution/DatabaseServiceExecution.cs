@@ -29,8 +29,8 @@ using Dev2.Interfaces;
 using Npgsql;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-using System.Transactions;
 using System.Diagnostics;
+using System.Transactions;
 
 namespace Dev2.Services.Execution
 {
@@ -126,7 +126,7 @@ namespace Dev2.Services.Execution
 
                 case enSourceType.ODBC:
                     {
-                        object result = ODBCExecution(invokeErrors, update);
+                        object result = OdbcExecution(invokeErrors, update);
                         ErrorResult.MergeErrors(invokeErrors);
                         return result;
                     }
@@ -138,31 +138,18 @@ namespace Dev2.Services.Execution
                     }
 
                 case enSourceType.WebService:
-                    break;
                 case enSourceType.DynamicService:
-                    break;
                 case enSourceType.ManagementDynamicService:
-                    break;
                 case enSourceType.PluginSource:
-                    break;
                 case enSourceType.Unknown:
-                    break;
                 case enSourceType.Dev2Server:
-                    break;
                 case enSourceType.EmailSource:
-                    break;
                 case enSourceType.WebSource:
-                    break;
                 case enSourceType.OauthSource:
-                    break;
                 case enSourceType.SharepointServerSource:
-                    break;
                 case enSourceType.RabbitMQSource:
-                    break;
                 case enSourceType.ExchangeSource:
-                    break;
                 case enSourceType.WcfSource:
-                    break;
                 case enSourceType.ComPluginSource:
                     break;
                 default:
@@ -183,64 +170,7 @@ namespace Dev2.Services.Execution
                     {
                         var rowIdx = 1;
 
-                        foreach (DataRow row in executeService.Rows)
-                        {
-                            foreach (var serviceOutputMapping in Outputs)
-                            {
-                                if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
-                                {
-                                    var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
-                                    var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
-                                    var rs = serviceOutputMapping.RecordSetName;
-
-                                    if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(rs))
-                                    {
-                                        if (started)
-                                        {
-                                            rowIdx = environment.GetLength(rs) + 1;
-                                            started = false;
-                                        }
-                                    }
-                                    else
-                                    {
-
-                                        try
-                                        {
-                                            environment.AssignDataShape(serviceOutputMapping.MappedTo);
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Dev2Logger.Error(e, GlobalConstants.WarewolfError);
-                                        }
-                                    }
-                                    if (rsType == enRecordsetIndexType.Star && started)
-                                    {
-                                        rowIdx = 1;
-                                        started = false;
-                                    }
-                                    if (rsType == enRecordsetIndexType.Numeric)
-                                    {
-                                        rowIdx = int.Parse(rowIndex);
-                                    }
-                                    if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
-                                    {
-                                        continue;
-                                    }
-                                    var value = row[serviceOutputMapping.MappedFrom];
-                                    if (update != 0)
-                                    {
-                                        rowIdx = update;
-                                    }
-                                    var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
-                                    if (rsType == enRecordsetIndexType.Star)
-                                    {
-                                        displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
-                                    }
-                                    environment.Assign(displayExpression, value.ToString(), update);
-                                }
-                            }
-                            rowIdx++;
-                        }
+                        MappDataRowsToEnvironment(executeService, environment, update, ref started, ref rowIdx);
                     }
                     catch (Exception e)
                     {
@@ -249,6 +179,69 @@ namespace Dev2.Services.Execution
                 }
             }
         }
+
+        private void MappDataRowsToEnvironment(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx)
+        {
+            foreach (DataRow row in executeService.Rows)
+            {
+                foreach (var serviceOutputMapping in Outputs)
+                {
+                    if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
+                    {
+                        var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
+                        var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
+                        var rs = serviceOutputMapping.RecordSetName;
+
+                        if (!string.IsNullOrEmpty(rs) && environment.HasRecordSet(rs))
+                        {
+                            if (started)
+                            {
+                                rowIdx = environment.GetLength(rs) + 1;
+                                started = false;
+                            }
+                        }
+                        else
+                        {
+
+                            try
+                            {
+                                environment.AssignDataShape(serviceOutputMapping.MappedTo);
+                            }
+                            catch (Exception e)
+                            {
+                                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
+                            }
+                        }
+                        if (rsType == enRecordsetIndexType.Star && started)
+                        {
+                            rowIdx = 1;
+                            started = false;
+                        }
+                        if (rsType == enRecordsetIndexType.Numeric)
+                        {
+                            rowIdx = int.Parse(rowIndex);
+                        }
+                        if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+                        {
+                            continue;
+                        }
+                        var value = row[serviceOutputMapping.MappedFrom];
+                        if (update != 0)
+                        {
+                            rowIdx = update;
+                        }
+                        var displayExpression = DataListUtil.ReplaceRecordsetBlankWithIndex(DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo), rowIdx);
+                        if (rsType == enRecordsetIndexType.Star)
+                        {
+                            displayExpression = DataListUtil.ReplaceStarWithFixedIndex(displayExpression, rowIdx);
+                        }
+                        environment.Assign(displayExpression, value.ToString(), update);
+                    }
+                }
+                rowIdx++;
+            }
+        }
+
         private void SqlExecution(ErrorResultTO errors, int update)
         {
             SqlConnection connection = new SqlConnection(Source.ConnectionString);
@@ -427,7 +420,7 @@ namespace Dev2.Services.Execution
             return sqlParameters;
         }
 
-        private ODBCServer SetupODBCServer(ErrorResultTO errors)
+        private ODBCServer SetupOdbcServer(ErrorResultTO errors)
         {
             var server = new ODBCServer();
             try
@@ -455,13 +448,13 @@ namespace Dev2.Services.Execution
             return server;
         }
 
-        private bool ODBCExecution(ErrorResultTO errors, int update)
+        private bool OdbcExecution(ErrorResultTO errors, int update)
         {
             try
             {
 
-                var parameters = GetODBCParameters(Inputs);
-                using (var server = SetupODBCServer(errors))
+                var parameters = GetOdbcParameters(Inputs);
+                using (var server = SetupOdbcServer(errors))
                 {
 
                     if (parameters != null)
@@ -482,11 +475,11 @@ namespace Dev2.Services.Execution
             }
             return false;
         }
-        public string ODBCMethod(string command)
+        public string OdbcMethod(string command)
         {
             return ODBCParameterIterators(0, command);
         }
-        private static List<OdbcParameter> GetODBCParameters(ICollection<IServiceInput> methodParameters)
+        private static List<OdbcParameter> GetOdbcParameters(ICollection<IServiceInput> methodParameters)
         {
             var sqlParameters = new List<OdbcParameter>();
 
