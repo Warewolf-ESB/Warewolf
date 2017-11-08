@@ -195,7 +195,7 @@ namespace Dev2.Core.Tests
             Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
             Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
             //---------------Test Result -----------------------
-            Assert.AreEqual(7, mergeWorkflowViewModel.Conflicts.Count);
+            Assert.AreEqual(13, mergeWorkflowViewModel.Conflicts.Count);
 
         }
     }
