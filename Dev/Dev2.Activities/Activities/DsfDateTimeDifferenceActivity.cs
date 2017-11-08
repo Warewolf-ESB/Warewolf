@@ -101,13 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<string> GetOutputs()
         {
             return new List<string> { Result };
-        }
-
-        
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
+        }     
         
 
         /// <summary>
@@ -121,8 +115,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -130,32 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // Process if no errors
             try
             {
-                if(dataObject.IsDebugMode())
-                {
-                    if(string.IsNullOrEmpty(Input1))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 1", "="));
-                    }
-                    else
-                    {
-                        AddDebugInputItem(Input1, "Input 1", dataObject.Environment, update);
-                    }
-
-                    if(string.IsNullOrEmpty(Input2))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 2", "="));
-                    }
-                    else
-                    {
-                        AddDebugInputItem(Input2, "Input 2", dataObject.Environment, update);
-                    }
-
-                    AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment, update);
-                    if(!String.IsNullOrEmpty(OutputType))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
-                    }
-                }
+                AddDebugInputs(dataObject, update);
                 var colItr = new WarewolfListIterator();
 
                 var input1Itr = new WarewolfIterator(dataObject.Environment.EvalStrict(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, update));
@@ -169,7 +136,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(ifItr);
                 int indexToUpsertTo = 1;
-                while(colItr.HasMoreData())
+                while (colItr.HasMoreData())
                 {
                     IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
                         colItr.FetchNextValue(input2Itr),
@@ -181,29 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (comparer.TryCompare(transObj, out string result, out string error))
                     {
-                        if (DataListUtil.IsValueRecordset(Result) &&
-                           DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            if (update == 0)
-                            {
-                                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                            }
-                        }
-                        else
-                        {
-                            expression = Result;
-                        }
-
-                        var rule = new IsSingleValueRule(() => Result);
-                        var single = rule.Check();
-                        if(single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(expression, result, update);
-                        }
+                        expression = AssignResults(dataObject, update, allErrors, indexToUpsertTo, expression, result);
                     }
                     else
                     {
@@ -214,12 +159,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 allErrors.MergeErrors(errors);
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, null, dataObject.Environment, update));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFDateTime", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -238,6 +183,65 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
+                }
+            }
+        }
+
+        private string AssignResults(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexToUpsertTo, string expression, string result)
+        {
+            if (DataListUtil.IsValueRecordset(Result) &&
+                                       DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            {
+                if (update == 0)
+                {
+                    expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            else
+            {
+                expression = Result;
+            }
+
+            var rule = new IsSingleValueRule(() => Result);
+            var single = rule.Check();
+            if (single != null)
+            {
+                allErrors.AddError(single.Message);
+            }
+            else
+            {
+                dataObject.Environment.Assign(expression, result, update);
+            }
+
+            return expression;
+        }
+
+        private void AddDebugInputs(IDSFDataObject dataObject, int update)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                if (string.IsNullOrEmpty(Input1))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 1", "="));
+                }
+                else
+                {
+                    AddDebugInputItem(Input1, "Input 1", dataObject.Environment, update);
+                }
+
+                if (string.IsNullOrEmpty(Input2))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 2", "="));
+                }
+                else
+                {
+                    AddDebugInputItem(Input2, "Input 2", dataObject.Environment, update);
+                }
+
+                AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment, update);
+                if (!String.IsNullOrEmpty(OutputType))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
                 }
             }
         }

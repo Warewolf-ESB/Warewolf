@@ -89,7 +89,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion Properties
 
-        #region Ctor
 
         /// <summary>
         /// The consructor for the activity 
@@ -107,7 +106,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result = string.Empty;
         }
 
-        #endregion Ctor
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
@@ -136,20 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
                 AddDebugInfo(dataObject, update);
-
-                if (DataListUtil.HasNegativeIndex(InputFormat))
-                {
-                    allErrors.AddError(string.Format("Negative Recordset Index for Input Format: {0}", InputFormat));
-                }
-                if (DataListUtil.HasNegativeIndex(OutputFormat))
-                {
-                    allErrors.AddError(string.Format("Negative Recordset Index for Output Format: {0}", OutputFormat));
-                }
-
-                if (DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
-                {
-                    allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
-                }
+                AddValidationErrors(allErrors);
 
                 if (!allErrors.HasErrors())
                 {
@@ -210,6 +195,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     DispatchDebugState(dataObject, StateType.Before, update);
                     DispatchDebugState(dataObject, StateType.After, update);
                 }
+            }
+        }
+
+        private void AddValidationErrors(ErrorResultTO allErrors)
+        {
+            if (DataListUtil.HasNegativeIndex(InputFormat))
+            {
+                allErrors.AddError(string.Format("Negative Recordset Index for Input Format: {0}", InputFormat));
+            }
+            if (DataListUtil.HasNegativeIndex(OutputFormat))
+            {
+                allErrors.AddError(string.Format("Negative Recordset Index for Output Format: {0}", OutputFormat));
+            }
+
+            if (DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
+            {
+                allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
             }
         }
 
