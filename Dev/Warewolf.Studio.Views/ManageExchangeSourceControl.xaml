@@ -6,7 +6,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-             xmlns:customControls="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activity.Designers"
+             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:passwordBoxAssistant="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -94,8 +95,8 @@
                                  Grid.Column="1"
                                  Margin="{StaticResource ControlBorderTop}"
                                  ToolTip="{x:Static languages:Tooltips.ManageEmailPasswordTooltip}"
-                                 customControls:PasswordBoxAssistant.BindPassword="true"
-                                 customControls:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                 passwordBoxAssistant:PasswordBoxAssistant.BindPassword="true"
+                                 passwordBoxAssistant:PasswordBoxAssistant.BoundPassword="{Binding Path=Password, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                         <i:Interaction.Behaviors>
                             <core:HelpSetter Text="{x:Static languages:HelpText.PasswordAuthenticationHelp}" DataContext="{Binding}" />
                         </i:Interaction.Behaviors>

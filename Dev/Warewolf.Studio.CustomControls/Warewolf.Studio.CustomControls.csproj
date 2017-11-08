@@ -120,6 +120,7 @@
     <Compile Include="ActivityDesignerToggleButton.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="DragDropExtension.cs" />
+    <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="VariableTextBox.cs" />
     <Compile Include="WatermarkAdorner.cs" />
@@ -137,6 +138,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="WatermarkTextBox.cs" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

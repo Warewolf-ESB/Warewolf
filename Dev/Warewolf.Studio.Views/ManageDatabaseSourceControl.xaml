@@ -8,7 +8,8 @@
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:fa="http://schemas.fontawesome.io/icons/"
-             xmlns:customControls="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activity.Designers"
+             xmlns:customControls="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activities.Designers"
+             xmlns:doubleClickBehavior="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
              xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
@@ -243,7 +244,7 @@
                  Style="{StaticResource ErrorMessageTextboxStyle}"
                  Visibility="{Binding Path=TestFailed,Converter={StaticResource BoolToVisibilityConverter}}">
             <i:Interaction.Behaviors>
-                <customControls:DoubleClickBehavior/>
+                <doubleClickBehavior:DoubleClickBehavior/>
             </i:Interaction.Behaviors>
         </TextBox>
     </Grid>
