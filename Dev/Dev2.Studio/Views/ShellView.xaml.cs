@@ -699,6 +699,7 @@ namespace Dev2.Studio.Views
                 case WindowState.Minimized:
                     break;
                 default:
+                    WindowState = WindowState.Normal;
                     break;
             }
         }
@@ -814,6 +815,14 @@ namespace Dev2.Studio.Views
                         paneToolWindow.Title = Title;
                     }
                 }
+            }
+        }
+
+        private void MainViewWindow_Closed(object sender, EventArgs e)
+        {
+            foreach (Process proc in Process.GetProcessesByName("Warewolf Studio"))
+            {
+                proc.Kill();
             }
         }
     }
