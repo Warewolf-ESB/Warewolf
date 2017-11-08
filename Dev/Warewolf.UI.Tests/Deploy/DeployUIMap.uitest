@@ -277,6 +277,19 @@
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants />
                                                     </UIObject>
+                                                    <UIObject ControlType="Text" Id="LocalServerSourceText" FriendlyName="LocalServerSource" SpecialControlType="None">
+                                                      <TechnologyName>UIA</TechnologyName>
+                                                      <WindowTitles>
+                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                      </WindowTitles>
+                                                      <AndCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                        <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                        <PropertyCondition Name="Name">Local Server Source (Connected)</PropertyCondition>
+                                                      </AndCondition>
+                                                      <SupportLevel>0</SupportLevel>
+                                                      <Descendants />
+                                                    </UIObject>
                                                   </Descendants>
                                                 </UIObject>
                                                 <UIObject ControlType="Custom" Id="Spinner" FriendlyName="UI_IndicatorConnecting_AutoID" SpecialControlType="None">

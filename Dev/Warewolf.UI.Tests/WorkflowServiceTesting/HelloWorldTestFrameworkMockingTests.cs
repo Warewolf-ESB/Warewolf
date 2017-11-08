@@ -34,7 +34,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Hello World Mocking Tests")]
         public void ClickNewTestWithUnsavedExistingTest()
         {
-            WorkflowServiceTestingUIMap.Try_Click_Create_New_Tests();
+            WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
             DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
             WorkflowServiceTestingUIMap.Click_Close_Tests_Tab();

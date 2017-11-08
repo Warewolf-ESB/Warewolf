@@ -643,6 +643,14 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             }
         }
 
+        [When(@"I Select Service ""(.*)"" In Service Picker")]
+        public void Select_Service_In_Service_Picker(string serviceName)
+        {
+            Filter_ServicePicker_Explorer(serviceName);
+            Select_FirstItem_From_ServicePicker_Tree();
+            Click_Service_Picker_Dialog_OK();
+        }
+
         public void Filter_ServicePicker_Explorer(string FilterText)
         {
             ServicePickerDialog.Explorer.FilterTextbox.Text = FilterText;
