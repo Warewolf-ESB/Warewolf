@@ -202,7 +202,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
-    <Compile Include="Merge\MergeWorkflowViewModelTests.cs" />
+    <Compile Include="Merge\MergeWorkflowViewModelIntergrationTests.cs" />
     <Compile Include="Properties\TestStrings.Designer.cs" />
     <Compile Include="Server Refresh\ServerRefreshTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
