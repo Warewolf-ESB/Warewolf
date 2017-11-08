@@ -71,7 +71,6 @@ namespace System.Windows.Controls
         private bool _allowWrite;
         internal InteractionHelper Interaction { get; set; }
         private BindingEvaluator<string> _valueBindingEvaluator;
-        private WeakEventListener<AutoCompleteBox, object, NotifyCollectionChangedEventArgs> _collectionChangedWeakEventListener;
 
         #region public int MinimumPrefixLength
 
@@ -1539,16 +1538,6 @@ namespace System.Windows.Controls
         [ExcludeFromCodeCoverage]
         private void OnItemsSourceChanged(IEnumerable oldValue, IEnumerable newValue)
         {
-            if (oldValue is INotifyCollectionChanged oldValueINotifyCollectionChanged && null != _collectionChangedWeakEventListener)
-            {
-                _collectionChangedWeakEventListener.Detach();
-                _collectionChangedWeakEventListener = null;
-            }
-            if (newValue is INotifyCollectionChanged newValueINotifyCollectionChanged)
-            {
-                _collectionChangedWeakEventListener = new WeakEventListener<AutoCompleteBox, object, NotifyCollectionChangedEventArgs>(this) { OnEventAction = (instance, source, eventArgs) => instance.ItemsSourceCollectionChanged(eventArgs), OnDetachAction = weakEventListener => newValueINotifyCollectionChanged.CollectionChanged -= weakEventListener.OnEvent };
-                newValueINotifyCollectionChanged.CollectionChanged += _collectionChangedWeakEventListener.OnEvent;
-            }
             _items = newValue == null ? null : new List<object>(newValue.Cast<object>().ToList());
             ClearView();            
             if(SelectionAdapter != null && SelectionAdapter.ItemsSource != _view)
