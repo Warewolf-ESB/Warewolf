@@ -188,21 +188,6 @@ namespace Dev2.Core.Tests
             var res = query.GetServerFolderShare("\\\\bobthebuilder", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
-
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FileSystemQuery_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FileSystemQuery_Constructor_NullDirectoryEntryFactory_ThrowsException()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            
-            new FileSystemQuery(new DirectoryWrapper(), null, new ShareCollectionFactory());
-            
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]
