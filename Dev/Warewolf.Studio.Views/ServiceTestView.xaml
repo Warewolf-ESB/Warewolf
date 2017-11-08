@@ -8,7 +8,8 @@
 			      xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
 			      xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
 			      xmlns:ig="http://schemas.infragistics.com/xaml"
-			      xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
+			      xmlns:customControls="clr-namespace:Dev2.Activities.AttachedProperties;assembly=Dev2.Activity.Designers"
+                  xmlns:widthconverter="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
 			      xmlns:converters1="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
 			      xmlns:serviceModel="clr-namespace:Dev2.Runtime.ServiceModel.Data;assembly=Dev2.Common.Interfaces"
 			      xmlns:converters="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
@@ -30,8 +31,8 @@
       </ResourceDictionary.MergedDictionaries>
       <converters1:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed"/>
       <converters:SimpleEnumToBoolConverter x:Key="EnumToBoolConverter"/>
-      <customControls:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
-      <customControls:ServiceTestHeaderTemplateWidthConverter x:Key="ServiceTestHeaderTemplateWidthConverter" />
+      <widthconverter:ServiceTestWidthConverter x:Key="ServiceTestWidthConverter" />
+      <widthconverter:ServiceTestHeaderTemplateWidthConverter x:Key="ServiceTestHeaderTemplateWidthConverter" />
     </ResourceDictionary>
   </UserControl.Resources>
   <UserControl.InputBindings>
