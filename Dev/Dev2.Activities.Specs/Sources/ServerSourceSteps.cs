@@ -53,11 +53,9 @@ namespace Dev2.Activities.Specs.Sources
             var server = buildManageNewServerSourceModel.Item2;
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.Name = p0;
-
             try
             {
                 manageNewServerSourceModel.Save(serverSource);
-
             }
             catch (WarewolfSaveException e)
             {
@@ -116,8 +114,6 @@ namespace Dev2.Activities.Specs.Sources
             var server = BuildManageNewServerSourceModel().Item2;
             server.ResourceRepository.DeleteResource(resourceModel);
         }
-
-
 
         [Then(@"The result is ""(.*)""")]
         public void ThenTheResultIs(string p0)
