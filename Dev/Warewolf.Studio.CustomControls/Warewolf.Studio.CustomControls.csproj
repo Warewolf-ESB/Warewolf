@@ -120,7 +120,6 @@
     <Compile Include="ActivityDesignerToggleButton.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
     <Compile Include="DragDropExtension.cs" />
-    <Compile Include="PasswordBoxAssistant.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="VariableTextBox.cs" />
     <Compile Include="WatermarkAdorner.cs" />
