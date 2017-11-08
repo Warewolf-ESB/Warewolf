@@ -6,7 +6,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
-                               xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+                               xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"

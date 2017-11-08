@@ -8,7 +8,7 @@
              xmlns:views="clr-namespace:Warewolf.Studio.Views"
              xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-             xmlns:customControls="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+             xmlns:customControls="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
              xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
              xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
              mc:Ignorable="d" 
