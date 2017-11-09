@@ -83,7 +83,7 @@ namespace Dev2.Activities
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            databaseServiceExecution.ProcedureName = databaseServiceExecution.ODBCMethod(CommandText);
+            databaseServiceExecution.ProcedureName = databaseServiceExecution.OdbcMethod(CommandText);
 
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);

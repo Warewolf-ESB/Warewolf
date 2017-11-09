@@ -68,6 +68,9 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="TestData\testresult.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
     </Reference>
@@ -206,6 +209,7 @@
     </Compile>
     <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
+    <Compile Include="SqlParallelRunStressTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
