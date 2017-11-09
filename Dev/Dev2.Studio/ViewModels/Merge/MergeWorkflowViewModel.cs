@@ -20,7 +20,7 @@ namespace Dev2.ViewModels.Merge
         bool _hasVariablesConflict;
         bool _isVariablesEnabled;
         readonly IContextualResourceModel _resourceModel;
-        List<IConflict> _conflicts;
+        readonly List<IConflict> _conflicts;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
         : this(CustomContainer.Get<IServiceDifferenceParser>())
@@ -178,12 +178,13 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        static void AddDiffArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
+        void AddDiffArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
         {
             var armConnectors = treeItem.Activity.ArmConnectors();
             foreach (var connector in armConnectors)
             {
                 var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key);
+                mergeArmConnectorConflict.OnChecked += ArmCheck;
                 var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
                 if (foundConnector != null)
                 {
@@ -441,6 +442,10 @@ namespace Dev2.ViewModels.Merge
                 WorkflowDesignerViewModel.LinkTools(sourceUniqueId, destionationUniqueId, key);
 
                 var conflict = UpdateNextEnabledState();
+                if (conflict is IToolConflict nextConflict)
+                {
+                    UpdateNextToolState(nextConflict);
+                }
                 if (conflict is IArmConnectorConflict nextArmConflict)
                 {
                     UpdateNextArmState(nextArmConflict);
