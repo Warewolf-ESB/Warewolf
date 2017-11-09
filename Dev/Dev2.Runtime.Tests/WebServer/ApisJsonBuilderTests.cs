@@ -161,7 +161,6 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[1].BaseUrl, apisJson.Apis[1].BaseUrl);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ApisJsonBuilder_BuildForPath")]
@@ -200,7 +199,6 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis.Count, apisJson.Apis.Count);
             Assert.AreEqual(exceptedApisJson.Apis[0].BaseUrl, apisJson.Apis[0].BaseUrl);
         }
-
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
@@ -244,6 +242,19 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(exceptedApisJson.Apis[1].BaseUrl, apisJson.Apis[1].BaseUrl);
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void ApisJsonBuilder_GetHashCode()
+        {
+            var apiJson = new ApisJson
+            {
+                Name = EnvironmentVariables.PublicWebServerUri,
+                Description = "",
+                SpecificationVersion = "0.15",
+                Apis = new List<SingleApi>()
+            };
+            Assert.IsInstanceOfType(apiJson.GetHashCode(), typeof(int), "ApisJson object did not hash to the expected hash code.");
+        }
 
         static ApisJson GetExceptedApisJsonForServerNoSecurity()
         {
