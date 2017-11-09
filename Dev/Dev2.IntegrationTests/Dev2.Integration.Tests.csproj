@@ -62,7 +62,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="Database Tools Refresh\SqlDatabaseServiceInputChangeTests.cs" />
+    <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
     <None Include="..\Run Tests.ps1">
