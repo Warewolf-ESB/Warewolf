@@ -62,6 +62,8 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Database Tools Refresh\SqlDatabaseServiceInputChangeTests.cs" />
+    <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -160,6 +162,7 @@
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -262,6 +265,10 @@
       <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
       <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
       <Name>Dev2.Activities</Name>
@@ -338,9 +345,17 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{c52b12c2-6a1d-4c4f-a878-cf283662a226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
