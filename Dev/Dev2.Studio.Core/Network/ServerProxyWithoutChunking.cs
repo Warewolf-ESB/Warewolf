@@ -47,7 +47,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IEnvironmentConnection
+    public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
@@ -693,7 +693,9 @@ namespace Dev2.Network
         {
             task.Wait(100);
         }
-        
+
+        public void Dispose() => _reconnectHeartbeat.Dispose();
+
         public Guid ID { get; private set; }
     }
 
