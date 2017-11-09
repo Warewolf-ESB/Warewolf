@@ -40,9 +40,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
     public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
     {
-
-        #region Properties
-
         /// <summary>
         /// The property that holds the date time string the user enters into the "Input1" box
         /// </summary>
@@ -77,10 +74,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public new string Result { get; set; }
 
-        #endregion Properties
-
-        #region Ctor
-
         /// <summary>
         /// The consructor for the activity 
         /// </summary>
@@ -94,32 +87,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result = string.Empty;
         }
 
-        #endregion Ctor
-
-
-
         public override List<string> GetOutputs()
         {
             return new List<string> { Result };
         }     
         
-
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
-            // Process if no errors
             try
             {
                 AddDebugInputs(dataObject, update);
@@ -135,16 +119,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(ifItr);
-                int indexToUpsertTo = 1;
+                var indexToUpsertTo = 1;
                 while (colItr.HasMoreData())
                 {
-                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
+                    var transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
                         colItr.FetchNextValue(input2Itr),
                         colItr.FetchNextValue(ifItr),
                         OutputType);
-                    //Create a DateTimeComparer using the DateTimeConverterFactory
-                    IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-                    string expression = Result;
+                    var comparer = DateTimeConverterFactory.CreateComparer();
+                    var expression = Result;
 
                     if (comparer.TryCompare(transObj, out string result, out string error))
                     {
@@ -171,7 +154,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                // Handle Errors
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
@@ -187,8 +169,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private string AssignResults(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexToUpsertTo, string expression, string result)
+        string AssignResults(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexToUpsertTo, string expr, string result)
         {
+            var expression = expr;
             if (DataListUtil.IsValueRecordset(Result) &&
                                        DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
             {
@@ -216,7 +199,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return expression;
         }
 
-        private void AddDebugInputs(IDSFDataObject dataObject, int update)
+        void AddDebugInputs(IDSFDataObject dataObject, int update)
         {
             if (dataObject.IsDebugMode())
             {
@@ -254,9 +237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
             AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
@@ -269,16 +250,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        private static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
+        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
         {
             return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
         }
 
-        #endregion Private Methods
-
-        #region Get Debug Inputs/Outputs
-
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -287,7 +264,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -296,15 +273,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-        #endregion Get Inputs/Outputs
-
-        #region Get ForEach Inputs/Outputs
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
-
                 if(t.Item1 == Input1)
                 {
                     Input1 = t.Item2;
@@ -332,10 +304,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(Input1, Input2, InputFormat);
@@ -345,8 +313,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return GetForEachItems(Result);
         }
-
-        #endregion
 
     }
 }

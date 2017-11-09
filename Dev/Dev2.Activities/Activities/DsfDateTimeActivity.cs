@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -38,8 +38,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Utility-DateTime", "Date Time", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time")]
     public class DsfDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO
     {
-
-        #region Properties
 
         /// <summary>
         /// The property that holds the date time string the user enters into the "Input" box
@@ -87,11 +85,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public new string Result { get; set; }
 
-        #endregion Properties
-
-
         /// <summary>
-        /// The consructor for the activity 
+        /// The consructor for the activity
         /// </summary>
         public DsfDateTimeActivity()
             : base("Date and Time")
@@ -99,7 +94,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DateTime = string.Empty;
             InputFormat = string.Empty;
             OutputFormat = string.Empty;
-            //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             TimeModifierType = "";
             TimeModifierAmountDisplay = string.Empty;
             TimeModifierAmount = 0;
@@ -107,12 +101,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
+
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -124,11 +116,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
-            // Process if no errors
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
@@ -182,7 +171,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfDateTimeActivity", allErrors);
+                    DisplayAndWriteError(@"DsfDateTimeActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
@@ -198,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddValidationErrors(ErrorResultTO allErrors)
+        void AddValidationErrors(ErrorResultTO allErrors)
         {
             if (DataListUtil.HasNegativeIndex(InputFormat))
             {
@@ -208,14 +197,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 allErrors.AddError(string.Format("Negative Recordset Index for Output Format: {0}", OutputFormat));
             }
-
             if (DataListUtil.HasNegativeIndex(TimeModifierAmountDisplay))
             {
                 allErrors.AddError(string.Format("Negative Recordset Index for Add Time: {0}", TimeModifierAmountDisplay));
             }
         }
 
-        private void AddDebugInfo(IDSFDataObject dataObject, int update)
+        void AddDebugInfo(IDSFDataObject dataObject, int update)
         {
             if (dataObject.IsDebugMode())
             {
@@ -264,23 +252,23 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void PerformDateUpdate(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, WarewolfListIterator colItr, Dev2.Common.Interfaces.IWarewolfIterator dtItr, Dev2.Common.Interfaces.IWarewolfIterator ifItr, Dev2.Common.Interfaces.IWarewolfIterator ofItr, Dev2.Common.Interfaces.IWarewolfIterator tmaItr)
+        void PerformDateUpdate(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, WarewolfListIterator colItr, Dev2.Common.Interfaces.IWarewolfIterator dtItr, Dev2.Common.Interfaces.IWarewolfIterator ifItr, Dev2.Common.Interfaces.IWarewolfIterator ofItr, Dev2.Common.Interfaces.IWarewolfIterator tmaItr)
         {
             if (!allErrors.HasErrors())
             {
                 while (colItr.HasMoreData())
                 {
-                    IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                    var transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
                         colItr.FetchNextValue(ifItr),
                         colItr.FetchNextValue(ofItr),
                         TimeModifierType,
                         colItr.FetchNextValue(tmaItr)
                         );
 
-                    IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
+                    var format = DateTimeConverterFactory.CreateFormatter();
                     if (format.TryFormat(transObj, out string result, out string error))
                     {
-                        string expression = Result;
+                        var expression = Result;
                         dataObject.Environment.Assign(expression, result, update);
                     }
                     else
@@ -295,16 +283,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region Private Methods
-
-        /// <summary>
-        /// Used for converting the properties of this activity to a DateTimeTO object
-        /// </summary>
-        private IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
+        IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
-            //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
-            //Create a DateTimeTO using the DateTimeConverterFactory and send through the properties of this activity.DONE
-            int tmpTimeAmount = 0;
+            var tmpTimeAmount = 0;
             if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
                 if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
@@ -315,11 +296,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return DateTimeConverterFactory.CreateDateTimeTO(evaledDateTime, evaledInputFormat, evaledOutputFormat, timeModifierType, tmpTimeAmount, Result);
         }
 
-        #endregion Private Methods
-
-        #region Get Debug Inputs/Outputs
-
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -328,7 +305,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -336,10 +313,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             return _debugOutputs;
         }
-
-        #endregion Get Inputs/Outputs
-
-        #region Get ForEach Inputs/Outputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -377,10 +350,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(DateTime, InputFormat, TimeModifierAmountDisplay, OutputFormat);
@@ -390,7 +359,5 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return GetForEachItems(Result);
         }
-
-        #endregion
     }
 }
