@@ -71,11 +71,9 @@ namespace Dev2.Runtime.Hosting
                 return new List<IExplorerItem>();
             }
             var versionPath = resource.GetResourcePath(GlobalConstants.ServerWorkspaceID);
-            var path = GetVersionFolderFromResource(versionPath);
+            var path = GetVersionFolderFromResource();
 
-            
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
-            
             return files.Select(a => CreateVersionFromFilePath(a, resource, path)).OrderByDescending(a => a.VersionInfo.DateTimeStamp).Take(GlobalConstants.VersionCount).ToList();
         }
 
@@ -87,9 +85,8 @@ namespace Dev2.Runtime.Hosting
             {
                 return;
             }
-            var path = GetVersionFolderFromResource(resourcePath);
+            var path = GetVersionFolderFromResource();
 
-            
             var files = _directory.GetFiles(path).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             var versionPath = Path.Combine(ServerExplorerRepository.DirectoryStructureFromPath(newPath), "VersionControl");
             if (!_directory.Exists(versionPath))
@@ -105,7 +102,8 @@ namespace Dev2.Runtime.Hosting
         public StringBuilder GetVersion(IVersionInfo version, string resourcePath)
         {
             var resource = _catalogue.GetResource(Guid.Empty, version.ResourceId);
-            var path = GetVersionFolderFromResource(resourcePath);
+            var path = GetVersionFolderFromResource();
+
             var files = _directory.GetFiles(path).FirstOrDefault(a => a.Contains(string.Format("{0}_{1}_", resource.VersionInfo.VersionId.ToString(), version.VersionNumber)));
             if (string.IsNullOrEmpty(files))
             {
@@ -115,12 +113,9 @@ namespace Dev2.Runtime.Hosting
             return new StringBuilder(_file.ReadAllText(files));
         }
 
-        string GetVersionFolderFromResource(string resourcePath)
+        string GetVersionFolderFromResource()
         {
-            var path = Path.Combine(_rootPath, GetDirectoryFromResource(resourcePath), GlobalConstants.VersionFolder);
-            _directory.CreateIfNotExists(path);
-            
-            return path;
+            return EnvironmentVariables.VersionsPath;
         }
 
         string GetFolderFromResource(string resourcePath)
@@ -219,7 +214,7 @@ namespace Dev2.Runtime.Hosting
         public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath)
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
-            var path = GetVersionFolderFromResource(resourcePath);
+            var path = GetVersionFolderFromResource();
             var files = _directory.GetFiles(path).FirstOrDefault(a => a.Contains($"{resource.VersionInfo.VersionId.ToString()}_{versionNumber}_"));
             _file.Delete(files);
             return GetVersions(resourceId);
@@ -241,7 +236,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                         old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, userName, reason);
-                        var folderPath = GetVersionFolderFromResource(old.GetResourcePath(workSpaceId));
+                        var folderPath = GetVersionFolderFromResource();
 
                         var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
                         if (!_file.Exists(Path.Combine(folderPath, fileName))) //todo: remove this and stop save on workspace
