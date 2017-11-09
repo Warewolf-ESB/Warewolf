@@ -250,21 +250,6 @@ namespace Warewolf.UI.Tests.SaveDialog
 
         private DialogsUIMap _DialogsUIMap;
 
-        ServerSourceUIMap ServerSourceUIMap
-        {
-            get
-            {
-                if (_ServerSourceUIMap == null)
-                {
-                    _ServerSourceUIMap = new ServerSourceUIMap();
-                }
-
-                return _ServerSourceUIMap;
-            }
-        }
-
-        private ServerSourceUIMap _ServerSourceUIMap;
-
         #endregion
     }
 }
