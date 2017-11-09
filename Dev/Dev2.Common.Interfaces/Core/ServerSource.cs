@@ -25,29 +25,11 @@ namespace Dev2.Common.Interfaces.Core
         #region Implementation of IServerSource
 
         public string ServerName { get; set; }
-        /// <summary>
-        /// The server address that we are trying to connect to
-        /// </summary>
         public string Address { get; set; }
-        /// <summary>
-        ///  Windows or user or publlic
-        /// </summary>
         public AuthenticationType AuthenticationType { get; set; }
-        /// <summary>
-        /// User Name
-        /// </summary>
         public string UserName { get; set; }
-        /// <summary>
-        /// Password
-        /// </summary>
         public string Password { get; set; }
-        /// <summary>
-        /// Test if connection is successful
-        /// </summary>
         public ICommand TestCommand { get; set; }
-        /// <summary>
-        /// The message that will be set if the test is either successful or not
-        /// </summary>
         public string TestMessage { get; set; }
         public Guid ID { get; set; }
         public string Name { get; set; }
@@ -56,14 +38,7 @@ namespace Dev2.Common.Interfaces.Core
         #endregion
 
         #region Implementation of IEquatable<IServerSource>
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(IServerSource other)
         {
             return Equals(other as ServerSource);
@@ -72,14 +47,7 @@ namespace Dev2.Common.Interfaces.Core
         #endregion
 
         #region Equality members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(ServerSource other)
         {
             if(ReferenceEquals(null, other))
@@ -93,14 +61,7 @@ namespace Dev2.Common.Interfaces.Core
             var equals = string.Equals(Address, other.Address,StringComparison.InvariantCultureIgnoreCase) && AuthenticationType == other.AuthenticationType && string.Equals(UserName, other.UserName, StringComparison.InvariantCultureIgnoreCase) && string.Equals(Password, other.Password) && string.Equals(Name, other.Name, StringComparison.InvariantCultureIgnoreCase);
             return equals;
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        
         public override bool Equals(object obj)
         {
             if(ReferenceEquals(null, obj))
@@ -118,12 +79,6 @@ namespace Dev2.Common.Interfaces.Core
             return Equals((ServerSource)obj);
         }
 
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
         public override int GetHashCode()
         {
             unchecked

@@ -20,7 +20,6 @@ namespace Dev2.Activities.Specs.Sources
     [Binding]
     public sealed class ServerSourceSteps : RecordSetBases
     {
-
         public ServerSourceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
@@ -28,10 +27,10 @@ namespace Dev2.Activities.Specs.Sources
             IServer environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
         }
+
         [Given(@"I create a server source as")]
         public void GivenICreateAServerSourceAs(Table table)
         {
-
             var address = table.Rows[0]["Address"];
             var authenticationType = table.Rows[0]["AuthenticationType"];
             Enum.TryParse(authenticationType, true, out AuthenticationType result);
@@ -42,7 +41,6 @@ namespace Dev2.Activities.Specs.Sources
                 AuthenticationType = result
             };
             ScenarioContext.Current.Add("serverSource", serverSource);
-
         }
 
         [Given(@"I save as ""(.*)""")]
