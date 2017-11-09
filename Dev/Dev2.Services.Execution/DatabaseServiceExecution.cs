@@ -171,18 +171,14 @@ namespace Dev2.Services.Execution
             foreach (var serviceOutputMapping in Outputs)
             {
                 if (!string.IsNullOrEmpty(serviceOutputMapping?.MappedTo))
-                {
-                    if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
-                    {
-                        continue;
-                    }
-                    ProcessOutputMapping(environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
+                {                    
+                    ProcessOutputMapping(executeService, environment, update, ref started, ref rowIdx, row, serviceOutputMapping);
                 }
             }
             rowIdx++;
         }
 
-        static void ProcessOutputMapping(IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
+        static void ProcessOutputMapping(DataTable executeService, IExecutionEnvironment environment, int update, ref bool started, ref int rowIdx, DataRow row, IServiceOutputMapping serviceOutputMapping)
         {
             var rsType = DataListUtil.GetRecordsetIndexType(serviceOutputMapping.MappedTo);
             var rowIndex = DataListUtil.ExtractIndexRegionFromRecordset(serviceOutputMapping.MappedTo);
@@ -208,7 +204,10 @@ namespace Dev2.Services.Execution
                 }
             }
             GetRowIndex(ref started, ref rowIdx, rsType, rowIndex);
-
+            if (!executeService.Columns.Contains(serviceOutputMapping.MappedFrom))
+            {
+                return;
+            }
             var value = row[serviceOutputMapping.MappedFrom];
             if (update != 0)
             {
