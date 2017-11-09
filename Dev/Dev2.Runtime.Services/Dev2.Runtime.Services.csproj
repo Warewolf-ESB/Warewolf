@@ -531,6 +531,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="Dev2.Runtime.Services.ruleset" />
     <None Include="packages.config" />
     <None Include="SSL Generation\CreateCertificate.bat">
