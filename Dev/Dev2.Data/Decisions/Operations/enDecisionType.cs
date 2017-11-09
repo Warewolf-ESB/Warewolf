@@ -56,7 +56,7 @@ namespace Dev2.Data.Decisions.Operations
                 case enDecisionType.IsNumeric: return Messages.Test_FailureMessage_IsNumeric;
                 case enDecisionType.IsNotNumeric: return Messages.Test_FailureMessage_IsNotNumeric;
                 case enDecisionType.IsText: return Messages.Test_FailureMessage_IsText;
-                case enDecisionType.IsNotText:return Messages.Test_FailureMessage_IsNotText;
+                case enDecisionType.IsNotText: return Messages.Test_FailureMessage_IsNotText;
                 case enDecisionType.IsAlphanumeric: return Messages.Test_FailureMessage_IsAlphanumeric;
                 case enDecisionType.IsNotAlphanumeric: return Messages.Test_FailureMessage_IsNotAlphanumeric;
                 case enDecisionType.IsXML: return Messages.Test_FailureMessage_IsXML;
