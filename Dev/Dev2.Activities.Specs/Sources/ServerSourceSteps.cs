@@ -104,7 +104,6 @@ namespace Dev2.Activities.Specs.Sources
             return tuple;
         }
 
-
         [Then(@"I delete serversource")]
         public void ThenIDeleteServersource()
         {
@@ -129,7 +128,6 @@ namespace Dev2.Activities.Specs.Sources
             serverSource.UserName = username;
             serverSource.Password = password;
         }
-
 
         protected override void BuildDataList()
         {
