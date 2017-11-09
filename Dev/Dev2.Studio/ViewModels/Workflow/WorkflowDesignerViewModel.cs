@@ -166,7 +166,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
 
             : this(eventPublisher, resource, workflowHelper,
-                CustomContainer.Get<IPopupController>(), new AsyncWorker(), new ExternalProcessExecutor(), createDesigner)
+                CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
         {
         }
 
@@ -178,17 +178,15 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="workflowHelper">Serialisation Helper</param>
         /// <param name="popupController">Injected popup controller</param>
         /// <param name="asyncWorker"></param>
-        /// <param name="executor">Execute external Processes</param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
 
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, bool createDesigner = true, bool liteInit = false)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
             VerifyArgument.IsNotNull("popupController", popupController);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            _executor = executor;
             _workflowHelper = workflowHelper;
             _resourceModel = resource;
             _resourceModel.OnDataListChanged += FireWdChanged;
@@ -2431,7 +2429,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _openWorkflowLinkCommand;
         private bool _firstWorkflowChange;
         private readonly IAsyncWorker _asyncWorker;
-        private readonly IExternalProcessExecutor _executor;
         private string _expressionString;
         private ICommand _debugInputsCommand;
         private ICommand _debugStudioCommand;
