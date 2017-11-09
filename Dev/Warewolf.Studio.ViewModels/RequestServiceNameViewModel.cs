@@ -292,7 +292,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     if (selectedItem.ResourceType == "Folder")
                     {
-                        path.Append(path + "\\" + selectedItem.ResourceName);
+                        path.Append("\\" + selectedItem.ResourceName);
                     }
                     return path.ToString();
                 }
