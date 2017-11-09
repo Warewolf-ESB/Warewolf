@@ -15,12 +15,8 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Decisions.Operations
 {
-    /// <summary>
-    /// Is Between Operator
-    /// </summary>
     public class NotBetween : IDecisionOperation
     {
-
         public Enum HandlesType()
         {
             return enDecisionType.NotBetween;
@@ -32,10 +28,13 @@ namespace Dev2.Data.Decisions.Operations
             DateTime[] dtVal = new DateTime[3];
 
             int pos = 0;
+            bool anyDoubles = false;
 
-            foreach(string c in cols)
+            foreach (string c in cols)
             {
-                if(!double.TryParse(c, out dVal[pos]))
+                bool isDouble = double.TryParse(c, out dVal[pos]);
+                anyDoubles = anyDoubles || isDouble;
+                if (!anyDoubles)
                 {
                     try
                     {
@@ -47,18 +46,16 @@ namespace Dev2.Data.Decisions.Operations
                     catch(Exception ex)
                     {
                         Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                        // Best effort ;)
                     }
                 }
 
                 pos++;
             }
 
-
             double left;
             double right;
 
-            if(dVal.Length == 3)
+            if(anyDoubles)
             {
                 left = dVal[0] - dVal[1];
                 right = dVal[0] - dVal[2];

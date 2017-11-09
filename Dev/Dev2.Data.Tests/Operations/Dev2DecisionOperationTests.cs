@@ -10,6 +10,7 @@
 
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -320,15 +321,13 @@ namespace Dev2.Data.Tests.Operations
 
 
         #endregion
-
-     
-
+        
         #region NotBetween
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("NotBetween_Invoke")]
-        public void NotBetween_Invoke_IsBetween_ReturnsFalse()
+        public void NotBetween_Invoke_NotBetween_ReturnsFalse()
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
@@ -481,6 +480,52 @@ namespace Dev2.Data.Tests.Operations
             Assert.AreEqual(decisionType, isNotEqual.HandlesType());
         }
 
+
+        #endregion
+
+        #endregion
+
+        #region Comparing DateTimes
+
+        #region NotBetween
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("NotBetween_Invoke")]
+        public void NotBetween_InvokeWithDoubles_NotBetween_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            String[] cols = new String[3];
+            cols[0] = DateTime.Now.ToString();
+            cols[1] = (DateTime.Now - TimeSpan.FromMinutes(5)).ToString();
+            cols[2] = (DateTime.Now + TimeSpan.FromMinutes(10)).ToString();
+
+            //------------Execute Test---------------------------
+            bool result = notBetween.Invoke(cols);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("NotBetween_Invoke")]
+        public void NotBetween_InvokeWithDoubles_NotBetween_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            string[] cols = new string[3];
+            cols[0] = "30.0";
+            cols[1] = "10.0";
+            cols[2] = "20.0";
+
+            //------------Execute Test---------------------------
+            bool result = notBetween.Invoke(cols);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
 
         #endregion
 
