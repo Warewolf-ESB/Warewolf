@@ -11,6 +11,7 @@
 using System.Threading;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Common;
 
 namespace Dev2.Infrastructure.Tests.Logs
 {
@@ -26,10 +27,9 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             var pulseLogger = new PulseLogger(25);
-            Assert.AreEqual(pulseLogger.Interval,25);
-            PrivateObject pvt = new PrivateObject(pulseLogger);
-            System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
-            Assert.AreEqual(false,timer.Enabled);
+            Assert.AreEqual(pulseLogger.Interval, 25);
+            var timer = pulseLogger._timer;
+            Assert.AreEqual(false, timer.Enabled);
         }
 
         [TestMethod]
@@ -39,11 +39,9 @@ namespace Dev2.Infrastructure.Tests.Logs
 
         {
             //------------Setup for test--------------------------
-            var pulseLogger = new PulseLogger(2000);
-            
+            var pulseLogger = new PulseLogger(2000);            
             Assert.AreEqual(pulseLogger.Interval, 2000);
-            PrivateObject pvt = new PrivateObject(pulseLogger);
-            System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
+            var timer = pulseLogger._timer;
             timer.Elapsed += (sender, e) =>
                 {
                     _elapsed = true;
@@ -55,6 +53,21 @@ namespace Dev2.Infrastructure.Tests.Logs
             Thread.Sleep(6000);
             //------------Assert Results-------------------------
             Assert.IsTrue(_elapsed);
+        }
+
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PulseLogger_Ctor")]
+        public void PulseTracker_Ctor_TimeoutElapse_ExpectResetExecutionWatcher()
+        {
+            //------------Setup for test--------------------------
+            var pulseTracker = new PulseTracker(2000);
+            WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+            //------------Execute Test---------------------------
+            pulseTracker.Start();
+            Thread.Sleep(6000);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(WorkflowExecutionWatcher.HasAWorkflowBeenExecuted, "Execution Watcher not reset after pulse tracker execute.");
         }
     }
 }

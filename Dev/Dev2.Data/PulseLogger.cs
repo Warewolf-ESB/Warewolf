@@ -19,7 +19,7 @@ namespace Dev2.Data
 {
     public class PulseLogger : IPulseLogger, IDisposable
     {
-        readonly Timer _timer;
+        internal readonly Timer _timer;
 
         public PulseLogger(double intervalMs)
         {
