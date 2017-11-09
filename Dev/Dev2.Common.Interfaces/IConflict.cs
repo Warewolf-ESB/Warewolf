@@ -13,6 +13,7 @@ namespace Dev2.Common.Interfaces
 
     public interface IMergeArmConnectorConflict : IEquatable<IMergeArmConnectorConflict>
     {
+        IArmConnectorConflict Container { get; set; }
         string ArmDescription { get; set; }
         string SourceUniqueId { get; set; }
         string DestinationUniqueId { get; set; }

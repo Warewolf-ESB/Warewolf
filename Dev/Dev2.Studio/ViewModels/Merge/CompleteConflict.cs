@@ -76,11 +76,12 @@ namespace Dev2.ViewModels.Merge
         public string ArmDescription { get; set; }
         public string SourceUniqueId { get; set; }
         public string DestinationUniqueId { get; set; }
+        public IArmConnectorConflict Container { get; set; }
         public string Key { get; set; }
         bool _isChecked;
-        private bool _isArmSelectionAllowed;
+        bool _isArmSelectionAllowed;
 
-        public event Action<bool,string,string,string> OnChecked;
+        public event Action<IArmConnectorConflict,bool, string,string,string> OnChecked;
         
         public bool IsChecked
         {
@@ -89,7 +90,7 @@ namespace Dev2.ViewModels.Merge
             {
                 _isChecked = value;
                 OnPropertyChanged(() => IsChecked);
-                OnChecked?.Invoke(_isChecked,SourceUniqueId,DestinationUniqueId,Key);
+                OnChecked?.Invoke(Container,_isChecked, SourceUniqueId,DestinationUniqueId,Key);
             }
         }
 
@@ -103,16 +104,17 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public MergeArmConnectorConflict()
+        public MergeArmConnectorConflict(IArmConnectorConflict container)
         {
-
+            Container = container;
         }
-        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key)
+        public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
+            Container = container;
         }
 
         public bool Equals(IMergeArmConnectorConflict other)
