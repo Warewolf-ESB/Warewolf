@@ -512,7 +512,88 @@ namespace Dev2.Activities.Designers.Tests.Decision
             //------------Assert Results-------------------------
             Assert.AreEqual(2, viewModel.Collection.Count);
         }
-        
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void DecisionDesignerViewModel_Validate_IsBetweenWithStaredRecordset()
+        {
+            //------------Setup for test--------------------------
+            var viewModel = new DecisionDesignerViewModel(CreateModelItem("Decision"))
+            {
+                DisplayText = "",
+                TrueArmText = "",
+                FalseArmText = "",
+                ExpressionText = ""
+            };
+            viewModel.DisplayText = "Testing";
+            var dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[recset(*).field]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[recset(*).field]]",
+                Col3 = "[[recset(*).field]]"
+            };
+            var item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[recset(*).field]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[recset(*).field]]",
+                Col3 = "[[val]]"
+            };
+            item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[recset(*).field]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[val]]",
+                Col3 = "[[recset(*).field]]"
+            };
+            item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[val]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[recset(*).field]]",
+                Col3 = "[[recset(*).field]]"
+            };
+            item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[val]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[val]]",
+                Col3 = "[[recset(*).field]]"
+            };
+            item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[val]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[recset(*).field]]",
+                Col3 = "[[val]]"
+            };
+            item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            dev2Decision = new Dev2Decision
+            {
+                Col1 = "[[recset(*).field]]",
+                EvaluationFn = enDecisionType.IsBetween,
+                Col2 = "[[val]]",
+                Col3 = "[[val]]"
+            };
+            item = new DecisionTO(dev2Decision, 1);
+            viewModel.Collection.Insert(0, item);
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Testing", viewModel.DisplayText);
+        }
+
         static ModelItem CreateModelItem(string displayName = "Find")
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDecision());
