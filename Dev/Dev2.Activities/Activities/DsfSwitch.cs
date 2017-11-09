@@ -71,7 +71,7 @@ namespace Dev2.Activities
             {
                 foreach (var dft in Default)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "DEFAULT", UniqueID, dft.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
                 }
             }
             return armConnectors;
