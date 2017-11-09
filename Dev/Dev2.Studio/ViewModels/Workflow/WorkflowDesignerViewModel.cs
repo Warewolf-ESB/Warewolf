@@ -122,7 +122,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         IContextualResourceModel _resourceModel;
 
         protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
-        
+
         protected WorkflowDesigner _wd;
         DesignerMetadata _wdMeta;
 
@@ -162,9 +162,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="resource">Resource that will be opened</param>
         /// <param name="workflowHelper">Serialization helper</param>
         /// <param name="createDesigner">create a new designer flag</param>
-        
+
         private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
-            
+
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), new ExternalProcessExecutor(), createDesigner)
         {
@@ -181,7 +181,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="executor">Execute external Processes</param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
-        
+
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
         {
@@ -608,9 +608,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
-                
+
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
-                
+
             }
         }
 
@@ -706,7 +706,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workflowInputDataViewModel = _workflowInputDataViewModel as WorkflowInputDataViewModel;
             var inputsValue = workflowInputDataViewModel?.WorkflowInputs?.FirstOrDefault(o => o.Field == field);
             value = inputsValue?.Value;
-            
+
             return value;
         }
 
@@ -810,11 +810,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
                             PopUp.ShowNoInputsSelectedWhenClickLink();
-
                         }
                         try
                         {
-                            _executor.OpenInBrowser(new Uri(_workflowLink));
+                            DebugBrowserCommand.Execute(null);
                         }
                         catch (Exception e)
                         {
@@ -915,7 +914,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }));
             }
         }
-        
+
         public ICommand TestEditorCommand
         {
             get
@@ -1072,38 +1071,38 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="addedItem"></param>
         /// <returns></returns>
 
-        
-        
+
+
         protected ModelItem PerformAddItems(ModelItem addedItem)
-        
-        
+
+
         {
             var mi = addedItem;
             var computedValue = mi.Content?.ComputedValue;
-            if (computedValue == null && (mi.ItemType == typeof (DsfFlowDecisionActivity) ||
-                                          mi.ItemType == typeof (DsfFlowSwitchActivity)))
+            if (computedValue == null && (mi.ItemType == typeof(DsfFlowDecisionActivity) ||
+                                          mi.ItemType == typeof(DsfFlowSwitchActivity)))
             {
                 computedValue = mi.Source?.Value?.Source?.ComputedValue;
             }
             if (computedValue is IDev2Activity)
             {
                 (computedValue as IDev2Activity).UniqueID = Guid.NewGuid().ToString();
-                _modelItems = ModelService.Find(ModelService.Root, typeof (IDev2Activity));
+                _modelItems = ModelService.Find(ModelService.Root, typeof(IDev2Activity));
             }
             if (computedValue is Activity)
             {
-                _activityCollection = ModelService.Find(ModelService.Root, typeof (Activity));
+                _activityCollection = ModelService.Find(ModelService.Root, typeof(Activity));
             }
 
-            if (mi.ItemType == typeof (FlowSwitch<string>))
+            if (mi.ItemType == typeof(FlowSwitch<string>))
             {
                 InitializeFlowSwitch(mi);
             }
-            else if (mi.ItemType == typeof (FlowDecision))
+            else if (mi.ItemType == typeof(FlowDecision))
             {
                 InitializeFlowDecision(mi);
             }
-            else if (mi.ItemType == typeof (FlowStep))
+            else if (mi.ItemType == typeof(FlowStep))
             {
                 InitializeFlowStep(mi);
             }
@@ -1157,7 +1156,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             ModelProperty modelProperty1 = mi.Properties["Action"];
-            InitialiseWithAction(modelProperty1);            
+            InitialiseWithAction(modelProperty1);
         }
 
         private void InitialiseWithAction(ModelProperty modelProperty1)
@@ -1800,12 +1799,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ModelService != null)
             {
-                
+
                 var selectedModelItem = (from mi in _modelItems
                                          let instanceID = ModelItemUtils.GetUniqueID(mi)
                                          where instanceID == itemId || instanceID == parentId
                                          select mi).FirstOrDefault();
-                
+
 
                 if (selectedModelItem == null)
                 {
@@ -2480,7 +2479,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
-        { 
+        {
             if (e.ModelChangeInfo != null &&
                 e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged)
             {
@@ -2512,7 +2511,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 PerformAddItems(e.ModelChangeInfo.Value);
             }
 
-            if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged 
+            if (e.ModelChangeInfo != null && e.ModelChangeInfo.ModelChangeType == ModelChangeType.PropertyChanged
                 && (e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowDecisionActivity)
                 || e.ModelChangeInfo.Value?.Source?.ComputedValue?.GetType() == typeof(DsfFlowSwitchActivity)))
             {
@@ -2692,9 +2691,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
-            
+
             catch { }
-            
+
             _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }
