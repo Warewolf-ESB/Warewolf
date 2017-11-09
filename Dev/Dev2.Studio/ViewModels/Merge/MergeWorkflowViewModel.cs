@@ -374,7 +374,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void RemovePreviousTool(object sender, IMergeToolModel args)
+        void RemovePreviousTool(object sender, IMergeToolModel args)
         {
             if (sender is IMergeToolModel previousToolValue)
             {
@@ -395,7 +395,7 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void ResetToolEvents(IMergeToolModel args)
+        void ResetToolEvents(IMergeToolModel args)
         {
             var index = _conflicts.IndexOf(args.Container);
             if (index != -1 && index + 1 < _conflicts.Count - 1)
@@ -405,12 +405,20 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (conf is IToolConflict tool && tool.HasConflict)
                     {
-                        tool.DiffViewModel?.DisableEvents();
-                        tool.DiffViewModel?.EnableEvents();
-                        tool.CurrentViewModel?.DisableEvents();
-                        tool.CurrentViewModel?.EnableEvents();
+                        ResetToolConflict(tool.DiffViewModel);
+                        ResetToolConflict(tool.CurrentViewModel);                          
                     }
                 }
+            }
+        }
+
+        void ResetToolConflict(IMergeToolModel mergeTool)
+        {
+            if (mergeTool != null)
+            {
+                mergeTool.DisableEvents();
+                mergeTool.EnableEvents();
+                WorkflowDesignerViewModel.RemoveItem(mergeTool);
             }
         }
 
