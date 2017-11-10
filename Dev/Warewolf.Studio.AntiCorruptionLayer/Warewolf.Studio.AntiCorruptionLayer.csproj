@@ -93,7 +93,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Utils.cs" />
-    <None Include="app.config" />
     <None Include="Warewolf.Studio.AntiCorruptionLayer.ruleset" />
   </ItemGroup>
   <ItemGroup>

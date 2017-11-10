@@ -245,7 +245,6 @@
     <Analyzer Include="..\packages\SonarAnalyzer.CSharp.5.11.0.1761\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="Dev2.Runtime.ruleset" />
     <None Include="packages.config" />
   </ItemGroup>
