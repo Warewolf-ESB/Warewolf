@@ -15,9 +15,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Studio.Core;
-
-
-
+using Dev2.ConnectionHelpers;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -99,6 +97,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
+
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
+            var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
+
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -119,6 +123,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
+
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
+            var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
+
             var deploySourceExplorerViewModel = new DeploySourceExplorerViewModel(shell.Object, new Mock<IEventAggregator>().Object, new Mock<IDeployStatsViewerViewModel>().Object);
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
@@ -147,6 +157,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var envMock = new Mock<IEnvironmentViewModel>();
+            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             var eventAggregator = new Mock<IEventAggregator>();
             var destPermissions = new List<IWindowsGroupPermission>();
             destPermissions.Add(new WindowsGroupPermission
@@ -194,6 +209,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var envMock = new Mock<IEnvironmentViewModel>();
+            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             var eventAggregator = new Mock<IEventAggregator>();
                         
             var localhost = new Mock<IServer>();
@@ -207,6 +227,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             otherServer.SetupGet(server => server.CanDeployFrom).Returns(true);
 
             shellViewModel.Setup(x => x.LocalhostServer).Returns(localhost.Object);
+
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
+            var environmentRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(environmentRepository.Object);
 
             var deployDestinationViewModel = new DeployDestinationViewModel(shellViewModel.Object, eventAggregator.Object);
             
@@ -246,6 +271,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shellViewModel.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var envMock = new Mock<IEnvironmentViewModel>();
+            shellViewModel.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             var eventAggregator = new Mock<IEventAggregator>();
 
             var localhost = new Mock<IServer>();
