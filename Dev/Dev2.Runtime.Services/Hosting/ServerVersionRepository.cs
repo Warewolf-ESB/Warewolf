@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -62,7 +63,7 @@ namespace Dev2.Runtime.Hosting
         #region Implementation of IVersionRepository
 
         public IList<IExplorerItem> GetVersions(Guid resourceId)
-        {            
+        {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
             if (resource?.VersionInfo == null)
             {
@@ -83,7 +84,7 @@ namespace Dev2.Runtime.Hosting
 
             var files = _directory.GetFiles(EnvironmentVariables.VersionsPath).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             IEnumerable<string> enumerable = files as IList<string> ?? files.ToList();
-            
+
             enumerable.ForEach(a => _file.Move(a, Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(a))));
         }
 
@@ -238,6 +239,26 @@ namespace Dev2.Runtime.Hosting
         string GetDateString(DateTime dateTimeStamp)
         {
             return dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
+        }
+
+        public void CleanUpOldVersionControlStructure()
+        {
+            DirectoryInfo resourcesFolder = new DirectoryInfo(EnvironmentVariables.ResourcePath);
+            var partialName = "VersionControl";
+            var dirs = resourcesFolder.GetDirectories("*" + partialName + "*", SearchOption.AllDirectories);
+            foreach (var item in dirs)
+            {
+
+                FileInfo[] files = item.GetFiles("*", SearchOption.AllDirectories);
+                for (int i = 0; i < files.Count(); i++)
+                {
+                    if (!File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, files[i].Name)))
+                    {
+                        files[i].MoveTo(Path.Combine(EnvironmentVariables.VersionsPath, files[i].Name));
+                    }
+                }
+                item.Delete(true);
+            }
         }
 
         #endregion

@@ -9,6 +9,8 @@
 */
 
 using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces.Versioning
@@ -17,5 +19,6 @@ namespace Dev2.Common.Interfaces.Versioning
     {
         void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId, string resourcePath);
         void MoveVersions(Guid resourceId, string newPath, string resourcePath);
+        void CleanUpOldVersionControlStructure();
     }
 }
