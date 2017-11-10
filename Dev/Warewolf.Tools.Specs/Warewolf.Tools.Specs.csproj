@@ -259,6 +259,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>ForEach.feature</DependentUpon>
     </Compile>
+    <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
+      <DependentUpon>DateandTime.feature</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Compile Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQSteps.cs" />
     <Compile Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQ.feature.cs">
       <AutoGen>True</AutoGen>
@@ -452,11 +457,6 @@
       <DependentUpon>DateandTimeDifference.feature</DependentUpon>
     </Compile>
     <Compile Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifferenceSteps.cs" />
-    <Compile Include="Toolbox\Utility\DateandTime\DateandTime.feature.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DateandTime.feature</DependentUpon>
-    </Compile>
     <Compile Include="Toolbox\Utility\DateandTime\DateandTimeSteps.cs" />
     <Compile Include="Toolbox\Email\Email\Email.feature.cs">
       <AutoGen>True</AutoGen>
@@ -610,6 +610,10 @@
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>SelectAndApply.feature.cs</LastGenOutput>
     </None>
+    <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
+      <Generator>SpecFlowSingleFileGenerator</Generator>
+      <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
+    </None>
     <None Include="Toolbox\Utility\RabbitMQ\Consume\ConsumeRabbitMQ.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>ConsumeRabbitMQ.feature.cs</LastGenOutput>
@@ -737,10 +741,6 @@
     <None Include="Toolbox\Utility\DateandTimeDifference\DateandTimeDifference.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
       <LastGenOutput>DateandTimeDifference.feature.cs</LastGenOutput>
-    </None>
-    <None Include="Toolbox\Utility\DateandTime\DateandTime.feature">
-      <Generator>SpecFlowSingleFileGenerator</Generator>
-      <LastGenOutput>DateandTime.feature.cs</LastGenOutput>
     </None>
     <None Include="Toolbox\Email\Email\Email.feature">
       <Generator>SpecFlowSingleFileGenerator</Generator>
