@@ -215,7 +215,6 @@
     <Compile Include="ToolBox\ToolboxViewModel.cs" />
     <Compile Include="ToolBox\ToolDescriptorViewModel.cs" />
     <Compile Include="VersionViewModel.cs" />
-    <None Include="app.config" />
     <None Include="Warewolf.Studio.ViewModels.ruleset" />
   </ItemGroup>
   <ItemGroup>

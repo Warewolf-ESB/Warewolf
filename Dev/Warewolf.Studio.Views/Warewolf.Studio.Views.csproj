@@ -246,7 +246,6 @@
     <Compile Include="ActivityDefaultWindow.xaml.cs">
       <DependentUpon>ActivityDefaultWindow.xaml</DependentUpon>
     </Compile>
-    <None Include="app.config" />
     <None Include="Warewolf.Studio.Views.ruleset" />
   </ItemGroup>
   <ItemGroup>
