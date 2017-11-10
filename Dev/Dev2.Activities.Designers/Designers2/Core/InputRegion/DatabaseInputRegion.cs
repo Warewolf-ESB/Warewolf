@@ -22,7 +22,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         private readonly ModelItem _modelItem;
         private readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
-        
+
         private ICollection<IServiceInput> _inputs;
         private bool _isInputsEmptyRows;
 
@@ -94,7 +94,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 }
             }
         }
-                
+
         public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
@@ -105,9 +105,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             try
             {
                 Errors.Clear();
-                
+
                 UpdateOnActionSelection();
-                
+
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -128,9 +128,9 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         private void UpdateOnActionSelection()
         {
-            IsEnabled = false;
+            IsEnabled = _action?.SelectedAction != null;
             var inputCopy = Inputs.ToArray().Clone() as ICollection<IServiceInput>;
-
+            Inputs = new List<IServiceInput>();
             if (_action?.SelectedAction != null)
             {
                 var selectedActionInputs = _action.SelectedAction.Inputs;
@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     var newInputs = InputsFromSameAction(selectedActionInputs);
                     var removedInputs = inputCopy.Except(selectedActionInputs, new ServiceInputNameComparer()).ToList();
                     var union = inputCopy.Union(newInputs, new ServiceInputNameComparer()).ToList();
-                    union.RemoveAll(a => removedInputs.Any(k => a == k));
+                    union.RemoveAll(a => removedInputs.Any(k => a.Equals(k)));
                     Inputs = union;
                 }
                 else
@@ -152,7 +152,6 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     IsInputsEmptyRows = Inputs.Count < 1;
                     IsEnabled = true;
                 }
-
             }
             OnPropertyChanged("Inputs");
         }
