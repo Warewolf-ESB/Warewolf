@@ -749,7 +749,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; HH &apos;hours and&apos; m &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeDifferenceHelpInputFormat {
             get {
@@ -794,7 +794,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br  [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Describe the format of the date times you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the system date time format.	To escape text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; HH &apos;hours and&apos; m &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	 [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeHelpInputformat {
             get {
@@ -803,7 +803,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	 [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in. The default date time format is shown, if this is not the required format, then it can be changed to the format needed.	Leaving this field blank will assume the same as the Input Format.	To include text or non-date information use &apos;around the text you want to escape&apos;. e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; H &apos;hours and&apos; m &apos;minutes.&apos; 	&lt;br /&gt;	Allowed:&lt;br /&gt;	Data   	&lt;ol&gt;	&lt;li&gt;[[Scalar]]&lt;/li&gt;	&lt;li&gt;[ [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeHelpOutputformat {
             get {
