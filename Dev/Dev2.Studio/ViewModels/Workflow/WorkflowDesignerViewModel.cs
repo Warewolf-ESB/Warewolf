@@ -811,7 +811,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         try
                         {
-                            DebugBrowserCommand.Execute(null);
+                            OpenLinkInBrowser();
                         }
                         catch (Exception e)
                         {
@@ -883,15 +883,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return _debugBrowserCommand ?? (_debugBrowserCommand = new DelegateCommand(param =>
                 {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.QuickViewInBrowserCommand.Execute(mvm.ActiveItem);
-                        }
-                    }
+                    OpenLinkInBrowser();
                 }));
+            }
+        }
+
+        private static void OpenLinkInBrowser()
+        {
+            if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            {
+                var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                if (mvm?.ActiveItem != null)
+                {
+                    mvm.QuickViewInBrowserCommand.Execute(mvm.ActiveItem);
+                }
             }
         }
 
