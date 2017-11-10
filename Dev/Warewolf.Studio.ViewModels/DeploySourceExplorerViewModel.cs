@@ -53,6 +53,7 @@ namespace Warewolf.Studio.ViewModels
             foreach (var environmentViewModel in _environments)
             {
                 environmentViewModel.SelectAction = SelectAction;
+                environmentViewModel.IsResourceChecked = false;
             }
 
             if (ConnectControlViewModel.SelectedConnection != null)
@@ -64,6 +65,9 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
             {
+                //var context = SynchronizationContext.Current != null
+                //? TaskScheduler.FromCurrentSynchronizationContext()
+                //: TaskScheduler.Default;
                 await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true);
             };
             IsDeploy = true;

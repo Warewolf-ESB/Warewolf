@@ -18,7 +18,6 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Threading;
-using System.Threading.Tasks;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -164,6 +163,7 @@ namespace Warewolf.Studio.ViewModels
             SourcesCount = _stats.Sources.ToString();
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
+            _destination.SelectedEnvironment = Destination.Environments.FirstOrDefault(model => model.ResourceId == environmentid);
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
             _stats.Calculate(Source?.SourceLoadedItems?.ToList());
             OnPropertyChanged(() => CanDeploy);

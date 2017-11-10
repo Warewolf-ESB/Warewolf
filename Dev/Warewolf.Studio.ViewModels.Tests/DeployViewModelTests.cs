@@ -95,7 +95,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
-            CustomContainer.Register<IShellViewModel>(shell.Object);
+            CustomContainer.Register(shell.Object);
             Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
