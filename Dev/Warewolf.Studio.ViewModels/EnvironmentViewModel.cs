@@ -367,7 +367,7 @@ namespace Warewolf.Studio.ViewModels
             if (_isDialog)
             {
                 child.AllowResourceCheck = false;
-                child.IsResourceChecked = false;
+                //child.IsResourceChecked = false;
                 child.CanCreateSource = false;
                 child.CanCreateWorkflowService = false;
                 child.ShowContextMenu = false;
@@ -516,7 +516,7 @@ namespace Warewolf.Studio.ViewModels
         public void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions)
         {
             AllowResourceCheck = false;
-            IsResourceChecked = false;
+            //IsResourceChecked = false;
             CanCreateSource = permissions.Contribute;
             CanCreateFolder = permissions.Contribute;
             CanCreateWorkflowService = permissions.Contribute;
@@ -536,7 +536,7 @@ namespace Warewolf.Studio.ViewModels
         public void SetPropertiesForDialog()
         {
             AllowResourceCheck = false;
-            IsResourceChecked = false;
+            //IsResourceChecked = false;
             CanDeploy = false;
             CanCreateSource = false;
             CanCreateWorkflowService = false;
@@ -956,7 +956,7 @@ namespace Warewolf.Studio.ViewModels
                 Task.Run(() => { AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = _isResourceChecked); });
 
                 SelectAll?.Invoke();
-                IsResourceCheckedEnabled = true;
+                //IsResourceCheckedEnabled = true;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
             }
         }
@@ -1185,6 +1185,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, isDeploy);
                 }
+                IsResourceCheckedEnabled = isDeploy;
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -1414,7 +1415,7 @@ namespace Warewolf.Studio.ViewModels
         private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
         {
             itemCreated.AllowResourceCheck = false;
-            itemCreated.IsResourceChecked = false;
+            //itemCreated.IsResourceChecked = false;
             itemCreated.CanCreateSource = false;
             itemCreated.CanCreateWorkflowService = false;
             itemCreated.ShowContextMenu = false;

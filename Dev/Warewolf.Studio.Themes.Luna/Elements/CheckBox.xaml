@@ -265,14 +265,14 @@
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unchecked" />
-                                <VisualState x:Name="Indeterminate">
+                                <!--<VisualState x:Name="Indeterminate">
                                     <Storyboard>
                                         <DoubleAnimation Duration="0"
                                                          Storyboard.TargetName="IndeterminateCheck"
                                                          Storyboard.TargetProperty="(UIElement.Opacity)"
                                                          To="1" />
                                     </Storyboard>
-                                </VisualState>
+                                </VisualState>-->
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
@@ -360,11 +360,11 @@
                               Opacity="0"
                               Stretch="Fill"
                               UseLayoutRounding="False" />
-                        <Rectangle x:Name="IndeterminateCheck"
+                        <!--<Rectangle x:Name="IndeterminateCheck"
                                    Width="8"
                                    Height="3"
                                    Fill="{StaticResource CheckBoxCheckedBrush}"
-                                   Opacity="0" />
+                                   Opacity="0" />-->
                         <Rectangle x:Name="disabled"
                                    Width="18"
                                    Height="18"
