@@ -65,9 +65,6 @@ namespace Warewolf.Studio.ViewModels
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
             {
-                //var context = SynchronizationContext.Current != null
-                //? TaskScheduler.FromCurrentSynchronizationContext()
-                //: TaskScheduler.Default;
                 await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true);
             };
             IsDeploy = true;
