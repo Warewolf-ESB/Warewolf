@@ -122,26 +122,7 @@
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll"
-if not %25errorlevel%25==0 echo failed at line 1
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll"
-if not %25errorlevel%25==0 echo failed at line 2
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Framework.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Framework.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Enterprise\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Framework.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Framework.dll"
-if not %25errorlevel%25==0 echo failed at line 3
-
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll"
-if not %25errorlevel%25==0 echo failed at line 4
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll"
-if not %25errorlevel%25==0 echo failed at line 5
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Framework.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Framework.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Professional\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Framework.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Framework.dll"
-if not %25errorlevel%25==0 echo failed at line 6
-
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Playback.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Playback.dll"
-if not %25errorlevel%25==0 echo failed at line 7
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.WindowsStoreUtility.dll"
-if not %25errorlevel%25==0 echo failed at line 8
-if exist "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Framework.dll" if not exist "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Framework.dll" copy /Y "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\PrivateAssemblies\Microsoft.VisualStudio.TestTools.UITest.Framework.dll" "$(TargetDir)Microsoft.VisualStudio.TestTools.UITest.Framework.dll"
-if not %25errorlevel%25==0 echo failed at line 9</PostBuildEvent>
+    <PostBuildEvent></PostBuildEvent>
   </PropertyGroup>
   <PropertyGroup>
     <PreBuildEvent>"$(SolutionDir)packages\SpecFlow.2.2.0\tools\specflow.exe" generateall "$(ProjectPath)"
