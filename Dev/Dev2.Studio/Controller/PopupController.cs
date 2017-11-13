@@ -16,7 +16,7 @@ using Dev2.Common.Interfaces.PopupController;
 using Dev2.Studio.ViewModels.Dialogs;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
-
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Studio.Controller
 {
@@ -144,6 +144,21 @@ namespace Dev2.Studio.Controller
             IsInfo = false;
             IsError = true;
             IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
+        public MessageBoxResult ShowResourcesNotInCorrectPath(IResource resource)
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "Resource Not In Correct Path";
+            Description = "The Resource you are attempting to open does not Exist. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = true;
             IsDeleteAnywayButtonVisible = false;
             ApplyToAll = false;
             return Show();
@@ -516,5 +531,6 @@ namespace Dev2.Studio.Controller
                 Description = $"The name {name} already exists. Please choose a different name."
             };
         }
+
     }
 }
