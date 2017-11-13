@@ -22,6 +22,7 @@ using Moq;
 using Dev2.Common;
 using System.IO;
 using System.Threading;
+using System.Collections.Generic;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -648,6 +649,71 @@ namespace Dev2.Tests.Runtime.Hosting
             }
         }
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
+        public void ServerVersionRepostory_CleanUpOldVersionControlStructure_MultipleFolders()
+        {
+            string versionFileName = "OldFile.bite";
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            var subDirs = new List<string>
+            {
+                "\\FolderA","\\FolderB", "\\FolderA\\SubFolderA"
+            };
+            var versions = SetUpMultipleFolderVersionFile(subDirs, versionFileName);
+            foreach (var item in versions)
+            {
+                Assert.IsTrue(File.Exists(item));
+            }
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
+            serverVersionRepostory.CleanUpOldVersionControlStructure();
+            //------------Assert Results-------------------------
+            var newVersions = new List<string>
+            {
+                "C:\\ProgramData\\Warewolf\\VersionControl\\OldFile1.bite", "C:\\ProgramData\\Warewolf\\VersionControl\\OldFile2.bite", "C:\\ProgramData\\Warewolf\\VersionControl\\OldFile3.bite"
+            };
+            foreach (var item in newVersions)
+            {
+                Assert.IsTrue(File.Exists(item), item + " was not created as part of CleanUpOldVersionControlStructure");
+                File.Delete(item);
+            }
+            Directory.Delete(EnvironmentVariables.ResourcePath + subDirs[0], true);
+            Directory.Delete(EnvironmentVariables.ResourcePath + subDirs[1], true);
+        }
+
+        private static List<string> SetUpMultipleFolderVersionFile(List<string> subDirs, string versionFileName)
+        {
+            List<string> versionFiles = new List<string>();
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
+            }
+            foreach (var dir in subDirs)
+            {
+                var path = EnvironmentVariables.ResourcePath + dir;
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                if (!Directory.Exists(path + "\\VersionControl\\"))
+                {
+                    Directory.CreateDirectory(path + "\\VersionControl\\");
+                }
+                var index = subDirs.IndexOf(dir) + 1;
+                var fileName = versionFileName.Replace(".bite", index + ".bite");
+                var file = File.Create(path + "\\VersionControl\\" + fileName);
+                versionFiles.Add(file.Name);
+                file.Dispose();
+            }
+            return versionFiles;
+        }
         private static void SetUpVersionFile(string versionFileName)
         {
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
@@ -659,12 +725,11 @@ namespace Dev2.Tests.Runtime.Hosting
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath + "\\VersionControl");
             }
             if (!File.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName))
-            {                
+            {
                 var file = File.Create(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName);
                 file.Dispose();
             }
         }
-
         string CreateFileName(Guid versionId, int version)
         {
             return $"{versionId}_{version}_{DateTime.Now.Ticks}_bob";

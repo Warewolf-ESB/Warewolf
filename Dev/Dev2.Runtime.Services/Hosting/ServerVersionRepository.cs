@@ -248,7 +248,6 @@ namespace Dev2.Runtime.Hosting
             var dirs = resourcesFolder.GetDirectories("*" + partialName + "*", SearchOption.AllDirectories);
             foreach (var item in dirs)
             {
-
                 FileInfo[] files = item.GetFiles("*", SearchOption.AllDirectories);
                 for (int i = 0; i < files.Count(); i++)
                 {
