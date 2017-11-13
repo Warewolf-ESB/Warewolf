@@ -23,6 +23,7 @@ using Dev2.Common;
 using System.IO;
 using System.Threading;
 using System.Collections.Generic;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -149,7 +150,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static ServerVersionRepository CreateServerVersionRepository(IVersionStrategy strat, IResourceCatalog cat, IDirectory dir, string rootPath, IFile file)
         {
-
             var serverVersionRepostory = new ServerVersionRepository(strat, cat, dir, rootPath, file);
             return serverVersionRepostory;
         }
@@ -626,6 +626,26 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         [Owner("Sanele Mthembu")]
         [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
+        public void ServerVersionRepostory_CleanUpOldVersionControlStructure_Given_ResourcePath_Does_Not_Exist()
+        {
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            var _directoryWrapper = new Mock<IDirectory>();
+            _directoryWrapper.Setup(p => p.GetDirectories(It.IsAny<string>())).Returns(new string[0]);
+            serverVersionRepostory.CleanUpOldVersionControlStructure(_directoryWrapper.Object);
+            //------------Assert Results-------------------------
+            _directoryWrapper.Verify(p => p.GetFiles(It.IsAny<string>()), Times.Never());
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
         public void ServerVersionRepostory_CleanUpOldVersionControlStructure()
         {
             string versionFileName = "OldFile.bite";
@@ -640,7 +660,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
-            serverVersionRepostory.CleanUpOldVersionControlStructure();
+            var _directoryWrapper = new DirectoryWrapper();
+            serverVersionRepostory.CleanUpOldVersionControlStructure(_directoryWrapper);
             //------------Assert Results-------------------------
             Assert.IsTrue(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
             if (File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)))
@@ -673,7 +694,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
-            serverVersionRepostory.CleanUpOldVersionControlStructure();
+            var _directoryWrapper = new DirectoryWrapper();
+            serverVersionRepostory.CleanUpOldVersionControlStructure(_directoryWrapper);
             //------------Assert Results-------------------------
             var newVersions = new List<string>
             {

@@ -241,22 +241,28 @@ namespace Dev2.Runtime.Hosting
             return dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
         }
 
-        public void CleanUpOldVersionControlStructure()
+        public void CleanUpOldVersionControlStructure(IDirectory directory)
         {
-            DirectoryInfo resourcesFolder = new DirectoryInfo(EnvironmentVariables.ResourcePath);
-            var partialName = "VersionControl";
-            var dirs = resourcesFolder.GetDirectories("*" + partialName + "*", SearchOption.AllDirectories);
-            foreach (var item in dirs)
+            try
             {
-                FileInfo[] files = item.GetFiles("*", SearchOption.AllDirectories);
-                for (int i = 0; i < files.Count(); i++)
+                var partialName = "VersionControl";
+                var dirs = directory.GetDirectories(EnvironmentVariables.ResourcePath, "*" + partialName + "*");
+                foreach (var item in dirs)
                 {
-                    if (!File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, files[i].Name)))
+                    var files = directory.GetFiles(item);
+                    for (int i = 0; i < files.Count(); i++)
                     {
-                        files[i].MoveTo(Path.Combine(EnvironmentVariables.VersionsPath, files[i].Name));
+                        if (!File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(files[i]))))
+                        {
+                            File.Move(files[i], Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(files[i])));
+                        }
                     }
+                    File.Delete(item);
                 }
-                item.Delete(true);
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, "Warewolf Error");
             }
         }
 
