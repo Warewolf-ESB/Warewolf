@@ -445,15 +445,15 @@ namespace Dev2.Runtime.Hosting
             if (_parsers != null && !_parsers.TryGetValue(workspaceID, out parser))
             {
                 parser = new ResourceActivityCache(CustomContainer.Get<IActivityParser>(), new ConcurrentDictionary<Guid, IDev2Activity>());
-                _parsers.AddOrUpdate(workspaceID, parser,(key,cache)=> 
-                {
-                    IResourceActivityCache existingCache;
-                    if (_parsers.TryGetValue(key,out existingCache))
-                    {
-                        return existingCache;                        
-                    }
-                    return cache;
-                });
+                _parsers.AddOrUpdate(workspaceID, parser, (key, cache) =>
+                 {
+                     IResourceActivityCache existingCache;
+                     if (_parsers.TryGetValue(key, out existingCache))
+                     {
+                         return existingCache;
+                     }
+                     return cache;
+                 });
             }
             if (parser != null && parser.HasActivityInCache(resourceID))
             {
@@ -464,22 +464,20 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            if (workspaceID != Guid.Empty)
+            var resource = GetResource(workspaceID, resourceID);
+            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            if (service != null)
             {
-                var resource = GetResource(workspaceID, resourceID);
-                var service = GetService(workspaceID, resourceID, resource.ResourceName);
-                if (service != null)
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                var activity = GetActivity(sa);
+                if (parser != null)
                 {
-                    var sa = service.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(workspaceID, sa);
-                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                    var activity = GetActivity(sa);
-                    if (parser != null)
-                    {
-                        return parser.Parse(activity, resourceID);
-                    }
+                    return parser.Parse(activity, resourceID);
                 }
             }
+
             return null;
         }
 
