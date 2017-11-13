@@ -14,6 +14,7 @@ namespace Dev2.Studio.Interfaces
         string ErrorMessage { get; set; }
         ICommand OkCommand { get; set; }
         ICommand DuplicateCommand { get; set; }
+        ICommand DoneCommand { get; }
         ICommand CancelCommand { get; }
         IExplorerViewModel SingleEnvironmentExplorerViewModel { get; }
         string Header { get; }

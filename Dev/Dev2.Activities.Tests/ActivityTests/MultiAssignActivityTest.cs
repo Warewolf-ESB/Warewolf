@@ -881,6 +881,28 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        public void MutiAssign_CalculateMode_ValidComplexExpression()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            var expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
+
+            SetupArguments(
+                            "<ADL><Variable></Variable></ADL>"
+                          , "<root><Variable></Variable></root>"
+                          , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            const string expected = "NS";
+
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
+
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void MutiAssign_ErrorHandeling_Expected_ErrorTag()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
