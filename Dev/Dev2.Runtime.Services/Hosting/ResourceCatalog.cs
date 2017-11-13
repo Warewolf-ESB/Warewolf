@@ -64,7 +64,8 @@ namespace Dev2.Runtime.Hosting
             IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
-            versioningRepository.CleanUpOldVersionControlStructure();
+            var _directoryWrapper = new DirectoryWrapper();
+            versioningRepository.CleanUpOldVersionControlStructure(_directoryWrapper);
         }
 
         [ExcludeFromCodeCoverage]//used by tests for constructor injection
