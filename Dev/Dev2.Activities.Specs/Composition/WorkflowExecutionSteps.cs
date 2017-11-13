@@ -4010,7 +4010,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
 
-            var mySqlResourceId = "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid();
+            var mySqlResourceId = "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid();
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
                 ProcedureName = serviceName,
@@ -4193,7 +4193,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
 
-            var resourceId = "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid();
+            var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
 
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity
