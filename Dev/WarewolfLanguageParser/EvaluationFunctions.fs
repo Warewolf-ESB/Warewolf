@@ -591,7 +591,10 @@ and  evalForCalculateAggregate  (env: WarewolfEnvironment)  (update:int) (langs:
                                             | _ -> failwith (sprintf "failed to evaluate [[%s]]"  (languageExpressionToString buffer))
 /// simplify a calculate expression
 and reduceForCalculate (env : WarewolfEnvironment) (update : int) (langs : string) : string = 
-    let lang = langs.Trim()
+    let lang =
+        match langs with
+        | " " -> langs
+        | _ -> langs.Trim()
     let exp = ParseCache.TryFind lang
     
     let buffer = 
