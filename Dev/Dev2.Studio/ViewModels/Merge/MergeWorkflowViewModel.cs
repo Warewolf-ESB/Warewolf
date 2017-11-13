@@ -271,6 +271,10 @@ namespace Dev2.ViewModels.Merge
                 {
                     childrenMatch &= toolConflict.All(check);
                 }
+                if (completeConflict is IArmConnectorConflict armConflict)
+                {
+                    childrenMatch &= armConflict.IsChecked;
+                }
             }
             return conflictsMatch && childrenMatch;
         }
@@ -447,6 +451,7 @@ namespace Dev2.ViewModels.Merge
                 {
                     UpdateNextArmState(nextArmConflict);
                 }
+                container.IsChecked = isChecked;
             }
         }
 
