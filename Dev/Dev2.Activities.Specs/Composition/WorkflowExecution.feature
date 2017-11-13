@@ -1759,29 +1759,26 @@ Scenario: Workflow Assign and Find Record index
 Scenario: Workflow Assign and Find Record index With Multiple Recordsets
       Given I have a workflow "WFWithAssignandFindRecordindexTool"
 	  And "WFWithAssignandFindRecordindexTool" contains an Assign "Record" as
-      | # | variable        | value |
-      | # | [[rec(1).Name]] | Bob   |
-      | # | [[rec(1).Age]]  | 30    |
-      | # | [[rec(2).Name]] | Alice |
-      | # | [[rec(2).Age]]  | 26    |
-      | # | [[rec(3).Name]] | Bob   |
-      | # | [[rec(3).Age]]  | 41    |
-      | # | [[rec(4).Name]] | Jake  |
-      | # | [[rec(4).Age]]  | 41    |
-      | # | [[rec(5).Name]] | Bob   |
-      | # | [[rec(5).Age]]  | 15    |
-	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[a]]*]]"
+      | # | variable       | value |
+      | # | [[rec().Name]] | Bob   |
+      | # | [[rec().Age]]  | 30    |
+      | # | [[rec().Name]] | Alice |
+      | # | [[rec().Age]]  | 26    |
+      | # | [[rec().Name]] | Bob   |
+      | # | [[rec().Age]]  | 41    |
+      | # | [[rec().Name]] | Jake  |
+      | # | [[rec().Age]]  | 41    |
+      | # | [[rec().Name]] | Bob   |
+      | # | [[rec().Age]]  | 15    |
+	  And "WFWithAssignandFindRecordindexTool" contains Find Record Index "FindRecord0" into result as "[[Output]]"
       | # | In Field                       | # | Match Type | Match | Require All Matches To Be True | Require All Fields To Match |
       | # | [[rec(*).Name]],[[rec(*).Age]] | 1 | =          | Bob   | YES                            | NO                          |
       | # |                                | 2 | <          | 40    | YES                            | NO                          |
 	  When "WFWithAssignandFindRecordindexTool" is executed
 	  Then the workflow execution has "NO" error
-	  And the "Record" in WorkFlow "WFWithAssignandFindRecordindexTool" debug inputs as 
-	  | # | Variable       | New Value |
-	  | 1 | [[rec(1).a]] = | Warewolf  | 
-	  And the "Record" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
-	  | # |     |
-	  | 1 | 1,5 |
+	  And the "FindRecord0" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
+	  | # |                   |
+	  | 1 | [[Output]] =  1,5 |
 		 
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
