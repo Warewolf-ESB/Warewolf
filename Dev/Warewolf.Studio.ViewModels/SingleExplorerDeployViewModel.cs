@@ -163,7 +163,11 @@ namespace Warewolf.Studio.ViewModels
             SourcesCount = _stats.Sources.ToString();
             NewResourcesCount = _stats.NewResources.ToString();
             OverridesCount = _stats.Overrides.ToString();
-            _destination.SelectedEnvironment = Destination?.Environments?.FirstOrDefault(model => model.ResourceId == environmentid);
+            IEnvironmentViewModel environmentViewModel = Destination?.Environments?.FirstOrDefault(model => model.ResourceId == environmentid);
+            if (environmentViewModel != null)
+            {
+                _destination.SelectedEnvironment = environmentViewModel;
+            }
             ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
             _stats.Calculate(Source?.SourceLoadedItems?.ToList());
             OnPropertyChanged(() => CanDeploy);
