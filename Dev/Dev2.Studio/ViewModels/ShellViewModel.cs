@@ -174,14 +174,25 @@ namespace Dev2.Studio.ViewModels
         internal void LoadWorkflow(string e)
         {
             if (!File.Exists(e)) { return; }
-            ActiveServer.ResourceRepository.Load();
+            ActiveServer.ResourceRepository.Load();            
             string fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
+            if (singleResource != null)
+            {
+                HandleResourceNotInResourceFolder();
+            }
             OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
         }
 
+        private void HandleResourceNotInResourceFolder()
+        {
+            PopupController popupController = new PopupController
+            {
+                IsQuestion = true
+            };
 
+        }
 
         public IBrowserPopupController BrowserPopupController { get; }
 
