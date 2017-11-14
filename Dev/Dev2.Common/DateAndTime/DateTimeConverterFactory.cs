@@ -22,6 +22,10 @@ namespace Dev2.Common.DateAndTime
         {
             return new DateTimeFormatter();
         }
+        public static IDateTimeFormatter CreateStandardFormatter()
+        {
+            return new StandardDateTimeFormatter();
+        }
 
         /// <summary>
         ///     Instantiates a concreate implementation of the IDateTimeParser
