@@ -16,7 +16,7 @@ namespace Dev2.Common.DateAndTime
 {
     public class StandardDateTimeFormatter : DateTimeFormatter
     {
-        protected override void CreateDateTimeFormatParts()
+        protected new void CreateDateTimeFormatParts()
         {
             DateTimeFormatParts.Clear();
             DateTimeFormatParts.Add("y", (a, b) => b.ToString("y"));
