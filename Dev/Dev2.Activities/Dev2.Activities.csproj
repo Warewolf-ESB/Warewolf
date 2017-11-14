@@ -181,6 +181,7 @@
       <Visible>False</Visible>
     </None>
     <Compile Include="Activities\ActivityParser.cs" />
+    <Compile Include="Activities\DateAndTime\DsfNewDateTimeActivity.cs" />
     <Compile Include="Activities\DebugCopyException.cs" />
     <Compile Include="Activities\DebugEvalResult.cs" />
     <Compile Include="Activities\Debug\DebugItemServiceTestStaticDataParams.cs" />
