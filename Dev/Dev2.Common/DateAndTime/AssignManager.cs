@@ -26,7 +26,8 @@ namespace Dev2.Common.DateAndTime
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            if (_timeZoneTos.TryGetValue(lowerValue, out ITimeZoneTO timeZoneTo))
+            ITimeZoneTO timeZoneTo;
+            if (_timeZoneTos.TryGetValue(lowerValue, out timeZoneTo))
             {
                 dateTimeResultTo.TimeZone = timeZoneTo;
             }
@@ -35,7 +36,14 @@ namespace Dev2.Common.DateAndTime
         {
             string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
-            dateTimeResultTo.AmPm = lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m." ? DateTimeAmPm.pm : DateTimeAmPm.am;
+            if (lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m.")
+            {
+                dateTimeResultTo.AmPm = DateTimeAmPm.pm;
+            }
+            else
+            {
+                dateTimeResultTo.AmPm = DateTimeAmPm.am;
+            }
         }
 
         public void AssignMilliseconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
