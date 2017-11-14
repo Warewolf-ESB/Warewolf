@@ -15,7 +15,7 @@ namespace Dev2.Common.TimeZoneBuilder
         public Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatsParts { get; set; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptions { get; set; }
         protected readonly AssignManager _assignManager;
-        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
+        protected static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
         public DateTimeFormatPart(Dictionary<string, ITimeZoneTO> timeZones)
         {
             _timeZones = timeZones;
@@ -156,13 +156,13 @@ namespace Dev2.Common.TimeZoneBuilder
             DateTimeFormatPartOptions.Add("DW",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false, 3, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false, 4, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false, 6, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false, 3, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false, 4, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false, 6, _assignManager.AssignDaysOfWeek),
                 });
 
             DateTimeFormatsParts.Add("dW", new DateTimeFormatPartTO("dW", false, "Day of Week text abbreviated: Thu"));
@@ -170,25 +170,25 @@ namespace Dev2.Common.TimeZoneBuilder
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7,
                         _assignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1,
                         _assignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2,
                         _assignManager.AssignDaysOfWeek, 7),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false,
                         3, _assignManager.AssignDaysOfWeek, 9),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false,
                         4, _assignManager.AssignDaysOfWeek, 8),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5,
                         _assignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false,
                         6, _assignManager.AssignDaysOfWeek, 7),
                 });
 
