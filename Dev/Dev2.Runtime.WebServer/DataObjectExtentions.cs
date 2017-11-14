@@ -18,6 +18,7 @@ namespace Dev2.Runtime.WebServer
         public static string SetEmitionType(this IDSFDataObject dataObject, string serviceName, NameValueCollection headers)
         {
             int loc;
+            var originalServiceName = serviceName;
             if (!string.IsNullOrEmpty(serviceName) && (loc = serviceName.LastIndexOf(".", StringComparison.Ordinal)) > 0)
             {
                 // default it to xml
@@ -35,10 +36,10 @@ namespace Dev2.Runtime.WebServer
                     if (typeOf.StartsWith("tests", StringComparison.InvariantCultureIgnoreCase) || typeOf.StartsWith("trx", StringComparison.InvariantCultureIgnoreCase))
                     {
                         dataObject.IsServiceTestExecution = true;
-                        var idx = serviceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
+                        var idx = originalServiceName.LastIndexOf("/", StringComparison.InvariantCultureIgnoreCase);
                         if (idx > loc)
                         {
-                            var testName = serviceName.Substring(idx + 1).ToUpper();
+                            var testName = originalServiceName.Substring(idx + 1).ToUpper();
                             dataObject.TestName = string.IsNullOrEmpty(testName) ? "*" : testName;
                         }
                         else
@@ -128,7 +129,7 @@ namespace Dev2.Runtime.WebServer
 
         public static void SetTestResourceIds(this IDSFDataObject dataObject, IResourceCatalog catalog, WebRequestTO webRequest, string serviceName)
         {
-            if (webRequest.IsRunAllTestsRequest(serviceName))
+            if (webRequest.IsRunAllTestsRequest(dataObject.TestName))
             {
                 var pathOfAllResources = webRequest.GetPathForAllResources();
                 dataObject.ResourceID = Guid.Empty;
