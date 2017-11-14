@@ -207,20 +207,18 @@ namespace Dev2.Studio.ViewModels
                     {
                         var resourceContent = streamReader.ReadToEnd();
                         var serverRepo = CustomContainer.Get<IServerRepository>();
-                        var resourceXml = resourceContent;
-                        var serviceXml = XDocument.Parse(resourceXml);
+                        var serviceXml = XDocument.Parse(resourceContent);
                         var resourceId = serviceXml.Element("Service").Attribute("ID").Value;
                         var resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
                         ResourceModel newResource = new ResourceModel(serverRepo.ActiveServer)
                         {
-                            Category = Path.Combine(EnvironmentVariables.ResourcePath, fileName),
                             DisplayName = resource.ResourceName,
                             ResourceName = resource.ResourceName,
                             DataList = resource.DataList.ToString(),
                             ID = new Guid(resourceId),
                             WorkflowXaml = serviceXml.Element("Service").Element("Action").ToString(SaveOptions.DisableFormatting).ToStringBuilder(),
                         };
-                        SaveDialogHelper.ShowNewWorkflowSaveDialog(newResource);
+                        SaveDialogHelper.ShowExistingWorkflowSaveDialog(newResource, ActiveServer.ResourceRepository);
                         return resource.ResourceID;
                     }
                 }                

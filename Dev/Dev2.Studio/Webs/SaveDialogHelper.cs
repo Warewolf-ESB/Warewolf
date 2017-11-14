@@ -15,6 +15,7 @@ using System.Windows;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Services.Events;
 using Dev2.Studio.Core;
+using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Dev2.Webs.Callbacks;
 using Newtonsoft.Json;
@@ -97,6 +98,10 @@ namespace Dev2.Webs
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager, Action action)
         {
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager), action);
+        }        
+        internal static void ShowExistingWorkflowSaveDialog(ResourceModel newResource, IResourceRepository resourceRepository)
+        {
+            resourceRepository.Save(newResource);
         }
     }
 }
