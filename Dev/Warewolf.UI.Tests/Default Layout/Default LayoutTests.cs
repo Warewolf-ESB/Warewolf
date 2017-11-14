@@ -44,6 +44,7 @@ namespace Warewolf.UI.Tests.Workflow
         {
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
             Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");
+            UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager);
             Assert.IsNull(studio, "Warewolf Studio is running in the background.");
         }
 
