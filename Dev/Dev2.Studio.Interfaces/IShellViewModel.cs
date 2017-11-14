@@ -137,5 +137,6 @@ namespace Dev2.Studio.Interfaces
         void OpenCurrentVersion(Guid resourceId, Guid environmentId);
         IWorkflowDesignerViewModel GetWorkflowDesigner();
         void OpenMergeDialogView(IExplorerItemViewModel currentResource);
+        void UpdateExplorerWorkflowChanges(Guid resourceId);
     }
 }

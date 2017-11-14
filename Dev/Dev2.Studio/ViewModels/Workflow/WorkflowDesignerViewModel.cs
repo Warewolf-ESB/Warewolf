@@ -89,6 +89,7 @@ using Warewolf.Studio.ViewModels;
 using Dev2.Activities;
 using System.Collections.Concurrent;
 using Dev2.ViewModels.Merge;
+using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -401,7 +402,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanMerge
         {
-            get => _canMerge;
+            get => _canMerge && GetVersionHistory() != null;
             set
             {
                 _canMerge = value;
@@ -415,6 +416,17 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 OnPropertyChanged("CanMerge");
             }
+        }
+
+        private ICollection<IVersionInfo> GetVersionHistory()
+        {
+            var versionInfos = Server?.ExplorerRepository?.GetVersions(ResourceModel.ID);
+            if (versionInfos?.Count <= 0)
+            {
+                return null;
+            }
+
+            return versionInfos;
         }
 
         public string DeployTooltip

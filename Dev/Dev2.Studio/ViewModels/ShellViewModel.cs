@@ -2247,5 +2247,14 @@ namespace Dev2.Studio.ViewModels
                 message.SelectedFiles = fileChooser.GetAttachments();
             }
         }
+
+        public void UpdateExplorerWorkflowChanges(Guid resourceId)
+        {
+            var resource = ActiveServer.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
+            WorkSurfaceKey key = WorkSurfaceKeyFactory.CreateKey(resource);
+            WorkSurfaceContextViewModel currentContext = FindWorkSurfaceContextViewModel(key);
+            var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
+            vm.CanMerge = true;
+        }
     }
 }

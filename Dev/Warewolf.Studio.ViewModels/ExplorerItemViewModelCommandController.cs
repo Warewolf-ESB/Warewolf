@@ -196,6 +196,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     parent.AreVersionsVisible = true;
                 }
+                if (parentChildren.Count == 0)
+                {
+                    parent.AreVersionsVisible = false;
+                    parent.IsMergeVisible = false;
+                }
+                _shellViewModel.UpdateExplorerWorkflowChanges(explorerItemViewModel.ResourceId);
             }
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
