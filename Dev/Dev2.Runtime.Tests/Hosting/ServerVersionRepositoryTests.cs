@@ -592,7 +592,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             var newVersions = new List<string>
             {
-                "C:\\ProgramData\\Warewolf\\VersionControl\\OldFile1.bite", "C:\\ProgramData\\Warewolf\\VersionControl\\OldFile2.bite", "C:\\ProgramData\\Warewolf\\VersionControl\\OldFile3.bite"
+                Path.Combine(EnvironmentVariables.VersionsPath, "OldFile1.bite"), Path.Combine(EnvironmentVariables.VersionsPath, "OldFile2.bite"), Path.Combine(EnvironmentVariables.VersionsPath, "OldFile3.bite")
             };
             foreach (var item in newVersions)
             {
