@@ -24,6 +24,7 @@ Scenario: Execute New DB Connector With Variables
 	And I Select UITestingDBSource From SQL Server Large View Source Combobox
 	And I Select GetCountries From SQL Server Large View Action Combobox
 	And I Type 0 Into SQL Server Large View Inputs Row1 Data Textbox
+	And I Type 0 Into SQL Server Large View Inputs Row2 Data Textbox
 	And I Click SQL Server Large View Generate Outputs
 	And I Type 0 Into SQL Server Large View Test Inputs Row1 Test Data Textbox
 	And I Click SQL Server Large View Test Inputs Button
