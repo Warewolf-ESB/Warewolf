@@ -536,6 +536,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestIsMergeVisible()
+        {
+            //assert
+            Assert.IsFalse(_target.IsMergeVisible);
+        }
+
+        [TestMethod]
         public void TestIsResourceUnchecked()
         {
             //arrange

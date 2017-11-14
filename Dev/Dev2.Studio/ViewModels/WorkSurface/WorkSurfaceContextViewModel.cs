@@ -539,10 +539,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
             if (!isLocalSave)
             {
-                if (DebugOutputViewModel != null)
-                {
-                    ViewModelUtils.RaiseCanExecuteChanged(DebugOutputViewModel.AddNewTestCommand);
-                }
+                ViewModelUtils.RaiseCanExecuteChanged(DebugOutputViewModel?.AddNewTestCommand);
             }
             return saveResult;
         }
@@ -613,17 +610,20 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var explorerViewModel = mainViewModel?.ExplorerViewModel;
-            var environmentViewModel =
-                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.EnvironmentID);
-            var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(
-                model => model.ResourceId == resource.ID);
-            if (explorerItemViewModel != null && explorerItemViewModel.GetType() == typeof (VersionViewModel))
+            var environmentViewModel = explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.EnvironmentID);
+            var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId == resource.ID);
+            if (explorerItemViewModel != null)
             {
-                if (explorerItemViewModel.Parent != null)
+                explorerItemViewModel.IsMergeVisible = true;
+                if (explorerItemViewModel.GetType() == typeof(VersionViewModel))
                 {
-                    explorerItemViewModel.Parent.AreVersionsVisible = true;
+                    if (explorerItemViewModel.Parent != null)
+                    {
+                        explorerItemViewModel.Parent.AreVersionsVisible = true;
+                    }
                 }
             }
+            mainViewModel?.UpdateExplorerWorkflowChanges(resource.ID);
         }
 
         private void DisplaySaveResult(ExecuteMessage result, IContextualResourceModel resource)
