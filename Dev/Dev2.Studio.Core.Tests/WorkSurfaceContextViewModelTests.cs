@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
@@ -183,7 +183,7 @@ namespace Dev2.Core.Tests
                 return workflow;
             });
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             return viewModel;
         }
 
