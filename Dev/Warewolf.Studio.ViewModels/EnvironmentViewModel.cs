@@ -81,6 +81,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSaveDialog;
         private bool _canViewExecutionLogging;
         private string _viewExecutionLoggingTooltip;
+        private bool _isMergeVisible;
 
         private EnvironmentViewModel()
         {
@@ -252,6 +253,7 @@ namespace Warewolf.Studio.ViewModels
             SelectAll = () => { };
             CanDrag = false;
             CanDrop = false;
+            IsMergeVisible = false;
             ResourceId = server.EnvironmentID;
             CanViewApisJson = true;
             CanViewExecutionLogging = true;
@@ -1296,6 +1298,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public bool IsMergeVisible
+        {
+            get
+            {
+                return _isMergeVisible;
+            }
+            set
+            {
+                _isMergeVisible = value;
+                OnPropertyChanged(() => IsMergeVisible);
+            }
+        }
 
         public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
 

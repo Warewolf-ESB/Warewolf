@@ -164,6 +164,21 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestIsMergeVisibleFalse()
+        {
+            //assert
+            Assert.IsFalse(_target.IsMergeVisible);
+        }
+
+        [TestMethod]
+        public void TestIsMergeVisibleTrue()
+        {
+            _target.IsSaveDialog = false;
+            //assert
+            Assert.IsTrue(_target.IsMergeVisible);
+        }
+
+        [TestMethod]
         public void TestNewPostgreSqlSourceCommand()
         {
             //arrange
