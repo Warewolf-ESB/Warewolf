@@ -386,7 +386,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     tx.Complete();
                     saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
                     Transaction.Current.Rollback();
                     throw;
