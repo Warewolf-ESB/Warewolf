@@ -36,7 +36,7 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             Optional = false;
             IntellisenseProviderType = IntellisenseProviderType.NonDefault;
-            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
+            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
             _intellisenseResults = dateTimeParser.DateTimeFormatParts.Select(p => 
                 {
                     IIntellisenseResult intellisenseResult = IntellisenseFactory.CreateDateTimeResult(IntellisenseFactory.CreateDateTimePart(p.Value, p.Description));
