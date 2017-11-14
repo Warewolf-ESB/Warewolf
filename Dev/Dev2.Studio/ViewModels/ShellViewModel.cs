@@ -64,6 +64,10 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
+using System.Xml.Linq;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Common;
+using Dev2.Webs;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -172,26 +176,59 @@ namespace Dev2.Studio.ViewModels
         }
 
         internal void LoadWorkflow(string e)
+
         {
             if (!File.Exists(e)) { return; }
-            ActiveServer.ResourceRepository.Load();            
+            ActiveServer.ResourceRepository.Load();
             string fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
-            if (singleResource != null)
+            Guid resourceId;
+            if (singleResource == null)
             {
-                HandleResourceNotInResourceFolder();
+                resourceId = HandleResourceNotInResourceFolder(e, fileName);
             }
-            OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+            else
+            {
+                resourceId = singleResource.ID;
+            }
+
+            OpenResource(resourceId, ActiveServer.EnvironmentID, ActiveServer);
         }
 
-        private void HandleResourceNotInResourceFolder()
+        private Guid HandleResourceNotInResourceFolder(string filePath, string fileName)
         {
-            PopupController popupController = new PopupController
+            var saveResource = PopupProvider.ShowResourcesNotInCorrectPath();
+            if (saveResource == MessageBoxResult.OK)
             {
-                IsQuestion = true
-            };
-
+                using (var stream = File.OpenRead(filePath))
+                {
+                    using (var streamReader = new StreamReader(stream))
+                    {
+                        var resourceContent = streamReader.ReadToEnd();
+                        var serverRepo = CustomContainer.Get<IServerRepository>();
+                        var resourceXml = resourceContent;
+                        var serviceXml = XDocument.Parse(resourceXml);
+                        var resourceId = serviceXml.Element("Service").Attribute("ID").Value;
+                        var resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
+                        ResourceModel newResource = new ResourceModel(serverRepo.ActiveServer)
+                        {
+                            Category = Path.Combine(EnvironmentVariables.ResourcePath, fileName),
+                            DisplayName = resource.ResourceName,
+                            ResourceName = resource.ResourceName,
+                            DataList = resource.DataList.ToString(),
+                            ID = new Guid(resourceId),
+                            WorkflowXaml = serviceXml.Element("Service").Element("Action").ToString(SaveOptions.DisableFormatting).ToStringBuilder(),
+                        };
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(newResource);
+                        return resource.ResourceID;
+                    }
+                }                
+            }
+            else
+            {
+                return Guid.Empty;
+            }
         }
 
         public IBrowserPopupController BrowserPopupController { get; }

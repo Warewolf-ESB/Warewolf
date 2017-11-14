@@ -14,7 +14,6 @@
 using System.Collections.Generic;
 using System.Windows;
 using Dev2.Common.Interfaces.PopupController;
-using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Common.Interfaces.Studio.Controller
 
@@ -66,6 +65,6 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
         MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates);
-        MessageBoxResult ShowResourcesNotInCorrectPath(IResource resource);
+        MessageBoxResult ShowResourcesNotInCorrectPath();
     }
 }
