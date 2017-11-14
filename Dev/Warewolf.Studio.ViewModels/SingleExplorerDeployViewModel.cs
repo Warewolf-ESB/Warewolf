@@ -17,7 +17,6 @@ using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Dev2.Common.Interfaces.Threading;
-using Dev2.Threading;
 using System.Globalization;
 
 namespace Warewolf.Studio.ViewModels
