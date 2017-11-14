@@ -257,7 +257,7 @@ namespace Dev2.Runtime.Hosting
                             File.Move(files[i], Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(files[i])));
                         }
                     }
-                    File.Delete(item);
+                    Directory.Delete(item, true);
                 }
             }
             catch (Exception e)
