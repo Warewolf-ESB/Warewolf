@@ -22,6 +22,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.DateAndTime
 {
+
     public class DateTimeParser : IDateTimeParser
     {
         /// <summary>
@@ -39,8 +40,8 @@ namespace Dev2.Common.DateAndTime
         public const char DateLiteralCharacter = '\'';
 
         private static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
-        private static Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        protected static Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
+        protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions =new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         public static Dictionary<string, ITimeZoneTO> TimeZones = new Dictionary<string, ITimeZoneTO>();
         private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet= new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
@@ -77,6 +78,10 @@ namespace Dev2.Common.DateAndTime
             var dateTimeFormatPartsForDotNet = new DateTimeFormatPartsForDotNet();
             dateTimeFormatPartsForDotNet.Build();
             _dateTimeFormatPartOptionsForDotNet = dateTimeFormatPartsForDotNet.DateTimeFormatPartOptionsForDotNet;
+        }
+
+        protected virtual void BuildDateTimeFormatParts()
+        {
         }
 
         /// <summary>

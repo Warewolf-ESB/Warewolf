@@ -119,6 +119,7 @@
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatter.cs" />
+    <Compile Include="DateAndTime\StandardDateTimeParser.cs" />
     <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />
     <Compile Include="DebugStateTreeBuilder.cs" />
     <Compile Include="DeplyResult.cs" />
@@ -172,6 +173,7 @@
     <Compile Include="Interfaces\ITimeFormatPartBuilder.cs" />
     <Compile Include="Interfaces\ITimeZoneBuilder.cs" />
     <Compile Include="Interfaces\IWebServiceHeaderBuilder.cs" />
+    <Compile Include="TimeZoneBuilder\NewDateTimeFormatPart.cs" />
     <Compile Include="WebServiceHeaderBuilder.cs" />
     <Compile Include="LogEntry.cs" />
     <Compile Include="Lookups\CompressionRatios.cs" />

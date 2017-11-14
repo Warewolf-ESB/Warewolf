@@ -22,6 +22,7 @@ namespace Dev2.Common.DateAndTime
         {
             return new DateTimeFormatter();
         }
+
         public static IDateTimeFormatter CreateStandardFormatter()
         {
             return new StandardDateTimeFormatter();
@@ -33,6 +34,11 @@ namespace Dev2.Common.DateAndTime
         public static IDateTimeParser CreateParser()
         {
             return new DateTimeParser();
+        }
+
+        public static IDateTimeParser CreateStandardParser()
+        {
+            return new StandardDateTimeParser();
         }
 
         /// <summary>
