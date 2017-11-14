@@ -131,7 +131,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ErrorResultTO errors = null;
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
-                if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
+                if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
                     formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
                     return new StringResponseWriter(executePayload, formatter.ContentType);
