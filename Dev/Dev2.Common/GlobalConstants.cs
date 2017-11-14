@@ -372,7 +372,7 @@ where pn.nspname = 'public';
         public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern;
         public static readonly string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
-        
+        public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 
         private static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);

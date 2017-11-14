@@ -13,8 +13,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-
-
 namespace Dev2.Common.DateAndTime
 {
 
@@ -22,11 +20,11 @@ namespace Dev2.Common.DateAndTime
     {
         #region Class Members
 
-        protected readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
+        protected static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
             new Dictionary<string, Func<IDateTimeResultTO, DateTime, string>>();
 
         //27.09.2012: massimo.guerrera - Added for the new way of doing time modification
-        protected readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
+        protected static readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
             new Dictionary<string, Func<DateTime, int, DateTime>>();
 
         private static IList<string> _listOfModifierTypes = new List<string>();
@@ -35,16 +33,13 @@ namespace Dev2.Common.DateAndTime
 
         #region Constructors
 
-        public DateTimeFormatter()
-        {
-            Initialise();
-        }
-
-        protected override void Initialise()
+        static DateTimeFormatter()
         {
             CreateDateTimeFormatParts();
             CreateTimeModifierTypes();
         }
+
+        
         #endregion Constructors
 
         #region Properties
@@ -175,7 +170,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Creates a list of all valid date time format parts
         /// </summary>
-        protected virtual void CreateDateTimeFormatParts()
+        protected static void CreateDateTimeFormatParts()
         {
             DateTimeFormatParts.Add("yy", Format_yy);
             DateTimeFormatParts.Add("yyyy", Format_yyyy);
@@ -207,7 +202,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Creates a list of all valid time modifier parts
         /// </summary>
-        private void CreateTimeModifierTypes()
+        private static void CreateTimeModifierTypes()
         {
             TimeModifiers.Add("", null);
             TimeModifiers.Add("Years", AddYears);

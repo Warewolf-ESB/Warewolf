@@ -340,6 +340,16 @@
     <Compile Include="Designers2\DateTime\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DateTimStandard\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\DateTimeDesignerViewModel.cs" />
+    <Compile Include="Designers2\DateTimStandard\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\Decision\DecisionDesignerViewModel.cs" />
     <Compile Include="Designers2\Decision\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
@@ -1398,6 +1408,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DateTimStandard\DateTimeDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimStandard\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimStandard\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\Decision\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -2257,6 +2279,7 @@
     </Resource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Designers2\DateTimeDifferenceStandard\" />
     <Folder Include="Themes\" />
   </ItemGroup>
   <ItemGroup>
