@@ -85,18 +85,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceGuid = SetWorkspaceId(workspaceId, workspaceRepository);
 
             var allErrors = new ErrorResultTO();
-            var dataObject = _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-            {
-                IsFromWebServer = true
-                ,
-                ExecutingUser = user
-                ,
-                ServiceName = serviceName
-                ,
-                WorkspaceID = workspaceGuid
-                ,
-                ExecutionID = Guid.NewGuid()
-            };
+            var dataObject = CreateNewDsfDataObject(webRequest, serviceName, user, workspaceGuid);
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
             dataObject.SetupForRemoteInvoke(headers);
@@ -123,7 +112,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            
+
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
@@ -185,6 +174,18 @@ namespace Dev2.Runtime.WebServer.Handlers
             };
             return executionDto.CreateResponseWriter();
 
+        }
+
+        private static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid)
+        {
+            return _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            {
+                IsFromWebServer = true,
+                ExecutingUser = user,
+                ServiceName = serviceName,
+                WorkspaceID = workspaceGuid,
+                ExecutionID = Guid.NewGuid()
+            };
         }
 
         private static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)

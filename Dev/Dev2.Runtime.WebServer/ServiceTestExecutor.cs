@@ -129,8 +129,8 @@ namespace Dev2.Runtime.WebServer
                 dataObjectClone.Environment = new ExecutionEnvironment();
                 dataObjectClone.TestName = test.TestName;
                 var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
-                dataObjectClone.ServiceName = res.ResourceName;
-                var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
+                dataObjectClone.ServiceName = res?.ResourceName;
+                var resourcePath = res?.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
                 var lastTask = GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
                     serializer, testResults, dataObjectClone);
                 taskList.Add(lastTask);
