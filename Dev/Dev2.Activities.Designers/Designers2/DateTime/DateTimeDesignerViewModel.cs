@@ -27,19 +27,11 @@ namespace Dev2.Activities.Designers2.DateTime
             SelectedTimeModifierType = string.IsNullOrEmpty(TimeModifierType) ? TimeModifierTypes[0] : TimeModifierType;
             AddTitleBarLargeToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Date_Time;
-            if (string.IsNullOrEmpty(InputFormat))
-            {
-                InputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-
-            }
-            if (string.IsNullOrEmpty(OutputFormat))
-            {
-                OutputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            }
         }
 
         public List<string> TimeModifierTypes { get; private set; }
 
+        public string Dev2DefaultDateTime => GlobalConstants.Dev2CustomDefaultDateTimeFormat;
 
         public string SelectedTimeModifierType
         {
@@ -57,26 +49,23 @@ namespace Dev2.Activities.Designers2.DateTime
 
             if(string.IsNullOrWhiteSpace(value))
             {
-                viewModel.SetTimeModifierAmountDisplay(value);
+                viewModel.TimeModifierAmountDisplay = value;
             }
             viewModel.TimeModifierType = value;
         }
-        
-        string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
 
-        private void SetTimeModifierAmountDisplay(string value) { SetProperty(value); }
-        string InputFormat { set => SetProperty(value); get => GetProperty<string>(); }
-        string OutputFormat { set => SetProperty(value); get => GetProperty<string>(); }
+        // DO NOT bind to these properties - these are here for convenience only!!!
+        string TimeModifierType { set { SetProperty(value);} get {return  GetProperty<string>();} }
+        string TimeModifierAmountDisplay { set { SetProperty(value); } }
+
+        public override void Validate()
+        {
+        }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
-        }
-
-        public override void Validate()
-        {
-            throw new System.NotImplementedException();
         }
     }
 }

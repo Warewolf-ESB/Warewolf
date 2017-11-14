@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Globalization;
@@ -51,7 +50,7 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatParts.Add("tt", (a, b) => b.ToString("tt"));
             DateTimeFormatParts.Add("K", (a, b) => b.ToString("K"));
             DateTimeFormatParts.Add("gg", (a, b) => b.ToString("gg"));
-        }       
+        }
         public override bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
             {
@@ -72,6 +71,22 @@ namespace Dev2.Common.DateAndTime
                 }
                 return true;
             }
+        }
+
+        DateTime PerformDateTimeModification(IDateTimeOperationTO dateTimeTO, DateTime tmpDateTime)
+        {
+            var dateTime = tmpDateTime;
+            if (!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
+            {
+                Func<DateTime, int, DateTime> funcToExecute;
+                if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
+                    funcToExecute != null)
+                {
+                    dateTime = funcToExecute(dateTime, dateTimeTO.TimeModifierAmount);
+                }
+            }
+
+            return dateTime;
         }
     }
 }

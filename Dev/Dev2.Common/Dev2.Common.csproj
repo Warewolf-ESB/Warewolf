@@ -117,6 +117,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="AssemblyWrapper.cs" />
+    <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatter.cs" />
     <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />
     <Compile Include="DebugStateTreeBuilder.cs" />
