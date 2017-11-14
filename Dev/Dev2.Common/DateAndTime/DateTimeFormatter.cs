@@ -17,15 +17,16 @@ using System.Globalization;
 
 namespace Dev2.Common.DateAndTime
 {
-    public class DateTimeFormatter : IDateTimeFormatter
+
+    public class DateTimeFormatter : DateTimeFormatterBase
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
+        protected readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
             new Dictionary<string, Func<IDateTimeResultTO, DateTime, string>>();
 
         //27.09.2012: massimo.guerrera - Added for the new way of doing time modification
-        private static readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
+        protected readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
             new Dictionary<string, Func<DateTime, int, DateTime>>();
 
         private static IList<string> _listOfModifierTypes = new List<string>();
@@ -34,12 +35,16 @@ namespace Dev2.Common.DateAndTime
 
         #region Constructors
 
-        static DateTimeFormatter()
+        public DateTimeFormatter()
+        {
+            Initialise();
+        }
+
+        protected override void Initialise()
         {
             CreateDateTimeFormatParts();
             CreateTimeModifierTypes();
         }
-
         #endregion Constructors
 
         #region Properties
@@ -58,7 +63,7 @@ namespace Dev2.Common.DateAndTime
         ///     Converts a date from one format to another. If a valid time modifier is specified then the date is adjusted
         ///     accordingly before being returned.
         /// </summary>
-        public bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
+        public override bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
             result = "";
             IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
@@ -170,7 +175,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Creates a list of all valid date time format parts
         /// </summary>
-        private static void CreateDateTimeFormatParts()
+        protected virtual void CreateDateTimeFormatParts()
         {
             DateTimeFormatParts.Add("yy", Format_yy);
             DateTimeFormatParts.Add("yyyy", Format_yyyy);
@@ -202,7 +207,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Creates a list of all valid time modifier parts
         /// </summary>
-        private static void CreateTimeModifierTypes()
+        private void CreateTimeModifierTypes()
         {
             TimeModifiers.Add("", null);
             TimeModifiers.Add("Years", AddYears);
@@ -396,7 +401,9 @@ namespace Dev2.Common.DateAndTime
         {
             DateTime result = inputDateTime.AddMilliseconds(amountToAdd);
             return result;
-        }
+        }    
+
+       
 
         #endregion Time Modifier Methods
 

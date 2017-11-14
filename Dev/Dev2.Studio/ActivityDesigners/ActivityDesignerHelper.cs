@@ -96,9 +96,7 @@ using Dev2.Activities.Designers2.ComDLL;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Scripting;
-
-
-
+using Dev2.Activities.DateAndTime;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -120,6 +118,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(Dev2.Activities.Designers2.RecordsLengthNullHandler.RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Dev2.Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(Dev2.Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
+                {typeof(DsfNewDateTimeActivity),typeof(DsfNewDateTimeActivity) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
