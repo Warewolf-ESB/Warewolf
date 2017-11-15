@@ -130,24 +130,17 @@ namespace Dev2.Studio.Views
 
         private static IntPtr WindowProc(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            switch (msg)
+            if (msg == 0x0024 && !_isSuperMaximising)
             {
-                case 0x0024:/* WM_GETMINMAXINFO */
-                    if (!_isSuperMaximising)
-                    {
-                        WmGetMinMaxInfo(hwnd, lParam);
-                        handled = true;
-                    }
-                    break;
-                default:
-                    break;
+                WmGetMinMaxInfo(hwnd, lParam);
+                handled = true;
             }
             return (IntPtr)0;
         }
 
         private static void WmGetMinMaxInfo(IntPtr hwnd, IntPtr lParam)
         {
-            var mmi = (MINMAXINFO)Marshal.PtrToStructure(lParam, typeof(MINMAXINFO));
+            var mmi = (Minmaxinfo)Marshal.PtrToStructure(lParam, typeof(Minmaxinfo));
 
             // Adjust the maximized size and position to fit the work area of the correct monitor
             var currentScreen = Screen.FromHandle(hwnd);
@@ -163,17 +156,17 @@ namespace Dev2.Studio.Views
 
         [StructLayout(LayoutKind.Sequential)]
         
-        public struct MINMAXINFO
+        public struct Minmaxinfo
         {
-            public POINT ptReserved;
-            public POINT ptMaxSize;
-            public POINT ptMaxPosition;
-            public POINT ptMinTrackSize;
-            public POINT ptMaxTrackSize;
+            public Point ptReserved;
+            public Point ptMaxSize;
+            public Point ptMaxPosition;
+            public Point ptMinTrackSize;
+            public Point ptMaxTrackSize;
         };
 
         [StructLayout(LayoutKind.Sequential)]
-        public struct POINT
+        public struct Point
         {
             /// <summary>
             /// x coordinate of point.
@@ -188,7 +181,7 @@ namespace Dev2.Studio.Views
             /// <summary>
             /// Construct a point of coordinates (x,y).
             /// </summary>
-            public POINT(int x, int y)
+            public Point(int x, int y)
             {
                 this.x = x;
                 this.y = y;
@@ -230,13 +223,10 @@ namespace Dev2.Studio.Views
                 ClearTabItems(mainViewModel);
 
                 var localhostServer = mainViewModel.LocalhostServer;
-                if (localhostServer.IsConnected)
+                if (localhostServer.IsConnected && !Equals(mainViewModel.ActiveServer, localhostServer))
                 {
-                    if (!Equals(mainViewModel.ActiveServer, localhostServer))
-                    {
-                        mainViewModel.SetActiveServer(localhostServer.EnvironmentID);
-                        mainViewModel.SetActiveServer(localhostServer);
-                    }
+                    mainViewModel.SetActiveServer(localhostServer.EnvironmentID);
+                    mainViewModel.SetActiveServer(localhostServer);
                 }
 
                 var explorerViewModel = mainViewModel.ExplorerViewModel;
@@ -244,16 +234,7 @@ namespace Dev2.Studio.Views
                 {
                     explorerViewModel.SearchText = string.Empty;
 
-                    if (explorerViewModel.ConnectControlViewModel != null)
-                    {
-                        foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
-                        {
-                            if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
-                            {
-                                server.Disconnect();
-                            }
-                        }
-                    }
+                    DisconnectServers(localhostServer, explorerViewModel);
 
                     var environmentViewModels = explorerViewModel.Environments;
                     if (environmentViewModels?.Count > 1)
@@ -275,6 +256,20 @@ namespace Dev2.Studio.Views
             }
         }
 
+        private static void DisconnectServers(Interfaces.IServer localhostServer, Interfaces.IExplorerViewModel explorerViewModel)
+        {
+            if (explorerViewModel.ConnectControlViewModel != null)
+            {
+                foreach (var server in explorerViewModel.ConnectControlViewModel.Servers)
+                {
+                    if (server != null && server.DisplayName != localhostServer.DisplayName && server.IsConnected)
+                    {
+                        server.Disconnect();
+                    }
+                }
+            }
+        }
+
         private void ClearTabItems(ShellViewModel mainViewModel)
         {
             for (int i = TabManager.Items.Count - 1; i >= 0; i--)
@@ -291,21 +286,15 @@ namespace Dev2.Studio.Views
             var windowCollection = System.Windows.Application.Current.Windows;
             foreach (var window in windowCollection)
             {
-
                 if (window is Window window1 && window1.Name != "MainViewWindow")
                 {
                     if (window1.GetType().Name == "ToolWindowHostWindow")
                     {
                         var contentPane = window1.Content as PaneToolWindow;
-                        var splitPane = contentPane?.Pane;
-
-                        if (splitPane != null)
+                        foreach (var item in contentPane?.Pane?.Panes)
                         {
-                            foreach (var item in splitPane.Panes)
-                            {
-                                var pane = item as ContentPane;
-                                RemoveWorkspaceItems(pane, mainViewModel);
-                            }
+                            var pane = item as ContentPane;
+                            RemoveWorkspaceItems(pane, mainViewModel);
                         }
                     }
                     window1.Close();
@@ -536,12 +525,9 @@ namespace Dev2.Studio.Views
         {
             var title = PaneToolWindow.Title;
             var newTitle = " - " + displayName?.Replace("*", "").TrimEnd();
-            if (!title.Contains(newTitle))
+            if (!title.Contains(newTitle) && !string.IsNullOrWhiteSpace(displayName))
             {
-                if (!string.IsNullOrWhiteSpace(displayName))
-                {
-                    PaneToolWindow.Title = PaneToolWindow.Title + " - " + displayName;
-                }
+                PaneToolWindow.Title = PaneToolWindow.Title + " - " + displayName;
             }
         }
 
@@ -699,6 +685,7 @@ namespace Dev2.Studio.Views
                 case WindowState.Minimized:
                     break;
                 default:
+                    WindowState = WindowState.Normal;
                     break;
             }
         }
@@ -759,7 +746,7 @@ namespace Dev2.Studio.Views
 
         [DllImport("user32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetCursorPos(out POINT lpPoint);
+        static extern bool GetCursorPos(out Point lpPoint);
         void PART_TITLEBAR_OnMouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             try
@@ -777,7 +764,7 @@ namespace Dev2.Studio.Views
                     WindowState = WindowState.Normal;
                     ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;
 
-                    GetCursorPos(out POINT lMousePosition);
+                    GetCursorPos(out Point lMousePosition);
 
                     Left = lMousePosition.x - targetHorizontal;
                     Top = lMousePosition.y - targetVertical;
@@ -787,7 +774,7 @@ namespace Dev2.Studio.Views
                 }
                 if (allowMaximizeState)
                 {
-                    GetCursorPos(out POINT lMousePosition);
+                    GetCursorPos(out Point lMousePosition);
 
                     if (lMousePosition.y <= 0)
                     {
@@ -814,6 +801,14 @@ namespace Dev2.Studio.Views
                         paneToolWindow.Title = Title;
                     }
                 }
+            }
+        }
+
+        private void MainViewWindow_Closed(object sender, EventArgs e)
+        {
+            foreach (Process proc in Process.GetProcessesByName("Warewolf Studio"))
+            {
+                proc.Kill();
             }
         }
     }

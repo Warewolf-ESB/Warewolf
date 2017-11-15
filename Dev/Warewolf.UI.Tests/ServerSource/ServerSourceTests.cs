@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
 using System.IO;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -185,6 +186,26 @@ namespace Warewolf.UI.Tests.ServerSource
             DialogsUIMap.Click_MessageBox_Yes();
             UIMap.Save_With_Ribbon_Button_And_Dialog("WorkflowSaveError");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
+        {
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            ServerSourceUIMap.Select_Server_Authentication_Public();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("ClickSaveEnterSavesServerResource");
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Point point;
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out point), 60000);
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
         }
 
         #region Additional test attributes

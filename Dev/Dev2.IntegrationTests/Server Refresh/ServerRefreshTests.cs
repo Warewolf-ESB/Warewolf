@@ -17,6 +17,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
     {
         private const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Run_a_workflow_to_test_server_refresh()
         {
             SetupPermissions();
