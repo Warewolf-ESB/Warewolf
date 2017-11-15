@@ -13,27 +13,32 @@ using System.Collections.Generic;
 using System.Linq;
 using Warewolf.Resource.Errors;
 
-
 namespace Dev2
-{
+{ 
     public static class VerifyArgument
     {
-        [AssertionMethod]
-        public static void IsNotNull([NotNull] string name, [AssertionCondition(AssertionConditionType.IS_NOT_NULL)] object argument)
+        public static void IsNotNull(string name, object argument)
         {
-            if(argument == null)
+            if (argument == null)
             {
                 throw new ArgumentNullException(name);
             }
         }
-
-        [AssertionMethod]
-        public static void AreNotNull([AssertionCondition(AssertionConditionType.IS_NOT_NULL)] IDictionary<string, object> args)
+        
+        public static void AreNotNull(IDictionary<string, object> args)
         {
-            if(args.Any(a => a.Value == null))
+            if (args.Any(a => a.Value == null))
             {
                 throw new ArgumentNullException(@"", String.Format(ErrorResource.ArgumentsNotAllowedToBeNull, args.Where(a => a.Value == null).Aggregate(@"", (a, b) => $"{a}{b.Key}{Environment.NewLine}")));
             }
         }
-    }
+        
+        public static void IsNotNullOrWhitespace(string name, string value)
+        {
+            if (string.IsNullOrWhiteSpace(value) || string.IsNullOrEmpty(value))
+            {
+                throw new ArgumentNullException(name, ErrorResource.NullArgument);
+            }
+        }
+    }    
 }
