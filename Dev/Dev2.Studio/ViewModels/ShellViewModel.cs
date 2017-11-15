@@ -111,6 +111,7 @@ namespace Dev2.Studio.ViewModels
         readonly IAsyncWorker _asyncWorker;
         private readonly IViewFactory _factory;
         private ICommand _showStartPageCommand;
+        IContextualResourceModel contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
 
@@ -176,27 +177,26 @@ namespace Dev2.Studio.ViewModels
         }
 
         internal void LoadWorkflow(string e)
-
         {
             if (!File.Exists(e)) { return; }
             ActiveServer.ResourceRepository.Load();
             string fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
-            Guid resourceId;
             if (singleResource == null)
             {
-                resourceId = HandleResourceNotInResourceFolder(e, fileName);
+                singleResource = HandleResourceNotInResourceFolder(e, fileName);
+                contextualResourceModel = singleResource as IContextualResourceModel;
+                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+                SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel);
             }
             else
             {
-                resourceId = singleResource.ID;
+                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
             }
-
-            OpenResource(resourceId, ActiveServer.EnvironmentID, ActiveServer);
         }
 
-        private Guid HandleResourceNotInResourceFolder(string filePath, string fileName)
+        private ResourceModel HandleResourceNotInResourceFolder(string filePath, string fileName)
         {
             var saveResource = PopupProvider.ShowResourcesNotInCorrectPath();
             if (saveResource == MessageBoxResult.OK)
@@ -210,22 +210,24 @@ namespace Dev2.Studio.ViewModels
                         var serviceXml = XDocument.Parse(resourceContent);
                         var resourceId = serviceXml.Element("Service").Attribute("ID").Value;
                         var resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
-                        ResourceModel newResource = new ResourceModel(serverRepo.ActiveServer)
+                        var def = serviceXml.Element("Service").Element("Action").Element("XamlDefinition").ToStringBuilder();
+                        XElement xaml = def.Unescape().Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "").ToXElement();
+                        return new ResourceModel(serverRepo.ActiveServer)
                         {
+                            Category = Path.Combine(EnvironmentVariables.ResourcePath, resource.ResourceName),
                             DisplayName = resource.ResourceName,
                             ResourceName = resource.ResourceName,
                             DataList = resource.DataList.ToString(),
                             ID = new Guid(resourceId),
-                            WorkflowXaml = serviceXml.Element("Service").Element("Action").ToString(SaveOptions.DisableFormatting).ToStringBuilder(),
+                            WorkflowXaml = xaml.ToString(SaveOptions.DisableFormatting).ToStringBuilder(),
+                            UserPermissions = Common.Interfaces.Security.Permissions.Administrator
                         };
-                        SaveDialogHelper.ShowExistingWorkflowSaveDialog(newResource, ActiveServer.ResourceRepository);
-                        return resource.ResourceID;
                     }
-                }                
+                }
             }
             else
             {
-                return Guid.Empty;
+                return null;
             }
         }
 
@@ -846,8 +848,10 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(environmentId);
             environmentModel?.ResourceRepository?.UpdateServer(activeServer);
-            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
-
+            if (contextualResourceModel == null)
+            {
+                contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            }
             if (contextualResourceModel != null)
             {
                 var workSurfaceKey = new WorkSurfaceKey { EnvironmentID = environmentId, ResourceID = resourceId, ServerID = contextualResourceModel.ServerID };
