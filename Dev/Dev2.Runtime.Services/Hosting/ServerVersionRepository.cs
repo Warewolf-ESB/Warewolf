@@ -60,8 +60,6 @@ namespace Dev2.Runtime.Hosting
             _file = file;
         }
 
-        #region Implementation of IVersionRepository
-
         public IList<IExplorerItem> GetVersions(Guid resourceId)
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
@@ -215,23 +213,23 @@ namespace Dev2.Runtime.Hosting
                 lock (LockObject)
                 {
                     var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
-                    if (old != null)
+                    if (old == null)
+                    { return; }
+                    var versions = GetVersions(resource.ResourceID).FirstOrDefault();
+                    old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, _userName, reason);
+
+                    var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
+                    if (!_file.Exists(Path.Combine(EnvironmentVariables.VersionsPath, fileName)))
                     {
-                        var versions = GetVersions(resource.ResourceID).FirstOrDefault();
-                        old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, _userName, reason);
-
-                        var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
-                        if (!_file.Exists(Path.Combine(EnvironmentVariables.VersionsPath, fileName))) //todo: remove this and stop save on workspace
+                        var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
+                        if (_file.Exists(sourceFile))
                         {
-                            var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
-                            if (_file.Exists(sourceFile))
-                            {
-                                _file.Copy(sourceFile, Path.Combine(EnvironmentVariables.VersionsPath, fileName));
-                            }
+                            _file.Copy(sourceFile, Path.Combine(EnvironmentVariables.VersionsPath, fileName));
                         }
-
-                        resource.VersionInfo = _versionStrategy.GetNextVersion(resource, old, _userName, reason);
                     }
+
+                    resource.VersionInfo = _versionStrategy.GetNextVersion(resource, old, _userName, reason);
+
                 }
             }
         }
@@ -249,14 +247,8 @@ namespace Dev2.Runtime.Hosting
                 var dirs = directory.GetDirectories(EnvironmentVariables.ResourcePath, "*" + partialName + "*");
                 foreach (var item in dirs)
                 {
-                    var files = directory.GetFiles(item);
-                    for (int i = 0; i < files.Count(); i++)
-                    {
-                        if (!File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(files[i]))))
-                        {
-                            File.Move(files[i], Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(files[i])));
-                        }
-                    }
+                    var files = directory.GetFiles(item).Where(p=>File.Exists(p));
+                    files.ForEach(p => File.Move(p, Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(p))));
                     Directory.Delete(item, true);
                 }
             }
@@ -265,7 +257,5 @@ namespace Dev2.Runtime.Hosting
                 Dev2Logger.Error(e, "Warewolf Error");
             }
         }
-
-        #endregion
     }
 }
