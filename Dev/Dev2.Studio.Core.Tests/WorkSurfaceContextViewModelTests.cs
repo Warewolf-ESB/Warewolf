@@ -1202,6 +1202,11 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
+        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel)
+        {
+            throw new NotImplementedException();
+        }
+
         public IServer Server
         {
             get { throw new NotImplementedException(); }

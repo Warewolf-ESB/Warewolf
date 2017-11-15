@@ -39,10 +39,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
 
@@ -134,10 +130,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get { return _isLoading; }
             set
             {
                 _isLoading = value;
@@ -150,6 +143,7 @@ namespace Warewolf.Studio.ViewModels
             CreateTests(true);
             if (_canAddFromDebug)
             {
+                WorkflowDesignerViewModel?.UpdateWorkflowInputDataViewModel(ResourceModel);
                 AddFromDebug(models);
             }
         }
