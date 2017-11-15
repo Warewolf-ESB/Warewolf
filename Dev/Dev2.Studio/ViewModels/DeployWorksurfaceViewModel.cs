@@ -29,7 +29,6 @@ namespace Dev2.ViewModels
                 {
                     OnPropertyChanged("DisplayName");
                 }
-                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 ViewModelUtils.RaiseCanExecuteChanged(mainViewModel?.SaveCommand);
             };
         }
