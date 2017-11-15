@@ -1133,12 +1133,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (ChildrenCount >= 1)
                     {
-                        Children.Apply(a => a.IsResourceChecked = isResourceChecked ?? false);
-                        _isResource = isResourceChecked ?? false;
-                        if (Parent.IsFolder)
-                        {
-                            Parent.IsFolderChecked = isResourceChecked;
-                        }
+                        Children.Apply(a => a.IsResourceChecked = isResourceChecked);
                     }
                 }
                 else
@@ -1146,7 +1141,7 @@ namespace Warewolf.Studio.ViewModels
                     IsResourceCheckedEnabled = CanDeploy;
                     _isResource = isResourceChecked.HasValue && !IsFolder && isResourceChecked.Value;
                 }
-                IsSelected = isResourceChecked != null && (bool)isResourceChecked ? true : false;
+                IsSelected = isResourceChecked != null && (bool)isResourceChecked;
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
             }
@@ -1444,7 +1439,7 @@ namespace Warewolf.Studio.ViewModels
                     _canDeploy = value;
                     if (!_canDeploy)
                     {
-                        IsResourceChecked = false;
+                        //IsResourceChecked = false;
                     }
                     IsResourceCheckedEnabled = _canDeploy;
 
