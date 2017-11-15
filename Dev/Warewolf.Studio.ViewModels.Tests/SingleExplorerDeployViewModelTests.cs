@@ -157,6 +157,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
+            var envMock = new Mock<IEnvironmentViewModel>();
+            _shellVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
@@ -535,6 +540,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var envMock = new Mock<IEnvironmentViewModel>();
+            _shellVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             connectControl.SetupAllProperties();
@@ -570,6 +580,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellVm.Setup(model => model.LocalhostServer).Returns(_serverMock.Object);
             _shellVm.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellVm.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var envMock = new Mock<IEnvironmentViewModel>();
+            _shellVm.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                envMock.Object
+            });
             var popupController = new Mock<IPopupController>();
             var connectControl = new Mock<IConnectControlViewModel>();
             var differentConnectControl = new Mock<IConnectControlViewModel>();
@@ -725,13 +740,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
             _destView.Setup(model => model.SelectedServer).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.MinSupportedVersion).Returns(new Version("2.0.0.0"));
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
             _sourceView.Setup(model => model.ServerVersion).Returns(new Version("1.0.0.0"));
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
-            _sourceView.SetupGet(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>
+            var explorerTreeItem1 = new Mock<IExplorerTreeItem>();
+            explorerTreeItem1.Setup(item => item.ResourceId).Returns(Guid.NewGuid);
+            explorerTreeItem1.Setup(model => model.ResourcePath).Returns("Somepath");
+            var explorerTreeItems = new List<IExplorerTreeItem>
             {
-                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
-            });
+                explorerTreeItem1.Object
+            };
+            _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
             var privateObject = new PrivateObject(singleExplorerDeployViewModel);
 
@@ -764,13 +788,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
             _destView.Setup(model => model.SelectedServer).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.MinSupportedVersion).Returns(new Version("1.0.0.0"));
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
             _sourceView.Setup(model => model.ServerVersion).Returns(new Version("1.0.0.0"));
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
-            _sourceView.SetupGet(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>
+            var explorerTreeItem1 = new Mock<IExplorerTreeItem>();
+            explorerTreeItem1.Setup(item => item.ResourceId).Returns(Guid.NewGuid);
+            explorerTreeItem1.Setup(model => model.ResourcePath).Returns("Somepath");
+            var explorerTreeItems = new List<IExplorerTreeItem>
             {
-                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
-            });
+                explorerTreeItem1.Object
+            };
+            _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
             var privateObject = new PrivateObject(singleExplorerDeployViewModel);
             typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
@@ -803,13 +836,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             _destView.Setup(model => model.SelectedEnvironment).Returns(It.IsAny<IEnvironmentViewModel>());
             _destView.Setup(model => model.SelectedServer).Returns(_differentServerMock.Object);
             _destView.Setup(model => model.MinSupportedVersion).Returns(new Version("2.0.0.0"));
+            var explorerItemViewModels = new List<IExplorerItemViewModel>
+            {
+                new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourcePath = "Somepath" }
+            };
+            _destView.Setup(model => model.SelectedEnvironment.AsList()).Returns(explorerItemViewModels);
             _sourceView.Setup(model => model.ServerVersion).Returns(new Version("1.0.0.0"));
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.SelectedEnvironment).Returns(new Mock<IEnvironmentViewModel>().Object);
-            _sourceView.SetupGet(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>
+            var explorerTreeItem1 = new Mock<IExplorerTreeItem>();
+            explorerTreeItem1.Setup(item => item.ResourceId).Returns(Guid.NewGuid);
+            explorerTreeItem1.Setup(model => model.ResourcePath).Returns("Somepath");
+            var explorerTreeItems = new List<IExplorerTreeItem>
             {
-                new ExplorerItemViewModel(_serverMock.Object, It.IsAny<IExplorerTreeItem>(), model => It.IsAny<IExplorerItemViewModel>(),_shellVm.Object, new Mock<IPopupController>().Object)
-            });
+                explorerTreeItem1.Object
+            };
+            _sourceView.Setup(model => model.SelectedItems).Returns(explorerTreeItems);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
             var privateObject = new PrivateObject(singleExplorerDeployViewModel);
             typeof(SingleExplorerDeployViewModel).GetProperty("IsDeploying").SetValue(privateObject.Target, true);
