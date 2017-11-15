@@ -13,7 +13,6 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Input;
-using Dev2.Common.Annotations;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Newtonsoft.Json;
@@ -63,8 +62,7 @@ namespace Dev2.Settings
         protected abstract void CloseHelp();
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        [NotifyPropertyChangedInvocator]
+        
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
