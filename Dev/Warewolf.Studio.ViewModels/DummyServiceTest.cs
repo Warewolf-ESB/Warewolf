@@ -92,12 +92,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public IServiceTestStep AddTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(debugItemContent, serviceTestOutputs, StepType.Mock);
-        public IServiceTestStep AddTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
-        {
-            return null;
-        }
-
+        public IServiceTestStep AddDebugItemTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs, StepType.Mock);
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(activityUniqueId, activityDisplayName, activityTypeName, serviceTestOutputs, StepType.Mock);
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
