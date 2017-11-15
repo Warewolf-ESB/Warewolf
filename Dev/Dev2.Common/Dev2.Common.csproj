@@ -177,7 +177,6 @@
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="PluginAction.cs" />
     <Compile Include="PluginConstructor.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="SaveResult.cs" />
