@@ -2700,7 +2700,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //---------------Set up test pack-------------------
 
-            ResourceCatalogPluginContainer catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionarySafe<Guid, List<IResource>>());
+            ResourceCatalogPluginContainer catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionary<Guid, List<IResource>>());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(catalogPluginContainer);
             //---------------Execute Test ----------------------
@@ -2713,13 +2713,14 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(catalogPluginContainer.DeleteProvider);
             Assert.IsNotNull(catalogPluginContainer.LoadProvider);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalogPluginContainer_GivenVersionAndManagementServices_ShouldCreateInstances()
         {
             //---------------Set up test pack-------------------
             IEnumerable<DynamicService> services = new List<DynamicService>();
-            ResourceCatalogPluginContainer catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionarySafe<Guid, List<IResource>>(), services);
+            ResourceCatalogPluginContainer catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionary<Guid, List<IResource>>(), services);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(catalogPluginContainer);
             //---------------Execute Test ----------------------

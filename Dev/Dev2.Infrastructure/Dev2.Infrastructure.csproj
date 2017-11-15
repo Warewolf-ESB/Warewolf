@@ -114,7 +114,6 @@
     <Compile Include="Communication\Envelope.cs" />
     <Compile Include="Communication\Dev2JsonSerializer.cs" />
     <Compile Include="Impersonator.cs" />
-    <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
     <Compile Include="ObservablePair.cs" />
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
     <Compile Include="PerformanceCounters\Counters\SafeCounter.cs" />
