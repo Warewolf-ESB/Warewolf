@@ -16,6 +16,7 @@ using Dev2.Runtime.WebServer;
 using Dev2.Runtime.WebServer.Responses;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System.IO;
 
 namespace Dev2.Tests.Runtime.WebServer
 {
@@ -24,7 +25,7 @@ namespace Dev2.Tests.Runtime.WebServer
     {
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerContext_Constructor")]
+        [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServerContext_Constructor_NullRequest_ThrowsArgumentNullException()
         {
@@ -38,7 +39,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerContext_Constructor")]
+        [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServerContext_Constructor_NullRequestPaths_ThrowsArgumentNullException()
         {
@@ -52,7 +53,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerContext_Constructor")]
+        [TestCategory("WebServerContext")]
         public void WebServerContext_Constructor_PropertiesInitialized()
         {
             var request = WebServerRequestTests.CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out NameValueCollection headers);
@@ -71,7 +72,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerContext_Send")]
+        [TestCategory("WebServerContext")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServerContext_Send_ResponseIsNull_ThrowsArgumentNullException()
         {
@@ -90,7 +91,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerContext_Send")]
+        [TestCategory("WebServerContext")]
         public void WebServerContext_Send_ResponseIsNotNull_InvokesWriteOnResponse()
         {
             //------------Setup for test--------------------------            
@@ -101,14 +102,32 @@ namespace Dev2.Tests.Runtime.WebServer
             var context = new WebServerContext(request, new NameValueCollection());
 
             var response = new Mock<IResponseWriter>();
-            response.Setup(r => r.Write(It.IsAny<WebServerContext>())).Verifiable();
-         
+            response.Setup(r => r.Write(It.IsAny<WebServerContext>())).Verifiable();         
 
             //------------Execute Test---------------------------
             context.Send(response.Object);
 
             //------------Assert Results-------------------------
             response.Verify(r => r.Write(It.IsAny<WebServerContext>()));
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WebServerContext")]
+        public void WebServerContext_Dispose_InputStreamIsClosed()
+        {
+            //------------Setup for test--------------------------            
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://localhost/services")
+            {
+                Content = new StringContent("", Encoding.UTF8)
+            };
+            var context = new WebServerContext(request, new NameValueCollection());
+
+            //------------Execute Test---------------------------
+            context.Dispose();
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(context.Request.InputStream.CanRead, "WebServerContext Request input stream not null after dispose.");
         }
     }
 }
