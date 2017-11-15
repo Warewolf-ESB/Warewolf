@@ -51,31 +51,19 @@ namespace Dev2.Common.Common
                 string[] parts = serverUserName.Split('\\');
 
                 string queryStr = "WinNT://";
-
-                // query with domain appended ;)
+                
                 if (parts.Length == 2)
                 {
                     queryStr += parts[0];
                 }
                 else
                 {
-                    // find the first workgroup and report on it ;)
-
-                    try
+                    var query = new SelectQuery("Win32_ComputerSystem");
+                    var searcher = new ManagementObjectSearcher(query);                        
+                    ManagementObjectCollection.ManagementObjectEnumerator itr = searcher.Get().GetEnumerator();
+                    if (itr.MoveNext())
                     {
-                        var query = new SelectQuery("Win32_ComputerSystem");
-                        var searcher = new ManagementObjectSearcher(query);
-                        
-                        ManagementObjectCollection.ManagementObjectEnumerator itr = searcher.Get().GetEnumerator();
-
-                        if (itr.MoveNext())
-                        {
-                            queryStr += itr.Current["Workgroup"] as string;
-                        }
-                    }                    
-                    catch                    
-                    {
-                        // best effort ;)
+                        queryStr += itr.Current["Workgroup"] as string;
                     }
                 }
 
@@ -85,8 +73,7 @@ namespace Dev2.Common.Common
 
                 return (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
             }
-
-            // big problems, add this computer and return
+            
             return new List<string> { Environment.MachineName };
         }
     }
