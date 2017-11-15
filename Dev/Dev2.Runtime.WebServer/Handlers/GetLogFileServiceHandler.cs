@@ -13,20 +13,10 @@ namespace Dev2.Runtime.WebServer.Handlers
             if (ctx.Request.QueryString.HasKeys())
             {
                 var numberOfLines = GlobalConstants.LogFileNumberOfLines;
-                try
+                var numberOfLinesString = ctx.Request.QueryString["numLines"];
+                if (numberOfLinesString != null && int.TryParse(numberOfLinesString, out int numLines) && numLines > 0)
                 {
-                    var numberOfLinesString = ctx.Request.QueryString.Get("numLines");
-                    if (int.TryParse(numberOfLinesString, out int numLines))
-                    {
-                        if (numLines > 0)
-                        {
-                            numberOfLines = numLines;
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    //Bad Query return default number of lines
+                    numberOfLines = numLines;
                 }
 
                 string serverLogFile;
