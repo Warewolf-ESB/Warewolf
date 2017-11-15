@@ -285,6 +285,43 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.IsFalse(differentApiJson.Include == apiJson.Include, "ApisJson object cannot compare Included Apis.");
         }
 
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void ApisJsonBuilder_Maintainers_Equals()
+        {
+            var apiJson = new ApisJson
+            {
+                Maintainers = new List<MaintainerApi>()
+                {
+                    new MaintainerApi()
+                    {
+                        Fn = "Ashley Lewis",
+                        Email = "ashley.lewis@dev2.co.za",
+                        Url = "https://warewolf.io",
+                        Org = "https://dev2.co.za",
+                        Adr = "Bellevue, Kloof",
+                        Tel = "9139",
+                        XTwitter = "@warewolf",
+                        XGithub = "Warewolf-ESB/Warewolf",
+                        Photo = "https://warewolf.io/images/logo.png",
+                        VCard = "39A03A58-978F-4CFB-B1D1-3EFA6C55E380"
+                    }
+                }
+            };
+            var differentApiJson = new ApisJson
+            {
+                Maintainers = new List<MaintainerApi>()
+                {
+                    new MaintainerApi()
+                    {
+                        Fn = "A Totally Different Ashley Lewis",
+                        Email = "not.ashley.lewis@dev2.co.za"
+                    }
+                }
+            };
+            Assert.IsFalse(differentApiJson.Maintainers == apiJson.Maintainers, "ApisJson object cannot compare Maintainers.");
+        }
+
         static ApisJson GetExceptedApisJsonForServerNoSecurity()
         {
             var exceptedApisJsonForServerNoSecurity = new ApisJson
@@ -329,22 +366,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 Name = "9139Local",
                 Description = "",
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/9139Local.json",
-                Properties = new List<PropertyApi>(),
-                Contact = new List<MaintainerApi>()
-                {
-                    new MaintainerApi()
-                    {
-                        Fn = "Ashley Lewis",
-                        Email = "ashley.lewis@dev2.co.za",
-                        Url = "https://warewolf.io",
-                        Org = "https://dev2.co.za",
-                        Adr = "Bellevue, Kloof",
-                        XTwitter = "@warewolf",
-                        XGithub = "Warewolf-ESB/Warewolf",
-                        Photo = "https://warewolf.io/images/logo.png",
-                        VCard = "39A03A58-978F-4CFB-B1D1-3EFA6C55E380"
-                    }
-                }
+                Properties = new List<PropertyApi>()
             };
             var swagger3 = new PropertyApi
             {
