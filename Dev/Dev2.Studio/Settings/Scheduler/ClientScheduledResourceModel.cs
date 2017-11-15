@@ -28,7 +28,7 @@ namespace Dev2.Settings.Scheduler
         readonly Action _createNewTask;
         ObservableCollection<IScheduledResource> _scheduledResources;
        
-        public ClientScheduledResourceModel([NotNull] IServer model, Action createNewTask)
+        public ClientScheduledResourceModel(IServer model, Action createNewTask)
         {
             _model = model ?? throw new ArgumentNullException("model");
             _createNewTask = createNewTask;
