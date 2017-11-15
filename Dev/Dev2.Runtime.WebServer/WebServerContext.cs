@@ -57,10 +57,7 @@ namespace Dev2.Runtime.WebServer
         }
 
         #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
+        
         public void Dispose()
         {
             try
@@ -75,10 +72,8 @@ namespace Dev2.Runtime.WebServer
                     ResponseMessage.Dispose();
                     Response.Response.Dispose();
                 }
-            }
-            
-            catch
-            
+            }            
+            catch            
             {
                 // best effort to clean up ;)
             }
