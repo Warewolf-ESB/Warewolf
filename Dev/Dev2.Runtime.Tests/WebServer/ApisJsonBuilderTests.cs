@@ -480,13 +480,17 @@ namespace Dev2.Tests.Runtime.WebServer
                 SpecificationVersion = "0.15",
                 Apis = new List<SingleApi>()
             };
-            
+
             var singleApi2 = new SingleApi
             {
                 Name = "Execution Engine Test",
                 Description = "",
                 BaseUrl = EnvironmentVariables.PublicWebServerUri + "secure/Acceptance Testing Resources/Execution Engine/Execution Engine Test.json",
-                Properties = new List<PropertyApi>()
+                Properties = new List<PropertyApi>(),
+                HumanUrl = "https://warewolf.io",
+                Image = "https://warewolf.io/images/logo.png",
+                Version = "1.0",
+                Tags = new List<string>()
             };
             var swagger2 = new PropertyApi
             {
