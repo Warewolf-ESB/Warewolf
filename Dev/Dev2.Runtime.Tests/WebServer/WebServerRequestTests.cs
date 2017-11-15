@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerRequest_Constructor")]
+        [TestCategory("WebServerRequest")]
         [ExpectedException(typeof(ArgumentNullException))]
         
         public void WebServerRequest_Constructor_RequestIsNull_ThrowsArgumentNullException()
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerRequest_Constructor")]
+        [TestCategory("WebServerRequest")]
         [ExpectedException(typeof(ArgumentNullException))]
         public void WebServerRequest_Constructor_BoundVariablesIsNull_ThrowsArgumentNullException()
         {
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerRequest_Constructor")]
+        [TestCategory("WebServerRequest")]
         public void WebServerRequest_Constructor_PropertiesInitialized()
         {
             var request = CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out NameValueCollection headers);
@@ -67,6 +67,24 @@ namespace Dev2.Tests.Runtime.WebServer
 
             //------------Assert Results-------------------------
             VerifyProperties(request, webServerRequest, content, queryStr, boundVars);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("WebServerRequest")]
+        public void WebServerRequest_GetContentEncoding_ParseSimpleEncoding()
+        {
+            var headers = new NameValueCollection
+            {
+                { "Content-Encoding", "utf8" }
+            };
+            var request = CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out headers);
+
+            //------------Execute Test---------------------------
+            var ContentEncoding = request.Content.GetContentEncoding();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(Encoding.UTF8, ContentEncoding, "WebServerRequest parsed the wrong content encoding.");
         }
 
         public static HttpRequestMessage CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out NameValueCollection headers)
