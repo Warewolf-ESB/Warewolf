@@ -127,6 +127,7 @@ namespace Dev2.Activities.Specs.Sources
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             serverSource.UserName = username;
             serverSource.Password = password;
+            ScenarioContext.Current.Set(serverSource, "serverSource");
         }
 
         protected override void BuildDataList()
