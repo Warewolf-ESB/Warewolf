@@ -15,11 +15,12 @@ namespace Dev2.ViewModels
     {
         public DeployWorksurfaceViewModel():base(new EventAggregator())
         {
-            var dest = new DeployDestinationViewModel(CustomContainer.Get<IShellViewModel>(), CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
+            var mainViewModel = CustomContainer.Get<IShellViewModel>();
+            var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
             var stats = new DeployStatsViewerViewModel(dest);
-            var source = new DeploySourceExplorerViewModel(CustomContainer.Get<IShellViewModel>(), CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), stats);
+            var source = new DeploySourceExplorerViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), stats);
             dest.StatsArea = stats;
-            var vm = new SingleExplorerDeployViewModel(dest, source, new List<IExplorerTreeItem>(), stats, CustomContainer.Get<IShellViewModel>(),CustomContainer.Get<IPopupController>());
+            var vm = new SingleExplorerDeployViewModel(dest, source, new List<IExplorerTreeItem>(), stats, mainViewModel, CustomContainer.Get<IPopupController>());
             ViewModel = vm;
             View = new DeployView();
             ViewModel.PropertyChanged += (sender, args) =>
@@ -29,10 +30,7 @@ namespace Dev2.ViewModels
                     OnPropertyChanged("DisplayName");
                 }
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                if (mainViewModel != null)
-                {
-                    ViewModelUtils.RaiseCanExecuteChanged(mainViewModel.SaveCommand);
-                }
+                ViewModelUtils.RaiseCanExecuteChanged(mainViewModel?.SaveCommand);
             };
         }
 
@@ -56,7 +54,6 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
-
     
         public string ResourceType => "DeployViewer";
 
