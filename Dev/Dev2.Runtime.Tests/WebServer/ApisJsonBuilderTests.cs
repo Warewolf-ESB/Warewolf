@@ -253,7 +253,36 @@ namespace Dev2.Tests.Runtime.WebServer
                 SpecificationVersion = "0.15",
                 Apis = new List<SingleApi>()
             };
-            Assert.IsInstanceOfType(apiJson.GetHashCode(), typeof(int), "ApisJson object did not hash to the expected hash code.");
+            Assert.IsInstanceOfType(apiJson.GetHashCode(), typeof(int), "ApisJson object did not hash.");
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void ApisJsonBuilder_Include_Equals()
+        {
+            var apiJson = new ApisJson
+            {
+                Include = new List<IncludeApi>()
+                {
+                    new IncludeApi()
+                    {
+                        Name = "Included Api",
+                        Url = "Included Url"
+                    }
+                }
+            };
+            var differentApiJson = new ApisJson
+            {
+                Include = new List<IncludeApi>()
+                {
+                    new IncludeApi()
+                    {
+                        Name = "Different Included Api",
+                        Url = "Different Included Url"
+                    }
+                }
+            };
+            Assert.IsFalse(differentApiJson.Include == apiJson.Include, "ApisJson object cannot compare Included Apis.");
         }
 
         static ApisJson GetExceptedApisJsonForServerNoSecurity()
