@@ -191,6 +191,7 @@
       <DependentUpon>SharepointSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Shortcut Keys\Shortcut Keys.cs" />
+    <Compile Include="Studio Shutdown\Studio ShutdownTests.cs" />
     <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
     <Compile Include="Tabs and Panes\WorkflowTabs.cs" />
     <Compile Include="UIMap.cs">
