@@ -937,16 +937,29 @@ namespace Warewolf.Studio.ViewModels
 
         public bool? IsResourceChecked
         {
-            get { return _isResourceChecked; }
+            get { return _isResource; }
             set
             {
-                _isResourceChecked = value ?? false;
+                bool? isResourceChecked;
+                if (IsResourceCheckedEnabled)
+                {
+                    isResourceChecked = value;
+                }
+                else
+                {
+                    isResourceChecked = false;
+                }
+                _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
 
                 OnPropertyChanged(() => IsResourceChecked);
-                Task.Run(() => { AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = _isResourceChecked); });
+                Task.Run(() => 
+                {
+                    AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).
+                    Apply(a => a.IsResourceChecked = _isResource);
+                });
 
                 SelectAll?.Invoke();
-                OnPropertyChanged(() => IsResourceCheckedEnabled);
+                OnPropertyChanged(() => IsResourceChecked);
             }
         }
 
