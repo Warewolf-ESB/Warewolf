@@ -45,7 +45,7 @@ namespace Dev2.Communication
             return JsonConvert.SerializeObject(message, Formatting, _serializerSettings);
         }
 
-        public T Deserialize<T>([NotNull] string message)
+        public T Deserialize<T>(string message)
         {
             VerifyArgument.IsNotNull("message", message);
             return JsonConvert.DeserializeObject<T>(message, _deSerializerSettings);
