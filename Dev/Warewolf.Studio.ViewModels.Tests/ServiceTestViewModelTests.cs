@@ -1378,7 +1378,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			Assert.IsFalse(canSave);
 		}
 
-		private List<IServiceTestModel> GetTests([NotNull]IServiceTestViewModel viewModel)
+		private List<IServiceTestModel> GetTests(IServiceTestViewModel viewModel)
 		{
 			return viewModel.Tests.Where(model => model.GetType() != typeof(DummyServiceTest)).ToList();
 		}
