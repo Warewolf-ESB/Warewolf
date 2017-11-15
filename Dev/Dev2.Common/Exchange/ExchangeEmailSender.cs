@@ -29,7 +29,6 @@ namespace Dev2.Common.Exchange
             service.UseDefaultCredentials = false;
             service.TraceEnabled = false;
             service.TraceFlags = TraceFlags.None;
-
             if (!string.IsNullOrEmpty(_source.AutoDiscoverUrl))
             {
                 service.Url = new Uri(_source.AutoDiscoverUrl);
@@ -42,21 +41,13 @@ namespace Dev2.Common.Exchange
 
         private static bool RedirectionUrlValidationCallback(string redirectionUrl)
         {
-            var result = false;
-
             var redirectionUri = new Uri(redirectionUrl);
-
-            if (redirectionUri.Scheme == "https")
-            {
-                result = true;
-            }
-            return result;
+            return redirectionUri.Scheme == "https";
         }
 
         public void Send(ExchangeService service, EmailMessage message)
         {
             Initialize(service);
-
             message.Send();
         }
     }
