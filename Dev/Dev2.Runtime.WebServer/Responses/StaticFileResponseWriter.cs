@@ -21,12 +21,8 @@ namespace Dev2.Runtime.WebServer.Responses
         readonly int _chunkSize;
 
         public StaticFileResponseWriter(string file, string contentType)
+            : this(file, contentType, 1024)
         {
-            VerifyArgument.IsNotNull("file", file);
-            VerifyArgument.IsNotNull("contentType", contentType);
-            _file = file;
-            _contentType = MediaTypeHeaderValue.Parse(contentType);
-            _chunkSize = 1024;
         }
 
         public StaticFileResponseWriter(string file, string contentType, int chunkSize)
