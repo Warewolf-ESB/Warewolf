@@ -524,6 +524,27 @@ namespace Warewolf.Studio.ViewModels
             Item = model as ServiceTestModel;
         }
 
+        public IServiceTestStep AddTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(debugItemContent, serviceTestOutputs, StepType.Assert);
+        public IServiceTestStep AddTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
+        {
+            if (string.IsNullOrEmpty(debugItemContent.ID.ToString()))
+            {
+                throw new ArgumentNullException(nameof(debugItemContent.ID));
+            }
+
+            if (string.IsNullOrEmpty(debugItemContent.DisplayName))
+            {
+                throw new ArgumentNullException(nameof(debugItemContent.DisplayName));
+            }
+
+            if (serviceTestOutputs == null)
+            {
+                throw new ArgumentNullException(nameof(serviceTestOutputs));
+            }
+            var testStep = new ServiceTestStep(debugItemContent.ID, debugItemContent.ActualType, serviceTestOutputs, stepType) { StepDescription = debugItemContent.DisplayName };
+            TestSteps.Add(testStep);
+            return testStep;
+        }
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs)=>AddTestStep(activityUniqueId, activityDisplayName, activityTypeName, serviceTestOutputs, StepType.Assert);
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {

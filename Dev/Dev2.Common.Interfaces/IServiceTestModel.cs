@@ -50,6 +50,8 @@ namespace Dev2.Common.Interfaces
         IServiceTestModel Clone();
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs);
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType);
+        IServiceTestStep AddTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs);
+        IServiceTestStep AddTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType);
     }
 
     public interface IServiceTestInput
