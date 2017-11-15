@@ -2040,10 +2040,16 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "3032b7fd-f12a-4ab8-be7d-2f4705c31317".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Delete", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
-                ,
+                Name = "Delete",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
                 Method = WebRequestMethod.Delete
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2098,10 +2104,16 @@ namespace Dev2.Activities.Specs.Composition
 
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Post", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
-                ,
+                Name = "Post",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
                 Method = WebRequestMethod.Post
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2160,9 +2172,17 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "e541d860-cd10-4aec-b2fe-79eca3c62c25".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Get", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
+                Name = "Get",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
+                Method = WebRequestMethod.Get
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
@@ -2219,12 +2239,17 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "0fb49fec-e454-4357-a06f-08f329558b18".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Put", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
-                ,
+                Name = "Put",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
                 Method = WebRequestMethod.Put
-
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 

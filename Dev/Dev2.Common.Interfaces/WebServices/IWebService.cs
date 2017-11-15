@@ -15,7 +15,7 @@ using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces.WebServices
 {
-    public interface IWebService:IEquatable<IWebService>
+    public interface IWebService
     {
         string Name { get; set; }
         string Path { get; set; }
