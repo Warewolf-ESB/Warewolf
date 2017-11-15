@@ -19,6 +19,8 @@ namespace Warewolf.UI.Tests
             ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             ExplorerUIMap.Select_Deploy_From_ExplorerContextMenu();
             DeployUIMap.WhenISelectFromTheSourceTab("Hello World");
+            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
+            UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             DeployUIMap.ThenFilteredResourseIsCheckedForDeploy();
         }
 
@@ -30,6 +32,8 @@ namespace Warewolf.UI.Tests
             ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
             ExplorerUIMap.Select_Deploy_From_ExplorerContextMenu();
             DeployUIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter("Unit Tests");
+            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
+            UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             DeployUIMap.ThenFilteredResourseIsCheckedForDeploy();
         }
 
