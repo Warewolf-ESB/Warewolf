@@ -23,15 +23,12 @@ namespace Dev2.Integration.Tests.Services.Sql
     [TestClass]
     public class SqlDatabaseBrokerTests
     {
-        //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        
+        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
-
         {
-            Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
+            RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -39,17 +36,13 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Assert.AreEqual(true, result.Count > 0);
             });
         }
-
-        //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
+        
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
-
         {
-
-            Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
+            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -69,7 +62,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
+        [TestCategory("SqlDatabaseBroker")]
         [ExpectedException(typeof(SqlException))]
         
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
@@ -85,26 +78,21 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
-
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             var broker = new SqlDatabaseBroker();
             var result = broker.GetServiceMethods(dbSource);
             Assert.AreEqual(true, result.Count > 0);
         }
-
-        //Massimo.Guerrera - 10.05.2013 - Added for Bug 9394
+        
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_WindowsUserWithDbAccess_ReturnsValidResult()
-
         {
-            Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
+            RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var serviceConn = new DbService
@@ -125,18 +113,14 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Assert.AreEqual(OutputFormats.ShapedXML, result.Format);
             });
         }
-
-        //Massimo.Guerrera - 10.05.2013 - Added for Bug 9394
+        
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_WindowsUserWithoutDbAccess_ReturnsInvalidResult()
-
         {
             Exception exception = null;
-
-            Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
+            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
 
@@ -167,17 +151,13 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Assert.IsNotNull(exception);
                 Assert.IsInstanceOfType(exception, typeof(SqlException));
                 Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
-
             });
-
-
         }
 
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        [ExpectedException(typeof(WarewolfDbException))]
-        
+        [TestCategory("SqlDatabaseBroker")]
+        [ExpectedException(typeof(WarewolfDbException))]        
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
 
         {
@@ -204,8 +184,7 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
 
         {
@@ -228,13 +207,10 @@ namespace Dev2.Integration.Tests.Services.Sql
             Assert.AreEqual(OutputFormats.ShapedXML, result.Format);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_ValidDbServiceThatReturnsNull_RecordsetWithNullColumn()
-
         {
             var service = new DbService
             {
@@ -261,6 +237,21 @@ namespace Dev2.Integration.Tests.Services.Sql
             Assert.IsNotNull(dataSourceShape);
             Assert.AreEqual(3, dataSourceShape.Paths.Count);
             StringAssert.Contains(dataSourceShape.Paths[2].DisplayPath, "TestTextNull"); //This is the field that contains a null value. Previously this column would not have been returned.
+        }
+
+        public static bool RunAs(string userName, string domain, string password, Action action)
+        {
+            var result = false;
+            using (var impersonator = new Impersonator())
+            {
+                if (impersonator.Impersonate(userName, domain, password))
+                {
+                    action();
+                    result = true;
+                }
+            }
+
+            return result;
         }
     }
 }
