@@ -1734,20 +1734,14 @@ namespace Warewolf.Studio.ViewModels
                     if (destfolder != null)
                     {
                         destfolder.ResourcePath = destination.ResourcePath + "\\" + destfolder.ResourceName;
-
                         var resourcePath = destfolder.ResourcePath;
-                        foreach (var explorerItemViewModel in Children)
-                        {
-                            explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
-                        }
+                        UpdateChildrenPath(resourcePath);
                     }
                 }
                 else
                 {
-                    foreach (var explorerItemViewModel in Children)
-                    {
-                        explorerItemViewModel.ResourcePath = destination.ResourcePath + "\\" + explorerItemViewModel.ResourceName;
-                    }
+                    string resourcePath = destination.ResourcePath;
+                    UpdateChildrenPath(resourcePath);
                 }
             }
             else
@@ -1756,6 +1750,14 @@ namespace Warewolf.Studio.ViewModels
                 {
                     ResourcePath = destination.ResourcePath + (destination.ResourcePath == string.Empty ? "" : "\\") + ResourceName;
                 }
+            }
+        }
+
+        private void UpdateChildrenPath(string resourcePath)
+        {
+            foreach (var explorerItemViewModel in Children)
+            {
+                explorerItemViewModel.ResourcePath = resourcePath + "\\" + explorerItemViewModel.ResourceName;
             }
         }
 
