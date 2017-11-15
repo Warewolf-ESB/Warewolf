@@ -106,7 +106,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewFolderTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.ViewApisJsonTooltip, _target.ViewApisJsonTooltip);
             Assert.AreEqual(Resources.Languages.Tooltips.ServerVersionTooltip, _target.ServerVersionTooltip);
-            Assert.AreEqual(Resources.Languages.Core.DeployResourceCheckbox, _target.DeployResourceCheckboxTooltip);
         }
 
         [TestMethod]
@@ -704,7 +703,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isChildrenChanged);
             Assert.IsTrue(_target.IsExpanded);
             Assert.AreEqual(_target.AllowResourceCheck, folder.AllowResourceCheck);
-            Assert.AreEqual(_target.IsResourceChecked, folder.IsResourceChecked);
             Assert.AreEqual(_target.CanCreateFolder, folder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, folder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, folder.CanShowVersions);
@@ -764,7 +762,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_target.AllowResourceCheck);
-            Assert.IsFalse(_target.IsResourceChecked ?? true);
             Assert.IsTrue(_target.CanCreateSource);
             Assert.IsTrue(_target.CanCreateFolder);
             Assert.IsFalse(_target.CanDelete);
@@ -787,7 +784,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_target.AllowResourceCheck);
-            Assert.IsFalse(_target.IsResourceChecked ?? true);
             Assert.IsFalse(_target.CanCreateSource);
             Assert.IsFalse(_target.CanCreateWorkflowService);
             Assert.IsFalse(_target.ShowContextMenu);
