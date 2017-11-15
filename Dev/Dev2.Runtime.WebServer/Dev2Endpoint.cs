@@ -35,29 +35,6 @@ namespace Dev2.Runtime.WebServer
         public string CertificatePath { get; private set; }
         public string Url { get; private set; }
 
-        public bool IsSecured => !string.IsNullOrEmpty(CertificatePath);
-
-        public IPAddress Address
-        {
-            get
-            {
-                return TheIPEndPoint?.Address;
-            }
-        }
-
-        public int Port
-        {
-            get
-            {
-                if (TheIPEndPoint != null)
-                {
-                    return TheIPEndPoint.Port;
-                }
-
-                return -1;
-            }
-        }
-
         public Dev2Endpoint(IPEndPoint endPoint, string url) : this(endPoint, url, null)
         {
         }
