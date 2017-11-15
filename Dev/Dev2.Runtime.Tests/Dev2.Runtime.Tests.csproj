@@ -369,7 +369,6 @@
     <Compile Include="WebServer\AbstractWebRequestHandlerTests.cs" />
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
-    <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
     <Compile Include="WebServer\DataObjectExtentionsTests.cs" />
     <Compile Include="WebServer\GetApisJsonServiceHandlerTest.cs" />
     <Compile Include="WebServer\Hubs\EsbHubTests.cs" />

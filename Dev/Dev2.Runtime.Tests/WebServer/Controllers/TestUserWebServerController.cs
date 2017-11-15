@@ -33,11 +33,6 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             };
         }
 
-        public HttpResponseMessage TestProcessRequest()
-        {
-            return ProcessRequest<WebsiteResourceHandler>(new NameValueCollection());
-        }
-
         protected override HttpResponseMessage ProcessRequest<TRequestHandler>(NameValueCollection requestVariables)
         {
             User = _user;
