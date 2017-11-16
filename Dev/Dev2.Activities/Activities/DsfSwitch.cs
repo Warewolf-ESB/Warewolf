@@ -71,13 +71,13 @@ namespace Dev2.Activities
             {
                 foreach (var dft in Default)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()}: Default->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
                 }
             }
             return armConnectors;
         }
 
-        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        public override IEnumerable<IDev2Activity> GetNextNodes()
         {
             var nextNodes = new List<IDev2Activity>();            
             foreach(var swt in Switches)
