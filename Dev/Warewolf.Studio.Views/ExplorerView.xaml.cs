@@ -524,6 +524,11 @@ namespace Warewolf.Studio.Views
                 e.Handled = true;
                 return true;
             }
+            if (explorerItemViewModel.AllowResourceCheck)
+            {
+                e.Handled = true;
+                return true;
+            }
             return false;
         }
     }

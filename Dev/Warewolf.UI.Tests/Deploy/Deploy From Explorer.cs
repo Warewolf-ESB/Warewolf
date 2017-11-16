@@ -35,6 +35,7 @@ namespace Warewolf.UI.Tests
             DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
             UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             DeployUIMap.ThenFilteredResourseIsCheckedForDeploy();
+            Assert.AreEqual("4", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
         }
 
         #region Additional test attributes
