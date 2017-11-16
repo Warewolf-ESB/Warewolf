@@ -64,6 +64,11 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
+using System.Xml.Linq;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Common;
+using Dev2.Webs;
+using System.Text;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -107,6 +112,7 @@ namespace Dev2.Studio.ViewModels
         readonly IAsyncWorker _asyncWorker;
         private readonly IViewFactory _factory;
         private ICommand _showStartPageCommand;
+        IContextualResourceModel contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
 
@@ -173,12 +179,25 @@ namespace Dev2.Studio.ViewModels
 
         internal void LoadWorkflow(string e)
         {
+            contextualResourceModel = null;
             if (!File.Exists(e)) { return; }
             ActiveServer.ResourceRepository.Load();
             string fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
-            OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+            if (singleResource == null)
+            {
+                contextualResourceModel = ResourceExtensionHelper.HandleResourceNotInResourceFolder(e, fileName, PopupProvider);
+                if (contextualResourceModel != null)
+                {
+                    OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
+                    SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel, loadingFromServer: false, originalPath: e);
+                }
+            }
+            else
+            {
+                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+            }
         }
 
 
@@ -800,8 +819,10 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(environmentId);
             environmentModel?.ResourceRepository?.UpdateServer(activeServer);
-            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
-
+            if (contextualResourceModel == null)
+            {
+                contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            }
             if (contextualResourceModel != null)
             {
                 var workSurfaceKey = new WorkSurfaceKey { EnvironmentID = environmentId, ResourceID = resourceId, ServerID = contextualResourceModel.ServerID };
@@ -1287,10 +1308,19 @@ namespace Dev2.Studio.ViewModels
             return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
         }
 
+        public void CloseResource(IContextualResourceModel contextualResourceModel, Guid environmentId)
+        {
+            var environmentModel = ServerRepository.Get(environmentId);
+            Close(contextualResourceModel);
+        }
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            Close(contextualResourceModel);
+        }
+        private void Close(IContextualResourceModel contextualResourceModel)
+        {
             if (contextualResourceModel != null)
             {
                 var wfscvm = _worksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
