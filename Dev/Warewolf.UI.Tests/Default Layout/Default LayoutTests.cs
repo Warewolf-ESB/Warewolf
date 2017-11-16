@@ -37,7 +37,7 @@ namespace Warewolf.UI.Tests.Workflow
             Assert.IsTrue(dockWidthBefore > dockWidthAfter, "Then Menu Bar did not Open/Close");
             Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.LockunlockthemenuButton.UnlockMenuText.Exists, "Side Menu Bar is Open.");
         }
-        
+
         static void ExecuteCommand(string fileName)
         {
             try

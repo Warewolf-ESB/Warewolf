@@ -306,10 +306,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool ShowContextMenu
         {
-            get
-            {
-                return _showContextMenu;
-            }
+            get { return _showContextMenu; }
             set
             {
                 _showContextMenu = value;
@@ -367,7 +364,6 @@ namespace Warewolf.Studio.ViewModels
             if (_isDialog)
             {
                 child.AllowResourceCheck = false;
-                child.IsResourceChecked = false;
                 child.CanCreateSource = false;
                 child.CanCreateWorkflowService = false;
                 child.ShowContextMenu = false;
@@ -378,7 +374,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 var permissions = Server.GetPermissions(ResourceId);
                 child.SetPermissions(permissions);
-
                 child.CanRename = true;
                 child.CanDelete = true;
                 child.IsSaveDialog = IsSaveDialog;
@@ -516,7 +511,6 @@ namespace Warewolf.Studio.ViewModels
         public void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions)
         {
             AllowResourceCheck = false;
-            IsResourceChecked = false;
             CanCreateSource = permissions.Contribute;
             CanCreateFolder = permissions.Contribute;
             CanCreateWorkflowService = permissions.Contribute;
@@ -536,7 +530,6 @@ namespace Warewolf.Studio.ViewModels
         public void SetPropertiesForDialog()
         {
             AllowResourceCheck = false;
-            IsResourceChecked = false;
             CanDeploy = false;
             CanCreateSource = false;
             CanCreateWorkflowService = false;
@@ -944,10 +937,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool? IsResourceChecked
         {
-            get
-            {
-                return _isResourceChecked;
-            }
+            get { return _isResourceChecked; }
             set
             {
                 _isResourceChecked = value ?? false;
@@ -956,7 +946,6 @@ namespace Warewolf.Studio.ViewModels
                 Task.Run(() => { AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = _isResourceChecked); });
 
                 SelectAll?.Invoke();
-                IsResourceCheckedEnabled = true;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
             }
         }
@@ -1043,10 +1032,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsConnected
         {
-            get
-            {
-                return _isConnected;
-            }
+            get { return _isConnected; }
             private set
             {
                 _isConnected = value;
@@ -1056,10 +1042,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool AllowEdit
         {
-            get
-            {
-                return _allowEdit;
-            }
+            get { return _allowEdit; }
             private set
             {
                 _allowEdit = value;
@@ -1085,10 +1068,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsConnecting
         {
-            get
-            {
-                return _isConnecting;
-            }
+            get { return _isConnecting; }
             set
             {
                 _isConnecting = value;
@@ -1185,6 +1165,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, isDeploy);
                 }
+                IsResourceCheckedEnabled = isDeploy;
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -1264,7 +1245,6 @@ namespace Warewolf.Studio.ViewModels
             return AsList(Children);
         }
 
-
         private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
         {
             return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
@@ -1272,10 +1252,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsServerIconVisible
         {
-            get
-            {
-                return _isServerIconVisible && IsConnected;
-            }
+            get { return _isServerIconVisible && IsConnected; }
             set
             {
                 _isServerIconVisible = value;
@@ -1285,10 +1262,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsServerUnavailableIconVisible
         {
-            get
-            {
-                return _isServerUnavailableIconVisible && !IsConnected;
-            }
+            get { return _isServerUnavailableIconVisible && !IsConnected; }
             set
             {
                 _isServerUnavailableIconVisible = value;
@@ -1298,7 +1272,6 @@ namespace Warewolf.Studio.ViewModels
 
 
         public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
-
         {
             if (explorerItems == null)
             {
@@ -1327,8 +1300,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var isResourceChecked = existingItem.IsResourceChecked;
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
-                    existingItem.IsResourceChecked = isResourceChecked;
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
+                    existingItem.IsResourceChecked = isResourceChecked;
                     if (!explorerItemModels.Contains(existingItem))
                     {
                         explorerItemModels.Add(existingItem);
@@ -1414,7 +1387,6 @@ namespace Warewolf.Studio.ViewModels
         private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
         {
             itemCreated.AllowResourceCheck = false;
-            itemCreated.IsResourceChecked = false;
             itemCreated.CanCreateSource = false;
             itemCreated.CanCreateWorkflowService = false;
             itemCreated.ShowContextMenu = false;
