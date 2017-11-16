@@ -17,7 +17,7 @@ namespace Dev2.Services.Security
     {
         #region Implementation of IEqualityComparer<in WindowsGroupPermission>
 
-        public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y) => x.WindowsGroup != null && x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID) && x.WindowsGroup.Equals(y.WindowsGroup);
+        public bool Equals(WindowsGroupPermission x, WindowsGroupPermission y) => x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID) && ((x.WindowsGroup == null) || x.WindowsGroup.Equals(y.WindowsGroup));
 
         public int GetHashCode(WindowsGroupPermission obj) => throw new NotImplementedException();
 
