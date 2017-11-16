@@ -60,7 +60,7 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.Studio
 
@@ -247,6 +247,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
             CustomContainer.Register<IWarewolfWebClient>(new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials }));
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
