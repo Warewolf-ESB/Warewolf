@@ -118,6 +118,7 @@
     </None>
     <Compile Include="AssemblyWrapper.cs" />
     <Compile Include="DateAndTime\DateTimeFormatterBase.cs" />
+    <Compile Include="DateAndTime\StandardDateTimeComparer.cs" />
     <Compile Include="DateAndTime\StandardDateTimeFormatter.cs" />
     <Compile Include="DateAndTime\StandardDateTimeParser.cs" />
     <Compile Include="DependencyVisualization\DependencyVisualizationNode.cs" />

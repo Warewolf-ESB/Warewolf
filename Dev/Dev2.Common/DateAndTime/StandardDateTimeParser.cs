@@ -8,7 +8,11 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common.DateAndTime.TO;
+using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.TimeZoneBuilder;
+using System;
+using System.Globalization;
 
 namespace Dev2.Common.DateAndTime
 {
@@ -20,9 +24,7 @@ namespace Dev2.Common.DateAndTime
             dateTimeFormatPart.Build();
             _dateTimeFormatsParts = dateTimeFormatPart.DateTimeFormatsParts;
             _dateTimeFormatPartOptions = dateTimeFormatPart.DateTimeFormatPartOptions;
-        }     
-
-       
+        }       
     }
 }
 

@@ -15,15 +15,16 @@ using System.Globalization;
 
 namespace Dev2.Common.DateAndTime
 {
+
     public class DateTimeComparer : IDateTimeComparer
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats =
+        protected static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats =
             new Dictionary<string, Func<DateTime, DateTime, double>>();
 
-        private DateTime _input1;
-        private DateTime _input2;
+        protected DateTime _input1;
+        protected DateTime _input2;
 
         #endregion Class Members
 
@@ -44,7 +45,7 @@ namespace Dev2.Common.DateAndTime
 
         #region Methods
 
-        public bool TryCompare(IDateTimeDiffTO dateTimeDiffTo, out string result, out string error)
+        public virtual bool TryCompare(IDateTimeDiffTO dateTimeDiffTo, out string result, out string error)
         {
             //local variable declarations
 

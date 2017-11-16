@@ -87,7 +87,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Creates a DateTime instance from a specified string and format.
         /// </summary>
-        public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
+        public virtual bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
         {
             bool nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
 

@@ -119,6 +119,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Dev2.Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(Dev2.Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
                 { typeof(DsfNewDateTimeActivity),typeof(Dev2.Activities.Designers2.DateTimStandard.DateTimeDesigner) },
+                { typeof(DsfNewDateTimeDifferenceActivity),typeof(Dev2.Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },

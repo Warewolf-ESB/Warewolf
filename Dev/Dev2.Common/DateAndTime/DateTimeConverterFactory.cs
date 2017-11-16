@@ -49,6 +49,11 @@ namespace Dev2.Common.DateAndTime
             return new DateTimeComparer();
         }
 
+        public static IDateTimeComparer CreateStandardComparer()
+        {
+            return new StandardDateTimeComparer();
+        }
+
         /// <summary>
         ///     Instantiates a concreate implementation of the DateTimeDiffTO
         /// </summary>
