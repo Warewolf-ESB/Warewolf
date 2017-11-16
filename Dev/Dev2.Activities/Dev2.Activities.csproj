@@ -218,6 +218,7 @@
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfEnhancedDotNetDllActivity.cs" />
+    <Compile Include="Activities\DsfNewGatherSystemInformationActivity.cs" />
     <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />
@@ -274,6 +275,7 @@
     <Compile Include="Activities\Exchange\DsfExchangeEmailActivity.cs" />
     <Compile Include="Activities\FindRecordsTO.cs" />
     <Compile Include="Activities\GetSystemInformationHelper.cs" />
+    <Compile Include="Activities\GetSystemInformationStandardHelper.cs" />
     <Compile Include="Activities\HttpClientCredentialManager.cs" />
     <Compile Include="Activities\IEmailSender.cs" />
     <Compile Include="Activities\IFlowNodeActivity.cs" />

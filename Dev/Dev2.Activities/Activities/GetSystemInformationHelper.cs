@@ -103,15 +103,15 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetFullDateTimeInformation()
+        public virtual string GetFullDateTimeInformation()
         {
-            return DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
         }
 
-        public string GetDateTimeFormatInformation()
+        public virtual string GetDateTimeFormatInformation()
         {
             var dateTimeParser = new DateTimeParser();
-            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, out string error);
+            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out string error);
             return translatedDateTimeFormat;
         }
 
@@ -193,7 +193,7 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
         }
-        
+
         public string GetVirtualMemoryTotalInformation()
         {
             var stringBuilder = new StringBuilder();
