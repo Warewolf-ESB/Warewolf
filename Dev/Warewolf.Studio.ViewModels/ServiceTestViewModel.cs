@@ -595,8 +595,11 @@ namespace Warewolf.Studio.ViewModels
             var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
             if (outputs == null || outputs.Count < 1)
             {
-                var serviceTestOutput = CreateTestOutput(serviceTestStep, "", "", "");
-                serviceTestOutputs.Add(serviceTestOutput);
+                serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                {
+                    AssertOp = "",
+                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                });
                 serviceTestStep.StepOutputs = serviceTestOutputs;
                 return;
             }
@@ -605,6 +608,7 @@ namespace Warewolf.Studio.ViewModels
                 var actualOutputs = output.ResultsList.Where(result => result.Type == DebugItemResultType.Variable);
                 foreach (var debugItemResult in actualOutputs)
                 {
+                    var variable = debugItemResult.Variable;
                     var value = debugItemResult.Value;
                     var assertOp = "=";
                     if (debugItemResult.MoreLink != null)
@@ -619,20 +623,15 @@ namespace Warewolf.Studio.ViewModels
                             assertOp = "Contains";
                         }
                     }
-                    var serviceTestOutput = CreateTestOutput(serviceTestStep, debugItemResult.Variable ?? "", value, assertOp);
+                    var serviceTestOutput = new ServiceTestOutput(variable ?? "", value, "", "")
+                    {
+                        AssertOp = assertOp,
+                        AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
+                    };
                     serviceTestOutputs.Add(serviceTestOutput);
                 }
             }
             serviceTestStep.StepOutputs = serviceTestOutputs;
-        }
-
-        private static ServiceTestOutput CreateTestOutput(ServiceTestStep serviceTestStep, string variable, string value, string assertOp)
-        {
-            return new ServiceTestOutput(variable, value, "", "")
-            {
-                AssertOp = assertOp,
-                AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
-            };
         }
 
         private void SetInputs(IDebugState inputState)
@@ -1085,11 +1084,10 @@ namespace Warewolf.Studio.ViewModels
             if (outputs != null && outputs.Count > 0)
             {
                 var serviceTestStep = CreateMockChildStep(Guid.Parse(act.UniqueID), testStep, act.GetType().Name, act.DisplayName);
-                var serviceTestOutputs = outputs.Select(output =>
+                var serviceTestOutputs = outputs.Select(output => new ServiceTestOutput(output, "", "", "")
                 {
-                    var serviceTestOutput = CreateTestOutput(serviceTestStep, output, "", "");
-                    serviceTestOutput.HasOptionsForValue = false;
-                    return serviceTestOutput;
+                    HasOptionsForValue = false,
+                    AddStepOutputRow = s => { serviceTestStep.AddNewOutput(s); }
                 }).Cast<IServiceTestOutput>().ToObservableCollection();
                 serviceTestStep.StepOutputs = serviceTestOutputs;
                 SetStepIcon(act.GetType(), serviceTestStep);
@@ -1112,8 +1110,10 @@ namespace Warewolf.Studio.ViewModels
         private void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep)
         {
             var serviceTestStep = CreateMockChildStep(pluginAction.ID, testStep, testStep.ActivityType, pluginAction.Method);
-            var serviceTestOutput = CreateTestOutput(serviceTestStep, pluginAction.OutputVariable ?? "", "", "");
-            var serviceOutputs = new ObservableCollection<IServiceTestOutput> { serviceTestOutput };
+            var serviceOutputs = new ObservableCollection<IServiceTestOutput>
+            {
+                new ServiceTestOutput(pluginAction.OutputVariable ?? "", "", "", "")
+            };
             serviceTestStep.StepOutputs = serviceOutputs;
             SetStepIcon(testStep.ActivityType, serviceTestStep);
             testStep.Children.Add(serviceTestStep);
@@ -1245,9 +1245,12 @@ namespace Warewolf.Studio.ViewModels
                 if (alreadyAdded == null && activityUniqueID != null && type == typeof(DsfActivity))
                 {
                     var testStep = CreateMockChildStep(Guid.Parse(activityUniqueID), null, type.Name, activityDisplayName);
-                    var serviceTestOutput = CreateTestOutput(testStep, "", "", "");
-                    serviceTestOutput.IsSearchCriteriaEnabled = true;
-                    serviceTestOutputs.Add(serviceTestOutput);
+                    serviceTestOutputs.Add(new ServiceTestOutput("", "", "", "")
+                    {
+                        AssertOp = "",
+                        AddStepOutputRow = s => { testStep.AddNewOutput(s); },
+                        IsSearchCriteriaEnabled = true
+                    });
                     testStep.StepOutputs = serviceTestOutputs;
                     SelectedServiceTest.TestSteps.Add(testStep);
                     SetStepIcon(type, testStep);
@@ -1331,9 +1334,11 @@ namespace Warewolf.Studio.ViewModels
 
                 var serviceTestOutputs = outputs.Select(output =>
                 {
-                    var serviceTestOutput = CreateTestOutput(serviceTestStep, output ?? "", "", "");
-                    serviceTestOutput.HasOptionsForValue = false;
-                    return serviceTestOutput;
+                    return new ServiceTestOutput(output ?? "", "", "", "")
+                    {
+                        HasOptionsForValue = false,
+                        AddStepOutputRow = s => { serviceTestStep?.AddNewOutput(s); }
+                    };
                 }).Cast<IServiceTestOutput>().ToList();
                 if (serviceTestStep != null)
                 {
@@ -1367,11 +1372,10 @@ namespace Warewolf.Studio.ViewModels
         private static List<IServiceTestOutput> AddOutputsIfHasVariable(List<string> outputs, ServiceTestStep step)
         {
             var serviceTestOutputs =
-                outputs.Select(output =>
+                outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
-                    var serviceTestOutput = CreateTestOutput(step, output ?? "", "", "");
-                    serviceTestOutput.HasOptionsForValue = false;
-                    return serviceTestOutput;
+                    HasOptionsForValue = false,
+                    AddStepOutputRow = s => step.AddNewOutput(s)
                 }).Cast<IServiceTestOutput>().ToList();
             return serviceTestOutputs;
         }
@@ -1380,16 +1384,20 @@ namespace Warewolf.Studio.ViewModels
         {
             if (outputs == null || outputs.Count == 0)
             {
-                var serviceTestOutput = CreateTestOutput(step, "", "", "");
-                serviceTestOutput.HasOptionsForValue = false;
-                return new List<IServiceTestOutput> { serviceTestOutput };
+                return new List<IServiceTestOutput>
+                {
+                    new ServiceTestOutput("", "", "", "")
+                    {
+                        HasOptionsForValue = false,
+                        AddStepOutputRow = s => step.AddNewOutput(s)
+                    }
+                };
             }
             var serviceTestOutputs =
-                outputs.Select(output =>
+                outputs.Select(output => new ServiceTestOutput(output ?? "", "", "", "")
                 {
-                    var serviceTestOutput = CreateTestOutput(step, output ?? "", "", "");
-                    serviceTestOutput.HasOptionsForValue = false;
-                    return serviceTestOutput;
+                    HasOptionsForValue = false,
+                    AddStepOutputRow = s => step.AddNewOutput(s)
                 }).Cast<IServiceTestOutput>().ToList();
             return serviceTestOutputs;
         }
