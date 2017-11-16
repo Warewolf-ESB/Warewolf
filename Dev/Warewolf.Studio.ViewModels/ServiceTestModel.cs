@@ -654,24 +654,9 @@ namespace Warewolf.Studio.ViewModels
             bool stepCompare = true;
             for (int i = 0; i < _testSteps.Count; i++)
             {
-                stepCompare = TestSteps[i].Type == other.TestSteps[i].Type;
-                if (!stepCompare)
-                {
-                    continue;
-                }
-
-                stepCompare = TestSteps[i].StepOutputs.Count == other.TestSteps[i].StepOutputs.Count;
-                if (!stepCompare)
-                {
-                    continue;
-                }
-
-                stepCompare = TestSteps[i].Children.Count == other.TestSteps[i].Children.Count;
-                if (!stepCompare)
-                {
-                    continue;
-                }
-
+                stepCompare &= TestSteps[i].Type == other.TestSteps[i].Type;
+                stepCompare &= TestSteps[i].StepOutputs.Count == other.TestSteps[i].StepOutputs.Count;
+                stepCompare &= TestSteps[i].Children.Count == other.TestSteps[i].Children.Count;
                 if (TestSteps[i].Children.Count > 0)
                 {
                     var stepChildren = TestSteps[i].Children;
@@ -681,12 +666,16 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (!stepCompare)
                 {
-                    continue;
+                    return stepCompare;
                 }
 
                 var stepOutputs = TestSteps[i].StepOutputs;
                 var otherStepOutputs = other.TestSteps[i].StepOutputs;
                 stepCompare = StepOutputsCompare(stepOutputs, otherStepOutputs);
+                if (!stepCompare)
+                {
+                    return stepCompare;
+                }
             }
             return stepCompare;
         }
@@ -696,18 +685,19 @@ namespace Warewolf.Studio.ViewModels
             bool stepCompare = true;
             for (int c = 0; c < stepChildren.Count; c++)
             {
-                if (stepChildren[c].Type != otherStepChildren[c].Type)
-                {
-                    stepCompare = false;
-                }
+                stepCompare &= stepChildren[c].Type == otherStepChildren[c].Type;
                 if (!stepCompare)
                 {
-                    continue;
+                    return stepCompare;
                 }
 
                 var childStepOutputs = stepChildren[c].StepOutputs;
                 var otherChildStepOutputs = otherStepChildren[c].StepOutputs;
                 stepCompare = StepOutputsCompare(childStepOutputs, otherChildStepOutputs);
+                if (!stepCompare)
+                {
+                    return stepCompare;
+                }
 
                 if (stepChildren[c].Children.Count > 0)
                 {
@@ -715,6 +705,10 @@ namespace Warewolf.Studio.ViewModels
                     var otherStepChildren1 = otherStepChildren[c].Children;
 
                     stepCompare = StepChildrenCompare(stepChildren1, otherStepChildren1);
+                    if (!stepCompare)
+                    {
+                        return stepCompare;
+                    }
                 }
             }
             return stepCompare;
@@ -725,31 +719,15 @@ namespace Warewolf.Studio.ViewModels
             bool stepCompare = true;
             for (int c = 0; c < stepOutputs.Count; c++)
             {
-                stepCompare = stepOutputs[c].AssertOp == otherStepOutputs[c].AssertOp;
+                stepCompare &= stepOutputs[c].AssertOp == otherStepOutputs[c].AssertOp;
+                stepCompare &= stepOutputs[c].Value == otherStepOutputs[c].Value;
+                stepCompare &= stepOutputs[c].From == otherStepOutputs[c].From;
+                stepCompare &= stepOutputs[c].To == otherStepOutputs[c].To;
+                stepCompare &= stepOutputs[c].Variable == otherStepOutputs[c].Variable;
                 if (!stepCompare)
                 {
-                    continue;
+                    return stepCompare;
                 }
-
-                stepCompare = stepOutputs[c].Value == otherStepOutputs[c].Value;
-                if (!stepCompare)
-                {
-                    continue;
-                }
-
-                stepCompare = stepOutputs[c].From == otherStepOutputs[c].From;
-                if (!stepCompare)
-                {
-                    continue;
-                }
-
-                stepCompare = stepOutputs[c].To == otherStepOutputs[c].To;
-                if (!stepCompare)
-                {
-                    continue;
-                }
-
-                stepCompare = stepOutputs[c].Variable == otherStepOutputs[c].Variable;
             }
             return stepCompare;
         }
@@ -767,7 +745,7 @@ namespace Warewolf.Studio.ViewModels
             bool inputCompare = true;
             for (int i = 0; i < _inputs.Count; i++)
             {
-                inputCompare = Inputs[i].Value == other.Inputs[i].Value;
+                inputCompare &= Inputs[i].Value == other.Inputs[i].Value;
                 inputCompare &= Inputs[i].Variable == other.Inputs[i].Variable;
                 inputCompare &= Inputs[i].EmptyIsNull == other.Inputs[i].EmptyIsNull;
                 if (!inputCompare)
@@ -791,7 +769,7 @@ namespace Warewolf.Studio.ViewModels
             bool outputCompare = true;
             for (int i = 0; i < _outputs.Count; i++)
             {
-                outputCompare = _outputs[i].Value == other._outputs[i].Value;
+                outputCompare &= _outputs[i].Value == other._outputs[i].Value;
                 outputCompare &= _outputs[i].Variable == other._outputs[i].Variable;
                 outputCompare &= _outputs[i].AssertOp == other._outputs[i].AssertOp;
                 outputCompare &= _outputs[i].From == other._outputs[i].From;
