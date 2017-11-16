@@ -4,6 +4,7 @@ using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using System.Drawing;
+using Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses;
 
 namespace Warewolf.UI.Tests.SaveDialog
 {

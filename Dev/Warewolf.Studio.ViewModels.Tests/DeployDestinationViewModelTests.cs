@@ -6,7 +6,8 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
-
+using Dev2;
+using Dev2.ConnectionHelpers;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -30,9 +31,16 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
             _shellViewModelMock = new Mock<IShellViewModel>();
             _shellViewModelMock.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             _shellViewModelMock.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var env = new Mock<IEnvironmentViewModel>();
+            _shellViewModelMock.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                env.Object
+            });
             _serverMock = new Mock<IServer>();
             _studioUpdateManagerMock = new Mock<IStudioUpdateManager>();
             _explorerItemMock = new Mock<IExplorerItem>();

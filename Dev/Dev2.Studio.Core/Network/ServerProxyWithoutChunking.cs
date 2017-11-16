@@ -45,11 +45,6 @@ using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using Warewolf.Resource.Errors;
 
-
-
-
-
-
 namespace Dev2.Network
 {
     public class ServerProxyWithoutChunking : IEnvironmentConnection
@@ -699,32 +694,7 @@ namespace Dev2.Network
             task.Wait(100);
         }
         
-        public void Dispose()
-        {
-        }
-        
         public Guid ID { get; private set; }
-
-        public bool Equals(IEnvironmentConnection other)
-        {
-            if (other == null)
-            {
-                return false;
-            }
-            var isEqual = other.ID == ID && other.AuthenticationType == AuthenticationType &&
-                          other.AppServerUri.Equals(AppServerUri) && other.WebServerUri.Equals(WebServerUri);
-            return isEqual;
-        }
-
-        public override bool Equals(object obj)
-        {
-            return Equals(obj as IEnvironmentConnection);
-        }
-
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
-        }
     }
 
     public class FallbackException : Exception
