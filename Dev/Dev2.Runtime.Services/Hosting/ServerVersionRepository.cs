@@ -110,7 +110,7 @@ namespace Dev2.Runtime.Hosting
             var resource = _catalogue.GetResource(Guid.Empty, version.ResourceId);
 
             var versionFolder = _filePath.Combine(EnvironmentVariables.VersionsPath, version.ResourceId.ToString());
-            var files = _directory.GetFiles(versionFolder).FirstOrDefault(a => a.Contains(string.Format("{0}_{1}_", resource.VersionInfo.VersionId.ToString(), version.VersionNumber)));
+            var files = _directory.GetFiles(versionFolder).FirstOrDefault(a => a.Contains(string.Format("{0}_", version.VersionNumber)));
             if (string.IsNullOrEmpty(files))
             {
                 throw new VersionNotFoundException("Version Does not exist");
@@ -132,24 +132,24 @@ namespace Dev2.Runtime.Hosting
         {
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
-            if (parts.Length != 4)
+            if (parts.Length != 3)
             {
                 throw new Exception(ErrorResource.InvalidVersion);
             }
 
-            return new VersionInfo(new DateTime(long.Parse(parts[2])), parts[3], "", parts[1], resourceId, Guid.Parse(parts[0]));
+            return new VersionInfo(new DateTime(long.Parse(parts[1])), parts[2], "", parts[1], resourceId, Guid.Parse(parts[0]));
         }
 
         string CreateNameFromPath(string path)
         {
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
-            if (parts.Length != 4)
+            if (parts.Length != 3)
             {
                 throw new Exception(ErrorResource.InvalidVersion);
             }
 
-            return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "")}";
+            return $"v.{parts[0]}  {new DateTime(long.Parse(parts[1]))}  {parts[2].Replace(".xml", "")}";
         }
 
         static string GetDirectoryFromResource(string resourcePath)
@@ -231,13 +231,14 @@ namespace Dev2.Runtime.Hosting
                     var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                     old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, _userName, reason);
 
-                    var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
-                    if (!_file.Exists(_filePath.Combine(versionFolder, fileName)))
+                    var newFileName = $"{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
+                    _directory.CreateIfNotExists(versionFolder);
+                    if (!_file.Exists(_filePath.Combine(versionFolder, newFileName)))
                     {
                         var sourceFile = _filePath.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
                         if (_file.Exists(sourceFile))
                         {
-                            _file.Copy(sourceFile, _filePath.Combine(versionFolder, fileName));
+                            _file.Copy(sourceFile, _filePath.Combine(versionFolder, newFileName));
                         }
                     }
 
@@ -257,7 +258,7 @@ namespace Dev2.Runtime.Hosting
         public void CleanUpOldVersionControlStructure(IDirectory directory)
         {
             var resources = _catalogue.GetResources(GlobalConstants.ServerWorkspaceID);
-
+            var appDataVersionPath = EnvironmentVariables.VersionsPath;
             foreach (var item in resources)
             {
                 if (item?.VersionInfo == null)
@@ -267,7 +268,7 @@ namespace Dev2.Runtime.Hosting
                 var versionPath = item.GetResourcePath(GlobalConstants.ServerWorkspaceID);
                 var path = GetVersionFolderFromResource(versionPath);
                 var files = _directory.GetFiles(path).Where(a => a.Contains(item.VersionInfo.VersionId.ToString()));
-                var folderName = _filePath.Combine(EnvironmentVariables.VersionsPath, item.ResourceID.ToString());
+                var folderName = _filePath.Combine(appDataVersionPath, item.ResourceID.ToString());
                 foreach (var pathForVersion in files)
                 {
                     directory.CreateIfNotExists(folderName);
