@@ -39,8 +39,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             _serverVersionRepository = serverVersionRepository;
         }
 
-        #region Implementation of IResourceSaveProvider
-
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath) => SaveResource(workspaceID, resourceXml, savedPath, "", "");
 
         public ResourceCatalogResult SaveResource(Guid workspaceID, StringBuilder resourceXml, string savedPath, string reason, string user)
@@ -121,9 +119,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return saveResult;
         }
 
-        #endregion
-
-        #region Private Methods
         private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "", string reason = "")
         {
             // Find the service before edits ;)
@@ -364,19 +359,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     }
                     var directoryName = SetResourceFilePath(workspaceID, resource, ref savedPath);
 
-                    #region Save to disk
-
+                    
                     var xml = SaveToDisk(resource, contents, directoryName, fileManager);
-
-                    #endregion
-
-                    #region Add to catalog
+                    
 
                     var updated = AddToCatalog(resource, resources, fileManager, xml);
 
                     ((ResourceCatalog)_resourceCatalog).AddToActivityCache(resource);
-
-                    #endregion
+                    
                     Dev2Logger.Debug($"Removing Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
                     ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
                     Dev2Logger.Debug($"Removed Execution Plan for {resource.ResourceID} for workspace {workspaceID}", GlobalConstants.WarewolfDebug);
@@ -410,7 +400,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             resource.FilePath = resourceFilePath;
             return directoryName;
         }
-
-        #endregion
+        
     }
 }

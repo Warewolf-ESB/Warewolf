@@ -83,6 +83,7 @@ namespace Dev2.Studio.Interfaces
         void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server);
         void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
         void CloseResource(Guid resourceId, Guid environmentId);
+        void CloseResource(IContextualResourceModel currentResourceModel, Guid environmentId);
         void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json);
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);

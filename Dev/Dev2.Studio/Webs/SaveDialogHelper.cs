@@ -28,16 +28,19 @@ namespace Dev2.Webs
 {
     public static class SaveDialogHelper
     {
-
-        #region ShowSaveDialog
-
+        
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel) => ShowNewWorkflowSaveDialog(resourceModel, null, true);
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager)
         {
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager));
         }
+        internal static void ShowNewWorkflowSaveDialog(IContextualResourceModel contextualResourceModel, bool loadingFromServer, string originalPath) 
+            => ShowSaveDialog(contextualResourceModel
+               , new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, contextualResourceModel, true)
+               , loadingFromServer: loadingFromServer
+               , originalPath: originalPath);
 
-        static async void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, Action loaded = null)
+        static async void ShowSaveDialog(IContextualResourceModel resourceModel, WebsiteCallbackHandler callbackHandler, Action loaded = null, bool loadingFromServer = true, string originalPath = "")
         {
             try
             {
@@ -82,9 +85,16 @@ namespace Dev2.Webs
                 var messageBoxResult = requestViewModel.ShowSaveDialog();
                 if (messageBoxResult == MessageBoxResult.OK)
                 {
-                    var value = new { resourceName = requestViewModel.ResourceName.Name, resourcePath = requestViewModel.ResourceName.Path };
+                    var value = new { resourceName = requestViewModel.ResourceName.Name, resourcePath = requestViewModel.ResourceName.Path, resourceLoadingFromServer = loadingFromServer, OriginalPath = originalPath };
                     var serializeObject = JsonConvert.SerializeObject(value);
                     callbackHandler.Save(serializeObject, server);
+                }
+                else
+                {
+                    if (!loadingFromServer)
+                    {
+                        mainViewModel.CloseResource(resourceModel, server.EnvironmentID);
+                    }
                 }
                 loaded?.Invoke();
             }
@@ -94,17 +104,10 @@ namespace Dev2.Webs
                 throw;
             }
         }
-
-
-        #endregion
-
+        
         public static void ShowNewWorkflowSaveDialog(IContextualResourceModel resourceModel, string resourceId, bool addToTabManager, Action action)
         {
             ShowSaveDialog(resourceModel, new SaveNewWorkflowCallbackHandler(EventPublishers.Aggregator, ServerRepository.Instance, resourceModel, addToTabManager), action);
-        }
-        internal static void ShowExistingWorkflowSaveDialog(ResourceModel newResource, IResourceRepository resourceRepository)
-        {            
-            resourceRepository.Save(newResource);
         }
     }
 }

@@ -163,6 +163,20 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowCanNotMoveResource()
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "Resource Can Not Be Moved";
+            Description = "This Resource contains Encrypted data. \nPlease Deploy Resource from Original Server to localhost.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowServerNotConnected(string server)
         {

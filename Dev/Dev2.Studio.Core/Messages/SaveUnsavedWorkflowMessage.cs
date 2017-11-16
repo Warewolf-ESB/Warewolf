@@ -20,13 +20,16 @@ namespace Dev2.Messages
         public string ResourceName { get; set; }
         public string ResourceCategory { get; set; }
         public bool KeepTabOpen { get; set; }
-
-        public SaveUnsavedWorkflowMessage(IContextualResourceModel resourceModel, string resourceName, string resourceCategory, bool keepTabOpen)
+        public bool ResourceLoadingFromServer { get; set; }
+        public string OriginalPath { get; set; }
+        public SaveUnsavedWorkflowMessage(IContextualResourceModel resourceModel, string resourceName, string resourceCategory, bool keepTabOpen, bool resourceLoadingFromServer, string originalPath)
         {
             ResourceModel = resourceModel;
             ResourceName = resourceName;
             ResourceCategory = resourceCategory;
             KeepTabOpen = keepTabOpen;
-        }
+            ResourceLoadingFromServer = resourceLoadingFromServer;
+            OriginalPath = originalPath;
+    }
     }
 }

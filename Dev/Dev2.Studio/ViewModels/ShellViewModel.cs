@@ -188,8 +188,11 @@ namespace Dev2.Studio.ViewModels
             if (singleResource == null)
             {
                 contextualResourceModel = ResourceExtensionHelper.HandleResourceNotInResourceFolder(e, fileName, PopupProvider);
-                OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
-                SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel);
+                if (contextualResourceModel != null)
+                {
+                    OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
+                    SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel, loadingFromServer: false, originalPath: e);
+                }
             }
             else
             {
@@ -1305,10 +1308,19 @@ namespace Dev2.Studio.ViewModels
             return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
         }
 
+        public void CloseResource(IContextualResourceModel contextualResourceModel, Guid environmentId)
+        {
+            var environmentModel = ServerRepository.Get(environmentId);
+            Close(contextualResourceModel);
+        }
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            Close(contextualResourceModel);
+        }
+        private void Close(IContextualResourceModel contextualResourceModel)
+        {
             if (contextualResourceModel != null)
             {
                 var wfscvm = _worksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);

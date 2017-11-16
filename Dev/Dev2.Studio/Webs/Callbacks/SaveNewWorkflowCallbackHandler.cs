@@ -41,15 +41,17 @@ namespace Dev2.Webs.Callbacks
             try
             {
                 string resName = jsonObj.resourceName;
+                bool loadingFromServer = jsonObj.resourceLoadingFromServer;
+                string originalPath = jsonObj.OriginalPath;
                 string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
-                if(_resourceModel != null)
+                if (_resourceModel != null)
                 {
-                    EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager));
+                    EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager, loadingFromServer, originalPath));
                 }
 
                 Close();
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Exception e1 = new Exception("There was a problem saving. Please try again.", e);
 
