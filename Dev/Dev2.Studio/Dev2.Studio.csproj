@@ -300,6 +300,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="ResourceExtensionHelper.cs" />
     <Compile Include="CustomControls\ActivityTemplateSelector.cs" />
     <Compile Include="CustomControls\TemplateGenerator.cs" />
     <Compile Include="DesignerAttributeMap.cs" />

@@ -17,7 +17,6 @@ using Dev2.Studio.ViewModels.Dialogs;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 
-
 namespace Dev2.Studio.Controller
 {
     public class PopupController : Common.Interfaces.Studio.Controller.IPopupController
@@ -149,6 +148,35 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowResourcesNotInCorrectPath()
+        {
+            Buttons = MessageBoxButton.OKCancel;
+            Header = "Resource Not In Correct Path";
+            Description = "The Resource you are attempting to open does not Exist. \nClick OK to Move the Resource to the Resources Folder or Cancel to Return.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
+        public MessageBoxResult ShowCanNotMoveResource()
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = "Resource Can Not Be Moved";
+            Description = "This Resource contains Encrypted data. \nPlease Deploy Resource from Original Server to localhost.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowServerNotConnected(string server)
         {
@@ -516,5 +544,6 @@ namespace Dev2.Studio.Controller
                 Description = $"The name {name} already exists. Please choose a different name."
             };
         }
+
     }
 }
