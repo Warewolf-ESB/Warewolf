@@ -535,9 +535,14 @@ namespace Dev2
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
-            catalog.CleanUpOldVersionControlStructure();
+            MethodsToBeDepricated();
             WriteLine("done.");
             return catalog;
+        }
+
+        void MethodsToBeDepricated()
+        {
+            ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
         }
 
         void LoadTestCatalog()
