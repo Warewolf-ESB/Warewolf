@@ -90,6 +90,8 @@ using Dev2.Activities;
 using System.Collections.Concurrent;
 using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
+using Dev2.Communication;
+using System.IO;
 
 namespace Dev2.Studio.ViewModels.Workflow
 
@@ -1197,7 +1199,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     ModelProperty modelProperty = mi.Properties["Key"];
                     if (modelProperty?.Value != null && (FlowController.OldSwitchValue == null || string.IsNullOrWhiteSpace(FlowController.OldSwitchValue)))
                     {
-                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment,IsPaste = _isPaste });
+                        FlowController.ConfigureSwitchCaseExpression(new ConfigureCaseExpressionMessage { ModelItem = mi, ExpressionText = switchExpressionValue, Server = _resourceModel.Environment, IsPaste = _isPaste });
                     }
                 }
             }
@@ -1307,7 +1309,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             ModelProperty modelProperty = mi.Properties["Action"];
 
             InitialiseWithAction(modelProperty);
-            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true, IsPaste=_isPaste });
+            _expressionString = FlowController.ConfigureDecisionExpression(new ConfigureDecisionExpressionMessage { ModelItem = mi, Server = _resourceModel.Environment, IsNew = true, IsPaste = _isPaste });
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
@@ -1846,7 +1848,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         e.Handled = true;
                         return;
                     }
-                    
+
                     if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
                     {
                         switch (e.Key)
@@ -3020,7 +3022,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.Category = message.ResourceCategory;
             resourceModel.WorkflowXaml = ServiceDefinition?.Replace(unsavedName, message.ResourceName);
             resourceModel.IsNewWorkflow = false;
-            resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
+            var saveResult = resourceModel.Environment.ResourceRepository.SaveToServer(resourceModel);
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var environmentViewModel = mainViewModel?.ExplorerViewModel?.Environments.FirstOrDefault(model => model.Server.EnvironmentID == resourceModel.Environment.EnvironmentID);
             if (environmentViewModel != null)
@@ -3031,6 +3033,24 @@ namespace Dev2.Studio.ViewModels.Workflow
                 item.AddChild(savedItem);
             }
             resourceModel.IsWorkflowSaved = true;
+            DeleteOldResourceAfterSucessfulSave(message, saveResult);
+        }
+        public void DeleteOldResourceAfterSucessfulSave(SaveUnsavedWorkflowMessage message, ExecuteMessage saveResult)
+        {
+            if (!saveResult.HasError
+                && saveResult.Message.Contains("Added")
+                && !message.ResourceLoadingFromServer
+                && !string.IsNullOrEmpty(message.OriginalPath))
+            {
+                try
+                {
+                    File.Delete(message.OriginalPath);
+                }
+                catch (Exception)
+                {
+                    Dev2Logger.Error("Resource from " + message.OriginalPath + " could not be Deleted", "Warewolf Error");
+                }
+            }
         }
 
         public void RemoveItem(IMergeToolModel model)
@@ -3068,7 +3088,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     break;
             }
         }
-        
+
         public void LinkTools(string sourceUniqueId, string destinationUniqueId, string key)
         {
             if (SetNextForDecision(sourceUniqueId, destinationUniqueId, key))
@@ -3084,7 +3104,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var next = GetItemFromNodeCollection(destinationUniqueId);
                 SetNext(next, step);
-                
+
             }
         }
 
@@ -3093,7 +3113,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var decisionItem = GetDecisionFromNodeCollection(sourceUniqueId);
             if (decisionItem != null)
             {
-                var next = GetItemFromNodeCollection(destinationUniqueId);               
+                var next = GetItemFromNodeCollection(destinationUniqueId);
                 var parentNodeProperty = decisionItem.Properties[key];
                 if (parentNodeProperty != null)
                 {
@@ -3137,7 +3157,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                     return true;
-                }                
+                }
             }
             return false;
         }
@@ -3164,7 +3184,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return hasParent;
         });
 
-        void SetNext(ModelItem next,ModelItem source)
+        void SetNext(ModelItem next, ModelItem source)
         {
             if (next != null)
             {
@@ -3190,7 +3210,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         });
 
         public ModelItemCollection NodesCollection
-       {
+        {
             get
             {
                 var root = _wd.Context.Services.GetService<ModelService>().Root;
@@ -3199,7 +3219,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var nodes = chart?.Properties["Nodes"]?.Collection;
                 return nodes;
             }
-       }
+        }
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
@@ -3218,7 +3238,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             var nodeToAdd = model.ModelItem;
             var step = model.FlowNode;
-            
+
             switch (step)
             {
                 case FlowStep normalStep:
@@ -3295,7 +3315,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(flowNode));
             }
         }
-        
+
         public System.Action WorkflowChanged { get; set; }
 
         #endregion

@@ -334,7 +334,7 @@ namespace Dev2.Studio.ViewModels
             return workSurfaceKey;
         }
 
-        public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel,bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null)
+        public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null)
         {
             var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, loadFromServer);//if this is merge between two server versions then we pass false
             var vm = new MergeViewModel(_shellViewModel.EventPublisher, mergeViewModel, _shellViewModel.PopupProvider, new MergeWorkflowView());
@@ -724,7 +724,10 @@ namespace Dev2.Studio.ViewModels
 
             IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, @"WorkflowService",
                 newWorflowName);
-            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\" + newWorflowName : resourcePath + @"\" + newWorflowName;
+            if (string.IsNullOrEmpty(tempResource.Category))
+            {
+                tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\" + newWorflowName : resourcePath + @"\" + newWorflowName;
+            }
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;

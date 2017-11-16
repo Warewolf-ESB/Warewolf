@@ -1769,7 +1769,7 @@ namespace Dev2.Core.Tests.Workflows
             unsavedResourceModel.Setup(model => model.ResourceName).Returns("Unsaved 1");
             unsavedResourceModel.Setup(model => model.WorkflowXaml).Returns(new StringBuilder("workflow xaml"));
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
-            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", false);
+            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", false, false,"");
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             var workflowLink = wd.DisplayWorkflowLink;
@@ -1859,7 +1859,7 @@ namespace Dev2.Core.Tests.Workflows
             var unsavedResourceModel = new Mock<IContextualResourceModel>();
             unsavedResourceModel.Setup(model => model.ResourceName).Returns("Unsaved 1");
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
-            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", true);
+            var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", true,false,"");
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
