@@ -135,6 +135,7 @@
     <Compile Include="Providers\Errors\ActionableErrorInfo.cs" />
     <Compile Include="Providers\Errors\ErrorInfo.cs" />
     <Compile Include="Providers\Events\EventPublisher.cs" />
+    <Compile Include="Providers\Logs\CustomTraceListener.cs" />
     <Compile Include="Providers\Validation\Rules\ComposableRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoIndexsInRecordsetsRule.cs" />
