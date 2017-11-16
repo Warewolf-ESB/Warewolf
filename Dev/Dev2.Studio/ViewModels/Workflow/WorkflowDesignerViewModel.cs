@@ -1155,10 +1155,10 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             if (computedValue is IDev2Activity act)
             {
-                if (string.IsNullOrEmpty(act.UniqueID) && !_isPaste)
+                if (_isPaste || string.IsNullOrEmpty(act.UniqueID))
                 {
                     act.UniqueID = Guid.NewGuid().ToString();
-                }
+                }               
                 _modelItems = _modelService.Find(_modelService.Root, typeof(IDev2Activity));
             }
             if (computedValue is Activity)

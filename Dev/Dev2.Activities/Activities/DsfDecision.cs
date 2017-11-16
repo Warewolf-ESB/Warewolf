@@ -466,9 +466,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (TrueArm != null ? TrueArm.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (FalseArm != null ? FalseArm.GetHashCode() : 0);
+                int hashCode = base.GetHashCode();                
                 hashCode = (hashCode * 397) ^ (Conditions != null ? Conditions.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ And.GetHashCode();
