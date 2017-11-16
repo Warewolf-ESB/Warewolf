@@ -151,8 +151,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowResourcesNotInCorrectPath()
         {
             Buttons = MessageBoxButton.OKCancel;
-            Header = "Resource Not In Correct Path";
-            Description = "The Resource you are attempting to open does not Exist. \nClick OK to Move the Resource to the Resources Folder or Cancel to Return.";
+            Header = "Unknown Resource";
+            Description = "The Resource you are attempting to open is unknown by the server. \nClick Move to have the resource moved to the server or Cancel to Exit.";
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -166,8 +166,8 @@ namespace Dev2.Studio.Controller
         public MessageBoxResult ShowCanNotMoveResource()
         {
             Buttons = MessageBoxButton.OK;
-            Header = "Resource Can Not Be Moved";
-            Description = "This Resource contains Encrypted data. \nPlease Deploy Resource from Original Server to localhost.";
+            Header = "Source data contains encrypted connections strings.";
+            Description = "Click Continue to discard the connection information and re-enter it or Cancel and then deploy it to this machine from the resources originating server.";
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
