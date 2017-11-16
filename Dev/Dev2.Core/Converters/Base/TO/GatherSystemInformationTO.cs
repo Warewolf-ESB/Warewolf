@@ -54,10 +54,7 @@ namespace Dev2
         #endregion
 
         #region Properties
-
-        /// <summary>
-        ///     Type of system information to gather
-        /// </summary>
+        
         public enTypeOfSystemInformationToGather EnTypeOfSystemInformation
         {
             get { return _enTypeOfSystemInformation; }
@@ -67,11 +64,7 @@ namespace Dev2
                 OnPropertyChanged("EnTypeOfSystemInformation");
             }
         }
-
-
-        /// <summary>
-        ///     Where to place the result, will be the same as From until wizards are created
-        /// </summary>
+        
         [FindMissing]
         public string Result
         {
@@ -89,6 +82,7 @@ namespace Dev2
         public string WatermarkTextVariable { get; set; }
 
         public string WatermarkText { get; set; }
+
         public bool Inserted { get; set; }
 
         public int IndexNumber { get; set; }
@@ -174,50 +168,21 @@ namespace Dev2
         public bool Validate(string propertyName, string datalist)
         {
             RuleSet ruleSet = null;
-            switch (propertyName)
+            if (propertyName == "FieldName")
             {
-                case "FieldName":
-                    ruleSet = GetFieldNameRuleSet();
-                    break;
-                case "FieldValue":
-                    break;
-                default:
-                    break;
+                ruleSet = new RuleSet();
             }
             return Validate(propertyName, ruleSet);
-        }
-
-        private RuleSet GetFieldNameRuleSet()
-        {
-            var ruleSet = new RuleSet();
-            return ruleSet;
         }
 
         #endregion
 
         #region Implementation of IDataErrorInfo
-
-        /// <summary>
-        ///     Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        ///     The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] => null;
-
-        /// <summary>
-        ///     Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
         
+        public string this[string columnName] => null;
         
         public string Error { get; private set; }
-
-
-
+        
         #endregion
     }
 }
