@@ -768,18 +768,12 @@ namespace Warewolf.Studio.ViewModels
             for (int i = 0; i < _inputs.Count; i++)
             {
                 inputCompare = Inputs[i].Value == other.Inputs[i].Value;
+                inputCompare &= Inputs[i].Variable == other.Inputs[i].Variable;
+                inputCompare &= Inputs[i].EmptyIsNull == other.Inputs[i].EmptyIsNull;
                 if (!inputCompare)
                 {
-                    continue;
+                    return inputCompare;
                 }
-
-                inputCompare = Inputs[i].Variable == other.Inputs[i].Variable;
-                if (!inputCompare)
-                {
-                    continue;
-                }
-
-                inputCompare = Inputs[i].EmptyIsNull == other.Inputs[i].EmptyIsNull;
             }
             return inputCompare;
         }
@@ -798,30 +792,14 @@ namespace Warewolf.Studio.ViewModels
             for (int i = 0; i < _outputs.Count; i++)
             {
                 outputCompare = _outputs[i].Value == other._outputs[i].Value;
+                outputCompare &= _outputs[i].Variable == other._outputs[i].Variable;
+                outputCompare &= _outputs[i].AssertOp == other._outputs[i].AssertOp;
+                outputCompare &= _outputs[i].From == other._outputs[i].From;
+                outputCompare &= _outputs[i].To == other._outputs[i].To;
                 if (!outputCompare)
                 {
-                    continue;
+                    return outputCompare;
                 }
-
-                outputCompare = _outputs[i].Variable == other._outputs[i].Variable;
-                if (!outputCompare)
-                {
-                    continue;
-                }
-
-                outputCompare = _outputs[i].AssertOp == other._outputs[i].AssertOp;
-                if (!outputCompare)
-                {
-                    continue;
-                }
-
-                outputCompare = _outputs[i].From == other._outputs[i].From;
-                if (!outputCompare)
-                {
-                    continue;
-                }
-
-                outputCompare = _outputs[i].To == other._outputs[i].To;
             }
             return outputCompare;
         }
