@@ -559,19 +559,10 @@ namespace System.Windows.Controls
             AutoCompleteFilterMode mode = (AutoCompleteFilterMode)e.NewValue;
 
             if(mode != AutoCompleteFilterMode.Contains &&
-                mode != AutoCompleteFilterMode.ContainsCaseSensitive &&
-                mode != AutoCompleteFilterMode.ContainsOrdinal &&
-                mode != AutoCompleteFilterMode.ContainsOrdinalCaseSensitive &&
-                mode != AutoCompleteFilterMode.Custom &&
-                mode != AutoCompleteFilterMode.Equals &&
                 mode != AutoCompleteFilterMode.EqualsCaseSensitive &&
-                mode != AutoCompleteFilterMode.EqualsOrdinal &&
-                mode != AutoCompleteFilterMode.EqualsOrdinalCaseSensitive &&
-                mode != AutoCompleteFilterMode.None &&
                 mode != AutoCompleteFilterMode.StartsWith &&
-                mode != AutoCompleteFilterMode.StartsWithCaseSensitive &&
-                mode != AutoCompleteFilterMode.StartsWithOrdinal &&
-                mode != AutoCompleteFilterMode.StartsWithOrdinalCaseSensitive)
+                mode != AutoCompleteFilterMode.Custom &&
+                mode != AutoCompleteFilterMode.None)
             {
                 source?.SetValue(e.Property, e.OldValue);                
                 throw new ArgumentException(Dev2.Runtime.Configuration.Properties.Resources.AutoComplete_OnFilterModePropertyChanged_InvalidValue, "value");
