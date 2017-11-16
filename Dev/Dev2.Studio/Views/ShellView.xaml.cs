@@ -808,7 +808,7 @@ namespace Dev2.Studio.Views
         {
             foreach (Process proc in Process.GetProcessesByName("Warewolf Studio"))
             {
-                proc.Kill();
+                Dev2Logger.Warn(proc.ProcessName + " still running in the background.", "Warewolf Warn");
             }
         }
     }
