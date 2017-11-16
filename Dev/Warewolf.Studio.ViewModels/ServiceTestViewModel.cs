@@ -1168,35 +1168,38 @@ namespace Warewolf.Studio.ViewModels
             }
             if (flowSwitch != null)
             {
-                var cases = flowSwitch.Cases;
-                var defaultCase = flowSwitch.Default;
                 var uniqueId = activity.UniqueID;
                 var exists = SelectedServiceTest.TestSteps.FirstOrDefault(a => a.UniqueId.ToString() == uniqueId);
 
                 if (exists == null && SelectedServiceTest != null)
                 {
-                    var switchOptions = cases?.Select(pair => pair.Key).ToList();
-                    if (defaultCase != null)
-                    {
-                        switchOptions?.Insert(0, "Default");
-                    }
-                    var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
-                    var serviceTestOutput = new ServiceTestOutput(GlobalConstants.ArmResultText, "", "", "")
-                    {
-                        HasOptionsForValue = true,
-                        OptionsForValue = switchOptions
-                    };
-                    serviceTestOutputs.Add(serviceTestOutput);
-                    var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
-                    if (serviceTestStep != null)
-                    {
-                        SetStepIcon(typeof(DsfSwitch), serviceTestStep);
-                    }
-
-                    return serviceTestStep;
+                    return CreateFlowSwitchTestStep(flowSwitch, uniqueId);
                 }
             }
             return null;
+        }
+
+        private ServiceTestStep CreateFlowSwitchTestStep(FlowSwitch<string> flowSwitch, string uniqueId)
+        {
+            var switchOptions = flowSwitch.Cases?.Select(pair => pair.Key).ToList();
+            if (flowSwitch.Default != null)
+            {
+                switchOptions?.Insert(0, "Default");
+            }
+            var serviceTestOutputs = new ObservableCollection<IServiceTestOutput>();
+            var serviceTestOutput = new ServiceTestOutput(GlobalConstants.ArmResultText, "", "", "")
+            {
+                HasOptionsForValue = true,
+                OptionsForValue = switchOptions
+            };
+            serviceTestOutputs.Add(serviceTestOutput);
+            var serviceTestStep = SelectedServiceTest.AddTestStep(uniqueId, flowSwitch.DisplayName, typeof(DsfSwitch).Name, serviceTestOutputs) as ServiceTestStep;
+            if (serviceTestStep != null)
+            {
+                SetStepIcon(typeof(DsfSwitch), serviceTestStep);
+            }
+
+            return serviceTestStep;
         }
 
         private void ProcessActivity(ModelItem modelItem)
@@ -1282,29 +1285,16 @@ namespace Warewolf.Studio.ViewModels
                 var parentComputedValue = item.GetCurrentValue();
                 if (parentComputedValue is FlowStep)
                 {
-                    if (item.Content?.Value != null)
-                    {
-                        parentComputedValue = item.Content.Value.GetCurrentValue();
-                    }
-                    var parentActivityAbstract = parentComputedValue as DsfActivityAbstract<string>;
-                    var parentActivityUniqueID = parentActivityAbstract?.UniqueID;
-                    if (parentActivityAbstract == null)
-                    {
-                        var boolParentAct = computedValue as DsfActivityAbstract<bool>;
-                        parentActivityUniqueID = boolParentAct?.UniqueID;
-                    }
+                    string parentActivityUniqueID = GetParentFlowStepUniqueId(computedValue, item, ref parentComputedValue);
                     if (parentActivityUniqueID == activityUniqueID)
                     {
                         return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
                     }
                 }
 
-                if (outputs != null && outputs.Count > 0)
+                if (outputs != null && outputs.Count > 0 && ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
                 {
-                    if (ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
-                    {
-                        return serviceTestStep;
-                    }
+                    return serviceTestStep;
                 }
                 if (ServiceTestStepGetParentType(item, out IServiceTestStep serviceTestStep1))
                 {
@@ -1313,6 +1303,23 @@ namespace Warewolf.Studio.ViewModels
                 return BuildParentsFromModelItem(item);
             }
             return CheckForExists(activityUniqueID, outputs, activityDisplayName, type);
+        }
+
+        private static string GetParentFlowStepUniqueId(object computedValue, ModelItem item, ref object parentComputedValue)
+        {
+            if (item.Content?.Value != null)
+            {
+                parentComputedValue = item.Content.Value.GetCurrentValue();
+            }
+            var parentActivityAbstract = parentComputedValue as DsfActivityAbstract<string>;
+            var parentActivityUniqueID = parentActivityAbstract?.UniqueID;
+            if (parentActivityAbstract == null)
+            {
+                var boolParentAct = computedValue as DsfActivityAbstract<bool>;
+                parentActivityUniqueID = boolParentAct?.UniqueID;
+            }
+
+            return parentActivityUniqueID;
         }
 
         private IServiceTestStep CheckForExists(string activityUniqueID, List<string> outputs, string activityDisplayName, Type type)
@@ -1640,7 +1647,6 @@ namespace Warewolf.Studio.ViewModels
             ServiceTestCommandHandler.StopTest(ResourceModel);
         }
 
-
         private void RunSelectedTestInBrowser()
         {
             var runSelectedTestUrl = GetWebRunUrlForTest(SelectedServiceTest);
@@ -1945,20 +1951,7 @@ namespace Warewolf.Studio.ViewModels
                 serviceTestModel.TestPending = true;
                 if (serviceTestModel.TestSteps != null)
                 {
-                    foreach (var serviceTestStep in serviceTestModel.TestSteps)
-                    {
-                        MarkChildrenPending(serviceTestStep);
-                        if (serviceTestStep.Children == null)
-                        {
-                            continue;
-                        }
-
-                        var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
-                        foreach (var testStep in testSteps)
-                        {
-                            MarkChildrenPending(testStep);
-                        }
-                    }
+                    MarkTestStepsPending(serviceTestModel);
                 }
 
                 if (serviceTestModel.Outputs == null)
@@ -1977,6 +1970,24 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        private static void MarkTestStepsPending(IServiceTestModel serviceTestModel)
+        {
+            foreach (var serviceTestStep in serviceTestModel.TestSteps)
+            {
+                MarkChildrenPending(serviceTestStep);
+                if (serviceTestStep.Children == null)
+                {
+                    continue;
+                }
+
+                var testSteps = serviceTestStep.Children.Flatten(step => step.Children);
+                foreach (var testStep in testSteps)
+                {
+                    MarkChildrenPending(testStep);
+                }
+            }
+        }
+
         private static void MarkChildrenPending(IServiceTestStep serviceTestStep)
         {
             if (serviceTestStep is ServiceTestStep step)
@@ -1987,17 +1998,18 @@ namespace Warewolf.Studio.ViewModels
                     step.Result.RunTestResult = RunResult.TestPending;
                 }
 
-                if (step.StepOutputs != null)
+                if (step.StepOutputs == null)
                 {
-                    foreach (var serviceTestOutput in step.StepOutputs)
+                    return;
+                }
+                foreach (var serviceTestOutput in step.StepOutputs)
+                {
+                    if (serviceTestOutput is ServiceTestOutput stepOutput)
                     {
-                        if (serviceTestOutput is ServiceTestOutput stepOutput)
+                        stepOutput.TestPending = true;
+                        if (stepOutput.Result != null)
                         {
-                            stepOutput.TestPending = true;
-                            if (stepOutput.Result != null)
-                            {
-                                stepOutput.Result.RunTestResult = RunResult.TestPending;
-                            }
+                            stepOutput.Result.RunTestResult = RunResult.TestPending;
                         }
                     }
                 }
