@@ -120,6 +120,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordActivity), typeof(Dev2.Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
                 { typeof(DsfNewDateTimeActivity),typeof(Dev2.Activities.Designers2.DateTimStandard.DateTimeDesigner) },
                 { typeof(DsfNewDateTimeDifferenceActivity),typeof(Dev2.Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
+                { typeof(DsfNewGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },

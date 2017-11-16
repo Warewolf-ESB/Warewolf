@@ -50,23 +50,25 @@ namespace Dev2.MathOperations
             bool evaluationState = false;
             error = String.Empty;
             evaluation = String.Empty;
-            if(!String.IsNullOrEmpty(expression))
+            if (!String.IsNullOrEmpty(expression))
             {
 
                 try
                 {
-                    var value = _manager.CalculateFormula(expression);
-                    if(value.IsError)
+                    CalculationValue value = _manager.CalculateFormula(expression);
+                    if (value.IsError)
                     {
                         error = value.ToErrorValue().Message;
                     }
                     else
                     {
-                        if(value.IsDateTime)
+                        if (value.IsDateTime)
                         {
-                            var dateTime = value.ToDateTime();                            
-                            var finalPattern = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-                            if(finalPattern.Contains("ss"))
+                            DateTime dateTime = value.ToDateTime();
+                            string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                            string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                            string finalPattern = shortPattern + " " + longPattern;
+                            if (finalPattern.Contains("ss"))
                             {
                                 finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
                             }
@@ -79,7 +81,7 @@ namespace Dev2.MathOperations
                         evaluationState = true;
                     }
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Dev2Logger.Error(ErrorResource.FunctionEvaluationError, ex, GlobalConstants.WarewolfError);
                     error = ex.Message;
