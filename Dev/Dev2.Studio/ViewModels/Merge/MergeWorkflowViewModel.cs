@@ -118,7 +118,7 @@ namespace Dev2.ViewModels.Merge
                     conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
 
                     AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
-                    ShowArmConnectorsForDiff(conflicts, armConnectorConflicts);
+                    ShowArmConnectors(conflicts, armConnectorConflicts, FindForDiff);
                 }
             }
         }
@@ -140,34 +140,28 @@ namespace Dev2.ViewModels.Merge
                     conflict.HasConflict = treeItem.IsInConflict;
                     conflicts.Add(conflict);
                     AddArmConnectors(armConnectorConflicts, treeItem, id);
-                    ShowArmConnectorsForCurrent(conflicts, armConnectorConflicts);
+                    ShowArmConnectors(conflicts, armConnectorConflicts, FindForCurrent);
                 }
             }
         }
 
-        static void ShowArmConnectorsForDiff(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
+        static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts,Func<IConflict,List<IArmConnectorConflict>, IEnumerable<IArmConnectorConflict>> findFunction)
         {
             var itemsToAdd = new List<IConflict>();
             foreach (var addConflict in conflicts)
             {
-                var found = armConnectorConflicts.FirstOrDefault(s => s.DifferentArmConnector.DestinationUniqueId == addConflict.UniqueId.ToString());
-                AddToTempConflictList(conflicts, itemsToAdd, found);
-
+                var foundConflicts = findFunction?.Invoke(addConflict, armConnectorConflicts); 
+                foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
+                {
+                    AddToTempConflictList(conflicts, itemsToAdd, found);
+                }
             }
             conflicts.AddRange(itemsToAdd);
         }
 
-        static void ShowArmConnectorsForCurrent(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
-        {
-            var itemsToAdd = new List<IConflict>();
-            foreach (var addConflict in conflicts)
-            {
-                var found = armConnectorConflicts.FirstOrDefault(s => s.CurrentArmConnector.DestinationUniqueId == addConflict.UniqueId.ToString());
-                AddToTempConflictList(conflicts, itemsToAdd, found);
-
-            }
-            conflicts.AddRange(itemsToAdd);
-        }
+        static IEnumerable<IArmConnectorConflict> FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));         
+        static IEnumerable<IArmConnectorConflict> FindForCurrent(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
+        static bool FindMatchingConnector(string connectorId, string conflictId) => connectorId == conflictId;
 
         static void AddToTempConflictList(List<IConflict> conflicts, List<IConflict> itemsToAdd, IArmConnectorConflict found)
         {
@@ -205,6 +199,7 @@ namespace Dev2.ViewModels.Merge
                     };
                     var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);
                     mergeArmConnectorConflict.OnChecked += ArmCheck;
+                    armConnector.HasConflict = true;
                     armConnector.DifferentArmConnector = mergeArmConnectorConflict;
                     armConnector.CurrentArmConnector = EmptyMergeArmConnectorConflict(id,armConnector);
                     armConnectorConflicts.Add(armConnector);
@@ -228,6 +223,7 @@ namespace Dev2.ViewModels.Merge
                 armConnector.CurrentArmConnector = mergeArmConnectorConflict;
                 armConnector.DifferentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector);
                 armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
+                armConnector.HasConflict = true;
                 if (armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
                 {
                     armConnectorConflicts.Add(armConnector);
@@ -240,7 +236,8 @@ namespace Dev2.ViewModels.Merge
             return new MergeArmConnectorConflict(container)
             {
                 SourceUniqueId = uniqueId.ToString(),
-                DestinationUniqueId = uniqueId.ToString()
+                DestinationUniqueId = uniqueId.ToString(),
+                Key = container.Key
             };
         }
 
@@ -481,7 +478,7 @@ namespace Dev2.ViewModels.Merge
             var nextId = idx + 1;
             if (nextId >= _conflicts.Count)
             {
-                return conflict;
+                return null;
             }
             return _conflicts[nextId];
         }
@@ -494,6 +491,10 @@ namespace Dev2.ViewModels.Merge
             }
 
             var conflict = GetNextConflict(currentConflict);
+            if (conflict == null)
+            {
+                return null;
+            }
             var nextConflict = conflict as IToolConflict;
             if (nextConflict != null)
             {
