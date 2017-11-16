@@ -28,6 +28,5 @@ namespace Dev2.Util
                 return collectUsageStats;
             }
         }
-        public static string ServicesAddress => LocalHost + "/wwwroot/services/Service/Resources/{0}";
     }
 }
