@@ -1755,7 +1755,8 @@ Scenario: Workflow Assign and Find Record index
 	  And the "Record" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
-		 
+	  
+
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
       And "WorkflowforLength" contains an Assign "Rec To Convert" as
