@@ -535,6 +535,7 @@ namespace Dev2
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
+            catalog.CleanUpOldVersionControlStructure();
             WriteLine("done.");
             return catalog;
         }

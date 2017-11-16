@@ -32,7 +32,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ResourceCatalogImpl;
 using Dev2.Runtime.ServiceModel.Data;
 using Warewolf.ResourceManagement;
-
+using Dev2.Common.Interfaces.Wrappers;
 
 namespace Dev2.Runtime.Hosting
 {
@@ -56,11 +56,18 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
             InitializeWorkspaceResources();
-            IServerVersionRepository versioningRepository = new ServerVersionRepository(new VersionStrategy(), this, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-            _catalogPluginContainer = new ResourceCatalogPluginContainer(versioningRepository, WorkspaceResources, managementServices);
+            _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper());
+            _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
-            var _directoryWrapper = new DirectoryWrapper();
-            versioningRepository.CleanUpOldVersionControlStructure(_directoryWrapper);
+            
+            
+           
+        }
+        IServerVersionRepository _serverVersionRepository;
+        IDirectory _directoryWrapper = new DirectoryWrapper();
+        public void CleanUpOldVersionControlStructure()
+        {
+            _serverVersionRepository.CleanUpOldVersionControlStructure(_directoryWrapper);
         }
 
         [ExcludeFromCodeCoverage]//used by tests for constructor injection

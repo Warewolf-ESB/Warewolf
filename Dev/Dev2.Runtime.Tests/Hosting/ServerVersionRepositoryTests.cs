@@ -45,9 +45,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(null, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(null, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
 
 
             //------------Execute Test---------------------------
@@ -67,10 +68,11 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, null, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, null, dir.Object, rootPath, file.Object,filePath.Object);
 
 
             //------------Execute Test---------------------------
@@ -90,10 +92,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
 
             const string rootPath = "bob";
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, null, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, null, rootPath, file.Object,filePath.Object);
 
 
             //------------Execute Test---------------------------
@@ -111,11 +114,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var strat = new Mock<IVersionStrategy>();
 #pragma warning restore 168
             var cat = new Mock<IResourceCatalog>();
+            var filePath = new Mock<IFilePath>();
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, null, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, null, file.Object,filePath.Object);
 
 
             //------------Execute Test---------------------------
@@ -136,9 +140,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceId = Guid.NewGuid();
 
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, null);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, null, filePath.Object);
 
 
             //------------Execute Test---------------------------
@@ -148,9 +153,9 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
-        static ServerVersionRepository CreateServerVersionRepository(IVersionStrategy strat, IResourceCatalog cat, IDirectory dir, string rootPath, IFile file)
+        static ServerVersionRepository CreateServerVersionRepository(IVersionStrategy strat, IResourceCatalog cat, IDirectory dir, string rootPath, IFile file, IFilePath filePath)
         {
-            var serverVersionRepostory = new ServerVersionRepository(strat, cat, dir, rootPath, file);
+            var serverVersionRepostory = new ServerVersionRepository(strat, cat, dir, rootPath, file, filePath);
             return serverVersionRepostory;
         }
 
@@ -165,10 +170,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object, filePath.Object);
 
             //------------Execute Test---------------------------
             var items = serverVersionRepostory.GetVersions(resourceId);
@@ -188,12 +194,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
 
             var resource = new Mock<IResource>();
             cat.Setup(a => a.GetResource(Guid.Empty, resourceId)).Returns(resource.Object);
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object, filePath. Object);
 
             //------------Execute Test---------------------------
             var items = serverVersionRepostory.GetVersions(resourceId);
@@ -220,8 +227,9 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "1", resourceId, versionId));
             resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { CreateFileName(versionId, 1), CreateFileName(versionId, 2) });
+            var filePath = new Mock<IFilePath>();
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object, filePath.Object);
             //------------Execute Test---------------------------
             var items = serverVersionRepostory.GetVersions(resourceId);
             //------------Assert Results-------------------------
@@ -241,6 +249,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
 
             var resource = new Mock<IResource>();
@@ -254,7 +263,7 @@ namespace Dev2.Tests.Runtime.Hosting
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
             file.Setup(a => a.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             file.Setup(a => a.Exists(It.IsAny<string>())).Returns(false).Callback(() => file.Setup(a => a.Exists(It.IsAny<string>())).Returns(true));
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object, filePath.Object);
             //------------Execute Test---------------------------
             serverVersionRepostory.StoreVersion(resource.Object, "userName", "password", Guid.Empty, "moot\\boot");
 
@@ -272,6 +281,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceId = Guid.NewGuid();
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
 
@@ -285,7 +295,7 @@ namespace Dev2.Tests.Runtime.Hosting
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             file.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
             file.Setup(a => a.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             //------------Execute Test---------------------------
@@ -308,6 +318,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
 
             var resource = new Mock<IResource>();
@@ -320,7 +331,7 @@ namespace Dev2.Tests.Runtime.Hosting
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
 
             file.Setup(a => a.Copy(It.IsAny<string>(), It.IsAny<string>())).Verifiable();
             //------------Execute Test---------------------------
@@ -342,6 +353,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceId = Guid.NewGuid();
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
 
@@ -360,7 +372,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             var res = serverVersionRepostory.RollbackTo(resourceId, "2");
 
@@ -382,6 +394,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
 
             var resource = new Mock<IResource>();
@@ -398,7 +411,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             var res = serverVersionRepostory.RollbackTo(resourceId, "2");
 
@@ -419,6 +432,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
             const string savePath = "NewPath/UnitTestResource";
 
@@ -437,7 +451,7 @@ namespace Dev2.Tests.Runtime.Hosting
             cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), savePath, It.IsAny<string>(), It.IsAny<string>()));
 
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             var res = serverVersionRepostory.RollbackTo(resourceId, "2");
 
@@ -457,6 +471,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceId = Guid.NewGuid();
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
             var dt = DateTime.Now;
@@ -470,7 +485,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             var res = serverVersionRepostory.DeleteVersion(resourceId, "2", "moot\\boot");
             var filedel = versionId + "_2_" + dt.Ticks + "_jjj";
@@ -493,6 +508,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var versionId = Guid.NewGuid();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
             var dt = DateTime.Now;
             var resource = new Mock<IResource>();
@@ -505,7 +521,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
 
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             var res = serverVersionRepostory.DeleteVersion(resourceId, "2", "moot\\boot");
             var filedel = versionId.ToString() + "_2_" + dt.Ticks + "_jjj";
@@ -525,9 +541,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var cat = new Mock<IResourceCatalog>();
             var file = new Mock<IFile>();
             var dir = new Mock<IDirectory>();
+            var filePath = new Mock<IFilePath>();
             const string rootPath = "bob";
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             var _directoryWrapper = new Mock<IDirectory>();
             _directoryWrapper.Setup(p => p.GetDirectories(It.IsAny<string>())).Returns(new string[0]);
@@ -545,12 +562,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
             SetUpVersionFile(versionFileName);
             Assert.IsTrue(File.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName));
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
             var _directoryWrapper = new DirectoryWrapper();
@@ -572,6 +590,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var file = new Mock<IFile>();
+            var filePath = new Mock<IFilePath>();
             var dir = new Mock<IDirectory>();
             const string rootPath = "bob";
             var subDirs = new List<string>
@@ -584,7 +603,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 Assert.IsTrue(File.Exists(item));
             }
             //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
             Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
             var _directoryWrapper = new DirectoryWrapper();
