@@ -65,7 +65,6 @@
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
-    <Compile Include="VersionStrategy\ServerVersionRepostoryTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
