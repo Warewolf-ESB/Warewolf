@@ -27,11 +27,6 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         private IExplorerServerResourceRepository _serverExplorerRepository;
 
-        public override string HandlesType()
-        {
-            return "FetchResourceDuplicates";
-        }
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Fetch Duplicate ResourcesError", GlobalConstants.WarewolfInfo);
@@ -51,30 +46,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            const string Value = "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>";
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder(Value)
-            };
-            using (var action = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                findServices.Actions.Add(action);
-                return findServices;
-            }
-        }
-
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
+            get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
+            set => _serverExplorerRepository = value;
         }
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchResourceDuplicates";
     }
 }

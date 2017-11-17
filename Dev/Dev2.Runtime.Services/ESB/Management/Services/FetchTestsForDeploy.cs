@@ -65,18 +65,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), null);
 
-            return newDs;
-        }
-
-        public override string HandlesType()
-        {
-            return "FetchTestsForDeploy";
-        }
+        public override string HandlesType() => "FetchTestsForDeploy";
     }
 }

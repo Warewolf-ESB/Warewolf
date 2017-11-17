@@ -71,28 +71,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><DebugItemFilePath ColumnIODirection=\"Input\"></DebugItemFilePath><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (var findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                findDirectoryService.Actions.Add(findDirectoryServiceAction);
-                return findDirectoryService;
-            }
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><DebugItemFilePath ColumnIODirection=\"Input\"></DebugItemFilePath><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType()
-        {
-            return "FetchDebugItemFileService";
-        }
+        public override string HandlesType() => "FetchDebugItemFileService";
     }
 }

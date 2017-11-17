@@ -63,28 +63,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var serviceEntry = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (ServiceAction serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                SourceMethod = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService
-            })
-            {
-                serviceEntry.Actions.Add(serviceAction);
-                return serviceEntry;
-            }
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType()
-        {
-            return "FetchRemoteDebugMessagesService";
-        }
+        public override string HandlesType() => "FetchRemoteDebugMessagesService";
     }
 }

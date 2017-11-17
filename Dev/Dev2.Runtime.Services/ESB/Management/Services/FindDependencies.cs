@@ -26,9 +26,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find dependencies for a service
-    /// </summary>
     public class FindDependencies : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -144,33 +141,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-        public override string HandlesType()
-        {
-            return "FindDependencyService";
-        }
-
-        public override DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder(@"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #region Private Methods
-
 
         private StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
         {
@@ -198,10 +169,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-
         #endregion
 
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), @"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>");
 
-
+        public override string HandlesType() => "FindDependencyService";
     }
 }

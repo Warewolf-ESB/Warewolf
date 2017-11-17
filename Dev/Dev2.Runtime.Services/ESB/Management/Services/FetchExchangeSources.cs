@@ -15,11 +15,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchExchangeSources : DefaultEsbManagementEndpoint
     {
-        public override string HandlesType()
-        {
-            return "FetchExchangeSources";
-        }
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -49,25 +44,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (var fetchItemsAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                findServices.Actions.Add(fetchItemsAction);
-                return findServices;
-            }
-        }
-
         private ResourceCatalog Resources => ResourceCatalog.Instance;
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchExchangeSources";
     }
 }
