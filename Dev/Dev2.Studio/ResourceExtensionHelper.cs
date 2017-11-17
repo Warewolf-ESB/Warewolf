@@ -39,6 +39,8 @@ namespace Dev2.Studio
                     if (moveSource)
                     {
                         File.Move(filePath, Path.Combine(EnvironmentVariables.ResourcePath, Path.GetFileName(filePath)));
+                        shellViewModel?.ExplorerViewModel?.RefreshEnvironment(serverRepo.ActiveServer.EnvironmentID);
+                        serverRepo.ActiveServer.ExplorerRepository.LoadExplorer();
                         serverRepo.ReloadServers();
                         resourceModel = serverRepo.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
                     }
