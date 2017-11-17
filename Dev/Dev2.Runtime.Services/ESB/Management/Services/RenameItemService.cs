@@ -12,14 +12,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
@@ -29,7 +27,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class RenameItemService : IEsbManagementEndpoint
     {
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("itemToRename", out StringBuilder tmp);
@@ -44,16 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
         private IExplorerServerResourceRepository _serverExplorerRepository;
-
-        public string HandlesType()
-        {
-            return "RenameItemService";
-        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -110,21 +99,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(item);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToRename ColumnIODirection=\"Input\"/><newName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
-
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
+            get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
+            set => _serverExplorerRepository = value;
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><itemToRename ColumnIODirection=\"Input\"/><newName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "RenameItemService";
     }
 }

@@ -3,43 +3,30 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    
     public class DuplicateFolderService : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         private readonly IResourceCatalog _catalog;
 
-        public DuplicateFolderService(IResourceCatalog catalog)
-        {
-            _catalog = catalog;
-        }
-
+        public DuplicateFolderService(IResourceCatalog catalog) => _catalog = catalog;
         
         public DuplicateFolderService()
         {
 
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();

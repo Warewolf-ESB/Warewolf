@@ -12,11 +12,8 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
@@ -67,18 +64,8 @@ namespace Dev2.Runtime.ESB.Management
             return serializer.SerializeToBuilder(res);
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
-
-        public override string HandlesType()
-        {
-            return "TerminateExecutionService";
-        }
+        public override string HandlesType() => "TerminateExecutionService";
     }
 }

@@ -11,11 +11,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
@@ -29,47 +26,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage {HasError = false};
-
+            ExecuteMessage msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("Pong @ " + Now.Invoke().ToString("yyyy-MM-dd hh:mm:ss.fff"));
-
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-
             return serializer.SerializeToBuilder(msg);
         }
 
         public Func<DateTime> Now { get; set; }
 
-        public override string HandlesType()
-        {
-            return "Ping";
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService ds = new DynamicService {Name = HandlesType()};
-
-            ServiceAction action = new ServiceAction
-                {
-                    Name = HandlesType(),
-                    SourceMethod = HandlesType(),
-                    ActionType = enActionType.InvokeManagementDynamicService,
-                    DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-                };
-
-            ds.Actions.Add(action);
-
-            return ds;
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "Ping";
     }
 }

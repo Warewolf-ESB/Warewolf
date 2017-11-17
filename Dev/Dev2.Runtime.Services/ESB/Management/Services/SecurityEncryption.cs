@@ -7,28 +7,11 @@
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU General Public License <http://www.gnu.org/licenses/gpl.html>
 */
-///////////////////////////////////////////////////////////////////////////////
-// SAMPLE: Symmetric key encryption and decryption using Rijndael algorithm.
-// 
-// To run this sample, create a new Visual C# project using the Console
-// Application template and replace the contents of the Class1.cs file with
-// the code below.
-//
-// THIS CODE AND INFORMATION IS PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, 
-// EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
-// WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
-// 
-// Copyright (C) 2002 Obviex(TM). All rights reserved.
-// 
-
-#region
 
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
-
-#endregion
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -106,7 +89,5 @@ namespace Dev2.Runtime.ESB.Management.Services
             var plainText = Encoding.UTF8.GetString(plainTextBytes);  
             return plainText;
         }
-            
-        
     }
 }

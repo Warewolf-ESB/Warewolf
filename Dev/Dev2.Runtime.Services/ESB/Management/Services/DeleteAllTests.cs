@@ -45,21 +45,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.TryParse(tmp.ToString(), out Guid resourceId) ? resourceId : Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public ITestCatalog TestCatalog
         {
-            private get
-            {
-                return _testCatalog ?? Runtime.TestCatalog.Instance;
-            }
-            set
-            {
-                _testCatalog = value;
-            }
+            private get => _testCatalog ?? Runtime.TestCatalog.Instance;
+            set => _testCatalog = value;
         }
 
         private ITestCatalog _testCatalog;
