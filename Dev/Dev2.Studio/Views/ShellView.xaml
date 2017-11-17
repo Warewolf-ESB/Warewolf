@@ -20,7 +20,6 @@
         WindowState="Maximized"
         Title="{Binding DisplayName}"
         Closing="MainView_OnClosing"
-        Closed="MainViewWindow_Closed"
         Icon="pack://application:,,,/Warewolf Studio;component/Warewolf.ico"
         x:Name="MainViewWindow"
         Style="{DynamicResource MetroWindowStyle}"

@@ -104,7 +104,7 @@ namespace Dev2.Studio
         protected override void OnStartup(StartupEventArgs e)
         {
             Tracker.StartStudio();
-
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
             Task.Factory.StartNew(() =>
                 {
                     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
@@ -140,7 +140,7 @@ namespace Dev2.Studio
 #endif
         }
 
-        private static ISplashView splashView;
+        private static ISplashView _splashView;
 
         private ManualResetEvent _resetSplashCreated;
         private Thread _splashThread;
@@ -161,7 +161,7 @@ namespace Dev2.Studio
             if(_shellViewModel != null)
             {
                 CreateDummyWorkflowDesignerForCaching();
-                SplashView.CloseSplash();
+                SplashView.CloseSplash(false);
                 CheckForDuplicateResources();
                 var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
                 if (!File.Exists(settingsConfigFile))
@@ -270,7 +270,7 @@ namespace Dev2.Studio
         protected override void OnExit(ExitEventArgs e)
         {
             Tracker.Stop();
-
+            SplashView.CloseSplash(true);
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
@@ -299,14 +299,12 @@ namespace Dev2.Studio
             Environment.Exit(0);
         }
 
-        #region Implementation of IApp
-
-        #region Implementation of IApp
 
         public new void Shutdown()
         {
             try
             {
+                SplashView.CloseSplash(true);
                 base.Shutdown();
             }            
             catch (Exception e) 
@@ -316,10 +314,7 @@ namespace Dev2.Studio
             ForceShutdown();
         }
 
-        #endregion
-
-        #endregion
-
+      
         public bool ShouldRestart { get; set; }
 
         public bool HasShutdownStarted
@@ -334,7 +329,7 @@ namespace Dev2.Studio
             }
         }
 
-        public static ISplashView SplashView { get => splashView; set => splashView = value; }
+        public static ISplashView SplashView { get => _splashView; set => _splashView = value; }
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
