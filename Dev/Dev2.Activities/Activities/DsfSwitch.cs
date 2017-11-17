@@ -253,10 +253,7 @@ namespace Dev2.Activities
                 return true;
             }
 
-            var switchesComparer = new SwitchesActivityComparer();
-            var switchesAreEqual = switchesComparer.Equals(Switches, other.Switches);
             return base.Equals(other) 
-                && switchesAreEqual
                 && string.Equals(Switch, other.Switch) 
                 && string.Equals(Result, other.Result);
         }
@@ -286,9 +283,6 @@ namespace Dev2.Activities
             unchecked
             {
                 int hashCode = base.GetHashCode();
-                hashCode = (hashCode * 397) ^ (Inner != null ? Inner.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Switches != null ? Switches.GetHashCode() : 0);
-                hashCode = (hashCode * 397) ^ (Default != null ? Default.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Switch != null ? Switch.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
