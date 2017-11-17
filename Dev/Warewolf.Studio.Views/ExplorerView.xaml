@@ -397,6 +397,7 @@
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <CheckBox x:Name="EnvironmentNameCheckBox"
                                           ClickMode="Press"
+                                          Click="EnvironmentNameCheckBox_Click"
                                           IsChecked="{Binding IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{Binding IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           ToolTip="{Binding ExplorerTooltips.DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -968,6 +969,7 @@
                                         </Image>
                                         <CheckBox x:Name="ResourceNameCheckBox"
                                                   ClickMode="Press"
+                                                  Click="ResourceNameCheckBox_Click"
                                                   IsChecked="{Binding Path=IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   IsEnabled="{Binding Path=IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   ToolTip="{Binding Path=ExplorerTooltips.DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

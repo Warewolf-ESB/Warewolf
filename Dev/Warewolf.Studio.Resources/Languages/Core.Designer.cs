@@ -250,6 +250,42 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are no items to deploy in this folder..
+        /// </summary>
+        public static string DeployEmptyFolderDescription {
+            get {
+                return ResourceManager.GetString("DeployEmptyFolderDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy Empty Folder.
+        /// </summary>
+        public static string DeployEmptyFolderHeader {
+            get {
+                return ResourceManager.GetString("DeployEmptyFolderHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to There are no items to deploy on this server..
+        /// </summary>
+        public static string DeployEmptyServerDescription {
+            get {
+                return ResourceManager.GetString("DeployEmptyServerDescription", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Deploy Empty Server.
+        /// </summary>
+        public static string DeployEmptyServerHeader {
+            get {
+                return ResourceManager.GetString("DeployEmptyServerHeader", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Nothing selected to deploy..
         /// </summary>
         public static string DeployNoResourcesSelected {

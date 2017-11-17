@@ -7,7 +7,7 @@ using System.Windows.Media;
 using Dev2;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
-
+using Dev2.Common.Interfaces.Studio.Controller;
 
 namespace Warewolf.Studio.Views
 {
@@ -530,6 +530,45 @@ namespace Warewolf.Studio.Views
                 return true;
             }
             return false;
+        }
+
+        private void ResourceNameCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            var checkbox = sender as CheckBox;
+            var explorerItemViewModel = checkbox?.DataContext as ExplorerItemViewModel;
+            if (explorerItemViewModel == null)
+            {
+                return;
+            }
+            if (explorerItemViewModel.IsFolder && explorerItemViewModel.ChildrenCount == 0)
+            {
+                string header = Studio.Resources.Languages.Core.DeployEmptyFolderHeader;
+                string description = Studio.Resources.Languages.Core.DeployEmptyFolderDescription;
+                ShowNoResourcesToDeploy(e, header, description);
+            }
+        }
+
+        private void EnvironmentNameCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            var checkbox = sender as CheckBox;
+            var environmentViewModel = checkbox?.DataContext as EnvironmentViewModel;
+            if (environmentViewModel == null)
+            {
+                return;
+            }
+            if (environmentViewModel.ChildrenCount == 0)
+            {
+                string header = Studio.Resources.Languages.Core.DeployEmptyServerHeader;
+                string description = Studio.Resources.Languages.Core.DeployEmptyServerDescription;
+                ShowNoResourcesToDeploy(e, header, description);
+            }
+        }
+
+        private static void ShowNoResourcesToDeploy(RoutedEventArgs e, string header, string description)
+        {
+            var popupController = CustomContainer.Get<IPopupController>();
+            popupController?.ShowDeployNoResourcesToDeploy(header, description);
+            e.Handled = true;
         }
     }
 }
