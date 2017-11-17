@@ -55,13 +55,21 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry()
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
+            var findServices = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
+            using (var fetchItemsAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            })
+            {
+                findServices.Actions.Add(fetchItemsAction);
+                return findServices;
+            }
         }
 
         public ResourceCatalog Resources => ResourceCatalog.Instance;

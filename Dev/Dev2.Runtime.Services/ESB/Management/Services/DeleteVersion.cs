@@ -110,9 +110,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         public DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-            return newDs;
+            using (ServiceAction sa = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            })
+            {
+                newDs.Actions.Add(sa);
+                return newDs;
+            }
         }
 
         public IServerVersionRepository ServerVersionRepo
