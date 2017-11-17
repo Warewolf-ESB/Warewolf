@@ -11,12 +11,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Xml.Linq;
-using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Interfaces;
 using Microsoft.AspNet.SignalR.Client;

@@ -88,20 +88,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        static string FormatMessage(string message, string filePath, string directory)
-        {
-            return $"DeleteLog: Error deleting '{filePath}' from '{directory}'...{message}";
-        }
+        static string FormatMessage(string message, string filePath, string directory) => $"DeleteLog: Error deleting '{filePath}' from '{directory}'...{message}";
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Administrator;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Administrator;
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Directory ColumnIODirection=\"Input\"/><ResourcePath ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 

@@ -5,11 +5,8 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -140,40 +137,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return dllListing;
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
-        }
-
-        public override string HandlesType()
-        {
-            return "GetFiles";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "GetFiles";
     }
 
     public interface IGetFiles

@@ -18,13 +18,11 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Oracle.ManagedDataAccess.Client;
 using System.Data.Odbc;
-using Dev2.Common.Interfaces.Enums;
 using MySql.Data.MySqlClient;
 using Warewolf.Resource.Errors;
 

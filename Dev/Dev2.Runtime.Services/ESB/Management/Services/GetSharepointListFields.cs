@@ -4,13 +4,10 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -18,26 +15,10 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class GetSharepointListFields : DefaultEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<string>
-
-        public override string HandlesType()
-        {
-            return "GetSharepointListFields";
-        }
-
-        #endregion
-
         #region Implementation of DefaultEsbManagementEndpoint
 
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(values == null)
@@ -107,40 +88,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public override DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #endregion
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "GetSharepointListFields";
     }
 }

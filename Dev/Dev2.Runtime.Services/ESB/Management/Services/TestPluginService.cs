@@ -14,11 +14,9 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
@@ -29,24 +27,14 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class TestPluginService : IEsbManagementEndpoint
     {
         IResourceCatalog _rescat;
         IPluginServices _pluginServices;
 
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
-
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -58,10 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Info("Test Plugin Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("PluginService", out StringBuilder resourceDefinition);
-                IPluginService src = serializer.Deserialize<IPluginService>(resourceDefinition);
-
-
-                
+                IPluginService src = serializer.Deserialize<IPluginService>(resourceDefinition);                
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
                 
                 var pluginsrc = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
@@ -83,47 +68,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
                 Dev2Logger.Error(err, GlobalConstants.WarewolfError);
-
             }
 
             return serializer.SerializeToBuilder(msg);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><PluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-
-            return newDs;
-        }
-
         public IResourceCatalog ResourceCatalogue
         {
-            get
-            {
-                return _rescat ?? ResourceCatalog.Instance;
-            }
-            set
-            {
-                _rescat = value;
-            }
-        }
-        public IPluginServices PluginServices
-        {
-            get
-            {
-                return _pluginServices ?? new PluginServices();
-            }
-            set
-            {
-                _pluginServices = value;
-            }
+            get => _rescat ?? ResourceCatalog.Instance;
+            set => _rescat = value;
         }
 
-        public string HandlesType()
+        public IPluginServices PluginServices
         {
-            return "TestPluginService";
+            get => _pluginServices ?? new PluginServices();
+            set => _pluginServices = value;
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><PluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "TestPluginService";
     }
 }

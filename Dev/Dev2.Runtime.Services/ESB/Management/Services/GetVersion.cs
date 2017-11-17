@@ -12,7 +12,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Util;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -20,7 +19,6 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
@@ -31,20 +29,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersion : DefaultEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<string>
-
         private IServerVersionRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalog;
 
-        public override string HandlesType()
-        {
-            return "GetVersion";
-        }
-
-        #endregion
-
         #region Implementation of IEsbManagementEndpoint
-        
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -57,9 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 if (!values.ContainsKey("versionInfo"))
                 {
-
                     throw new ArgumentNullException(ErrorResource.NoResourceIdInTheIncomingData);
-
                 }
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
@@ -85,27 +72,23 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return serializer.SerializeToBuilder(error);
             }
         }
-        
-        public override DynamicService CreateServiceEntry()
-        {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            serviceEntry.Actions.Add(serviceAction);
-            return serviceEntry;
-        }
 
         #endregion
 
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), Hosting.ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
-            set { _serverExplorerRepository = value; }
+            get => _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), Hosting.ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
+            set => _serverExplorerRepository = value;
         }
 
         public IResourceCatalog ResourceCatalog
         {
-            get { return _resourceCatalog ?? Hosting.ResourceCatalog.Instance; }
-            set { _resourceCatalog = value; }
+            get => _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
+            set => _resourceCatalog = value;
         }
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "GetVersion";
     }
 }

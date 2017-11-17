@@ -4,22 +4,18 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    
     public class DuplicateResourceService : IEsbManagementEndpoint
     {
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
@@ -34,23 +30,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         private readonly IResourceCatalog _catalog;
 
-        public DuplicateResourceService(IResourceCatalog catalog)
-        {
-            _catalog = catalog;
-        }
-
+        public DuplicateResourceService(IResourceCatalog catalog) => _catalog = catalog;
         
         public DuplicateResourceService()
         {
 
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
