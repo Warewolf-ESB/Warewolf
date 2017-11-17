@@ -3136,23 +3136,23 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var next = GetItemFromNodeCollection(destinationUniqueId);
                 if (next != null)
                 {
-                    if (key != "Default")
+                    var nodeItem = next.GetCurrentValue() as FlowNode;
+                    if (nodeItem != null)
                     {
-                        var parentNodeProperty = switchItem.Properties["Cases"];
-                        var cases = parentNodeProperty?.Dictionary;
-                        var nodeItem = next.GetCurrentValue() as FlowNode;
-                        if (nodeItem != null)
+                        if (key != "Default")
                         {
+                            var parentNodeProperty = switchItem.Properties["Cases"];
+                            var cases = parentNodeProperty?.Dictionary;
                             cases.Add(key, nodeItem);
                             parentNodeProperty.SetValue(cases);
                         }
-                    }
-                    else
-                    {
-                        var defaultProperty = switchItem.Properties["Default"];
-                        if (defaultProperty != null)
+                        else
                         {
-                            defaultProperty.SetValue(switchItem.GetCurrentValue());
+                            var defaultProperty = switchItem.Properties["Default"];
+                            if (defaultProperty != null)
+                            {
+                                defaultProperty.SetValue(nodeItem);
+                            }
                         }
                     }
                     Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
