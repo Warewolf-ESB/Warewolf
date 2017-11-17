@@ -65,6 +65,11 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
 using Dev2.Webs;
+using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Common;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -107,6 +112,8 @@ namespace Dev2.Studio.ViewModels
         private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
         private readonly IViewFactory _factory;
+        private IFile _file;
+        private Common.Interfaces.Wrappers.IFilePath _filePath;
         private ICommand _showStartPageCommand;
         IContextualResourceModel contextualResourceModel;
         bool _canDebug = true;
@@ -181,9 +188,10 @@ namespace Dev2.Studio.ViewModels
             string fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
+            var serverRepo = CustomContainer.Get<IServerRepository>();
             if (singleResource == null)
             {
-                contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this);
+                contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
                 if (contextualResourceModel != null)
                 {
                     OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
@@ -511,6 +519,8 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
+            _file = new FileWrapper();
+            _filePath = new FilePathWrapper();
             Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
             VerifyArgument.IsNotNull(@"asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
@@ -2285,6 +2295,11 @@ namespace Dev2.Studio.ViewModels
             WorkSurfaceContextViewModel currentContext = FindWorkSurfaceContextViewModel(key);
             var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
             vm.CanMerge = true;
+        }
+
+        public IResource CreateResourceFromStreamContent(string resourceContent)
+        {
+            return new Resource(resourceContent.ToStringBuilder().ToXElement());
         }
     }
 }

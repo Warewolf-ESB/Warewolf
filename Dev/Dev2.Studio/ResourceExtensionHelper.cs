@@ -6,30 +6,29 @@ using System.Windows;
 using System.Xml.Linq;
 using Dev2.Studio.Core.Factories;
 using Dev2.Common;
-using Dev2.Studio.ViewModels;
-using Warewolf.Studio.ViewModels;
 using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Studio
-{
+{   
     public static class ResourceExtensionHelper
     {
-        public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, ShellViewModel shellViewModel)
+        public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, IShellViewModel shellViewModel, IFile file, IFilePath path, IServerRepository serverRepository)
         {
             IContextualResourceModel resourceModel = null;
-            IServerRepository serverRepo = null;
-            Resource resource = null;
+            IServerRepository serverRepo = serverRepository;
+            IResource resource = null;
             var saveResource = popupController.ShowResourcesNotInCorrectPath();
             if (saveResource == MessageBoxResult.OK)
             {
-                using (var stream = File.OpenRead(filePath))
+                using (var stream = file.OpenRead(filePath))
                 {
                     using (var streamReader = new StreamReader(stream))
                     {
                         var resourceContent = streamReader.ReadToEnd();
-                        serverRepo = CustomContainer.Get<IServerRepository>();
                         var serviceXml = XDocument.Parse(resourceContent);
-                        resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
+                        resource = shellViewModel.CreateResourceFromStreamContent(resourceContent);
                         resourceModel = ResourceModelFactory.CreateResourceModel(serverRepo.ActiveServer, resource, serviceXml);
                     }
                 }
@@ -38,10 +37,10 @@ namespace Dev2.Studio
                     var moveSource = popupController.ShowCanNotMoveResource() == MessageBoxResult.OK;
                     if (moveSource)
                     {
-                        File.Move(filePath, Path.Combine(EnvironmentVariables.ResourcePath, Path.GetFileName(filePath)));
+                        var destination = path.Combine(EnvironmentVariables.ResourcePath, path.GetFileName(filePath));
+                        file.Move(filePath, destination);
                         await shellViewModel.ExplorerViewModel.RefreshEnvironment(serverRepo.ActiveServer.EnvironmentID);
                         resourceModel = serverRepo.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
-                        
                     }
                 }
                 return resourceModel;

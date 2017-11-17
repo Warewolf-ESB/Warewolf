@@ -9,8 +9,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
-
-
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -139,5 +138,6 @@ namespace Dev2.Studio.Interfaces
         IWorkflowDesignerViewModel GetWorkflowDesigner();
         void OpenMergeDialogView(IExplorerItemViewModel currentResource);
         void UpdateExplorerWorkflowChanges(Guid resourceId);
+        IResource CreateResourceFromStreamContent(string resourceContent);
     }
 }

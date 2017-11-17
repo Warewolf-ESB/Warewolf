@@ -213,6 +213,7 @@
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\DomainWrapper.cs" />
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />
+    <Compile Include="Wrappers\FilePathWrapper.cs" />
     <Compile Include="Wrappers\FileWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
