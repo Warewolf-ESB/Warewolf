@@ -1,4 +1,5 @@
 ﻿using Dev2.Common;
+using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
@@ -25,8 +26,8 @@ namespace Dev2.Integration.Tests.VersionStrategy
             var file = new FileWrapper();
             var filePath = new PathWrapper();
             var dir = new DirectoryWrapper();
-             string rootPath = EnvironmentVariables.ResourcePath;
-           
+            string rootPath = EnvironmentVariables.ResourcePath;
+
             var pathResource = filePath.Combine(rootPath, "Acceptance Tests", "VersionControl");
             dir.CreateIfNotExists(pathResource);
             try
@@ -37,10 +38,9 @@ namespace Dev2.Integration.Tests.VersionStrategy
             {
                 //
             }
-          
+
             dir.Move("TestData\\VersionControl", filePath.Combine(pathResource));
             Assert.IsTrue(dir.Exists(pathResource));
-            //ResourceCatalog.Instance.Reload();
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat, dir, rootPath, file, filePath);
             //------------Execute Test---------------------------
@@ -59,15 +59,32 @@ namespace Dev2.Integration.Tests.VersionStrategy
             var movedVersions = dir.GetFiles(newPath);
             Assert.AreEqual(6, movedVersions.Length);
 
-            foreach (var item in movedVersions.Select(p=>filePath.GetFileName(p)))
+            foreach (var item in movedVersions.Select(p => filePath.GetFileName(p)))
             {
                 CollectionAssert.Contains(newVersions, item);
             }
             foreach (var item in movedVersions)
             {
                 Assert.IsTrue(File.Exists(item), item + " was not created as part of CleanUpOldVersionControlStructure");
-                File.Delete(item);
             }
+
+            var allVersions = serverVersionRepostory.GetVersions("e296f78f-27ec-40de-817a-0e874528050e".ToGuid());
+            Assert.AreEqual(6, allVersions.Count);
+            var singleResource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, "e296f78f-27ec-40de-817a-0e874528050e".ToGuid());
+            Common.Interfaces.Versioning.IVersionInfo versionInfo = singleResource.VersionInfo;
+            versionInfo.VersionNumber = 1.ToString();
+            var singleVersion = serverVersionRepostory.GetVersion(versionInfo, singleResource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
+            Assert.IsNotNull(singleVersion);
+
+            for (int i = 1; i < 7; i++)
+            {
+                serverVersionRepostory.DeleteVersion("e296f78f-27ec-40de-817a-0e874528050e".ToGuid(), i.ToString(), singleResource.GetResourcePath(GlobalConstants.ServerWorkspaceID));
+            }
+            foreach (var item in movedVersions)
+            {
+                Assert.IsFalse(File.Exists(item), item + " was not created as part of CleanUpOldVersionControlStructure");
+            }
+
         }
         static ServerVersionRepository CreateServerVersionRepository(IVersionStrategy strat, IResourceCatalog cat, IDirectory dir, string rootPath, IFile file, IFilePath filePath)
         {
@@ -75,21 +92,6 @@ namespace Dev2.Integration.Tests.VersionStrategy
             return serverVersionRepostory;
         }
 
-        private static void SetUpVersionFile(string versionFileName)
-        {
-            if (!Directory.Exists(EnvironmentVariables.ResourcePath))
-            {
-                Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
-            }
-            if (!Directory.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl"))
-            {
-                Directory.CreateDirectory(EnvironmentVariables.ResourcePath + "\\VersionControl");
-            }
-            if (!File.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName))
-            {
-                var file = File.Create(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName);
-                file.Dispose();
-            }
-        }
+
     }
 }
