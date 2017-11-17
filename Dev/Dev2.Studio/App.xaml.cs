@@ -118,8 +118,7 @@ namespace Dev2.Studio
                 DirectoryHelper.CleanUp(Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug"));
             });
 
-            bool createdNew;
-            var localprocessGuard = new Mutex(true, "Warewolf Studio", out createdNew);
+            var localprocessGuard = new Mutex(true, "Warewolf Studio", out bool createdNew);
 
             if (createdNew)
             {
@@ -208,9 +207,11 @@ namespace Dev2.Studio
         }
 
         private static void CreateDummyWorkflowDesignerForCaching()
-        {        
-            var workflowDesigner = new WorkflowDesigner();
-            workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
+        {
+            var workflowDesigner = new WorkflowDesigner
+            {
+                PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable())
+            };
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
             if (designerConfigService != null)
             {
@@ -287,11 +288,6 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
-
-            //CustomContainer.RegisterInstancePerRequestType<ICreateDuplicateResourceView>(() => new CreateDuplicateResourceDialog());
-
-
-
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
