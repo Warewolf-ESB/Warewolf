@@ -198,28 +198,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return serializer.SerializeToBuilder(res);
             }
         }
-        
-        public override DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
 
         #endregion
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
         public override string HandlesType() => "GetDatabaseColumnsForTableService";
     }
