@@ -34,7 +34,7 @@ namespace Dev2.Studio.Interfaces
 
 	    void SelectItem(Guid id);
 
-	    void RefreshEnvironment(Guid environmentId);
+        Task RefreshEnvironment(Guid environmentId);
 
 	    Task RefreshSelectedEnvironment();
 	}

@@ -64,11 +64,7 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using System.IO;
-using System.Xml.Linq;
-using Dev2.Runtime.ServiceModel.Data;
-using Dev2.Common.Common;
 using Dev2.Webs;
-using System.Text;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -177,17 +173,17 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        internal void LoadWorkflow(string e)
+        internal async Task<bool> LoadWorkflow(string e)
         {
             contextualResourceModel = null;
-            if (!File.Exists(e)) { return; }
+            if (!File.Exists(e)) { return false; }
             ActiveServer.ResourceRepository.Load();
             string fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
             if (singleResource == null)
             {
-                contextualResourceModel = ResourceExtensionHelper.HandleResourceNotInResourceFolder(e, fileName, PopupProvider, this);
+                contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this);
                 if (contextualResourceModel != null)
                 {
                     OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
@@ -201,6 +197,7 @@ namespace Dev2.Studio.ViewModels
             {
                 OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
             }
+            return true;
         }
 
 
