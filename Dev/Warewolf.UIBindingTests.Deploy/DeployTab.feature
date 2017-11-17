@@ -1,4 +1,5 @@
 ﻿@MSTest:DeploymentItem:InfragisticsWPF4.DataPresenter.v15.1.dll
+@MSTest:DeploymentItem:InfragisticsWPF4.Controls.Grids.XamGrid.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Menus.XamDataTree.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Editors.XamComboEditor.v15.1.dll
 @MSTest:DeploymentItem:InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll
@@ -8,31 +9,13 @@
 @MSTest:DeploymentItem:Newtonsoft.Json.dll
 @MSTest:DeploymentItem:Microsoft.Practices.Prism.SharedInterfaces.dll
 @MSTest:DeploymentItem:System.Windows.Interactivity.dll
+@MSTest:DeploymentItem:Warewolf.Studio.Themes.Luna.dll
 @DeployTab
 Feature: DeployTab
 	In order to Deploy resource.
 	As a warewolf user
 	I want to Deploy aresource from one server to another server.
-
-#Present in Document
-#Ensure Deploy Tab is opening when user click on deploy.
-#Deploy button is enabling when selecting resource in source side
-#Ensure Deploy screen deploys successfull from one serve to the next
-#Conflicting resources on Source and Destination server
-#Conflicting resources on Source and Destination server deploy is not successful
-#Select all Dependecies is selecting dependecies
-#Deploying a connector with a source
-#Mouse right click select Dependecies is selecting dependecies
-#Filtering and clearing filter on source side
-#Deploy is successfull when filter is on on both sides
-#Selected for deploy items type is showing on deploy tab
-#Deploy Summary is showing new and overiding resources
-#Not allowing to deploy when source and destination servers are same 
-#One server with different names in both sides not allow to deploy
-#Deploy is enabled when I change server after validation thrown
-#Deploy a resource without dependency is showing popup
-#Wolf-1106 Deploying items from one server to the next with the same name
-
+	
 Scenario: Deploy Tab
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
@@ -123,7 +106,7 @@ Scenario: Selected for deploy items type is showing on deploy tab
 	 Then Services is "1"
 	 And Sources is "1"
 
-moveScenario: Deploy Summary is showing new and overiding resources 
+Scenario: Deploy Summary is showing new and overiding resources 
 	 Given I have deploy tab opened
 	 And selected Source Server is "localhost"
 	 And source is connected

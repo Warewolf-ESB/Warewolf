@@ -54,6 +54,9 @@
     <Reference Include="InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1">
       <HintPath>..\Binaries\InfragisticsWPF4.Controls.Interactions.XamDialogWindow.v15.1.dll</HintPath>
     </Reference>
+    <Reference Include="InfragisticsWPF4.DataPresenter.v15.1">
+      <HintPath>..\Binaries\InfragisticsWPF4.DataPresenter.v15.1.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.15.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
@@ -232,7 +235,8 @@
   </Target>
   <Import Project="..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets" Condition="Exists('..\packages\MSTest.TestAdapter.1.1.18\build\net45\MSTest.TestAdapter.targets')" />
   <PropertyGroup>
-    <PreBuildEvent>"$(SolutionDir)packages\SpecFlow.2.2.0\tools\specflow.exe" generateall "$(ProjectPath)"</PreBuildEvent>
+    <PreBuildEvent>"$(SolutionDir)packages\SpecFlow.2.2.0\tools\specflow.exe" generateall "$(ProjectPath)"
+powershell -ExecutionPolicy Bypass -Command "&amp;'$(ProjectDir)GenerateStudioDeploymentItemAttributes.ps1'"</PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

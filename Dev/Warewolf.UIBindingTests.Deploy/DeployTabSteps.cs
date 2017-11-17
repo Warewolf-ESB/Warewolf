@@ -21,6 +21,7 @@ using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Dev2.Threading;
 using Dev2.ConnectionHelpers;
+using Dev2.Studio.Core;
 
 namespace Warewolf.UIBindingTests.Deploy
 {
@@ -663,6 +664,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             var msg = new Mock<IPopupMessage>();
             GetPopup().Object.Show(msg.Object);
+            CustomContainer.Register<IServerRepository>(new ServerRepository());
         }
 
         [Then(@"a warning message appears ""(.*)""")]
