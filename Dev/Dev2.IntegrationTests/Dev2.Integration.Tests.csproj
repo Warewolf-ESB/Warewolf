@@ -65,6 +65,7 @@
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
+    <Compile Include="VersionStrategy\ServerVersionRepostoryTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -248,7 +249,26 @@
       <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_1_636465118385389893_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_2_636465118417350181_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_3_636465118438843826_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_4_636465118457085391_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_5_636465118492924213_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_6_636465118541785216_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\CitiesDatabase.xml" />
@@ -373,6 +393,11 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\Google_Address_Lookup.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\BUG_10638_Result.xml" />
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="TestData\LoopTest.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
