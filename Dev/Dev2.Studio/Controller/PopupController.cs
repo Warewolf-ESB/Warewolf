@@ -165,7 +165,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowCanNotMoveResource()
         {
-            Buttons = MessageBoxButton.OK;
+            Buttons = MessageBoxButton.OKCancel;
             Header = "Source data contains encrypted connections strings.";
             Description = "Click Continue to discard the connection information and re-enter it or Cancel and then deploy it to this machine from the resources originating server.";
             ImageType = MessageBoxImage.Information;

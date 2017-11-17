@@ -5,13 +5,20 @@ using System.IO;
 using System.Windows;
 using System.Xml.Linq;
 using Dev2.Studio.Core.Factories;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Studio.Controller;
+using Dev2.Studio.ViewModels;
+using System;
 
 namespace Dev2.Studio
 {
     public static class ResourceExtensionHelper
     {
-        public static IContextualResourceModel HandleResourceNotInResourceFolder(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController)
+        public static IContextualResourceModel HandleResourceNotInResourceFolder(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, ShellViewModel shellViewModel)
         {
+            IContextualResourceModel resourceModel = null;
+            IServerRepository serverRepo = null;
+            Resource resource = null;
             var saveResource = popupController.ShowResourcesNotInCorrectPath();
             if (saveResource == MessageBoxResult.OK)
             {
@@ -20,21 +27,27 @@ namespace Dev2.Studio
                     using (var streamReader = new StreamReader(stream))
                     {
                         var resourceContent = streamReader.ReadToEnd();
-                        var serverRepo = CustomContainer.Get<IServerRepository>();
+                        serverRepo = CustomContainer.Get<IServerRepository>();
                         var serviceXml = XDocument.Parse(resourceContent);
-                        var resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
-                        var resourceModel = ResourceModelFactory.CreateResourceModel(serverRepo.ActiveServer, resource, serviceXml, out bool isWorkflow);
-                        if (!isWorkflow)
-                        {
-                            popupController.ShowCanNotMoveResource();
-                        }
-                        return resourceModel;
+                        resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
+                        resourceModel = ResourceModelFactory.CreateResourceModel(serverRepo.ActiveServer, resource, serviceXml);
                     }
                 }
+                if (resourceModel == null && resource.ResourceType.Contains("Source"))
+                {
+                    var moveSource = popupController.ShowCanNotMoveResource() == MessageBoxResult.OK;
+                    if (moveSource)
+                    {
+                        File.Move(filePath, Path.Combine(EnvironmentVariables.ResourcePath, Path.GetFileName(filePath)));
+                        serverRepo.ReloadServers();
+                        resourceModel = serverRepo.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
+                    }
+                }
+                return resourceModel;
             }
             else
             {
-                return null;
+                return resourceModel;
             }
         }
     }
