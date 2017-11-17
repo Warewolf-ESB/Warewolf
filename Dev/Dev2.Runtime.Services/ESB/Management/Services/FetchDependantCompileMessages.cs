@@ -103,11 +103,21 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-
-            return newDs;
+            DynamicService newDs = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification = new StringBuilder("<DataList><ServiceID ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><FilterList ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
+            using (ServiceAction sa = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            })
+            {
+                newDs.Actions.Add(sa);
+                return newDs;
+            }
         }
 
         public override string HandlesType()

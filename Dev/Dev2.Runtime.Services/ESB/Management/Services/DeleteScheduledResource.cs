@@ -86,18 +86,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Name = HandlesType(),
                 DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
-
-            var deleteScheduledResourceAction = new ServiceAction
+            using (var deleteScheduledResourceAction = new ServiceAction
             {
                 Name = HandlesType(),
                 ActionType = enActionType.InvokeManagementDynamicService,
                 SourceMethod = HandlesType()
-            };
-
-
-            deleteScheduledResource.Actions.Add(deleteScheduledResourceAction);
-
-            return deleteScheduledResource;
+            })
+            {
+                deleteScheduledResource.Actions.Add(deleteScheduledResourceAction);
+                return deleteScheduledResource;
+            }
         }
 
         public IServerSchedulerFactory SchedulerFactory

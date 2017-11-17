@@ -92,12 +92,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Name = HandlesType(),
                 DataListSpecification = new StringBuilder("<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
-
-            ServiceAction deployResourceServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            deployResourceDynamicService.Actions.Add(deployResourceServiceAction);
-
-            return deployResourceDynamicService;
+            using (ServiceAction deployResourceServiceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            })
+            {
+                deployResourceDynamicService.Actions.Add(deployResourceServiceAction);
+                return deployResourceDynamicService;
+            }
         }
 
         public string HandlesType()

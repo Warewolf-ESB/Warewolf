@@ -86,10 +86,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         public DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-
-            return newDs;
+            using (ServiceAction sa = new ServiceAction
+            {
+                Name = HandlesType(), 
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            })
+            {
+                newDs.Actions.Add(sa);
+                return newDs;
+            }
         }
 
         public string HandlesType()

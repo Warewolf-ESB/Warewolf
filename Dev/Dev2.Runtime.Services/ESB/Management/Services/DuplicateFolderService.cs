@@ -89,16 +89,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 DataListSpecification = new StringBuilder("<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
 
-            var deleteResourceAction = new ServiceAction
+            using (var deleteResourceAction = new ServiceAction
             {
                 Name = HandlesType(),
                 ActionType = enActionType.InvokeManagementDynamicService,
                 SourceMethod = HandlesType()
-            };
-
-            deleteResourceService.Actions.Add(deleteResourceAction);
-
-            return deleteResourceService;
+            })
+            {
+                deleteResourceService.Actions.Add(deleteResourceAction);
+                return deleteResourceService;
+            }
         }
     }
 }

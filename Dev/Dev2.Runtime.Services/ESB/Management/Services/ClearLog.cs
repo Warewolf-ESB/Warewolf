@@ -81,13 +81,21 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override DynamicService CreateServiceEntry()
         {
-            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
+            DynamicService findDirectoryService = new DynamicService
+            {
+                Name = HandlesType(),
+                DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
+            };
+            using (ServiceAction findDirectoryServiceAction = new ServiceAction
+            {
+                Name = HandlesType(),
+                ActionType = enActionType.InvokeManagementDynamicService,
+                SourceMethod = HandlesType()
+            })
+            {
+                findDirectoryService.Actions.Add(findDirectoryServiceAction);
+                return findDirectoryService;
+            }
         }
 
         public override string HandlesType()

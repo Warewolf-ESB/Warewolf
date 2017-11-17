@@ -72,17 +72,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Name = HandlesType(),
                 DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
             };
-
-            var findDirectoryServiceAction = new ServiceAction
+            using (var findDirectoryServiceAction = new ServiceAction
             {
                 Name = HandlesType(),
                 ActionType = enActionType.InvokeManagementDynamicService,
                 SourceMethod = HandlesType()
-            };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
+            })
+            {
+                findDirectoryService.Actions.Add(findDirectoryServiceAction);
+                return findDirectoryService;
+            }
         }
 
         public override string HandlesType()

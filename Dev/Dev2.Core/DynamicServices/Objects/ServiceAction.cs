@@ -23,7 +23,6 @@ using Newtonsoft.Json.Converters;
 
 namespace Dev2.DynamicServices.Objects
 {
-
     #region Service Action Class - Represents a single action within a service
     
     public class ServiceAction : DynamicServiceObjectBase, IDisposable
@@ -39,7 +38,6 @@ namespace Dev2.DynamicServices.Objects
         private Activity _workflowActivity;
         private Queue<PooledServiceActivity> _workflowPool = new Queue<PooledServiceActivity>();
         private StringBuilder _xamlDefinition;
-
         private Stream _xamlStream;
 
         #endregion
@@ -48,9 +46,8 @@ namespace Dev2.DynamicServices.Objects
 
         public int CommandTimeout
         {
-            get { return _commandTimeout; }
-
-            set { _commandTimeout = value; }
+            get => _commandTimeout;
+            set => _commandTimeout = value;
         }
 
         public Stream XamlStream => _xamlStream;
@@ -66,7 +63,7 @@ namespace Dev2.DynamicServices.Objects
         
         public StringBuilder XamlDefinition
         {
-            get { return _xamlDefinition; }
+            get => _xamlDefinition;
             set
             {
                 lock (_poolGuard)
@@ -100,14 +97,14 @@ namespace Dev2.DynamicServices.Objects
         
         public bool ResultsToClient
         {
-            get { return _resultsToClient; }
-            set { _resultsToClient = value; }
+            get => _resultsToClient;
+            set => _resultsToClient = value;
         }
         
         public bool TerminateServiceOnFault
         {
-            get { return _terminateServiceOnFault; }
-            set { _terminateServiceOnFault = value; }
+            get => _terminateServiceOnFault;
+            set => _terminateServiceOnFault = value;
         }
         
         public dynamic Parent { get; set; }
@@ -191,13 +188,10 @@ namespace Dev2.DynamicServices.Objects
         
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposing)
+            if (!_disposing && disposing)
             {
-                if (disposing)
-                {
-                    _xamlStream.Close();
-                    _xamlStream.Dispose();
-                }
+                _xamlStream.Close();
+                _xamlStream.Dispose();
             }
             _disposing = true;
         }
