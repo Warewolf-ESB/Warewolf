@@ -187,7 +187,7 @@ namespace Dev2.Studio.ViewModels
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
             if (singleResource == null)
             {
-                contextualResourceModel = ResourceExtensionHelper.HandleResourceNotInResourceFolder(e, fileName, PopupProvider);
+                contextualResourceModel = ResourceExtensionHelper.HandleResourceNotInResourceFolder(e, fileName, PopupProvider, this);
                 if (contextualResourceModel != null)
                 {
                     OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);

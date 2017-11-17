@@ -34,16 +34,14 @@ namespace Dev2.Studio.Core.Factories
             };
         }
 
-        public static IContextualResourceModel CreateResourceModel(IServer environment, IResource resource, XDocument xElement, out bool isWorkflow)
+        public static IContextualResourceModel CreateResourceModel(IServer environment, IResource resource, XDocument xElement)
         {
-            isWorkflow = false;
             IContextualResourceModel contextualResource = CreateResourceModel(environment);
             contextualResource.ID = resource.ResourceID;
             contextualResource.UserPermissions = Permissions.Contribute;
             contextualResource.Category = Path.Combine(EnvironmentVariables.ResourcePath, resource.ResourceName);
             if (resource.ResourceType == "WorkflowService" || resource.ResourceType == "Workflow")
             {
-                isWorkflow = true;
                 var def = xElement.Element("Service").Element("Action").Element("XamlDefinition").ToStringBuilder();
                 XElement xaml = def.Unescape().Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "").ToXElement();
                 contextualResource.WorkflowXaml = xaml.ToString(SaveOptions.DisableFormatting).ToStringBuilder();
