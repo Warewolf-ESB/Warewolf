@@ -6,15 +6,15 @@ using System.Windows;
 using System.Xml.Linq;
 using Dev2.Studio.Core.Factories;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Studio.ViewModels;
-using System;
+using Warewolf.Studio.ViewModels;
+using System.Threading.Tasks;
 
 namespace Dev2.Studio
 {
     public static class ResourceExtensionHelper
     {
-        public static IContextualResourceModel HandleResourceNotInResourceFolder(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, ShellViewModel shellViewModel)
+        public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, ShellViewModel shellViewModel)
         {
             IContextualResourceModel resourceModel = null;
             IServerRepository serverRepo = null;
@@ -39,10 +39,9 @@ namespace Dev2.Studio
                     if (moveSource)
                     {
                         File.Move(filePath, Path.Combine(EnvironmentVariables.ResourcePath, Path.GetFileName(filePath)));
-                        shellViewModel?.ExplorerViewModel?.RefreshEnvironment(serverRepo.ActiveServer.EnvironmentID);
-                        serverRepo.ActiveServer.ExplorerRepository.LoadExplorer();
-                        serverRepo.ReloadServers();
+                        await shellViewModel.ExplorerViewModel.RefreshEnvironment(serverRepo.ActiveServer.EnvironmentID);
                         resourceModel = serverRepo.ActiveServer.ResourceRepository.LoadContextualResourceModel(resource.ResourceID);
+                        
                     }
                 }
                 return resourceModel;
