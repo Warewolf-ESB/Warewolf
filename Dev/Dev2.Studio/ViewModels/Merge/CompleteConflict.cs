@@ -51,11 +51,7 @@ namespace Dev2.ViewModels.Merge
             if (ReferenceEquals(null, obj))
             {
                 return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
+            }            
             if (obj.GetType() != GetType())
             {
                 return false;
@@ -125,7 +121,8 @@ namespace Dev2.ViewModels.Merge
             }
             var equals = true;
             equals &= other.SourceUniqueId == SourceUniqueId;
-            equals &= other.DestinationUniqueId == DestinationUniqueId;            
+            equals &= other.DestinationUniqueId == DestinationUniqueId;
+            equals &= other.Key == Key;
             return equals;
         }
 
@@ -134,11 +131,7 @@ namespace Dev2.ViewModels.Merge
             if (ReferenceEquals(null, obj))
             {
                 return false;
-            }
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
+            }            
             if (obj.GetType() != GetType())
             {
                 return false;
