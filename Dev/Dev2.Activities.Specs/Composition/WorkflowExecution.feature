@@ -525,7 +525,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing agai
 	  And "WorkflowWithAssignAndSQLBulkInsert" contains an Assign "InsertData" as
 	  | variable    | value    |
 	  | [[rec().a]] | Warewolf |
-	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlServerSource" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
 	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
 	  | Id     |                     | false      | int          |           | true            |
 	  | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
@@ -552,7 +552,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  And "WorkflowWithAssignAndSQLBulk" contains an Assign "InsertData" as
 	  | variable    | value |
 	  | [[rec().a]] | Warewolf     |
-	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlServerSource" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
 	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
 	  | Id     |                     | false      | int          |           | true            |
 	  | Name   | [[rec(-1).a]]       | false      | varchar      | 50        | false           |
