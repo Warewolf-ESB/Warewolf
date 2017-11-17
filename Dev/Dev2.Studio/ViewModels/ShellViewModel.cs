@@ -191,7 +191,10 @@ namespace Dev2.Studio.ViewModels
                 if (contextualResourceModel != null)
                 {
                     OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
-                    SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel, loadingFromServer: false, originalPath: e);
+                    if (contextualResourceModel.ResourceType == ResourceType.WorkflowService || contextualResourceModel.ResourceType == ResourceType.Service)
+                    {
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel, loadingFromServer: false, originalPath: e);
+                    }
                 }
             }
             else

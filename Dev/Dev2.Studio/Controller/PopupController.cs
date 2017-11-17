@@ -152,7 +152,7 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OKCancel;
             Header = "Unknown Resource";
-            Description = "The Resource you are attempting to open is unknown by the server. \nClick Move to have the resource moved to the server or Cancel to Exit.";
+            Description = "The Resource you are attempting to open is unknown by the server. \nClick Ok to have the resource moved to the server or Cancel to Exit.";
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
