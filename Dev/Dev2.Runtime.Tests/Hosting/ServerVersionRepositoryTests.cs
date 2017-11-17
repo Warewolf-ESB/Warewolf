@@ -376,7 +376,7 @@ namespace Dev2.Tests.Runtime.Hosting
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
             cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-
+            filePath.Setup(a => a.GetFileName(It.IsAny<string>())).Returns("2_636465059550527303_password.xml");
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object,filePath.Object);
             //------------Execute Test---------------------------
@@ -409,6 +409,7 @@ namespace Dev2.Tests.Runtime.Hosting
             file.Setup(a => a.ReadAllText(It.IsAny<string>())).Returns(ResourceOne);
             cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
             filePath.Setup(a => a.Combine(@"C:\ProgramData\Warewolf\VersionControl", Guid.Empty.ToString())).Returns("2_636465059550527303_password.xml");
+            filePath.Setup(a => a.GetFileName(It.IsAny<string>())).Returns("2_636465059550527303_password.xml");
             filePath.Setup(a => a.Combine(@"C:\ProgramData\Warewolf\VersionControl", resourceId.ToString())).Returns("2_636465059550527303_password.xml");
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
             resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
@@ -454,7 +455,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "12345", resourceId, versionId));
             resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] {"2_" + DateTime.Now.Ticks + "_jjj" });
-
+            filePath.Setup(a => a.GetFileName(It.IsAny<string>())).Returns("2_636465059550527303_password.xml");
             strat.Setup(a => a.GetNextVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "123456", resourceId, versionId));
             strat.Setup(a => a.GetCurrentVersion(resource.Object, resource.Object, "usr", "mook")).Returns(new VersionInfo(DateTime.Now, "mook", "usr", "654321", resourceId, versionId));
             cat.Setup(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), savePath, It.IsAny<string>(), It.IsAny<string>()));
@@ -491,6 +492,7 @@ namespace Dev2.Tests.Runtime.Hosting
             resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
             resource.Setup(a => a.GetResourcePath(It.IsAny<Guid>())).Returns("");
             filePath.Setup(a => a.Combine(@"C:\ProgramData\Warewolf\VersionControl", Guid.Empty.ToString())).Returns("2_636465059550527303_password.xml");
+            filePath.Setup(a => a.GetFileName(It.IsAny<string>())).Returns("2_636465059550527303_password.xml");
             filePath.Setup(a => a.Combine(@"C:\ProgramData\Warewolf\VersionControl", resourceId.ToString())).Returns("2_636465059550527303_password.xml");
             dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { "2_" + dt.Ticks + "_jjj" });
 

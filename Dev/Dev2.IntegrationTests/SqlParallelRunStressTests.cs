@@ -37,17 +37,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
         {
             var url1 = "http://localhost:3142/secure/QLINK/WriteProcess/QlinkTrailerCreation.tests";
             List<Task> list = new List<Task>();
-
-
-            /*  string substring = "";
-              using (var stream = File.OpenRead("TestData\\testresult.json"))
-              {
-                  using (StreamReader streamReader = new StreamReader(stream))
-                  {
-                      substring = streamReader.ReadToEnd();
-                  }
-              }
-              JArray obj = new JArray(substring);*/
+                       
 
             var passRequest = ExececuteRequest(new Uri(url1));
             list.Add(passRequest);
@@ -65,13 +55,13 @@ namespace Dev2.Integration.Tests.Server_Refresh
                     var hasTestResult = stringResult.Contains(item1.ToString());
                     Assert.IsTrue(hasTestResult);
                     var hasTestResult1 = stringResult.Contains(item2.ToString());
-                    Assert.IsTrue(hasTestResult);
+                    Assert.IsTrue(hasTestResult1);
                     var hasTestResult2 = stringResult.Contains(item3.ToString());
-                    Assert.IsTrue(hasTestResult);
+                    Assert.IsTrue(hasTestResult2);
                     var hasTestResult3 = stringResult.Contains(item4.ToString());
-                    Assert.IsTrue(hasTestResult);
+                    Assert.IsTrue(hasTestResult3);
                     var hasTestResult4 = stringResult.Contains(item5.ToString());
-                    Assert.IsTrue(hasTestResult);
+                    Assert.IsTrue(hasTestResult4);
                 }
                 catch (Exception ex)
                 {

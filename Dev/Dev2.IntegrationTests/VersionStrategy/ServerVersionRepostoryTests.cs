@@ -30,20 +30,25 @@ namespace Dev2.Integration.Tests.VersionStrategy
 
             var pathResource = filePath.Combine(rootPath, "Acceptance Tests", "VersionControl");
             dir.CreateIfNotExists(pathResource);
+            var resourceVersion = filePath.Combine(rootPath, "Acceptance Tests", "LoopTest.xml");
             try
             {
-                File.Move("TestData\\LoopTest.xml", filePath.Combine(rootPath, "Acceptance Tests"));
+                File.Move("TestData\\LoopTest.xml", resourceVersion);
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                //
+                System.Diagnostics.Debug.WriteLine(e.Message);
             }
+            Assert.IsTrue(File.Exists(resourceVersion));
 
+           
             dir.Move("TestData\\VersionControl", filePath.Combine(pathResource));
             Assert.IsTrue(dir.Exists(pathResource));
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat, dir, rootPath, file, filePath);
             //------------Execute Test---------------------------
+
+            
             serverVersionRepostory.CleanUpOldVersionControlStructure(dir);
             //------------Assert Results-------------------------
             var newVersions = new List<string>
