@@ -1193,7 +1193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
 
             //---------------Test Result -----------------------
-            Assert.IsTrue(bool.Parse(areEqual.ToString()));
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
 
         [TestMethod]
