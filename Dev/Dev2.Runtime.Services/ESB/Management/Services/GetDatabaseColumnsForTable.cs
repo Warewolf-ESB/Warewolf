@@ -30,26 +30,10 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // NOTE: Only use for design time in studio as errors will NOT be forwarded!
     public class GetDatabaseColumnsForTable : DefaultEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<string>
-
-        public override string HandlesType()
-        {
-            return "GetDatabaseColumnsForTableService";
-        }
-
-        #endregion
-
         #region Implementation of DefaultEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
+        
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if (values == null)
@@ -214,11 +198,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 return serializer.SerializeToBuilder(res);
             }
         }
-
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
+        
         public override DynamicService CreateServiceEntry()
         {
             var ds = new DynamicService
@@ -241,14 +221,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #endregion
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "GetDatabaseColumnsForTableService";
     }
 }
