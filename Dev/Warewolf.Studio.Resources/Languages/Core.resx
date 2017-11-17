@@ -332,6 +332,18 @@ The window will be reloaded when you click OK.</value>
   <data name="DeployResourceCheckboxViewPermissionError" xml:space="preserve">
     <value>You do not have contribute permission for this item on the destination server, you cannot deploy it.</value>
   </data>
+  <data name="DeployEmptyServerHeader" xml:space="preserve">
+    <value>Deploy Empty Server</value>
+  </data>
+  <data name="DeployEmptyServerDescription" xml:space="preserve">
+    <value>There are no items to deploy on this server.</value>
+  </data>
+  <data name="DeployEmptyFolderHeader" xml:space="preserve">
+    <value>Deploy Empty Folder</value>
+  </data>
+  <data name="DeployEmptyFolderDescription" xml:space="preserve">
+    <value>There are no items to deploy in this folder.</value>
+  </data>
   <data name="DecisionDropNotAllowedMessage" xml:space="preserve">
     <value>The Decision tool cannot be dropped onto this tool.</value>
   </data>
@@ -551,5 +563,11 @@ Please contact your Warewolf System Administrator.</value>
     <value>You have pasted text which contains tabs into a textbox on the design surface. Tabs are not allowed in textboxes on the design surface and will be replaced with spaces.
     
 Please note that tabs are fully supported at runtime, in variables and when reading from files.</value>
+  </data>
+  <data name="ShowVersionHistoryLabel" xml:space="preserve">
+    <value>Show Version History</value>
+  </data>
+  <data name="HideVersionHistoryLabel" xml:space="preserve">
+    <value>Hide Version History</value>
   </data>
 </root>

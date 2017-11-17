@@ -204,7 +204,6 @@
         </Setter>
     </Style>
 
-    <!--  ********************************** CheckBoxStyle **********************************  -->
     <Style x:Key="DeployCheckBoxStyle" TargetType="CheckBox">
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="Background" Value="{StaticResource WarewolfWhite}"/>
@@ -214,8 +213,8 @@
         <Setter Property="HorizontalContentAlignment" Value="Left" />
         <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Padding" Value="6,0,0,0" />
-        <Setter Property="MinHeight" Value="17" />
         <Setter Property="Cursor" Value="Hand"/>
+        <Setter Property="MinHeight" Value="17" />
         <Setter Property="MinWidth" Value="17" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="IsThreeState" Value="True"/>
@@ -265,6 +264,14 @@
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Unchecked" />
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <DoubleAnimation Duration="0"
+                                                         Storyboard.TargetName="IndeterminateCheck"
+                                                         Storyboard.TargetProperty="(UIElement.Opacity)"
+                                                         To="1" />
+                                    </Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
@@ -352,9 +359,14 @@
                               Opacity="0"
                               Stretch="Fill"
                               UseLayoutRounding="False" />
+                        <Rectangle x:Name="IndeterminateCheck"
+                                   Width="8"
+                                   Height="3"
+                                   Fill="{StaticResource CheckBoxCheckedBrush}"
+                                   Opacity="0" />
                         <Rectangle x:Name="disabled"
-                                   Width="18"
-                                   Height="18"
+                                   Width="17"
+                                   Height="17"
                                    Fill="{StaticResource DisabledVisualElement}"
                                    Opacity="0"
                                    StrokeThickness="1" />
@@ -369,7 +381,7 @@
             </Setter.Value>
         </Setter>
     </Style>
-    
+
     <!--  ********************************** CheckBoxStyle **********************************  -->
     <Style x:Key="CheckBoxRoundedStyle" TargetType="CheckBox">
         <Setter Property="Foreground" Value="Black" />

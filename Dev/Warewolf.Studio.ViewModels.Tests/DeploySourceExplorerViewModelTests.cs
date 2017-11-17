@@ -10,6 +10,8 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Moq;
+using Dev2;
+using System.Linq.Expressions;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -34,6 +36,8 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestInitialize]
         public void TestInitialize()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             _selectedEnvironment = new Mock<IEnvironmentViewModel>();
             _selectedEnvironment.Setup(p => p.DisplayName).Returns("someResName");
             _shellViewModelMock = new Mock<IShellViewModel>();
@@ -51,6 +55,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             _shellViewModelMock.SetupGet(it => it.LocalhostServer).Returns(_serverMock.Object);
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _deployStatsViewerViewModel = new Mock<IDeployStatsViewerViewModel>();
+
+            var environmentRepository = new Mock<IServerRepository>();
+            var environments = new List<IServer>
+                {
+                    _serverMock.Object
+                };
+            environmentRepository.Setup(e => e.All()).Returns(environments);
+            CustomContainer.Register(environmentRepository.Object);
+
             _target = new DeploySourceExplorerViewModel(_shellViewModelMock.Object, _eventAggregatorMock.Object, _deployStatsViewerViewModel.Object, _selectedEnvironment.Object);
         }
 
