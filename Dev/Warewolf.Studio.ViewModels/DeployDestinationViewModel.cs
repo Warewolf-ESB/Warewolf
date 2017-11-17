@@ -22,6 +22,19 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            ValidateEnvironments(shellViewModel);
+        }
+
+        private void ValidateEnvironments(IShellViewModel shellViewModel)
+        {
+            foreach (var env in shellViewModel?.ExplorerViewModel?.Environments)
+            {
+                var exists = Environments.FirstOrDefault(model => model.ResourceId == env.ResourceId);
+                if (env.IsConnected && exists == null)
+                {
+                    Environments.Add(env);
+                }
+            }
         }
 
         private void ServerDisconnected(object sender, IServer server)
