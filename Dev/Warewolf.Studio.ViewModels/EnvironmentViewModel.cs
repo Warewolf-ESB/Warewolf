@@ -713,6 +713,10 @@ namespace Warewolf.Studio.ViewModels
             get => _isResource;
             set
             {
+                if (ChildrenCount == 0)
+                {
+                    return;
+                }
                 bool? isResourceChecked;
                 if (IsResourceCheckedEnabled)
                 {

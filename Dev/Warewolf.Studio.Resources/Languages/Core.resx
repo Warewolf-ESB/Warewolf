@@ -332,6 +332,18 @@ The window will be reloaded when you click OK.</value>
   <data name="DeployResourceCheckboxViewPermissionError" xml:space="preserve">
     <value>You do not have contribute permission for this item on the destination server, you cannot deploy it.</value>
   </data>
+  <data name="DeployEmptyServerHeader" xml:space="preserve">
+    <value>Deploy Empty Server</value>
+  </data>
+  <data name="DeployEmptyServerDescription" xml:space="preserve">
+    <value>There are no items to deploy on this server.</value>
+  </data>
+  <data name="DeployEmptyFolderHeader" xml:space="preserve">
+    <value>Deploy Empty Folder</value>
+  </data>
+  <data name="DeployEmptyFolderDescription" xml:space="preserve">
+    <value>There are no items to deploy in this folder.</value>
+  </data>
   <data name="DecisionDropNotAllowedMessage" xml:space="preserve">
     <value>The Decision tool cannot be dropped onto this tool.</value>
   </data>
