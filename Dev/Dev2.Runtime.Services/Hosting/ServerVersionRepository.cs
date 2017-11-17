@@ -115,13 +115,15 @@ namespace Dev2.Runtime.Hosting
         public StringBuilder GetVersion(IVersionInfo version, string resourcePath)
         {
             var versionFolder = _filePath.Combine(_envVersionFolder, version.ResourceId.ToString());
-            var files = _directory.GetFiles(versionFolder).FirstOrDefault(a => a.StartsWith(version.VersionNumber));
-            if (string.IsNullOrEmpty(files))
+            var v = _directory.GetFiles(versionFolder)
+                .Where(p=>_filePath.GetFileName(p).StartsWith(version.VersionNumber))
+                .FirstOrDefault();
+            if (string.IsNullOrEmpty(v))
             {
                 throw new VersionNotFoundException("Version Does not exist");
             }
 
-            return new StringBuilder(_file.ReadAllText(files));
+            return new StringBuilder(_file.ReadAllText(v));
         }
 
         IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath)
@@ -213,8 +215,10 @@ namespace Dev2.Runtime.Hosting
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
             var versionFolder = GetVersionFolderPath(resource.ResourceID.ToString());
-            var files = _directory.GetFiles(versionFolder).FirstOrDefault(a => a.StartsWith(versionNumber));
-            _file.Delete(files);
+            var v = _directory.GetFiles(versionFolder)
+                .Where(p => _filePath.GetFileName(p).StartsWith(versionNumber))
+                .FirstOrDefault();
+            _file.Delete(v);
             return GetVersions(resourceId);
         }
 
@@ -285,7 +289,11 @@ namespace Dev2.Runtime.Hosting
                     directory.CreateIfNotExists(folderName);
                     var parts = _filePath.GetFileName(pathForVersion).Split('_');
                     var name = string.Format("{0}_{1}_{2}", parts[1], parts[2], parts[3]);
-                    _file.Move(pathForVersion, _filePath.Combine(folderName, name));
+                    string destination = _filePath.Combine(folderName, name);
+                    if (!_file.Exists(destination))
+                    {                     
+                        _file.Move(pathForVersion, destination);
+                    }
                 }
             }
             try
