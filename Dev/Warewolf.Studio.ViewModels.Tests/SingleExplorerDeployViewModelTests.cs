@@ -14,8 +14,7 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Threading;
-
-
+using Dev2;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -30,6 +29,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private Mock<IServer> _differentServerMock;
         private Mock<IEventAggregator> _eventAggregatorMock;
         private Mock<IStudioUpdateManager> _updateRepositoryMock;
+        private Mock<IExplorerTooltips> _explorerTooltips;
 
         private Guid _serverEnvironmentId;
 
@@ -46,10 +46,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             _eventAggregatorMock = new Mock<IEventAggregator>();
             _updateRepositoryMock = new Mock<IStudioUpdateManager>();
             _sourceView.Setup(model => model.SelectedItems).Returns(new List<IExplorerTreeItem>());
+            _explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(_explorerTooltips.Object);
         }
 
-        //SingleExplorerDeployViewModel(IDeployDestinationExplorerViewModel destination, IDeploySourceExplorerViewModel source, 
-        //IEnumerable<IExplorerTreeItem> selectedItems, IDeployStatsViewerViewModel stats, IShellViewModel shell, IPopupController popupController)
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CanDeploytests_GivenCanSelectAllDependencies_ShouldMatch()
