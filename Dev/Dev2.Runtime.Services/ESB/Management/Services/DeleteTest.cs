@@ -83,24 +83,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            using (ServiceAction sa = new ServiceAction
-            {
-                Name = HandlesType(), 
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                newDs.Actions.Add(sa);
-                return newDs;
-            }
-        }
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), null);
 
-        public string HandlesType()
-        {
-            return "DeleteTest";
-        }
+        public string HandlesType() => "DeleteTest";
     }
 }

@@ -31,30 +31,17 @@ using Dev2.DynamicServices.Objects.Base;
 
 namespace Dev2.DynamicServices
 {
-    /// <summary>
-    ///     Provides an representation of a service
-    ///     A service can contain actions that define what the service can do
-    ///     This class is hydrated from the service definition file.
-    /// </summary>
     public class DynamicService : DynamicServiceObjectBase
     {
-        /// <summary>
-        ///     The actions that this service runs
-        /// </summary>
         public List<ServiceAction> Actions { get; set; }
         
         public Guid ID { get; set; }
 
         public Guid ServiceId { get; set; }
-
-
-        /// <summary>
-        ///     Initializes the Dynamic Service
-        /// </summary>
+        
         public DynamicService()
             : base(enDynamicServiceObjectType.DynamicService)
         {
-            //Initialize the Actions Property
             Actions = new List<ServiceAction>();
         }
         
