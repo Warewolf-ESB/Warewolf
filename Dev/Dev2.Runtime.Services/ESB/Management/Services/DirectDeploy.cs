@@ -29,10 +29,6 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Deploy a resource
-    /// </summary>
-
     public class DirectDeploy : IEsbManagementEndpoint
     {
         private bool _existingResource;
@@ -251,28 +247,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService deployResourceDynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (ServiceAction deployResourceServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                deployResourceDynamicService.Actions.Add(deployResourceServiceAction);
-                return deployResourceDynamicService;
-            }
-        }
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType()
-        {
-            return "DirectDeploy";
-        }
+        public string HandlesType() => "DirectDeploy";
     }
 }

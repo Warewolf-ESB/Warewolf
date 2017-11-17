@@ -188,7 +188,7 @@ namespace Dev2.DynamicServices.Objects
         
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposing && disposing)
+            if (!_disposing && disposing && _xamlStream != null)
             {
                 _xamlStream.Close();
                 _xamlStream.Dispose();

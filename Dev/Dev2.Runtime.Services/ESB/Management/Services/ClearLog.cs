@@ -13,10 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -79,28 +77,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             result.Append($"Error: {msg}");
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (ServiceAction findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                findDirectoryService.Actions.Add(findDirectoryServiceAction);
-                return findDirectoryService;
-            }
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public override string HandlesType()
-        {
-            return "ClearLogService";
-        }
+        public override string HandlesType() => "ClearLogService";
     }
 }

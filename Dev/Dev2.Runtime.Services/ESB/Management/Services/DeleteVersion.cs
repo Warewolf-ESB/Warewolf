@@ -47,23 +47,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Contribute;
         }
-        #region Implementation of ISpookyLoadable<string>
-
-        public string HandlesType()
-        {
-            return "DeleteVersion";
-        }
-
-        #endregion
 
         #region Implementation of IEsbManagementEndpoint
 
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -106,22 +92,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(execMessage);
         }
 
-
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            using (ServiceAction sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                newDs.Actions.Add(sa);
-                return newDs;
-            }
-        }
-
         public IServerVersionRepository ServerVersionRepo
         {
             get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
@@ -129,5 +99,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         #endregion
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "DeleteVersion";
     }
 }

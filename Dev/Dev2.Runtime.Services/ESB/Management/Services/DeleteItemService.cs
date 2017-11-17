@@ -30,12 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteItemService : IEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;       
-
-        public string HandlesType()
-        {
-            return "DeleteItemService";
-        }
+        private IExplorerServerResourceRepository _serverExplorerRepository;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -109,28 +104,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(item);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (var fetchItemsAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                findServices.Actions.Add(fetchItemsAction);
-                return findServices;
-            }
-        }
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
             get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
             set { _serverExplorerRepository = value; }
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "DeleteItemService";
     }
 }

@@ -34,7 +34,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public DeleteScheduledResource()
         {
-
+            
         }
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -45,11 +45,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         public AuthorizationContext GetAuthorizationContextForService()
         {
             return AuthorizationContext.Administrator;
-        }
-
-        public string HandlesType()
-        {
-            return "DeleteScheduledResourceService";
         }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -77,27 +72,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(result);
         }
 
-
-
-        public DynamicService CreateServiceEntry()
-        {
-            var deleteScheduledResource = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (var deleteScheduledResourceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            })
-            {
-                deleteScheduledResource.Actions.Add(deleteScheduledResourceAction);
-                return deleteScheduledResource;
-            }
-        }
-
         public IServerSchedulerFactory SchedulerFactory
         {
             get { return _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(GlobalConstants.ServerWorkspaceID, a.ResourceId)); }
@@ -121,5 +95,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 _securityWrapper = value;
             }
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "DeleteScheduledResourceService";
     }
 }
