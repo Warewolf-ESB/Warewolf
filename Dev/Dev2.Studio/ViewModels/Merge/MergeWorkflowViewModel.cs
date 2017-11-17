@@ -29,7 +29,7 @@ namespace Dev2.ViewModels.Merge
             WorkflowDesignerViewModel.CreateBlankWorkflow();
 
             _resourceModel = currentResourceModel;
-
+            _seenConflicts = new List<IConflict>();
             var currentChanges = _serviceDifferenceParser.GetDifferences(currentResourceModel, differenceResourceModel, loadworkflowFromServer);
             _conflicts = BuildConflicts(currentResourceModel, differenceResourceModel, currentChanges);
             Conflicts = new LinkedList<IConflict>(_conflicts);
@@ -290,6 +290,7 @@ namespace Dev2.ViewModels.Merge
         bool _canSave;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
         IDataListViewModel _dataListViewModel;
+        private List<IConflict> _seenConflicts;
 
         void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
@@ -473,14 +474,27 @@ namespace Dev2.ViewModels.Merge
         }
 
         IConflict GetNextConflict(IConflict conflict)
+        {            
+            var idx = _conflicts.IndexOf(conflict);           
+            var nextConflict = MoveNext(idx);
+            while (_seenConflicts.Contains(nextConflict))
+            {
+                idx = idx + 1;
+                nextConflict = MoveNext(idx);
+            }
+            _seenConflicts.Add(nextConflict);
+            return nextConflict;
+        }
+
+        IConflict MoveNext(int idx)
         {
-            var idx = _conflicts.IndexOf(conflict);
             var nextId = idx + 1;
             if (nextId >= _conflicts.Count)
             {
                 return null;
             }
-            return _conflicts[nextId];
+            var nextConflict = _conflicts[nextId];
+            return nextConflict;
         }
 
         IConflict UpdateNextEnabledState(IConflict currentConflict)
