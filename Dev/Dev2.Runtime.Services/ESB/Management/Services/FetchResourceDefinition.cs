@@ -240,29 +240,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return output;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var serviceEntry = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-            using (var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                SourceMethod = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService
-            })
-            {
-                serviceEntry.Actions.Add(serviceAction);
-                return serviceEntry;
-            }
-        }
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public string HandlesType()
-        {
-            return @"FetchResourceDefinitionService";
-        }
+        public string HandlesType() => @"FetchResourceDefinitionService";
 
     }
 }
