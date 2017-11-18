@@ -1042,7 +1042,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (IsFolder)
                 {
-                    if (ChildrenCount >= 1)
+                    if (ChildrenCount >= 1 && value != null)
                     {
                         Children.Apply(a => a.IsResourceChecked = isResourceChecked);
                     }
@@ -1651,6 +1651,7 @@ namespace Warewolf.Studio.ViewModels
             ValidateFolderExpand(filter);
             IsSelected = false;
             OnPropertyChanged(() => Children);
+            SelectAction?.Invoke(this);
         }
 
         private void ValidateIsVisible(string filter)
