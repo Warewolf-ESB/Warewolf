@@ -14,11 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Services.Security;
@@ -39,16 +36,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             WindowsGroupPermission.CreateGuests()
         };
 
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Debug("Start Security Read", GlobalConstants.WarewolfDebug);
@@ -166,35 +153,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return 1;
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var dynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            dynamicService.Actions.Add(serviceAction);
-
-            return dynamicService;
-        }
-
-        public override string HandlesType()
-        {
-            return "SecurityReadService";
-        }
-
         public IResourceCatalog Catalog
         {
-            get { return _resourceCatalog ?? ResourceCatalog.Instance; }
-            set { _resourceCatalog = value; }
+            get => _resourceCatalog ?? ResourceCatalog.Instance;
+            set => _resourceCatalog = value;
         }
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "SecurityReadService";
     }
 }

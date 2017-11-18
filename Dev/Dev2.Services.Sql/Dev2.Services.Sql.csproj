@@ -77,7 +77,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ConnectionBuilder.cs" />
-    <Compile Include="DbFactory.cs" />
     <Compile Include="IConnectionBuilder.cs" />
     <Compile Include="ISqlConnection.cs" />
     <Compile Include="MySqlDbFactory.cs" />

@@ -12,7 +12,7 @@ using System.Xml.Serialization;
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
-    public interface IDebugItemResult : IXmlSerializable
+    public interface IDebugItemResult
     {
         DebugItemResultType Type { get; set; }
         string Label { get; set; }
@@ -25,7 +25,6 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         bool HasError { get; set; }
         bool TestStepHasError { get; set; }
         bool MockSelected { get; set; }
-
         string GetMoreLinkItem();
     }
 }

@@ -15,10 +15,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -34,9 +32,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Fetch a service body definition
-    /// </summary>
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
         const string PayloadStart = @"<XamlDefinition>";
@@ -243,20 +238,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return output;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            serviceEntry.Actions.Add(serviceAction);
-
-            return serviceEntry;
-        }
-
-        public string HandlesType()
-        {
-            return @"FetchResourceDefinitionService";
-        }
+        public string HandlesType() => @"FetchResourceDefinitionService";
 
     }
 }
