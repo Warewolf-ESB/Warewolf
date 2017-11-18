@@ -1008,6 +1008,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             OnPropertyChanged(() => Children);
+            SelectAll?.Invoke();
         }
 
         public void Filter(Func<IExplorerItemViewModel, bool> filter)

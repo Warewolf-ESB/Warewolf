@@ -335,16 +335,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var childMock = new Mock<IExplorerItemViewModel>();
             var axParentMock = new Mock<IExplorerItemViewModel>();
-            var axMock = new Mock<IExplorerItemViewModel>();
-            axMock.SetupGet(it => it.IsResourceChecked).Returns(true);
-            axMock.SetupGet(it => it.ResourceType).Returns("DbService");
+            childMock.SetupGet(it => it.IsResourceChecked).Returns(true);
+            childMock.SetupGet(it => it.ResourceType).Returns("DbService");
             axParentMock.SetupGet(it => it.ResourceType).Returns("Folder");
-            axMock.SetupGet(it => it.Parent).Returns(axParentMock.Object);
-            axMock.Setup(it => it.Children)
+            childMock.SetupGet(it => it.Parent).Returns(axParentMock.Object);
+            axParentMock.Setup(it => it.UnfilteredChildren)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { childMock.Object });
 
             //act
-            _target.Environments.First().SelectAction(axMock.Object);
+            _target.Environments.First().SelectAction(childMock.Object);
 
             //assert
             axParentMock.VerifySet(it => it.IsFolderChecked = true);
@@ -357,17 +356,16 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var childMock = new Mock<IExplorerItemViewModel>();
-            var axParentMock = new Mock<IExplorerItemViewModel>();
-            var axMock = new Mock<IExplorerItemViewModel>();
-            axMock.SetupGet(it => it.IsResourceChecked).Returns(true);
-            axMock.SetupGet(it => it.ResourceType).Returns("DbService");
+            var axParentMock = new Mock<IEnvironmentViewModel>();
+            childMock.SetupGet(it => it.IsResourceChecked).Returns(true);
+            childMock.SetupGet(it => it.ResourceType).Returns("DbService");
             axParentMock.SetupGet(it => it.ResourceType).Returns("ServerSource");
-            axMock.SetupGet(it => it.Parent).Returns(axParentMock.Object);
-            axMock.Setup(it => it.Children)
+            childMock.SetupGet(it => it.Parent).Returns(axParentMock.Object);
+            axParentMock.Setup(it => it.UnfilteredChildren)
                 .Returns(new ObservableCollection<IExplorerItemViewModel>() { childMock.Object });
 
             //act
-            _target.Environments.First().SelectAction(axMock.Object);
+            _target.Environments.First().SelectAction(childMock.Object);
 
             //assert
             axParentMock.VerifySet(it => it.IsFolderChecked = true);
