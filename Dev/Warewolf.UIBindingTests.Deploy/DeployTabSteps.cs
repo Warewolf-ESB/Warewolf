@@ -42,6 +42,9 @@ namespace Warewolf.UIBindingTests.Deploy
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             CustomContainer.Register(connectControlSingleton.Object);
 
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
             serverRepo.Setup(repository => repository.ActiveServer).Returns(shellViewModel.ActiveServer);

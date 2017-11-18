@@ -36,5 +36,6 @@ namespace Dev2.Studio.Interfaces
         ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
 
         string GetWorkflowInputs(string field);
+        void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
     }
 }

@@ -95,6 +95,10 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         public void SetModelToDirtyAndExpectThatItemsWillBeAdded()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             var eventAggregator = new EventAggregator();
 
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
@@ -1338,6 +1342,8 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         public void WorkflowDesignerViewModelServiceDefinitionExpectedInvokesWorkflowHelperSerializeWorkflow()
         {
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             var repo = new Mock<IResourceRepository>();
             repo.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             var env = EnviromentRepositoryTest.CreateMockEnvironment();
@@ -1490,6 +1496,8 @@ namespace Dev2.Core.Tests.Workflows
         [TestMethod]
         public void CheckIfRemoteWorkflowAndSetPropertiesExpectedResourceTypeToBeUnknown()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             var contextEnvironment = new Mock<IServer>();
             contextEnvironment.Setup(e => e.EnvironmentID).Returns(Guid.NewGuid());
             Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
