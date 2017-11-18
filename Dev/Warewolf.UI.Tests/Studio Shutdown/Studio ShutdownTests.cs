@@ -15,8 +15,8 @@ namespace Warewolf.UI.Tests.Workflow
         public void Studio_Close_KillsProcess_UITest()
         {
             Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-            Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");
             UIMap.WaitForControlNotVisible(UIMap.MainStudioWindow.DockManager);
+            Process studio = Process.GetProcesses().FirstOrDefault(process => process.ProcessName == "Warewolf Studio");            
             Assert.IsNull(studio, "Warewolf Studio is running in the background.");
         }
 

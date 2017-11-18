@@ -5,9 +5,6 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
 
-
-
-
 namespace Dev2.Studio.Interfaces
 {
     public interface IExplorerItemViewModel : IExplorerTreeItem
@@ -30,7 +27,6 @@ namespace Dev2.Studio.Interfaces
         string EditToolTip { get; }
         string ActivityName { get; }
 
-
         ICommand ViewSwaggerCommand { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
@@ -50,7 +46,6 @@ namespace Dev2.Studio.Interfaces
         IEnumerable<IExplorerItemViewModel> AsList();
 
         Task<bool> Move(IExplorerTreeItem destination);
-
     
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();

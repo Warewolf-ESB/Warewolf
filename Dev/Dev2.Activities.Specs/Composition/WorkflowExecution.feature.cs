@@ -2037,8 +2037,8 @@ this.FeatureBackground();
                         "false"});
 #line 528
    testRunner.And("\"WorkflowWithAssignAndSQLBulkInsert\" contains an SQL Bulk Insert \"BulkInsert\" usi" +
-                    "ng database \"testingDBSrc\" and table \"dbo.MailingList\" and KeepIdentity set \"fal" +
-                    "se\" and Result set \"[[result]]\" as", ((string)(null)), table121, "And ");
+                    "ng database \"NewSqlServerSource\" and table \"dbo.MailingList\" and KeepIdentity se" +
+                    "t \"false\" and Result set \"[[result]]\" as", ((string)(null)), table121, "And ");
 #line 533
    testRunner.When("\"WorkflowWithAssignAndSQLBulkInsert\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 534
@@ -2188,8 +2188,8 @@ this.FeatureBackground();
                         "false"});
 #line 555
    testRunner.And("\"WorkflowWithAssignAndSQLBulk\" contains an SQL Bulk Insert \"BulkInsert\" using dat" +
-                    "abase \"testingDBSrc\" and table \"dbo.MailingList\" and KeepIdentity set \"false\" an" +
-                    "d Result set \"[[result]]\" as", ((string)(null)), table127, "And ");
+                    "abase \"NewSqlServerSource\" and table \"dbo.MailingList\" and KeepIdentity set \"fal" +
+                    "se\" and Result set \"[[result]]\" as", ((string)(null)), table127, "And ");
 #line 560
    testRunner.When("\"WorkflowWithAssignAndSQLBulk\" is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 561

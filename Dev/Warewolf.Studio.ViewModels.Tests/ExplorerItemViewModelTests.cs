@@ -33,6 +33,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private Mock<IExplorerRepository> _explorerRepositoryMock;
         private Mock<IPopupController> _popupControllerMock;
         private Mock<IWindowsGroupPermission> _windowsGroupPermissionsMock;
+        private Mock<IExplorerTooltips> _explorerTooltips;
 
         #endregion Fields
 
@@ -53,6 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.Permissions)
                 .Returns(new List<IWindowsGroupPermission> { _windowsGroupPermissionsMock.Object });
             _popupControllerMock = new Mock<IPopupController>();
+            _explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(_explorerTooltips.Object);
             _target = new ExplorerItemViewModel(_serverMock.Object, _explorerTreeItemMock.Object,
                 a => { }, _shellViewModelMock.Object, _popupControllerMock.Object);
         }
@@ -291,7 +294,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
             //act
-            _target.NewRabbitMQSourceSourceCommand.Execute(null);
+            _target.NewRabbitMqSourceSourceCommand.Execute(null);
             Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
 
             //assert
@@ -866,31 +869,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(_target.ShowContextMenu, createdFolder.ShowContextMenu);
             Assert.IsTrue(createdFolder.IsRenaming);
 
-            Assert.AreEqual(Resources.Languages.Tooltips.NewServiceTooltip, _target.NewServiceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewServerSourceTooltip, _target.NewServerSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewSqlServerSourceTooltip, _target.NewSqlServerSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewMySqlSourceTooltip, _target.NewMySqlSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewPostgreSqlSourceTooltip, _target.NewPostgreSqlSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewOracleSourceTooltip, _target.NewOracleSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewOdbcSourceTooltip, _target.NewOdbcSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewWebSourceTooltip, _target.NewWebSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewPluginSourceTooltip, _target.NewPluginSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewComPluginSourceTooltip, _target.NewComPluginSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewEmailSourceTooltip, _target.NewEmailSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewExchangeSourceTooltip, _target.NewExchangeSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewRabbitMqSourceTooltip, _target.NewRabbitMqSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewDropboxSourceTooltip, _target.NewDropboxSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewSharepointSourceTooltip, _target.NewSharepointSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NewFolderTooltip, _target.NewFolderTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.RenameFolderTooltip, _target.RenameTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.DuplicateToolTip, _target.DuplicateTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.TestEditorToolTip, _target.CreateTestTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.DeployToolTip, _target.DeployTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.DependenciesToolTip, _target.DependenciesTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.ViewSwaggerTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.ViewApisJsonTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.ShowHideVersionsTooltip, _target.ShowHideVersionsTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.RollbackTooltip);
+            _explorerTooltips.Verify(it => it.SetSourceTooltips(_target.CanCreateSource));
         }
 
         [TestMethod]
@@ -1118,7 +1097,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
-            var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
@@ -1240,7 +1219,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.AreVersionsVisible = true;
             //assert
             var version = (VersionViewModel)_target.Children[0];
-            Assert.AreEqual("Hide Version History", _target.VersionHeader);
+            Assert.AreEqual(Resources.Languages.Core.HideVersionHistoryLabel, _target.VersionHeader);
             Assert.IsTrue(version.IsVersion);
             Assert.AreEqual("v.someVerNum 02022013 000000 gfedew", version.ResourceName);
             Assert.AreEqual(_target.ResourceId, version.ResourceId);
@@ -1340,7 +1319,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.AreVersionsVisible = false;
             //assert
             Assert.IsFalse(_target.Children.Any());
-            Assert.AreEqual("Show Version History", _target.VersionHeader);
+            Assert.AreEqual(Resources.Languages.Core.ShowVersionHistoryLabel, _target.VersionHeader);
 
             Assert.IsTrue(isAreVersionsVisibleChanged);
             Assert.IsTrue(isChildrenChanged);
