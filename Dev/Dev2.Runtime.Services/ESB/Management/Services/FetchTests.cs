@@ -4,11 +4,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 
@@ -83,18 +81,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), null);
 
-            return newDs;
-        }
-
-        public string HandlesType()
-        {
-            return "FetchTests";
-        }
+        public string HandlesType() => "FetchTests";
     }
 }

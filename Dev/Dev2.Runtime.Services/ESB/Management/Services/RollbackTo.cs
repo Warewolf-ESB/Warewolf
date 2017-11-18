@@ -12,13 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Common.Wrappers;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
@@ -27,35 +24,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class RollbackTo : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
         IServerVersionRepository _serverExplorerRepository;
 
-        #region Implementation of ISpookyLoadable<string>
-
-        public override string HandlesType()
-        {
-            return "RollbackTo";
-        }
-
-        #endregion
-
         #region Implementation of DefaultEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
+        
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -91,22 +63,17 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return serializer.SerializeToBuilder(execMessage);
         }
-
-
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-            return newDs;
-        }
-
+        
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
-            set { _serverExplorerRepository = value; }
+            get => _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
+            set => _serverExplorerRepository = value;
         }
 
         #endregion
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "RollbackTo";
     }
 }

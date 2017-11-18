@@ -186,6 +186,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="ESB\Management\DefaultEsbManagementEndpoint.cs" />
+    <Compile Include="ESB\Management\EsbManagementServiceEntry.cs" />
     <Compile Include="ESB\Management\Services\TaskExtentions.cs" />
     <Compile Include="IDbSources.cs" />
     <Compile Include="Interfaces\IConnections.cs" />

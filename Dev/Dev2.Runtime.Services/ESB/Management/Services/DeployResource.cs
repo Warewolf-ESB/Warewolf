@@ -14,22 +14,16 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Deploy a resource
-    /// </summary>
-
     public class DeployResource : IEsbManagementEndpoint
     {
         private bool _existingResource;
@@ -85,24 +79,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(result);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService deployResourceDynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            ServiceAction deployResourceServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            deployResourceDynamicService.Actions.Add(deployResourceServiceAction);
-
-            return deployResourceDynamicService;
-        }
-
-        public string HandlesType()
-        {
-            return "DeployResourceService";
-        }
+        public string HandlesType() => "DeployResourceService";
     }
 }

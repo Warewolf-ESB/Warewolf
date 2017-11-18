@@ -13,22 +13,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find resources in the service catalog
-    /// </summary>
-
     public class FindResource : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -81,20 +75,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><ResourceId ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><ResourceId ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var findServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(findServiceAction);
-
-            return findServices;
-        }
-
-        public override string HandlesType()
-        {
-            return "FindResourceService";
-        }
+        public override string HandlesType() => "FindResourceService";
     }
 }

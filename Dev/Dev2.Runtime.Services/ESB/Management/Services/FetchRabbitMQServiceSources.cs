@@ -11,11 +11,9 @@
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using System.Collections.Generic;
@@ -27,15 +25,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchRabbitMQServiceSources : DefaultEsbManagementEndpoint
     {
-        public override string HandlesType()
-        {
-            return "FetchRabbitMQServiceSources";
-        }
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-
             
             List<IRabbitMQServiceSourceDefinition> list = Resources.GetResourceList<RabbitMQSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
@@ -59,17 +51,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
-
         public ResourceCatalog Resources => ResourceCatalog.Instance;
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchRabbitMQServiceSources";
     }
 }

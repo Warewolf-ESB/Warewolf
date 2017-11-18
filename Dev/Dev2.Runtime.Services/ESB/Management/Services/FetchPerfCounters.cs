@@ -11,28 +11,17 @@
 
 using System.Collections.Generic;
 using System.Text;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchPerformanceCounters : DefaultEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<out string>
-
-        public override string HandlesType()
-        {
-            return "FetchPerformanceCounters";
-        }
-
-        #endregion
-
         #region Implementation of IEsbManagementEndpoint
-        
+
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -40,18 +29,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
         
         private IPerformanceCounterRepository Manager => CustomContainer.Get<IPerformanceCounterRepository>();
-        
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
 
         #endregion
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchPerformanceCounters";
     }
 }

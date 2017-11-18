@@ -13,11 +13,9 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.Diagnostics.Debug;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -63,18 +61,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder( "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><InvokerID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
-
-        public override string HandlesType()
-        {
-            return "FetchRemoteDebugMessagesService";
-        }
+        public override string HandlesType() => "FetchRemoteDebugMessagesService";
     }
 }

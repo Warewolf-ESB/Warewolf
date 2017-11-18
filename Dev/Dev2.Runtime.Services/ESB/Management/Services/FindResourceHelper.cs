@@ -23,17 +23,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class FindResourceHelper
     {
         private IAuthorizationService _authorizationService;
-
-        /// <summary>
-        /// Strips for ship.
-        /// </summary>
-        /// <param name="resource">The resource.</param>
-        /// <param name="workspaceID"></param>
-        /// <returns></returns>
+        
         public SerializableResource SerializeResourceForStudio(IResource resource,Guid workspaceID)
         {
-
-            // convert the fliping errors due to json issues in c# ;(
             var errors = new List<ErrorInfo>();
             var parseErrors = resource.Errors;
             if(parseErrors != null)

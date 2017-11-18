@@ -6,10 +6,8 @@ using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
@@ -18,7 +16,6 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class FetchPluginConstructors : DefaultEsbManagementEndpoint
     {
         private readonly IResourceCatalog _catalog;
@@ -30,12 +27,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public FetchPluginConstructors()
         {
-        }
-
-
-        public override string HandlesType()
-        {
-            return "FetchPluginConstructors";
         }
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -98,17 +89,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return name.ToString();
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
-
         public IResourceCatalog Resources => _catalog ?? ResourceCatalog.Instance;
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchPluginConstructors";
     }
 }

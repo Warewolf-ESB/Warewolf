@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -16,33 +14,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class TestSharepointServerService : IEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         #region Implementation of ISpookyLoadable<string>
-
-        public string HandlesType()
-        {
-            return "TestSharepointServerService";
-        }
 
         #endregion
 
         #region Implementation of IEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
+        
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(values == null)
@@ -94,30 +75,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #endregion
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Database ColumnIODirection=\"Input\"/><TableName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "TestSharepointServerService";
     }
 }

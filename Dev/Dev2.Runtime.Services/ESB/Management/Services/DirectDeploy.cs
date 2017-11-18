@@ -15,10 +15,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -29,10 +27,6 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Deploy a resource
-    /// </summary>
-
     public class DirectDeploy : IEsbManagementEndpoint
     {
         private bool _existingResource;
@@ -67,6 +61,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return AuthorizationContext.DeployTo;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var toReturn = new List<DeployResult>();
@@ -164,38 +159,20 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IConnections Connections
         {
-            private get
-            {
-                return _connections ?? (_connections = new Connections());
-            }
-            set
-            {
-                _connections = value;
-            }
+            private get => _connections ?? (_connections = new Connections());
+            set => _connections = value;
         }
 
         public ITestCatalog TestCatalog
         {
-            private get
-            {
-                return _testCatalog ?? Runtime.TestCatalog.Instance;
-            }
-            set
-            {
-                _testCatalog = value;
-            }
+            private get => _testCatalog ?? Runtime.TestCatalog.Instance;
+            set => _testCatalog = value;
         }
 
         public IResourceCatalog ResourceCatalog
         {
-            private get
-            {
-                return _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
-            }
-            set
-            {
-                _resourceCatalog = value;
-            }
+            private get => _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
+            set => _resourceCatalog = value;
         }
 
         private async Task<IEnumerable<DeployResult>> DeployResourceAsync(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, IHubProxy proxy, bool doTestDeploy)
@@ -251,24 +228,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService deployResourceDynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceDefinition ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            ServiceAction deployResourceServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            deployResourceDynamicService.Actions.Add(deployResourceServiceAction);
-
-            return deployResourceDynamicService;
-        }
-
-        public string HandlesType()
-        {
-            return "DirectDeploy";
-        }
+        public string HandlesType() => "DirectDeploy";
     }
 }

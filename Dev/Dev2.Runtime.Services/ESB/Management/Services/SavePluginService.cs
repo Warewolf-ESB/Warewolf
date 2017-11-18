@@ -14,13 +14,11 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Converters.Graph.DataTable;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
@@ -29,22 +27,15 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class SavePluginService : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalogue;
 
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
@@ -53,11 +44,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Save Plugin Service", GlobalConstants.WarewolfInfo);
 
-
                 values.TryGetValue("PluginService", out StringBuilder resourceDefinition);
 
-                IPluginService serviceDef = serializer.Deserialize<IPluginService>(resourceDefinition);
-                
+                IPluginService serviceDef = serializer.Deserialize<IPluginService>(resourceDefinition);                
                 
                 var source = ResourceCatalogue.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, serviceDef.Source.Id);
                 var output = new List<MethodOutput>(serviceDef.OutputMappings.Select(a => new MethodOutput(a.MappedFrom, a.MappedTo, "", false, a.RecordSetName, false, "", false, "", false)));
@@ -95,34 +84,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><PluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-
-            return newDs;
-        }
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
-        }
-        public IResourceCatalog ResourceCatalogue
-        {
-            get
-            {
-                return _resourceCatalogue ?? ResourceCatalog.Instance;
-            }
-            set
-            {
-                _resourceCatalogue = value;
-            }
+            get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
+            set => _serverExplorerRepository = value;
         }
 
-        public string HandlesType()
+        public IResourceCatalog ResourceCatalogue
         {
-            return "SavePluginService";
+            get => _resourceCatalogue ?? ResourceCatalog.Instance;
+            set => _resourceCatalogue = value;
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><PluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "SavePluginService";
     }
 }

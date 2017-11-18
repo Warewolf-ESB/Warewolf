@@ -13,22 +13,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find a resource by its id
-    /// </summary>
-
-
     public class FindResourcesByID : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -45,8 +38,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-
-
                 string guidCsv = string.Empty;
                 string type = null;
 
@@ -77,19 +68,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findResourcesByIdAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var findResourcesByIdService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><GuidCsv ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            findResourcesByIdService.Actions.Add(findResourcesByIdAction);
-
-            return findResourcesByIdService;
-        }
-
-        public override string HandlesType()
-        {
-            return "FindResourcesByID";
-        }
+        public override string HandlesType() => "FindResourcesByID";
     }
 }

@@ -41,11 +41,8 @@ namespace Dev2.DynamicServices.Objects.Base
         public string OutputSpecification { get; set; }
         public StringBuilder DataListSpecification { get; set; }
         public string Name { get; set; }
-
         public ICollection<string> CompilerErrors { get; set; }
-
         public enDynamicServiceObjectType ObjectType { get; set; }
-
         public StringBuilder ResourceDefinition { get; set; }
 
         public int VersionNo

@@ -12,12 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -56,44 +54,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(settings);
         }
 
-        protected virtual IEsbManagementEndpoint CreatePerfCounterReadEndPoint()
-        {
-            return new FetchPerformanceCounters();
-        }
+        protected virtual IEsbManagementEndpoint CreatePerfCounterReadEndPoint() => new FetchPerformanceCounters();
 
-        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()
-        {
-            return new SecurityRead();
-        }
-        
-        protected virtual IEsbManagementEndpoint CreateLoggingSettingsReadEndPoint()
-        {
-            return new LoggingSettingsRead();
-        }
+        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint() => new SecurityRead();
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var dynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        protected virtual IEsbManagementEndpoint CreateLoggingSettingsReadEndPoint() => new LoggingSettingsRead();
 
-            var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            dynamicService.Actions.Add(serviceAction);
-
-            return dynamicService;
-        }
-
-        public override string HandlesType()
-        {
-            return "SettingsReadService";
-        }
+        public override string HandlesType() => "SettingsReadService";
     }
 }

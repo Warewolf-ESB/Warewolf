@@ -4,10 +4,8 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
@@ -59,29 +57,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             Dev2Logger.WriteLogSettings(loggingSettingsTo.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture), loggingSettingsTo.FileLoggerLogLevel,loggingSettingsTo.EventLogLoggerLogLevel, EnvironmentVariables.ServerLogSettingsFile,"Warewolf Server");
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var dynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><LoggingSettings ColumnIODirection=\"Input\"></LoggingSettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><LoggingSettings ColumnIODirection=\"Input\"></LoggingSettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            dynamicService.Actions.Add(serviceAction);
-
-            return dynamicService;
-        }
-
-        public override string HandlesType()
-        {
-            return "LoggingSettingsWriteService";
-        }
+        public override string HandlesType() => "LoggingSettingsWriteService";
     }
 }

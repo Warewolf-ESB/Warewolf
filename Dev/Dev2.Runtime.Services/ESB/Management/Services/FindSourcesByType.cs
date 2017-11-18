@@ -13,19 +13,13 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find resources by type
-    /// </summary>
-
     public class FindSourcesByType : DefaultEsbManagementEndpoint
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
@@ -64,29 +58,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findSourcesByTypeAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var findSourcesByTypeService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Type ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            findSourcesByTypeService.Actions.Add(findSourcesByTypeAction);
-
-            return findSourcesByTypeService;
-        }
-
-        public override string HandlesType()
-        {
-            return "FindSourcesByType";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "FindSourcesByType";
     }
 }
