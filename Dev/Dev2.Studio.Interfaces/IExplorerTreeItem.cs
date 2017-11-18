@@ -69,6 +69,7 @@ namespace Dev2.Studio.Interfaces
         IExplorerTooltips ExplorerTooltips { get; set; }
 
         ObservableCollection<IExplorerItemViewModel> Children { get; set; }
+        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
         Action<IExplorerItemViewModel> SelectAction { get; set; }
         bool IsSaveDialog { get; set; }
 
