@@ -41,7 +41,6 @@ namespace Dev2.Studio.Interfaces
         bool CanCreateSchedule { get; set; }
         bool CanViewRunAllTests { get; set; }
         bool CanContribute { get; set; }
-        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 

@@ -38,6 +38,25 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("4", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
         }
 
+
+        [TestMethod]
+        [TestCategory("Deploy from Explorer")]
+        public void Deploying_From_Explorer_Opens_The_Deploy_With_The_Resource_In_Folder_Already_Checked_And_Refresh_Keeps_Selected()
+        {
+            ExplorerUIMap.Filter_Explorer("Check Result");
+            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.Select_Deploy_From_ExplorerContextMenu();
+            DeployUIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter("Check Result");
+            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
+            UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
+            DeployUIMap.ThenFilteredResourseIsCheckedForDeploy();
+            Assert.AreEqual("1", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
+            DeployUIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter("");
+            DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
+            UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
+            Assert.AreEqual("1", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
