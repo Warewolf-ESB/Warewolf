@@ -4,15 +4,18 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
+using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
+
     public class SaveTests : IEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
@@ -32,7 +35,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
+        public AuthorizationContext GetAuthorizationContextForService()
+        {
+            return AuthorizationContext.Contribute;
+        }
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -106,18 +112,40 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public ITestCatalog TestCatalog
         {
-            get => _testCatalog ?? Runtime.TestCatalog.Instance;
-            set => _testCatalog = value;
+            get
+            {
+                return _testCatalog ?? Runtime.TestCatalog.Instance;
+            }
+            set
+            {
+                _testCatalog = value;
+            }
         }
 
         public IResourceCatalog ResourceCatalog
         {
-            get => _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
-            set => _resourceCatalog = value;
+            get
+            {
+                return _resourceCatalog ?? Hosting.ResourceCatalog.Instance;
+            }
+            set
+            {
+                _resourceCatalog = value;
+            }
         }
 
-        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), null);
+        public DynamicService CreateServiceEntry()
+        {
+            DynamicService newDs = new DynamicService { Name = HandlesType() };
+            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            newDs.Actions.Add(sa);
 
-        public string HandlesType() => "SaveTests";
+            return newDs;
+        }
+
+        public string HandlesType()
+        {
+            return "SaveTests";
+        }
     }
 }
