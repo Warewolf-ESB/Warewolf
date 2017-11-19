@@ -1640,6 +1640,7 @@ namespace Warewolf.Studio.ViewModels
             if (string.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion)))
             {
                 IsVisible = true;
+                SelectAction?.Invoke(this);
             }
             else
             {
