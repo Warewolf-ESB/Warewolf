@@ -1651,7 +1651,6 @@ namespace Warewolf.Studio.ViewModels
             ValidateFolderExpand(filter);
             IsSelected = false;
             OnPropertyChanged(() => Children);
-            SelectAction?.Invoke(this);
         }
 
         private void ValidateIsVisible(string filter)
