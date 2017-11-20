@@ -179,6 +179,7 @@
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
+    <Compile Include="ActivityTests\DotNetCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CalculateActivityTest.cs" />
     <Compile Include="ActivityTests\CaseConvertActivityTests.cs" />
     <Compile Include="ActivityTests\CommentActivityTests.cs" />
@@ -205,8 +206,8 @@
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DsfEnhancedDotNetDllActivityTests.cs" />
     <Compile Include="ActivityTests\DsfSwitchTests.cs" />
-    <Compile Include="ActivityTests\NewMultiAssignObjectActivityTest.cs" />
-    <Compile Include="ActivityTests\NewMultiAssignActivityTest.cs" />
+    <Compile Include="ActivityTests\DotNetMultiAssignObjectActivityTest.cs" />
+    <Compile Include="ActivityTests\DotNetMultiAssignActivityTest.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\Scripting\DsfJavascriptActivityTests.cs" />

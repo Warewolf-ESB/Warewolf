@@ -23,7 +23,7 @@ using System.Globalization;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    public class NewMultiAssignActivityTest : BaseActivityUnitTest
+    public class DotNetMultiAssignActivityTest : BaseActivityUnitTest
     {
         public TestContext TestContext { get; set; }
 
@@ -771,7 +771,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var fieldCollection = new ObservableCollection<ActivityDTO>();
             fieldCollection.Add(new ActivityDTO("[[gRec(1).opt]]", "\"testData\"", fieldCollection.Count));
             fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "some value [[gRec(1).opt]] another", fieldCollection.Count));
-            var act = new DsfNewMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+            var act = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
@@ -790,7 +790,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestStartNode = new FlowStep
             {
-                Action = new DsfNewMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
+                Action = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
             };
 
             SetupArguments(
@@ -814,7 +814,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestStartNode = new FlowStep
             {
-                Action = new DsfNewMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
+                Action = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
             };
 
             SetupArguments(
@@ -836,7 +836,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MutiAssign_CalculateMode_PrefixEncasing_Test()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[Variable]]", DsfNewMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", DsfDotNetMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)", fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -844,7 +844,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = DsfNewMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
+            string expected = DsfDotNetMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -857,7 +857,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MutiAssign_CalculateMode_SuffixEncasing_Test()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[Variable]]", "sum(5)" + DsfNewMultiAssignActivity.CalculateTextConvertSuffix, fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", "sum(5)" + DsfDotNetMultiAssignActivity.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -865,7 +865,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            string expected = "sum(5)" + DsfNewMultiAssignActivity.CalculateTextConvertSuffix;
+            string expected = "sum(5)" + DsfDotNetMultiAssignActivity.CalculateTextConvertSuffix;
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -879,7 +879,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MutiAssign_CalculateMode_ValidEncasing_Test()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
-            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfNewMultiAssignActivity.CalculateTextConvertFormat, "sum(5)"), fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfDotNetMultiAssignActivity.CalculateTextConvertFormat, "sum(5)"), fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -902,7 +902,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
             var expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
-            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfNewMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfDotNetMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -952,7 +952,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new ActivityDTO("[[result]]", "[[rs(*).val]] [[result]]", 1),
             };
 
-            DsfNewMultiAssignActivity act = new DsfNewMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -979,7 +979,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new ActivityDTO("[[result]]", "[[rs(*).val]]", 1),
             };
 
-            DsfNewMultiAssignActivity act = new DsfNewMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -1006,7 +1006,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new ActivityDTO("[[rs(*).val]]", "abc", 1),
             };
 
-            DsfNewMultiAssignActivity act = new DsfNewMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -1033,7 +1033,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
 
-            DsfNewMultiAssignActivity act = new DsfNewMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -1056,7 +1056,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
 
-            DsfNewMultiAssignActivity act = new DsfNewMultiAssignActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -1078,14 +1078,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 TestStartNode = new FlowStep
                 {
-                    Action = new DsfNewMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
+                    Action = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection }
                 };
             }
             else
             {
                 TestStartNode = new FlowStep
                 {
-                    Action = new DsfNewMultiAssignActivity { OutputMapping = outputMapping, FieldsCollection = fieldCollection }
+                    Action = new DsfDotNetMultiAssignActivity { OutputMapping = outputMapping, FieldsCollection = fieldCollection }
                 };
             }
             TestData = testData;

@@ -24,6 +24,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -31,7 +32,8 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DsfCalculateActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("Utility-Calculate", "Aggregate Calculate", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Aggregate_Calculate")]
+    public class DsfDotNetAggregateCalculateActivity : DsfActivityAbstract<string>
     {
 
         #region Properties
@@ -54,8 +56,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Ctor
 
-        public DsfCalculateActivity()
-            : base("Calculate")
+        public DsfDotNetAggregateCalculateActivity()
+            : base("Aggregate Calculate")
         {
             Expression = string.Empty;
             Result = string.Empty;
@@ -94,13 +96,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
-                var calc = String.Format(GlobalConstants.CalculateTextConvertFormat, input);
+                var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
                 if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult && scalarResult.Item.IsNothing)
                 {
                     throw new NullValueInVariableException(ErrorResource.VariableInputError, input);
                 }
-                var inputIterator = new WarewolfIterator(warewolfEvalResult);
+                var inputIterator = new WarewolfIterator(warewolfEvalResult, FunctionEvaluatorOption.DotNetDateTimeFormat);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
                 var counter = 1;
                 while(warewolfListIterator.HasMoreData())
@@ -109,8 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     dataObject.Environment.Assign(Result, result, update == 0 ? counter : update);
                     counter++;
                 }
-
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(Result, dataObject.Environment, update);
                 }
@@ -118,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error("Calculate Exception", ex, GlobalConstants.WarewolfError);
+                Dev2Logger.Error("Aggregate Calculate Exception", ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -127,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var hasErrors = allErrors.HasErrors();
                 if(hasErrors)
                 {
-                    DisplayAndWriteError("DsfCalculateActivity", allErrors);
+                    DisplayAndWriteError("DsfAggregateCalculateActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
@@ -149,7 +150,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void AddDebugInputItem(IExecutionEnvironment environment,int update)
         {
-            AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update, false, true));
+            var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, Expression);
+            AddDebugInputItem(new DebugEvalResult(calc, "fx =", environment, update));
         }
 
         private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
@@ -158,11 +160,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Private Methods
-
-        public override List<string> GetOutputs()
-        {
-            return new List<string> { Result };
-        }
 
         #region Get Debug Inputs/Outputs
 
@@ -185,6 +182,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Get Inputs/Outputs
+
+        public override List<string> GetOutputs()
+        {
+            return new List<string> { Result };
+        }
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -220,4 +222,3 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion
     }
 }
-

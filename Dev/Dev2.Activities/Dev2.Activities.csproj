@@ -181,8 +181,8 @@
       <Visible>False</Visible>
     </None>
     <Compile Include="Activities\ActivityParser.cs" />
-    <Compile Include="Activities\DateAndTime\DsfNewDateTimeActivity.cs" />
-    <Compile Include="Activities\DateAndTime\DsfNewDateTimeDifferenceActivity.cs" />
+    <Compile Include="Activities\DateAndTime\DsfDotNetDateTimeActivity.cs" />
+    <Compile Include="Activities\DateAndTime\DsfDotNetDateTimeDifferenceActivity.cs" />
     <Compile Include="Activities\DebugCopyException.cs" />
     <Compile Include="Activities\DebugEvalResult.cs" />
     <Compile Include="Activities\Debug\DebugItemServiceTestStaticDataParams.cs" />
@@ -210,17 +210,19 @@
     <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\IDropBoxUpload.cs" />
+    <Compile Include="Activities\DsfDotNetAggregateCalculateActivity.cs" />
     <Compile Include="Activities\DsfAggregateCalculateActivity.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
+    <Compile Include="Activities\DsfDotNetCalculateActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfComDllActivity.cs" />
     <Compile Include="Activities\DsfDeleteRecordActivity.cs" />
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfEnhancedDotNetDllActivity.cs" />
-    <Compile Include="Activities\DsfNewMultiAssignObjectActivity.cs" />
-    <Compile Include="Activities\DsfNewMultiAssignActivity.cs" />
-    <Compile Include="Activities\DsfNewGatherSystemInformationActivity.cs" />
+    <Compile Include="Activities\DsfDotNetMultiAssignObjectActivity.cs" />
+    <Compile Include="Activities\DsfDotNetMultiAssignActivity.cs" />
+    <Compile Include="Activities\DsfDotNetGatherSystemInformationActivity.cs" />
     <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
     <Compile Include="Activities\DsfMySqlDatabaseActivity.cs" />

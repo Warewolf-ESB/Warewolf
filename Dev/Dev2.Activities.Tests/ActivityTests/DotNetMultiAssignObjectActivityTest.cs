@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
     
-    public class NewMultiAssignObjectActivityTest : BaseActivityUnitTest
+    public class DotNetMultiAssignObjectActivityTest : BaseActivityUnitTest
     {
         [TestMethod]
         [Owner("Clint Stedman")]
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var fieldCollection = new ObservableCollection<AssignObjectDTO>();
             fieldCollection.Add(new AssignObjectDTO("[[@test.value1]]", "somevalue", fieldCollection.Count));
-            var act = new DsfNewMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
+            var act = new DsfDotNetMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
@@ -390,14 +390,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 TestStartNode = new FlowStep
                 {
-                    Action = new DsfNewMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection }
+                    Action = new DsfDotNetMultiAssignObjectActivity { OutputMapping = null, FieldsCollection = fieldCollection }
                 };
             }
             else
             {
                 TestStartNode = new FlowStep
                 {
-                    Action = new DsfNewMultiAssignObjectActivity { OutputMapping = outputMapping, FieldsCollection = fieldCollection }
+                    Action = new DsfDotNetMultiAssignObjectActivity { OutputMapping = outputMapping, FieldsCollection = fieldCollection }
                 };
             }
             TestData = testData;
@@ -414,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", 1),
             };
 
-            DsfNewMultiAssignObjectActivity act = new DsfNewMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -440,7 +440,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", 1),
             };
 
-            DsfNewMultiAssignObjectActivity act = new DsfNewMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -466,7 +466,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
             };
 
-            DsfNewMultiAssignObjectActivity act = new DsfNewMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -488,7 +488,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
             };
 
-            DsfNewMultiAssignObjectActivity act = new DsfNewMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
