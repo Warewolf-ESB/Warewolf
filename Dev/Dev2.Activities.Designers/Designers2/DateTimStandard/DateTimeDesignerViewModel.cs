@@ -76,7 +76,6 @@ namespace Dev2.Activities.Designers2.DateTimStandard
 
         public override void Validate()
         {
-            throw new System.NotImplementedException();
         }
     }
 }

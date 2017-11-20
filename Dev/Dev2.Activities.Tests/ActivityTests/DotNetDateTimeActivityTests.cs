@@ -16,10 +16,9 @@ using System.Threading;
 using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
 using NodaTime;
 using System.Diagnostics;
-using System.IO;
+using Dev2.Activities.DateAndTime;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -27,7 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    public class DateTimeActivityTests : BaseActivityUnitTest
+    public class DotNetDateTimeActivityTests : BaseActivityUnitTest
     {
         /// <summary>
         ///Gets or sets the test context which provides
@@ -155,7 +154,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual);
+            DateTime actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
@@ -188,6 +187,30 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                 GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
+                Assert.AreEqual("0", actual);
+            }
+            Assert.AreEqual("0", actual);
+        }
+
+        [TestMethod]
+        [TestCategory("DateTimeUnitTest")]
+
+        public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_ValidateDateTimeFunction()
+
+        {
+            const string currDL = @"<root><MyTestResult></MyTestResult></root>";
+            SetupArguments(currDL, currDL, "", "", "FFFF", "Seconds", 10, "[[MyTestResult]]");
+
+            IDSFDataObject result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+            if (actual == "0")
+            {
+                Thread.Sleep(11);
+
+                result = ExecuteProcess();
+
+                GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+
                 Assert.AreNotEqual("0", actual);
             }
             Assert.AreNotEqual("0", actual);
@@ -201,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDateTimeActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
-            var act = new DsfDateTimeActivity
+            var act = new DsfDotNetDateTimeActivity
             {
                 DateTime = "",
                 InputFormat = "",
@@ -304,20 +327,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             TestStartNode = new FlowStep
             {
-                Action = new DsfDateTimeActivity
+                Action = new DsfDotNetDateTimeActivity
                 {
-                    DateTime = dateTime
-                ,
-                    InputFormat = inputFormat
-                ,
-                    OutputFormat = outputFormat
-                ,
-                    TimeModifierType = timeModifierType
-                ,
-                    TimeModifierAmount = timeModifierAmount
-                ,
-                    Result = resultValue
-                ,
+                    DateTime = dateTime,
+                    InputFormat = inputFormat,
+                    OutputFormat = outputFormat,
+                    TimeModifierType = timeModifierType,
+                    TimeModifierAmount = timeModifierAmount,
+                    Result = resultValue,
                     TimeModifierAmountDisplay = timeModifierAmount.ToString(CultureInfo.InvariantCulture)
                 }
             };
