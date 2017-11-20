@@ -30,7 +30,6 @@ namespace Dev2.Activities.Designers2.DateTimStandard
             if (string.IsNullOrEmpty(InputFormat))
             {
                 InputFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-
             }
             if (string.IsNullOrEmpty(OutputFormat))
             {
@@ -39,7 +38,6 @@ namespace Dev2.Activities.Designers2.DateTimStandard
         }
 
         public List<string> TimeModifierTypes { get; private set; }
-
 
         public string SelectedTimeModifierType
         {

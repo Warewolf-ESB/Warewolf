@@ -103,22 +103,27 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                var hasErrors = allErrors.HasErrors();
+                HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (hasErrors)
+            {
+                DisplayAndWriteError("DsfAggregateCalculateActivity", allErrors);
+                var errorString = allErrors.MakeDisplayReady();
+                dataObject.Environment.AddError(errorString);
+            }
+            if (dataObject.IsDebugMode())
+            {
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfAggregateCalculateActivity", allErrors);
-                    var errorString = allErrors.MakeDisplayReady();
-                    dataObject.Environment.AddError(errorString);
+                    AddDebugOutputItem(Result, dataObject.Environment, update);
                 }
-                if (dataObject.IsDebugMode())
-                {
-                    if (hasErrors)
-                    {
-                        AddDebugOutputItem(Result, dataObject.Environment, update);
-                    }
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
-                }
+                DispatchDebugState(dataObject, StateType.Before, update);
+                DispatchDebugState(dataObject, StateType.After, update);
             }
         }
 

@@ -115,24 +115,9 @@ namespace Dev2.Activities
                             _debugInputs.Add(inputToAdd);
                         }
 
-                        var hasErrors = allErrors.HasErrors();
-                        if (!hasErrors)
+                        if (!allErrors.HasErrors())
                         {
-                            string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
-                            string expression = item.Result;
-
-                            var regions = DataListCleaningUtils.SplitIntoRegions(expression);
-                            if (regions.Count > 1)
-                            {
-                                allErrors.AddError(ErrorResource.MultipleVariablesInResultField);
-                            }
-                            else
-                            {
-                                foreach (var region in regions)
-                                {
-                                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val), update);
-                                }
-                            }
+                            HandleNoErrorsFound(dataObject, update, allErrors, item);
                         }
                     }
                     catch (Exception err)
@@ -163,33 +148,57 @@ namespace Dev2.Activities
             finally
             {
                 // Handle Errors
-                var hasErrors = allErrors.HasErrors();
+                HandleErrors(dataObject, update, allErrors);
+            }
+        }
+
+        private void HandleNoErrorsFound(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, GatherSystemInformationTO item)
+        {
+            string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
+            string expression = item.Result;
+
+            var regions = DataListCleaningUtils.SplitIntoRegions(expression);
+            if (regions.Count > 1)
+            {
+                allErrors.AddError(ErrorResource.MultipleVariablesInResultField);
+            }
+            else
+            {
+                foreach (var region in regions)
+                {
+                    dataObject.Environment.AssignWithFrame(new AssignValue(region, val), update);
+                }
+            }
+        }
+
+        private void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        {
+            var hasErrors = allErrors.HasErrors();
+            if (hasErrors)
+            {
+                DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
+                foreach (var error in allErrors.FetchErrors())
+                {
+                    dataObject.Environment.AddError(error);
+                }
+            }
+            if (dataObject.IsDebugMode())
+            {
                 if (hasErrors)
                 {
-                    DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    foreach (var error in allErrors.FetchErrors())
+                    int innerCount = 1;
+                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
-                        dataObject.Environment.AddError(error);
+                        var itemToAdd = new DebugItem();
+                        AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
+                        AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
+                        _debugOutputs.Add(itemToAdd);
+                        innerCount++;
                     }
                 }
-                if (dataObject.IsDebugMode())
-                {
-                    if (hasErrors)
-                    {
-                        int innerCount = 1;
-                        foreach (GatherSystemInformationTO item in SystemInformationCollection)
-                        {
-                            var itemToAdd = new DebugItem();
-                            AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
-                            AddDebugItem(new DebugEvalResult(item.Result, "", dataObject.Environment, update), itemToAdd);
-                            _debugOutputs.Add(itemToAdd);
-                            innerCount++;
-                        }
-                    }
 
-                    DispatchDebugState(dataObject, StateType.Before, update);
-                    DispatchDebugState(dataObject, StateType.After, update);
-                }
+                DispatchDebugState(dataObject, StateType.Before, update);
+                DispatchDebugState(dataObject, StateType.After, update);
             }
         }
 
