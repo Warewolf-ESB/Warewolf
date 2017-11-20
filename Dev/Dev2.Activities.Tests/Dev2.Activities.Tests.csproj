@@ -205,6 +205,8 @@
     <Compile Include="ActivityTests\DropBox2016\Upload\DsfDropBoxUploadAcivtityTestShould.cs" />
     <Compile Include="ActivityTests\DsfEnhancedDotNetDllActivityTests.cs" />
     <Compile Include="ActivityTests\DsfSwitchTests.cs" />
+    <Compile Include="ActivityTests\NewMultiAssignObjectActivityTest.cs" />
+    <Compile Include="ActivityTests\NewMultiAssignActivityTest.cs" />
     <Compile Include="ActivityTests\MultiAssignObjectActivityTest.cs" />
     <Compile Include="ActivityTests\RecordsLengthTest.cs" />
     <Compile Include="ActivityTests\Scripting\DsfJavascriptActivityTests.cs" />

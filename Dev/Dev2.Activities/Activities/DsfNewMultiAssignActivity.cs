@@ -35,7 +35,8 @@ using WarewolfParserInterop;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DsfMultiAssignActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
+    public class DsfNewMultiAssignActivity : DsfActivityAbstract<string>
     {
         public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
@@ -62,7 +63,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override bool CanInduceIdle => true;
 
-        public DsfMultiAssignActivity()
+        public DsfNewMultiAssignActivity()
             : base("Assign")
         {
             _fieldsCollection = new List<ActivityDTO>();
@@ -170,30 +171,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         private void DoCalculation(IExecutionEnvironment environment, string fieldName, string cleanExpression, int update)
         {
-            var functionEvaluator = new FunctionEvaluator();
+            var functionEvaluator = new FunctionEvaluator(FunctionEvaluatorOption.DotNetDateTimeFormat);
             var warewolfEvalResult = environment.Eval(cleanExpression, update);
 
-            if (warewolfEvalResult.IsWarewolfAtomResult)
+            if (warewolfEvalResult.IsWarewolfAtomResult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomResult)
             {
-                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult result)
-                {
-                    var eval = PerformCalcForAtom(result.Item, functionEvaluator);
-                    var doCalculation = new AssignValue(fieldName, eval);
-                    environment.AssignWithFrame(doCalculation, update);
-                }
+                var eval = PerformCalcForAtom(atomResult.Item, functionEvaluator);
+                var doCalculation = new AssignValue(fieldName, eval);
+                environment.AssignWithFrame(doCalculation, update);
             }
-            if (warewolfEvalResult.IsWarewolfAtomListresult)
+            if (warewolfEvalResult.IsWarewolfAtomListresult && warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult atomListResult)
             {
-                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult result)
+                var counter = 1;
+                foreach (var item in atomListResult.Item)
                 {
-                    var counter = 1;
-                    foreach (var item in result.Item)
-                    {
-                        var eval = PerformCalcForAtom(item, functionEvaluator);
-                        var doCalculation = new AssignValue(fieldName, eval);
-                        environment.AssignWithFrame(doCalculation, update == 0 ? counter : update);
-                        counter++;
-                    }
+                    var eval = PerformCalcForAtom(item, functionEvaluator);
+                    var doCalculation = new AssignValue(fieldName, eval);
+                    environment.AssignWithFrame(doCalculation, update == 0 ? counter : update);
+                    counter++;
                 }
             }
         }
