@@ -28,7 +28,8 @@ namespace Dev2.Runtime.ESB.Management
             {
                 Name = HandleType,
                 ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandleType
+                SourceMethod = HandleType,
+                DataListSpecification = new StringBuilder(DataListSpecification)
             })
             {
                 findServices.Actions.Add(serviceAction);
