@@ -210,9 +210,9 @@
     <Compile Include="Activities\DropBox2016\UploadActivity\DropBoxUpload.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\DsfDropBoxUploadActivity.cs" />
     <Compile Include="Activities\DropBox2016\UploadActivity\IDropBoxUpload.cs" />
-    <Compile Include="Activities\DsfDotNetAggregateCalculateActivity.cs" />
     <Compile Include="Activities\DsfAggregateCalculateActivity.cs" />
     <Compile Include="Activities\DsfBaseActivity.cs" />
+    <Compile Include="Activities\DsfDotNetAggregateCalculateActivity.cs" />
     <Compile Include="Activities\DsfDotNetCalculateActivity.cs" />
     <Compile Include="Activities\DsfDecision.cs" />
     <Compile Include="Activities\DsfComDllActivity.cs" />

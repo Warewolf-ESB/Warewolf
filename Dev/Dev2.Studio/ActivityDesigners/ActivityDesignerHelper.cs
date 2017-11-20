@@ -102,8 +102,8 @@ namespace Dev2.Studio.ActivityDesigners
     {
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
-                { typeof(DsfNewMultiAssignActivity), typeof(MultiAssignDesigner) },
-                { typeof(DsfNewMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
+                { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
@@ -115,9 +115,9 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(Activities.Designers2.RecordsLengthNullHandler.RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
                 { typeof(DsfDeleteRecordActivity), typeof(Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
-                { typeof(DsfNewDateTimeActivity),typeof(Activities.Designers2.DateTimStandard.DateTimeDesigner) },
-                { typeof(DsfNewDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
-                { typeof(DsfNewGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
+                { typeof(DsfDotNetDateTimeActivity),typeof(Activities.Designers2.DateTimStandard.DateTimeDesigner) },
+                { typeof(DsfDotNetDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
+                { typeof(DsfDotNetGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
