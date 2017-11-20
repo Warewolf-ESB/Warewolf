@@ -694,8 +694,6 @@ namespace Dev2.Network
             task.Wait(100);
         }
 
-        public void Dispose() => _reconnectHeartbeat.Dispose();
-
         public Guid ID { get; private set; }
 
         private bool _disposedValue;
