@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -67,7 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(dataObject.Environment, update);
                 }
@@ -83,7 +83,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var inputIterator = new WarewolfIterator(warewolfEvalResult, FunctionEvaluatorOption.DotNetDateTimeFormat);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
                 var counter = 1;
-                while(warewolfListIterator.HasMoreData())
+                while (warewolfListIterator.HasMoreData())
                 {
                     var result = warewolfListIterator.FetchNextValue(inputIterator);
                     dataObject.Environment.Assign(Result, result, update == 0 ? counter : update);
@@ -95,7 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 allErrors.MergeErrors(errors);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Aggregate Calculate Exception", ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
@@ -104,15 +104,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfAggregateCalculateActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
+                    if (hasErrors)
                     {
                         AddDebugOutputItem(Result, dataObject.Environment, update);
                     }
@@ -122,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddDebugInputItem(IExecutionEnvironment environment,int update)
+        private void AddDebugInputItem(IExecutionEnvironment environment, int update)
         {
             var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, Expression);
             AddDebugInputItem(new DebugEvalResult(calc, "fx =", environment, update));
@@ -135,7 +135,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugInput in _debugInputs)
+            foreach (IDebugItem debugInput in _debugInputs)
             {
                 debugInput.FlushStringBuilder();
             }
@@ -144,7 +144,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
@@ -158,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null && updates.Count == 1)
+            if (updates != null && updates.Count == 1)
             {
                 Expression = updates[0].Item2;
             }
@@ -167,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
             var itemUpdate = updates?.FirstOrDefault(tuple => tuple.Item1 == Result);
-            if(itemUpdate != null)
+            if (itemUpdate != null)
             {
                 Result = itemUpdate.Item2;
             }
