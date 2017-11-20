@@ -697,6 +697,25 @@ namespace Dev2.Network
         public void Dispose() => _reconnectHeartbeat.Dispose();
 
         public Guid ID { get; private set; }
+
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_disposedValue)
+            {
+                if (disposing)
+                {
+                    _reconnectHeartbeat.Dispose();
+                }                
+                _disposedValue = true;
+            }
+        }
+       
+        public void Dispose()
+        {
+            Dispose(true);
+        }
     }
 
     public class FallbackException : Exception
