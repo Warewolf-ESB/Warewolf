@@ -36,6 +36,8 @@ namespace Warewolf.UI.Tests
             UIMap.WaitForSpinner(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.LocalHost.Spinner);
             DeployUIMap.ThenFilteredResourseIsCheckedForDeploy();
             Assert.AreEqual("4", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
+            DeployUIMap.DeSelect_Deploy_First_Source_Item();
+            Assert.AreEqual("0", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
         }
 
 
