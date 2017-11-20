@@ -51,4 +51,10 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         TestAggregate = 256,
         Duration = 512
     }
+
+    public enum FunctionEvaluatorOption
+    {
+        Dev2DateTimeFormat,
+        DotNetDateTimeFormat
+    }
 }

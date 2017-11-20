@@ -14,45 +14,33 @@ using Dev2.Common;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
-
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.MathOperations
-
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {
-
-        #region Private Members
         private readonly IDev2CalculationManager _manager;
-
-        #endregion Private Members
-
-        #region Ctor
+        private readonly FunctionEvaluatorOption _functionEvaluatorOption;
 
         public FunctionEvaluator()
         {
             _manager = new Dev2CalculationManager();
+            _functionEvaluatorOption = FunctionEvaluatorOption.Dev2DateTimeFormat;
         }
 
-        #endregion Ctor
+        public FunctionEvaluator(FunctionEvaluatorOption functionEvaluatorOption) : this()
+        {
+            _functionEvaluatorOption = functionEvaluatorOption;
+        }
 
-        #region Public Methods
-
-        /// <summary>
-        /// Evaluate the expression according to the operation specified and pass this to the CalculationManager
-        /// </summary>
-        /// <param name="expression">The expression.</param>
-        /// <param name="evaluation">The evaluation.</param>
-        /// <param name="error">The error.</param>
-        /// <returns></returns>
         public bool TryEvaluateFunction(string expression, out string evaluation, out string error)
         {
-            bool evaluationState = false;
-            error = String.Empty;
-            evaluation = String.Empty;
-            if (!String.IsNullOrEmpty(expression))
+            var evaluationState = false;
+            error = string.Empty;
+            evaluation = string.Empty;
+            if (!string.IsNullOrEmpty(expression))
             {
-
                 try
                 {
                     CalculationValue value = _manager.CalculateFormula(expression);
@@ -62,22 +50,7 @@ namespace Dev2.MathOperations
                     }
                     else
                     {
-                        if (value.IsDateTime)
-                        {
-                            DateTime dateTime = value.ToDateTime();
-                            string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                            string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                            string finalPattern = shortPattern + " " + longPattern;
-                            if (finalPattern.Contains("ss"))
-                            {
-                                finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
-                            }
-                            evaluation = dateTime.ToString(finalPattern);
-                        }
-                        else
-                        {
-                            evaluation = value.GetResolvedValue().ToString();
-                        }
+                        evaluation = value.IsDateTime ? PerformEvaluation(value) : value.GetResolvedValue().ToString();
                         evaluationState = true;
                     }
                 }
@@ -96,14 +69,27 @@ namespace Dev2.MathOperations
             return evaluationState;
         }
 
-        // It expects a List of Type To (either strings or any type of object that is IComparable).
-        // And evaluates the whole list against the expression.
+        private string PerformEvaluation(CalculationValue value)
+        {
+            string evaluation;
+            var dateTime = value.ToDateTime();
+            if (_functionEvaluatorOption == FunctionEvaluatorOption.DotNetDateTimeFormat)
+            {
+                evaluation = dateTime.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            }
+            else
+            {
+                var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                var finalPattern = shortPattern + " " + longPattern;
+                if (finalPattern.Contains("ss"))
+                {
+                    finalPattern = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
+                }
+                evaluation = dateTime.ToString(finalPattern);
+            }
 
-        #endregion Public Methods
-
-        #region Private Methods
-
-        #endregion Private Methods
-
+            return evaluation;
+        }
     }
 }
