@@ -44,7 +44,7 @@ namespace Warewolf.UI.Tests
         public void Deploying_From_Explorer_Opens_The_Deploy_With_The_Resource_In_Folder_Already_Checked_And_Refresh_Keeps_Selected()
         {
             ExplorerUIMap.Filter_Explorer("Check Result");
-            ExplorerUIMap.RightClick_Explorer_Localhost_FirstItem();
+            ExplorerUIMap.RightClick_Explorer_Localhost_SecondItem();
             ExplorerUIMap.Select_Deploy_From_ExplorerContextMenu();
             DeployUIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter("Check Result");
             DeployUIMap.Click_Deploy_Tab_Source_Refresh_Button();
