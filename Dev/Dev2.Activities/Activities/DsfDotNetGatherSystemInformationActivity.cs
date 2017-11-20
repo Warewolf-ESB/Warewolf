@@ -31,22 +31,14 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-SystemInformation", "Sys Info", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Sys_Info")]
     public class DsfDotNetGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
-        #region Fields
-
         IGetSystemInformation _getSystemInformation;
         IIdentity _currentIdentity;
 
-        #endregion
-
-        /// <summary>
-        /// The property that holds all the conversions
-        /// </summary>
         public IList<GatherSystemInformationTO> SystemInformationCollection { get; set; }
 
         public IGetSystemInformation GetSystemInformation
@@ -61,27 +53,23 @@ namespace Dev2.Activities
             }
         }
 
-
         public override List<string> GetOutputs()
         {
             return SystemInformationCollection.Select(to => to.Result).ToList();
         }
-
-        #region Overrides of DsfNativeActivity<string>
 
         public DsfDotNetGatherSystemInformationActivity()
             : base("Gather System Information")
         {
             SystemInformationCollection = new List<GatherSystemInformationTO>();
         }
-        
 
         private void CleanArgs()
         {
             int count = 0;
-            while(count < SystemInformationCollection.Count)
+            while (count < SystemInformationCollection.Count)
             {
-                if(string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
+                if (string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
                 {
                     SystemInformationCollection.RemoveAt(count);
                 }
@@ -91,13 +79,8 @@ namespace Dev2.Activities
                 }
             }
         }
-        /// <summary>
-        /// When overridden runs the activity's execution logic
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
-        
+
         protected override void OnExecute(NativeActivityContext context)
-            
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
@@ -105,11 +88,9 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             ErrorResultTO allErrors = new ErrorResultTO();
 
-            if(dataObject.ExecutingUser != null)
+            if (dataObject.ExecutingUser != null)
             {
                 _currentIdentity = dataObject.ExecutingUser.Identity;
             }
@@ -119,52 +100,52 @@ namespace Dev2.Activities
             {
                 CleanArgs();
 
-                foreach(GatherSystemInformationTO item in SystemInformationCollection)
+                foreach (GatherSystemInformationTO item in SystemInformationCollection)
                 {
                     try
                     {
                         indexCounter++;
 
-                        if(dataObject.IsDebugMode())
+                        if (dataObject.IsDebugMode())
                         {
                             var inputToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", indexCounter.ToString(CultureInfo.InvariantCulture)), inputToAdd);
-                            AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result,update), "", "="), inputToAdd);
+                            AddDebugItem(new DebugItemStaticDataParams("", dataObject.Environment.EvalToExpression(item.Result, update), "", "="), inputToAdd);
                             AddDebugItem(new DebugItemStaticDataParams(item.EnTypeOfSystemInformation.GetDescription(), ""), inputToAdd);
                             _debugInputs.Add(inputToAdd);
                         }
 
                         var hasErrors = allErrors.HasErrors();
-                        if(!hasErrors)
+                        if (!hasErrors)
                         {
                             string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
                             string expression = item.Result;
 
                             var regions = DataListCleaningUtils.SplitIntoRegions(expression);
-                            if(regions.Count > 1)
+                            if (regions.Count > 1)
                             {
                                 allErrors.AddError(ErrorResource.MultipleVariablesInResultField);
                             }
                             else
                             {
-                                foreach(var region in regions)
+                                foreach (var region in regions)
                                 {
                                     dataObject.Environment.AssignWithFrame(new AssignValue(region, val), update);
                                 }
                             }
                         }
                     }
-                    catch(Exception err)
+                    catch (Exception err)
                     {
                         dataObject.Environment.Assign(item.Result, null, update);
                         allErrors.AddError(err.Message);
                     }
                 }
                 dataObject.Environment.CommitAssign();
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach(GatherSystemInformationTO item in SystemInformationCollection)
+                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
@@ -174,7 +155,7 @@ namespace Dev2.Activities
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFGatherSystemInformationTool", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
@@ -183,20 +164,20 @@ namespace Dev2.Activities
             {
                 // Handle Errors
                 var hasErrors = allErrors.HasErrors();
-                if(hasErrors)
+                if (hasErrors)
                 {
                     DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
-                    foreach(var error in allErrors.FetchErrors())
+                    foreach (var error in allErrors.FetchErrors())
                     {
                         dataObject.Environment.AddError(error);
                     }
                 }
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    if(hasErrors)
+                    if (hasErrors)
                     {
                         int innerCount = 1;
-                        foreach(GatherSystemInformationTO item in SystemInformationCollection)
+                        foreach (GatherSystemInformationTO item in SystemInformationCollection)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
@@ -214,7 +195,7 @@ namespace Dev2.Activities
 
         public string GetCorrectSystemInformation(enTypeOfSystemInformationToGather enTypeOfSystemInformation)
         {
-            switch(enTypeOfSystemInformation)
+            switch (enTypeOfSystemInformation)
             {
                 case enTypeOfSystemInformationToGather.ComputerName:
                     return GetSystemInformation.GetComputerName();
@@ -298,16 +279,16 @@ namespace Dev2.Activities
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
                     Tuple<string, string> t1 = t;
                     var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
 
                     // issues updates
-                    foreach(var a in items)
+                    foreach (var a in items)
                     {
                         a.Result = t.Item2;
                     }
@@ -317,24 +298,22 @@ namespace Dev2.Activities
 
         public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
         {
-            if(updates != null)
+            if (updates != null)
             {
-                foreach(Tuple<string, string> t in updates)
+                foreach (Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
                     Tuple<string, string> t1 = t;
                     var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
 
                     // issues updates
-                    foreach(var a in items)
+                    foreach (var a in items)
                     {
                         a.Result = t.Item2;
                     }
                 }
             }
         }
-
-        #region Overrides of DsfNativeActivity<string>
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
@@ -343,77 +322,67 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            foreach(IDebugItem debugOutput in _debugOutputs)
+            foreach (IDebugItem debugOutput in _debugOutputs)
             {
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
-            if(modelProperty != null)
+            ModelItemCollection mic = modelProperty?.Collection;
+            if (mic == null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
-
-                if(mic != null)
+                return;
+            }
+            List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
+            if (listOfValidRows.Count > 0)
+            {
+                GatherSystemInformationTO gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
+                int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
+                foreach (string s in listToAdd)
                 {
-                    List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
-                    if(listOfValidRows.Count > 0)
-                    {
-                        GatherSystemInformationTO gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
-                        int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
-                        foreach(string s in listToAdd)
-                        {
-                            mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
-                            startIndex++;
-                        }
-                        CleanUpCollection(mic, modelItem, startIndex);
-                    }
-                    else
-                    {
-                        AddToCollection(listToAdd, modelItem);
-                    }
+                    mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
+                    startIndex++;
                 }
+                CleanUpCollection(mic, modelItem, startIndex);
+            }
+            else
+            {
+                AddToCollection(listToAdd, modelItem);
             }
         }
 
         private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
-            if(modelProperty != null)
+            ModelItemCollection mic = modelProperty?.Collection;
+            if (mic == null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
-
-                if(mic != null)
-                {
-                    int startIndex = 0;
-                    const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
-                    mic.Clear();
-                    foreach(string s in listToAdd)
-                    {
-                        mic.Add(new GatherSystemInformationTO(EnTypeOfSystemInformation, s, startIndex + 1));
-                        startIndex++;
-                    }
-                    CleanUpCollection(mic, modelItem, startIndex);
-                }
+                return;
             }
+            int startIndex = 0;
+            const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
+            mic.Clear();
+            foreach (string s in listToAdd)
+            {
+                mic.Add(new GatherSystemInformationTO(EnTypeOfSystemInformation, s, startIndex + 1));
+                startIndex++;
+            }
+            CleanUpCollection(mic, modelItem, startIndex);
         }
 
         private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if(startIndex < mic.Count)
+            if (startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
             }
@@ -422,7 +391,7 @@ namespace Dev2.Activities
         private string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 var currentName = modelProperty.ComputedValue as string;
                 if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
@@ -436,12 +405,6 @@ namespace Dev2.Activities
             return string.Empty;
         }
 
-        #endregion
-
-        #endregion
-
-        #region Implementation of ICollectionActivity
-
         public int GetCollectionCount()
         {
             return SystemInformationCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
@@ -449,7 +412,7 @@ namespace Dev2.Activities
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {
-            if(!overwrite)
+            if (!overwrite)
             {
                 InsertToCollection(listToAdd, modelItem);
             }
@@ -458,9 +421,5 @@ namespace Dev2.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
-
-        #endregion
     }
-
-
 }
