@@ -15,7 +15,6 @@ using System.Globalization;
 
 namespace Dev2.Common.DateAndTime
 {
-
     public class DateTimeFormatter : DateTimeFormatterBase
     {
         #region Class Members
@@ -70,7 +69,7 @@ namespace Dev2.Common.DateAndTime
             dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
 
             //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - Added trim to data
-            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO,
+            if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime?.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO,
                 out error))
             {
                 //

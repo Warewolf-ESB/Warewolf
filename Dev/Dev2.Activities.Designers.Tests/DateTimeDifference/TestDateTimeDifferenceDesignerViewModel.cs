@@ -8,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Designers2.DateTimeDifferenceStandard;
 using System.Activities.Presentation.Model;
-using Dev2.Activities.Designers2.DateTimeDifference;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeDifference
 {

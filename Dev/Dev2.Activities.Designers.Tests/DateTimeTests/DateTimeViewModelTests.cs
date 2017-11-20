@@ -10,7 +10,6 @@
 
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
-using Dev2.Activities.Designers2.DateTime;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -18,8 +17,8 @@ using Moq;
 using Moq.Protected;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Globalization;
 using Dev2.Common;
+using Dev2.Activities.Designers2.DateTimStandard;
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
