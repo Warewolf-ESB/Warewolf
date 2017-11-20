@@ -39,11 +39,11 @@ namespace Dev2.Integration.Tests.VersionStrategy
             {
                 System.Diagnostics.Debug.WriteLine(e.Message);
             }
-            Assert.IsTrue(File.Exists(resourceVersion));
+            Assert.IsTrue(File.Exists(resourceVersion), "Resource file with Versions does not exist.");
 
 
             dir.Move("TestData\\VersionControl", filePath.Combine(pathResource));
-            Assert.IsTrue(dir.Exists(pathResource));
+            Assert.IsTrue(dir.Exists(pathResource), "VersionControl folder does not exist.");
             //------------Setup for test--------------------------
             var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat, dir, rootPath, file, filePath);
             //------------Execute Test---------------------------
@@ -62,7 +62,7 @@ namespace Dev2.Integration.Tests.VersionStrategy
             };
             var newPath = filePath.Combine(EnvironmentVariables.VersionsPath, "e296f78f-27ec-40de-817a-0e874528050e");
             var movedVersions = dir.GetFiles(newPath);
-            Assert.AreEqual(6, movedVersions.Length);
+            Assert.AreEqual(6, movedVersions.Length, "Versions were not Moved.");
 
             foreach (var item in movedVersions.Select(p => filePath.GetFileName(p)))
             {
@@ -74,7 +74,7 @@ namespace Dev2.Integration.Tests.VersionStrategy
             }
 
             var allVersions = serverVersionRepostory.GetVersions("e296f78f-27ec-40de-817a-0e874528050e".ToGuid());
-            Assert.AreEqual(6, allVersions.Count);
+            Assert.AreEqual(6, allVersions.Count, "No versions found for resource.");
             var singleResource = ResourceCatalog.Instance.GetResource(GlobalConstants.ServerWorkspaceID, "e296f78f-27ec-40de-817a-0e874528050e".ToGuid());
             Common.Interfaces.Versioning.IVersionInfo versionInfo = singleResource.VersionInfo;
             versionInfo.VersionNumber = 1.ToString();
