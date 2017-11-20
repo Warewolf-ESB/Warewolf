@@ -1640,6 +1640,7 @@ namespace Warewolf.Studio.ViewModels
             if (string.IsNullOrEmpty(filter) || (_children.Count > 0 && _children.Any(model => model.IsVisible && !model.IsResourceVersion)))
             {
                 IsVisible = true;
+                SelectAction?.Invoke(this);
             }
             else
             {
@@ -1651,7 +1652,6 @@ namespace Warewolf.Studio.ViewModels
             ValidateFolderExpand(filter);
             IsSelected = false;
             OnPropertyChanged(() => Children);
-            SelectAction?.Invoke(this);
         }
 
         private void ValidateIsVisible(string filter)
