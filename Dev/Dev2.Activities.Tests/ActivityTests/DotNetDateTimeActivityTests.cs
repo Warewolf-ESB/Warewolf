@@ -36,30 +36,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region DateTime Tests
 
-        //Added for BUG 9494
-        [TestMethod]
-        public void DateTimeUsingdWDatePartWithFullDateNameExpectedDateTimeReturnedCorrectly()
-        {
-            const string CurrDl = @"<root><MyTestResult></MyTestResult></root>";
-            SetupArguments(CurrDl
-                         , CurrDl
-                         , "Sunday, July 23 78 15:30"
-                         , "dW', 'MM' 'dd' 'yy' '24h':'min"
-                         , "yyyy/mm/dd 12h:min am/pm"
-                         , ""
-                         , 0
-                         , "[[MyTestResult]]");
-
-            IDSFDataObject result = ExecuteProcess();
-            const string Expected = "1978/07/23 03:30 PM";
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-
-            // remove test datalist ;)
-
-            Assert.AreEqual(Expected, actual);
-
-        }
-
         [TestMethod]
         public void DateTime_NominalDateTimeInputs_Expected_DateTimeReturnedCorrectly()
         {
@@ -67,8 +43,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "2012/11/27 04:12:41 PM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "yyyy/MM/dd hh:mm:ss tt"
+                         , "yyyy/MM/dd hh:mm:ss tt"
                          , "Hours"
                          , 10
                          , "[[MyTestResult]]");
@@ -91,8 +67,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , testData
                          , "[[MyDateRecordSet(*).Date]]"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "yyyy/MM/dd hh:mm:ss tt"
+                         , "yyyy/MM/dd hh:mm:ss tt"
                          , "Hours"
                          , 10
                          , "[[MyDateRecordSet().Date]]");
@@ -118,8 +94,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(currDL
                          , currDL
                          , "2013/02/07 08:38:56.953 PM"
-                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
-                         , "yyyy/mm/dd 12h:min:ss.sp am/pm"
+                         , "yyyy/MM/dd hh:mm:ss.FFFF tt"
+                         , "yyyy/MM/dd hh:mm:ss.FFFF tt"
                          , "Split Secs"
                          , 327
                          , "[[MyTestResult]]");
@@ -129,7 +105,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             // remove test datalist ;)
 
-            const string expected = "2013/02/07 08:38:57.280 PM";
+            const string expected = "2013/02/07 08:38:57.28 PM";
             Assert.AreEqual(expected, actual);
         }
 
@@ -172,7 +148,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , currDL
                          , ""
                          , ""
-                         , "sp"
+                         , "FFFF"
                          , "Seconds"
                          , 10
                          , "[[MyTestResult]]");
@@ -187,9 +163,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                 GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
-                Assert.AreEqual("0", actual);
+                Assert.AreNotEqual("0", actual);
             }
-            Assert.AreEqual("0", actual);
+            Assert.AreNotEqual("0", actual);
         }
 
         [TestMethod]
