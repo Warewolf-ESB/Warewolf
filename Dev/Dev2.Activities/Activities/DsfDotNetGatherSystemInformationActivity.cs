@@ -35,7 +35,7 @@ using WarewolfParserInterop;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-SystemInformation", "Sys Info", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Sys_Info")]
-    public class DsfNewGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfDotNetGatherSystemInformationActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
         #region Fields
 
@@ -69,7 +69,7 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        public DsfNewGatherSystemInformationActivity()
+        public DsfDotNetGatherSystemInformationActivity()
             : base("Gather System Information")
         {
             SystemInformationCollection = new List<GatherSystemInformationTO>();

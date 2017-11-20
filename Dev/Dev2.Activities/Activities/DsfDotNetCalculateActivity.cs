@@ -24,6 +24,7 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
+using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -31,43 +32,24 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class DsfCalculateActivity : DsfActivityAbstract<string>
+    [ToolDescriptorInfo("Utility-Calculate", "Calculate", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Calculate")]
+    public class DsfDotNetCalculateActivity : DsfActivityAbstract<string>
     {
-
-        #region Properties
-
-        /// <summary>
-        /// The property that holds the Expression string the user enters into the "fx" box
-        /// </summary>
         [Inputs("Expression")]
         [FindMissing]
         public string Expression { get; set; }
 
-        /// <summary>
-        /// The property that holds the Result string the user enters into the "Result" box
-        /// </summary>
         [Outputs("Result")]
         [FindMissing]
         public new string Result { get; set; }
 
-        #endregion Properties
-
-        #region Ctor
-
-        public DsfCalculateActivity()
+        public DsfDotNetCalculateActivity()
             : base("Calculate")
         {
             Expression = string.Empty;
             Result = string.Empty;
         }
 
-        #endregion Ctor
-
-        #region Override Abstract Methods
-
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary> 
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -77,8 +59,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             ErrorResultTO allErrors = new ErrorResultTO();
             ErrorResultTO errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
@@ -100,7 +80,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     throw new NullValueInVariableException(ErrorResource.VariableInputError, input);
                 }
-                var inputIterator = new WarewolfIterator(warewolfEvalResult);
+                var inputIterator = new WarewolfIterator(warewolfEvalResult, FunctionEvaluatorOption.DotNetDateTimeFormat);
                 warewolfListIterator.AddVariableToIterateOn(inputIterator);
                 var counter = 1;
                 while(warewolfListIterator.HasMoreData())
@@ -143,10 +123,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion Override Abstract Methods
-
-        #region Private Methods
-
         private void AddDebugInputItem(IExecutionEnvironment environment,int update)
         {
             AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update, false, true));
@@ -157,14 +133,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }
 
-        #endregion Private Methods
-
         public override List<string> GetOutputs()
         {
             return new List<string> { Result };
         }
-
-        #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
@@ -184,8 +156,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-        #endregion Get Inputs/Outputs
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
 
@@ -204,9 +174,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(Expression);
@@ -216,8 +183,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return GetForEachItems(Result);
         }
-
-        #endregion
     }
 }
 
