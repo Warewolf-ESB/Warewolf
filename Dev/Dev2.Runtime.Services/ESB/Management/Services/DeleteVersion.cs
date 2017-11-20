@@ -32,14 +32,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             requestArgs.TryGetValue("resourceId", out StringBuilder tmp);
-            if (tmp != null)
+            if (tmp != null && Guid.TryParse(tmp.ToString(), out Guid resourceId))
             {
-                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
-                {
-                    return resourceId;
-                }
+                return resourceId;
             }
-
             return Guid.Empty;
         }
 
@@ -68,13 +64,13 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var execMessage = new ExecuteMessage { HasError = false };
-            if(!values.ContainsKey("resourceId"))
+            if (!values.ContainsKey("resourceId"))
             {
                 Dev2Logger.Info("Delete Version. Invalid Resource Id", GlobalConstants.WarewolfInfo);
                 execMessage.HasError = true;
-                execMessage.Message = new StringBuilder( "No resourceId sent to server");
+                execMessage.Message = new StringBuilder("No resourceId sent to server");
             }
-            else if(!values.ContainsKey("versionNumber") )
+            else if (!values.ContainsKey("versionNumber"))
             {
                 Dev2Logger.Info("Delete Version. Invalid Version number", GlobalConstants.WarewolfInfo);
                 execMessage.HasError = true;
@@ -93,14 +89,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                     {
                         resourcePath = tmp.ToString();
                     }
-                    var res = ServerVersionRepo.DeleteVersion(guid,version, resourcePath);
-                    execMessage.Message = serializer.SerializeToBuilder(res); 
+                    var res = ServerVersionRepo.DeleteVersion(guid, version, resourcePath);
+                    execMessage.Message = serializer.SerializeToBuilder(res);
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Delete Version Error.",e, GlobalConstants.WarewolfError);
+                    Dev2Logger.Error("Delete Version Error.", e, GlobalConstants.WarewolfError);
                     execMessage.HasError = true;
-                    execMessage.Message = new StringBuilder( e.Message);
+                    execMessage.Message = new StringBuilder(e.Message);
                 }
             }
             return serializer.SerializeToBuilder(execMessage);

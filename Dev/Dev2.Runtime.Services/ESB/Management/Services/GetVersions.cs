@@ -30,16 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersions : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
         private IServerVersionRepository _serverExplorerRepository;
 
         public override string HandlesType()

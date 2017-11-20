@@ -465,7 +465,7 @@
     <Compile Include="Wrappers\IDomain.cs" />
     <Compile Include="Wrappers\IDropboxClientWrapper.cs" />
     <Compile Include="Wrappers\IFile.cs" />
-    <Compile Include="Wrappers\IPath.cs" />
+    <Compile Include="Wrappers\IFilePath.cs" />
     <Compile Include="Wrappers\IWrappedObject.cs" />
   </ItemGroup>
   <ItemGroup>
