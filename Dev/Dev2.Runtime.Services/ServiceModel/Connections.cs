@@ -11,7 +11,12 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Xml.Linq;
+using Dev2.Common;
 using Dev2.Common.Common;
+using Dev2.Communication;
 using Dev2.Runtime.Diagnostics;
 using Dev2.Runtime.Interfaces;
 using Microsoft.AspNet.SignalR.Client;
@@ -52,6 +57,18 @@ namespace Dev2.Runtime.ServiceModel
             {
                 // Validate URI, ports, etc...
                 new Uri(connection.Address);
+
+
+                var connectResult = ConnectToServer(connection);
+                if (!string.IsNullOrEmpty(connectResult))
+                {
+                    if (connectResult.Contains("FatalError"))
+                    {
+                        var error = XElement.Parse(connectResult);
+                        result.IsValid = false;
+                        result.ErrorMessage = string.Join(" - ", error.Nodes().Cast<XElement>().Select(n => n.Value));
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -88,5 +105,12 @@ namespace Dev2.Runtime.ServiceModel
         }
 
         public IHubProxy CreateHubProxy(Dev2.Data.ServiceModel.Connection connection) => _hubFactory.CreateHubProxy(connection);
+
+        protected virtual string ConnectToServer(Dev2.Data.ServiceModel.Connection connection)
+        {
+            // we need to grab the principle and impersonate to properly execute in context of the requesting user ;)
+            var proxy = CreateHubProxy(connection);
+            return "Success";
+        }
     }
 }
