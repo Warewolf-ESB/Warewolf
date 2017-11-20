@@ -1042,9 +1042,15 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (IsFolder)
                 {
-                    if (ChildrenCount >= 1 && value != null)
+                    if (ChildrenCount >= 1 && _isResource != null || value == false)
                     {
-                        Children.Apply(a => a.IsResourceChecked = isResourceChecked);
+                        _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
+                        OnPropertyChanged(() => IsResourceChecked);
+                        Task.Run(() =>
+                        {
+                            var isChecked = _isResource;
+                            AsList().Apply(a => a.IsResourceChecked = isChecked);
+                        });
                     }
                 }
                 else
