@@ -43,7 +43,7 @@ namespace ActivityUnitTests.ActivityTests
                          , ActivityStrings.DateTimeDiff_DataListShape
                          , "2012/03/05 09:20:30 AM"
                          , "2012/10/01 07:15:50 AM"
-                         , "yyyy/mm/dd 12h:min:ss am/pm"
+                         , "yyyy/MM/dd hh:mm:ss tt"
                          , "Days"
                          , "[[Result]]"
                          );
@@ -64,7 +64,7 @@ namespace ActivityUnitTests.ActivityTests
                          , ActivityStrings.DateTimeDifferenceDataListShape
                          , "[[recset1(*).f1]]"
                          , "[[recset2(*).f2]]"
-                         , "dd/mm/yyyy"
+                         , "dd/MM/yyyy"
                          , "Days"
                          , "[[resCol(*).res]]"
                          );
@@ -91,12 +91,10 @@ namespace ActivityUnitTests.ActivityTests
                             , "[[Result]]"
                             );
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "209";
             GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
-
-            Assert.AreEqual(expected, actual);
+            Assert.IsNull(actual);
         }              
         #endregion Positive Test Cases
 
