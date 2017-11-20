@@ -167,7 +167,7 @@ namespace Dev2.Studio.Controller
         {
             Buttons = MessageBoxButton.OKCancel;
             Header = "Source data contains encrypted connections strings.";
-            Description = "Click Continue to discard the connection information and re-enter it or Cancel and then deploy it to this machine from the resources originating server.";
+            Description = "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resources originating server.";
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
