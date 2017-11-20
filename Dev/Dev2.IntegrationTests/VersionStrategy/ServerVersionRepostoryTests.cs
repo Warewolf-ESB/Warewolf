@@ -41,7 +41,7 @@ namespace Dev2.Integration.Tests.VersionStrategy
             }
             Assert.IsTrue(File.Exists(resourceVersion));
 
-           
+
             dir.Move("TestData\\VersionControl", filePath.Combine(pathResource));
             Assert.IsTrue(dir.Exists(pathResource));
             //------------Setup for test--------------------------

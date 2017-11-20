@@ -240,7 +240,7 @@ namespace Dev2.Runtime.Hosting
 
                 lock (LockObject)
                 {
-                    var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
+                   var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
                     if (old == null)
                     { return; }
                     var versions = GetVersions(resource.ResourceID).FirstOrDefault();
@@ -268,9 +268,12 @@ namespace Dev2.Runtime.Hosting
             return dateTimeStamp.Ticks.ToString(CultureInfo.InvariantCulture);
         }
 
-
-
         public void CleanUpOldVersionControlStructure(IDirectory directory)
+        {
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { PerformCleanUp(directory); });
+        }
+
+        private void PerformCleanUp(IDirectory directory)
         {
             var resources = _catalogue.GetResources(GlobalConstants.ServerWorkspaceID).Where(p => !p.ResourceType.Equals("ReservedService"));
 
@@ -291,7 +294,7 @@ namespace Dev2.Runtime.Hosting
                     var name = string.Format("{0}_{1}_{2}", parts[1], parts[2], parts[3]);
                     string destination = _filePath.Combine(folderName, name);
                     if (!_file.Exists(destination))
-                    {                     
+                    {
                         _file.Move(pathForVersion, destination);
                     }
                 }
