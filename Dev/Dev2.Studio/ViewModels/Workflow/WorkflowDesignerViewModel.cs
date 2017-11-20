@@ -204,7 +204,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
-            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            UpdateWorkflowInputDataViewModel(_resourceModel);
             GetWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
@@ -2772,12 +2772,19 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (message.KeepTabOpen)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this);
-                _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+                UpdateWorkflowInputDataViewModel(_resourceModel);
                 UpdateWorkflowLink(GetWorkflowLink());
                 NotifyOfPropertyChange(() => DesignerView);
             }
             RemoveUnsavedWorkflowName(unsavedName);
         }
+
+        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel)
+        {
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            _workflowInputDataViewModel.LoadWorkflowInputs();
+        }
+
         internal void RemoveUnsavedWorkflowName(string unsavedName)
         {
             NewWorkflowNames.Instance.Remove(unsavedName);

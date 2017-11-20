@@ -30,7 +30,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of INewServiceResource
 
-        
+
         public ICommand CreateTestCommand
         {
             get

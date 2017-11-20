@@ -425,22 +425,20 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            if (workspaceID != Guid.Empty)
+            var resource = GetResource(workspaceID, resourceID);
+            var service = GetService(workspaceID, resourceID, resource.ResourceName);
+            if (service != null)
             {
-                var resource = GetResource(workspaceID, resourceID);
-                var service = GetService(workspaceID, resourceID, resource.ResourceName);
-                if (service != null)
+                var sa = service.Actions.FirstOrDefault();
+                MapServiceActionDependencies(workspaceID, sa);
+                ServiceActionRepo.Instance.AddToCache(resourceID, service);
+                var activity = GetActivity(sa);
+                if (parser != null)
                 {
-                    var sa = service.Actions.FirstOrDefault();
-                    MapServiceActionDependencies(workspaceID, sa);
-                    ServiceActionRepo.Instance.AddToCache(resourceID, service);
-                    var activity = GetActivity(sa);
-                    if (parser != null)
-                    {
-                        return parser.Parse(activity, resourceID);
-                    }
+                    return parser.Parse(activity, resourceID);
                 }
             }
+
             return null;
         }
 

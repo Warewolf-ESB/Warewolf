@@ -143,6 +143,7 @@
     <Compile Include="DeployStatsViewerViewModel.cs" />
     <Compile Include="DLLChooser.cs" />
     <Compile Include="DummyServiceTest.cs" />
+    <Compile Include="ExplorerTooltips.cs" />
     <Compile Include="FileChooser.cs" />
     <Compile Include="FileChooserModel.cs" />
     <Compile Include="IProcessor.cs" />

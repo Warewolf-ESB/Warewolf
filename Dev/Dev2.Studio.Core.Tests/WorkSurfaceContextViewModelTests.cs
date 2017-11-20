@@ -347,6 +347,10 @@ namespace Dev2.Core.Tests
         [TestCategory("WorkSurfaceContextViewModel_CanDebug")]
         public void WorkSurfaceContextViewModel_CanDebug_ExpectTrue()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             //------------Setup for test--------------------------
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
@@ -1192,6 +1196,11 @@ namespace Dev2.Core.Tests
         }
 
         public string GetWorkflowInputs(string field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel)
         {
             throw new NotImplementedException();
         }

@@ -79,6 +79,9 @@ namespace Dev2.Core.Tests
             svr.Setup(a => a.DisplayName).Returns("Localhost");
             svr.Setup(a => a.Name).Returns("Localhost");
 
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+
             Task<IExplorerItem> ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
             CustomContainer.Register(svr.Object);
