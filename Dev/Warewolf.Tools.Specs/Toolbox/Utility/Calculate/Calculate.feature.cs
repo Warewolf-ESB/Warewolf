@@ -1006,11 +1006,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("27", "COUNT([[x]],[[y]],
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "29")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "DATE(2000,[[y]],12)")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "02/12/2000 00:00:00.000")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "2/12/2000 12:00:00.000 AM")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_29()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("29", "DATE(2000,[[y]],12)", "02/12/2000 00:00:00.000", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("29", "DATE(2000,[[y]],12)", "2/12/2000 12:00:00.000 AM", ((string[])(null)));
 #line hidden
         }
         
@@ -1201,11 +1201,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("41", "DOLLARFR([[x]],[[z
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "42")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EDATE([[z]],[[[[a]]]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "04/10/1900 00:00:00.000")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4/10/1900 12:00:00.000 AM")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_42()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]]]])", "04/10/1900 00:00:00.000", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]]]])", "4/10/1900 12:00:00.000 AM", ((string[])(null)));
 #line hidden
         }
         
@@ -1216,11 +1216,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("42", "EDATE([[z]],[[[[a]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "43")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "EOMONTH([[z]],[[[[a]]]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "04/30/1900 00:00:00.000")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "4/30/1900 12:00:00.000 AM")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_43()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("43", "EOMONTH([[z]],[[[[a]]]])", "04/30/1900 00:00:00.000", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("43", "EOMONTH([[z]],[[[[a]]]])", "4/30/1900 12:00:00.000 AM", ((string[])(null)));
 #line hidden
         }
         
@@ -2986,11 +2986,11 @@ this.CalculateAssignByEvaluatingVariablesWithFunctions("165", "WEEKNUM(11011,[[y
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("VariantName", "166")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:No", "166")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:fx", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "01/15/1900 00:00:00.000")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("Parameter:result", "1/15/1900 12:00:00.000 AM")]
         public virtual void CalculateAssignByEvaluatingVariablesWithFunctions_166()
         {
 #line 207
-this.CalculateAssignByEvaluatingVariablesWithFunctions("166", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])", "01/15/1900 00:00:00.000", ((string[])(null)));
+this.CalculateAssignByEvaluatingVariablesWithFunctions("166", "WORKDAY([[rc(1).set]],[[rc(1).set]],[[z]])", "1/15/1900 12:00:00.000 AM", ((string[])(null)));
 #line hidden
         }
         
