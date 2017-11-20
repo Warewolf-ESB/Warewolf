@@ -51,7 +51,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            DateTime res = DateTime.Parse(entry,CultureInfo.InvariantCulture);
+            DateTime res = DateTime.Parse(entry);
 
             if(res.Second == 0)
             {

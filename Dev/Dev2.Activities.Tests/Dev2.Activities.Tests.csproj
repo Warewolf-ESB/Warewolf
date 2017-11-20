@@ -177,6 +177,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="ActivityTests\AbstractMultipleFilesActivityTests.cs" />
+    <Compile Include="ActivityTests\DotNetDateTimeDifferenceTests.cs" />
+    <Compile Include="ActivityTests\DotNetDateTimeActivityTests.cs" />
+    <Compile Include="ActivityTests\DotNetAggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\AggregateCalculateActivityTest.cs" />
     <Compile Include="ActivityTests\BaseActivityTests.cs" />
     <Compile Include="ActivityTests\DotNetCalculateActivityTest.cs" />
