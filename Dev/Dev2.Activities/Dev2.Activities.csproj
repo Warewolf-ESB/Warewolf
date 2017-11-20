@@ -218,6 +218,8 @@
     <Compile Include="Activities\DsfDotNetDllActivity.cs" />
     <Compile Include="Activities\DsfCreateJsonActivity.cs" />
     <Compile Include="Activities\DsfEnhancedDotNetDllActivity.cs" />
+    <Compile Include="Activities\DsfNewMultiAssignObjectActivity.cs" />
+    <Compile Include="Activities\DsfNewMultiAssignActivity.cs" />
     <Compile Include="Activities\DsfNewGatherSystemInformationActivity.cs" />
     <Compile Include="Activities\DsfMethodBasedActivity.cs" />
     <Compile Include="Activities\DsfMultiAssignObjectActivity.cs" />
