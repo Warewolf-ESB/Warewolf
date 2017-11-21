@@ -6,8 +6,6 @@ using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
-
-
 namespace Dev2.Common.Interfaces
 {
     public interface IServiceTestModel : INotifyPropertyChanged
@@ -50,6 +48,7 @@ namespace Dev2.Common.Interfaces
         IServiceTestModel Clone();
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs);
         IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType);
+        IServiceTestStep AddDebugItemTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs);
     }
 
     public interface IServiceTestInput

@@ -144,7 +144,7 @@ namespace Dev2.Core.Tests
             workflowHelper.Setup(h => h.CreateWorkflow(It.IsAny<string>())).Returns(() => workflow);
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
             mockResourceModel.Setup(model => model.Environment).Returns(mockEnvironmentModel.Object);
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             var connectedEventArgs = new ConnectedEventArgs { IsConnected = false };
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, viewModel) { DebugOutputViewModel = { DebugStatus = DebugStatus.Executing } };
             //------------Execute Test---------------------------
@@ -183,7 +183,7 @@ namespace Dev2.Core.Tests
                 return workflow;
             });
             workflowHelper.Setup(h => h.SanitizeXaml(It.IsAny<StringBuilder>())).Returns(xamlBuilder);
-            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object, new Mock<IExternalProcessExecutor>().Object);
+            var viewModel = new WorkflowDesignerViewModelMock(resourceModel.Object, workflowHelper.Object);
             return viewModel;
         }
 
@@ -347,6 +347,10 @@ namespace Dev2.Core.Tests
         [TestCategory("WorkSurfaceContextViewModel_CanDebug")]
         public void WorkSurfaceContextViewModel_CanDebug_ExpectTrue()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             //------------Setup for test--------------------------
             var workSurfaceKey = new WorkSurfaceKey();
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
@@ -1198,6 +1202,11 @@ namespace Dev2.Core.Tests
         }
 
         public string GetWorkflowInputs(string field)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel)
         {
             throw new NotImplementedException();
         }
