@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common;
 using System;
 using System.Globalization;
 using System.Windows;
@@ -29,16 +28,17 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(!(value is DateTime))
+            if (!(value is DateTime))
             {
                 return Binding.DoNothing;
             }
 
             DateTime dateTime = (DateTime)value;
 
-            if(string.IsNullOrWhiteSpace(Format))
+            if (string.IsNullOrWhiteSpace(Format))
             {
-                var customFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.ffff");
+                var dateTimeFormatInfo = CultureInfo.CurrentCulture.DateTimeFormat;
+                var customFormat = dateTimeFormatInfo.ShortDatePattern + " " + dateTimeFormatInfo.LongTimePattern.Replace("ss", "ss.ffff");
                 return dateTime.ToString(customFormat);
             }
             return dateTime.ToString(Format);
