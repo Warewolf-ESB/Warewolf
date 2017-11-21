@@ -19,6 +19,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         IWorkSurfaceViewModel
     {
         private WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
+        private bool _hasDebugOutput;
 
         public BaseWorkSurfaceViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
@@ -37,7 +38,15 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public virtual bool HasVariables => false;
 
-        public virtual bool HasDebugOutput => true;
+        public virtual bool HasDebugOutput
+        {
+            get { return _hasDebugOutput; }
+            set
+            {
+                _hasDebugOutput = value;
+                NotifyOfPropertyChange(() => HasDebugOutput);
+            }
+        }
 
         public virtual bool CanSave => true;
     }
