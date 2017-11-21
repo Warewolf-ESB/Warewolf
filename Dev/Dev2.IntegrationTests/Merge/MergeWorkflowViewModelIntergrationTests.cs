@@ -150,7 +150,7 @@ namespace Dev2.Integration.Tests.Merge
             var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
             Assert.IsTrue(all);
             var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(3, conflictsCount);
+            Assert.AreEqual(35, conflictsCount);
             var completeConflict1 = mergeWorkflowViewModel.Conflicts.First;
             Assert.IsNotNull(completeConflict1);
 
@@ -166,38 +166,9 @@ namespace Dev2.Integration.Tests.Merge
 
             var completeConflict3 = completeConflict2.Next;
             Assert.IsNotNull(completeConflict3);
-            var toolConflict3 = completeConflict3.Value as IToolConflict;
-            Assert.IsTrue(toolConflict3.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Decision", toolConflict3.CurrentViewModel.MergeDescription);
-
-            var childrenCount = toolConflict3.CurrentViewModel.Children.Count;
-            Assert.AreEqual(4, childrenCount);
-
-            var mergeToolModel = toolConflict3.CurrentViewModel.Children.Single(model => model.MergeDescription == "Over 18");
-            Assert.AreEqual(4, mergeToolModel.Children.Count);
-            AsserthildrenHasChild(mergeToolModel.Children, "Correct Result");
-            AsserthildrenHasChild(mergeToolModel.Children, "Incorrect Result");
-            AsserthildrenHasChild(mergeToolModel.Children, "EXAMPLE 3 - Error Checking");
-            AsserthildrenHasChild(mergeToolModel.Children, "Was there an error?");
-
-            var toolModel = mergeToolModel.Children.Single(model => model.MergeDescription == "Was there an error?");
-            var count = toolModel.Children.Count;
-            Assert.AreEqual(5, count);
-            AsserthildrenHasChild(toolModel.Children, "Correct Result");
-            AsserthildrenHasChild(toolModel.Children, "Incorrect Result");
-            AsserthildrenHasChild(toolModel.Children, "EXAMPLE 4 - Recordsets");
-            AsserthildrenHasChild(toolModel.Children, "Assign (3)");
-            AsserthildrenHasChild(toolModel.Children, "If [[rec(*).set]] Is Numeric");
-
-            var single = toolModel.Children.Single(model => model.MergeDescription == "If [[rec(*).set]] Is Numeric");
-            var childCount = single.Children.Count;
-            Assert.AreEqual(2, childCount);
-            var trueArmTools = single.Children.Count(model => model.ParentDescription == "True");
-            var falseArmTools = single.Children.Count(model => model.ParentDescription == "False");
-            Assert.AreEqual(1, trueArmTools);
-            Assert.AreEqual(1, falseArmTools);
-            AsserthildrenHasChild(single.Children, "Incorrect");
-            AsserthildrenHasChild(single.Children, "Correct Result");
+            var toolConflict3 = completeConflict3.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict3.CurrentArmConnector);
+            Assert.AreEqual("Use the Decision tool to: -> EXAMPLE 1 - Basic Usage", toolConflict3.CurrentArmConnector.ArmDescription);
         }
 
         [TestMethod]
@@ -275,7 +246,7 @@ namespace Dev2.Integration.Tests.Merge
             var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
             Assert.IsTrue(all);
             var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(6, conflictsCount);
+            Assert.AreEqual(11, conflictsCount);
 
             var completeConflict1 = mergeWorkflowViewModel.Conflicts.First;
             Assert.IsNotNull(completeConflict1);
@@ -291,40 +262,32 @@ namespace Dev2.Integration.Tests.Merge
 
             var completeConflict3 = completeConflict2.Next;
             Assert.IsNotNull(completeConflict3);
-            var toolConflict3 = completeConflict3.Value as IToolConflict;
-            Assert.IsFalse(toolConflict3.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Create Example Data (1)", toolConflict3.CurrentViewModel.MergeDescription);
+            var toolConflict3 = completeConflict3.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict3.CurrentArmConnector);
+            Assert.AreEqual("Use the Sequence tool to: -> EXAMPLE 1 - Basic Usage", toolConflict3.CurrentArmConnector.ArmDescription);
 
             var completeConflict4 = completeConflict3.Next;
             Assert.IsNotNull(completeConflict4);
             var toolConflict4 = completeConflict4.Value as IToolConflict;
-            Assert.IsTrue(toolConflict4.CurrentViewModel.Children.Any());
-            Assert.AreEqual("Organize Customers", toolConflict4.CurrentViewModel.MergeDescription);
+            Assert.IsTrue(!toolConflict4.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Create Example Data (1)", toolConflict4.CurrentViewModel.MergeDescription);
             var childrenCount = toolConflict4.CurrentViewModel.Children.Count;
-            Assert.AreEqual(3, childrenCount);
-            AsserthildrenHasChild(toolConflict4.CurrentViewModel.Children, "Split Names (3)");
-            AsserthildrenHasChild(toolConflict4.CurrentViewModel.Children, "Find Only Unique Names");
-            AsserthildrenHasChild(toolConflict4.CurrentViewModel.Children, "Sort Names Alphabetically");
+            Assert.AreEqual(0, childrenCount);
 
             var completeConflict5 = completeConflict4.Next;
             Assert.IsNotNull(completeConflict5);
-            var toolConflict5 = completeConflict5.Value as IToolConflict;
-            Assert.IsFalse(toolConflict5.CurrentViewModel.Children.Any());
-            Assert.AreEqual("EXAMPLE 2 - Advanced Usage", toolConflict5.CurrentViewModel.MergeDescription);
+            var toolConflict5 = completeConflict5.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict5.CurrentArmConnector);
+            Assert.AreEqual("EXAMPLE 1 - Basic Usage -> Create Example Data (1)", toolConflict5.CurrentArmConnector.ArmDescription);
 
             var completeConflict6 = completeConflict5.Next;
             Assert.IsNotNull(completeConflict6);
             var toolConflict6 = completeConflict6.Value as IToolConflict;
-            Assert.IsTrue(toolConflict6.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", toolConflict6.CurrentViewModel.MergeDescription);
+            Assert.IsTrue(!toolConflict6.CurrentViewModel.Children.Any());
+            Assert.AreEqual("Organize Customers", toolConflict6.CurrentViewModel.MergeDescription);
 
             var childrenCount5 = toolConflict6.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount5);
-
-            var mergeToolModel = toolConflict6.CurrentViewModel.Children.Single();
-            Assert.AreEqual(2, mergeToolModel.Children.Count);
-            AsserthildrenHasChild(mergeToolModel.Children, "Convert Case To Title Case (2)");
-            AsserthildrenHasChild(mergeToolModel.Children, "Create New Email Addresses (3)");
+            Assert.AreEqual(0, childrenCount5);
         }
 
         [TestMethod]
@@ -348,7 +311,7 @@ namespace Dev2.Integration.Tests.Merge
             var all = mergeWorkflowViewModel.Conflicts.All(conflict => !conflict.HasConflict);
             Assert.IsTrue(all);
             var conflictsCount = mergeWorkflowViewModel.Conflicts.Count;
-            Assert.AreEqual(7, conflictsCount);
+            Assert.AreEqual(13, conflictsCount);
 
             var completeConflict1 = mergeWorkflowViewModel.Conflicts.First;
             Assert.IsNotNull(completeConflict1);
@@ -364,42 +327,45 @@ namespace Dev2.Integration.Tests.Merge
 
             var completeConflict3 = completeConflict2.Next;
             Assert.IsNotNull(completeConflict3);
-            var toolConflict3 = completeConflict3.Value as IToolConflict;
-            Assert.IsTrue(toolConflict3.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", toolConflict3.CurrentViewModel.MergeDescription);
-            var childrenCount = toolConflict3.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount);
-            AsserthildrenHasChild(toolConflict3.CurrentViewModel.Children, "Random");
+            var toolConflict3 = completeConflict3.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict3.CurrentArmConnector);
+            Assert.AreEqual("Use the For Each tool to: -> EXAMPLE 1 - No. of Executions", toolConflict3.CurrentArmConnector.ArmDescription);
 
             var completeConflict4 = completeConflict3.Next;
             Assert.IsNotNull(completeConflict4);
             var toolConflict4 = completeConflict4.Value as IToolConflict;
             Assert.IsTrue(!toolConflict4.CurrentViewModel.Children.Any());
-            Assert.AreEqual("EXAMPLE 2 - * in Range", toolConflict4.CurrentViewModel.MergeDescription);
+            Assert.AreEqual("For Each", toolConflict4.CurrentViewModel.MergeDescription);
 
             var completeConflict5 = completeConflict4.Next;
             Assert.IsNotNull(completeConflict5);
-            var toolConflict5 = completeConflict5.Value as IToolConflict;
-            Assert.IsTrue(toolConflict5.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", toolConflict5.CurrentViewModel.MergeDescription);
-            var childrenCount1 = toolConflict5.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount1);
-            AsserthildrenHasChild(toolConflict5.CurrentViewModel.Children, "Random");
+            var toolConflict5 = completeConflict5.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict5.CurrentArmConnector);
+            Assert.AreEqual("EXAMPLE 1 - No. of Executions -> For Each", toolConflict5.CurrentArmConnector.ArmDescription);
 
             var completeConflict6 = completeConflict5.Next;
             Assert.IsNotNull(completeConflict6);
             var toolConflict6 = completeConflict6.Value as IToolConflict;
             Assert.IsTrue(!toolConflict6.CurrentViewModel.Children.Any());
-            Assert.AreEqual("EXAMPLE 3 - * in CSV", toolConflict6.CurrentViewModel.MergeDescription);
+            Assert.AreEqual("EXAMPLE 2 - * in Range", toolConflict6.CurrentViewModel.MergeDescription);
 
             var completeConflict7 = completeConflict6.Next;
             Assert.IsNotNull(completeConflict7);
-            var toolConflict7 = completeConflict7.Value as IToolConflict;
-            Assert.IsTrue(toolConflict7.CurrentViewModel.Children.Any());
-            Assert.AreEqual("For Each", toolConflict7.CurrentViewModel.MergeDescription);
-            var childrenCount2 = toolConflict7.CurrentViewModel.Children.Count;
-            Assert.AreEqual(1, childrenCount2);
-            AsserthildrenHasChild(toolConflict7.CurrentViewModel.Children, "Random");
+            var toolConflict7 = completeConflict7.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict7.CurrentArmConnector);
+            Assert.AreEqual("For Each -> EXAMPLE 2 - * in Range", toolConflict7.CurrentArmConnector.ArmDescription);
+
+            var completeConflict8 = completeConflict7.Next;
+            Assert.IsNotNull(completeConflict8);
+            var toolConflict8 = completeConflict8.Value as IToolConflict;
+            Assert.IsTrue(!toolConflict8.CurrentViewModel.Children.Any());
+            Assert.AreEqual("For Each", toolConflict8.CurrentViewModel.MergeDescription);
+
+            var completeConflict9 = completeConflict8.Next;
+            Assert.IsNotNull(completeConflict9);
+            var toolConflict9 = completeConflict9.Value as IArmConnectorConflict;
+            Assert.IsNotNull(toolConflict9.CurrentArmConnector);
+            Assert.AreEqual("EXAMPLE 2 - * in Range -> For Each", toolConflict9.CurrentArmConnector.ArmDescription);
         }
 
 
