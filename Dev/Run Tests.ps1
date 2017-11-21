@@ -267,7 +267,6 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     #Stop Studio
     $Output = ""
     taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
-	Write-Host $Output.ToString()
 
     #Soft Kill
     [int]$i = 0
@@ -275,13 +274,13 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     [string]$WaitOutput = $WaitTimeoutMessage
     while (!($Output.ToString().StartsWith("ERROR: ")) -and $WaitOutput.ToString().StartsWith($WaitTimeoutMessage) -and $i -lt $WaitForCloseRetryCount) {
 	    $i += 1
+	    Write-Host $Output.ToString()
 	    Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
         $FormatWaitForCloseTimeoutMessage = $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
         if ($FormatWaitForCloseTimeoutMessage -ne "" -and !($FormatWaitForCloseTimeoutMessage.StartsWith("Cannot find a process with the name "))) {
             Write-Host $FormatWaitForCloseTimeoutMessage
         }
 	    taskkill /im "Warewolf Studio.exe"  2>&1 |  %{$Output = $_}
-	    Write-Host $Output.ToString()
     }
 
     #Force Kill
