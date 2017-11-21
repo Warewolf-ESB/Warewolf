@@ -47,7 +47,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
+    public class ServerProxyWithoutChunking : IEnvironmentConnection,IDisposable
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
