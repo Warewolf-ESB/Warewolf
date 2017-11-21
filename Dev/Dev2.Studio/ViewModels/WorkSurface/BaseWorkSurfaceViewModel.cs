@@ -12,14 +12,12 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces.Enums;
 
-
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
     public class BaseWorkSurfaceViewModel : BaseViewModel,
         IWorkSurfaceViewModel
     {
         private WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
-        private bool _hasDebugOutput;
 
         public BaseWorkSurfaceViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
@@ -38,15 +36,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public virtual bool HasVariables => false;
 
-        public virtual bool HasDebugOutput
-        {
-            get { return _hasDebugOutput; }
-            set
-            {
-                _hasDebugOutput = value;
-                NotifyOfPropertyChange(() => HasDebugOutput);
-            }
-        }
+        public virtual bool HasDebugOutput => false;
 
         public virtual bool CanSave => true;
     }
