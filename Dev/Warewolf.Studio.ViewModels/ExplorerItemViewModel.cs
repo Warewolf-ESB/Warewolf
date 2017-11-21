@@ -1042,16 +1042,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (IsFolder)
                 {
-                    if (ChildrenCount >= 1 && _isResource != null || value == false)
-                    {
-                        _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
-                        OnPropertyChanged(() => IsResourceChecked);
-                        Task.Run(() =>
-                        {
-                            var isChecked = _isResource;
-                            AsList().Apply(a => a.IsResourceChecked = isChecked);
-                        });
-                    }
+                    UpdateFolderItems(value, isResourceChecked);
                 }
                 else
                 {
@@ -1061,6 +1052,20 @@ namespace Warewolf.Studio.ViewModels
                 IsSelected = isResourceChecked != null && (bool)isResourceChecked;
                 SelectAction?.Invoke(this);
                 OnPropertyChanged(() => IsResourceChecked);
+            }
+        }
+
+        private void UpdateFolderItems(bool? value, bool? isResourceChecked)
+        {
+            if (ChildrenCount >= 1 && _isResource != null || value == false)
+            {
+                _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
+                OnPropertyChanged(() => IsResourceChecked);
+                Task.Run(() =>
+                {
+                    var isChecked = _isResource;
+                    AsList().Apply(a => a.IsResourceChecked = isChecked);
+                });
             }
         }
 
