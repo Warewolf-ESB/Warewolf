@@ -32,7 +32,7 @@ namespace Dev2.Studio
                         resourceModel = ResourceModelFactory.CreateResourceModel(serverRepo.ActiveServer, resource, serviceXml);
                     }
                 }
-                if (resourceModel == null && resource.ResourceType.Contains("Source"))
+                if (resourceModel == null && (resource.ResourceType != "WorkflowService" || resource.ResourceType != "Workflow"))
                 {
                     var moveSource = popupController.ShowCanNotMoveResource() == MessageBoxResult.OK;
                     if (moveSource)
