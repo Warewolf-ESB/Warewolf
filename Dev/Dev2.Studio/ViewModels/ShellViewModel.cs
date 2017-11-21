@@ -906,6 +906,7 @@ namespace Dev2.Studio.ViewModels
                         _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
                         break;
                 }
+                contextualResourceModel = null;
             }
         }
 
