@@ -3101,10 +3101,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
             if (step != null)
-            {
+            {                
                 var next = GetItemFromNodeCollection(destinationUniqueId);
                 SetNext(next, step);
-
             }
         }
 
@@ -3117,8 +3116,12 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var parentNodeProperty = decisionItem.Properties[key];
                 if (parentNodeProperty != null)
                 {
-                    parentNodeProperty.SetValue(next);
-                    Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    parentNodeProperty.SetValue(null);
+                    if (next != null)
+                    {
+                        parentNodeProperty.SetValue(next);
+                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
+                    }
                     return true;
                 }
             }
@@ -3139,27 +3142,33 @@ namespace Dev2.Studio.ViewModels.Workflow
                     var nodeItem = next.GetCurrentValue() as FlowNode;
                     if (nodeItem != null)
                     {
-                        if (key != "Default")
-                        {
-                            var parentNodeProperty = switchItem.Properties["Cases"];
-                            var cases = parentNodeProperty?.Dictionary;
-                            cases.Add(key, nodeItem);
-                            parentNodeProperty.SetValue(cases);
-                        }
-                        else
-                        {
-                            var defaultProperty = switchItem.Properties["Default"];
-                            if (defaultProperty != null)
-                            {
-                                defaultProperty.SetValue(nodeItem);
-                            }
-                        }
+                        UpdateSwithArm(key, switchItem, nodeItem);
                     }
                     Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                     return true;
                 }
+                UpdateSwithArm(key, switchItem, null);
             }
             return false;
+        }
+
+        private static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem)
+        {
+            if (key != "Default")
+            {
+                var parentNodeProperty = switchItem.Properties["Cases"];
+                var cases = parentNodeProperty?.Dictionary;
+                cases.Add(key, nodeItem);
+                parentNodeProperty.SetValue(cases);
+            }
+            else
+            {
+                var defaultProperty = switchItem.Properties["Default"];
+                if (defaultProperty != null)
+                {
+                    defaultProperty.SetValue(nodeItem);
+                }
+            }
         }
 
         ModelItem GetDecisionFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
@@ -3191,15 +3200,24 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var nextStep = next.GetCurrentValue<FlowNode>();
                 if (nextStep != null)
                 {
-                    var parentNodeProperty = source.Properties["Next"];
-                    if (parentNodeProperty == null)
-                    {
-                        return;
-                    }
-                    parentNodeProperty.SetValue(nextStep);
+                    SetNextProperty(source, nextStep);
                     Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                 }
             }
+            else
+            {
+                SetNextProperty(source, null);
+            }
+        }
+
+        void SetNextProperty(ModelItem source, FlowNode nextStep)
+        {
+            var parentNodeProperty = source.Properties["Next"];
+            if (parentNodeProperty == null)
+            {
+                return;
+            }
+            parentNodeProperty.SetValue(nextStep);
         }
 
         ModelItem GetRegularActivityFromNodeCollection(string uniqueId) => NodesCollection.FirstOrDefault(q =>
