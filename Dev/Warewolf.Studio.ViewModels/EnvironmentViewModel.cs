@@ -1083,7 +1083,10 @@ namespace Warewolf.Studio.ViewModels
                     var isResourceChecked = existingItem.IsResourceChecked;
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
-                    existingItem.IsResourceChecked = isResourceChecked;
+                    if (existingItem.IsFolder && isResourceChecked != null)
+                    {
+                        existingItem.IsResourceChecked = isResourceChecked;
+                    }
                     if (!explorerItemModels.Contains(existingItem))
                     {
                         explorerItemModels.Add(existingItem);
