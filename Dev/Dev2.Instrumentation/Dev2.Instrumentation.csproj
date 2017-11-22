@@ -52,7 +52,7 @@
     </Reference>
     <Reference Include="ruiSDKDotNet_5.1.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Desktop\ru\ruiSDKDotNet_5.1.0.dll</HintPath>
+      <HintPath>..\Binaries\ruiSDKDotNet_5.1.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -90,6 +90,10 @@
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.Resources\Warewolf.Studio.Resources.csproj">
+      <Project>{cb565c94-8833-4911-b20f-0921ee3c286c}</Project>
+      <Name>Warewolf.Studio.Resources</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

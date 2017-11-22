@@ -122,9 +122,12 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         private void AddNewTest(IEventAggregator eventPublisher)
         {
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+            if (applicationTracker != null)
+            {
+                applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
                                                 Warewolf.Studio.Resources.Languages.TrackEventMenu.CreateNewTest);
-            var newTestFromDebugMessage = new NewTestFromDebugMessage
+            }
+                var newTestFromDebugMessage = new NewTestFromDebugMessage
             {
                 ResourceID = ResourceID,
                 ResourceModel = _contextualResourceModel,

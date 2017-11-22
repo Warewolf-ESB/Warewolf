@@ -152,8 +152,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-               // var className = GetType().Name;
-                //Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className)
+              
                 OnExecute(context);
                 
             }
@@ -1018,7 +1017,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             try
             {
                 var className = GetType().Name;
-                //Tracker.TrackEvent(TrackerEventGroup.ActivityExecution, className);
+               
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
