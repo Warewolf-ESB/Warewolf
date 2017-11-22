@@ -742,30 +742,47 @@ namespace Dev2.Activities
 
         public bool Equals(DsfSqlBulkInsertActivity other)
         {
-            if (ReferenceEquals(null, other)) return false;
-            if (ReferenceEquals(this, other)) return true;
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
             var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(Database, other.Database);
             var collectionEquals = CommonEqualityOps.CollectionEquals(InputMappings, other.InputMappings, new DataColumnMappingComparer());
-            return base.Equals(other)
-                && collectionEquals
-                && isSourceEqual
-                && string.Equals(TableName, other.TableName) 
-                && string.Equals(Result, other.Result)
-                && CheckConstraints == other.CheckConstraints
-                && FireTriggers == other.FireTriggers
-                && UseInternalTransaction == other.UseInternalTransaction 
-                && KeepIdentity == other.KeepIdentity
-                && KeepTableLock == other.KeepTableLock
-                && string.Equals(Timeout, other.Timeout) 
-                && string.Equals(BatchSize, other.BatchSize)
-                && IgnoreBlankRows == other.IgnoreBlankRows;
+            var isEqual = base.Equals(other);
+            isEqual &= collectionEquals;
+            isEqual &= isSourceEqual;
+            isEqual &= collectionEquals;
+            isEqual &= string.Equals(TableName, other.TableName);
+            isEqual &= string.Equals(Result, other.Result);
+            isEqual &= CheckConstraints == other.CheckConstraints;
+            isEqual &= FireTriggers == other.FireTriggers;
+            isEqual &= UseInternalTransaction == other.UseInternalTransaction;
+            isEqual &= KeepIdentity == other.KeepIdentity;
+            isEqual &= KeepTableLock == other.KeepTableLock;
+            isEqual &= string.Equals(Timeout, other.Timeout);
+            isEqual &= string.Equals(BatchSize, other.BatchSize);
+            isEqual &= IgnoreBlankRows == other.IgnoreBlankRows;
+            return isEqual;
         }
 
         public override bool Equals(object obj)
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
             return Equals((DsfSqlBulkInsertActivity) obj);
         }
 

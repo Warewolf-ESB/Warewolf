@@ -198,10 +198,11 @@ namespace Dev2.ViewModels.Merge
 
                     };
                     var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);
-                    mergeArmConnectorConflict.OnChecked += ArmCheck;
                     armConnector.HasConflict = true;
                     armConnector.DifferentArmConnector = mergeArmConnectorConflict;
                     armConnector.CurrentArmConnector = EmptyMergeArmConnectorConflict(id,armConnector);
+                    armConnector.CurrentArmConnector.OnChecked += ArmCheck;
+                    armConnector.DifferentArmConnector.OnChecked += ArmCheck;
                     armConnectorConflicts.Add(armConnector);
                 }
             }
@@ -218,10 +219,11 @@ namespace Dev2.ViewModels.Merge
                     Key = connector.Key,
                     HasConflict = true
                 };
-                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);
-                mergeArmConnectorConflict.OnChecked += ArmCheck;
+                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);                
                 armConnector.CurrentArmConnector = mergeArmConnectorConflict;
                 armConnector.DifferentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector);
+                armConnector.CurrentArmConnector.OnChecked += ArmCheck;
+                armConnector.DifferentArmConnector.OnChecked += ArmCheck;
                 armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
                 armConnector.HasConflict = true;
                 if (armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
@@ -236,7 +238,7 @@ namespace Dev2.ViewModels.Merge
             return new MergeArmConnectorConflict(container)
             {
                 SourceUniqueId = uniqueId.ToString(),
-                DestinationUniqueId = uniqueId.ToString(),
+                DestinationUniqueId = Guid.Empty.ToString(),
                 Key = container.Key
             };
         }
@@ -345,16 +347,15 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
-                if (!args.IsMergeChecked)
-                {
-                    return;
-                }
-
                 if (!HasMergeStarted)
                 {
                     HasMergeStarted = true;
                 }
                 RemovePreviousTool(sender, args);
+                if (!args.IsMergeChecked)
+                {
+                    return;
+                }
                 args.Container.IsMergeExpanderEnabled = args.Container.HasConflict;
                 AddActivity(args);
                 var conflict = UpdateNextEnabledState(args.Container);
@@ -379,17 +380,17 @@ namespace Dev2.ViewModels.Merge
             if (sender is IMergeToolModel previousToolValue)
             {
                 args.Container.IsChecked = args.Container.IsChecked || previousToolValue.IsMergeChecked;
-                if (!previousToolValue.IsMergeChecked && args.IsMergeChecked)
+                if (previousToolValue.IsMergeChecked && !args.IsMergeChecked)
                 {
                     if (args.Container.CurrentViewModel == args)
                     {
                         ResetToolEvents(args);
-                        WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
+                        WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
                     }
                     if (args.Container.DiffViewModel == args)
                     {
                         ResetToolEvents(args);
-                        WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
+                        WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
                     }
                 }
             }
@@ -477,10 +478,10 @@ namespace Dev2.ViewModels.Merge
         {            
             var idx = _conflicts.IndexOf(conflict);           
             var nextConflict = MoveNext(idx);
-            while (_seenConflicts.Contains(nextConflict))
+            while (_seenConflicts.Contains(nextConflict) && nextConflict!=null)
             {
                 idx = idx + 1;
-                nextConflict = MoveNext(idx);
+                nextConflict = MoveNext(idx);                
             }
             _seenConflicts.Add(nextConflict);
             return nextConflict;

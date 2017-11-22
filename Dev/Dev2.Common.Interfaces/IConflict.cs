@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces
         bool IsArmSelectionAllowed { get; set; }
         bool IsChecked { get; set; }
         string Key { get; set; }
+        event Action<IArmConnectorConflict, bool, string, string, string> OnChecked;
     }
 
     public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>
