@@ -27,13 +27,8 @@ using Dev2.Services.Security;
 using Dev2.Studio.Core.AppResources.Repositories;
 using Dev2.Studio.Interfaces;
 
-
-
-
-
 namespace Dev2.Studio.Core.Models
 {
-
     public class Server : ObservableObject, IServer
     {
         IAuthorizationService _authorizationService;
