@@ -65,7 +65,6 @@
     <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
     <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
-    <Compile Include="VersionStrategy\ServerVersionRepostoryTests.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -398,6 +397,9 @@
     <EmbeddedResource Include="TestData\LoopTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="VersionStrategy\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
