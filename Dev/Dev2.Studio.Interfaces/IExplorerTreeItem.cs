@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -34,7 +44,6 @@ namespace Dev2.Studio.Interfaces
         bool? IsFolderChecked { get; set; }
         bool? IsResourceChecked { get; set; }
         bool IsResourceCheckedEnabled { get; set; }
-        string DeployResourceCheckboxTooltip { get; set; }
         bool? IsResourceUnchecked { get; set; }
         bool IsSource { get; set; }
         bool IsService { get; set; }
@@ -58,8 +67,10 @@ namespace Dev2.Studio.Interfaces
         IServer Server { get; set; }
         IExplorerTreeItem Parent { get; set; }
         IShellViewModel ShellViewModel { get; }
+        IExplorerTooltips ExplorerTooltips { get; set; }
 
         ObservableCollection<IExplorerItemViewModel> Children { get; set; }
+        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
         Action<IExplorerItemViewModel> SelectAction { get; set; }
         bool IsSaveDialog { get; set; }
 
@@ -67,7 +78,5 @@ namespace Dev2.Studio.Interfaces
         void RemoveChild(IExplorerItemViewModel child);
         void SelectItem(Guid id, Action<IExplorerItemViewModel> foundAction);
         void UpdateChildrenCount();
-
-        
     }
 }

@@ -114,6 +114,7 @@
     <Compile Include="IMergeServiceViewModel.cs" />
     <Compile Include="IMergeWorkflowViewModel.cs" />
     <Compile Include="IServiceDifferenceParser.cs" />
+    <Compile Include="IExplorerTooltips.cs" />
     <Compile Include="IServer.cs" />
     <Compile Include="IServerRepository.cs" />
     <Compile Include="IEnvironmentViewModel.cs" />

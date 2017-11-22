@@ -26,9 +26,8 @@ using Dev2.Common.Interfaces.Studio.Core;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IEnvironmentConnection:IDisposable,IEquatable<IEnvironmentConnection>
+    public interface IEnvironmentConnection
     {
-        // PBI 6690 - 2013.07.04 - TWR : added
         IEventPublisher ServerEvents { get; }
 
         Guid ServerID { get; set; }

@@ -153,7 +153,7 @@
                                               Style="{StaticResource MenuItemStyle}"
                                               InputGestureText="[Ctrl+W]"
                                               IsEnabled="{Binding CanCreateWorkflowService}"
-                                              ToolTip="{Binding NewServiceTooltip}"
+                                              ToolTip="{Binding ExplorerTooltips.NewServiceTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem.Icon>
                                             <Image Style="{StaticResource NewServiceIcon}"/>
@@ -170,7 +170,7 @@
                                               Header="{x:Static languages:Core.NewFolderLabel}"
                                               InputGestureText="[Ctrl+Shift+F]"
                                               IsEnabled="{Binding CanCreateFolder}" 
-                                              ToolTip="{Binding NewFolderTooltip}"/>
+                                              ToolTip="{Binding ExplorerTooltips.NewFolderTooltip}"/>
 
                                     <Separator Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
@@ -181,7 +181,7 @@
                                               Header="Deploy"
                                               Style="{StaticResource MenuItemStyle}"
                                               IsEnabled="{Binding CanDeploy}"
-                                              ToolTip="{Binding DeployTooltip}"
+                                              ToolTip="{Binding ExplorerTooltips.DeployTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem.Icon>
                                             <fa:FontAwesome FontSize="12" FontWeight="Light" Icon="PaperPlaneOutline" />
@@ -193,7 +193,7 @@
                                               Header="Server Version"
                                               Style="{StaticResource MenuItemStyle}"
                                               IsEnabled="{Binding CanShowServerVersion}" 
-                                              ToolTip="{Binding ServerVersionTooltip}"
+                                              ToolTip="{Binding ExplorerTooltips.ServerVersionTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
                                     <MenuItem Name="ViewApisJson"
@@ -201,7 +201,7 @@
                                               Header="View Apis.Json"
                                               Style="{StaticResource MenuItemStyle}"
                                               IsEnabled="{Binding CanViewApisJson}" 
-                                              ToolTip="{Binding ViewApisJsonTooltip}"
+                                              ToolTip="{Binding ExplorerTooltips.ViewApisJsonTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                         <MenuItem.Icon>
                                             <Image Style="{StaticResource ViewApisJsonIcon}"/>
@@ -214,7 +214,7 @@
                                               Style="{StaticResource MenuItemStyle}"
                                               InputGestureText="[http://my.warewolf.io]"
                                               IsEnabled="{Binding CanViewExecutionLogging}" 
-                                              ToolTip="{Binding ViewExecutionLoggingTooltip}"
+                                              ToolTip="{Binding ExplorerTooltips.ViewExecutionLoggingTooltip}"
                                               Visibility="{Binding IsSaveDialog, Converter={StaticResource BoolToVisibilityConverterNegative}}">
                                     </MenuItem>
 
@@ -226,7 +226,7 @@
                                                   Command="{Binding NewServerCommand}"
                                                   Header="New Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewServerSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewServerSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewServerSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -236,7 +236,7 @@
                                                   Command="{Binding NewSqlServerSourceCommand}"
                                                   Header="New SQL Server Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewSqlServerSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewSqlServerSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -246,7 +246,7 @@
                                                   Command="{Binding NewMySqlSourceCommand}"
                                                   Header="New MySQL Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewMySqlSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewMySqlSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewMySqlSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -256,7 +256,7 @@
                                                   Command="{Binding NewPostgreSqlSourceCommand}"
                                                   Header="New PostgreSQL Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewPostgreSqlSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewPostgreSqlSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -266,7 +266,7 @@
                                                   Command="{Binding NewOracleSourceCommand}"
                                                   Header="New Oracle Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewOracleSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewOracleSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewOracleSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -276,7 +276,7 @@
                                                   Command="{Binding NewOdbcSourceCommand}"
                                                   Header="New ODBC Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewOdbcSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewOdbcSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewOdbcSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -287,7 +287,7 @@
                                                   CommandParameter="WebSource"
                                                   Header="New Web Service Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewWebSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewWebSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewWebSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -297,7 +297,7 @@
                                                   Command="{Binding NewPluginSourceCommand}"
                                                   Header="New DotNet Plugin Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewPluginSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewPluginSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -307,7 +307,7 @@
                                                   Command="{Binding NewComPluginSourceCommand}"
                                                   Header="New COM Plugin Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewComPluginSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewComPluginSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -317,7 +317,7 @@
                                                   Command="{Binding NewWcfSourceCommand}"
                                                   Header="New Wcf Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewComPluginSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewComPluginSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -327,7 +327,7 @@
                                                   Command="{Binding NewEmailSourceSourceCommand}"
                                                   Header="New Email Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewEmailSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewEmailSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -337,17 +337,17 @@
                                                   Command="{Binding NewExchangeSourceSourceCommand}"
                                                   Header="New Exchange Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewExchangeSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewExchangeSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                             </MenuItem.Icon>
                                         </MenuItem>
                                         <MenuItem Name="NewRabbitMqSource"
                                                   Style="{StaticResource MenuItemStyle}"
-                                                  Command="{Binding NewRabbitMQSourceSourceCommand}"
+                                                  Command="{Binding NewRabbitMqSourceSourceCommand}"
                                                   Header="New RabbitMQ Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewRabbitMqSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewRabbitMqSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -357,7 +357,7 @@
                                                   Command="{Binding NewDropboxSourceSourceCommand}"
                                                   Header="New Dropbox Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewDropboxSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewDropboxSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewDropboxSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -367,7 +367,7 @@
                                                   Command="{Binding NewSharepointSourceSourceCommand}"
                                                   Header="New Sharepoint Source"
                                                   IsEnabled="{Binding CanCreateSource}"
-                                                  ToolTip="{Binding NewSharepointSourceTooltip}">
+                                                  ToolTip="{Binding ExplorerTooltips.NewSharepointSourceTooltip}">
                                             <MenuItem.Icon>
                                                 <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                             </MenuItem.Icon>
@@ -397,9 +397,10 @@
                             <StackPanel Grid.Column="1" Orientation="Horizontal">
                                 <CheckBox x:Name="EnvironmentNameCheckBox"
                                           ClickMode="Press"
+                                          Click="EnvironmentNameCheckBox_Click"
                                           IsChecked="{Binding IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           IsEnabled="{Binding IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                          ToolTip="{Binding DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          ToolTip="{Binding ExplorerTooltips.DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           ToolTipService.ShowOnDisabled="True"
                                           Style="{StaticResource DeployCheckBoxStyle}"
                                           Margin="2,0,0,0"
@@ -454,7 +455,7 @@
 								                      Command="{Binding OpenCommand}"
 								                      CommandParameter="WorkflowService"
                                                       IsEnabled="{Binding CanView}"
-								                      ToolTip="{Binding OpenTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.OpenTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Header" Value="Open"/>
@@ -491,7 +492,7 @@
 								                      Header="New Workflow Service"
 								                      InputGestureText="[Ctrl+W]"
 								                      IsEnabled="{Binding CanCreateWorkflowService}"
-								                      ToolTip="{Binding NewServiceTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.NewServiceTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -521,7 +522,7 @@
 								                      Header="Debug Inputs"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanDebugInputs}"
-								                      ToolTip="{Binding DebugInputsTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.DebugInputsTooltip}"
 								                      Visibility="{Binding IsDebugInputsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
@@ -533,7 +534,7 @@
 								                      Header="Debug Studio"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanDebugStudio}"
-								                      ToolTip="{Binding DebugStudioTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.DebugStudioTooltip}"
 								                      Visibility="{Binding IsDebugStudioVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
@@ -545,7 +546,7 @@
 								                      Header="Debug Browser"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanDebugBrowser}"
-								                      ToolTip="{Binding DebugBrowserTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.DebugBrowserTooltip}"
 								                      Visibility="{Binding IsDebugBrowserVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Play" />
@@ -557,7 +558,7 @@
 								                      Header="Schedule"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanCreateSchedule}"
-								                      ToolTip="{Binding ScheduleTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.ScheduleTooltip}"
 								                      Visibility="{Binding IsScheduleVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="History" />
@@ -573,7 +574,7 @@
 								                      Style="{StaticResource MenuItemStyle}"
 								                      InputGestureText="[Ctrl+Shift+F]"
 								                      IsEnabled="{Binding CanCreateFolder}" 
-								                      ToolTip="{Binding NewFolderTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.NewFolderTooltip}"
 								                      Visibility="{Binding IsNewFolderVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                             <MenuItem Name="Rename"
@@ -582,7 +583,7 @@
 								                      Header="Rename"
 								                      InputGestureText="[F2]"
 								                      IsEnabled="{Binding CanRename}"
-								                      ToolTip="{Binding RenameTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.RenameTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Visibility" Value="Visible" />
@@ -602,7 +603,7 @@
 								                      CommandParameter="{Binding Data}"
 								                      Header="Delete"
 								                      IsEnabled="{Binding CanDelete}"
-								                      ToolTip="{Binding DeleteTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.DeleteTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Visibility" Value="Visible" />
@@ -627,7 +628,7 @@
 								                      CommandParameter="{Binding Path=Data}"
 								                      Header="Duplicate"
 								                      IsEnabled="{Binding CanDuplicate}"
-								                      ToolTip="{Binding DuplicateTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.DuplicateTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Visibility" Value="Visible" />
@@ -654,7 +655,7 @@
 								                      Header="Tests"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanCreateTest}"
-								                      ToolTip="{Binding CreateTestTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.CreateTestTooltip}"
 								                      Visibility="{Binding IsCreateTestVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome FontSize="14" FontWeight="Light" Icon="Flask" />
@@ -666,7 +667,7 @@
 								                      Header="Run All Tests"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanViewRunAllTests}"
-								                      ToolTip="{Binding RunAllTestsTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.RunAllTestsTooltip}"
 								                      Visibility="{Binding IsRunAllTestsVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                             </MenuItem>
 
@@ -690,7 +691,7 @@
 								                      InputGestureText="[Ctrl+D]"
 								                      Header="Deploy"
 								                      IsEnabled="{Binding CanDeploy}"
-								                      ToolTip="{Binding DeployTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.DeployTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Visibility" Value="Visible" />
@@ -720,7 +721,7 @@
 								                      Header="Show Dependencies"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanShowDependencies}"
-								                      ToolTip="{Binding DependenciesTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.DependenciesTooltip}"
 								                      Visibility="{Binding IsDependenciesVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <fa:FontAwesome Margin="0,2,0,0" FontSize="12" FontWeight="Light" Icon="Sitemap" />
@@ -732,7 +733,7 @@
 								                      Header="View Swagger"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanViewSwagger}" 
-								                      ToolTip="{Binding ViewSwaggerTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.ViewSwaggerTooltip}"
 								                      Visibility="{Binding IsViewSwaggerVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <Image Style="{StaticResource ViewSwaggerIcon}" Margin="-2,0,0,0"/>
@@ -744,7 +745,7 @@
 								                      Header="View Apis.Json"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanViewApisJson}" 
-								                      ToolTip="{Binding ViewApisJsonTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.ViewApisJsonTooltip}"
 								                      Visibility="{Binding IsViewJsonApisVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <Image Style="{StaticResource ViewApisJsonIcon}"/>
@@ -759,7 +760,7 @@
 								                      Header="{Binding VersionHeader}"
 								                      Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanShowVersions}"
-								                      ToolTip="{Binding ShowHideVersionsTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.ShowHideVersionsTooltip}"
 								                      Visibility="{Binding IsShowVersionHistoryVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <Image Style="{StaticResource ShowHideVersionsIcon}"/>
@@ -771,7 +772,7 @@
 								                      CommandParameter="{Binding Data}"
 								                      Header="Make Current Version"
 								                      IsEnabled="{Binding IsVersion}" 
-								                      ToolTip="{Binding RollbackTooltip}">
+								                      ToolTip="{Binding ExplorerTooltips.RollbackTooltip}">
                                                 <MenuItem.Style>
                                                     <Style TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MenuItemStyle}">
                                                         <Setter Property="Visibility" Value="Collapsed" />
@@ -824,7 +825,7 @@
 									                      Command="{Binding NewServerCommand}"
 									                      Header="New Server Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewServerSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewServerSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewServerSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -834,7 +835,7 @@
                                                           Command="{Binding NewSqlServerSourceCommand}"
                                                           Header="New SQL Server Source"
                                                           IsEnabled="{Binding CanCreateSource}"
-                                                          ToolTip="{Binding NewSqlServerSourceTooltip}">
+                                                          ToolTip="{Binding ExplorerTooltips.NewSqlServerSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewSqlServerSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -844,7 +845,7 @@
                                                           Command="{Binding NewMySqlSourceCommand}"
                                                           Header="New MySQL Source"
                                                           IsEnabled="{Binding CanCreateSource}"
-                                                          ToolTip="{Binding NewMySqlSourceTooltip}">
+                                                          ToolTip="{Binding ExplorerTooltips.NewMySqlSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewMySqlSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -854,7 +855,7 @@
                                                           Command="{Binding NewPostgreSqlSourceCommand}"
                                                           Header="New PostgreSQL Source"
                                                           IsEnabled="{Binding CanCreateSource}"
-                                                          ToolTip="{Binding NewPostgreSqlSourceTooltip}">
+                                                          ToolTip="{Binding ExplorerTooltips.NewPostgreSqlSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewPostgreSqlSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -864,7 +865,7 @@
                                                           Command="{Binding NewOracleSourceCommand}"
                                                           Header="New Oracle Source"
                                                           IsEnabled="{Binding CanCreateSource}"
-                                                          ToolTip="{Binding NewOracleSourceTooltip}">
+                                                          ToolTip="{Binding ExplorerTooltips.NewOracleSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewOracleSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -874,7 +875,7 @@
                                                           Command="{Binding NewOdbcSourceCommand}"
                                                           Header="New ODBC Source"
                                                           IsEnabled="{Binding CanCreateSource}"
-                                                          ToolTip="{Binding NewOdbcSourceTooltip}">
+                                                          ToolTip="{Binding ExplorerTooltips.NewOdbcSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewOdbcSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -885,7 +886,7 @@
 									                      CommandParameter="WebSource"
 									                      Header="New Web Service Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewWebSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewWebSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewWebSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -895,7 +896,7 @@
 									                      Command="{Binding NewPluginSourceCommand}"
 									                      Header="New DotNet Plugin Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewPluginSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewPluginSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -905,7 +906,7 @@
 									                      Command="{Binding NewComPluginSourceCommand}"
 									                      Header="New COM Plugin Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewComPluginSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewComPluginSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewPluginSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -915,7 +916,7 @@
 									                      Command="{Binding NewEmailSourceSourceCommand}"
 									                      Header="New Email Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewEmailSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewEmailSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -925,17 +926,17 @@
 									                      Command="{Binding NewExchangeSourceSourceCommand}"
 									                      Header="New Exchange Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewExchangeSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewExchangeSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewEmailSourceIcon}"/>
                                                     </MenuItem.Icon>
                                                 </MenuItem>
                                                 <MenuItem Name="NewRabbitMqSourceItem"
 									                      Style="{StaticResource MenuItemStyle}"
-									                      Command="{Binding NewRabbitMQSourceSourceCommand}"
+									                      Command="{Binding NewRabbitMqSourceSourceCommand}"
 									                      Header="New RabbitMQ Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewRabbitMqSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewRabbitMqSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewRabbitMqSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -945,7 +946,7 @@
 									                      Command="{Binding NewDropboxSourceSourceCommand}"
 									                      Header="New Dropbox Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewDropboxSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewDropboxSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewDropboxSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -955,7 +956,7 @@
 									                      Command="{Binding NewSharepointSourceSourceCommand}"
 									                      Header="New Sharepoint Source"
 									                      IsEnabled="{Binding CanCreateSource}"
-									                      ToolTip="{Binding NewSharepointSourceTooltip}">
+									                      ToolTip="{Binding ExplorerTooltips.NewSharepointSourceTooltip}">
                                                     <MenuItem.Icon>
                                                         <Image Style="{StaticResource NewSharepointSourceIcon}"/>
                                                     </MenuItem.Icon>
@@ -982,9 +983,10 @@
                                         </Image>
                                         <CheckBox x:Name="ResourceNameCheckBox"
                                                   ClickMode="Press"
+                                                  Click="ResourceNameCheckBox_Click"
                                                   IsChecked="{Binding Path=IsResourceChecked, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   IsEnabled="{Binding Path=IsResourceCheckedEnabled, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                                  ToolTip="{Binding Path=DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                                  ToolTip="{Binding Path=ExplorerTooltips.DeployResourceCheckboxTooltip, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                   ToolTipService.ShowOnDisabled="True"
                                                   Style="{StaticResource DeployCheckBoxStyle}"
                                                   Margin="{StaticResource ControlBorderLeft}"

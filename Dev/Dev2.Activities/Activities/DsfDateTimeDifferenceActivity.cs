@@ -40,9 +40,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
     public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO,IEquatable<DsfDateTimeDifferenceActivity>
     {
-
-        #region Properties
-
         /// <summary>
         /// The property that holds the date time string the user enters into the "Input1" box
         /// </summary>
@@ -77,10 +74,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public new string Result { get; set; }
 
-        #endregion Properties
-
-        #region Ctor
-
         /// <summary>
         /// The consructor for the activity 
         /// </summary>
@@ -94,68 +87,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             Result = string.Empty;
         }
 
-        #endregion Ctor
-
-
-
         public override List<string> GetOutputs()
         {
             return new List<string> { Result };
-        }
-
+        }     
         
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
-        
-
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
-            // Process if no errors
             try
             {
-                if(dataObject.IsDebugMode())
-                {
-                    if(string.IsNullOrEmpty(Input1))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 1", "="));
-                    }
-                    else
-                    {
-                        AddDebugInputItem(Input1, "Input 1", dataObject.Environment, update);
-                    }
-
-                    if(string.IsNullOrEmpty(Input2))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 2", "="));
-                    }
-                    else
-                    {
-                        AddDebugInputItem(Input2, "Input 2", dataObject.Environment, update);
-                    }
-
-                    AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment, update);
-                    if(!String.IsNullOrEmpty(OutputType))
-                    {
-                        AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
-                    }
-                }
+                AddDebugInputs(dataObject, update);
                 var colItr = new WarewolfListIterator();
 
                 var input1Itr = new WarewolfIterator(dataObject.Environment.EvalStrict(string.IsNullOrEmpty(Input1) ? GlobalConstants.CalcExpressionNow : Input1, update));
@@ -168,42 +119,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(ifItr);
-                int indexToUpsertTo = 1;
-                while(colItr.HasMoreData())
+                var indexToUpsertTo = 1;
+                while (colItr.HasMoreData())
                 {
-                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
+                    var transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
                         colItr.FetchNextValue(input2Itr),
                         colItr.FetchNextValue(ifItr),
                         OutputType);
-                    //Create a DateTimeComparer using the DateTimeConverterFactory
-                    IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-                    string expression = Result;
+                    var comparer = DateTimeConverterFactory.CreateComparer();
+                    var expression = Result;
 
                     if (comparer.TryCompare(transObj, out string result, out string error))
                     {
-                        if (DataListUtil.IsValueRecordset(Result) &&
-                           DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-                        {
-                            if (update == 0)
-                            {
-                                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-                            }
-                        }
-                        else
-                        {
-                            expression = Result;
-                        }
-
-                        var rule = new IsSingleValueRule(() => Result);
-                        var single = rule.Check();
-                        if(single != null)
-                        {
-                            allErrors.AddError(single.Message);
-                        }
-                        else
-                        {
-                            dataObject.Environment.Assign(expression, result, update);
-                        }
+                        expression = AssignResults(dataObject, update, allErrors, indexToUpsertTo, expression, result);
                     }
                     else
                     {
@@ -214,19 +142,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
 
                 allErrors.MergeErrors(errors);
-                if(dataObject.IsDebugMode() && !allErrors.HasErrors())
+                if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
                     AddDebugOutputItem(new DebugEvalResult(Result, null, dataObject.Environment, update));
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Dev2Logger.Error("DSFDateTime", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
             {
-                // Handle Errors
                 if(allErrors.HasErrors())
                 {
                     DisplayAndWriteError("DsfDateTimeDifferenceActivity", allErrors);
@@ -242,6 +169,66 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        string AssignResults(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, int indexToUpsertTo, string expr, string result)
+        {
+            var expression = expr;
+            if (DataListUtil.IsValueRecordset(Result) &&
+                                       DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+            {
+                if (update == 0)
+                {
+                    expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
+                }
+            }
+            else
+            {
+                expression = Result;
+            }
+
+            var rule = new IsSingleValueRule(() => Result);
+            var single = rule.Check();
+            if (single != null)
+            {
+                allErrors.AddError(single.Message);
+            }
+            else
+            {
+                dataObject.Environment.Assign(expression, result, update);
+            }
+
+            return expression;
+        }
+
+        void AddDebugInputs(IDSFDataObject dataObject, int update)
+        {
+            if (dataObject.IsDebugMode())
+            {
+                if (string.IsNullOrEmpty(Input1))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 1", "="));
+                }
+                else
+                {
+                    AddDebugInputItem(Input1, "Input 1", dataObject.Environment, update);
+                }
+
+                if (string.IsNullOrEmpty(Input2))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "now()", "Input 2", "="));
+                }
+                else
+                {
+                    AddDebugInputItem(Input2, "Input 2", dataObject.Environment, update);
+                }
+
+                AddDebugInputItem(InputFormat, "Input Format", dataObject.Environment, update);
+                if (!String.IsNullOrEmpty(OutputType))
+                {
+                    AddDebugInputItem(new DebugItemStaticDataParams(OutputType, "Output In"));
+                }
+            }
+        }
+
         void DoDebugOutput(IDSFDataObject dataObject, string region, int update)
         {
             if(dataObject.IsDebugMode())
@@ -250,9 +237,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #region Private Methods
-
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
             AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
@@ -265,16 +250,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        private static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
+        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
         {
             return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
         }
 
-        #endregion Private Methods
-
-        #region Get Debug Inputs/Outputs
-
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugInput in _debugInputs)
             {
@@ -283,7 +264,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach(IDebugItem debugOutput in _debugOutputs)
             {
@@ -292,15 +273,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
-        #endregion Get Inputs/Outputs
-
-        #region Get ForEach Inputs/Outputs
-
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
             foreach(Tuple<string, string> t in updates)
             {
-
                 if(t.Item1 == Input1)
                 {
                     Input1 = t.Item2;
@@ -328,10 +304,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        #endregion
-
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(Input1, Input2, InputFormat);
@@ -341,8 +313,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return GetForEachItems(Result);
         }
-
-        #endregion
 
         public bool Equals(DsfDateTimeDifferenceActivity other)
         {

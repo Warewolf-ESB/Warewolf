@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels
 
         #region Implementation of INewServiceResource
 
-        
+
         public ICommand CreateTestCommand
         {
             get
@@ -92,7 +92,8 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs)=>AddTestStep(activityUniqueId, activityDisplayName, activityTypeName, serviceTestOutputs, StepType.Mock);
+        public IServiceTestStep AddDebugItemTestStep(IDebugState debugItemContent, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(debugItemContent.ID.ToString(), debugItemContent.DisplayName, debugItemContent.ActualType, serviceTestOutputs, StepType.Mock);
+        public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs) => AddTestStep(activityUniqueId, activityDisplayName, activityTypeName, serviceTestOutputs, StepType.Mock);
         public IServiceTestStep AddTestStep(string activityUniqueId, string activityDisplayName, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
             return null;

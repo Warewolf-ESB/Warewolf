@@ -166,7 +166,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
 
             : this(eventPublisher, resource, workflowHelper,
-                CustomContainer.Get<IPopupController>(), new AsyncWorker(), new ExternalProcessExecutor(), createDesigner)
+                CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
         {
         }
 
@@ -178,7 +178,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="workflowHelper">Serialisation Helper</param>
         /// <param name="popupController">Injected popup controller</param>
         /// <param name="asyncWorker"></param>
-        /// <param name="executor">Execute external Processes</param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
 
@@ -188,7 +187,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
             VerifyArgument.IsNotNull("popupController", popupController);
             VerifyArgument.IsNotNull("asyncWorker", asyncWorker);
-            _executor = executor;
             _workflowHelper = workflowHelper;
             _resourceModel = resource;
             _resourceModel.OnDataListChanged += FireWdChanged;
@@ -207,7 +205,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this, liteInit);
             }
-            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            UpdateWorkflowInputDataViewModel(_resourceModel);
             GetWorkflowLink();
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
@@ -854,11 +852,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
                         {
                             PopUp.ShowNoInputsSelectedWhenClickLink();
-
                         }
                         try
                         {
-                            _executor.OpenInBrowser(new Uri(_workflowLink));
+                            OpenLinkInBrowser();
                         }
                         catch (Exception e)
                         {
@@ -930,15 +927,20 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return _debugBrowserCommand ?? (_debugBrowserCommand = new DelegateCommand(param =>
                 {
-                    if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
-                    {
-                        var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
-                        if (mvm?.ActiveItem != null)
-                        {
-                            mvm.QuickViewInBrowserCommand.Execute(mvm.ActiveItem);
-                        }
-                    }
+                    OpenLinkInBrowser();
                 }));
+            }
+        }
+
+        private static void OpenLinkInBrowser()
+        {
+            if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            {
+                var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
+                if (mvm?.ActiveItem != null)
+                {
+                    mvm.QuickViewInBrowserCommand.Execute(mvm.ActiveItem);
+                }
             }
         }
 
@@ -2609,7 +2611,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private ICommand _openWorkflowLinkCommand;
         private bool _firstWorkflowChange;
         private readonly IAsyncWorker _asyncWorker;
-        private readonly IExternalProcessExecutor _executor;
         private string _expressionString;
         private ICommand _debugInputsCommand;
         private ICommand _debugStudioCommand;
@@ -2951,12 +2952,19 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (message.KeepTabOpen)
             {
                 ActivityDesignerHelper.AddDesignerAttributes(this);
-                _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+                UpdateWorkflowInputDataViewModel(_resourceModel);
                 UpdateWorkflowLink(GetWorkflowLink());
                 NotifyOfPropertyChange(() => DesignerView);
             }
             RemoveUnsavedWorkflowName(unsavedName);
         }
+
+        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel)
+        {
+            _workflowInputDataViewModel = WorkflowInputDataViewModel.Create(_resourceModel);
+            _workflowInputDataViewModel.LoadWorkflowInputs();
+        }
+
         internal void RemoveUnsavedWorkflowName(string unsavedName)
         {
             NewWorkflowNames.Instance.Remove(unsavedName);
