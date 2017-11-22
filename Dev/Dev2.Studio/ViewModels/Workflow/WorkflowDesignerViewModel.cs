@@ -181,7 +181,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
 
-        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, IExternalProcessExecutor executor, bool createDesigner = true, bool liteInit = false)
+        public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
         {
             VerifyArgument.IsNotNull("workflowHelper", workflowHelper);
