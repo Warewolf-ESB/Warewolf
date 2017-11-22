@@ -99,7 +99,6 @@ namespace Dev2
         {
             public ServerLifecycleManagerService()
             {
-                ServiceName = ServiceName;
                 CanPauseAndContinue = false;
             }
 
@@ -186,13 +185,11 @@ namespace Dev2
         private void SetupTempCleanupSetting()
         {
             var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
-            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue))
+            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue) && int.TryParse(daysToKeepTempFilesValue, out int daysToKeepTempFiles))
             {
-                if (int.TryParse(daysToKeepTempFilesValue, out int daysToKeepTempFiles))
-                {
-                    _daysToKeepTempFiles = daysToKeepTempFiles;
-                }
+                _daysToKeepTempFiles = daysToKeepTempFiles;
             }
+
         }
         
         void Run(bool interactiveMode)
@@ -233,7 +230,11 @@ namespace Dev2
             }
             catch (Exception e)
             {
+#pragma warning disable S2228 // Console logging should not be used
+#pragma warning disable S2228 // Console logging should not be used
                 Console.WriteLine(e);
+#pragma warning restore S2228 // Console logging should not be used
+#pragma warning restore S2228 // Console logging should not be used
                 Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
@@ -339,7 +340,7 @@ namespace Dev2
             }
         }
 
-        void SetWorkingDirectory()
+        static void SetWorkingDirectory()
         {
             try
             {
@@ -387,7 +388,7 @@ namespace Dev2
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
-                    EnableSSLForServer(webServerSslPort, endpoints);
+                    EnableSslForServer(webServerSslPort, endpoints);
 
                     _endpoints = endpoints.ToArray();
                 }
@@ -400,7 +401,7 @@ namespace Dev2
         }
 
 
-        private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
+        void EnableSslForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
         {
             if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
             {
@@ -425,8 +426,8 @@ namespace Dev2
                 }
             }
         }
-        
-        
+
+
         internal void CleanupServer()
         {
             try
@@ -500,7 +501,7 @@ namespace Dev2
             _owinServer = null;
         }
 
-        void LoadPerformanceCounters()
+        static void LoadPerformanceCounters()
         {
             try
             {
@@ -528,7 +529,7 @@ namespace Dev2
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
-        ResourceCatalog LoadResourceCatalog()
+        static ResourceCatalog LoadResourceCatalog()
         {
             
             MigrateOldResources();
@@ -540,12 +541,12 @@ namespace Dev2
             return catalog;
         }
 
-        void MethodsToBeDepricated()
+        static void MethodsToBeDepricated()
         {
             ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
         }
 
-        void LoadTestCatalog()
+        static void LoadTestCatalog()
         {
             
             Write("Loading Test catalog...  ");
@@ -597,14 +598,14 @@ namespace Dev2
         /// </summary>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/07</date>
-        void LoadSettingsProvider()
+        static void LoadSettingsProvider()
         {
             Write("Loading settings provider...  ");
             Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             WriteLine("done.");
         }
 
-        void ConfigureLoggging()
+        static void ConfigureLoggging()
         {
             try
             {
@@ -623,21 +624,27 @@ namespace Dev2
             }
         }
 
-        void LoadServerWorkspace()
+        static void LoadServerWorkspace()
         {
 
             Write("Loading server workspace...  ");
             
             var instance = WorkspaceRepository.Instance;
-            
-            WriteLine("done.");
+            if (instance != null)
+            {
+                WriteLine("done.");
+            }
         }
 
-        void LoadHostSecurityProvider()
+        static void LoadHostSecurityProvider()
         {
-            
+            Write("Loading Security Provider...  ");
             var instance = HostSecurityProvider.Instance;
-            
+            if (instance != null)
+            {
+                WriteLine("done.");
+            }
+
         }
 
         void StartWebServer()
