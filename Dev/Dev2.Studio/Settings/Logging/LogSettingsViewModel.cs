@@ -91,25 +91,26 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials };
-            var dialog = new ProgressDialog();
-            _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
+            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
             {
-                dialog.Show();
-            }, delegate
-            {
-                dialog.Close();
-            });
-            _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
-            _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
-            dialog.DataContext = _progressDialogViewModel;
-            _progressDialogViewModel.Show();
-            client.DownloadProgressChanged += DownloadProgressChanged;
-            client.DownloadFileCompleted += DownloadFileCompleted;
-            var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
-            _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
-            client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-
+                var dialog = new ProgressDialog();
+                _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
+                {
+                    dialog.Show();
+                }, delegate
+                {
+                    dialog.Close();
+                });
+                _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
+                _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
+                dialog.DataContext = _progressDialogViewModel;
+                _progressDialogViewModel.Show();
+                client.DownloadProgressChanged += DownloadProgressChanged;
+                client.DownloadFileCompleted += DownloadFileCompleted;
+                var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
+                _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
+                client.DownloadFileAsync(managementServiceUri, _serverLogFile);
+            }
         }
 
         [ExcludeFromCodeCoverage]
