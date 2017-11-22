@@ -87,8 +87,7 @@ using TestingDotnetDllCascading;
 using Warewolf.Sharepoint;
 using Dev2.Studio.ViewModels;
 using Caliburn.Micro;
-using Dev2.Studio.Core.Helpers;
-using Dev2.ViewModels.Merge;
+using Dev2.Studio.Core.Helpers;      
 
 namespace Dev2.Activities.Specs.Composition
 {
