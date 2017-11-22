@@ -115,7 +115,7 @@ namespace Dev2.Studio.ViewModels
         private IFile _file;
         private Common.Interfaces.Wrappers.IFilePath _filePath;
         private ICommand _showStartPageCommand;
-        IContextualResourceModel contextualResourceModel;
+        IContextualResourceModel _contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
 
@@ -182,7 +182,7 @@ namespace Dev2.Studio.ViewModels
 
         internal async Task<bool> LoadWorkflow(string e)
         {
-            contextualResourceModel = null;
+            _contextualResourceModel = null;
             if (!File.Exists(e)) { return false; }
             ActiveServer.ResourceRepository.Load();
             string fileName = string.Empty;
@@ -191,13 +191,13 @@ namespace Dev2.Studio.ViewModels
             var serverRepo = CustomContainer.Get<IServerRepository>();
             if (singleResource == null)
             {
-                contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
-                if (contextualResourceModel != null)
+                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
+                if (_contextualResourceModel != null)
                 {
-                    OpenResource(contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
-                    if (contextualResourceModel.ResourceType == ResourceType.WorkflowService || contextualResourceModel.ResourceType == ResourceType.Service)
+                    OpenResource(_contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
+                    if (_contextualResourceModel.ResourceType == ResourceType.WorkflowService || _contextualResourceModel.ResourceType == ResourceType.Service)
                     {
-                        SaveDialogHelper.ShowNewWorkflowSaveDialog(contextualResourceModel, loadingFromServer: false, originalPath: e);
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(_contextualResourceModel, loadingFromServer: false, originalPath: e);
                     }
                 }
             }
@@ -829,84 +829,84 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(environmentId);
             environmentModel?.ResourceRepository?.UpdateServer(activeServer);
-            if (contextualResourceModel == null)
+            if (_contextualResourceModel == null)
             {
-                contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+                _contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
             }
-            if (contextualResourceModel != null)
+            if (_contextualResourceModel != null)
             {
-                var workSurfaceKey = new WorkSurfaceKey { EnvironmentID = environmentId, ResourceID = resourceId, ServerID = contextualResourceModel.ServerID };
-                switch (contextualResourceModel.ServerResourceType)
+                var workSurfaceKey = new WorkSurfaceKey { EnvironmentID = environmentId, ResourceID = resourceId, ServerID = _contextualResourceModel.ServerID };
+                switch (_contextualResourceModel.ServerResourceType)
                 {
                     case "SqlDatabase":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.SqlServerSource;
-                        ProcessDBSource(ProcessSQLDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.SqlServerSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessSQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.SqlServerSource)), workSurfaceKey);
                         break;
                     case "ODBC":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OdbcSource;
-                        ProcessDBSource(ProcessODBCDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.OdbcSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessODBCDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.OdbcSource)), workSurfaceKey);
                         break;
                     case "Oracle":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OracleSource;
-                        ProcessDBSource(ProcessOracleDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.OracleSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessOracleDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.OracleSource)), workSurfaceKey);
                         break;
                     case "PostgreSQL":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.PostgreSqlSource;
-                        ProcessDBSource(ProcessPostgreSQLDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.PostgreSqlSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessPostgreSQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.PostgreSqlSource)), workSurfaceKey);
                         break;
                     case "MySqlDatabase":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.MySqlSource;
-                        ProcessDBSource(ProcessMySQLDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.MySqlSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessMySQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.MySqlSource)), workSurfaceKey);
                         break;
                     case "EmailSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.EmailSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessEmailSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessEmailSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "WebSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.EmailSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWebSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWebSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "ComPluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ComPluginSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessComPluginSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessComPluginSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "ExchangeSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Exchange;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessExchangeSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessExchangeSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "OauthSource":
                     case "DropBoxSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OAuthSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessDropBoxSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessDropBoxSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "Server":
                     case "Dev2Server":
                     case "ServerSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ServerSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessServerSource(contextualResourceModel, workSurfaceKey, environmentModel, activeServer));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessServerSource(_contextualResourceModel, workSurfaceKey, environmentModel, activeServer));
                         break;
                     case "SharepointServerSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.SharepointServerSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessSharepointServerSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessSharepointServerSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "RabbitMQSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.RabbitMQSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessRabbitMQSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessRabbitMQSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "WcfSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.WcfSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWcfSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWcfSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "PluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.PluginSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessPluginSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessPluginSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     default:
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Workflow;
-                        _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                        _worksurfaceContextManager.DisplayResourceWizard(_contextualResourceModel);
                         break;
                 }
-                contextualResourceModel = null;
+                _contextualResourceModel = null;
             }
         }
 
@@ -1729,7 +1729,7 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
-            ContinueShutDown = true;
+            _continueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
@@ -1742,13 +1742,13 @@ namespace Dev2.Studio.ViewModels
                 DeactivateItem(workSurfaceContextViewModel, true);
                 if (!CloseCurrent)
                 {
-                    ContinueShutDown = false;
+                    _continueShutDown = false;
                     break;
                 }
             }
         }
 
-        public bool ContinueShutDown;
+        public bool _continueShutDown;
 
         public void ResetMainView()
         {
@@ -1775,7 +1775,9 @@ namespace Dev2.Studio.ViewModels
 
         }
 
+#pragma warning disable IDE1006 // Naming Styles
         public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
+#pragma warning restore IDE1006 // Naming Styles
 
         private bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
@@ -2023,7 +2025,7 @@ namespace Dev2.Studio.ViewModels
             {
                 closeStudio = true;
                 SaveAllCommand.Execute(null);
-                if (!ContinueShutDown)
+                if (!_continueShutDown)
                 {
                     closeStudio = false;
                 }

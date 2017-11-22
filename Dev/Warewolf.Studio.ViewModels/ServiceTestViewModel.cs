@@ -1305,11 +1305,11 @@ namespace Warewolf.Studio.ViewModels
                     }
                 }
 
-                if (outputs != null && outputs.Count > 0 && ServiceTestStepWithOutputs(activityUniqueID, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
+                if (outputs != null && outputs.Count > 0 && ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
                 {
-                    if (ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep serviceTestStep))
+                    if (ServiceTestStepWithOutputs(activityUniqueId, activityDisplayName, outputs, type, item, out IServiceTestStep testStep))
                     {
-                        return serviceTestStep;
+                        return testStep;
                     }
                 }
                 if (ServiceTestStepGetParentType(item, out var serviceTestStep1))
