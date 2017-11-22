@@ -25,7 +25,7 @@ namespace Dev2.Common
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            var seenKeys = new HashSet<TKey>();
             return source.Where(element => seenKeys.Add(keySelector(element)));
         }
 
@@ -37,7 +37,7 @@ namespace Dev2.Common
             }
             else
             {
-                WindowsIdentity identity = userPrinciple.Identity as WindowsIdentity;
+                var identity = userPrinciple.Identity as WindowsIdentity;
                 WindowsImpersonationContext impersonationContext = null;
                 if (identity != null)
                 {

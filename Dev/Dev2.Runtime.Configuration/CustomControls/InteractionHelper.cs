@@ -34,9 +34,9 @@ namespace System.Windows.Controls
         public bool IsPressed { get; private set; }
         
         public int ClickCount { get; set; }
-        
-        private readonly IUpdateVisualState _updateVisualState;
-        
+
+        readonly IUpdateVisualState _updateVisualState;
+
         public InteractionHelper(Control control)
         {
             Debug.Assert(control != null, "control should not be null!");
@@ -63,7 +63,7 @@ namespace System.Windows.Controls
         /// methods in InteractionHelper need to trigger it in the calling
         /// class.  We do this using the IUpdateVisualState internal interface.
         /// </remarks>
-        private void UpdateVisualState(bool useTransitions)
+        void UpdateVisualState(bool useTransitions)
         {
             _updateVisualState?.UpdateVisualState(useTransitions);
         }
@@ -110,12 +110,12 @@ namespace System.Windows.Controls
             }
         }
         #endregion UpdateVisualState
-        
-        private void OnLoaded(object sender, RoutedEventArgs e)
+
+        void OnLoaded(object sender, RoutedEventArgs e)
         {
             UpdateVisualState(false);
         }
-        
+
         private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             bool enabled = (bool)e.NewValue;

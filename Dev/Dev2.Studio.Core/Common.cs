@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core
         public static enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
     
         {
-            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+            var result = enDev2ColumnArgumentDirection.None;
 
             if (attr == null)
             {

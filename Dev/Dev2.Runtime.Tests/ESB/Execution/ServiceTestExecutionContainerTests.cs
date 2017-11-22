@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
 
             var fetch = JsonResource.Fetch("Sequence");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
             dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -164,7 +164,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
             Thread.CurrentPrincipal = null;
-            GenericIdentity identity = new GenericIdentity("User");
+            var identity = new GenericIdentity("User");
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
             Thread.CurrentPrincipal = currentPrincipal;
             Common.Utilities.ServerUser = currentPrincipal;
@@ -259,7 +259,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
             dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -319,7 +319,7 @@ Test Failed because of some reasons
             dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
             dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -369,7 +369,7 @@ Test Failed because of some reasons
             dsfObj.Setup(o => o.Environment).Returns(envMock.Object);
             dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var cataLog = new Mock<ITestCatalog>();
             cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
             var resourceCat = new Mock<IResourceCatalog>();
@@ -414,7 +414,7 @@ Test Failed because of some reasons
             dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
 
             var fetch = JsonResource.Fetch("AssignWithRecSet");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var testCataLog = new Mock<ITestCatalog>();
@@ -464,7 +464,7 @@ Test Failed because of some reasons
             }
         }
 
-        private static Mock<IServiceTestModelTO> SetupServiceTestSteps()
+        static Mock<IServiceTestModelTO> SetupServiceTestSteps()
         {
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
             var failingStep = new Mock<IServiceTestStep>();

@@ -38,15 +38,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 
                 Dev2Logger.Info("Test Plugin Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("PluginService", out StringBuilder resourceDefinition);
-                IPluginService src = serializer.Deserialize<IPluginService>(resourceDefinition);                
+                var src = serializer.Deserialize<IPluginService>(resourceDefinition);
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
                 
                 var pluginsrc = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);

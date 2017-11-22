@@ -20,8 +20,8 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
     {
         public static string ExceptChars(this string str, IEnumerable<char> toExclude)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach(char c in str)
+            var sb = new StringBuilder();
+            foreach (char c in str)
             {
                                 if(!toExclude.Contains(c))
                 {

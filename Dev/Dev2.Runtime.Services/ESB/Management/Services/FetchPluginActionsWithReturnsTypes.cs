@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchPluginActionsWithReturnsTypes : DefaultEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _catalog;
+        readonly IResourceCatalog _catalog;
 
         public FetchPluginActionsWithReturnsTypes(IResourceCatalog catalog)
         {
@@ -39,14 +39,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var pluginSource = serializer.Deserialize<PluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
                 
-                PluginServices services = new PluginServices();
+                var services = new PluginServices();
                 var src = Resources.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 if (ns != null)
                 {
-                    PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
+                    var svc = new PluginService { Namespace = ns.FullName, Source = src };
 
                     var serviceMethodList = services.MethodsWithReturns(svc, Guid.Empty, Guid.Empty);
-                    List<IPluginAction> methods = serviceMethodList.Select(a => new PluginAction
+                    var methods = serviceMethodList.Select(a => new PluginAction
                     {
                         FullName = ns.FullName,
                         Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "")

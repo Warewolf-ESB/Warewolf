@@ -110,8 +110,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var mockModelItem = GenerateMockModelItem();
-            Mock<IContextualResourceModel> setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
-            ErrorInfo errorInfo = new ErrorInfo { InstanceID = new Guid() };
+            var setupResourceModelMock = Dev2MockFactory.SetupResourceModelMock();
+            var errorInfo = new ErrorInfo { InstanceID = new Guid() };
 
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(e => e.ActiveServer).Returns(setupResourceModelMock.Object.Environment);

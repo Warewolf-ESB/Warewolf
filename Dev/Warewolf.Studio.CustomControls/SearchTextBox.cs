@@ -13,41 +13,41 @@ namespace Warewolf.Studio.CustomControls {
     }
 
     public class SearchTextBox : TextBox {
-        private static DependencyProperty labelTextProperty =
+        static DependencyProperty labelTextProperty =
             DependencyProperty.Register(
                 "LabelText",
                 typeof(string),
                 typeof(SearchTextBox));
 
-        private static DependencyProperty labelTextColorProperty =
+        static DependencyProperty labelTextColorProperty =
             DependencyProperty.Register(
                 "LabelTextColor",
                 typeof(Brush),
                 typeof(SearchTextBox));
 
-        private static DependencyProperty clearSearchCommandProperty =
+        static DependencyProperty clearSearchCommandProperty =
             DependencyProperty.Register(
                 "ClearSearchCommand",
                 typeof(ICommand),
                 typeof(SearchTextBox));
 
-        private static DependencyProperty searchModeProperty =
+        static DependencyProperty searchModeProperty =
             DependencyProperty.Register(
                 "SearchMode",
                 typeof(SearchMode),
                 typeof(SearchTextBox),
                 new PropertyMetadata(SearchMode.Instant));
 
-        private static DependencyPropertyKey HasTextPropertyKey =
+        static DependencyPropertyKey HasTextPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 "HasText",
                 typeof(bool),
                 typeof(SearchTextBox),
                 new PropertyMetadata());
-        private static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
+        static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
 
-        private static DependencyProperty searchEventTimeDelayProperty =
+        static DependencyProperty searchEventTimeDelayProperty =
             DependencyProperty.Register(
                 "SearchEventTimeDelay",
                 typeof(Duration),
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.CustomControls {
                 new FrameworkPropertyMetadata(typeof(SearchTextBox)));
         }
 
-        private readonly DispatcherTimer _searchEventDelayTimer;
+        readonly DispatcherTimer _searchEventDelayTimer;
 
         public SearchTextBox()
         {
@@ -126,8 +126,9 @@ namespace Warewolf.Studio.CustomControls {
             }
         }
 
-        private void RaiseSearchEvent() {
-            RoutedEventArgs args = new RoutedEventArgs(SearchEvent);
+        void RaiseSearchEvent()
+        {
+            var args = new RoutedEventArgs(SearchEvent);
             RaiseEvent(args);
         }
 

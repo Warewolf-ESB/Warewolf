@@ -27,13 +27,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     internal class ResourceLoadProvider : IResourceLoadProvider
     {
-        private readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
-        private ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
+        readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
+        ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices { get; } = new ConcurrentDictionary<Guid, ManagementServiceResource>();
         public ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
         public List<DuplicateResource> DuplicateResources { get; set; }
         readonly object _loadLock = new object();
-        private readonly FileWrapper _dev2FileWrapper;
+        readonly FileWrapper _dev2FileWrapper;
         readonly IPerformanceCounter _perfCounter;
 
 
@@ -61,12 +61,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             LoadFrequentlyUsedServices();
         }
 
-        private ResourceLoadProvider(FileWrapper fileWrapper)
+        ResourceLoadProvider(FileWrapper fileWrapper)
         {
             _dev2FileWrapper = fileWrapper;
         }
 
-        private void LoadFrequentlyUsedServices()
+        void LoadFrequentlyUsedServices()
         {
             // do we really need this still - YES WE DO ELSE THERE ARE INSTALL ISSUES WHEN LOADING FROM FRESH ;)
 
@@ -164,7 +164,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     }
                 }
             }
-            Dictionary<enSourceType, Func<IEnumerable>> commands = new Dictionary<enSourceType, Func<IEnumerable>>
+            var commands = new Dictionary<enSourceType, Func<IEnumerable>>
             {
                 { enSourceType.Dev2Server, ()=>BuildSourceList<Connection>(resources) },
                 { enSourceType.EmailSource, ()=>BuildSourceList<EmailSource>(resources) },
@@ -441,7 +441,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         public StringBuilder GetResourceContents(IResource resource)
         {
-            StringBuilder contents = new StringBuilder();
+            var contents = new StringBuilder();
 
             if (string.IsNullOrEmpty(resource?.FilePath) || !_dev2FileWrapper.Exists(resource.FilePath))
             {
@@ -472,21 +472,21 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         #endregion
 
         #region Private methods
-        private StringBuilder ResourceContents<T>(Guid workspaceID, string resourceName) where T : Resource, new()
+        StringBuilder ResourceContents<T>(Guid workspaceID, string resourceName) where T : Resource, new()
         {
             var resource = GetResource(workspaceID, resourceName);
             var resourceContents = GetResourceContents(resource);
             return CheckType<T>(resource) ? resourceContents : null;
         }
 
-        private StringBuilder ResourceContents<T>(Guid workspaceID, Guid resourceID) where T : Resource, new()
+        StringBuilder ResourceContents<T>(Guid workspaceID, Guid resourceID) where T : Resource, new()
         {
             var resource = GetResource(workspaceID, resourceID);
             var resourceContents = GetResourceContents(resource);
             return CheckType<T>(resource) ? resourceContents : null;
         }
 
-        private static bool CheckType<T>(IResource resource) where T : Resource, new()
+        static bool CheckType<T>(IResource resource) where T : Resource, new()
         {
             if (resource != null)
             {
@@ -516,7 +516,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return false;
         }
 
-        private static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
+        static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
         {
             if (resourceContents == null)
             {
@@ -528,7 +528,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return (T)Activator.CreateInstance(typeof(T), args);
         }
 
-        private void AddResourceAsDynamicServiceObject(List<DynamicServiceObjectBase> result, IResource resource)
+        void AddResourceAsDynamicServiceObject(List<DynamicServiceObjectBase> result, IResource resource)
         {
             if (resource.ResourceType == "ReservedService")
             {
@@ -553,7 +553,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
         }
-        private List<Guid> SplitGuidsByComma(string guidCsv)
+        List<Guid> SplitGuidsByComma(string guidCsv)
         {
             var guids = new List<Guid>();
             var guidStrs = guidCsv.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -576,7 +576,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             else
             {
-                Dictionary<string, List<IResource>> commands = new Dictionary<string, List<IResource>>()
+                var commands = new Dictionary<string, List<IResource>>()
                 {
                     {"WorkflowService", workspaceResources.FindAll(r => func.Invoke(r) && r.IsService)},
                     {"Source", workspaceResources.FindAll(r => func.Invoke(r) && r.IsSource)},
@@ -587,7 +587,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             return resources;
         }
-        private List<IResource> LoadWorkspaceImpl(Guid workspaceID)
+        List<IResource> LoadWorkspaceImpl(Guid workspaceID)
         {
             var workspacePath = workspaceID == GlobalConstants.ServerWorkspaceID ? EnvironmentVariables.ResourcePath : EnvironmentVariables.GetWorkspacePath(workspaceID);
             IList<IResource> userServices = new List<IResource>();
@@ -604,9 +604,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return resources;
         }
 
-        private IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
+        IList<IResource> LoadWorkspaceViaBuilder(string workspacePath, bool getDuplicates, params string[] folders)
         {
-            ResourceCatalogBuilder builder = new ResourceCatalogBuilder();
+            var builder = new ResourceCatalogBuilder();
 
             builder.BuildCatalogFromWorkspace(workspacePath, folders);
             if (getDuplicates)
@@ -617,14 +617,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             var resources = builder.ResourceList;
             return resources;
         }
-        private object GetWorkspaceLock(Guid workspaceID)
+        object GetWorkspaceLock(Guid workspaceID)
         {
             lock (_loadLock)
             {
                 return WorkspaceLocks.GetOrAdd(workspaceID, guid => new object());
             }
         }
-        private static ResourceForTree CreateResourceForTree(IResource resource, IResourceForTree tree)
+        static ResourceForTree CreateResourceForTree(IResource resource, IResourceForTree tree)
         {
             return new ResourceForTree
             {
@@ -635,7 +635,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             };
         }
 
-        private List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)
+        List<DynamicServiceObjectBase> GenerateObjectGraph(IResource resource)
         {
             var xml = GetResourceContents(resource);
             if (xml == null || xml.Length > 0)
@@ -645,13 +645,13 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             return null;
         }
-        private IEnumerable BuildSourceList<T>(IEnumerable<IResource> resources) where T : Resource, new()
+        IEnumerable BuildSourceList<T>(IEnumerable<IResource> resources) where T : Resource, new()
         {
             var objects = resources.Select(r => GetResource<T>(ToPayload(r))).ToList();
             return objects;
         }
 
-        private StringBuilder ToPayload(IResource resource)
+        StringBuilder ToPayload(IResource resource)
         {
             var result = new StringBuilder();
 

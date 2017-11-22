@@ -44,24 +44,24 @@ namespace Dev2.CustomControls.Behavior
             AssociatedObject.Unloaded += AssociatedObject_Unloaded;
         }
 
-        private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
+        void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.PreviewKeyDown += AssociatedObject_PreviewKeyDown;
         }
 
-        private void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
+        void AssociatedObject_Unloaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.PreviewKeyDown -= AssociatedObject_PreviewKeyDown;
         }
 
-        private void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e)
+        void AssociatedObject_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && e.KeyboardDevice.Modifiers != ModifierKeys.Control)
             {
                 int count = 0;
                 while (count < NumberOfMoves)
                 {
-                    DependencyObject scope = FocusManager.GetFocusScope(AssociatedObject);
+                    var scope = FocusManager.GetFocusScope(AssociatedObject);
                     var focusedObject = FocusManager.GetFocusedElement(scope) as FrameworkElement;
                     focusedObject?.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
                     count++;

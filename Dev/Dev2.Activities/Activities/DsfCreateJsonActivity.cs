@@ -129,8 +129,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var json = new JObject(); 
 
-                    List<JsonMappingTo> jsonMappingList = JsonMappings.ToList();
-                    List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
+                    var jsonMappingList = JsonMappings.ToList();
+                    var results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
                     results.ForEach(x =>
@@ -192,7 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
-                    string errorString = allErrors.MakeDataListReady();
+                    var errorString = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())

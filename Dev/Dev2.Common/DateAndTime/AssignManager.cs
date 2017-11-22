@@ -8,7 +8,7 @@ namespace Dev2.Common.DateAndTime
 {
     internal class AssignManager : IAssignManager
     {
-        private readonly Dictionary<string, ITimeZoneTO> _timeZoneTos;
+        readonly Dictionary<string, ITimeZoneTO> _timeZoneTos;
 
         public AssignManager(Dictionary<string, ITimeZoneTO> timeZoneTos)
         {
@@ -24,7 +24,7 @@ namespace Dev2.Common.DateAndTime
 
         public void AssignTimeZone(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
+            var lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
             if (_timeZoneTos.TryGetValue(lowerValue, out ITimeZoneTO timeZoneTo))
             {
@@ -33,7 +33,7 @@ namespace Dev2.Common.DateAndTime
         }
         public void AssignAmPm(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            string lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
+            var lowerValue = value.ToString(CultureInfo.InvariantCulture).ToLower();
 
             dateTimeResultTo.AmPm = lowerValue == "pm" || lowerValue == "p.m" || lowerValue == "p.m." ? DateTimeAmPm.pm : DateTimeAmPm.am;
         }

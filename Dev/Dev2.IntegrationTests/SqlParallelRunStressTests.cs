@@ -16,7 +16,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
         public void Run_a_Tests_to_Verify_ParallelSqlExecutionONAllDatabaseTools()
         {
             var url1 = "http://localhost:3142/secure/AllDatabaseTests.tests";
-            List<Task> list = new List<Task>();
+            var list = new List<Task>();
 
             Parallel.For(1, 10, a =>
             {
@@ -36,7 +36,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
         public void TestUsingQlinkTrailerCreationWorkflow()
         {
             var url1 = "http://localhost:3142/secure/QLINK/WriteProcess/QlinkTrailerCreation.tests";
-            List<Task> list = new List<Task>();
+            var list = new List<Task>();
 
 
             /*  string substring = "";
@@ -82,18 +82,18 @@ namespace Dev2.Integration.Tests.Server_Refresh
             Task.WaitAll(list.ToArray());
         }
 
-        private class PatientWebClient : WebClient
+        class PatientWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)
             {
-                WebRequest w = base.GetWebRequest(uri);
+                var w = base.GetWebRequest(uri);
                 // ReSharper disable once PossibleNullReferenceException
                 w.Timeout = 20 * 60 * 1000;
                 return w;
             }
         }
 
-        private Task<string> ExececuteRequest(Uri url)
+        Task<string> ExececuteRequest(Uri url)
         {
             try
             {

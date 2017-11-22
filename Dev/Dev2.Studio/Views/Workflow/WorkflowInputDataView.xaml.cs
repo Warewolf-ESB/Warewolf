@@ -46,15 +46,15 @@ namespace Dev2.Studio.Views.Workflow
             _currentTab = InputTab.Grid;
         }
 
-        private TextEditor _editor;
-        private TextEditor _jsonEditor;
-        private AbstractFoldingStrategy _foldingStrategy;
-        private FoldingManager _foldingManager;
+        TextEditor _editor;
+        TextEditor _jsonEditor;
+        AbstractFoldingStrategy _foldingStrategy;
+        FoldingManager _foldingManager;
         DispatcherTimer _foldingUpdateTimer;
         readonly Grid _blackoutGrid = new Grid();
         InputTab _currentTab;
 
-        private void SetUpTextEditor()
+        void SetUpTextEditor()
         {
             _editor = new TextEditor { SyntaxHighlighting = HighlightingManager.Instance.GetDefinition("XML"), ShowLineNumbers = true, VerticalScrollBarVisibility = ScrollBarVisibility.Auto, HorizontalScrollBarVisibility = ScrollBarVisibility.Auto };
             _editor.SetValue(AutomationProperties.AutomationIdProperty, "UI_XMLEditor_AutoID");
@@ -82,13 +82,13 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void ShowDataInOutputWindow(string input)
+        void ShowDataInOutputWindow(string input)
         {
             _editor.Text = input;
             XmlOutput.Content = _editor;
         }
 
-        private void TextBoxTextChanged(object sender, RoutedEventArgs routedEventArgs)
+        void TextBoxTextChanged(object sender, RoutedEventArgs routedEventArgs)
         {
             if (routedEventArgs.OriginalSource is IntellisenseTextBox tb)
             {
@@ -98,7 +98,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void TabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void TabControlSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.Source is TabControl ctrl)
             {
@@ -224,7 +224,7 @@ namespace Dev2.Studio.Views.Workflow
             return _editor.Text;
         }
 
-        private void MenuItemAddRow(object sender, RoutedEventArgs e)
+        void MenuItemAddRow(object sender, RoutedEventArgs e)
         {
 
             if (DataContext is WorkflowInputDataViewModel vm && vm.AddBlankRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
@@ -234,24 +234,24 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void FocusOnAddition()
+        void FocusOnAddition()
         {
             try
             {
                 var row = GetSelectedRow(DataListInputs);
-                if(row != null)
+                if (row != null)
                 {
                     var intelbox = FindByName("txtValue", row) as IntellisenseTextBox;
                     intelbox?.Focus();
                 }
             }
-            catch(Exception)
+            catch (Exception)
             {
                 //
             }
         }
 
-        private void MenuItemDeleteRow(object sender, RoutedEventArgs e)
+        void MenuItemDeleteRow(object sender, RoutedEventArgs e)
         {
             if (DataContext is WorkflowInputDataViewModel vm && vm.RemoveRow(DataListInputs.ActiveItem as IDataListItem, out int indexToSelect))
             {
@@ -259,7 +259,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void IntellisenseTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
+        void IntellisenseTextBoxPreviewKeyDown(object sender, KeyEventArgs e)
         {
             var vm = DataContext as WorkflowInputDataViewModel;
 
@@ -311,7 +311,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private void GridPreviewKeyDown(object sender, KeyEventArgs e)
+        void GridPreviewKeyDown(object sender, KeyEventArgs e)
         {
             UIElement keyboardFocus = Keyboard.FocusedElement as TextBox;
             if (e.KeyboardDevice.IsKeyDown(Key.LeftShift) && e.KeyboardDevice.IsKeyDown(Key.Tab))
@@ -330,7 +330,7 @@ namespace Dev2.Studio.Views.Workflow
             }
         }
 
-        private static FrameworkElement FindByName(string name, FrameworkElement root)
+        static FrameworkElement FindByName(string name, FrameworkElement root)
         {
             if (root != null)
             {
@@ -364,7 +364,7 @@ namespace Dev2.Studio.Views.Workflow
             return row?.Control;
         }
 
-        private void ExecuteClicked(object sender, RoutedEventArgs e)
+        void ExecuteClicked(object sender, RoutedEventArgs e)
         {
             var tabItem = TabItems.SelectedItem as TabItem;
             if (DataContext is WorkflowInputDataViewModel vm)
@@ -460,7 +460,7 @@ namespace Dev2.Studio.Views.Workflow
             FocusOnAddition();
         }
 
-        private void WorkflowInputDataView_OnKeyUp(object sender, KeyEventArgs e)
+        void WorkflowInputDataView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {

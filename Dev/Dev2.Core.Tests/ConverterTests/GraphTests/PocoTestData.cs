@@ -17,7 +17,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
         public string Name { get; set; }
         public int Age { get; set; }
 
-        private string InternalData { get; set; }
+        string InternalData { get; set; }
 
         public PocoTestData NestedData { get; set; }
 

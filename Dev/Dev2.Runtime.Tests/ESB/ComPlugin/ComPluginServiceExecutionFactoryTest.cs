@@ -84,8 +84,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         static ComPluginSource CreatePluginSource(bool invalidResourceID = false)
         {
-            Guid resourceID = Guid.Empty;
-            if(!invalidResourceID)
+            var resourceID = Guid.Empty;
+            if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();
             }

@@ -24,8 +24,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage result = new ExecuteMessage { HasError = false };
-            StringBuilder msg = new StringBuilder();
+            var result = new ExecuteMessage { HasError = false };
+            var msg = new StringBuilder();
             string directory = null;
 
             values.TryGetValue("Directory", out StringBuilder tmp);
@@ -64,13 +64,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             result.Message.Append(msg);
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             return serializer.SerializeToBuilder(result);
 
         }
 
-        private static void AppendError(StringBuilder result, string directory, string msg)
+        static void AppendError(StringBuilder result, string directory, string msg)
         {
             result.AppendFormat("Error clearing '{0}'...", directory);
             result.AppendLine();

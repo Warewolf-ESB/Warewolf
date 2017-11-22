@@ -173,7 +173,7 @@ namespace Dev2.Activities.Specs.TestFramework
             MyContext["shellViewModel"] = shellViewModel;
         }
 
-        private static ResourceModel BuildResourceModel(string workflowName, IServer server)
+        static ResourceModel BuildResourceModel(string workflowName, IServer server)
         {
             var newGuid = Guid.NewGuid();
             var resourceModel = new ResourceModel(server)
@@ -271,7 +271,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
         }
 
-        private static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
+        static void AddVariables(string variableName, DataListViewModel datalistViewModel, enDev2ColumnArgumentDirection ioDirection)
         {
             if (DataListUtil.IsValueScalar(variableName))
             {
@@ -1899,7 +1899,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var actStartNode = act.StartNode;
             if (act.Nodes.Count == 0 && actStartNode != null)
             {
-                dynamic searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
+                var searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
 
                 while (searchNode != null)
                 {
@@ -1931,7 +1931,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 foreach (var flowNode in act.Nodes)
                 {
-                    dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
+                    var searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowDecision);
                     bool isCorr;
                     if (searchNode is FlowDecision node)
                     {
@@ -1982,7 +1982,7 @@ namespace Dev2.Activities.Specs.TestFramework
             var actStartNode = act.StartNode;
             if (act.Nodes.Count == 0 && actStartNode != null)
             {
-                dynamic searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
+                var searchNode = actStartNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
 
                 while (searchNode != null)
                 {
@@ -2014,7 +2014,7 @@ namespace Dev2.Activities.Specs.TestFramework
             {
                 foreach (var flowNode in act.Nodes)
                 {
-                    dynamic searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
+                    var searchNode = flowNode as FlowStep ?? (dynamic)(actStartNode as FlowSwitch<string>);
                     bool isCorr;
                     if (searchNode == null)
                     {
@@ -2304,7 +2304,7 @@ namespace Dev2.Activities.Specs.TestFramework
 
 
 
-        private IEnumerable<IServiceTestModel> GetTestForCurrentTestFramework()
+        IEnumerable<IServiceTestModel> GetTestForCurrentTestFramework()
         {
             var testFrameworkFromContext = GetTestFrameworkFromContext();
             var serviceTestModels = testFrameworkFromContext.Tests.Where(model => model.GetType() != typeof(DummyServiceTest));

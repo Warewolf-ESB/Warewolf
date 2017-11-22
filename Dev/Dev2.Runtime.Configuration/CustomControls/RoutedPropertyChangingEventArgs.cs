@@ -39,7 +39,7 @@ namespace System.Windows.Controls
             }
         }
 
-        private bool _cancel;
+        bool _cancel;
         public RoutedPropertyChangingEventArgs(DependencyProperty property,
             T oldValue, T newValue, bool isCancelable, RoutedEvent routedEvent)
             : base(routedEvent)

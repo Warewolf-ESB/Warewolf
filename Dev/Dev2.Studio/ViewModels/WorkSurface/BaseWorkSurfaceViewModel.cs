@@ -17,7 +17,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
     public class BaseWorkSurfaceViewModel : BaseViewModel,
         IWorkSurfaceViewModel
     {
-        private WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
+        WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
 
         public BaseWorkSurfaceViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)

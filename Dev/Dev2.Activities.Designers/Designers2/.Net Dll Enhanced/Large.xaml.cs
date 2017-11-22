@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         #endregion
 
-        private void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             var minHeight = 180;
             if (DataContext is DotNetDllEnhancedViewModel dotNetDllEnhancedViewModel)
@@ -44,31 +44,31 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             Height = double.NaN;
         }
 
-        private void ConstructorExpander_OnExpanded(object sender, RoutedEventArgs e)
+        void ConstructorExpander_OnExpanded(object sender, RoutedEventArgs e)
         {
             Height = double.NaN;
             SetMinHeight();
         }
 
-        private void MethodExpander_OnExpanded(object sender, RoutedEventArgs e)
+        void MethodExpander_OnExpanded(object sender, RoutedEventArgs e)
         {
             Height = double.NaN;
             SetMinHeight();
         }
 
-        private void ConstructorExpander_OnCollapsed(object sender, RoutedEventArgs e)
+        void ConstructorExpander_OnCollapsed(object sender, RoutedEventArgs e)
         {
             Height = double.NaN;
             SetMinHeight();
         }
 
-        private void MethodExpander_OnCollapsed(object sender, RoutedEventArgs e)
+        void MethodExpander_OnCollapsed(object sender, RoutedEventArgs e)
         {
             Height = double.NaN;
             SetMinHeight();
         }
 
-        private void SetMinHeight()
+        void SetMinHeight()
         {
             MinHeight = 250;
             var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
@@ -93,14 +93,14 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+        void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
             var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
             dotNetDllEnhancedViewModel?.UpdateMethodInputs();
             e.Handled = true;
         }
 
-        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             var dotNetDllEnhancedViewModel = DataContext as DotNetDllEnhancedViewModel;
             dotNetDllEnhancedViewModel?.UpdateMethodInputs();

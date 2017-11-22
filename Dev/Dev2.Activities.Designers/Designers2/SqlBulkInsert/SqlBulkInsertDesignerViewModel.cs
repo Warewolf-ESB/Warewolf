@@ -618,9 +618,9 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
 
                 if (!identityChecked)
                 {
-                    List<IActionableErrorInfo> rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => ModelItem.SetProperty("IsMappingFieldFocused", true));
+                    var rs = GetRuleSet("InputColumn", inputColumn).ValidateRules("'Input Data or [[Variable]]'", () => ModelItem.SetProperty("IsMappingFieldFocused", true));
 
-                    foreach(var looperror in rs)
+                    foreach (var looperror in rs)
                     {
                         yield return looperror;
                     }

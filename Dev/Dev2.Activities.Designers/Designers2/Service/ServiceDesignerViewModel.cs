@@ -51,11 +51,11 @@ namespace Dev2.Activities.Designers2.Service
 {
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
-        private readonly IEventAggregator _eventPublisher;
+        readonly IEventAggregator _eventPublisher;
 
-        private bool _isDisposed;
-        private const string DoneText = "Done";
-        private const string FixText = "Fix";
+        bool _isDisposed;
+        const string DoneText = "Done";
+        const string FixText = "Fix";
 
         [ExcludeFromCodeCoverage]
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Designers2.Service
                 var environment = serverRepository.FindSingle(c => c.EnvironmentID == EnvironmentID);
                 if (environment == null)
                 {
-                    IList<IServer> environments = ServerRepository.Instance.LookupEnvironments(activeEnvironment);
+                    var environments = ServerRepository.Instance.LookupEnvironments(activeEnvironment);
                     environment = environments.FirstOrDefault(model => model.EnvironmentID == EnvironmentID);
                 }
                 _environment = environment;
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Designers2.Service
             }, CanViewComplexObjects);
         }
 
-        private void UpdateDesignerAfterResourceLoad(IServerRepository serverRepository)
+        void UpdateDesignerAfterResourceLoad(IServerRepository serverRepository)
         {
 
             if (!IsDeleted)
@@ -190,13 +190,13 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private static bool CanViewComplexObjects(Object itemx)
+        static bool CanViewComplexObjects(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsComplexObject;
         }
 
-        private static void ViewJsonObjects(IComplexObjectItemModel item, JsonObjectsView window)
+        static void ViewJsonObjects(IComplexObjectItemModel item, JsonObjectsView window)
         {
             if (item != null && window != null)
             {
@@ -212,7 +212,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
+        void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
             if (_environment?.AuthorizationService != null)
             {
@@ -220,7 +220,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
+        void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
         {
             ValidationMemoManager.RemovePermissionsError();
 
@@ -243,18 +243,18 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private bool HasNoPermission()
+        bool HasNoPermission()
         {
             var hasNoPermission = ResourceModel != null && ResourceModel.UserPermissions == Permissions.None;
             return hasNoPermission;
         }
 
-        private void DoneCompleted()
+        void DoneCompleted()
         {
             IsFixed = true;
         }
 
-        private void Done()
+        void Done()
         {
             if (!IsWorstErrorReadOnly)
             {
@@ -275,7 +275,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public ICommand DoneCommand { get; private set; }
 
-        private RelayCommand ViewComplexObjectsCommand { get; set; }
+        RelayCommand ViewComplexObjectsCommand { get; set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
 
@@ -422,7 +422,7 @@ namespace Dev2.Activities.Designers2.Service
         string ActionName => GetProperty<string>();
 
 
-        private string FriendlySourceName
+        string FriendlySourceName
         {
             get
             {
@@ -458,9 +458,9 @@ namespace Dev2.Activities.Designers2.Service
         public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
         readonly IServer _environment;
         bool _runWorkflowAsync;
-        private readonly IAsyncWorker _worker;
-        private bool _isLoading;
-        private List<KeyValuePair<string, string>> _properties;
+        readonly IAsyncWorker _worker;
+        bool _isLoading;
+        List<KeyValuePair<string, string>> _properties;
 
         public override void Validate()
         {
@@ -525,7 +525,7 @@ namespace Dev2.Activities.Designers2.Service
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
         }
 
-        private void GetResourceModel(IServer server)
+        void GetResourceModel(IServer server)
         {
             var resourceId = ResourceID;
 
@@ -538,7 +538,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public IContextualResourceModel NewModel { get; set; }
 
-        private bool InitializeResourceModelFromRemoteServer(IServer server)
+        bool InitializeResourceModelFromRemoteServer(IServer server)
         {
             var resourceId = ResourceID;
             if (!server.IsConnected)
@@ -614,7 +614,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeImageSource()
         {
-            Common.Interfaces.Core.DynamicServices.enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
+            var actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
             ImageSource = GetIconPath(actionType);
         }
 
@@ -699,7 +699,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
                 {
-                    IErrorInfo sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
+                    var sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
                     if (sourceNotAvailableMessage != null)
                     {
                         ValidationMemoManager.RemoveError(sourceNotAvailableMessage);

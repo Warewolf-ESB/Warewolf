@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
     [Binding]
     public class DataSplitSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DataSplitSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         [Given(@"A file ""(.*)"" to split")]
         public void GivenAFileToSplit(string fileName)
         {
-            string resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Data.DataSplit.{0}",
+            var resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Data.DataSplit.{0}",
                                                 fileName);
             var stringToSplit = ReadFile(resourceName);
             scenarioContext.Add("stringToSplit", stringToSplit.Replace("\n","\r\n"));
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
                 splitCollection = new List<DataSplitDTO>();
                 scenarioContext.Add("splitCollection", splitCollection);
             }
-            DataSplitDTO dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt, EscapeChar = escape, Include = include };
+            var dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt, EscapeChar = escape, Include = include };
             splitCollection.Add(dto);
         }
 
@@ -176,8 +176,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
          public void ThenTheSplitRecordsetWillBe(string variable, Table table)
          {
              var result = scenarioContext.Get<IDSFDataObject>("result");
-             List<TableRow> tableRows = table.Rows.ToList();
-             var recordSets = result.Environment.Eval(variable, 0);
+             var tableRows = table.Rows.ToList();
+            var recordSets = result.Environment.Eval(variable, 0);
              if (recordSets.IsWarewolfAtomListresult)
              {
                  
@@ -199,20 +199,20 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
         {
             BuildDataList();
             var esbChannel = new EsbServicesEndpoint();
-            IDSFDataObject result = ExecuteProcess(isDebug: true,channel:esbChannel, throwException: false);
+            var result = ExecuteProcess(isDebug: true,channel:esbChannel, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the split result will be")]
         public void ThenTheSplitResultWillBe(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
             var recordset = scenarioContext.Get<string>("recordset");
             var field = scenarioContext.Get<string>("recordField");
 
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = Enumerable.ToList<string>(RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out string error));
+            var recordSetValues = Enumerable.ToList<string>(RetrieveAllRecordSetFieldValues(result.Environment, recordset, field, out string error));
 
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
 

@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                 }
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
             catch (Exception err)

@@ -26,7 +26,7 @@ namespace Dev2.Studio.InterfaceImplementors
     {
         #region Class Members
 
-        private List<IIntellisenseResult>  _intellisenseResults;
+        List<IIntellisenseResult> _intellisenseResults;
 
         #endregion Class Members
 
@@ -36,10 +36,10 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             Optional = false;
             IntellisenseProviderType = IntellisenseProviderType.NonDefault;
-            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
+            var dateTimeParser = DateTimeConverterFactory.CreateParser();
             _intellisenseResults = dateTimeParser.DateTimeFormatParts.Select(p => 
                 {
-                    IIntellisenseResult intellisenseResult = IntellisenseFactory.CreateDateTimeResult(IntellisenseFactory.CreateDateTimePart(p.Value, p.Description));
+                    var intellisenseResult = IntellisenseFactory.CreateDateTimeResult(IntellisenseFactory.CreateDateTimePart(p.Value, p.Description));
                     return intellisenseResult;
                 }).OrderBy(p => p.Option.DisplayValue).ToList();
         }
@@ -68,8 +68,8 @@ namespace Dev2.Studio.InterfaceImplementors
                 return new List<IntellisenseProviderResult>();
             }
 
-            IList<IIntellisenseResult> oldResults = GetIntellisenseResultsImpl(context);
-            
+            var oldResults = GetIntellisenseResultsImpl(context);
+
             var results = new List<IntellisenseProviderResult>();
 
             if (oldResults != null)
@@ -96,7 +96,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public IList<IIntellisenseResult> GetIntellisenseResultsImpl(IntellisenseProviderContext context)
         {
-            string searchText = context.FindTextToSearch();
+            var searchText = context.FindTextToSearch();
             var results = new List<IIntellisenseResult>();
 
             if (context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
@@ -130,7 +130,7 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             bool inLiteralRegion = false;
 
-            string text = inputText;
+            var text = inputText;
             if (caretPosition <= text.Length)
             {
                 text = text.Replace("\\\\", "##").Replace("\\'", "##").Replace("'''", "###");

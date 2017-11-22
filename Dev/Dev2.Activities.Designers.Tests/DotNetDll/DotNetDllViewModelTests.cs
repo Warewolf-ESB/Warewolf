@@ -183,7 +183,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             //------------Assert Results-------------------------
             vm.SetDisplayName("dsfbob_builer");
-            PrivateObject p = new PrivateObject(vm);
+            var p = new PrivateObject(vm);
             Assert.AreEqual(p.GetProperty("DisplayName"), "DotNet DLLdsfbob_builer");
         }
 
@@ -262,7 +262,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             var vm = new DotNetDllViewModel(CreateModelItemWithValues(), ps.Object);
             vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
-            PrivateObject p = new PrivateObject(vm);
+            var p = new PrivateObject(vm);
             p.Invoke("UpdateWorstError");
             var inf = vm.WorstDesignError as ErrorInfo;
             //------------Assert Results-------------------------
@@ -314,8 +314,8 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.AreEqual(buildRegions.Single(region => region is INamespaceToolRegion<INamespaceItem>).Errors.Count, 1);
         }
 
-        private static readonly Guid id = Guid.NewGuid();
-        private static Mock<IPluginServiceModel> SetupEmptyMockSource()
+        static readonly Guid id = Guid.NewGuid();
+        static Mock<IPluginServiceModel> SetupEmptyMockSource()
         {
             var ps = new Mock<IPluginServiceModel>();
             ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Id = id } });

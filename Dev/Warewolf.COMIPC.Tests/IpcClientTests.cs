@@ -43,7 +43,7 @@ namespace WarewolfCOMIPC.Test
 
         }
 
-        private const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
+        const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

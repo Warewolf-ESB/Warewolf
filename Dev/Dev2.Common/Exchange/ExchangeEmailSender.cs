@@ -16,14 +16,14 @@ namespace Dev2.Common.Exchange
 {
     public class ExchangeEmailSender : IExchangeEmailSender
     {
-        private readonly IExchange _source;
-        
+        readonly IExchange _source;
+
         public ExchangeEmailSender(IExchange source)
         {
             _source = source;
         }
 
-        private void Initialize(ExchangeService service)
+        void Initialize(ExchangeService service)
         {
             service.Credentials = new WebCredentials(_source.UserName, _source.Password);
             service.UseDefaultCredentials = false;
@@ -39,7 +39,7 @@ namespace Dev2.Common.Exchange
             }
         }
 
-        private static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(string redirectionUrl)
         {
             var redirectionUri = new Uri(redirectionUrl);
             return redirectionUri.Scheme == "https";

@@ -33,11 +33,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
          
-            List<string> dependancyNames = new List<string>();
+            var dependancyNames = new List<string>();
 
-            bool dependsOnMe = false;
-            string resourceIdsString = string.Empty;
-            string dependsOnMeString = string.Empty;
+                bool dependsOnMe = false;
+            var resourceIdsString = string.Empty;
+                var dependsOnMeString = string.Empty;
                 values.TryGetValue("ResourceIds", out StringBuilder tmp);
                 if (tmp != null)
             {
@@ -49,8 +49,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 dependsOnMeString = tmp.ToString();
             }
 
-            IEnumerable<Guid> resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
-            Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, GlobalConstants.WarewolfInfo);
+            var resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
+                Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, GlobalConstants.WarewolfInfo);
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -72,8 +72,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(dependancyNames);
+            var serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(dependancyNames);
             }
             catch (Exception e)
             {
@@ -86,14 +86,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Private Methods
 
-        private IEnumerable<string> FetchRecursiveDependancies(Guid resourceId, Guid workspaceId)
+        IEnumerable<string> FetchRecursiveDependancies(Guid resourceId, Guid workspaceId)
         {
-            List<string> results = new List<string>();
+            var results = new List<string>();
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
 
             var dependencies = resource?.Dependencies;
 
-            if(dependencies != null)
+            if (dependencies != null)
             {
 
                 dependencies.ForEach(c =>

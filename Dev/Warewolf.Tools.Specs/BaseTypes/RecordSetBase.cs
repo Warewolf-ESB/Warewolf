@@ -32,7 +32,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public RecordSetBases(ScenarioContext scenarioContext)
         {
@@ -46,7 +46,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
         }
 
         protected const string ResultVariable = "[[result]]";
-        private readonly CommonSteps _commonSteps;
+        readonly CommonSteps _commonSteps;
 
         protected abstract void BuildDataList();
 
@@ -182,8 +182,8 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         protected string ReadFile(string resourceName)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using(Stream stream = assembly.GetManifestResourceStream(resourceName))
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if(stream == null)
                 {

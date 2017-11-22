@@ -22,15 +22,15 @@ namespace System.Windows.Controls
         private bool _hasControlLoaded;
 #endif
         public bool UsesClosingVisualState { get; private set; }
-        
-        private Control Parent { get; set; }
+
+        Control Parent { get; set; }
 
 #if SILVERLIGHT
         private Canvas OutsidePopupCanvas { get; set; }
         
         private Canvas PopupChildCanvas { get; set; }
 #endif
-        
+
         public double MaxDropDownHeight { get; set; }
         
         public Popup Popup { get; private set; }
@@ -41,9 +41,9 @@ namespace System.Windows.Controls
             get { return Popup.IsOpen; }
             set { Popup.IsOpen = value; }
         }
-        
-        private FrameworkElement PopupChild { get; set; }
-        
+
+        FrameworkElement PopupChild { get; set; }
+
         public event EventHandler Closed;
         
         public event EventHandler FocusChanged;
@@ -91,8 +91,8 @@ namespace System.Windows.Controls
             {
                 u = VisualTreeHelper.GetParent(u) as UIElement;
             }
-            Window w = u as Window;
-            if(w == null)
+            var w = u as Window;
+            if (w == null)
             {
                 return;
             }
@@ -181,13 +181,13 @@ namespace System.Windows.Controls
             Canvas.SetLeft(PopupChild, popupX - rootOffsetX);
             Canvas.SetTop(PopupChild, popupY - rootOffsetY);
         }
-        
-        private void OnClosed(EventArgs e)
+
+        void OnClosed(EventArgs e)
         {
-            EventHandler handler = Closed;
+            var handler = Closed;
             handler?.Invoke(this, e);
         }
-        
+
         private void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
         {
             if(e?.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
@@ -204,8 +204,8 @@ namespace System.Windows.Controls
         {
             if(UsesClosingVisualState)
             {
-                VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-                if(null != groupPopupClosed)
+                var groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
+                if (null != groupPopupClosed)
                 {
                     groupPopupClosed.CurrentStateChanged -= OnPopupClosedStateChanged;
                     UsesClosingVisualState = false;
@@ -225,8 +225,8 @@ namespace System.Windows.Controls
                 Popup.Closed += Popup_Closed;
             }
 
-            VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-            if(null != groupPopupClosed)
+            var groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
+            if (null != groupPopupClosed)
             {
                 groupPopupClosed.CurrentStateChanged += OnPopupClosedStateChanged;
                 UsesClosingVisualState = true;
@@ -265,45 +265,45 @@ namespace System.Windows.Controls
                 }
             }
         }
-        
-        private void PopupChild_SizeChanged(object sender, SizeChangedEventArgs e)
+
+        void PopupChild_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Arrange();
         }
-        
+
         private void Popup_Closed(object sender, EventArgs e)
         {
             OnClosed(EventArgs.Empty);
         }
-        
-        private void OnFocusChanged(EventArgs e)
+
+        void OnFocusChanged(EventArgs e)
         {
-            EventHandler handler = FocusChanged;
+            var handler = FocusChanged;
             handler?.Invoke(this, e);
         }
-        
+
         private void OnUpdateVisualStates(EventArgs e)
         {
-            EventHandler handler = UpdateVisualStates;
+            var handler = UpdateVisualStates;
             handler?.Invoke(this, e);
         }
-        
-        private void PopupChild_GotFocus(object sender, RoutedEventArgs e)
+
+        void PopupChild_GotFocus(object sender, RoutedEventArgs e)
         {
             OnFocusChanged(EventArgs.Empty);
         }
-        
+
         private void PopupChild_LostFocus(object sender, RoutedEventArgs e)
         {
             OnFocusChanged(EventArgs.Empty);
         }
-        
-        private void PopupChild_MouseEnter(object sender, MouseEventArgs e)
+
+        void PopupChild_MouseEnter(object sender, MouseEventArgs e)
         {
             OnUpdateVisualStates(EventArgs.Empty);
         }
-        
-        private void PopupChild_MouseLeave(object sender, MouseEventArgs e)
+
+        void PopupChild_MouseLeave(object sender, MouseEventArgs e)
         {
             OnUpdateVisualStates(EventArgs.Empty);
         }

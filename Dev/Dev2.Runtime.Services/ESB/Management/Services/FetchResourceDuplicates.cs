@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchResourceDuplicates : DefaultEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 var item = ServerExplorerRepo.LoadDuplicate();
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
+                var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(item));
                 return serializer.SerializeToBuilder(message);
             }

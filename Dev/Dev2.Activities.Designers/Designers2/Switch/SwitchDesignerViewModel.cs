@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.Switch
         void Initialize(string display)
         {
             var expressionText = ModelItem.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
-            ModelProperty switchCaseValue = ModelItem.Properties["Case"];
+            var switchCaseValue = ModelItem.Properties["Case"];
             Dev2Switch ds;
             if (expressionText?.Value != null)
             {
@@ -52,7 +52,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
             if (switchCaseValue != null)
             {
-                string val = switchCaseValue.ComputedValue.ToString();
+                var val = switchCaseValue.ComputedValue.ToString();
                 ds.SwitchExpression = val;
             }
           
@@ -152,7 +152,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        private void ValidateProperties()
+        void ValidateProperties()
         {
             if (ModelItem?.Parent?.Source?.Collection != null)
             {
@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        private bool validExpression;
+        bool validExpression;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

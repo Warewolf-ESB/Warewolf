@@ -273,7 +273,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool MySqlExecution(ErrorResultTO errors, int update)
+        bool MySqlExecution(ErrorResultTO errors, int update)
         {
             try
             {

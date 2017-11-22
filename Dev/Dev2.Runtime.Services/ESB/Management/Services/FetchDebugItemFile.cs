@@ -43,9 +43,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(string.Format(ErrorResource.PropertyMusHaveAValue, "DebugItemFilePath "));
                 }
 
-                string debugItemFilePath = tmp.ToString();
+                var debugItemFilePath = tmp.ToString();
 
-                if(File.Exists(debugItemFilePath))
+                if (File.Exists(debugItemFilePath))
                 {
                     Dev2Logger.Debug("DebugItemFilePath found", GlobalConstants.WarewolfDebug);
 
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         result.Message.AppendLine(line);
                     }
 
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializer = new Dev2JsonSerializer();
                     return serializer.SerializeToBuilder(result);
                 }
                 Dev2Logger.Debug("DebugItemFilePath not found, throwing an exception", GlobalConstants.WarewolfDebug);

@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.DateTime
         
         string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
 
-        private void SetTimeModifierAmountDisplay(string value) { SetProperty(value); }
+        void SetTimeModifierAmountDisplay(string value) { SetProperty(value); }
         string InputFormat { set => SetProperty(value); get => GetProperty<string>(); }
         string OutputFormat { set => SetProperty(value); get => GetProperty<string>(); }
 

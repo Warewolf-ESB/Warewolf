@@ -29,16 +29,16 @@ namespace Dev2.DynamicServices.Objects
     {
         #region Private Fields
 
-        private const int _generation = 0;
-        private readonly object _poolGuard = new object();
-        private int _commandTimeout = 30;
-        private bool _disposing;
-        private bool _resultsToClient = true;
-        private bool _terminateServiceOnFault = true;
-        private Activity _workflowActivity;
-        private Queue<PooledServiceActivity> _workflowPool = new Queue<PooledServiceActivity>();
-        private StringBuilder _xamlDefinition;
-        private Stream _xamlStream;
+        const int _generation = 0;
+        readonly object _poolGuard = new object();
+        int _commandTimeout = 30;
+        bool _disposing;
+        bool _resultsToClient = true;
+        bool _terminateServiceOnFault = true;
+        Activity _workflowActivity;
+        Queue<PooledServiceActivity> _workflowPool = new Queue<PooledServiceActivity>();
+        StringBuilder _xamlDefinition;
+        Stream _xamlStream;
 
         #endregion
 
@@ -148,7 +148,7 @@ namespace Dev2.DynamicServices.Objects
                     }
                     else
                     {
-                        Activity activity = ActivityXamlServices.Load(_xamlStream);
+                        var activity = ActivityXamlServices.Load(_xamlStream);
                         _xamlStream.Seek(0, SeekOrigin.Begin);
                         result = new PooledServiceActivity(_generation, activity);
                     }
@@ -201,8 +201,8 @@ namespace Dev2.DynamicServices.Objects
 
     public sealed class PooledServiceActivity
     {
-        private readonly int _generation;
-        private readonly Activity _value;
+        readonly int _generation;
+        readonly Activity _value;
 
         internal PooledServiceActivity(int generation, Activity value)
         {

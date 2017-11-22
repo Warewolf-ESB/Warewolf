@@ -231,9 +231,9 @@ namespace Dev2.Integration.Tests.Services.Sql
             };
 
             var broker = new SqlDatabaseBroker();
-            IOutputDescription outputDescription = broker.TestService(service);
+            var outputDescription = broker.TestService(service);
             Assert.AreEqual(1, outputDescription.DataSourceShapes.Count);
-            IDataSourceShape dataSourceShape = outputDescription.DataSourceShapes[0];
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
             Assert.IsNotNull(dataSourceShape);
             Assert.AreEqual(3, dataSourceShape.Paths.Count);
             StringAssert.Contains(dataSourceShape.Paths[2].DisplayPath, "TestTextNull"); //This is the field that contains a null value. Previously this column would not have been returned.

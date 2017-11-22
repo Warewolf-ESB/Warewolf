@@ -28,7 +28,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     var file = new StreamReader(stream);
                     while (!file.EndOfStream)
                     {
-                        string line = file.ReadLine();
+                        var line = file.ReadLine();
 
                         if (buffor.Count >= numberOfLines)
                         {
@@ -37,7 +37,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
                         buffor.Enqueue(line);
                     }
-                    string[] lastLines = buffor.ToArray();
+                    var lastLines = buffor.ToArray();
                     serverLogFile = string.Join(Environment.NewLine, lastLines);
                 }
                 else

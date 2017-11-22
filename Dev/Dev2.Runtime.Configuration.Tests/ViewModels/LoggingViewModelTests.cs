@@ -168,34 +168,34 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
             Assert.AreEqual(vm.Error, "Invalid workflow selected");
         }
 
-        private static ILoggingSettings GetSettingsObject(IEnumerable<IWorkflowDescriptor> workflows = null)
+        static ILoggingSettings GetSettingsObject(IEnumerable<IWorkflowDescriptor> workflows = null)
         {
             var settings = new LoggingSettings("InvalidUri");
             workflows?.ToList().ForEach(wf => settings.Workflows.Add(wf));
             return settings;
         }
 
-        private static IEnumerable<WorkflowDescriptor> GetWorkFlowDescriptors(int number, bool isSelected = false)
+        static IEnumerable<WorkflowDescriptor> GetWorkFlowDescriptors(int number, bool isSelected = false)
         {
             var descriptors = new List<WorkflowDescriptor>();
-            for(int i = 0; i < number; i++)
+            for (int i = 0; i < number; i++)
             {
                 descriptors.Add(GetWorkFlowDescriptor(isSelected));
             }
             return descriptors;
         }
 
-        private static WorkflowDescriptor GetWorkFlowDescriptor(bool isSelected = false)
+        static WorkflowDescriptor GetWorkFlowDescriptor(bool isSelected = false)
         {
             var descriptor = new WorkflowDescriptor() { IsSelected = isSelected, ResourceID = Guid.NewGuid().ToString() };
             return descriptor;
         }
 
-        private static LoggingViewModel GetVM(IEnumerable<WorkflowDescriptor> descriptors = null)
+        static LoggingViewModel GetVM(IEnumerable<WorkflowDescriptor> descriptors = null)
         {
             var vm = new LoggingViewModel();
             var commService = new Mock<ICommunicationService>();
-            if(descriptors == null)
+            if (descriptors == null)
             {
                 descriptors = new List<WorkflowDescriptor>();
             }

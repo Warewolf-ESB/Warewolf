@@ -15,7 +15,7 @@ namespace Dev2.Studio.Model
 {
     public class ExceptionUiModel : PropertyChangedBase
     {
-        private BindableCollection<ExceptionUiModel> _exception;
+        BindableCollection<ExceptionUiModel> _exception;
         public BindableCollection<ExceptionUiModel> Exception
         {
             get
@@ -34,7 +34,7 @@ namespace Dev2.Studio.Model
             }
         }
 
-        private string _message;
+        string _message;
         public string Message
         {
             get

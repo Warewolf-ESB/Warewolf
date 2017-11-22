@@ -10,8 +10,8 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class TestAssertStep : DsfActivityAbstract<string>
     {
-        private readonly IDev2Activity _originalActivity;
-        private readonly List<IServiceTestOutput> _testOutputs;
+        readonly IDev2Activity _originalActivity;
+        readonly List<IServiceTestOutput> _testOutputs;
 
         public TestAssertStep(IDev2Activity originalActivity, List<IServiceTestOutput> testOutputs)
         {

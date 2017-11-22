@@ -26,7 +26,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppSettings.ServiceName);
             }
             catch(InvalidOperationException)
             {
@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppSettings.ServiceName);
                 result = controller.Status == ServiceControllerStatus.Running;
             }
             catch(InvalidOperationException)
@@ -59,8 +59,8 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
-                if(controller.Status != ServiceControllerStatus.Running)
+                var controller = new ServiceController(AppSettings.ServiceName);
+                if (controller.Status != ServiceControllerStatus.Running)
                 {
                     controller.Start();
                     controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(120));

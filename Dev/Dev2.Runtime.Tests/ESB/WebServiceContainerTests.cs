@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.ESB
             //------------------------------------Setup -------------------------------------------------------------------------
             var sa = CreateServiceAction(WebServiceWithInputsXml, WebSourceWithInputsXml);
             //------------------------------------Execute-----------------------------------------------------------------------
-            List<ServiceActionInput> serviceActionInputs = sa.ServiceActionInputs;
+            var serviceActionInputs = sa.ServiceActionInputs;
             //------------------------------------Assert------------------------------------------------------------------------
             Assert.AreEqual(2, serviceActionInputs.Count);
             Assert.AreEqual("CityName", serviceActionInputs[0].Source);

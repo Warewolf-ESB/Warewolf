@@ -36,10 +36,10 @@ namespace Warewolf.Studio.ViewModels
         IServer _selectedConnection;
         ObservableCollection<IServer> _servers;
         bool _isLoading;
-        private Guid? _selectedId;
-        private readonly ObservableCollection<IServer> _existingServers;
+        Guid? _selectedId;
+        readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
-        private readonly IServerRepository _serverRepository;
+        readonly IServerRepository _serverRepository;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator) 
             : this(server, aggregator, null, null)
@@ -79,7 +79,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
 
-        private bool CanExecuteMethod()
+        bool CanExecuteMethod()
         {
             return SelectedConnection.EnvironmentID != Guid.Empty;
         }
@@ -156,21 +156,21 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetupServerDisconnect()
+        void SetupServerDisconnect()
         {
             foreach (var server in Servers)
             {
                 server.NetworkStateChanged += OnServerOnNetworkStateChanged;
             }
         }
-        private void RemoveServerDisconnect()
+        void RemoveServerDisconnect()
         {
             foreach (var server in Servers)
             {
                 server.NetworkStateChanged -= OnServerOnNetworkStateChanged;
             }
         }
-        private void OnServerOnNetworkStateChanged(INetworkStateChangedEventArgs args, IServer server1)
+        void OnServerOnNetworkStateChanged(INetworkStateChangedEventArgs args, IServer server1)
         {
             if (args.State != ConnectionNetworkState.Connecting && args.State != ConnectionNetworkState.Connected && !server1.IsConnected)
             {
@@ -203,7 +203,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task<bool> ConnectOrDisconnect()
+        async Task<bool> ConnectOrDisconnect()
         {
             var isConnected = false;
             if (_selectedConnection == null)
@@ -263,7 +263,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IServer Server { get; set; }
+        IServer Server { get; set; }
         public ObservableCollection<IServer> Servers
         {
             get
@@ -301,7 +301,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetActiveEnvironment()
+        void SetActiveEnvironment()
         {
             if (_selectedConnection?.DisplayName != null)
             {
@@ -314,7 +314,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void NewServer()
+        void NewServer()
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null && ShouldUpdateActiveEnvironment)
@@ -410,7 +410,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        private static void SetActiveServer(IServer connection)
+        static void SetActiveServer(IServer connection)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.SetActiveServer(connection.EnvironmentID);

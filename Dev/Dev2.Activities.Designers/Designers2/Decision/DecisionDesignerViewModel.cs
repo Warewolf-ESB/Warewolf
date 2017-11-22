@@ -119,7 +119,7 @@ namespace Dev2.Activities.Designers2.Decision
             }
             else
             {
-                Dev2JsonSerializer ser = new Dev2JsonSerializer();
+                var ser = new Dev2JsonSerializer();
                 ExpressionText = ser.Serialize(ds);
             }
 
@@ -243,7 +243,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         public bool IsFalseArmFocused { get => (bool)GetValue(IsFalseArmFocusedProperty); set => SetValue(IsFalseArmFocusedProperty, value); }
         public static readonly DependencyProperty IsFalseArmFocusedProperty = DependencyProperty.Register("IsFalseArmFocused", typeof(bool), typeof(DecisionDesignerViewModel), new PropertyMetadata(default(bool)));
-        private readonly bool _isInitializing;
+        readonly bool _isInitializing;
 
 
         void OnSearchTypeChanged(object indexObj)
@@ -322,7 +322,7 @@ namespace Dev2.Activities.Designers2.Decision
             yield break;
         }
 
-        private IRuleSet GetRuleSet(string propertyName)
+        IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 

@@ -10,8 +10,8 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
 {
     public class DropBoxDownLoad : IDropboxDownload
     {
-        private readonly IFilenameValidator _validator;
-        private readonly string _path;
+        readonly IFilenameValidator _validator;
+        readonly string _path;
 
         public DropBoxDownLoad(string path)
             : this(new DropboxSoureFileValidator(path))
@@ -31,7 +31,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             _path = path;
         }
 
-        private DropBoxDownLoad(IFilenameValidator validator) => _validator = validator;
+        DropBoxDownLoad(IFilenameValidator validator) => _validator = validator;
 
         #region Implementation of IDropboxSingleExecutor<IDropboxResult>
 
@@ -40,7 +40,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             try
             {
                 var downloadArg = new DownloadArg(_path);
-                IDownloadResponse<FileMetadata> uploadAsync = client.DownloadAsync(downloadArg).Result;
+                var uploadAsync = client.DownloadAsync(downloadArg).Result;
                 return new DropboxDownloadSuccessResult(uploadAsync);
             }
             catch (Exception exception)

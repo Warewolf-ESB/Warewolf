@@ -21,7 +21,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class DeleteDropboxSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DeleteDropboxSteps(ScenarioContext scenarioContext)
         {

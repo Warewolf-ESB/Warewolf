@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class AbstractWebRequestHandlerTests
     {
-        private NameValueCollection LocalBoundVariables => new NameValueCollection
+        NameValueCollection LocalBoundVariables => new NameValueCollection
         {
             { "Bookmark", "the_bookmark" },
             { "Instanceid", "the_instanceid" },
@@ -681,8 +681,8 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
-            string payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
+            var payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
             communicationContext.SetupGet(context => context.Request.Uri)
                 .Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
@@ -722,8 +722,8 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
-            string payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
+            var payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
             communicationContext.SetupGet(context => context.Request.Uri)
                 .Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("POST");
@@ -902,7 +902,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(xmlData, postDataMock);
         }
 
-        private static string ConvertJsonToXml(string data)
+        static string ConvertJsonToXml(string data)
         {
             var xml =
                 XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(Encoding.ASCII.GetBytes(data),
@@ -918,7 +918,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{data}";
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{data}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
@@ -950,7 +950,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
             var xmlData = ConvertJsonToXml(data);
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
@@ -981,9 +981,9 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
-            XmlDocument myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
+            var myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
             var xmlData = myXmlNode.InnerXml;
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
@@ -1355,7 +1355,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1375,7 +1375,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1396,7 +1396,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1417,7 +1417,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1438,7 +1438,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1459,7 +1459,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1517,7 +1517,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var mock = new Mock<ICommunicationContext>();
             mock.Setup(communicationContext => communicationContext.Request.QueryString)
                 .Returns(new NameValueCollection());
-            ICommunicationContext context = mock.Object;
+            var context = mock.Object;
             //------------Execute Test---------------------------            
             privateObject.InvokeStatic("ExtractKeyValuePairForGetMethod", context,"");
             //------------Assert Results-------------------------
@@ -1585,7 +1585,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
-            NameValueCollection collection = new NameValueCollection
+            var collection = new NameValueCollection
             {
                 {"Content-Type", "Json"}
             };
@@ -1605,7 +1605,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
-            NameValueCollection collection = new NameValueCollection
+            var collection = new NameValueCollection
             {
                 {"Content-Type", "xml"}
             };
@@ -1641,7 +1641,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.api";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
@@ -1662,7 +1662,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
@@ -1682,7 +1682,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.JSON";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
@@ -1703,7 +1703,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests/";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
@@ -1726,7 +1726,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);

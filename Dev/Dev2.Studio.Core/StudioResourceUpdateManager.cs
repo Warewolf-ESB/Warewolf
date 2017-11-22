@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        private IUpdateManager UpdateManagerProxy { get; set; }
+        IUpdateManager UpdateManagerProxy { get; set; }
 
         public void Save(IServerSource serverSource)
         {

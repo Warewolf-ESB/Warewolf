@@ -26,21 +26,21 @@ namespace Dev2.Session
     {
         #region Static Conts
 
-        private const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
+        const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
         // the settings lock object
-        private static readonly object SettingsLock = new object();
-        private static readonly object InitLock = new object();
-        private string _debugPersistPath;
-        private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        static readonly object SettingsLock = new object();
+        static readonly object InitLock = new object();
+        string _debugPersistPath;
+        string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         #endregion
 
-        private readonly IDictionary<string, DebugTO> _debugPersistSettings =
+        readonly IDictionary<string, DebugTO> _debugPersistSettings =
             new ConcurrentDictionary<string, DebugTO>();
 
-        private IActivityIOOperationsEndPoint _debugOptsEndPoint;
-        private IActivityIOPath _debugPath;
-        
+        IActivityIOOperationsEndPoint _debugOptsEndPoint;
+        IActivityIOPath _debugPath;
+
         public DebugTO InitDebugSession(DebugTO to)
         {
             DebugTO tmp;
@@ -114,7 +114,7 @@ namespace Dev2.Session
 
                     if (key.Length > 0 && _debugPersistSettings.TryGetValue(key, out DebugTO tmp))
                     {
-                        SaveDebugTO that = tmp.CopyToSaveDebugTO();
+                        var that = tmp.CopyToSaveDebugTO();
                         settingList.Add(that);
                     }
                 }
@@ -131,7 +131,7 @@ namespace Dev2.Session
 
         #region Private Method
 
-        private void BootstrapPersistence(string baseDir)
+        void BootstrapPersistence(string baseDir)
         {
             lock (InitLock)
             {
@@ -154,7 +154,7 @@ namespace Dev2.Session
         /// <summary>
         ///     Boot strap the Session
         /// </summary>
-        private void InitPersistSettings()
+        void InitPersistSettings()
         {
             lock (SettingsLock)
             {
@@ -171,12 +171,12 @@ namespace Dev2.Session
                     {
                         if (s.Length > 0)
                         {
-                            var bf = new XmlSerializer(typeof (List<SaveDebugTO>));
+                            var bf = new XmlSerializer(typeof(List<SaveDebugTO>));
 
                             try
                             {
-                                var settings = (List<SaveDebugTO>) bf.Deserialize(s);
-                                _debugPersistSettings.Values.ToList().ForEach(a=>a.CleanUp());
+                                var settings = (List<SaveDebugTO>)bf.Deserialize(s);
+                                _debugPersistSettings.Values.ToList().ForEach(a => a.CleanUp());
                                 _debugPersistSettings.Clear();
                                 // now push back into the Dictionary
                                 foreach (SaveDebugTO dto in settings)

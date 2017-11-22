@@ -74,7 +74,7 @@ namespace Dev2.Activities
             NextNodes = new List<IDev2Activity>();
             try
             {
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                var ds = new Dev2Switch { SwitchVariable = Switch };
                 var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
                 if (dataObject.IsDebugMode())
                 {
@@ -130,8 +130,8 @@ namespace Dev2.Activities
             {
                 if (dataObject.IsDebugMode())
                 {
-                    List<DebugItem> result = new List<DebugItem>();
-                    DebugItem itemToAdd = new DebugItem();
+                    var result = new List<DebugItem>();
+                    var itemToAdd = new DebugItem();
                     var debugResult = new DebugItemWarewolfAtomResult(firstOrDefault, "", ds.SwitchVariable, "", "Switch on", "", "=");
                     itemToAdd.AddRange(debugResult.GetDebugItemResult());
                     result.Add(itemToAdd);
@@ -149,15 +149,15 @@ namespace Dev2.Activities
             }
         }
 
-        private void DebugOutput(IDSFDataObject dataObject)
+        void DebugOutput(IDSFDataObject dataObject)
         {
             try
             {
                 if (dataObject.IsDebugMode())
                 {
-                    List<DebugItem> result = new List<DebugItem>();
+                    var result = new List<DebugItem>();
                     var debugOutputBase = new DebugItemStaticDataParams(Result, "");
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugOutputBase.GetDebugItemResult());
                     result.Add(itemToAdd);
                     _debugOutputs = result;
@@ -188,7 +188,7 @@ namespace Dev2.Activities
 
     public class TestMockSwitchStep : DsfActivityAbstract<string>
     {
-        private readonly DsfSwitch _dsfSwitch;
+        readonly DsfSwitch _dsfSwitch;
 
         public TestMockSwitchStep(DsfSwitch dsfSwitch)
             : base(dsfSwitch.DisplayName)

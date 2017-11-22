@@ -12,13 +12,13 @@ namespace Dev2.Services.Sql
 {
     public sealed class OracleServer : IDbServer
     {
-        private readonly IDbFactory _factory;
-        private IDbCommand _command;
-        private IDbConnection _connection;
-        private IDbTransaction _transaction;
-        private string _owner;
-        private readonly bool _isTesting;
-        
+        readonly IDbFactory _factory;
+        IDbCommand _command;
+        IDbConnection _connection;
+        IDbTransaction _transaction;
+        string _owner;
+        readonly bool _isTesting;
+
         public OracleServer(IDbFactory factory, IDbCommand command, IDbTransaction transaction)
         {
             _factory = factory;
@@ -56,8 +56,8 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
             _owner = dbName;
-            DataTable proceduresDataTable = GetSchema(_connection);
-            
+            var proceduresDataTable = GetSchema(_connection);
+
             foreach (DataRow row in proceduresDataTable.Rows)
             {
                 var type = row["ROUTINE_TYPE"];
@@ -66,7 +66,7 @@ namespace Dev2.Services.Sql
                     continue;
                 }
 
-                string fullProcedureName = row["NAME"].ToString();
+                var fullProcedureName = row["NAME"].ToString();
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
@@ -75,9 +75,9 @@ namespace Dev2.Services.Sql
                         try
                         {
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
 
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
                         }
@@ -96,7 +96,7 @@ namespace Dev2.Services.Sql
         public IDbCommand CreateCommand()
         {
             VerifyConnection();
-            IDbCommand command = _connection.CreateCommand();
+            var command = _connection.CreateCommand();
             if (!_isTesting)
             {
                 command.Transaction = _transaction;
@@ -126,8 +126,8 @@ namespace Dev2.Services.Sql
         {
             VerifyConnection();
             OracleDataReader reader = null;
-            List<string> result = new List<string>();
-            OracleCommand cmd = new OracleCommand("SELECT DISTINCT(OWNER) AS DATABASE_NAME FROM DBA_SEGMENTS WHERE OWNER IN (SELECT USERNAME FROM DBA_USERS WHERE DEFAULT_TABLESPACE NOT IN ('SYSTEM','SYSAUX'))", (OracleConnection)_connection);
+            var result = new List<string>();
+            var cmd = new OracleCommand("SELECT DISTINCT(OWNER) AS DATABASE_NAME FROM DBA_SEGMENTS WHERE OWNER IN (SELECT USERNAME FROM DBA_USERS WHERE DEFAULT_TABLESPACE NOT IN ('SYSTEM','SYSAUX'))", (OracleConnection)_connection);
             try
             {
                 if (!_isTesting)
@@ -181,11 +181,11 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
             _owner = dbName;
-            DataTable proceduresDataTable = GetSchema(_connection);
-            
+            var proceduresDataTable = GetSchema(_connection);
+
             foreach (DataRow row in proceduresDataTable.Rows)//Procedure 2
             {
-                string fullProcedureName = row["NAME"].ToString();
+                var fullProcedureName = row["NAME"].ToString();
 
                 if (row["DB"].ToString().Equals(dbName, StringComparison.OrdinalIgnoreCase))
                 {
@@ -209,19 +209,19 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private List<IDbDataParameter> DbDataParameters(string dbName, IDbCommand command, string fullProcedureName, out List<IDbDataParameter> isOut,
+        List<IDbDataParameter> DbDataParameters(string dbName, IDbCommand command, string fullProcedureName, out List<IDbDataParameter> isOut,
             out string helpText)
         {
-            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
             helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
             return parameters;
         }
 
-        
 
-        private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
+
+        string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {
-            string helpText = "";
+            var helpText = "";
 
             try
             {
@@ -238,7 +238,7 @@ namespace Dev2.Services.Sql
             return helpText;
         }
 
-        private void VerifyConnection()
+        void VerifyConnection()
         {
             if (!IsConnected)
             {
@@ -276,7 +276,7 @@ namespace Dev2.Services.Sql
             return true;
         }
 
-        private void CreateConnect(string connectionString, CommandType commandType, string commandText)
+        void CreateConnect(string connectionString, CommandType commandType, string commandText)
         {
             if (!_isTesting)
             {
@@ -293,7 +293,7 @@ namespace Dev2.Services.Sql
                 _connection.Open();
             }
         }
-        
+
         private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
@@ -301,11 +301,11 @@ namespace Dev2.Services.Sql
                 var singleOutParams = new List<IDataParameter>();
                 if (command.CommandType == CommandType.StoredProcedure)
                 {
-                    OracleParameter obj = new OracleParameter();
+                    var obj = new OracleParameter();
 
                     for (int i = 0; i < command.Parameters.Count; i++)
                     {
-                        OracleParameter temp = (OracleParameter)command.Parameters[i];
+                        var temp = (OracleParameter)command.Parameters[i];
 
                         if (temp.OracleDbType == OracleDbType.RefCursor)
                         {
@@ -380,12 +380,12 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private DataTable GetSchema(IDbConnection connection)
+        DataTable GetSchema(IDbConnection connection)
         {
-            string CommandText = GlobalConstants.SchemaQueryOracle;
+            var CommandText = GlobalConstants.SchemaQueryOracle;
             if (_isTesting)
             {
-                DataTable proceduresDataTable = new DataTable();
+                var proceduresDataTable = new DataTable();
                 proceduresDataTable.Columns.Add("NAME");
                 proceduresDataTable.Columns.Add("DB");
                 proceduresDataTable.Rows.Add("Test", "Test");
@@ -397,25 +397,25 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private string GetHelpText(IDbConnection connection, string objectName)
+        string GetHelpText(IDbConnection connection, string objectName)
         {
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                 $"SELECT text FROM all_source WHERE name='{objectName}' ORDER BY line"))
-            {                
+            {
                 return ExecuteReader(command, GetStringBuilder);
             }
         }
 
-        private string GetStringBuilder(IDataAdapter reader)
+        string GetStringBuilder(IDataAdapter reader)
         {
             var sb = new StringBuilder();
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            var ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
             var t = ds.Tables[0];
             var dataTableReader = t.CreateDataReader();
             while (dataTableReader.Read())
             {
-                object value = dataTableReader.GetValue(0);
+                var value = dataTableReader.GetValue(0);
                 if (value != null)
                 {
                     sb.Append(value);
@@ -442,7 +442,7 @@ namespace Dev2.Services.Sql
             var parameteres = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
             command.CommandText = $"SELECT * from all_arguments where owner = '{dbName}' and object_name = '{procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1)}'";
-            DataTable dataTable = FetchDataTable(command);
+            var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
                 var parameterName = row["ARGUMENT_NAME"] as string;
@@ -456,22 +456,22 @@ namespace Dev2.Services.Sql
 
 
                 Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleDbType OracleType);
-                OracleParameter OracleParameter = GetOracleParameter(OracleType, row, parameterName, ParameterDirection.Input);
+                var OracleParameter = GetOracleParameter(OracleType, row, parameterName, ParameterDirection.Input);
                 parameteres.Add(OracleParameter);
             }
             return parameteres;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName, out List<IDbDataParameter> outParams)
+        List<IDbDataParameter> GetProcedureParameters(IDbCommand command, string dbName, string procedureName, out List<IDbDataParameter> outParams)
         {
             outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            string originalCommandText = command.CommandText;
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
             command.CommandText = $"SELECT * from all_arguments where owner = '{dbName}' and object_name = '{procedureName.Substring(procedureName.IndexOf(".", StringComparison.Ordinal) + 1)}'";
 
-            DataTable dataTable = FetchDataTable(command);
+            var dataTable = FetchDataTable(command);
             if (!_isTesting)
             {
                 GetParamValues(command, outParams, dataTable, parameters);
@@ -480,7 +480,7 @@ namespace Dev2.Services.Sql
             return parameters;
         }
 
-        private void GetParamValues(IDbCommand command, List<IDbDataParameter> outParams, DataTable dataTable, List<IDbDataParameter> parameters)
+        void GetParamValues(IDbCommand command, List<IDbDataParameter> outParams, DataTable dataTable, List<IDbDataParameter> parameters)
         {
             foreach (DataRow row in dataTable.Rows)
             {
@@ -494,21 +494,21 @@ namespace Dev2.Services.Sql
                 {
 
                     Enum.TryParse(((string)row["DATA_TYPE"]).Replace(" ", ""), true, out OracleDbType OracleType);
-                    OracleParameter OracleParameter = GetOracleParameter(OracleType, row, parameterName, direction);
+                    var OracleParameter = GetOracleParameter(OracleType, row, parameterName, direction);
 
                     GetOutParamProperties(command, outParams, parameters, isout, OracleParameter);
                 }
             }
         }
 
-        private OracleParameter GetOracleParameter(OracleDbType OracleType, DataRow row, string parameterName, ParameterDirection direction)
+        OracleParameter GetOracleParameter(OracleDbType OracleType, DataRow row, string parameterName, ParameterDirection direction)
         {
             OracleParameter oracleParameter;
             if (OracleType == 0)
             {
                 var dataType = row["DATA_TYPE"].ToString();
                 OracleType = GetOracleDbType(dataType);
-               
+
                 oracleParameter = new OracleParameter(parameterName, OracleType) { Direction = direction };
             }
             else
@@ -525,7 +525,7 @@ namespace Dev2.Services.Sql
                 }
 
             }
-            catch(Exception)
+            catch (Exception)
             {
                 size = string.Empty;
             }
@@ -534,7 +534,7 @@ namespace Dev2.Services.Sql
             return oracleParameter;
         }
 
-        private void GetOutParamProperties(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, bool isout, OracleParameter OracleParameter)
+        void GetOutParamProperties(IDbCommand command, List<IDbDataParameter> outParams, List<IDbDataParameter> parameters, bool isout, OracleParameter OracleParameter)
         {
             if (!isout)
             {
@@ -551,7 +551,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private OracleDbType GetOracleDbType(string dataType)
+        OracleDbType GetOracleDbType(string dataType)
         {
             OracleDbType OracleType;
             switch (dataType.ToUpper())
@@ -605,7 +605,7 @@ namespace Dev2.Services.Sql
             return OracleType;
         }
 
-        private bool GetIsout(string InOut)
+        bool GetIsout(string InOut)
         {
             bool isout = !(InOut != null && InOut.Contains("IN/OUT"));
             if (InOut != null && InOut.Trim().ToUpper() == "IN ".Trim().ToUpper())
@@ -615,7 +615,7 @@ namespace Dev2.Services.Sql
             return isout;
         }
 
-        private static int GetSizeForType(OracleDbType dbType)
+        static int GetSizeForType(OracleDbType dbType)
         {
             switch (dbType)
             {
@@ -674,7 +674,7 @@ namespace Dev2.Services.Sql
             return 4000;
         }
 
-        private bool _disposed;
+        bool _disposed;
 
         public OracleServer()
         {

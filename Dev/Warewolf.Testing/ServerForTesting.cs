@@ -50,12 +50,12 @@ namespace Warewolf.Testing
             Permissions = new List<IWindowsGroupPermission>{ permission };
         }
 
-        private readonly IExplorerRepository _explorerProxy;
+        readonly IExplorerRepository _explorerProxy;
 #pragma warning disable 0649
         bool _hasLoaded;
 #pragma warning restore 0649
-        private IStudioUpdateManager _updateManager;
-        private List<IWindowsGroupPermission> _permissions;
+        IStudioUpdateManager _updateManager;
+        List<IWindowsGroupPermission> _permissions;
 
         public ServerForTesting(IResource copy) : base(copy)
         {
@@ -110,7 +110,7 @@ namespace Warewolf.Testing
             return CreateResources();
         }
 
-        private List<IResource> CreateResources()
+        List<IResource> CreateResources()
         {
             return new List<IResource>();
         }
@@ -127,7 +127,7 @@ namespace Warewolf.Testing
             return null;
         }
 
-        private IExplorerItem CreateExplorerItems()
+        IExplorerItem CreateExplorerItems()
         {
             var mockExplorerItem = new Mock<IExplorerItem>();
             mockExplorerItem.Setup(item => item.DisplayName).Returns("Level 0");
@@ -137,7 +137,7 @@ namespace Warewolf.Testing
             return mockExplorerItem.Object;
         }
 
-        private IEnumerable<IExplorerItem> CreateFolders(IEnumerable<string> names)
+        IEnumerable<IExplorerItem> CreateFolders(IEnumerable<string> names)
         {
             var folders = new List<IExplorerItem>();
             foreach (var name in names)
@@ -154,12 +154,12 @@ namespace Warewolf.Testing
         }
         int i = 1;
 #pragma warning disable 0649
-        private bool _canDeployTo;
-        private bool _canDeployFrom;
+        bool _canDeployTo;
+        bool _canDeployFrom;
 #pragma warning restore 0649
-        private IQueryManager _queryManager;
+        IQueryManager _queryManager;
 
-        private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
+        void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
 
             var resourceType = "EmailSource";

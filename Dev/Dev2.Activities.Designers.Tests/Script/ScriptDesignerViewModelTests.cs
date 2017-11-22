@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Script
     public class ScriptDesignerViewModelTests
     {
 
-        private static string GetJsTmpFile()
+        static string GetJsTmpFile()
         {
             var codeBase = Assembly.GetExecutingAssembly().Location;
             var directoryName = Path.GetDirectoryName(codeBase);

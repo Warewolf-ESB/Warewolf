@@ -30,7 +30,7 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ExecuteWorkflow(__name__, false);
         }
 
-        private HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
+        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
         {
 
             if (__name__.EndsWith("apis.json"))
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
 
-        private HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
+        HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
         {
 
             var requestVariables = new NameValueCollection

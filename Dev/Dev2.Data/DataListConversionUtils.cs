@@ -26,7 +26,7 @@ namespace Dev2.Data
             return GetInputs(dataList);
         }
 
-        private OptomizedObservableCollection<IDataListItem> Get(IDataListModel dataList, enDev2ColumnArgumentDirection directionToGet)
+        OptomizedObservableCollection<IDataListItem> Get(IDataListModel dataList, enDev2ColumnArgumentDirection directionToGet)
         {
             var result = new OptomizedObservableCollection<IDataListItem>();
 

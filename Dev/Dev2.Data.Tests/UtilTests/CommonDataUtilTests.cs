@@ -120,8 +120,8 @@ namespace Dev2.Data.Tests.UtilTests
             var tempFile = Path.GetTempFileName();
             const string newFileName = "ZippedTempFile";
             var zipPathName = Path.GetTempPath() + newFileName + ".zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
             Assert.IsNotNull(commonDataUtils);
             scrEndPoint.IOPath.Path = string.Empty;
             commonDataUtils.AddMissingFileDirectoryParts(scrEndPoint, dstEndPoint);
@@ -135,8 +135,8 @@ namespace Dev2.Data.Tests.UtilTests
             var tempFile = Path.GetTempFileName();
             const string newFileName = "ZippedTempFile";
             var zipPathName = Path.GetTempPath() + newFileName + ".zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true, ""));
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true, ""));
             Assert.IsNotNull(commonDataUtils);
             dstEndPoint.IOPath.Path = string.Empty;
             commonDataUtils.AddMissingFileDirectoryParts(scrEndPoint, dstEndPoint);

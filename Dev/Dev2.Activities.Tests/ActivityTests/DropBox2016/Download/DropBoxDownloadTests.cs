@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
     public class DropBoxDownloadTests
     {
-        private Mock<IDropboxDownload> CreateDropboxDownloadMock()
+        Mock<IDropboxDownload> CreateDropboxDownloadMock()
         {
             var mock = new Mock<IDropboxDownload>();
             var successResult = new DropboxDownloadSuccessResult(It.IsAny<IDownloadResponse<FileMetadata>>());
@@ -21,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                  .Returns(successResult);
             return mock;
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

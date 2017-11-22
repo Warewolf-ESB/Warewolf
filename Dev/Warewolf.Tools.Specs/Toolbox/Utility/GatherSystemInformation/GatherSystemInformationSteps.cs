@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
     [Binding]
     public class GatherSystemInformationSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public GatherSystemInformationSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         public void WhenTheGatherSystemInfomartionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -108,9 +108,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 foreach(string recordSetValue in recordSetValues)
@@ -128,10 +128,10 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 
         void Verify(string type, string actualValue, string error)
         {            
-            Type component = Type.GetType("System." + type);
-            if(component != null)
+            var component = Type.GetType("System." + type);
+            if (component != null)
             {
-                TypeConverter converter = TypeDescriptor.GetConverter(component);
+                var converter = TypeDescriptor.GetConverter(component);
                 converter.ConvertFrom(actualValue);
             }
             Assert.AreEqual(string.Empty, error);

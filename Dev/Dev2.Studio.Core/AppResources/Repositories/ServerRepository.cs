@@ -34,7 +34,7 @@ namespace Dev2.Studio.Core
         static readonly object FileLock = new Object();
         static readonly object RestoreLock = new Object();
         protected List<IServer> Environments;
-        private bool _isDisposed;
+        bool _isDisposed;
 
         #region Singleton Instance
 
@@ -288,7 +288,7 @@ namespace Dev2.Studio.Core
             IServer environment = null;
             if (server != null)
             {
-                Guid id = server.EnvironmentID;
+                var id = server.EnvironmentID;
                 environment = Environments.FirstOrDefault(e => e.EnvironmentID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Connection.AuthenticationType, server.Connection.UserName, server.Connection.Password, server.Name);
             }
             return environment;
@@ -369,7 +369,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        private void AddEnvironmentIfNotExist(IServer newEnv)
+        void AddEnvironmentIfNotExist(IServer newEnv)
         {
             if (!ValidateIfEnvironmentExists(newEnv))
             {
@@ -377,7 +377,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        private bool ValidateIfEnvironmentExists(IServer newEnv)
+        bool ValidateIfEnvironmentExists(IServer newEnv)
         {
             return Environments.Contains(newEnv);
         }
@@ -473,9 +473,9 @@ namespace Dev2.Studio.Core
                         #region Parse connection string values
 
                         // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
-                        XElement xe = XElement.Parse(payload.ToString());
+                        var xe = XElement.Parse(payload.ToString());
                         var conStr = xe.AttributeSafe("ConnectionString");
-                        Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
+                        var connectionParams = ParseConnectionString(conStr);
 
                         if (!connectionParams.TryGetValue("AppServerUri", out string tmp))
                         {
@@ -607,7 +607,7 @@ namespace Dev2.Studio.Core
 
         #region CreateEnvironmentModel
 
-        private static IServer CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
+        static IServer CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
             var acutalWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
             var environmentConnection = new ServerProxy(acutalWebServerUri);

@@ -405,8 +405,8 @@ namespace System.Windows.Controls
         /// <returns>Returns null or the VisualStateGroup object.</returns>
         public static VisualStateGroup TryGetVisualStateGroup(DependencyObject dependencyObject, string groupName)
         {
-            FrameworkElement root = GetImplementationRoot(dependencyObject);
-            if(root == null)
+            var root = GetImplementationRoot(dependencyObject);
+            if (root == null)
             {
                 return null;
             }

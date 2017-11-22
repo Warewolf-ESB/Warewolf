@@ -33,7 +33,7 @@ namespace Dev2.DynamicServices.Objects.Base
 
         #region Public Properties
 
-        private int _versionNo = 1;
+        int _versionNo = 1;
         public string DisplayName { get; set; }
         public enApprovalState ApprovalState { get; set; }
         public string IconPath { get; set; }

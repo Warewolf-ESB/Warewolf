@@ -50,7 +50,7 @@ namespace Dev2.Network
     public class ServerProxyWithoutChunking : IEnvironmentConnection,IDisposable
     {
         System.Timers.Timer _reconnectHeartbeat;
-        private const int MillisecondsTimeout = 10000;
+        const int MillisecondsTimeout = 10000;
         readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public ServerProxyWithoutChunking(Uri serverUri)
@@ -59,7 +59,7 @@ namespace Dev2.Network
             AuthenticationType = AuthenticationType.Windows;
         }
 
-        private static bool IsShuttingDown { get; set; }
+        static bool IsShuttingDown { get; set; }
 
         public ServerProxyWithoutChunking(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
@@ -114,7 +114,7 @@ namespace Dev2.Network
             }
         }
 
-        private void InitializeEsbProxy()
+        void InitializeEsbProxy()
         {
             if (EsbProxy == null)
             {
@@ -305,7 +305,7 @@ namespace Dev2.Network
                             ConnectionRetry();
                         }
                     }
-                    IPopupController popup = CustomContainer.Get<IPopupController>();
+                    var popup = CustomContainer.Get<IPopupController>();
                     popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 }
@@ -335,7 +335,7 @@ namespace Dev2.Network
             }
             catch (Exception e)
             {
-                IPopupController popup = CustomContainer.Get<IPopupController>();
+                var popup = CustomContainer.Get<IPopupController>();
                 popup.Show(ErrorResource.ErrorConnectingToServer + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.UnableToContactServer, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
                 HandleConnectError(e);
@@ -344,10 +344,10 @@ namespace Dev2.Network
             return true;
         }
 
-        private void ConnectionRetry()
+        void ConnectionRetry()
         {
             HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
-            IPopupController popup = CustomContainer.Get<IPopupController>();
+            var popup = CustomContainer.Get<IPopupController>();
 
             var application = Application.Current;
             MessageBoxResult res;
@@ -696,7 +696,7 @@ namespace Dev2.Network
 
         public Guid ID { get; private set; }
 
-        private bool _disposedValue;
+        bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {

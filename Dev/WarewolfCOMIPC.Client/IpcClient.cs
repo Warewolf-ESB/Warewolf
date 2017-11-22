@@ -12,20 +12,20 @@ namespace WarewolfCOMIPC.Client
 {
     public class IpcClient : IDisposable, IDev2IpcClient
     {
-        private bool _disposed;
-        private readonly INamedPipeClientStreamWrapper _pipeWrapper;
-        private readonly Process _process;
-        private static IpcClient _ipcClient;
-        private static readonly object padlock = new object();
+        bool _disposed;
+        readonly INamedPipeClientStreamWrapper _pipeWrapper;
+        readonly Process _process;
+        static IpcClient _ipcClient;
+        static readonly object padlock = new object();
 
-        private IpcClient()
+        IpcClient()
         {
-            string token = Guid.NewGuid().ToString();
+            var token = Guid.NewGuid().ToString();
 
             // Pass token to child process
-            string currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
-            string currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
-            string clientPath = Path.Combine(currentAssemblyDirectoryPath, "WarewolfCOMIPC.exe");
+            var currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
+            var currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
+            var clientPath = Path.Combine(currentAssemblyDirectoryPath, "WarewolfCOMIPC.exe");
             var psi = new ProcessStartInfo(clientPath, token)
             {
                 Verb = "runas",

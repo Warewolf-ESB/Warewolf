@@ -78,7 +78,7 @@ namespace Dev2.Runtime.WebServer
             else
             {
 
-                List<IServiceTestModelTO> testResults = dataObject.TestName == "*" ? RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, dataObject.ResourceID) : RunSingleTestBatch(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
+                var testResults = dataObject.TestName == "*" ? RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, dataObject.ResourceID) : RunSingleTestBatch(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
                 const string TrxExtension = ".tests.trx";
                 if (!serviceName.EndsWith(TrxExtension, StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -146,7 +146,7 @@ namespace Dev2.Runtime.WebServer
         {
             foreach (var testsResourceId in dataObject.TestsResourceIds)
             {
-                List<IServiceTestModelTO> testResults = RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testsResourceId);
+                var testResults = RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testsResourceId);
                 formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 var objArray = (from testRunResult in testResults
                                 where testRunResult != null

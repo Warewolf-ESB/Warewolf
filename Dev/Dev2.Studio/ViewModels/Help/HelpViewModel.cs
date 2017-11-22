@@ -118,7 +118,7 @@ namespace Dev2.Studio.ViewModels.Help
             {
                 var navService = HelpViewWrapper.WebBrowser.NavigationService;
                 dynamic browser = navService.GetType().GetField("_webBrowser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(navService);
-                dynamic iWebBrowser2 = browser.GetType().GetField("_axIWebBrowser2", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(browser);
+                var iWebBrowser2 = browser.GetType().GetField("_axIWebBrowser2", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(browser);
                 iWebBrowser2.Silent = true;               
             };
         }

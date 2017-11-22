@@ -541,7 +541,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
         public void ServerVersionRepostory_CleanUpOldVersionControlStructure()
         {
-            string versionFileName = "OldFile.bite";
+            var versionFileName = "OldFile.bite";
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var file = new Mock<IFile>();
@@ -568,7 +568,7 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
         public void ServerVersionRepostory_CleanUpOldVersionControlStructure_MultipleFolders()
         {
-            string versionFileName = "OldFile.bite";
+            var versionFileName = "OldFile.bite";
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var file = new Mock<IFile>();
@@ -603,9 +603,9 @@ namespace Dev2.Tests.Runtime.Hosting
             Directory.Delete(EnvironmentVariables.ResourcePath + subDirs[1], true);
         }
 
-        private static List<string> SetUpMultipleFolderVersionFile(List<string> subDirs, string versionFileName)
+        static List<string> SetUpMultipleFolderVersionFile(List<string> subDirs, string versionFileName)
         {
-            List<string> versionFiles = new List<string>();
+            var versionFiles = new List<string>();
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {
                 Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
@@ -629,7 +629,7 @@ namespace Dev2.Tests.Runtime.Hosting
             }
             return versionFiles;
         }
-        private static void SetUpVersionFile(string versionFileName)
+        static void SetUpVersionFile(string versionFileName)
         {
             if (!Directory.Exists(EnvironmentVariables.ResourcePath))
             {

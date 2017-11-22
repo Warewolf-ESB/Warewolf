@@ -18,9 +18,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     internal class ResourceRenameProvider : IResourceRenameProvider
     {
-        private readonly IResourceCatalog _resourceCatalog;
-        private readonly IServerVersionRepository _versionRepository;
-        private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
+        readonly IResourceCatalog _resourceCatalog;
+        readonly IServerVersionRepository _versionRepository;
+        readonly FileWrapper _dev2FileWrapper = new FileWrapper();
 
         public ResourceRenameProvider(IResourceCatalog resourceCatalog,IServerVersionRepository versionRepository)
         {
@@ -178,12 +178,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 savePath = resPath.Substring(0, resourceNameIndex);
             }
             resource.ResourceName = newName;
-            StringBuilder contents = resourceElement.ToStringBuilder();
+            var contents = resourceElement.ToStringBuilder();
             return ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savePath);
 
         }
 
-        private void RenameWhereUsed(IEnumerable<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
+        void RenameWhereUsed(IEnumerable<ResourceForTree> dependants, Guid workspaceID, string oldName, string newName)
         {
             foreach (var dependant in dependants)
             {
@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         .Replace("ToolboxFriendlyName=\"" + oldName, "ToolboxFriendlyName=\"" + newName));
                 }
                 //delete old resource
-                lock(Common.GetFileLock(dependantResource.FilePath))
+                lock (Common.GetFileLock(dependantResource.FilePath))
                 {
                     if (_dev2FileWrapper.Exists(dependantResource.FilePath))
                     {
@@ -227,7 +227,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     renameDependent.ResourceName = newName;
                 }
                 //re-create, resign and save to file system the new resource
-                StringBuilder result = resourceElement.ToStringBuilder();
+                var result = resourceElement.ToStringBuilder();
 
                 ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, dependantResource, result);
             }

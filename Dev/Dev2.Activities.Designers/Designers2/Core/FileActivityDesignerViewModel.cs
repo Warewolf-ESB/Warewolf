@@ -119,12 +119,12 @@ namespace Dev2.Activities.Designers2.Core
             OutputPathValue = ValidatePath(OutputPathLabel, OutputPath, () => IsOutputPathFocused = true, true);
         }
 
-        private void ValidateSftpKey()
+        void ValidateSftpKey()
         {
             SftpValue = ValidatePath("Private Key Path", PrivateKeyFile, () => IsSftpFocused = true, false);
         }
 
-        private void ValidateDestinationSftpKey()
+        void ValidateDestinationSftpKey()
         {
             DestinationSftpValue = ValidatePath("Destination Private Key Path", DestinationPrivateKeyFile, () => IsSftpFocused = true, false);
         }
@@ -146,8 +146,8 @@ namespace Dev2.Activities.Designers2.Core
 
             var errors = new List<IActionableErrorInfo>();
 
-            RuleSet fileActivityRuleSet = new RuleSet();
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList);
+            var fileActivityRuleSet = new RuleSet();
+            var isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
@@ -155,13 +155,13 @@ namespace Dev2.Activities.Designers2.Core
 
             if (errors.Count == 0)
             {
-                IsStringEmptyOrWhiteSpaceRule isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => path)
+                var isStringEmptyOrWhiteSpaceRuleUserName = new IsStringEmptyOrWhiteSpaceRule(() => path)
                 {
                     LabelText = label,
                     DoError = onError
                 };
 
-                IsValidFileNameRule isValidFileNameRule = new IsValidFileNameRule(() => path)
+                var isValidFileNameRule = new IsValidFileNameRule(() => path)
                 {
                     LabelText = label,
                     DoError = onError
@@ -194,9 +194,9 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual string ValidateFileContent(string content, string label, Action onError, bool contentIsRequired = true)
         {
             var errors = new List<IActionableErrorInfo>();
-            RuleSet fileActivityRuleSet = new RuleSet();
+            var fileActivityRuleSet = new RuleSet();
 
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => content, DataListSingleton.ActiveDataList.Resource.DataList);
+            var isValidExpressionRule = new IsValidExpressionRule(() => content, DataListSingleton.ActiveDataList.Resource.DataList);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
@@ -221,9 +221,9 @@ namespace Dev2.Activities.Designers2.Core
         protected virtual string ValidateArchivePassword(string password, string label, Action onError, bool contentIsRequired = true)
         {
             var errors = new List<IActionableErrorInfo>();
-            RuleSet fileActivityRuleSet = new RuleSet();
+            var fileActivityRuleSet = new RuleSet();
 
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => password, DataListSingleton.ActiveDataList.Resource.DataList);
+            var isValidExpressionRule = new IsValidExpressionRule(() => password, DataListSingleton.ActiveDataList.Resource.DataList);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 

@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string filePath = null;
             string directory = null;
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
 
             values.TryGetValue("ResourcePath", out StringBuilder tmp);
             if (tmp != null)
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(msg);
         }
 

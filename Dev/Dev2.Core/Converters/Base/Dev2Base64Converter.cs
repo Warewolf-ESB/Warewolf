@@ -43,8 +43,8 @@ namespace Dev2.Converters
 
         public byte[] NeutralizeToCommon(string payload)
         {
-            byte[] decoded = Convert.FromBase64String(payload);
-            string tmp = Encoding.UTF8.GetString(decoded);
+            var decoded = Convert.FromBase64String(payload);
+            var tmp = Encoding.UTF8.GetString(decoded);
 
             var encoder = new UTF8Encoding();
             return encoder.GetBytes(tmp);

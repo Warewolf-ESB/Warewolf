@@ -50,7 +50,7 @@ namespace Dev2.Data
         public void PopulateWithData(string data)
         {
             var toLoad = data;
-            XmlDocument xDoc = new XmlDocument();
+            var xDoc = new XmlDocument();
             try
             {
                 xDoc.LoadXml(toLoad);
@@ -66,7 +66,7 @@ namespace Dev2.Data
             {
                 if (xDoc.DocumentElement != null)
                 {
-                    XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                    var children = xDoc.DocumentElement.ChildNodes;
 
                     IDictionary<string, int> indexCache = new Dictionary<string, int>();
 
@@ -111,7 +111,7 @@ namespace Dev2.Data
                                 // process recordset
                                 var scalars = shapeRecSet.Columns[1];
                                 var colToIoDirection = scalars.ToDictionary(scalar1 => scalar1.Name, scalar1 => scalar1.IODirection);
-                                XmlNodeList nl = c.ChildNodes;
+                                var nl = c.ChildNodes;
                                 if (!recSet.Columns.ContainsKey(idx))
                                 {
                                     recSet.Columns.Add(idx, new List<IScalar>());
@@ -146,11 +146,11 @@ namespace Dev2.Data
 
         public void CreateShape(string shape)
         {
-            XmlDocument xDoc = new XmlDocument();
+            var xDoc = new XmlDocument();
             xDoc.LoadXml(shape);
             if (xDoc.DocumentElement != null)
             {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                var children = xDoc.DocumentElement.ChildNodes;
 
                 var columnDirection = enDev2ColumnArgumentDirection.None;
                 foreach (XmlNode c in children)
@@ -226,7 +226,7 @@ namespace Dev2.Data
                                     descAttribute = c.Attributes["Description"];
                                     columnIoDirection = c.Attributes["ColumnIODirection"];
                                 }
-                                string descriptionValue = "";
+                                var descriptionValue = "";
                                 columnDirection = enDev2ColumnArgumentDirection.None;
                                 if (descAttribute != null)
                                 {
@@ -246,7 +246,7 @@ namespace Dev2.Data
             }
         }
 
-        private static bool IsJsonAttribute(XmlNode c)
+        static bool IsJsonAttribute(XmlNode c)
         {
             var jsonAttribute = false;
             var xmlAttribute = c.Attributes?["IsJson"];
@@ -257,7 +257,7 @@ namespace Dev2.Data
             return jsonAttribute;
         }
 
-        private void AddComplexObjectFromXmlNode(XmlNode c)
+        void AddComplexObjectFromXmlNode(XmlNode c)
         {
             var isArray = false;
             var ioDirection = enDev2ColumnArgumentDirection.None;
@@ -278,7 +278,7 @@ namespace Dev2.Data
             ShapeComplexObjects.Add(complexObjectItemModel);
         }
 
-        private bool ParseBoolAttribute(XmlAttribute attr)
+        bool ParseBoolAttribute(XmlAttribute attr)
         {
             var result = false;
             if (attr != null)
@@ -288,9 +288,9 @@ namespace Dev2.Data
             return result;
         }
 
-        private enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
+        enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
         {
-            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+            var result = enDev2ColumnArgumentDirection.None;
 
             if (attr == null)
             {
@@ -303,7 +303,7 @@ namespace Dev2.Data
             return result;
         }
 
-        private static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        static string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
         {
             var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
             return name;

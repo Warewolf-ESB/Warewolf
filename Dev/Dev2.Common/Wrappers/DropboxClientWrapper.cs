@@ -10,7 +10,7 @@ namespace Dev2.Common.Wrappers
 {
     public class DropboxClientWrapper : IDropboxClientWrapper
     {
-        private readonly DropboxClient _client;
+        readonly DropboxClient _client;
 
         public DropboxClientWrapper(DropboxClient client)
         {

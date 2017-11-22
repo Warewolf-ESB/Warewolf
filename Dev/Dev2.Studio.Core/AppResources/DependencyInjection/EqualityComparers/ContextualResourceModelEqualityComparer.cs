@@ -17,10 +17,10 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
 {
     public class ContexttualResourceModelEqualityComparer : IEqualityComparer<IContextualResourceModel>
     {
-        private static readonly Lazy<ContexttualResourceModelEqualityComparer> _current
+        static readonly Lazy<ContexttualResourceModelEqualityComparer> _current
             = new Lazy<ContexttualResourceModelEqualityComparer>(() => new ContexttualResourceModelEqualityComparer());
 
-        private ContexttualResourceModelEqualityComparer()
+        ContexttualResourceModelEqualityComparer()
         {
         }
 

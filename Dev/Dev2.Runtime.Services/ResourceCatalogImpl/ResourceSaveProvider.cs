@@ -30,9 +30,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     internal class ResourceSaveProvider : IResourceSaveProvider
     {
-        private readonly IResourceCatalog _resourceCatalog;
-        private readonly IServerVersionRepository _serverVersionRepository;
-        private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
+        readonly IResourceCatalog _resourceCatalog;
+        readonly IServerVersionRepository _serverVersionRepository;
+        readonly FileWrapper _dev2FileWrapper = new FileWrapper();
         public ResourceSaveProvider(IResourceCatalog resourceCatalog, IServerVersionRepository serverVersionRepository)
         {
             _resourceCatalog = resourceCatalog;
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     resource.UpgradeXml(xml, resource);
 
-                    StringBuilder result = xml.ToStringBuilder();
+                    var result = xml.ToStringBuilder();
 
                     return CompileAndSave(workspaceID, resource, result, savedPath, reason);
                 }
@@ -124,10 +124,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         #endregion
 
         #region Private Methods
-        private ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "", string reason = "")
+        ResourceCatalogResult CompileAndSave(Guid workspaceID, IResource resource, StringBuilder contents, string savedPath = "", string reason = "")
         {
             // Find the service before edits ;)
-            DynamicService beforeService = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
+            var beforeService = _resourceCatalog.GetDynamicObjects<DynamicService>(workspaceID, resource.ResourceID).FirstOrDefault();
 
             ServiceAction beforeAction = null;
             if (beforeService != null)
@@ -162,7 +162,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return result;
         }
 
-        private void UpdateResourceDependencies(IResource resource, StringBuilder contents)
+        void UpdateResourceDependencies(IResource resource, StringBuilder contents)
         {
             resource.LoadDependencies(contents.ToXElement());
         }
@@ -172,7 +172,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             if (beforeAction != null)
             {
                 // Compile the service 
-                ServiceModelCompiler smc = new ServiceModelCompiler();
+                var smc = new ServiceModelCompiler();
 
                 var messages = GetCompileMessages(resource, contents, beforeAction, smc);
                 if (messages != null)
@@ -189,7 +189,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
         }
-        private IEnumerable<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
+        IEnumerable<ICompileMessageTO> UpdateDependantResourceWithCompileMessages(Guid workspaceID, IResource resource, IList<ICompileMessageTO> messages)
         {
             var resourceId = resource.ResourceID;
             var dependants = _resourceCatalog.GetDependentsAsResourceForTrees(workspaceID, resourceId);
@@ -218,9 +218,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
 
-        private static IList<ICompileMessageTO> GetCompileMessages(IResource resource, StringBuilder contents, ServiceAction beforeAction, ServiceModelCompiler smc)
+        static IList<ICompileMessageTO> GetCompileMessages(IResource resource, StringBuilder contents, ServiceAction beforeAction, ServiceModelCompiler smc)
         {
-            List<ICompileMessageTO> messages = new List<ICompileMessageTO>();
+            var messages = new List<ICompileMessageTO>();
             switch (beforeAction.ActionType)
             {
                 case enActionType.Workflow:
@@ -254,7 +254,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return messages;
         }
 
-        private void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
+        void SavedResourceCompileMessage(Guid workspaceID, IResource resource, string saveMessage)
         {
             var savedResourceCompileMessage = new List<ICompileMessageTO>
             {
@@ -272,7 +272,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
             CompileMessageRepo.Instance.AddMessage(workspaceID, savedResourceCompileMessage);
         }
-        private XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, TxFileManager fileManager)
+        XElement SaveToDisk(IResource resource, StringBuilder contents, string directoryName, TxFileManager fileManager)
         {
             if (!Directory.Exists(directoryName))
             {
@@ -289,9 +289,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            XElement xml = contents.ToXElement();
+            var xml = contents.ToXElement();
             xml = resource.UpgradeXml(xml, resource);
-            StringBuilder result = xml.ToStringBuilder();
+            var result = xml.ToStringBuilder();
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
@@ -301,7 +301,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             return xml;
         }
-        private static bool AddToCatalog(IResource resource, List<IResource> resources, TxFileManager fileManager, XElement xml)
+        static bool AddToCatalog(IResource resource, List<IResource> resources, TxFileManager fileManager, XElement xml)
         {
             var index = resources.IndexOf(resource);
             var updated = false;
@@ -324,7 +324,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return updated;
         }
 
-        private void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
+        void PerformSaveResult(out ResourceCatalogResult saveResult, Guid workspaceID, IResource resource, StringBuilder contents, bool overwriteExisting, string savedPath, string reason = "")
         {
             var fileManager = new TxFileManager();
             using (TransactionScope tx = new TransactionScope())

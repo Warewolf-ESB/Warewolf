@@ -23,7 +23,7 @@ namespace Dev2.MathOperations
     {
 
         #region Private Members
-        private readonly IDev2CalculationManager _manager;
+        readonly IDev2CalculationManager _manager;
 
         #endregion Private Members
 

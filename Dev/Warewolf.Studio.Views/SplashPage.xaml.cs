@@ -16,7 +16,7 @@ namespace Warewolf.Studio.Views
     {
         readonly Grid _blackoutGrid = new Grid();
         bool _isDialog;
-        private bool _studioShutdown;
+        bool _studioShutdown;
 
         public SplashPage()
         {
@@ -91,7 +91,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             CloseSplash(false);
         }

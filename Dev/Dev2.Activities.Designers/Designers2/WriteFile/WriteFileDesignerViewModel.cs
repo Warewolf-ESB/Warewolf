@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.WriteFile
         public override void Validate()
         {
             Errors = null;
-            string content = FileContents;
+            var content = FileContents;
             ValidateUserNameAndPassword();
             ValidateOutputPath();
             ValidateFileContent(content, "Contents");

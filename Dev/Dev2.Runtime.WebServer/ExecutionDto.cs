@@ -132,7 +132,7 @@ namespace Dev2.Runtime.WebServer
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
-        private static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
+        static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
         {
             string executePayload;
             if (dataObject.ReturnType == EmitionTypes.XML)

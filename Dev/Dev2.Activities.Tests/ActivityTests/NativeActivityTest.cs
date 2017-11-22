@@ -360,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsDebug = true,
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -386,7 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ForEachNestingLevel = 1
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -409,7 +409,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsServiceTestExecution = true
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -453,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsServiceTestExecution = true
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
             act.IsEndedOnError = true;
             act.OnErrorVariable = "[[Error]]";
             dataObject.Environment.AddError("There is an error");

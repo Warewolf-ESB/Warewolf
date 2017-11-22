@@ -43,11 +43,11 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         }
 
         public virtual IFile DropboxFile { get; set; }
-        private DropboxClient _client;
+        DropboxClient _client;
         protected IDownloadResponse<FileMetadata> Response;
         protected Exception Exception;
-        private ILocalPathManager _localPathManager;
-        private IDropboxClientWrapper _dropboxClientWrapper;
+        ILocalPathManager _localPathManager;
+        IDropboxClientWrapper _dropboxClientWrapper;
 
         public virtual IDropboxSingleExecutor<IDropboxResult> GetDropboxSingleExecutor(IDropboxSingleExecutor<IDropboxResult> singleExecutor)
         {
@@ -168,9 +168,9 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
             }
             base.GetDebugInputs(env, update);
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Overwrite Local"), debugItem);
-            string value = OverwriteFile ? "True" : "False";
+            var value = OverwriteFile ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 

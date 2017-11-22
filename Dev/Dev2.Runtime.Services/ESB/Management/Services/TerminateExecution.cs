@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management
                 res.SetMessage(Resources.CompilerMessage_TerminationSuccess);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(res);
         }
 

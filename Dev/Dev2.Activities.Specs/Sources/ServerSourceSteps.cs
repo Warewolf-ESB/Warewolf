@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Sources
             : base(scenarioContext)
         {
             AppSettings.LocalHost = "http://localhost:3142";
-            IServer environmentModel = ServerRepository.Instance.Source;
+            var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
         }
 
@@ -91,15 +91,15 @@ namespace Dev2.Activities.Specs.Sources
             }
         }
 
-        private static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
+        static Tuple<ManageNewServerSourceModel, IServer, QueryManagerProxy> BuildManageNewServerSourceModel()
         {
             ICommunicationControllerFactory factory = new CommunicationControllerFactory();
 
-            IServer instanceSource = ServerRepository.Instance.Source;
+            var instanceSource = ServerRepository.Instance.Source;
             var environmentConnection = instanceSource.Connection;
             var studioResourceUpdateManager = new StudioResourceUpdateManager(factory, environmentConnection);
-            QueryManagerProxy queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
-            ManageNewServerSourceModel manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
+            var queryManagerProxy = new QueryManagerProxy(factory, environmentConnection);
+            var manageNewServerSourceModel = new ManageNewServerSourceModel(studioResourceUpdateManager, queryManagerProxy, Environment.MachineName);
             var tuple = Tuple.Create(manageNewServerSourceModel, instanceSource, queryManagerProxy);
             return tuple;
         }

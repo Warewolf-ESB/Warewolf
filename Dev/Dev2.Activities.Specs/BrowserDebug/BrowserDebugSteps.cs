@@ -11,7 +11,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
     [Binding]
     public sealed class BrowserDebugSteps
     {
-        private readonly SpecExternalProcessExecutor _externalProcessExecutor = new SpecExternalProcessExecutor();
+        readonly SpecExternalProcessExecutor _externalProcessExecutor = new SpecExternalProcessExecutor();
 
         [Then(@"I Debug ""(.*)"" in Browser")]
         [When(@"I Debug ""(.*)"" in Browser")]
@@ -36,7 +36,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
                 _externalProcessExecutor.WebResult.First());
         }
 
-        private List<IDebugState> GetDebugStates()
+        List<IDebugState> GetDebugStates()
         {
             var deserialize = _externalProcessExecutor.WebResult.First().DeserializeToObject<List<IDebugState>>();
             return deserialize.ToList();
@@ -125,10 +125,10 @@ namespace Dev2.Activities.Specs.BrowserDebug
         public void ThenTheDebugInBrowserContentContainsOrderOfAndIn(string sequenceflow1, string sequenceflow2, string sequenceflow3)
         {
             var allDebugStates = GetDebugStates();
-            List<string> expectedflow = new List<string> { sequenceflow1, sequenceflow2, sequenceflow3 };
-            List<string> actualflow = new List<string>();
+            var expectedflow = new List<string> { sequenceflow1, sequenceflow2, sequenceflow3 };
+            var actualflow = new List<string>();
 
-            
+
             foreach (var debugState in allDebugStates)
             {
                 if (debugState.IsFirstStep())
@@ -177,7 +177,7 @@ namespace Dev2.Activities.Specs.BrowserDebug
         {
             var allDebugStates = GetDebugStates();
             var actualOrder = allDebugStates[p0].Outputs;
-            List<TableRow> expectedOrder = table.Rows.ToList();
+            var expectedOrder = table.Rows.ToList();
 
             Assert.AreEqual(expectedOrder.Count, actualOrder[0].ResultsList.Count);
 

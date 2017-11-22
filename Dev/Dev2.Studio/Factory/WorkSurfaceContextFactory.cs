@@ -50,15 +50,15 @@ namespace Dev2.Studio.Factory
         /// <returns></returns>
         /// <author>Jurie.smit</author>
         /// <date>3/6/2013</date>
-        private static WorkSurfaceContextViewModel CreateUniqueWorkSurfaceContextViewModel<T>
+        static WorkSurfaceContextViewModel CreateUniqueWorkSurfaceContextViewModel<T>
             (T vm, WorkSurfaceContext workSurfaceContext)
             where T : IWorkSurfaceViewModel
         {
 
             var key = WorkSurfaceKeyFactory.CreateKey(workSurfaceContext) as WorkSurfaceKey;
-            if(vm is HelpViewModel)
+            if (vm is HelpViewModel)
             {
-                if(key != null)
+                if (key != null)
                 {
                     key.ResourceID = Guid.Empty;
                 }
@@ -71,14 +71,14 @@ namespace Dev2.Studio.Factory
             return CreateWorkSurfaceContextViewModel(vm, workSurfaceContext, key);
         }
 
-        private static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel<T>(T vm,
+        static WorkSurfaceContextViewModel CreateWorkSurfaceContextViewModel<T>(T vm,
                                                                                         WorkSurfaceContext workSurfaceContext,
                                                                                         WorkSurfaceKey key)
             where T : IWorkSurfaceViewModel
         {
             var context = new WorkSurfaceContextViewModel(key, vm);
-           
-            if (!(vm is SchedulerViewModel)&& !(vm is SettingsViewModel))
+
+            if (!(vm is SchedulerViewModel) && !(vm is SettingsViewModel))
             {
                 vm.DisplayName = workSurfaceContext.GetDescription();
             }

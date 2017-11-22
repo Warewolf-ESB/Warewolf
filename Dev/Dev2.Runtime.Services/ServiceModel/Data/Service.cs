@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     // DO NOT override ToXml() here!
     public class Service : Resource
     {
-        private IOutputDescription _outputDescription;
+        IOutputDescription _outputDescription;
 
         #region CTOR
 

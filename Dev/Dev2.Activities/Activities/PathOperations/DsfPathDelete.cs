@@ -79,7 +79,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             while (colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                var broker = ActivityIOFactory.CreateOperationsBroker();
 
                 try
                 {
@@ -88,9 +88,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                          colItr.FetchNextValue(passItr),
                          true, colItr.FetchNextValue(privateKeyItr));
 
-                    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    
-                    string result = broker.Delete(dstEndPoint);
+                    var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+
+                    var result = broker.Delete(dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
                 }
                 catch(Exception e)

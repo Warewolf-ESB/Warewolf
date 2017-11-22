@@ -36,8 +36,8 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Class Memebers
 
-        private ItemCollection dataGridItems;
-        private INotifyCollectionChanged observable;
+        ItemCollection dataGridItems;
+        INotifyCollectionChanged observable;
 
         #endregion Class Memebers
 
@@ -118,7 +118,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Private Methods
 
-        private void UpdateWatermarks()
+        void UpdateWatermarks()
         {
             if (dataGridItems != null && !string.IsNullOrWhiteSpace(WatermarkPropertyName) && WatermarkText != null)
             {
@@ -136,18 +136,18 @@ namespace Dev2.Studio.AppResources.Behaviors
                 }
                 for (int i = 0; i < dataGridItems.Count; i++)
                 {
-                    List<object> list = dataGridItems.SourceCollection.Cast<object>().ToList();
+                    var list = dataGridItems.SourceCollection.Cast<object>().ToList();
 
                     if (list[i] is ModelItem mi)
                     {
                         int watermarkIndex = WatermarkIndexes.IndexOf(i);
                         WatermarkSential.IsWatermarkBeingApplied = true;
-                        ModelProperty modelProperty = mi.Properties[WatermarkPropertyName];
+                        var modelProperty = mi.Properties[WatermarkPropertyName];
                         modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");
                     }
                     else
                     {
-                        PropertyInfo pi = dataGridItems[i].GetType().GetProperty(WatermarkPropertyName);
+                        var pi = dataGridItems[i].GetType().GetProperty(WatermarkPropertyName);
 
                         if (pi != null)
                         {
@@ -168,7 +168,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private void SubscribeToEvents()
+        void SubscribeToEvents()
         {
             observable = AssociatedObject.Items;
             if (observable != null)
@@ -185,7 +185,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             AssociatedObject.Loaded += AssociatedObjectOnLoaded;
         }
 
-        private void UnsubscribeFromEvents()
+        void UnsubscribeFromEvents()
         {
             observable = AssociatedObject.Items;
             if (observable != null)
@@ -205,13 +205,13 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Event Handlers
 
-        private void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        void AssociatedObjectOnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             UnsubscribeFromEvents();
             routedEventArgs.Handled = true;
         }
 
-        private void observable_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void observable_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
@@ -219,7 +219,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
         }
 
-        private void notifyPropertyChangedImplimentor_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        void notifyPropertyChangedImplimentor_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "Items" || e.PropertyName == "ItemsSource")
             {

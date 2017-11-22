@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(m => m.Connection).Returns(envConn.Object);
             mockEnvironmentModel.Setup(m => m.IsConnected).Returns(true);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
-            StringBuilder xamlBuilder = new StringBuilder("abc");
+            var xamlBuilder = new StringBuilder("abc");
 
             var workflowHelper = new Mock<IWorkflowHelper>();
 
@@ -153,16 +153,16 @@ namespace Dev2.Core.Tests
             Assert.AreEqual(DebugStatus.Finished, workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus);
         }
 
-        private static WorkflowDesignerViewModelMock WorkflowDesignerViewModelMock(bool isConnected, Mock<IContextualResourceModel> ResourceModel = null)
+        static WorkflowDesignerViewModelMock WorkflowDesignerViewModelMock(bool isConnected, Mock<IContextualResourceModel> ResourceModel = null)
         {
             var workflow = new ActivityBuilder();
             var resourceRep = new Mock<IResourceRepository>();
             resourceRep.Setup(r => r.All()).Returns(new List<IResourceModel>());
 
             ExecuteMessage exeMsg = null;
-            
+
             resourceRep.Setup(r => r.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(exeMsg);
-            
+
 
             var resourceModel = ResourceModel ?? new Mock<IContextualResourceModel>();
             resourceModel.Setup(m => m.Environment.ResourceRepository).Returns(resourceRep.Object);
@@ -172,7 +172,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment.Connection).Returns(envConn.Object);
             resourceModel.Setup(m => m.Environment.IsConnected).Returns(isConnected);
             resourceModel.Setup(r => r.ResourceName).Returns("Test");
-            StringBuilder xamlBuilder = new StringBuilder("abc");
+            var xamlBuilder = new StringBuilder("abc");
 
             var workflowHelper = new Mock<IWorkflowHelper>();
 
@@ -214,7 +214,7 @@ namespace Dev2.Core.Tests
         public void WorkSurfaceContextViewModel_SetDebugStatus_StatusConfigure_ClearsDebugOutputViewModel()
         {
             //------------Setup for test--------------------------
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
             var mockDebugState = new Mock<IDebugState>();
             mockDebugState.Setup(state => state.StateType).Returns(StateType.All);
             mockDebugState.Setup(m => m.SessionID).Returns(workSurfaceContextViewModel.DebugOutputViewModel.SessionID);
@@ -233,7 +233,7 @@ namespace Dev2.Core.Tests
         public void WorkSurfaceContextViewModel_SetDebugStatus_StatusFinished_DebugStatusFinished()
         {
             //------------Setup for test--------------------------
-            WorkSurfaceContextViewModel workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
+            var workSurfaceContextViewModel = CreateWorkSurfaceContextViewModel();
             workSurfaceContextViewModel.DebugOutputViewModel.DebugStatus = DebugStatus.Executing;
             //------------Execute Test---------------------------
             workSurfaceContextViewModel.SetDebugStatus(DebugStatus.Finished);
@@ -1037,7 +1037,7 @@ namespace Dev2.Core.Tests
             environmentModel.Setup(model => model.ResourceRepository).Returns(resourceRepo.Object);
             var popup = new Mock<IPopupController>();
             ctx.Setup(a => a.DataList).Returns("asdasda$%^");
-            PrivateObject pvt = new PrivateObject(workSurfaceContextViewModel);
+            var pvt = new PrivateObject(workSurfaceContextViewModel);
             pvt.SetField("_contextualResourceModel", ctx.Object);
             pvt.SetField("_popupController", popup.Object);
             ctx.Setup(a => a.Environment).Returns(environmentModel.Object);
@@ -1058,7 +1058,7 @@ namespace Dev2.Core.Tests
 
     public class WorkSurfaceViewModelTest : IWorkSurfaceViewModel, IWorkflowDesignerViewModel
     {
-        private bool _workspaceSave;
+        bool _workspaceSave;
 
         #region Implementation of IHaveDisplayName
 

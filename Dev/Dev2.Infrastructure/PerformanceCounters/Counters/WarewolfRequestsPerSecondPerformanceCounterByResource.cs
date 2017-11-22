@@ -9,11 +9,11 @@ namespace Dev2.PerformanceCounters.Counters
     public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
-        private PerformanceCounter _counter;
-        private Stopwatch _stopwatch;
+        PerformanceCounter _counter;
+        Stopwatch _stopwatch;
 
 
-        private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
+        const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
         public WarewolfRequestsPerSecondPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
             ResourceId = resourceId;
@@ -80,7 +80,7 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,

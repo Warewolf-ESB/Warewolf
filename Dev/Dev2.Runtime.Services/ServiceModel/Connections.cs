@@ -27,8 +27,8 @@ namespace Dev2.Runtime.ServiceModel
     public class Connections : ExceptionManager, IConnections
     {
 
-        private readonly Func<List<string>> _fetchComputers;
-        private readonly IHubFactory _hubFactory;
+        readonly Func<List<string>> _fetchComputers;
+        readonly IHubFactory _hubFactory;
 
         public Connections()
             : this(() => GetComputerNames.ComputerNames, new HubFactory())
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
 
-        private string GetLastExeptionMessage(Exception ex)
+        string GetLastExeptionMessage(Exception ex)
         {
             if (ex.InnerException == null)
             {

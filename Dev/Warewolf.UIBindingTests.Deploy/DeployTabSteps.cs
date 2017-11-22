@@ -560,7 +560,7 @@ namespace Warewolf.UIBindingTests.Deploy
             SetDestPermisions(deployFrom, deployTo, destinationServer);
         }
 
-        private void SetDestPermisions(bool deployFrom, bool deployTo, Mock<IServer> Mockserver)
+        void SetDestPermisions(bool deployFrom, bool deployTo, Mock<IServer> Mockserver)
         {
             var destinationServer = Mockserver;
             destinationServer.Setup(server => server.CanDeployFrom).Returns(deployFrom);

@@ -21,7 +21,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
+            var schedulerStatus = (SchedulerStatus?)value;
 
             if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
             {

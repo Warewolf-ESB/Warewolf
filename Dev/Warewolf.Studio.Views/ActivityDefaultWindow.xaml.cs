@@ -15,7 +15,7 @@ namespace Warewolf.Studio.Views
     public partial class ActivityDefaultWindow
     {
         readonly Grid _blackoutGrid = new Grid();
-        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
+        static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
 
         public ActivityDefaultWindow()
         {
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private bool ValidateSwitchCase(bool valid)
+        bool ValidateSwitchCase(bool valid)
         {
             var configureSwitchArm = ControlContentPresenter.Content as ConfigureSwitchArm;
 
@@ -111,7 +111,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ActivityDefaultWindow_OnKeyUp(object sender, KeyEventArgs e)
+        void ActivityDefaultWindow_OnKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {

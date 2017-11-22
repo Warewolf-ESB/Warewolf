@@ -19,9 +19,9 @@ namespace Dev2.Common
 {
     internal class Dev2TokenOp : IDev2SplitOp
     {
-        private readonly string _escapeChar;
-        private readonly bool _include;
-        private readonly char[] _tokenParts;
+        readonly string _escapeChar;
+        readonly bool _include;
+        readonly char[] _tokenParts;
 
         internal Dev2TokenOp(string token, bool includeToken)
             : this(token, includeToken, "")
@@ -158,13 +158,13 @@ namespace Dev2.Common
 
         #region Private Method
 
-        private bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
+        bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
         {
-           bool result = true;
+            bool result = true;
 
             int cnt = 0;
             int canidateIdx = fromIndex;
-            
+
             if (isReversed)
             {
                 cnt = _tokenParts.Length - 1;
@@ -177,7 +177,7 @@ namespace Dev2.Common
                     if (canidate[canidateIdx] != _tokenParts[cnt])
                     {
                         result = false;
-                    }                  
+                    }
                     if (!isReversed)
                     {
                         canidateIdx++;
@@ -200,7 +200,7 @@ namespace Dev2.Common
 
         #endregion Private Method
 
-        private bool SkipDueToEscapeChar(char[] candidate, int pos)
+        bool SkipDueToEscapeChar(char[] candidate, int pos)
         {
             if (pos > 0 && !String.IsNullOrEmpty(_escapeChar))
             {
@@ -209,7 +209,7 @@ namespace Dev2.Common
             return false;
         }
 
-        private bool SkipDueToEscapeChar(string word)
+        bool SkipDueToEscapeChar(string word)
         {
             if (!String.IsNullOrEmpty(_escapeChar))
             {

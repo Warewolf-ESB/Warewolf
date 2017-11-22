@@ -23,12 +23,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
     public class DropboxFileListActivityShould
     {
-        private static DsfDropboxFileListActivity CreateDropboxActivity()
+        static DsfDropboxFileListActivity CreateDropboxActivity()
         {
             return new DsfDropboxFileListActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
@@ -589,7 +589,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
             //---------------Execute Test ----------------------
             var mockExecutionEnv = new Mock<IExecutionEnvironment>();
-            List<DebugItem> debugInputs = dropboxFileListActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
+            var debugInputs = dropboxFileListActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(4,debugInputs.Count());
         }
@@ -597,7 +597,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
     public class DsfDropboxFileListActivityMock : DsfDropboxFileListActivity
     {
-        private readonly IDropboxClientWrapper _clientWrapper;
+        readonly IDropboxClientWrapper _clientWrapper;
 
         public DsfDropboxFileListActivityMock(IDropboxClientWrapper clientWrapper)
             :base(clientWrapper)

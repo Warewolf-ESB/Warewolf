@@ -23,15 +23,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Test ComPlugin Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("ComPluginService", out StringBuilder resourceDefinition);
-                IComPluginService src = serializer.Deserialize<IComPluginService>(resourceDefinition);
-                
+                var src = serializer.Deserialize<IComPluginService>(resourceDefinition);
+
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
                 
                 var pluginsrc = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ComPluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        private readonly Lazy<IComPluginServices> _pluginServices =new Lazy<IComPluginServices>(()=> new ComPluginServices());
+        readonly Lazy<IComPluginServices> _pluginServices = new Lazy<IComPluginServices>(() => new ComPluginServices());
 
         public string HandlesType() => "TestComPluginService";
     }

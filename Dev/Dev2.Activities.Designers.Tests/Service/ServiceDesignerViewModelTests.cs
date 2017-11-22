@@ -500,7 +500,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -547,7 +547,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -594,7 +594,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -641,7 +641,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------
@@ -689,7 +689,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object,
                 new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker())
             { IsWorstErrorReadOnly = false };
-            PrivateObject privateType = new PrivateObject(viewModel);
+            var privateType = new PrivateObject(viewModel);
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------
@@ -2440,16 +2440,16 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            ISetup<IContextualResourceModel, string> setupResourceModel = resourceModel.Setup(model => model.DataList);
+            var setupResourceModel = resourceModel.Setup(model => model.DataList);
             setupResourceModel.Returns("<DataList><n1/></DataList>");
 
 
             var rootModel = CreateResourceModel(Guid.Empty);
 
             var envRepository = new Mock<IServerRepository>();
-            ISetup<IServerRepository, IServer> setupFindSingle = envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>()));
+            var setupFindSingle = envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>()));
             setupFindSingle.Returns((IServer)null);
-            ISetup<IServerRepository, IServer> setupActiveEnvironment = envRepository.Setup(r => r.ActiveServer);
+            var setupActiveEnvironment = envRepository.Setup(r => r.ActiveServer);
             setupActiveEnvironment.Returns(resourceModel.Object.Environment);
 
             var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.EnvironmentID), UniqueID = Guid.NewGuid().ToString() };
@@ -2596,7 +2596,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #region CreateModelItem
 
-        private static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
+        static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
         {
             const int OffSet = 4;
             var startIndex = 0;
@@ -2651,7 +2651,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, bool resourceRepositoryReturnsNull, Mock<IContextualResourceModel> contextualResourceModel, params IErrorInfo[] resourceErrors)
         {
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out Mock<IResourceRepository> resourceRepository, resourceErrors);
+            var resourceModel = CreateResourceModel(resourceID, out Mock<IResourceRepository> resourceRepository, resourceErrors);
             resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             if (resourceRepositoryReturnsNull)
             {
@@ -2794,7 +2794,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static Mock<IResourceRepository> SetupForSourceCheck(out Guid instanceID, out Mock<IServer> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID, bool mangleXaml = false)
         {
-            Mock<IResourceRepository> mockRepo = new Mock<IResourceRepository>();
+            var mockRepo = new Mock<IResourceRepository>();
             instanceID = Guid.NewGuid();
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
@@ -2806,7 +2806,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.IsConnected).Returns(true);
 
             const string src = @"1afe38e9-a6f5-403d-9e52-06dd7ae11198";
-            string xaml = string.Format(@"<Action Name=""foobar"" Type=""InvokeWebService"" SourceID=""{0}"" SourceName=""dummy"" SourceMethod="""" RequestUrl="""" RequestMethod=""Post"" JsonPath=""""></Action>", src);
+            var xaml = string.Format(@"<Action Name=""foobar"" Type=""InvokeWebService"" SourceID=""{0}"" SourceName=""dummy"" SourceMethod="""" RequestUrl="""" RequestMethod=""Post"" JsonPath=""""></Action>", src);
 
             if (mangleXaml)
             {

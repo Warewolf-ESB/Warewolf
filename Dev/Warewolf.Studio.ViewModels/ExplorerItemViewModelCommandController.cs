@@ -163,7 +163,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewServerSource(resourcePath);
         }
 
-        private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
+        static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
             shellViewModel.SetActiveServer(server.EnvironmentID);
         }

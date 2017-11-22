@@ -21,10 +21,10 @@ namespace Dev2
     {
         #region Fields
 
-        private string _fromExpression;
-        private string _fromType;
-        private string _toExpression;
-        private string _toType;
+        string _fromExpression;
+        string _fromType;
+        string _toExpression;
+        string _toType;
 
         #endregion
 
@@ -180,11 +180,11 @@ namespace Dev2
         
         public string Error { get; private set; }
 
-        
+
 
         #endregion
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");

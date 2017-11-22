@@ -38,8 +38,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
           
             string directory = null;
-            StringBuilder result = new StringBuilder();
-            if(values == null)
+            var result = new StringBuilder();
+                if (values == null)
             {
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
@@ -94,7 +94,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             else
             {
                 title = explorerItem.DisplayName;
-                string name = Regex.Replace(explorerItem.ResourcePath.Replace(EnvironmentVariables.ApplicationPath + "\\", ""), @"\\", @"\\");
+                var name = Regex.Replace(explorerItem.ResourcePath.Replace(EnvironmentVariables.ApplicationPath + "\\", ""), @"\\", @"\\");
                 key = name;
             }
             isFolder = true;

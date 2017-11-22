@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 requestArgs.TryGetValue("ResourceXml", out StringBuilder resourceDefinition);
                 if (resourceDefinition != null && resourceDefinition.Length > 0)
                 {
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializer = new Dev2JsonSerializer();
                     resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                     var xml = resourceDefinition.ToXElement();
                     var resource = new Resource(xml);
@@ -54,7 +54,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
 
-                string workspaceIdString = string.Empty;
+                var workspaceIdString = string.Empty;
                 values.TryGetValue("savePath", out StringBuilder savePathValue);
                 if (savePathValue == null)
                 {
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("ResourceXml is missing");
                 }
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false };
                 var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, savePathValue.ToString(), "Save");

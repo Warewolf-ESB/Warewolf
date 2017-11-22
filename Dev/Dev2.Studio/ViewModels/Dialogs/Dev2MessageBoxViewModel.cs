@@ -22,11 +22,11 @@ namespace Dev2.Studio.ViewModels.Dialogs
 {
     public class Dev2MessageBoxViewModel : Screen
     {
-        private static Dictionary<string, MessageBoxResult> _dontShowAgainOptions;
+        static Dictionary<string, MessageBoxResult> _dontShowAgainOptions;
 
         #region Static Methods
-        
-        private static void LoadDontShowAgainOptions()
+
+        static void LoadDontShowAgainOptions()
         {
             var filePersistenceProviderInst = CustomContainer.Get<IFilePersistenceProvider>();
             _dontShowAgainOptions = new Dictionary<string, MessageBoxResult>();

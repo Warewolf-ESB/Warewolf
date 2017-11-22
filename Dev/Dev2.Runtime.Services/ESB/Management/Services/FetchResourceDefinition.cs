@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 var res = new ExecuteMessage { HasError = false };
@@ -126,7 +126,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (!res.Message.IsNullOrEmpty())
             {
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                var dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
             }
             if (prepairForDeployment)
@@ -145,11 +145,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(res);
         }
 
-        private static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
+        static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
         {
             var startIdx = result.IndexOf(PayloadStart, 0, false);
 
-            if(startIdx >= 0)
+            if (startIdx >= 0)
             {
                 // remove beginning junk
                 startIdx += PayloadStart.Length;
@@ -157,7 +157,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 startIdx = result.IndexOf(PayloadEnd, 0, false);
 
-                if(startIdx > 0)
+                if (startIdx > 0)
                 {
                     var len = result.Length - startIdx;
                     result = result.Remove(startIdx, len);
@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 // handle services ;)
                 startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                if(startIdx >= 0)
+                if (startIdx >= 0)
                 {
                     // remove begging junk
                     startIdx += AltPayloadStart.Length;
@@ -177,7 +177,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     startIdx = result.IndexOf(AltPayloadEnd, 0, false);
 
-                    if(startIdx > 0)
+                    if (startIdx > 0)
                     {
                         var len = result.Length - startIdx;
                         result = result.Remove(startIdx, len);
@@ -195,7 +195,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
-            Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
+            var replacements = new Dictionary<string, StringTransform>
                                                                {
                                                                    {
                                                                        "Source", new StringTransform
@@ -230,8 +230,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                                                                               }
                                                                    }
                                                                };
-            string xml = stringBuilder.ToString();
-            StringBuilder output = new StringBuilder();
+            var xml = stringBuilder.ToString();
+            var output = new StringBuilder();
 
             xml = StringTransform.TransformAllMatches(xml, replacements.Values.ToList());
             output.Append(xml);

@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
 
         #region Fields
-        private readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
+        readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
 
         #endregion
 
@@ -88,7 +88,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
             
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -97,7 +97,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             InitializeDebug(dataObject);
             var env = dataObject.Environment;
@@ -179,9 +179,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
                 return a =>
                 {
-                    IBaseConverter from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
-                    IBaseConverter to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
-                    IBaseConversionBroker broker = _fac.CreateBroker(@from, to);
+                    var from = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.FromType, typeof(enDev2BaseConvertType)));
+                    var to = _fac.CreateConverter((enDev2BaseConvertType)Dev2EnumConverter.GetEnumFromStringDiscription(item.ToType, typeof(enDev2BaseConvertType)));
+                    var broker = _fac.CreateBroker(@from, to);
                     var value = a.ToString();
                     if(a.IsNothing)
                     {
@@ -211,12 +211,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void CleanArgs()
+        void CleanArgs()
         {
             int count = 0;
-            while(count < ConvertCollection.Count)
+            while (count < ConvertCollection.Count)
             {
-                if(string.IsNullOrWhiteSpace(ConvertCollection[count].FromExpression))
+                if (string.IsNullOrWhiteSpace(ConvertCollection[count].FromExpression))
                 {
                     ConvertCollection.RemoveAt(count);
                 }
@@ -253,21 +253,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ConvertCollection"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
+                var mic = modelProperty.Collection;
 
-                if(mic != null)
+                if (mic != null)
                 {
-                    List<BaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
-                    if(listOfValidRows.Count > 0)
+                    var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+                    if (listOfValidRows.Count > 0)
                     {
-                        BaseConvertTO baseConvertTo = ConvertCollection.Last(c => !c.CanRemove());
+                        var baseConvertTo = ConvertCollection.Last(c => !c.CanRemove());
                         int startIndex = ConvertCollection.IndexOf(baseConvertTo) + 1;
-                        foreach(string s in listToAdd)
+                        foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new BaseConvertTO(s, ConvertCollection[startIndex - 1].FromType, ConvertCollection[startIndex - 1].ToType, string.Empty, startIndex + 1));
                             startIndex++;
@@ -282,20 +282,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ConvertCollection"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
+                var mic = modelProperty.Collection;
 
-                if(mic != null)
+                if (mic != null)
                 {
                     int startIndex = 0;
-                    string firstRowConvertFromType = ConvertCollection[0].FromType;
-                    string firstRowConvertToType = ConvertCollection[0].ToType;
+                    var firstRowConvertFromType = ConvertCollection[0].FromType;
+                    var firstRowConvertToType = ConvertCollection[0].ToType;
                     mic.Clear();
-                    foreach(string s in listToAdd)
+                    foreach (string s in listToAdd)
                     {
                         mic.Add(new BaseConvertTO(s, firstRowConvertFromType, firstRowConvertToType, string.Empty, startIndex + 1));
                         startIndex++;
@@ -305,24 +305,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if(startIndex < mic.Count)
+            if (startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new BaseConvertTO(string.Empty, "Text", "Base 64", string.Empty, startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
             }
         }
 
-        private string CreateDisplayName(ModelItem modelItem, int count)
+        string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 var currentName = modelProperty.ComputedValue as string;
                 if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
@@ -346,7 +346,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t1.Item1));
 
                 // issues updates
@@ -365,7 +365,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 // locate all updates for this tuple
                 //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t1.Item1));
 
                 // issues updates

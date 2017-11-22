@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.Services
             var getInformation = new GetServerInformation();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = getInformation.Execute(null, null);
+            var jsonResult = getInformation.Execute(null, null);
             var result = serializer.Deserialize<Dictionary<string, string>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsNotNull(result);

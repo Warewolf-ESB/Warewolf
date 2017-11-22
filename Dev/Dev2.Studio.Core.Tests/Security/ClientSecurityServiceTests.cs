@@ -177,7 +177,7 @@ namespace Dev2.Core.Tests.Security
             connection.Setup(c => c.ServerEvents).Returns(eventPublisher);
             var clientSecurityService = new TestClientSecurityService(connection.Object);
             var currentPermissions = new List<WindowsGroupPermission>();
-            Guid resourceID = Guid.NewGuid();
+            var resourceID = Guid.NewGuid();
 
             var resourcePermission = new WindowsGroupPermission();
             resourcePermission.ResourceID = resourceID;

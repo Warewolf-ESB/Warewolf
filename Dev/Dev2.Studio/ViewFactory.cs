@@ -8,7 +8,7 @@ namespace Dev2
 {
     internal class ViewFactory : IViewFactory
     {
-        private readonly ConcurrentDictionary<string, Func<IView>> _viewMap =
+        readonly ConcurrentDictionary<string, Func<IView>> _viewMap =
             new ConcurrentDictionary<string, Func<IView>>();
 
         public ViewFactory()

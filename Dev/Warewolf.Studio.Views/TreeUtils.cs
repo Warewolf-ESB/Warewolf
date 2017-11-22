@@ -12,7 +12,7 @@ namespace Warewolf.Studio.Views
             var nodes = new Stack<XamDataTreeNode>(new[] { root });
             while (nodes.Any())
             {
-                XamDataTreeNode node = nodes.Pop();
+                var node = nodes.Pop();
                 yield return node;
                 if(node != null)
                 {
@@ -32,7 +32,7 @@ namespace Warewolf.Studio.Views
             var nodes = new Stack<XamDataTreeNode>(roots);
             while (nodes.Any())
             {
-                XamDataTreeNode node = nodes.Pop();
+                var node = nodes.Pop();
                 yield return node;
                 if(node != null)
                 {

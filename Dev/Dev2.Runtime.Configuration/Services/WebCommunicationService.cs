@@ -19,7 +19,7 @@ namespace Dev2.Runtime.Configuration.Services
 {
     public class WebCommunicationService : ICommunicationService, IDisposable
     {
-        private readonly WebClient _webClient;
+        readonly WebClient _webClient;
 
         public WebCommunicationService()
         {

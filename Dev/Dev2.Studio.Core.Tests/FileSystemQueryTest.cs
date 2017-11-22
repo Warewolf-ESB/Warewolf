@@ -376,7 +376,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\\bob\", ref output,ref qs );
             //------------Assert Results-------------------------
             Assert.IsTrue(res);
@@ -391,7 +391,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\bob\", ref output, ref qs);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
@@ -406,7 +406,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\\bob", ref output, ref qs);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
@@ -421,7 +421,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\\bob", ref output, ref qs);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
@@ -676,7 +676,7 @@ namespace Dev2.Core.Tests
 
          }
 
-        private static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
+        static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
         {
 
             var dirFact = new Mock<IDirectoryEntryFactory>();
@@ -710,13 +710,13 @@ namespace Dev2.Core.Tests
                                            .GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
-            IList<Share> shares = hasShares? new List<Share>{new Share("a","b",ShareType.Disk)}  : new List<Share>();
+            IList<Share> shares = hasShares ? new List<Share> { new Share("a", "b", ShareType.Disk) } : new List<Share>();
             var sFact = new Mock<IShareCollectionFactory>();
             sFact.Setup(a => a.CreateShareCollection(It.IsAny<string>())).Returns(new ShareCollection(shares));
 
             //------------Execute Test---------------------------
             var query = new FileSystemQuery(dirLocal.Object, dirFact.Object, sFact.Object);
-         
+
             return query;
         }
     }

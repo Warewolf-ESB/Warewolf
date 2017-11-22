@@ -28,8 +28,8 @@ namespace Dev2.Runtime.Hosting
 {
     public class ExplorerItemFactory : IExplorerItemFactory
     {
-        private readonly IAuthorizationService _authService;
-        private static readonly string RootName = Environment.MachineName;
+        readonly IAuthorizationService _authService;
+        static readonly string RootName = Environment.MachineName;
         public ExplorerItemFactory(IResourceCatalog catalogue, IDirectory directory, IAuthorizationService authService)
         {
             _authService = authService;
@@ -79,17 +79,17 @@ namespace Dev2.Runtime.Hosting
             AddChildren(rootNode, resourceList, type, workSpaceId);
             return rootNode;
         }
-        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type, Guid workSpaceId)
+        void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, string type, Guid workSpaceId)
         {
-            
+
 
             var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)) == rootNode.ResourcePath && a.ResourceType == type.ToString());
-            
+
             foreach (var node in rootNode.Children)
             {
-                
+
                 AddChildren(node, resourceList, type, workSpaceId);
-                
+
             }
             foreach (var resource in children)
             {
@@ -107,16 +107,16 @@ namespace Dev2.Runtime.Hosting
             return resourcePath.Contains("\\") ? resourcePath.Substring(0, resourcePath.LastIndexOf("\\", StringComparison.Ordinal)) : "";
         }
 
-        private void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, Guid workSpaceId)
+        void AddChildren(IExplorerItem rootNode, IEnumerable<IResource> resourceList, Guid workSpaceId)
         {
-            
+
             var children = resourceList.Where(a => GetResourceParent(a.GetResourcePath(workSpaceId)).Equals(rootNode.ResourcePath, StringComparison.InvariantCultureIgnoreCase));
-            
+
             foreach (var node in rootNode.Children)
             {
-                
+
                 AddChildren(node, resourceList, workSpaceId);
-                
+
             }
             foreach (var resource in children)
             {
@@ -131,7 +131,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem CreateResourceItem(IResource resource, Guid workSpaceId)
         {
-            Guid resourceId = resource.ResourceID;
+            var resourceId = resource.ResourceID;
             var childNode = new ServerExplorerItem(resource.ResourceName, resourceId, resource.ResourceType, null, _authService.GetResourcePermissions(resourceId), resource.GetResourcePath(workSpaceId))
             {
                 IsService = resource.IsService,
@@ -145,7 +145,7 @@ namespace Dev2.Runtime.Hosting
         }
 
 
-        private IExplorerItem BuildStructureFromFilePathRoot(IDirectory directory, string path, IExplorerItem root)
+        IExplorerItem BuildStructureFromFilePathRoot(IDirectory directory, string path, IExplorerItem root)
         {
 
             root.Children = BuildStructureFromFilePath(directory, path, path);
@@ -153,7 +153,7 @@ namespace Dev2.Runtime.Hosting
         }
 
 
-        private IList<IExplorerItem> BuildStructureFromFilePath(IDirectory directory, string path, string rootPath)
+        IList<IExplorerItem> BuildStructureFromFilePath(IDirectory directory, string path, string rootPath)
         {
             var firstGen =
                 directory.GetDirectories(path)
@@ -179,7 +179,7 @@ namespace Dev2.Runtime.Hosting
 
         public IExplorerItem BuildRoot()
         {
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, "Server", new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "")
+            var serverExplorerItem = new ServerExplorerItem(RootName, Guid.Empty, "Server", new List<IExplorerItem>(), _authService.GetResourcePermissions(Guid.Empty), "")
             {
                 ServerId = HostSecurityProvider.Instance.ServerID,
                 WebserverUri = EnvironmentVariables.WebServerUri,

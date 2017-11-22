@@ -26,7 +26,7 @@ namespace Dev2.CustomControls.Trigger
             DependencyProperty.Register("DelayInMilliSeconds", typeof (long), typeof (DelayTextChangedEventTrigger),
                 new PropertyMetadata(1000L));
 
-        private IDisposable _subscription;
+        IDisposable _subscription;
 
         public long DelayInMilliSeconds
         {
@@ -40,7 +40,7 @@ namespace Dev2.CustomControls.Trigger
         {
             base.OnAttached();
 
-            IObservable<EventPattern<EventArgs>> observable = Observable.FromEventPattern(AssociatedObject,
+            var observable = Observable.FromEventPattern(AssociatedObject,
                 "TextChanged")
                 .Throttle(TimeSpan.FromMilliseconds(DelayInMilliSeconds), Scheduler.ThreadPool)
                 .ObserveOn(SynchronizationContext.Current);
@@ -49,7 +49,7 @@ namespace Dev2.CustomControls.Trigger
         }
 
 
-        private void ProcessKeyPress(EventPattern<EventArgs> obj)
+        void ProcessKeyPress(EventPattern<EventArgs> obj)
 
         {
             Dispatcher.BeginInvoke(() => InvokeActions(null));

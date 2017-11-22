@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        private static int GetSpecifiedIndexOf(string str, char ch, int index)
+        static int GetSpecifiedIndexOf(string str, char ch, int index)
         {
             int i = 0, o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
@@ -41,8 +41,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Save Resource Service",GlobalConstants.WarewolfInfo);
@@ -50,10 +50,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ServerSource", out StringBuilder resourceDefinition);
 
                 IServerSource src = serializer.Deserialize<ServerSource>(resourceDefinition);
-                Connection con = new Connection();
+                var con = new Connection();
 
                 int portIndex = GetSpecifiedIndexOf(src.Address, ':', 2);
-                string port = src.Address.Substring(portIndex + 1);
+                var port = src.Address.Substring(portIndex + 1);
 
                 con.Address = src.Address;
                 con.AuthenticationType = src.AuthenticationType;
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 con.ResourceName = src.Name;
                 con.ResourceID = src.ID;
                 con.WebServerPort = int.Parse(port);
-                Connections tester = new Connections();
+                var tester = new Connections();
                 var res = tester.CanConnectToServer(con);
                 if (res.IsValid)
                 {

@@ -10,7 +10,7 @@ namespace Warewolf.Studio.CustomControls
     {
         #region Private Fields
 
-        private readonly ContentPresenter contentPresenter;
+        readonly ContentPresenter contentPresenter;
 
         #endregion
 
@@ -22,7 +22,7 @@ namespace Warewolf.Studio.CustomControls
             IsHitTestVisible = false;
 
             contentPresenter = new ContentPresenter();
-            TextBlock textBlock = new TextBlock
+            var textBlock = new TextBlock
             {
                 FontStyle = FontStyles.Italic,
                 VerticalAlignment = VerticalAlignment.Top,
@@ -40,7 +40,7 @@ namespace Warewolf.Studio.CustomControls
             }
 
             // Hide the control adorner when the adorned element is hidden
-            Binding binding = new Binding("IsVisible")
+            var binding = new Binding("IsVisible")
             {
                 Source = adornedElement,
                 Converter = new BooleanToVisibilityConverter()
@@ -58,7 +58,7 @@ namespace Warewolf.Studio.CustomControls
 
         #region Private Properties
 
-        private Control Control => (Control)AdornedElement;
+        Control Control => (Control)AdornedElement;
 
         #endregion
 

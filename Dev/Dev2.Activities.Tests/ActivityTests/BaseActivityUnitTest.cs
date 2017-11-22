@@ -140,7 +140,7 @@ namespace ActivityUnitTests
             using (ServiceAction svc = new ServiceAction { Name = "TestAction", ServiceName = "UnitTestService" })
             {
                 svc.SetActivity(FlowchartProcess);
-                Mock<IEsbChannel> mockChannel = new Mock<IEsbChannel>();
+                var mockChannel = new Mock<IEsbChannel>();
 
                 if (CurrentDl == null)
                 {
@@ -161,7 +161,7 @@ namespace ActivityUnitTests
 
                 if (errors.HasErrors())
                 {
-                    string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+                    var errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
 
                     if (throwException)
                     {
@@ -206,7 +206,7 @@ namespace ActivityUnitTests
                     esbChannel = channel;
                 }
                 dataObject.ExecutionToken = new ExecutionToken();
-                WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
+                var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, esbChannel);
 
                 errors.ClearErrors();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
@@ -235,12 +235,12 @@ namespace ActivityUnitTests
                     CurrentDl = TestData;
                 }
 
-                ErrorResultTO errors = new ErrorResultTO();
+                var errors = new ErrorResultTO();
 
 
-                if(errors.HasErrors())
+                if (errors.HasErrors())
                 {
-                    string errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
+                    var errorString = errors.FetchErrors().Aggregate(string.Empty, (current, item) => current + item);
 
                     throw new Exception(errorString);
                 }
@@ -260,7 +260,7 @@ namespace ActivityUnitTests
 
                 mockChannel.Setup(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, 0, false)).Verifiable();
                 CustomContainer.Register<IActivityParser>(new ActivityParser());
-                WfExecutionContainer wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
+                var wfec = new WfExecutionContainer(svc, dataObject, WorkspaceRepository.Instance.ServerWorkspace, mockChannel.Object);
 
                 errors.ClearErrors();
                 wfec.Eval(FlowchartProcess,dataObject, 0);

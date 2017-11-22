@@ -68,7 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -76,8 +76,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
             try
@@ -145,7 +145,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private Func<DataStorage.WarewolfAtom,DataStorage.WarewolfAtom> TryConvertFunc(ICaseConvertTO conversionType,IExecutionEnvironment env,int update)
+        Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom> TryConvertFunc(ICaseConvertTO conversionType, IExecutionEnvironment env, int update)
         {
             var convertFunct = CaseConverter.GetFuncs();
 
@@ -172,9 +172,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     };
                 }
             }
-            throw  new Exception(ErrorResource.ConvertOptionDoesNotExist);
+            throw new Exception(ErrorResource.ConvertOptionDoesNotExist);
         }
-        
+
 
         public override enFindMissingType GetFindMissingType()
         {
@@ -185,46 +185,46 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private List<string> BreakIntoTokens(string value)
+        List<string> BreakIntoTokens(string value)
         {
             var parts = value.Split(',');
             var result = parts.Select(r => r.Trim()).ToList();
             return result;
         }
 
-        private void CleanArgs()
+        void CleanArgs()
         {
-            ICaseConvertTO[] workItems = new ICaseConvertTO[ConvertCollection.Count];
+            var workItems = new ICaseConvertTO[ConvertCollection.Count];
             ConvertCollection.CopyTo(workItems, 0);
 
-            
-            for(var i = 0; i < workItems.Length; i++)
-            
+
+            for (var i = 0; i < workItems.Length; i++)
+
             {
                 var convertResult = workItems[i].Result;
                 var convertTarget = workItems[i].StringToConvert;
 
-                if(!string.IsNullOrEmpty(convertTarget) && !string.IsNullOrEmpty(convertResult))
+                if (!string.IsNullOrEmpty(convertTarget) && !string.IsNullOrEmpty(convertResult))
                 {
                     var targetList = BreakIntoTokens(convertTarget);
                     var resultList = BreakIntoTokens(convertResult);
 
                     // now add them back together
-                    if(targetList.Count > 0 && resultList.Count > 0)
+                    if (targetList.Count > 0 && resultList.Count > 0)
                     {
                         // build up the StringToConvert section ;)
                         // existing record
                         ConvertCollection[i].StringToConvert = targetList[0];
                         ConvertCollection[i].Result = resultList[0];
                         var canidateResult = resultList[0];
-                        for(var q = 1; q < targetList.Count; q++)
+                        for (var q = 1; q < targetList.Count; q++)
                         {
                             var pos = ConvertCollection.Count + 1;
 
                             // now process all new results ;)
                             // we always keep the last value in-case we run out of indexes 
                             // as they do not have to balance ;)
-                            if(q < resultList.Count)
+                            if (q < resultList.Count)
                             {
                                 canidateResult = resultList[q];
                             }
@@ -241,20 +241,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ConvertCollection"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
+                var mic = modelProperty.Collection;
 
-                if(mic != null)
+                if (mic != null)
                 {
-                    List<ICaseConvertTO> listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
-                    if(listOfValidRows.Count > 0)
+                    var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
+                    if (listOfValidRows.Count > 0)
                     {
                         int startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
-                        foreach(string s in listToAdd)
+                        foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
                             startIndex++;
@@ -269,19 +269,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ConvertCollection"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
+                var mic = modelProperty.Collection;
 
-                if(mic != null)
+                if (mic != null)
                 {
                     int startIndex = 0;
-                    string firstRowConvertType = ConvertCollection[0].ConvertType;
+                    var firstRowConvertType = ConvertCollection[0].ConvertType;
                     mic.Clear();
-                    foreach(string s in listToAdd)
+                    foreach (string s in listToAdd)
                     {
                         mic.Add(new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
                         startIndex++;
@@ -291,24 +291,24 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if(startIndex < mic.Count)
+            if (startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new CaseConvertTO(string.Empty, "UPPER", string.Empty, startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
             }
         }
 
-        private string CreateDisplayName(ModelItem modelItem, int count)
+        string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 var currentName = modelProperty.ComputedValue as string;
                 if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))
@@ -354,7 +354,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach(Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.StringToConvert) && c.StringToConvert.Contains(t1.Item1));
 
                 // issues updates
@@ -372,7 +372,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Contains(t1.Item1));
 
                 // issues updates

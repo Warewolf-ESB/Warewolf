@@ -47,7 +47,7 @@ namespace Dev2.Common.Utils
                 return String.Empty;
             }
 
-            string cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
+            var cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
 
             var offset = 0;
             var output = new StringBuilder();

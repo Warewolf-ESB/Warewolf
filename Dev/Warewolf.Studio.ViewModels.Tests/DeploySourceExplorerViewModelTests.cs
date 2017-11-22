@@ -20,14 +20,14 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private DeploySourceExplorerViewModel _target;
-        private Mock<IEnvironmentViewModel> _selectedEnvironment;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IServer> _serverMock;
-        private Mock<IEventAggregator> _eventAggregatorMock;
-        private Mock<IDeployStatsViewerViewModel> _deployStatsViewerViewModel;
-        private Mock<IStudioUpdateManager> _studioUpdateManagerMock;
-        private Mock<IExplorerItem> _explorerItemMock;
+        DeploySourceExplorerViewModel _target;
+        Mock<IEnvironmentViewModel> _selectedEnvironment;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IServer> _serverMock;
+        Mock<IEventAggregator> _eventAggregatorMock;
+        Mock<IDeployStatsViewerViewModel> _deployStatsViewerViewModel;
+        Mock<IStudioUpdateManager> _studioUpdateManagerMock;
+        Mock<IExplorerItem> _explorerItemMock;
 
         #endregion Fields
 

@@ -69,9 +69,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder("");
         }
 
-        private string GetValue(string key, Dictionary<string, StringBuilder> values)
+        string GetValue(string key, Dictionary<string, StringBuilder> values)
         {
-            string toReturn = "";
+            var toReturn = "";
             if (values.TryGetValue(key, out StringBuilder value))
             {
                 toReturn = value.ToString();
@@ -79,12 +79,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        private DateTime GetDate(string key, Dictionary<string, StringBuilder> values)
+        DateTime GetDate(string key, Dictionary<string, StringBuilder> values)
         {
             return ParseDate(GetValue(key, values));
         }
 
-        private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
+        StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
         {
             var startTime = GetDate("StartDateTime", values);
             var endTime = GetDate("CompletedDateTime", values);
@@ -104,7 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private static DateTime ParseDate(string s)
+        static DateTime ParseDate(string s)
         {
             return !string.IsNullOrEmpty(s) ?
                 DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private string GetUser(string message)
+        string GetUser(string message)
         {
             var toReturn = message.Split('[')[2].Split(':')[0];
             return toReturn;

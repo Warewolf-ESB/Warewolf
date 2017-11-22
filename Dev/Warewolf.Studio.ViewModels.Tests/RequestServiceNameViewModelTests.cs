@@ -471,7 +471,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void FixReferences_GivenIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
-            RequestServiceNameViewModel viewModel = new RequestServiceNameViewModel();
+            var viewModel = new RequestServiceNameViewModel();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(viewModel);
             //---------------Execute Test ----------------------

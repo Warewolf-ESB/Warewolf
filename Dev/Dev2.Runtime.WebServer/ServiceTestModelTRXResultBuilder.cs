@@ -20,8 +20,8 @@ namespace Dev2.Runtime.WebServer
     {
         public static string BuildTestResultTRX(string ServiceName, List<IServiceTestModelTO> TestResults)
         {
-            List<Guid> testIDs = new List<Guid>();
-            List<Guid> executionIDs = new List<Guid>();
+            var testIDs = new List<Guid>();
+            var executionIDs = new List<Guid>();
             foreach (var TestResult in TestResults)
             {
                 testIDs.Add(Guid.NewGuid());
@@ -38,7 +38,7 @@ namespace Dev2.Runtime.WebServer
             var TotalPassed = TestResults.FindAll((result) => { return result.TestPassed; }).Count;
             var TotalFailed = TestResults.FindAll((result) => { return result.TestFailing; }).Count + TestResults.FindAll((result) => { return result.TestInvalid; }).Count;
 
-            StringBuilder TRXFileContents = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+            var TRXFileContents = new StringBuilder("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
             TRXFileContents.Append("<TestRun id=\"" + Guid.NewGuid().ToString() + "\" name=\"Warewolf Service Tests\" ");
             TRXFileContents.Append("runUser=\"" + WarewolfServerUsername + "\" xmlns=\"http://microsoft.com/schemas/VisualStudio/TeamTest/2010\">");
             TRXFileContents.Append("\n    <Times creation=\"" + TestStartDateTime + "\" queuing=\"" + TestStartDateTime + "\" start=\"" + TestStartDateTime + "\" finish=\"" + TestEndDateTime + "\"");

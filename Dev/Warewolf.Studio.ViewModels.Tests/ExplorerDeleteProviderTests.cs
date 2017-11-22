@@ -264,7 +264,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(false, item.IsDeleted);
         }
 
-        private Task<IExplorerRepositoryResult> ValueFunction(ExecStatus status)
+        Task<IExplorerRepositoryResult> ValueFunction(ExecStatus status)
         {
             IExplorerRepositoryResult result = new ExplorerRepositoryResult(status, "");
             return Task.FromResult(result);

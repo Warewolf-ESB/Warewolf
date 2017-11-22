@@ -18,7 +18,7 @@ namespace Dev2.CustomControls
 
         #region Private Fields
 
-        private static readonly Dictionary<object, ItemsControl> itemsControls = new Dictionary<object, ItemsControl>();
+        static readonly Dictionary<object, ItemsControl> itemsControls = new Dictionary<object, ItemsControl>();
 
         #endregion
 
@@ -32,9 +32,9 @@ namespace Dev2.CustomControls
             d.SetValue(WatermarkProperty, value);
         }
 
-        private static void OnWatermarkChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void OnWatermarkChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            Control control = (Control)d;
+            var control = (Control)d;
             control.Loaded += Control_Loaded;
 
             if (d is ComboBox || d is TextBox)
@@ -58,41 +58,41 @@ namespace Dev2.CustomControls
 
             if (d is ItemsControl && !(d is ComboBox))
             {
-                ItemsControl i = (ItemsControl)d;
+                var i = (ItemsControl)d;
 
                 // for Items property  
                 i.ItemContainerGenerator.ItemsChanged += ItemsChanged;
                 itemsControls.Add(i.ItemContainerGenerator, i);
 
                 // for ItemsSource property  
-                DependencyPropertyDescriptor prop = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, i.GetType());
+                var prop = DependencyPropertyDescriptor.FromProperty(ItemsControl.ItemsSourceProperty, i.GetType());
                 prop.AddValueChanged(i, ItemsSourceChanged);
             }
         }
 
         #region Event Handlers
 
-        private static void Control_GotKeyboardFocus(object sender, RoutedEventArgs e)
+        static void Control_GotKeyboardFocus(object sender, RoutedEventArgs e)
         {
-            Control c = (Control)sender;
+            var c = (Control)sender;
             if (ShouldShowWatermark(c))
             {
                 RemoveWatermark(c);
             }
         }
 
-        private static void Control_Loaded(object sender, RoutedEventArgs e)
+        static void Control_Loaded(object sender, RoutedEventArgs e)
         {
-            Control control = (Control)sender;
+            var control = (Control)sender;
             if (ShouldShowWatermark(control))
             {
                 ShowWatermark(control);
             }
         }
 
-        private static void ItemsSourceChanged(object sender, EventArgs e)
+        static void ItemsSourceChanged(object sender, EventArgs e)
         {
-            ItemsControl c = (ItemsControl)sender;
+            var c = (ItemsControl)sender;
             if (c.ItemsSource != null)
             {
                 if (ShouldShowWatermark(c))
@@ -110,7 +110,7 @@ namespace Dev2.CustomControls
             }
         }
 
-        private static void ItemsChanged(object sender, ItemsChangedEventArgs e)
+        static void ItemsChanged(object sender, ItemsChangedEventArgs e)
         {
             if (itemsControls.TryGetValue(sender, out ItemsControl control))
             {
@@ -129,14 +129,14 @@ namespace Dev2.CustomControls
 
         #region Helper Methods
 
-        private static void RemoveWatermark(UIElement control)
+        static void RemoveWatermark(UIElement control)
         {
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
+            var layer = AdornerLayer.GetAdornerLayer(control);
 
             // layer could be null if control is no longer in the visual tree
             if (layer != null)
             {
-                Adorner[] adorners = layer.GetAdorners(control);
+                var adorners = layer.GetAdorners(control);
                 if (adorners == null)
                 {
                     return;
@@ -153,15 +153,15 @@ namespace Dev2.CustomControls
             }
         }
 
-        private static void ShowWatermark(Control control)
+        static void ShowWatermark(Control control)
         {
-            AdornerLayer layer = AdornerLayer.GetAdornerLayer(control);
+            var layer = AdornerLayer.GetAdornerLayer(control);
 
             // layer could be null if control is no longer in the visual tree
             layer?.Add(new WatermarkAdorner(control, GetWatermark(control)));
         }
 
-        private static bool ShouldShowWatermark(Control c)
+        static bool ShouldShowWatermark(Control c)
         {
             if (c is ComboBox)
             {

@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var manageRabbitMQSourceModel = new ManageRabbitMQSourceModel(updateManager.Object, queryManager.Object, shellViewModel.Object);
             //------------Assert Results-------------------------
-            PrivateObject p = new PrivateObject(manageRabbitMQSourceModel);
+            var p = new PrivateObject(manageRabbitMQSourceModel);
 
             Assert.IsNotNull(p.GetField("_updateManager"));
             Assert.IsNotNull(p.GetField("_queryManager"));

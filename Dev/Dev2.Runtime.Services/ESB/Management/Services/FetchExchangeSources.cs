@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        private ResourceCatalog Resources => ResourceCatalog.Instance;
+        ResourceCatalog Resources => ResourceCatalog.Instance;
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 

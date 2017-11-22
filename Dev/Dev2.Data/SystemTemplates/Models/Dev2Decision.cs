@@ -24,7 +24,7 @@ namespace Dev2.Data.SystemTemplates.Models
 {
     public class Dev2Decision : IDev2DataModel
     {
-        private const int TotalCols = 3;
+        const int TotalCols = 3;
 
         #region Properties
 
@@ -78,7 +78,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string ToWebModel()
         {
-            string result = JsonConvert.SerializeObject(this);
+            var result = JsonConvert.SerializeObject(this);
 
             return result;
         }
@@ -86,8 +86,8 @@ namespace Dev2.Data.SystemTemplates.Models
         public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            ErrorResultTO allErrors = new ErrorResultTO();
-            string fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
+            var allErrors = new ErrorResultTO();
+            var fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
 
             if (PopulatedColumnCount == 0)
             {
@@ -100,7 +100,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 {
                     var allValues = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col1, env, out errors, 0);
                     allErrors.MergeErrors(errors);
-                    StringBuilder expandStarredIndex = new StringBuilder();
+                    var expandStarredIndex = new StringBuilder();
 
                     expandStarredIndex.Append(allValues[0] + " " + fn);
                     allValues.RemoveAt(0);
@@ -117,7 +117,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
             if (PopulatedColumnCount == 2)
             {
-                StringBuilder expandStarredIndices = new StringBuilder();
+                var expandStarredIndices = new StringBuilder();
                 if (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star)
                 {
                     var allCol2Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col2, env, out errors, 0);
@@ -202,8 +202,8 @@ namespace Dev2.Data.SystemTemplates.Models
 
         string ResolveStarredIndices(IExecutionEnvironment env, string mode, out ErrorResultTO errors)
         {
-            string fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
-            StringBuilder expandStarredIndices = new StringBuilder();
+            var fn = DecisionDisplayHelper.GetDisplayValue(EvaluationFn);
+            var expandStarredIndices = new StringBuilder();
             if (DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col3) == enRecordsetIndexType.Star)
             {
                 var allCol3Values = DataListUtil.GetAllPossibleExpressionsForFunctionOperations(Col3, env, out errors, 0);
@@ -344,7 +344,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public string[] FetchColsAsArray()
         {
-            string[] result = new string[TotalCols];
+            var result = new string[TotalCols];
 
             if (Col1 == null)
             {

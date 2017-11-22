@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeployResource : IEsbManagementEndpoint
     {
-        private bool _existingResource;
+        bool _existingResource;
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             _existingResource = false;
@@ -75,7 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             var result = new ExecuteMessage { HasError = msg.Status != ExecStatus.Success };
             result.SetMessage(msg.Message);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
 

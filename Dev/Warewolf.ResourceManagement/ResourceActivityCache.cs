@@ -34,7 +34,7 @@ namespace Warewolf.ResourceManagement
             {
                 try
                 {
-                    IDev2Activity act = _activityParser.Parse(dynamicActivity);
+                    var act = _activityParser.Parse(dynamicActivity);
                     if (_cache.TryAdd(resourceIdGuid, act))
                     {
                         return act;
@@ -78,7 +78,7 @@ namespace Warewolf.ResourceManagement
 
         public void AddToCache(Guid resourceID, DynamicActivity activity)
         {
-            IDev2Activity act = _activityParser.Parse(activity);
+            var act = _activityParser.Parse(activity);
             _cache.AddOrUpdate(resourceID, act, (guid, dev2Activity) =>
             {
                 _cache[resourceID] = act;

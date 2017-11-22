@@ -20,8 +20,8 @@ namespace Dev2.Common.Common
 {
     public class GetComputerNames
     {
-        private static List<string> _currentComputerNames;
-        
+        static List<string> _currentComputerNames;
+
         public static List<string> ComputerNames
         {
             get
@@ -39,19 +39,19 @@ namespace Dev2.Common.Common
         {
             _currentComputerNames = StandardComputerNameQuery();
         }
-        
-        private static List<string> StandardComputerNameQuery()
+
+        static List<string> StandardComputerNameQuery()
         {
-            WindowsIdentity wi = WindowsIdentity.GetCurrent();
+            var wi = WindowsIdentity.GetCurrent();
 
             if (wi != null)
             {
-                string serverUserName = wi.Name;
+                var serverUserName = wi.Name;
 
-                string[] parts = serverUserName.Split('\\');
+                var parts = serverUserName.Split('\\');
 
-                string queryStr = "WinNT://";
-                
+                var queryStr = "WinNT://";
+
                 if (parts.Length == 2)
                 {
                     queryStr += parts[0];
@@ -59,8 +59,8 @@ namespace Dev2.Common.Common
                 else
                 {
                     var query = new SelectQuery("Win32_ComputerSystem");
-                    var searcher = new ManagementObjectSearcher(query);                        
-                    ManagementObjectCollection.ManagementObjectEnumerator itr = searcher.Get().GetEnumerator();
+                    var searcher = new ManagementObjectSearcher(query);
+                    var itr = searcher.Get().GetEnumerator();
                     if (itr.MoveNext())
                     {
                         queryStr += itr.Current["Workgroup"] as string;
@@ -69,11 +69,11 @@ namespace Dev2.Common.Common
 
                 var root = new DirectoryEntry(queryStr);
 
-                DirectoryEntries kids = root.Children;
+                var kids = root.Children;
 
                 return (from DirectoryEntry node in kids where node.SchemaClassName == "Computer" select node.Name).ToList();
             }
-            
+
             return new List<string> { Environment.MachineName };
         }
     }

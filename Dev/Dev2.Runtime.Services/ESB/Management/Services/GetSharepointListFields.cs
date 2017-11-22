@@ -44,9 +44,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 editableOnly = tmp.ToString();
             }
            
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
-            if(string.IsNullOrEmpty(serializedSource))
+            if (string.IsNullOrEmpty(serializedSource))
             {
                 var res = new ExecuteMessage();
                 res.HasError = true;
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var contents = ResourceCatalog.Instance.GetResourceContents(theWorkspace.ID, sharepointSource.ResourceID);
                     source = new SharepointSource(contents.ToXElement());
                 }
-                List<ISharepointFieldTo> fields = source.LoadFieldsForList(listName, editableFieldsOnly);
+                var fields = source.LoadFieldsForList(listName, editableFieldsOnly);
                 return serializer.SerializeToBuilder(fields);
             }
             catch(Exception ex)
