@@ -112,7 +112,6 @@
     <Compile Include="Converters\MultipleBoolToEnabledConverter.cs" />
     <Compile Include="Converters\RowToIndexConverter.cs" />
     <Compile Include="Converters\StringToTimespanConverter.cs" />
-    <Compile Include="FilterTextBox.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
