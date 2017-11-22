@@ -369,7 +369,9 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceSwitch.xml" />
+    <EmbeddedResource Include="XML\SameResourceSwitch.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="XML\SameResourceSequence.xml">
