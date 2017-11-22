@@ -258,47 +258,32 @@ function Move-File-To-TestResults([string]$SourceFilePath, [string]$DestinationF
 
 function Cleanup-ServerStudio([bool]$Force=$true) {
     if ($Force) {
+        $WaitForCloseTimeout = 10
         $WaitForCloseRetryCount = 1
     } else {
+        $WaitForCloseTimeout = 1800
         $WaitForCloseRetryCount = 10
     }
-    [string]$Output = ""
+    #Stop Studio
+    $Output = ""
+    taskkill /im "Warewolf Studio.exe"  2>&1 | %{$Output = $_}
 
-    #Try Kill Child Dialogs
-    taskkill /im "Warewolf Studio.exe" 2>&1 |  %{$Output = $_}
-    if (!($Output.ToString().StartsWith("ERROR: "))) {
-	    Write-Host $Output.ToString()
-    }
-
-    #Try Kill Main Studio Window
-    taskkill /im "Warewolf Studio.exe" 2>&1 |  %{$Output = $_}
-    if (!($Output.ToString().StartsWith("ERROR: "))) {
-	    Write-Host $Output.ToString()
-    }
-
-    #Check if Killed
-    taskkill /im "Warewolf Studio.exe" 2>&1 |  %{$Output = $_}
-    if (!($Output.ToString().StartsWith("ERROR: "))) {
-	    Write-Host $Output.ToString()
-    }
-
-    #Continue Trying to Kill
+    #Soft Kill
     [int]$i = 0
     [string]$WaitTimeoutMessage = "This command stopped operation because process "
     [string]$WaitOutput = $WaitTimeoutMessage
     while (!($Output.ToString().StartsWith("ERROR: ")) -and $WaitOutput.ToString().StartsWith($WaitTimeoutMessage) -and $i -lt $WaitForCloseRetryCount) {
 	    $i += 1
-	    taskkill /im "Warewolf Studio.exe" 2>&1 |  %{$Output = $_}
-        if (!($Output.ToString().StartsWith("ERROR: "))) {
-	        Write-Host $Output.ToString()
+	    Write-Host $Output.ToString()
+	    Wait-Process "Warewolf Studio" -Timeout ([math]::Round($WaitForCloseTimeout/$WaitForCloseRetryCount))  2>&1 | %{$WaitOutput = $_}
+        $FormatWaitForCloseTimeoutMessage = $WaitOutput.ToString().replace($WaitTimeoutMessage, "")
+        if ($FormatWaitForCloseTimeoutMessage -ne "" -and !($FormatWaitForCloseTimeoutMessage.StartsWith("Cannot find a process with the name "))) {
+            Write-Host $FormatWaitForCloseTimeoutMessage
         }
-	    Wait-Process "Warewolf Studio" -Timeout 60  2>&1 | %{$WaitOutput = $_.ToString().replace($WaitTimeoutMessage, "")}
-        if ($WaitOutput.ToString() -ne $WaitTimeoutMessage -and !($WaitOutput.ToString().StartsWith("Cannot find a process"))) {
-            Write-Host $WaitOutput.ToString()
-        }
+	    taskkill /im "Warewolf Studio.exe"  2>&1 |  %{$Output = $_}
     }
 
-    #Forced Studio Kill
+    #Force Kill
     taskkill /im "Warewolf Studio.exe" /f  2>&1 | %{if (!($_.ToString().StartsWith("ERROR: "))) {Write-Host $_}}
 
     #Stop my.warewolf.io
@@ -309,7 +294,7 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     sc.exe stop "Warewolf Server" 2>&1 | %{$ServiceOutput += "`n" + $_}
     if ($ServiceOutput -ne "`n[SC] ControlService FAILED 1062:`n`nThe service has not been started.`n") {
         Write-Host $ServiceOutput.TrimStart("`n")
-        Wait-Process "Warewolf Server" -Timeout 60  2>&1 | out-null
+        Wait-Process "Warewolf Server" -Timeout $WaitForCloseTimeout  2>&1 | out-null
     }
     taskkill /im "Warewolf Server.exe" /f  2>&1 | out-null
     taskkill /im "operadriver.exe" /f  2>&1 | out-null
