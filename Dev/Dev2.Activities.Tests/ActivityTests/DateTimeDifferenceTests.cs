@@ -80,6 +80,7 @@ namespace ActivityUnitTests.ActivityTests
         }
         
         [TestMethod]
+        [Timeout(60000)]
         public void Blank_InputFormat_Expected_Error()
         {
             SetupArguments(
