@@ -13,7 +13,6 @@ using System.Linq;
 
 namespace Dev2.Integration.Tests.VersionStrategy
 {
-    [Ignore("The file is locking when Moving it from Repo resource to local Resources")]
     [TestClass]
     public class ServerVersionRepostoryTests
     {
@@ -29,7 +28,7 @@ namespace Dev2.Integration.Tests.VersionStrategy
             var dir = new DirectoryWrapper();
             string rootPath = EnvironmentVariables.ResourcePath;
 
-            var pathResource = filePath.Combine(rootPath, "Acceptance Tests", "VersionControl");            
+            var pathResource = filePath.Combine(rootPath, "Acceptance Tests", "VersionControl");
             dir.CreateIfNotExists(pathResource);
             var resourceVersion = filePath.Combine(rootPath, "Acceptance Tests", "LoopTest.xml");
             try
