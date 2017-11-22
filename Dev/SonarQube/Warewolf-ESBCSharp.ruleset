@@ -129,7 +129,7 @@
     <Rule Id="S2931" Action="Warning" />
     <Rule Id="S2933" Action="Warning" />
     <Rule Id="S2934" Action="Warning" />
-    <Rule Id="S2952" Action="Warning" />
+    <Rule Id="S2952" Action="None" />
     <Rule Id="S2953" Action="Warning" />
     <Rule Id="S2955" Action="Warning" />
     <Rule Id="S2971" Action="None" />
