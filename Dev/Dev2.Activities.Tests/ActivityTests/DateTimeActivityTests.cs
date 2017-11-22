@@ -222,6 +222,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("DsfDateTimeActivity_GetOutputs")]
+        [Timeout(60000)]
         public void DsfDateTimeActivity_CurrentCulture_Called_ShouldPassAllDatesWithoutErrors()
         {
             //------------Setup for test--------------------------
