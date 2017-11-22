@@ -146,6 +146,38 @@ namespace Warewolf.Studio.ViewModels
         private bool _canDuplicate;
         private bool _canCreateTest;
         private bool _canViewRunAllTests;
+        private string _newServiceTooltip;
+        private string _newServerSourceTooltip;
+        private string _newSqlServerSourceTooltip;
+        private string _newMySqlSourceTooltip;
+        private string _newPostgreSqlSourceTooltip;
+        private string _newOracleSourceTooltip;
+        private string _newOdbcSourceTooltip;
+        private string _newWebSourceTooltip;
+        private string _newPluginSourceTooltip;
+        private string _newComPluginSourceTooltip;
+        private string _newEmailSourceTooltip;
+        private string _newExchangeSourceTooltip;
+        private string _newRabbitMqSourceTooltip;
+        private string _newDropboxSourceTooltip;
+        private string _newSharepointSourceTooltip;
+        private string _debugInputsTooltip;
+        private string _debugStudioTooltip;
+        private string _debugBrowserTooltip;
+        private string _scheduleTooltip;
+        private string _newFolderTooltip;
+        private string _renameTooltip;
+        private string _deleteTooltip;
+        private string _duplicateTooltip;
+        private string _createTestTooltip;
+        private string _runAllTestsTooltip;
+        private string _deployTooltip;
+        private string _dependenciesTooltip;
+        private string _viewSwaggerTooltip;
+        private string _viewApisJsonTooltip;
+        private string _showHideVersionsTooltip;
+        private string _rollbackTooltip;
+        private string _openTooltip;
         private bool _canCreateSource;
         private bool _canViewSwagger;
         private bool _canViewApisJson;
@@ -170,6 +202,7 @@ namespace Warewolf.Studio.ViewModels
         private bool _isSource;
         private bool _isScheduleVisible;
         private bool _isDuplicateVisible;
+        private string _newWcfSourceTooltip;        
         private bool _isNewFolder;
         private bool _isSaveDialog;
         private bool _isServer;
@@ -1406,6 +1439,19 @@ namespace Warewolf.Studio.ViewModels
         public bool CanRollback => IsResourceVersion;
 
         public IShellViewModel ShellViewModel => _shellViewModel;
+
+        private ICollection<IVersionInfo> GetVersionHistory()
+        {
+            var versionInfos = _explorerRepository.GetVersions(ResourceId);
+            if (versionInfos?.Count <= 0)
+            {
+                _areVersionsVisible = false;
+                VersionHeader = "Show Version History";
+                return null;
+            }
+
+            return versionInfos;
+        }
 
         public bool AreVersionsVisible
         {
