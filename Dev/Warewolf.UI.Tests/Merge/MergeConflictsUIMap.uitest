@@ -838,9 +838,8 @@
                                                         <SearchConfiguration>Expand</SearchConfiguration>
                                                       </SearchConfigurations>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.CompleteConflict</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
@@ -1009,9 +1008,8 @@
                                                         <SearchConfiguration>Expand</SearchConfiguration>
                                                       </SearchConfigurations>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.CompleteConflict</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
                                                       <Descendants>
@@ -1190,9 +1188,8 @@
                                                         <SearchConfiguration>Expand</SearchConfiguration>
                                                       </SearchConfigurations>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.CompleteConflict</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="Instance">2</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
@@ -1230,6 +1227,32 @@
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">MergeToolNoConflictIcon</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="RadioButton" Id="SecondAssign_Diff_RadioButton_Curr_RadioButton" FriendlyName="UI_TreeViewExpanderCurrentHeaderRB_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderCurrentHeaderRB_AutoID</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants />
+                                                                </UIObject>
+                                                                <UIObject ControlType="RadioButton" Id="SecondAssign_Diff_RadioButton" FriendlyName="UI_TreeViewExpanderDifferenceHeaderRB_AutoID" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">RadioButton</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">UI_TreeViewExpanderDifferenceHeaderRB_AutoID</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants />
@@ -1385,9 +1408,8 @@
                                                         <SearchConfiguration>Expand</SearchConfiguration>
                                                       </SearchConfigurations>
                                                       <AndCondition>
-                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
-                                                        <PropertyCondition Name="Name">Dev2.ViewModels.Merge.CompleteConflict</PropertyCondition>
+                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                         <PropertyCondition Name="Instance">3</PropertyCondition>
                                                       </AndCondition>
                                                       <SupportLevel>0</SupportLevel>
@@ -1695,10 +1717,11 @@
                                                                     <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
-                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                     <PropertyCondition Name="ClassName">Uia.MultiAssignDesigner</PropertyCondition>
                                                                     <PropertyCondition Name="AutomationId">Assign (1)(MultiAssignDesigner)</PropertyCondition>
+                                                                    <PropertyCondition Name="Instance">2</PropertyCondition>
                                                                   </AndCondition>
                                                                   <SupportLevel>0</SupportLevel>
                                                                   <Descendants>
@@ -1714,6 +1737,95 @@
                                                                       </AndCondition>
                                                                       <SupportLevel>0</SupportLevel>
                                                                       <Descendants />
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Custom" Id="UISmallViewContentCustom" FriendlyName="SmallViewContent" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                        <PropertyCondition Name="ClassName">Uia.Small</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">SmallViewContent</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Table" Id="UISmallDataGridTable" FriendlyName="SmallDataGrid" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Table</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">SmallDataGrid</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants>
+                                                                            <UIObject ControlType="Row" Id="UIUI_ActivityGridRow_0Row" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
+                                                                              <TechnologyName>UIA</TechnologyName>
+                                                                              <WindowTitles>
+                                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                              </WindowTitles>
+                                                                              <SearchConfigurations>
+                                                                                <SearchConfiguration>AlwaysSearch</SearchConfiguration>
+                                                                              </SearchConfigurations>
+                                                                              <AndCondition>
+                                                                                <PropertyCondition Name="ControlType">Row</PropertyCondition>
+                                                                                <PropertyCondition Name="AutomationId">UI_ActivityGridRow_0_AutoID</PropertyCondition>
+                                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                              </AndCondition>
+                                                                              <SupportLevel>0</SupportLevel>
+                                                                              <Descendants>
+                                                                                <UIObject ControlType="Cell" Id="UIItemUnlimitedApplicaCell" FriendlyName="valueCell" SpecialControlType="None">
+                                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                                  <WindowTitles>
+                                                                                    <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                  </WindowTitles>
+                                                                                  <SearchConfigurations>
+                                                                                    <SearchConfiguration>Distinct</SearchConfiguration>
+                                                                                  </SearchConfigurations>
+                                                                                  <AndCondition>
+                                                                                    <PropertyCondition Name="ControlType">Cell</PropertyCondition>
+                                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                  </AndCondition>
+                                                                                  <SupportLevel>0</SupportLevel>
+                                                                                  <Descendants>
+                                                                                    <UIObject ControlType="ComboBox" Id="UIUI__Row1_FieldValue_ComboBox" FriendlyName="UI__Row1_FieldValue_AutoID" SpecialControlType="None">
+                                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                                      <WindowTitles>
+                                                                                        <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                      </WindowTitles>
+                                                                                      <AndCondition>
+                                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                        <PropertyCondition Name="ControlType">ComboBox</PropertyCondition>
+                                                                                        <PropertyCondition Name="AutomationId">UI__Row1_FieldValue_AutoID</PropertyCondition>
+                                                                                      </AndCondition>
+                                                                                      <SupportLevel>0</SupportLevel>
+                                                                                      <Descendants>
+                                                                                        <UIObject ControlType="Edit" Id="AText" FriendlyName="Text" SpecialControlType="None">
+                                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                                          <WindowTitles>
+                                                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                                                          </WindowTitles>
+                                                                                          <AndCondition>
+                                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                                            <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                                            <PropertyCondition Name="AutomationId">Text</PropertyCondition>
+                                                                                          </AndCondition>
+                                                                                          <SupportLevel>0</SupportLevel>
+                                                                                          <Descendants />
+                                                                                        </UIObject>
+                                                                                      </Descendants>
+                                                                                    </UIObject>
+                                                                                  </Descendants>
+                                                                                </UIObject>
+                                                                              </Descendants>
+                                                                            </UIObject>
+                                                                          </Descendants>
+                                                                        </UIObject>
+                                                                      </Descendants>
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>

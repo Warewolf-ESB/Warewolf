@@ -174,6 +174,25 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestIsMergeVisibleTrue()
         {
             _target.IsSaveDialog = false;
+            _target.IsMergeVisible = true;
+            var id1 = Guid.NewGuid();
+            var v1 = new Mock<IVersionInfo>();
+            v1.SetupAllProperties();
+            v1.Setup(info => info.Reason).Returns("a");
+            v1.Setup(info => info.ResourceId).Returns(id1);
+            var versionInfos = new List<IVersionInfo>()
+            {
+                v1.Object
+            };
+            _serverMock.Setup(server => server.GetPermissions(Guid.Empty)).Returns(Permissions.View | Permissions.DeployTo);
+            var explorerRepositoryMock = new Mock<IExplorerRepository>();
+            explorerRepositoryMock.Setup(it => it.GetVersions(It.IsAny<Guid>())).Returns(versionInfos);
+            _serverMock.SetupGet(it => it.ExplorerRepository).Returns(explorerRepositoryMock.Object);
+            _explorerRepositoryMock.Setup(it => it.GetVersions(It.IsAny<Guid>())).Returns(versionInfos);
+            _target.ShowVersionHistory.Execute(_target);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(_target.ShowVersionHistory.CanExecute(null));
+            Assert.IsTrue(_target.AreVersionsVisible);
             //assert
             Assert.IsTrue(_target.IsMergeVisible);
         }

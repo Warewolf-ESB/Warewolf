@@ -137,7 +137,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Switch
             //---------------Execute Test ----------------------
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
-            Assert.IsFalse(@equals);
+            Assert.IsTrue(@equals);
         }
 
         [TestMethod]
