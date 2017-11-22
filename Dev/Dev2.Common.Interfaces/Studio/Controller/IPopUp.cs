@@ -39,6 +39,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowCorruptTaskResult(string errorMessage);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
         MessageBoxResult ShowDeployConflict(int conflictCount);
+        MessageBoxResult ShowDeployNoResourcesToDeploy(string header, string description);
         MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion);
         MessageBoxResult ShowConnectServerVersionConflict(string selectedServerVersion, string currentServerVersion);
         MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName);

@@ -1,4 +1,14 @@
-﻿using Caliburn.Micro;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Caliburn.Micro;
 using Dev2;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
@@ -25,8 +35,6 @@ using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 using Dev2.ConnectionHelpers;
 
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class EnvironmentViewModel : BindableBase, IEnvironmentViewModel
@@ -46,41 +54,19 @@ namespace Warewolf.Studio.ViewModels
         private readonly bool _isDialog;
         private bool _allowEdit;
         private bool _allowResourceCheck;
-        private bool? _isResourceChecked;
         private bool _isVisible;
         private bool _showContextMenu;
         private readonly IPopupController _controller;
         private bool _canDrag;
         private bool _forcedRefresh;
         private bool _isResourceCheckedEnabled;
-        private string _deployResourceCheckboxTooltip;
         private bool? _isResource;
         private string _filter;
-        private string _newServiceTooltip;
-        private string _newServerSourceTooltip;
-        private string _newSqlServerSourceTooltip;
-        private string _newMySqlSourceTooltip;
-        private string _newPostgreSqlSourceTooltip;
-        private string _newOracleSourceTooltip;
-        private string _newOdbcSourceTooltip;
-        private string _newWebSourceTooltip;
-        private string _newPluginSourceTooltip;
-        private string _newComPluginSourceTooltip;
-        private string _newEmailSourceTooltip;
-        private string _newExchangeSourceTooltip;
-        private string _newRabbitMqSourceTooltip;
-        private string _newDropboxSourceTooltip;
-        private string _newSharepointSourceTooltip;
         private bool _canCreateSource;
-        private string _newFolderTooltip;
         private bool _canViewApisJson;
-        private string _viewApisJsonTooltip;
-        private string _serverVersionTooltip;
         private bool _canDeploy;
-        private string _newWcfSourceTooltip;
         private bool _isSaveDialog;
         private bool _canViewExecutionLogging;
-        private string _viewExecutionLoggingTooltip;
         private bool _isMergeVisible;
 
         private EnvironmentViewModel()
@@ -95,8 +81,8 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel ?? throw new ArgumentNullException(nameof(shellViewModel));
             _isDialog = isDialog;
             _controller = CustomContainer.Get<IPopupController>();
-
             _children = new ObservableCollection<IExplorerItemViewModel>();
+            ExplorerTooltips = CustomContainer.Get<IExplorerTooltips>();
 
             NewServiceCommand = new DelegateCommand(() =>
             {
@@ -174,7 +160,7 @@ namespace Warewolf.Studio.ViewModels
                 shellViewModel.NewExchangeSource(ResourcePath);
             });
 
-            NewRabbitMQSourceSourceCommand = new DelegateCommand(() =>
+            NewRabbitMqSourceSourceCommand = new DelegateCommand(() =>
             {
                 UpdateActiveEnvironment(shellViewModel);
                 shellViewModel.NewRabbitMQSource(ResourcePath);
@@ -308,10 +294,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool ShowContextMenu
         {
-            get
-            {
-                return _showContextMenu;
-            }
+            get => _showContextMenu;
             set
             {
                 _showContextMenu = value;
@@ -321,18 +304,18 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanCreateWorkflowService
         {
-            get { return _canCreateWorkflowService; }
+            get => _canCreateWorkflowService;
             set
             {
                 _canCreateWorkflowService = value;
-                NewServiceTooltip = _canCreateWorkflowService ? Resources.Languages.Tooltips.NewServiceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.NewServiceTooltip = _canCreateWorkflowService ? Resources.Languages.Tooltips.NewServiceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanCreateWorkflowService);
             }
         }
 
         public bool IsSaveDialog
         {
-            get { return _isSaveDialog; }
+            get => _isSaveDialog;
             set
             {
                 _isSaveDialog = value;
@@ -369,7 +352,6 @@ namespace Warewolf.Studio.ViewModels
             if (_isDialog)
             {
                 child.AllowResourceCheck = false;
-                child.IsResourceChecked = false;
                 child.CanCreateSource = false;
                 child.CanCreateWorkflowService = false;
                 child.ShowContextMenu = false;
@@ -380,7 +362,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 var permissions = Server.GetPermissions(ResourceId);
                 child.SetPermissions(permissions);
-
                 child.CanRename = true;
                 child.CanDelete = true;
                 child.IsSaveDialog = IsSaveDialog;
@@ -393,10 +374,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool? IsFolderChecked
         {
-            get
-            {
-                return _isResource;
-            }
+            get => _isResource;
             set
             {
                 if (Children.Any() && Children.All(a => a.IsResourceChecked.HasValue && a.IsResourceChecked.Value))
@@ -440,10 +418,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsVisible
         {
-            get
-            {
-                return _isVisible;
-            }
+            get => _isVisible;
             set
             {
                 _isVisible = value;
@@ -481,21 +456,21 @@ namespace Warewolf.Studio.ViewModels
         public bool IsResourceVersion { get; set; }
         public bool CanViewApisJson
         {
-            get { return _canViewApisJson; }
+            get => _canViewApisJson;
             set
             {
                 _canViewApisJson = value;
-                ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Tooltips.ViewApisJsonTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.ViewApisJsonTooltip = _canViewApisJson ? Resources.Languages.Tooltips.ViewApisJsonTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewApisJson);
             }
         }
         public bool CanViewExecutionLogging
         {
-            get { return _canViewExecutionLogging; }
+            get => _canViewExecutionLogging;
             set
             {
                 _canViewExecutionLogging = value;
-                ViewExecutionLoggingTooltip = _canViewExecutionLogging ? Resources.Languages.Tooltips.ViewExecutionLoggingTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.ViewExecutionLoggingTooltip = _canViewExecutionLogging ? Resources.Languages.Tooltips.ViewExecutionLoggingTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewExecutionLogging);
             }
         }
@@ -518,7 +493,6 @@ namespace Warewolf.Studio.ViewModels
         public void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions)
         {
             AllowResourceCheck = false;
-            IsResourceChecked = false;
             CanCreateSource = permissions.Contribute;
             CanCreateFolder = permissions.Contribute;
             CanCreateWorkflowService = permissions.Contribute;
@@ -538,7 +512,6 @@ namespace Warewolf.Studio.ViewModels
         public void SetPropertiesForDialog()
         {
             AllowResourceCheck = false;
-            IsResourceChecked = false;
             CanDeploy = false;
             CanCreateSource = false;
             CanCreateWorkflowService = false;
@@ -617,186 +590,11 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanDrag
         {
-            get
-            {
-                return _canDrag && (IsServer || ResourceType == "ServerSource") && string.IsNullOrWhiteSpace(ResourcePath);
-            }
+            get => _canDrag && (IsServer || ResourceType == "ServerSource") && string.IsNullOrWhiteSpace(ResourcePath);
             set
             {
                 _canDrag = value;
                 OnPropertyChanged(() => CanDrag);
-            }
-        }
-
-        public string NewServiceTooltip
-        {
-            get { return _newServiceTooltip; }
-            set
-            {
-                _newServiceTooltip = value;
-                OnPropertyChanged(() => NewServiceTooltip);
-            }
-        }
-        public string NewServerSourceTooltip
-        {
-            get { return _newServerSourceTooltip; }
-            set
-            {
-                _newServerSourceTooltip = value;
-                OnPropertyChanged(() => NewServerSourceTooltip);
-            }
-        }
-        public string NewSqlServerSourceTooltip
-        {
-            get { return _newSqlServerSourceTooltip; }
-            set
-            {
-                _newSqlServerSourceTooltip = value;
-                OnPropertyChanged(() => NewSqlServerSourceTooltip);
-            }
-        }
-        public string NewMySqlSourceTooltip
-        {
-            get { return _newMySqlSourceTooltip; }
-            set
-            {
-                _newMySqlSourceTooltip = value;
-                OnPropertyChanged(() => NewMySqlSourceTooltip);
-            }
-        }
-        public string NewPostgreSqlSourceTooltip
-        {
-            get { return _newPostgreSqlSourceTooltip; }
-            set
-            {
-                _newPostgreSqlSourceTooltip = value;
-                OnPropertyChanged(() => NewPostgreSqlSourceTooltip);
-            }
-        }
-        public string NewOracleSourceTooltip
-        {
-            get { return _newOracleSourceTooltip; }
-            set
-            {
-                _newOracleSourceTooltip = value;
-                OnPropertyChanged(() => NewOracleSourceTooltip);
-            }
-        }
-        public string NewOdbcSourceTooltip
-        {
-            get { return _newOdbcSourceTooltip; }
-            set
-            {
-                _newOdbcSourceTooltip = value;
-                OnPropertyChanged(() => NewOdbcSourceTooltip);
-            }
-        }
-        public string NewWebSourceTooltip
-        {
-            get { return _newWebSourceTooltip; }
-            set
-            {
-                _newWebSourceTooltip = value;
-                OnPropertyChanged(() => NewWebSourceTooltip);
-            }
-        }
-        public string NewPluginSourceTooltip
-        {
-            get { return _newPluginSourceTooltip; }
-            set
-            {
-                _newPluginSourceTooltip = value;
-                OnPropertyChanged(() => NewPluginSourceTooltip);
-            }
-        }
-        public string NewComPluginSourceTooltip
-        {
-            get { return _newComPluginSourceTooltip; }
-            set
-            {
-                _newComPluginSourceTooltip = value;
-                OnPropertyChanged(() => NewComPluginSourceTooltip);
-            }
-        }
-        public string NewWcfSourceTooltip
-        {
-            get { return _newWcfSourceTooltip; }
-            set
-            {
-                _newWcfSourceTooltip = value;
-                OnPropertyChanged(() => NewWcfSourceTooltip);
-            }
-        }
-        public string NewEmailSourceTooltip
-        {
-            get { return _newEmailSourceTooltip; }
-            set
-            {
-                _newEmailSourceTooltip = value;
-                OnPropertyChanged(() => NewEmailSourceTooltip);
-            }
-        }
-        public string NewExchangeSourceTooltip
-        {
-            get { return _newExchangeSourceTooltip; }
-            set
-            {
-                _newExchangeSourceTooltip = value;
-                OnPropertyChanged(() => NewExchangeSourceTooltip);
-            }
-        }
-        public string NewRabbitMqSourceTooltip
-        {
-            get { return _newRabbitMqSourceTooltip; }
-            set
-            {
-                _newRabbitMqSourceTooltip = value;
-                OnPropertyChanged(() => NewRabbitMqSourceTooltip);
-            }
-        }
-        public string NewDropboxSourceTooltip
-        {
-            get { return _newDropboxSourceTooltip; }
-            set
-            {
-                _newDropboxSourceTooltip = value;
-                OnPropertyChanged(() => NewDropboxSourceTooltip);
-            }
-        }
-        public string NewSharepointSourceTooltip
-        {
-            get { return _newSharepointSourceTooltip; }
-            set
-            {
-                _newSharepointSourceTooltip = value;
-                OnPropertyChanged(() => NewSharepointSourceTooltip);
-            }
-        }
-        public string NewFolderTooltip
-        {
-            get { return _newFolderTooltip; }
-            set
-            {
-                _newFolderTooltip = value;
-                OnPropertyChanged(() => NewFolderTooltip);
-            }
-        }
-        public string ViewApisJsonTooltip
-        {
-            get { return _viewApisJsonTooltip; }
-            set
-            {
-                _viewApisJsonTooltip = value;
-                OnPropertyChanged(() => ViewApisJsonTooltip);
-            }
-        }
-        public string ViewExecutionLoggingTooltip
-        {
-            get { return _viewExecutionLoggingTooltip; }
-            set
-            {
-                _viewExecutionLoggingTooltip = value;
-                OnPropertyChanged(() => ViewExecutionLoggingTooltip);
             }
         }
 
@@ -805,33 +603,17 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsExpanderVisible
         {
-            get { return Children.Count > 0; }
+            get => Children.Count > 0;
             set { }
         }
 
         public bool CanCreateSource
         {
-            get { return _canCreateSource; }
+            get => _canCreateSource;
             set
             {
                 _canCreateSource = value;
-
-                NewServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewSqlServerSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSqlServerSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewMySqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewMySqlSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewPostgreSqlSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPostgreSqlSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewOracleSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOracleSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewOdbcSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewOdbcSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewWebSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWebSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewComPluginSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewComPluginSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewEmailSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewEmailSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewExchangeSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewExchangeSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewRabbitMqSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewRabbitMqSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewDropboxSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewDropboxSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewSharepointSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewSharepointSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-                NewWcfSourceTooltip = _canCreateSource ? Resources.Languages.Tooltips.NewWcfSourceTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
-
+                ExplorerTooltips.SetSourceTooltips(_canCreateSource);
                 OnPropertyChanged(() => CanCreateSource);
             }
         }
@@ -840,10 +622,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanCreateFolder
         {
-            get
-            {
-                return Server.Permissions != null && Server.Permissions.Any(a => (a.Contribute || a.Administrator) && a.IsServer);
-            }
+            get => Server.Permissions != null && Server.Permissions.Any(a => (a.Contribute || a.Administrator) && a.IsServer);
             set
             {
                 if (_canCreateFolder != value)
@@ -851,13 +630,13 @@ namespace Warewolf.Studio.ViewModels
                     _canCreateFolder = value;
                     OnPropertyChanged(() => CanCreateFolder);
                 }
-                NewFolderTooltip = _canCreateFolder ? Resources.Languages.Tooltips.NewFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.NewFolderTooltip = _canCreateFolder ? Resources.Languages.Tooltips.NewFolderTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
             }
         }
 
         public bool CanDeploy
         {
-            get { return _canDeploy; }
+            get => _canDeploy;
             set
             {
                 _canDeploy = value;
@@ -867,7 +646,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanShowVersions
         {
-            get { return false; }
+            get => false;
             set { }
         }
 
@@ -892,7 +671,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool ForcedRefresh
         {
-            get { return _forcedRefresh; }
+            get => _forcedRefresh;
             set
             {
                 _forcedRefresh = value;
@@ -902,7 +681,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsSelected
         {
-            get { return _isSelected; }
+            get => _isSelected;
             set
             {
                 _isSelected = value;
@@ -912,31 +691,18 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanShowServerVersion
         {
-            get { return _canShowServerVersion; }
+            get => _canShowServerVersion;
             set
             {
                 _canShowServerVersion = value;
-                ServerVersionTooltip = _canShowServerVersion ? Resources.Languages.Tooltips.ServerVersionTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                ExplorerTooltips.ServerVersionTooltip = _canShowServerVersion ? Resources.Languages.Tooltips.ServerVersionTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanShowServerVersion);
-            }
-        }
-
-        public string ServerVersionTooltip
-        {
-            get { return _serverVersionTooltip; }
-            set
-            {
-                _serverVersionTooltip = value;
-                OnPropertyChanged(() => ServerVersionTooltip);
             }
         }
 
         public bool AllowResourceCheck
         {
-            get
-            {
-                return _allowResourceCheck;
-            }
+            get => _allowResourceCheck;
             set
             {
                 _allowResourceCheck = value;
@@ -946,46 +712,50 @@ namespace Warewolf.Studio.ViewModels
 
         public bool? IsResourceChecked
         {
-            get
-            {
-                return _isResourceChecked;
-            }
+            get => _isResource;
             set
             {
-                _isResourceChecked = value ?? false;
+                if (ChildrenCount == 0)
+                {
+                    return;
+                }
+                bool? isResourceChecked;
+                if (IsResourceCheckedEnabled)
+                {
+                    isResourceChecked = value;
+                }
+                else
+                {
+                    isResourceChecked = false;
+                }
+                _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
 
                 OnPropertyChanged(() => IsResourceChecked);
-                Task.Run(() => { AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = _isResourceChecked); });
+                Task.Run(() => 
+                {
+                    var isChecked = _isResource;
+                    AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).
+                    Apply(a => a.IsResourceChecked = isChecked);
+                });
 
                 SelectAll?.Invoke();
-                IsResourceCheckedEnabled = true;
-                OnPropertyChanged(() => IsResourceCheckedEnabled);
+                OnPropertyChanged(() => IsResourceChecked);
             }
         }
 
         public bool IsResourceCheckedEnabled
         {
-            get { return _isResourceCheckedEnabled; }
+            get => _isResourceCheckedEnabled;
             set
             {
-                DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckbox;
+                ExplorerTooltips.DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckbox;
                 if (!value)
                 {
-                    DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckboxViewPermissionError;
+                    ExplorerTooltips.DeployResourceCheckboxTooltip = Resources.Languages.Core.DeployResourceCheckboxViewPermissionError;
                 }
                 _isResourceCheckedEnabled = value;
                 OnPropertyChanged(() => IsResourceCheckedEnabled);
-                OnPropertyChanged(() => DeployResourceCheckboxTooltip);
-            }
-        }
-
-        public string DeployResourceCheckboxTooltip
-        {
-            get { return _deployResourceCheckboxTooltip; }
-            set
-            {
-                _deployResourceCheckboxTooltip = value;
-                OnPropertyChanged(() => DeployResourceCheckboxTooltip);
+                OnPropertyChanged(() => ExplorerTooltips.DeployResourceCheckboxTooltip);
             }
         }
 
@@ -1006,7 +776,6 @@ namespace Warewolf.Studio.ViewModels
             return folderName;
         }
 
-
         public ICommand NewServiceCommand { get; set; }
         public ICommand NewServerCommand { get; set; }
         public ICommand NewSqlServerSourceCommand { get; set; }
@@ -1020,7 +789,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewWebSourceSourceCommand { get; set; }
         public ICommand NewEmailSourceSourceCommand { get; set; }
         public ICommand NewExchangeSourceSourceCommand { get; set; }
-        public ICommand NewRabbitMQSourceSourceCommand { get; set; }
+        public ICommand NewRabbitMqSourceSourceCommand { get; set; }
         public ICommand NewSharepointSourceSourceCommand { get; set; }
         public ICommand NewDropboxSourceSourceCommand { get; set; }
         public ICommand DeployCommand { get; set; }
@@ -1045,10 +814,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsConnected
         {
-            get
-            {
-                return _isConnected;
-            }
+            get => _isConnected;
             private set
             {
                 _isConnected = value;
@@ -1058,10 +824,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool AllowEdit
         {
-            get
-            {
-                return _allowEdit;
-            }
+            get => _allowEdit;
             private set
             {
                 _allowEdit = value;
@@ -1087,10 +850,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsConnecting
         {
-            get
-            {
-                return _isConnecting;
-            }
+            get => _isConnecting;
             set
             {
                 _isConnecting = value;
@@ -1187,6 +947,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     CreateExplorerItemsSync(explorerItems.Children, Server, this, selectedPath != null, isDeploy);
                 }
+                IsResourceCheckedEnabled = isDeploy;
                 IsLoaded = true;
                 IsConnecting = false;
                 IsExpanded = true;
@@ -1249,6 +1010,7 @@ namespace Warewolf.Studio.ViewModels
             }
 
             OnPropertyChanged(() => Children);
+            SelectAll?.Invoke();
         }
 
         public void Filter(Func<IExplorerItemViewModel, bool> filter)
@@ -1266,7 +1028,6 @@ namespace Warewolf.Studio.ViewModels
             return AsList(Children);
         }
 
-
         private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
         {
             return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
@@ -1274,10 +1035,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsServerIconVisible
         {
-            get
-            {
-                return _isServerIconVisible && IsConnected;
-            }
+            get => _isServerIconVisible && IsConnected;
             set
             {
                 _isServerIconVisible = value;
@@ -1287,10 +1045,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsServerUnavailableIconVisible
         {
-            get
-            {
-                return _isServerUnavailableIconVisible && !IsConnected;
-            }
+            get => _isServerUnavailableIconVisible && !IsConnected;
             set
             {
                 _isServerUnavailableIconVisible = value;
@@ -1298,6 +1053,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
+        public IExplorerTooltips ExplorerTooltips { get; set; }
         public bool IsMergeVisible
         {
             get
@@ -1312,7 +1068,6 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public void CreateExplorerItemsSync(IList<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog = false, bool isDeploy = false)
-
         {
             if (explorerItems == null)
             {
@@ -1341,8 +1096,11 @@ namespace Warewolf.Studio.ViewModels
                 {
                     var isResourceChecked = existingItem.IsResourceChecked;
                     existingItem.SetPermissions(explorerItem.Permissions, isDeploy);
-                    existingItem.IsResourceChecked = isResourceChecked;
                     CreateExplorerItemsSync(explorerItem.Children, server, existingItem, isDialog, isDeploy);
+                    if (existingItem.IsFolder && isResourceChecked != null)
+                    {
+                        existingItem.IsResourceChecked = isResourceChecked;
+                    }
                     if (!explorerItemModels.Contains(existingItem))
                     {
                         explorerItemModels.Add(existingItem);
@@ -1428,7 +1186,6 @@ namespace Warewolf.Studio.ViewModels
         private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
         {
             itemCreated.AllowResourceCheck = false;
-            itemCreated.IsResourceChecked = false;
             itemCreated.CanCreateSource = false;
             itemCreated.CanCreateWorkflowService = false;
             itemCreated.ShowContextMenu = false;

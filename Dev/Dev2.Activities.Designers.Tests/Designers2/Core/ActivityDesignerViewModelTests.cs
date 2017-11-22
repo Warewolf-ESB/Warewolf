@@ -461,7 +461,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 workflowHelper = wh.Object;
             }
 
-            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, true);
+            var viewModel = new WorkflowDesignerViewModel(eventPublisher, resourceModel, workflowHelper, popupController.Object, new SynchronousAsyncWorker(), createDesigner, true);
 
             return viewModel;
         }

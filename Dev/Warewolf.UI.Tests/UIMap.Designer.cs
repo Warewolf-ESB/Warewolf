@@ -1027,6 +1027,18 @@ namespace Warewolf.UI.Tests
                 return this.mDependenciesText;
             }
         }
+        
+        public ComboboxListItemAsLocalServerSource ComboboxListItemAsLocalServerSource
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsLocalServerSource == null))
+                {
+                    this.mComboboxListItemAsLocalServerSource = new ComboboxListItemAsLocalServerSource(this);
+                }
+                return this.mComboboxListItemAsLocalServerSource;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1159,6 +1171,8 @@ namespace Warewolf.UI.Tests
         private WpfButton mDependenciesOpenAffectedWorkflowButton;
         
         private WpfText mDependenciesText;
+        
+        private ComboboxListItemAsLocalServerSource mComboboxListItemAsLocalServerSource;
         #endregion
     }
     
@@ -19864,6 +19878,43 @@ namespace Warewolf.UI.Tests
                     #region Search Criteria
                     this.mText.SearchProperties[WpfText.PropertyNames.Name] = "DuplicatedCodedUITestServerSource";
                     this.mText.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mText;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ComboboxListItemAsLocalServerSource : WpfCustom
+    {
+        
+        public ComboboxListItemAsLocalServerSource(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
+            this.SearchProperties[WpfControl.PropertyNames.Name] = "Local Server Source";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText Text
+        {
+            get
+            {
+                if ((this.mText == null))
+                {
+                    this.mText = new WpfText(this);
+                    #region Search Criteria
+                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Local Server Source";
+                    this.mText.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
                 return this.mText;

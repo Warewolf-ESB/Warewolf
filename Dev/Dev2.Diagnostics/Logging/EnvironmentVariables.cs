@@ -56,6 +56,18 @@ namespace Dev2.Common
             }
         }
 
+        public static string VersionsPath
+        {
+            get
+            {
+                var versionsPath = Path.Combine(AppDataPath, "VersionControl");
+                if (!Directory.Exists(versionsPath))
+                {
+                    Directory.CreateDirectory(versionsPath);
+                }
+                return versionsPath;
+            }
+        }
         public static string TestPath
         {
             get

@@ -8,30 +8,23 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using Dev2.Common.DateAndTime.TO;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text;
 
 namespace Dev2.Common.DateAndTime
 {
     public class DateTimeFormatter : IDateTimeFormatter
     {
-        #region Class Members
-
-        private static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
+        static readonly Dictionary<string, Func<IDateTimeResultTO, DateTime, string>> DateTimeFormatParts =
             new Dictionary<string, Func<IDateTimeResultTO, DateTime, string>>();
 
-        //27.09.2012: massimo.guerrera - Added for the new way of doing time modification
-        private static readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
+        static readonly Dictionary<string, Func<DateTime, int, DateTime>> TimeModifiers =
             new Dictionary<string, Func<DateTime, int, DateTime>>();
 
-        private static IList<string> _listOfModifierTypes = new List<string>();
-
-        #endregion Class Members
-
-        #region Constructors
+        static IList<string> _listOfModifierTypes = new List<string>();
 
         static DateTimeFormatter()
         {
@@ -39,71 +32,68 @@ namespace Dev2.Common.DateAndTime
             CreateTimeModifierTypes();
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         public static IList<string> TimeModifierTypes
         {
             get { return _listOfModifierTypes; }
             private set { _listOfModifierTypes = value; }
         }
-
-        #endregion Properties
-
-        #region Methods
-
+        
         public bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
-        {
-            result = "";
-            error = "";
-            var dateTimeParser = DateTimeConverterFactory.CreateParser();
+        {            
+            var outPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.OutputFormat);
+            var inPutHasDev2Formating = DateTimeParserHelper.DateIsDev2DateFormat(dateTimeTO.InputFormat);
             var nothingDied = true;
-            IDateTimeResultTO dateTimeResultTO;
-
-            dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
-            var internallyParsedValue = dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out dateTimeResultTO, out error);
-            if (internallyParsedValue)
+            dateTimeTO.InputFormat = dateTimeTO.InputFormat ?? GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            dateTimeTO.OutputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat) ? dateTimeTO.InputFormat : dateTimeTO.OutputFormat;
+            if (inPutHasDev2Formating || outPutHasDev2Formating)
             {
-                var tmpDateTime = dateTimeResultTO.ToDateTime();
-                tmpDateTime = PerformDateTimeModification(dateTimeTO, tmpDateTime);
-
-                if (nothingDied)
+                result = "";
+                var dateTimeParser = DateTimeConverterFactory.CreateParser();
+                dateTimeTO.InputFormat = dateTimeTO.InputFormat?.Trim();
+                if (dateTimeParser.TryParseDateTime(dateTimeTO.DateTime.Trim(), dateTimeTO.InputFormat, out IDateTimeResultTO dateTimeResultTO, out error))
                 {
-                    result = PerformOutputFormatting(dateTimeTO, out error, dateTimeParser, out nothingDied, dateTimeResultTO, tmpDateTime);
+                    var tmpDateTime = dateTimeResultTO.ToDateTime();
+                    tmpDateTime = PerformDateTimeModification(dateTimeTO, tmpDateTime);
+
+                    if (nothingDied)
+                    {
+                        var outputFormat = BuildOutputFormat(dateTimeTO, ref error, dateTimeParser);
+                        nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out List<IDateTimeFormatPartTO> formatParts, out error);
+                        BuildResult(ref result, ref error, ref nothingDied, dateTimeResultTO, tmpDateTime, formatParts);
+                    }
                 }
+                else
+                {
+                    nothingDied = false;
+                }
+
+                return nothingDied;
             }
-            else
+            try
             {
+                return PerfomaStandardDateFormat(dateTimeTO, out result, out error);
+
+            }
+            catch (Exception ex)
+            {
+                result = "";
+                error = ex.Message;
                 nothingDied = false;
             }
+
             return nothingDied;
         }
 
-        private static DateTime PerformDateTimeModification(IDateTimeOperationTO dateTimeTO, DateTime tmpDateTime)
-        {
-            if (!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
-            {
-                Func<DateTime, int, DateTime> funcToExecute;
-                if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
-                    funcToExecute != null)
-                {
-                    tmpDateTime = funcToExecute(tmpDateTime, dateTimeTO.TimeModifierAmount);
-                }
-            }
-
-            return tmpDateTime;
-        }
-
-        private static string PerformOutputFormatting(IDateTimeOperationTO dateTimeTO, out string error, IDateTimeParser dateTimeParser, out bool nothingDied, IDateTimeResultTO dateTimeResultTO, DateTime tmpDateTime)
+        static string BuildOutputFormat(IDateTimeOperationTO dateTimeTO, ref string error, IDateTimeParser dateTimeParser)
         {
             var outputFormat = string.IsNullOrWhiteSpace(dateTimeTO.OutputFormat)
-                                    ? dateTimeTO.InputFormat
-                                    : dateTimeTO.OutputFormat;
-            var result = "";
+                ? dateTimeTO.InputFormat
+                : dateTimeTO.OutputFormat;
             if (string.IsNullOrWhiteSpace(outputFormat))
             {
-                var finalPattern = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+                var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                var finalPattern = shortPattern + " " + longPattern;
                 if (finalPattern.Contains("ss"))
                 {
                     outputFormat = finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2, ".fff");
@@ -111,28 +101,29 @@ namespace Dev2.Common.DateAndTime
                 }
             }
 
-            List<IDateTimeFormatPartTO> formatParts;
-            nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
+            return outputFormat;
+        }
 
+        static void BuildResult(ref string result, ref string error,  ref bool nothingDied, IDateTimeResultTO dateTimeResultTO, DateTime tmpDateTime, List<IDateTimeFormatPartTO> formatParts)
+        {
+            
             if (nothingDied)
             {
+                var stringbuilder = new StringBuilder();
                 var count = 0;
-                var builder = new System.Text.StringBuilder();
-                builder.Append(result);
                 while (count < formatParts.Count && nothingDied)
                 {
                     var formatPart = formatParts[count];
-
                     if (formatPart.Isliteral)
                     {
-                        builder.Append(formatPart.Value);
+                        stringbuilder.Append(formatPart.Value);
                     }
                     else
                     {
                         Func<IDateTimeResultTO, DateTime, string> func;
                         if (DateTimeFormatParts.TryGetValue(formatPart.Value, out func))
                         {
-                            builder.Append(func(dateTimeResultTO, tmpDateTime));
+                            stringbuilder.Append(func(dateTimeResultTO, tmpDateTime));
                         }
                         else
                         {
@@ -143,20 +134,50 @@ namespace Dev2.Common.DateAndTime
 
                     count++;
                 }
-                result = builder.ToString();
+                result = stringbuilder.ToString();
             }
-
-            return result;
         }
 
-        #endregion Methods
+        static bool PerfomaStandardDateFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
+        {
+            var internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime?.Trim(), dateTimeTO.InputFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var dateResult);
+            if (internallyParsedValue)
+            {
+                var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
+                result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                error = "";
+            }
+            else
+            {
+                var secondResult = DateTime.Parse(dateTimeTO.DateTime?.Trim(), CultureInfo.InvariantCulture);
+                var tmpDateTime = PerformDateTimeModification(dateTimeTO, secondResult);
+                result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                error = "";
 
-        #region Private Methods
+            }
+            return true;
+        }
+
+        static DateTime PerformDateTimeModification(IDateTimeOperationTO dateTimeTO, DateTime tmpDateTime)
+        {
+            var dateTime = tmpDateTime;
+            if (!string.IsNullOrWhiteSpace(dateTimeTO.TimeModifierType))
+            {
+                Func<DateTime, int, DateTime> funcToExecute;
+                if (TimeModifiers.TryGetValue(dateTimeTO.TimeModifierType, out funcToExecute) &&
+                    funcToExecute != null)
+                {
+                    dateTime = funcToExecute(dateTime, dateTimeTO.TimeModifierAmount);
+                }
+            }
+
+            return dateTime;
+        }
 
         /// <summary>
         ///     Creates a list of all valid date time format parts
         /// </summary>
-        private static void CreateDateTimeFormatParts()
+        static void CreateDateTimeFormatParts()
         {
             DateTimeFormatParts.Add("yy", Format_yy);
             DateTimeFormatParts.Add("yyyy", Format_yyyy);
@@ -184,11 +205,7 @@ namespace Dev2.Common.DateAndTime
             DateTimeFormatParts.Add("Era", Format_Era);
         }
 
-        //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
-        /// <summary>
-        ///     Creates a list of all valid time modifier parts
-        /// </summary>
-        private static void CreateTimeModifierTypes()
+        static void CreateTimeModifierTypes()
         {
             TimeModifiers.Add("", null);
             TimeModifiers.Add("Years", AddYears);
@@ -202,69 +219,67 @@ namespace Dev2.Common.DateAndTime
             TimeModifierTypes = new List<string>(TimeModifiers.Keys);
         }
 
-        #region Format Methods
-
-        private static string Format_yy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_yy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("yy");
         }
 
-        private static string Format_yyyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_yyyy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("yyyy");
         }
 
-        private static string Format_mm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_mm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("MM");
         }
 
-        private static string Format_m(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_m(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("%M");
         }
 
-        private static string Format_MM(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_MM(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("MMMM");
         }
 
-        private static string Format_M(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_M(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("MMM");
         }
 
-        private static string Format_d(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_d(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("%d");
         }
 
-        private static string Format_dd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_dd(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("dd");
         }
 
-        private static string Format_DW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_DW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("dddd");
         }
 
-        private static string Format_dW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_dW(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("ddd");
         }
 
-        private static string Format_dw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_dw(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return DateTimeParserHelper.GetDayOfWeekInt(dateTime.DayOfWeek).ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_dy(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.DayOfYear.ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_w(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //27.09.2012: massimo.guerrera - Gets the week of the year according to the rule specified
             return
@@ -272,7 +287,7 @@ namespace Dev2.Common.DateAndTime
                     .ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_ww(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             //27.09.2012: massimo.guerrera - Gets the week of the year according to the rule specified with a padding of 0 if needed.
             return
@@ -281,111 +296,102 @@ namespace Dev2.Common.DateAndTime
                     .PadLeft(2, '0');
         }
 
-        private static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_24h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("HH");
         }
 
-        private static string Format_12h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_12h(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("hh");
         }
 
-        private static string Format_min(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_min(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("mm");
         }
 
-        private static string Format_ss(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_ss(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("ss");
         }
 
-        private static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_sp(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
-            //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 - The "FFF" format has a tenancy to shave trailing zeros off milliseconds
             return dateTime.Millisecond.ToString(CultureInfo.InvariantCulture);
         }
 
-        private static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_am_pm(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("tt");
         }
 
-        private static string Format_Z(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_Z(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTimeResultTO.TimeZone.ShortName;
         }
 
-        private static string Format_ZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_ZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTimeResultTO.TimeZone.Name;
         }
 
-        private static string Format_ZZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_ZZZ(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTimeResultTO.TimeZone.LongName;
         }
 
-        private static string Format_Era(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
+        static string Format_Era(IDateTimeResultTO dateTimeResultTO, DateTime dateTime)
         {
             return dateTime.ToString("gg");
         }
 
-        #endregion Format Methods
-
-        #region Time Modifier Methods
-
-        private static DateTime AddYears(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddYears(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddYears(amountToAdd);
+            var result = inputDateTime.AddYears(amountToAdd);
             return result;
         }
 
-        private static DateTime AddMonths(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddMonths(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddMonths(amountToAdd);
+            var result = inputDateTime.AddMonths(amountToAdd);
             return result;
         }
 
-        private static DateTime AddDays(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddDays(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddDays(amountToAdd);
+            var result = inputDateTime.AddDays(amountToAdd);
             return result;
         }
 
-        private static DateTime AddWeeks(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddWeeks(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = CultureInfo.InvariantCulture.Calendar.AddWeeks(inputDateTime, amountToAdd);
+            var result = CultureInfo.InvariantCulture.Calendar.AddWeeks(inputDateTime, amountToAdd);
             return result;
         }
 
-        private static DateTime AddHours(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddHours(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddHours(amountToAdd);
+            var result = inputDateTime.AddHours(amountToAdd);
             return result;
         }
 
-        private static DateTime AddMinutes(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddMinutes(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddMinutes(amountToAdd);
+            var result = inputDateTime.AddMinutes(amountToAdd);
             return result;
         }
 
-        private static DateTime AddSeconds(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddSeconds(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddSeconds(amountToAdd);
+            var result = inputDateTime.AddSeconds(amountToAdd);
             return result;
         }
 
-        private static DateTime AddSplits(DateTime inputDateTime, int amountToAdd)
+        static DateTime AddSplits(DateTime inputDateTime, int amountToAdd)
         {
-            DateTime result = inputDateTime.AddMilliseconds(amountToAdd);
+            var result = inputDateTime.AddMilliseconds(amountToAdd);
             return result;
         }
-
-        #endregion Time Modifier Methods
-
-        #endregion Private Methods
     }
 }

@@ -141,6 +141,7 @@
     <Compile Include="EnvironmentViewModelTests.cs" />
     <Compile Include="ExplorerDeleteProviderTests.cs" />
     <Compile Include="ExplorerItemViewModelTests.cs" />
+    <Compile Include="ExplorerTooltipsTests.cs" />
     <Compile Include="ExplorerViewModelTests.cs" />
     <Compile Include="FileChooserModelTests.cs" />
     <Compile Include="FileChooserTests.cs" />

@@ -1379,6 +1379,7 @@ namespace Dev2.Activities.Specs.Composition
         }
     
         [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" for testing as")]
+        [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
         public void GivenContainsAnSQLBulkInsertUsingDatabaseAndTableAndKeepIdentitySetAndResultSetForTestingAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
         {
             var environmentModel = ServerRepository.Instance.Source;
@@ -1387,8 +1388,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            IDbSource dbSource = dbSources.Single(source => source.Id == "ad08beb0-9e5d-4270-af8d-43abd953afbd".ToGuid());
-
+            IDbSource dbSource = dbSources.Single(source => source.Name == dbSrcName);
 
             // extract keepIdentity value ;)
             bool.TryParse(keepIdentity, out bool keepIdentityBool);
@@ -1437,59 +1437,9 @@ namespace Dev2.Activities.Specs.Composition
             }
 
             dsfSqlBulkInsert.InputMappings = mappings;
-
             _commonSteps.AddVariableToVariableList(result);
             _commonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
 
-        }
-
-
-        [Given(@"""(.*)"" contains an SQL Bulk Insert ""(.*)"" using database ""(.*)"" and table ""(.*)"" and KeepIdentity set ""(.*)"" and Result set ""(.*)"" as")]
-        public void GivenContainsAnSqlBulkInsertAs(string workflowName, string activityName, string dbSrcName, string tableName, string keepIdentity, string result, Table table)
-        {
-            // Fetch source from source name ;)
-            var resourceXml = XmlFetch.Fetch(dbSrcName);
-            if (resourceXml != null)
-            {
-                // extract keepIdentity value ;)
-                bool.TryParse(keepIdentity, out bool keepIdentityBool);
-
-                var dbSource = new DbSource(resourceXml);
-                // Configure activity ;)
-                var dsfSqlBulkInsert = new DsfSqlBulkInsertActivity { Result = result, DisplayName = activityName, TableName = tableName, Database = dbSource, KeepIdentity = keepIdentityBool };
-                // build input mapping
-                var mappings = new List<DataColumnMapping>();
-
-                var pos = 1;
-                
-                foreach (var row in table.Rows)
-                
-                {
-                    var outputColumn = row["Column"];
-                    var inputColumn = row["Mapping"];
-                    var isNullableStr = row["IsNullable"];
-                    var dataTypeName = row["DataTypeName"];
-                    var maxLengthStr = row["MaxLength"];
-                    var isAutoIncrementStr = row["IsAutoIncrement"];
-                    bool.TryParse(isNullableStr, out bool isNullable);
-                    bool.TryParse(isAutoIncrementStr, out bool isAutoIncrement);
-                    int.TryParse(maxLengthStr, out int maxLength);
-                    Enum.TryParse(dataTypeName, true, out SqlDbType dataType);
-
-                    var mapping = new DataColumnMapping { IndexNumber = pos, InputColumn = inputColumn, OutputColumn = new DbColumn { ColumnName = outputColumn, IsAutoIncrement = isAutoIncrement, IsNullable = isNullable, MaxLength = maxLength, SqlDataType = dataType } };
-                    mappings.Add(mapping);
-                    pos++;
-                }
-
-                dsfSqlBulkInsert.InputMappings = mappings;
-
-                _commonSteps.AddActivityToActivityList(workflowName, activityName, dsfSqlBulkInsert);
-                _commonSteps.AddVariableToVariableList(result);
-            }
-            else
-            {
-                throw new Exception("Invalid Source Name [ " + dbSrcName + " ]. Ensure it has been properly added to the DBSource directory in this project.");
-            }
         }
 
         [Given(@"""(.*)"" contains an Sort ""(.*)"" as")]
@@ -4014,7 +3964,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsAMysqlDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
 
-            var mySqlResourceId = "f8b55bd8-e0d1-4258-85ab-210d7a59116a".ToGuid();
+            var mySqlResourceId = "97d6272e-15a1-483f-afdb-a076f602604f".ToGuid();
             var mySqlDatabaseActivity = new DsfMySqlDatabaseActivity
             {
                 ProcedureName = serviceName,
@@ -4197,7 +4147,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsASqlServerDatabaseServiceWithMappings(string parentName, string serviceName, Table table)
         {
 
-            var resourceId = "ebba47dc-e5d4-4303-a203-09e2e9761d16".ToGuid();
+            var resourceId = "b9184f70-64ea-4dc5-b23b-02fcd5f91082".ToGuid();
 
 
             var mySqlDatabaseActivity = new DsfSqlServerDatabaseActivity

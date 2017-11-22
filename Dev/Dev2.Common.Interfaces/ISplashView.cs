@@ -6,6 +6,6 @@ namespace Dev2.Common.Interfaces
     {
         void Show(bool isDialog);
 
-        void CloseSplash();
+        void CloseSplash(bool studioShutdown);
     }
 }

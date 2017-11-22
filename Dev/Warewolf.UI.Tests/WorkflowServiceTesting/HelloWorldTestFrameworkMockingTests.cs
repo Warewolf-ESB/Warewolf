@@ -5,6 +5,7 @@ using Warewolf.UI.Tests.Common;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests
 {
@@ -34,7 +35,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Hello World Mocking Tests")]
         public void ClickNewTestWithUnsavedExistingTest()
         {
-            WorkflowServiceTestingUIMap.Try_Click_Create_New_Tests();
+            WorkflowServiceTestingUIMap.Click_Workflow_Testing_Tab_Create_New_Test_Button();
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Messagebox warning about unsaved tests does not exist after clicking create new test.");
             DialogsUIMap.Click_Save_Before_Continuing_MessageBox_OK();
             WorkflowServiceTestingUIMap.Click_Close_Tests_Tab();
@@ -90,6 +91,23 @@ namespace Warewolf.UI.Tests
             WorkflowServiceTestingUIMap.Click_EnableDisable_This_Test_CheckBox(true, 4);
             WorkflowServiceTestingUIMap.Click_Delete_Test_Button(4);
             DialogsUIMap.Click_MessageBox_Yes();
+        }
+
+        [TestMethod]
+        [TestCategory("Hello World Mocking Tests")]
+        public void DuplicatedWorkflowShouldUpdateTestResult()
+        {
+            ExplorerUIMap.Filter_Explorer("Hello World");
+            ExplorerUIMap.Duplicate_FirstResource_From_ExplorerContextMenu();
+            WorkflowTabUIMap.Enter_Duplicate_workflow_name("Duplicated_HelloWorld_Testing");
+            DialogsUIMap.Click_Duplicate_From_Duplicate_Dialog();
+            ExplorerUIMap.Filter_Explorer("Duplicated_HelloWorld_Testing");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Press_F6();
+            UIMap.Click_Create_Test_From_Debug();
+
+            WorkflowServiceTestingUIMap.Click_Run_Test_Button(TestResultEnum.Pass, 1);
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists, "Failed status icon does not exist after running a test with the new duplicated workflow.");
         }
 
         #region Additional test attributes
@@ -164,6 +182,21 @@ namespace Warewolf.UI.Tests
         }
 
         private DialogsUIMap _DialogsUIMap;
+
+        WorkflowTabUIMap WorkflowTabUIMap
+        {
+            get
+            {
+                if (_WorkflowTabUIMap == null)
+                {
+                    _WorkflowTabUIMap = new WorkflowTabUIMap();
+                }
+
+                return _WorkflowTabUIMap;
+            }
+        }
+
+        private WorkflowTabUIMap _WorkflowTabUIMap;
 
         #endregion
     }
