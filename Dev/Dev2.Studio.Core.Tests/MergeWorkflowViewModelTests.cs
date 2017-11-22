@@ -32,7 +32,6 @@ namespace Dev2.Core.Tests
             var mockServer = new Mock<IServer>();
             var mockShellViewModel = new Mock<IShellViewModel>();
             var mockServerRepository = new Mock<IServerRepository>();
-            var mockParseServiceForDifferences = new Mock<IServiceDifferenceParser>();
 
             mockApplicationAdapter.Setup(a => a.Current).Returns(Application.Current);
 
@@ -81,35 +80,7 @@ namespace Dev2.Core.Tests
             //---------------Test Result -----------------------
             Assert.IsNotNull(mergeWorkflowViewModel.CurrentConflictModel);
             Assert.IsNotNull(mergeWorkflowViewModel.DifferenceConflictModel);
-        }
-
-        private static List<ModelItem> CreateChanges(ref Guid assignId, ref Guid foreachId)
-        {
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity()
-            {
-                UniqueID = assignId.ToString(),
-                FieldsCollection = new List<ActivityDTO>()
-                {
-                    new ActivityDTO("a","a",1),
-                    new ActivityDTO("a","a",2)
-                }
-            };
-            var dsfForEachActivity = new DsfForEachActivity()
-            {
-                UniqueID = foreachId.ToString(),
-                DataFunc = new ActivityFunc<string, bool>()
-                {
-                    Handler = new DsfDateTimeActivity()
-                }
-            };
-            var assignOne = ModelItemUtils.CreateModelItem(dsfMultiAssignActivity);
-            var forEach = ModelItemUtils.CreateModelItem(dsfForEachActivity);
-            var currentChanges = new List<ModelItem>()
-            {
-                assignOne,forEach
-            };
-            return currentChanges;
-        }
+        }      
 
         [TestMethod]
         public void Initialize_GivenHasConflicts_ShouldPassThrough()
