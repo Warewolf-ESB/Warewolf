@@ -454,7 +454,6 @@
     <Compile Include="WindowsTaskScheduler\Wrappers\ITrigger.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\ITriggerCollection.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IWrappedObject.cs" />
-    <Compile Include="Utils\ICryptoProvider.cs" />
     <Compile Include="Versioning\IRollbackResult.cs" />
     <Compile Include="Versioning\IServerVersionRepository.cs" />
     <Compile Include="Versioning\IVersionInfo.cs" />
