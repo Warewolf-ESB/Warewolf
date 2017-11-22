@@ -15,7 +15,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             return serialiser.SerializeToBuilder(GetVersion().ToString());
         }
 
@@ -30,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var versionResource = new VersionResource();
             var fileName = asm.Location;
             versionResource.LoadFrom(fileName);
-            Version v = new Version(versionResource.FileVersion);
+            var v = new Version(versionResource.FileVersion);
             return v;
         }
 

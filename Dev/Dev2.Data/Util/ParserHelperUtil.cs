@@ -33,7 +33,7 @@ namespace Dev2.Data.Util
             return openRegion;
         }
 
-        private bool CloseNode(IParseTO currentNode, int i, StringBuilder region)
+        bool CloseNode(IParseTO currentNode, int i, StringBuilder region)
         {
             const bool OpenRegion = false;
             currentNode.EndIndex = i;
@@ -58,7 +58,7 @@ namespace Dev2.Data.Util
             return currentNode;
         }
 
-        private IParseTO ProcessNode(string payload, IParseTO currentNode, ref StringBuilder region, ref bool openRegion)
+        IParseTO ProcessNode(string payload, IParseTO currentNode, ref StringBuilder region, ref bool openRegion)
         {
             if (!currentNode.IsRoot)
             {
@@ -103,7 +103,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                string message = "Recordset index (" + part + ") contains invalid character(s)";
+                var message = "Recordset index (" + part + ") contains invalid character(s)";
                 throw new Dev2DataLanguageParseError(message, to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonNumericRecordsetIndex);
             }
             return true;
@@ -112,7 +112,7 @@ namespace Dev2.Data.Util
         public bool CheckCurrentIndex(IParseTO to, int start, string raw, int end)
         {
             start += 1;
-            string part = raw.Substring(start, raw.Length - (start + 1));
+            var part = raw.Substring(start, raw.Length - (start + 1));
 
             if (!part.Contains(DataListUtil.OpeningSquareBrackets) && part != "*")
             {
@@ -125,7 +125,7 @@ namespace Dev2.Data.Util
                 }
                 else
                 {
-                    string message = string.Format(ErrorResource.RecordsetIndexContainsInvalidCharecters, part);
+                    var message = string.Format(ErrorResource.RecordsetIndexContainsInvalidCharecters, part);
                     throw new Dev2DataLanguageParseError(message, to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.NonNumericRecordsetIndex);
                 }
             }
@@ -185,7 +185,7 @@ namespace Dev2.Data.Util
             if (parts[0].IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal) <= 0)
             {
                 // its an error ;)
-                IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(parts[0], "." + parts[1], true);
+                var part = IntellisenseFactory.CreateDataListValidationRecordsetPart(parts[0], "." + parts[1], true);
                 result.Add(IntellisenseFactory.CreateErrorResult(payload.StartIndex, payload.EndIndex, part, " [[" + display + "]] is a malformed recordset", enIntellisenseErrorCode.InvalidRecordsetNotation, !payload.HangingOpen));
             }
             else
@@ -199,12 +199,12 @@ namespace Dev2.Data.Util
                 }
                 foreach (IDev2DataLanguageIntellisensePart t in recordsetPart.Children)
                 {
-                    string match = t.Name.ToLower();
+                    var match = t.Name.ToLower();
                     if (match.Contains(search) && ((match != search) || (match == search && addCompleteParts)))
                     {
-                        string index = payload.Child != null ? payload.Child.Payload : DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
+                        var index = payload.Child != null ? payload.Child.Payload : DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
 
-                        IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
+                        var part = IntellisenseFactory.CreateDataListValidationRecordsetPart(partName, t.Name, t.Description, index);
                         result.Add(IntellisenseFactory.CreateSelectableResult(parts[0].Length, payload.EndIndex, part, part.Description));
                     }
                     else
@@ -271,7 +271,7 @@ namespace Dev2.Data.Util
         public bool IsValidIndex(IParseTO to)
         {
             bool result = false;
-            string raw = to.Payload;
+            var raw = to.Payload;
             int start = raw.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             int end = raw.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
             
@@ -283,12 +283,12 @@ namespace Dev2.Data.Util
             {
                 if (start > 0 && end < 0)
                 {
-                    string part = raw.Substring(start + 1, raw.Length - (start + 1));
+                    var part = raw.Substring(start + 1, raw.Length - (start + 1));
 
                     result = part.Contains(DataListUtil.OpeningSquareBrackets) || CheckValidIndex(to, part, start, end);
                     if (end < 0)
                     {
-                        string message = "Recordset [ " + raw + " ] does not contain a matching ')'";
+                        var message = "Recordset [ " + raw + " ] does not contain a matching ')'";
                         throw new Dev2DataLanguageParseError(message, to.StartIndex + start, to.EndIndex + end, enIntellisenseErrorCode.InvalidRecordsetNotation);
                     }
                 }
@@ -311,7 +311,7 @@ namespace Dev2.Data.Util
             if (isRs)
             {
                 int start = part.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-                string rs = part;
+                var rs = part;
                 if (start >= 0)
                 {
                     rs = rs.Substring(0, start);

@@ -19,18 +19,18 @@ namespace Dev2.Common
 {
     internal class Dev2Tokenizer : IDev2Tokenizer, IDisposable
     {
-        private readonly CharEnumerator _charEnumerator;
-        private readonly bool _isReversed;
-        private readonly int _masterLen;
-        private readonly IList<IDev2SplitOp> _ops;
-        private readonly char[] _tokenParts;
+        readonly CharEnumerator _charEnumerator;
+        readonly bool _isReversed;
+        readonly int _masterLen;
+        readonly IList<IDev2SplitOp> _ops;
+        readonly char[] _tokenParts;
 
-        private readonly bool _useEnumerator;
+        readonly bool _useEnumerator;
 
-        private bool _disposing;
-        private bool _hasMoreOps;
-        private int _opPointer;
-        private int _startIdx;
+        bool _disposing;
+        bool _hasMoreOps;
+        int _opPointer;
+        int _startIdx;
 
         internal Dev2Tokenizer(string candiateString, IList<IDev2SplitOp> ops, bool reversed)
         {
@@ -55,13 +55,13 @@ namespace Dev2.Common
         }
 
         #region Private Method
-        
-        private bool CanUseEnumerator()
+
+        bool CanUseEnumerator()
         {
             bool result = _ops != null && _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
             return result;
         }
-        
+
         private void MoveOpPointer()
         {
             _opPointer++;
@@ -71,8 +71,8 @@ namespace Dev2.Common
                 _opPointer = 0;
             }
         }
-        
-        private void MoveStartIndex(int newOffSet)
+
+        void MoveStartIndex(int newOffSet)
         {
             if (!_isReversed)
             {
@@ -83,7 +83,7 @@ namespace Dev2.Common
                 _startIdx -= newOffSet;
             }
         }
-        
+
         private bool HasMoreData()
         {
             bool result;

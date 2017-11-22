@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            CompressedExecuteMessage result = new CompressedExecuteMessage { HasError = false };
+            var result = new CompressedExecuteMessage { HasError = false };
             try
             {
                 TestCatalog.Load();
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
 
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             private get => _testCatalog ?? Runtime.TestCatalog.Instance;
             set => _testCatalog = value;
         }
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
         #endregion
 

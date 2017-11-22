@@ -23,10 +23,10 @@ namespace Dev2.Activities.Designers2.Core
                 return null;
             }
             //get parent item
-            DependencyObject parentObject = VisualTreeHelper.GetParent(child);
+            var parentObject = VisualTreeHelper.GetParent(child);
 
             //we've reached the end of the tree
-            if(parentObject == null)
+            if (parentObject == null)
             {
                 return null;
             }

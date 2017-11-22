@@ -10,12 +10,12 @@ namespace Dev2.Common.TimeZoneBuilder
 {
     internal class DateTimeFormatPart : IDateTimeFormatPart
     {
-        private readonly Dictionary<string, ITimeZoneTO> _timeZones;
+        readonly Dictionary<string, ITimeZoneTO> _timeZones;
 
         public Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatsParts { get; set; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptions { get; set; }
-        private readonly AssignManager _assignManager;
-        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
+        readonly AssignManager _assignManager;
+        static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
         public DateTimeFormatPart(Dictionary<string, ITimeZoneTO> timeZones)
         {
             _timeZones = timeZones;
@@ -41,7 +41,7 @@ namespace Dev2.Common.TimeZoneBuilder
         #endregion
 
         #region Private Logic
-        private void AddYearParts()
+        void AddYearParts()
         {
             DateTimeFormatsParts.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in 2 digits: 08"));
             DateTimeFormatPartOptions.Add("yy", new List<IDateTimeFormatPartOptionTO>
@@ -57,7 +57,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddMonthParts()
+        void AddMonthParts()
         {
             DateTimeFormatsParts.Add("mm", new DateTimeFormatPartTO("mm", false, "Month in 2 digits: 03"));
             DateTimeFormatPartOptions.Add("mm",
@@ -135,7 +135,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddDayParts()
+        void AddDayParts()
         {
             DateTimeFormatsParts.Add("d", new DateTimeFormatPartTO("d", false, "Day of month in single digit: 6"));
             DateTimeFormatPartOptions.Add("d",
@@ -209,7 +209,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddWeekParts()
+        void AddWeekParts()
         {
             DateTimeFormatsParts.Add("ww", new DateTimeFormatPartTO("ww", false, "Week of year: 09"));
             DateTimeFormatPartOptions.Add("ww",
@@ -227,7 +227,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddHourParts()
+        void AddHourParts()
         {
             DateTimeFormatsParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
             DateTimeFormatPartOptions.Add("24h",
@@ -245,7 +245,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddMinuteParts()
+        void AddMinuteParts()
         {
             DateTimeFormatsParts.Add("min", new DateTimeFormatPartTO("min", false, "Minutes: 30"));
             DateTimeFormatPartOptions.Add("min",
@@ -255,7 +255,7 @@ namespace Dev2.Common.TimeZoneBuilder
                     new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMinutes, true, null, _assignManager.AssignMinutes),
                 });
         }
-        private void AddSecondParts()
+        void AddSecondParts()
         {
             DateTimeFormatsParts.Add("ss", new DateTimeFormatPartTO("ss", false, "Seconds: 29"));
             DateTimeFormatPartOptions.Add("ss",
@@ -275,7 +275,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddOffsetParts()
+        void AddOffsetParts()
         {
             DateTimeFormatsParts.Add("am/pm", new DateTimeFormatPartTO("am/pm", false, "am or pm"));
             DateTimeFormatPartOptions.Add("am/pm",
@@ -308,7 +308,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
         }
-        private void AddEraParts()
+        void AddEraParts()
         {
             DateTimeFormatsParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
 

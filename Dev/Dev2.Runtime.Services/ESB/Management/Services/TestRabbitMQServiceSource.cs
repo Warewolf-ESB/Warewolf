@@ -24,8 +24,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Test RabbitMQ Service Source", GlobalConstants.WarewolfInfo);
@@ -33,9 +33,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("RabbitMQServiceSource", out StringBuilder resourceDefinition);
 
-                RabbitMQServiceSourceDefinition rabbitMQServiceSourceDefinition = serializer.Deserialize<RabbitMQServiceSourceDefinition>(resourceDefinition);
-                RabbitMQSources rabbitMQSources = new RabbitMQSources();
-                ValidationResult result = rabbitMQSources.Test(new RabbitMQSource
+                var rabbitMQServiceSourceDefinition = serializer.Deserialize<RabbitMQServiceSourceDefinition>(resourceDefinition);
+                var rabbitMQSources = new RabbitMQSources();
+                var result = rabbitMQSources.Test(new RabbitMQSource
                 {
                     ResourceID = rabbitMQServiceSourceDefinition.ResourceID,
                     ResourceName = rabbitMQServiceSourceDefinition.ResourceName,
@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Password = rabbitMQServiceSourceDefinition.Password,
                     VirtualHost = rabbitMQServiceSourceDefinition.VirtualHost
                 });
-                
+
                 if (!result.IsValid)
                 {
                     msg.HasError = true;

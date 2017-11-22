@@ -26,10 +26,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteScheduledResource : IEsbManagementEndpoint
     {
-        private IServerSchedulerFactory _schedulerFactory;
+        IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
-        private IResourceCatalog _catalog;
-        
+        IResourceCatalog _catalog;
+
         public DeleteScheduledResource()
         {
             

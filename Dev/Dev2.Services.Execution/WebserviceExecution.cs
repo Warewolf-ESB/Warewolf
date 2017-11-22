@@ -49,7 +49,7 @@ namespace Dev2.Services.Execution
         {
             Service.Source = Source;
             ExecuteWebRequest(Service, out errors);
-            string result = String.IsNullOrEmpty(Service.JsonPath) || String.IsNullOrEmpty(Service.JsonPathResult)
+            var result = String.IsNullOrEmpty(Service.JsonPath) || String.IsNullOrEmpty(Service.JsonPathResult)
                 ? Scrubber.Scrub(Service.RequestResponse)
                 : Scrubber.Scrub(Service.JsonPathResult);
             Service.RequestResponse = null;

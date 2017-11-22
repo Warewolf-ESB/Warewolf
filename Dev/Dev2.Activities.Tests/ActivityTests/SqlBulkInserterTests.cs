@@ -41,9 +41,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var bulkInserter = new SqlBulkInserter();
-            Mock<ISqlBulkCopy> bulkCopy = new Mock<ISqlBulkCopy>();
+            var bulkCopy = new Mock<ISqlBulkCopy>();
             bulkCopy.Setup(b => b.WriteToServer(It.IsAny<DataTable>())).Returns(true);
-            DataTable dt = new DataTable("myTable");
+            var dt = new DataTable("myTable");
 
             //------------Execute Test---------------------------
             var result = bulkInserter.Insert(bulkCopy.Object, dt);
@@ -59,9 +59,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var bulkInserter = new SqlBulkInserter();
-            Mock<ISqlBulkCopy> bulkCopy = new Mock<ISqlBulkCopy>();
+            var bulkCopy = new Mock<ISqlBulkCopy>();
             bulkCopy.Setup(b => b.WriteToServer(It.IsAny<DataTable>())).Returns(false);
-            DataTable dt = new DataTable("myTable");
+            var dt = new DataTable("myTable");
 
             //------------Execute Test---------------------------
             var result = bulkInserter.Insert(bulkCopy.Object, dt);
@@ -77,7 +77,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var bulkInserter = new SqlBulkInserter();
-            Mock<ISqlBulkCopy> bulkCopy = new Mock<ISqlBulkCopy>();
+            var bulkCopy = new Mock<ISqlBulkCopy>();
             bulkCopy.Setup(b => b.WriteToServer(It.IsAny<DataTable>())).Returns(false);
 
             //------------Execute Test---------------------------

@@ -37,7 +37,7 @@ namespace Dev2.Studio.Core.Factories
         {
             try
             {
-                IContextualResourceModel resource = CreateResourceModel(environment);
+                var resource = CreateResourceModel(environment);
                 resource.ResourceName = string.Empty;
                 resource.ID = Guid.NewGuid();
                 resource.UserPermissions = environment.AuthorizationService != null ? environment.AuthorizationService.GetResourcePermissions(resource.ID) : Permissions.Contribute;

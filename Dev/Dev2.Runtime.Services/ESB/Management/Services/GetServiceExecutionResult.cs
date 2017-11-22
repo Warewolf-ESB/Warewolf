@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 LogDataCache.CurrentResults = BuildTempObjects();
             }
             var tmpObjects = LogDataCache.CurrentResults.FirstOrDefault(r => r.ExecutionId == trimExecutionId && r.Message.StartsWith("Execution Result"));
-            string replace = "";
+            var replace = "";
             if (tmpObjects != null)
             {
                 string message = tmpObjects.Message;

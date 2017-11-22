@@ -26,7 +26,7 @@ namespace Dev2.Converters
             for (int i = 0; i < payload.Length; i++)
                 
             {
-                string tmp = Convert.ToString(payload[i], 2);
+                var tmp = Convert.ToString(payload[i], 2);
                 // zero pad the value
                 for (int q = tmp.Length; q < 8; q++)
                 {

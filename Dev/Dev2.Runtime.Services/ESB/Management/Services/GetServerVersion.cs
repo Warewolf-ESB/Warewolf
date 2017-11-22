@@ -12,7 +12,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             return serialiser.SerializeToBuilder(GetVersion());
         }
 

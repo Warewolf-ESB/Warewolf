@@ -29,10 +29,10 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DirectDeploy : IEsbManagementEndpoint
     {
-        private bool _existingResource;
-        private IConnections _connections;
-        private IResourceCatalog _resourceCatalog;
-        private ITestCatalog _testCatalog;
+        bool _existingResource;
+        IConnections _connections;
+        IResourceCatalog _resourceCatalog;
+        ITestCatalog _testCatalog;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -87,7 +87,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(toReturn);
         }
 
-        private void ExecuteDeployResult(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, StringBuilder destinationEnvironment)
+        void ExecuteDeployResult(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, StringBuilder destinationEnvironment)
         {
             var destination = serializer.Deserialize<Data.ServiceModel.Connection>(destinationEnvironment);
             var canConnectToServer = Connections.CanConnectToServer(destination);
@@ -112,7 +112,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, IHubProxy proxy, StringBuilder roles, StringBuilder deployTests)
+        void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, IHubProxy proxy, StringBuilder roles, StringBuilder deployTests)
         {
             bool doTestDeploy = bool.Parse(deployTests.ToString());
             values.TryGetValue("resourceIDsToDeploy", out StringBuilder resourceIDsToDeploy);
@@ -175,7 +175,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             set => _resourceCatalog = value;
         }
 
-        private async Task<IEnumerable<DeployResult>> DeployResourceAsync(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, IHubProxy proxy, bool doTestDeploy)
+        async Task<IEnumerable<DeployResult>> DeployResourceAsync(Guid resourceId, StringBuilder roles, Dev2JsonSerializer serializer, IHubProxy proxy, bool doTestDeploy)
         {
             var toReturn = new List<DeployResult>();
             var savePath = new StringBuilder();
@@ -192,7 +192,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             esbExecuteRequest.AddArgument("savePath", savePath);
             esbExecuteRequest.AddArgument("ResourceDefinition", resourceContent);
             esbExecuteRequest.AddArgument("Roles", roles);
-            Envelope envelope = new Envelope
+            var envelope = new Envelope
             {
                 Content = serializer.SerializeToBuilder(esbExecuteRequest).ToString(),
                 PartID = 0,
@@ -200,20 +200,20 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
             var messageId = Guid.NewGuid();
             await proxy.Invoke<Receipt>("ExecuteCommand", envelope, true, Guid.Empty, Guid.Empty, messageId).ConfigureAwait(false);
-            string fragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
+            var fragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
             var execResult = serializer.Deserialize<ExecuteMessage>(fragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Deploy Failed") };
             toReturn.Add(new DeployResult(execResult, resource.ResourceName));
 
             if (doTestDeploy)
             {
                 var testsToDeploy = TestCatalog.Fetch(resourceId);
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
+                var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(testsToDeploy));
                 var testDeployRequest = new EsbExecuteRequest { ServiceName = "SaveTests" };
                 testDeployRequest.AddArgument("resourceID", resourceId.ToString().ToStringBuilder());
                 testDeployRequest.AddArgument("resourcePath", savePath);
                 testDeployRequest.AddArgument("testDefinitions", serializer.SerializeToBuilder(message));
-                Envelope deployEnvelope = new Envelope
+                var deployEnvelope = new Envelope
                 {
                     Content = serializer.SerializeToBuilder(testDeployRequest).ToString(),
                     PartID = 0,
@@ -221,7 +221,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 };
                 var deployMessageId = Guid.NewGuid();
                 await proxy.Invoke<Receipt>("ExecuteCommand", deployEnvelope, true, Guid.Empty, Guid.Empty, deployMessageId).ConfigureAwait(false);
-                string deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = deployMessageId }).ConfigureAwait(false);
+                var deployFragmentInvokeResult = await proxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = deployMessageId }).ConfigureAwait(false);
                 var deployExecResult = serializer.Deserialize<ExecuteMessage>(deployFragmentInvokeResult) ?? new ExecuteMessage { HasError = true, Message = new StringBuilder("Deploy Failed") };
                 toReturn.Add(new DeployResult(deployExecResult, $"{resource.ResourceName} Tests"));
             }

@@ -10,7 +10,7 @@ namespace Dev2.Studio.Core.DataList
 {
     internal class DataListViewModelHelper : IDataListViewModelHelper
     {
-        private readonly DataListViewModel _dataListViewModel;
+        readonly DataListViewModel _dataListViewModel;
 
         public DataListViewModelHelper(DataListViewModel dataListViewModel)
         {
@@ -53,8 +53,8 @@ namespace Dev2.Studio.Core.DataList
 
             return jsonAttribute;
         }
-        private const string Description = "Description";
-        private const string IsEditable = "IsEditable";
+        const string Description = "Description";
+        const string IsEditable = "IsEditable";
         public void AddItemToBuilder(StringBuilder result, IDataListItemModel item)
         {
             result.AppendFormat("<{0} {1}=\"{2}\" {3}=\"{4}\" {5}=\"{6}\" ",

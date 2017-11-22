@@ -40,9 +40,9 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
-        private ISourceToolRegion<IExchangeSource> _sourceRegion;
+        ISourceToolRegion<IExchangeSource> _sourceRegion;
 
-        
+
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
@@ -83,19 +83,19 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_Exchange_Send;
         }
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             Testing = false;
             AddTitleBarMappingToggle();
             InitialiseViewModel();
         }
-        
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
         }
 
-        private void InitialiseViewModel()
+        void InitialiseViewModel()
         {
             BuildRegions();
             InitializeProperties();
@@ -129,7 +129,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private string _statusMessage;
+        string _statusMessage;
         public string StatusMessage
         {
             get { return _statusMessage; }
@@ -141,7 +141,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private bool _testing;
+        bool _testing;
 
         public bool Testing
         {
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private IExchangeServiceModel Model { get; set; }
+        IExchangeServiceModel Model { get; set; }
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
@@ -270,7 +270,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SendEmail(testSource, testMessage);
         }
 
-        private void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
+        void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
         {
             _asyncWorker.Start(() =>
             {

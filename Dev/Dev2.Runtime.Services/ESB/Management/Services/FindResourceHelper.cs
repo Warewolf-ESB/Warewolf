@@ -22,8 +22,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FindResourceHelper
     {
-        private IAuthorizationService _authorizationService;
-        
+        IAuthorizationService _authorizationService;
+
         public SerializableResource SerializeResourceForStudio(IResource resource,Guid workspaceID)
         {
             var errors = new List<ErrorInfo>();
@@ -64,6 +64,6 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
         }
 
-        private IAuthorizationService AuthorizationService => _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
+        IAuthorizationService AuthorizationService => _authorizationService ?? (_authorizationService = ServerAuthorizationService.Instance);
     }
 }

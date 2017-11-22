@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var execMessage = new ExecuteMessage { HasError = false };
             if(!values.ContainsKey("resourceId"))
             {
@@ -68,7 +68,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var guid = Guid.Parse(values["resourceId"].ToString());
                     var version = values["versionNumber"].ToString();
                     Dev2Logger.Info($"Delete Version. ResourceId:{guid} VersionNumber{version}", GlobalConstants.WarewolfInfo);
-                    string resourcePath = "";
+                    var resourcePath = "";
                     values.TryGetValue("resourcePath", out StringBuilder tmp);
                     if (tmp != null)
                     {

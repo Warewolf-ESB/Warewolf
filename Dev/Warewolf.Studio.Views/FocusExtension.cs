@@ -24,7 +24,7 @@ namespace Warewolf.Studio.Views
                 "IsFocused", typeof(bool), typeof(FocusExtension),
                 new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
 
-        private static void OnIsFocusedPropertyChanged(DependencyObject d,
+        static void OnIsFocusedPropertyChanged(DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
             var uie = (UIElement)d;

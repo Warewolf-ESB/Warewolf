@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersion : DefaultEsbManagementEndpoint
     {
-        private IServerVersionRepository _serverExplorerRepository;
+        IServerVersionRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalog;
 
         #region Implementation of IEsbManagementEndpoint
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                
                 var version = serializer.Deserialize<IVersionInfo>(values["versionInfo"]);
                 Dev2Logger.Info("Get Version. " + version, GlobalConstants.WarewolfInfo);
-                Guid resourceId = Guid.Empty;
+                var resourceId = Guid.Empty;
                 values.TryGetValue("resourceId", out StringBuilder tmp);
                 if (tmp != null)
                 {
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var resourcePath = ResourceCatalog.GetResourcePath(theWorkspace.ID, resourceId);
                 var result = ServerVersionRepo.GetVersion(version, resourcePath);
                 res.Message.Append(result);
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                var dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
                 
                 return serializer.SerializeToBuilder(res);

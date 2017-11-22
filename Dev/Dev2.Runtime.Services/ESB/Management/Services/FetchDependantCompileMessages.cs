@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             string serviceId = null;
             string workspaceId = null;
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var result = new ExecuteMessage { HasError = false };
 
             values.TryGetValue("ServiceID", out StringBuilder tmp);

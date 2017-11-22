@@ -9,9 +9,9 @@ namespace Dev2.Common.TimeZoneBuilder
 {
     internal class TimeFormatPartBuilder : ITimeFormatPartBuilder
     {
-        private readonly Dictionary<string, ITimeZoneTO> _timeZones;
-        private readonly AssignManager _assignManager;
-        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
+        readonly Dictionary<string, ITimeZoneTO> _timeZones;
+        readonly AssignManager _assignManager;
+        static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
         public TimeFormatPartBuilder(Dictionary<string, ITimeZoneTO> timeZones)
         {
             _timeZones = timeZones;

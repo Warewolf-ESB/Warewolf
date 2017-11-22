@@ -29,9 +29,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             {         
                 Dev2Logger.Info("Fetch Remote Debug Messages", GlobalConstants.WarewolfInfo);
                 string invokerId = null;
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
 
-                    values.TryGetValue("InvokerID", out StringBuilder tmp);
+                values.TryGetValue("InvokerID", out StringBuilder tmp);
                     if (tmp != null)
                 {
                     invokerId = tmp.ToString();

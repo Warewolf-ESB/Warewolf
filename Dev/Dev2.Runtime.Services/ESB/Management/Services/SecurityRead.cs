@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     public class SecurityRead : DefaultEsbManagementEndpoint
     {
         readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
-        private IResourceCatalog _resourceCatalog;
+        IResourceCatalog _resourceCatalog;
 
         public static List<WindowsGroupPermission> DefaultPermissions => new List<WindowsGroupPermission>
         {

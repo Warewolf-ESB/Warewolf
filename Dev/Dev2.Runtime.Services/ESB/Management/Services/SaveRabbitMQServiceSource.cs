@@ -21,8 +21,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
 
             try
             {
@@ -31,13 +31,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("RabbitMQServiceSource", out StringBuilder resourceDefinition);
 
-                RabbitMQServiceSourceDefinition rabbitMQServiceSourceDefinition = serializer.Deserialize<RabbitMQServiceSourceDefinition>(resourceDefinition);
+                var rabbitMQServiceSourceDefinition = serializer.Deserialize<RabbitMQServiceSourceDefinition>(resourceDefinition);
                 if (rabbitMQServiceSourceDefinition.ResourcePath.EndsWith("\\"))
                 {
                     rabbitMQServiceSourceDefinition.ResourcePath = rabbitMQServiceSourceDefinition.ResourcePath.Substring(0, rabbitMQServiceSourceDefinition.ResourcePath.LastIndexOf("\\", StringComparison.Ordinal));
                 }
 
-                RabbitMQSource rabbitMQSource = new RabbitMQSource
+                var rabbitMQSource = new RabbitMQSource
                 {
                     ResourceID = rabbitMQServiceSourceDefinition.ResourceID,
                     ResourceName = rabbitMQServiceSourceDefinition.ResourceName,

@@ -4,7 +4,7 @@ namespace Warewolf.Studio.Core
 {
     public static class CustomMenuIcons
     {
-        private enum MenuIcons
+        enum MenuIcons
         {
             Unknown,
             WorkflowService,
@@ -34,7 +34,7 @@ namespace Warewolf.Studio.Core
             ExchangeSource
         }
 
-        private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
+        static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
         {
             {MenuIcons.WorkflowService, "Explorer-WorkflowService"},
             {MenuIcons.DbService, "Database"},

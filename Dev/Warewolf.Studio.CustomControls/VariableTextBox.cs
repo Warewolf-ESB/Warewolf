@@ -7,51 +7,51 @@ namespace Warewolf.Studio.CustomControls
 {
     public class VariableTextBox : TextBox
     {
-        private static DependencyProperty labelTextProperty =
+        static DependencyProperty labelTextProperty =
             DependencyProperty.Register(
                 "LabelText",
                 typeof(string),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty labelTextColorProperty =
+        static DependencyProperty labelTextColorProperty =
             DependencyProperty.Register(
                 "LabelTextColor",
                 typeof(Brush),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty deleteCommandProperty =
+        static DependencyProperty deleteCommandProperty =
             DependencyProperty.Register(
                 "DeleteCommand",
                 typeof(ICommand),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty viewComplexObjectsCommandProperty =
+        static DependencyProperty viewComplexObjectsCommandProperty =
             DependencyProperty.Register(
                 "ViewComplexObjectsCommand",
                 typeof(ICommand),
                 typeof(VariableTextBox));
 
-        private static readonly DependencyPropertyKey HasTextPropertyKey =
+        static readonly DependencyPropertyKey HasTextPropertyKey =
             DependencyProperty.RegisterReadOnly(
                 "HasText",
                 typeof(bool),
                 typeof(VariableTextBox),
                 new PropertyMetadata());
-        private static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
+        static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
-        private static DependencyProperty allowNotesProperty =
+        static DependencyProperty allowNotesProperty =
             DependencyProperty.Register(
                 "AllowNotes",
                 typeof(bool),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty isUsedProperty =
+        static DependencyProperty isUsedProperty =
             DependencyProperty.Register(
                 "IsUsed",
                 typeof(bool),
                 typeof(VariableTextBox));
 
-        private static DependencyProperty isComplexObjectProperty =
+        static DependencyProperty isComplexObjectProperty =
             DependencyProperty.Register(
                 "IsComplexObject",
                 typeof(bool),

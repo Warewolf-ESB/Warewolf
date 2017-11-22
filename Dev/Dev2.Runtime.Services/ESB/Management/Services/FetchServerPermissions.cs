@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     ModifiedPermissions = ServerAuthorizationService.Instance.GetPermissions(user),
                     ServerID = HostSecurityProvider.Instance.ServerID
                 };
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(permissionsMemo);
             }
             catch (Exception err)

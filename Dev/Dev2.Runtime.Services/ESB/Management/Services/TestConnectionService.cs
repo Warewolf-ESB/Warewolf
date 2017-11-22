@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class TestConnectionService : IEsbManagementEndpoint
     {
-        private readonly IConnections _connections;
+        readonly IConnections _connections;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
@@ -46,8 +46,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 

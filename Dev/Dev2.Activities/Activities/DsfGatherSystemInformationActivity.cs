@@ -80,14 +80,14 @@ namespace Dev2.Activities
         {
             base.CacheMetadata(metadata);
         }
-        
 
-        private void CleanArgs()
+
+        void CleanArgs()
         {
             int count = 0;
-            while(count < SystemInformationCollection.Count)
+            while (count < SystemInformationCollection.Count)
             {
-                if(string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
+                if (string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
                 {
                     SystemInformationCollection.RemoveAt(count);
                 }
@@ -101,11 +101,11 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-        
+
         protected override void OnExecute(NativeActivityContext context)
             
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -113,9 +113,9 @@ namespace Dev2.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
-            if(dataObject.ExecutingUser != null)
+            if (dataObject.ExecutingUser != null)
             {
                 _currentIdentity = dataObject.ExecutingUser.Identity;
             }
@@ -143,8 +143,8 @@ namespace Dev2.Activities
                         var hasErrors = allErrors.HasErrors();
                         if(!hasErrors)
                         {
-                            string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
-                            string expression = item.Result;
+                            var val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
+                            var expression = item.Result;
 
                             var regions = DataListCleaningUtils.SplitIntoRegions(expression);
                             if(regions.Count > 1)
@@ -309,7 +309,7 @@ namespace Dev2.Activities
                 foreach(Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
+                    var t1 = t;
                     var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
 
                     // issues updates
@@ -328,7 +328,7 @@ namespace Dev2.Activities
                 foreach(Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
+                    var t1 = t;
                     var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
 
                     // issues updates
@@ -360,21 +360,21 @@ namespace Dev2.Activities
 
         #region Private Methods
 
-        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
+                var mic = modelProperty.Collection;
 
-                if(mic != null)
+                if (mic != null)
                 {
-                    List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
-                    if(listOfValidRows.Count > 0)
+                    var listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
+                    if (listOfValidRows.Count > 0)
                     {
-                        GatherSystemInformationTO gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
+                        var gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
                         int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
-                        foreach(string s in listToAdd)
+                        foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
                             startIndex++;
@@ -389,19 +389,19 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                ModelItemCollection mic = modelProperty.Collection;
+                var mic = modelProperty.Collection;
 
-                if(mic != null)
+                if (mic != null)
                 {
                     int startIndex = 0;
                     const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
                     mic.Clear();
-                    foreach(string s in listToAdd)
+                    foreach (string s in listToAdd)
                     {
                         mic.Add(new GatherSystemInformationTO(EnTypeOfSystemInformation, s, startIndex + 1));
                         startIndex++;
@@ -411,24 +411,24 @@ namespace Dev2.Activities
             }
         }
 
-        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
-            if(startIndex < mic.Count)
+            if (startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
             mic.Add(new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime, string.Empty, startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 modelProperty.SetValue(CreateDisplayName(modelItem, startIndex + 1));
             }
         }
 
-        private string CreateDisplayName(ModelItem modelItem, int count)
+        string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
                 var currentName = modelProperty.ComputedValue as string;
                 if (currentName != null && currentName.Contains("(") && currentName.Contains(")"))

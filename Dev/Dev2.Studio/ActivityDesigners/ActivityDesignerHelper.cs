@@ -189,7 +189,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
             };
-        private static Hashtable _hashTable;
+        static Hashtable _hashTable;
 
         public static Hashtable GetDesignerHashTable()
         {

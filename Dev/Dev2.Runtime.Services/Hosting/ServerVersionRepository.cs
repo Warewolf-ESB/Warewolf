@@ -35,10 +35,10 @@ namespace Dev2.Runtime.Hosting
 {
     public class ServerVersionRepository : IServerVersionRepository
     {
-        private readonly IVersionStrategy _versionStrategy;
-        private readonly IResourceCatalog _catalogue;
-        private readonly IDirectory _directory;
-        private readonly IFile _file;
+        readonly IVersionStrategy _versionStrategy;
+        readonly IResourceCatalog _catalogue;
+        readonly IDirectory _directory;
+        readonly IFile _file;
         protected static readonly object LockObject = new object();
         readonly string _rootPath;
 
@@ -155,7 +155,7 @@ namespace Dev2.Runtime.Hosting
             var resourcePath = res.GetResourcePath(Guid.Empty);
             var xmlBuilder = GetVersion(new VersionInfo(DateTime.MinValue, "", "", versionNumber, resourceId, res.VersionInfo.VersionId), resourcePath);
             var xml = xmlBuilder.ToXElement();
-            Resource oldResource = new Resource(xml);
+            var oldResource = new Resource(xml);
             StoreAndDeleteCurrentIfRenamed(res, oldResource, resourcePath);
             UpdateVersionInfoIfNotExists(resourceId, xml, res);
             var savePath = res.GetSavePath();

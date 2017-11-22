@@ -28,16 +28,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Test Web Connection Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("WebService", out StringBuilder resourceDefinition);
 
-                IWebService src = serializer.Deserialize<IWebService>(resourceDefinition);
-                
+                var src = serializer.Deserialize<IWebService>(resourceDefinition);
+
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
                 
                 var requestHeaders = src.Headers.Select(nameValue => nameValue.Name + ":" + nameValue.Value).ToList();

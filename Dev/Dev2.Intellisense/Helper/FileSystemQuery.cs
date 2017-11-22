@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Helper
 {
     public class FileSystemQuery:IFileSystemQuery
     {
-        private const char SlashC = '\\';
+        const char SlashC = '\\';
 
         [NonSerialized]
         List<string> _queryCollection;
@@ -27,9 +27,9 @@ namespace Dev2.Intellisense.Helper
         List<string> _computerNameCache = new List<string>();
         DateTime _gotComputerNamesLast;
         readonly TimeSpan _networkQueryTime  = new TimeSpan(0,0,15,0);
-        private readonly IDirectory _directory;
-        private readonly IDirectoryEntryFactory _directoryEntryFactory;
-        private readonly IShareCollectionFactory _shareCollectionFactory;
+        readonly IDirectory _directory;
+        readonly IDirectoryEntryFactory _directoryEntryFactory;
+        readonly IShareCollectionFactory _shareCollectionFactory;
 
         public FileSystemQuery(IDirectory directory, IDirectoryEntryFactory directoryEntryFactory, IShareCollectionFactory shareCollectionFactory)
         {
@@ -108,8 +108,8 @@ namespace Dev2.Intellisense.Helper
         public List<string> GetAllFilesAndFolders(string searchPath, List<string> queryCollection, char directorySeparatorChar)
         {
             bool bQueryUncShares = false;
-            string sFileServer = string.Empty;
-            if(String.IsNullOrEmpty(searchPath))
+            var sFileServer = string.Empty;
+            if (String.IsNullOrEmpty(searchPath))
             {
                 return new List<string>();
             }

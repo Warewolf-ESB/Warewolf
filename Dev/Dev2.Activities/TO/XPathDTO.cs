@@ -21,9 +21,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class XPathDTO : ValidatedObject, IDev2TOFn
     {
-        private string _outputVariable;
-        private string _xPath;
-        private int _indexNum;
+        string _outputVariable;
+        string _xPath;
+        int _indexNum;
         bool _isOutputVariableFocused;
         bool _isXpathVariableFocused;
 

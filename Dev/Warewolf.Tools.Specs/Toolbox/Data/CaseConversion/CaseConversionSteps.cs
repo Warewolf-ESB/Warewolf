@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
     [Binding]
     public class CaseConversionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CaseConversionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -99,16 +99,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         public void WhenTheCaseConversionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Given(@"I have a CaseConversion recordset")]
         public void GivenIHaveACaseConversionRecordset(Table table)
         {
-            List<TableRow> records = table.Rows.ToList();
+            var records = table.Rows.ToList();
 
-            if(records.Count == 0)
+            if (records.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -139,15 +139,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         [Then(@"the case convert result for this varibale ""(.*)"" will be")]
         public void ThenTheCaseConvertResultForThisVaribaleWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+            var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out string error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
             for(int i = 0; i < tableRows.Count; i++)
             {

@@ -62,7 +62,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CanGenerateRemoteDebugItems()
         {
-            DsfCountRecordsetNullHandlerActivity act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
             var cat = new Mock<IResourceCatalog>();
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes, true);
 
-            IDSFDataObject dObj = obj as IDSFDataObject;
+            var dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
             Guid.TryParse(dObj.RemoteInvokerID, out Guid id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CanSerializeRemoteDebugItems()
         {
-            DsfCountRecordsetNullHandlerActivity act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
             var cat = new Mock<IResourceCatalog>();
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes, true);
 
-            IDSFDataObject dObj = obj as IDSFDataObject;
+            var dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
             Guid.TryParse(dObj.RemoteInvokerID, out Guid id);
             var msgs = RemoteDebugMessageRepo.Instance.FetchDebugItems(id);
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void CanFetchRemoteDebugItemsViaSystemService()
         {
-            DsfCountRecordsetNullHandlerActivity act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
+            var act = new DsfCountRecordsetNullHandlerActivity { RecordsetName = "[[Customers()]]", CountNumber = "[[res]]" };
             var cat = new Mock<IResourceCatalog>();
             var res = new Mock<IResource>();
             res.Setup(a => a.ResourceName).Returns("bob");
@@ -121,13 +121,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             var obj = CheckActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
                                                                 ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes, true);
 
-            IDSFDataObject dObj = obj as IDSFDataObject;
+            var dObj = obj as IDSFDataObject;
             Assert.IsNotNull(dObj);
             Guid.TryParse(dObj.RemoteInvokerID, out Guid id);
 
-            FetchRemoteDebugMessages frm = new FetchRemoteDebugMessages();
+            var frm = new FetchRemoteDebugMessages();
 
-            Dictionary<string, StringBuilder> d = new Dictionary<string, StringBuilder>();
+            var d = new Dictionary<string, StringBuilder>();
             d["InvokerID"] = new StringBuilder(id.ToString());
 
             var str = frm.Execute(d, null);

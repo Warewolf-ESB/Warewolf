@@ -448,7 +448,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        private void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
+        void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
         {
             var isServers = new[] { false, true };
 
@@ -470,7 +470,7 @@ namespace Dev2.Tests.Runtime.Security
             }
         }
 
-        private void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
+        void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
         {
             var configPermission = new WindowsGroupPermission { WindowsGroup = TestAuthorizationRequest.UserRole, IsServer = isServer, Permissions = configPermissions };
 
@@ -495,7 +495,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(configPermission, authorizationRequest);
         }
 
-        private void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
+        void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
         {
             //------------Setup for test--------------------------
             var allowedPermissions = AuthorizationHelpers.ToPermissions(authorizationRequest.AuthorizationContext);

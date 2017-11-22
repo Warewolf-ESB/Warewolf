@@ -27,9 +27,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var pluginSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
 
-                ComPluginServices services = new ComPluginServices();
+                var services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
-                ComPluginService svc = new ComPluginService();
+                var svc = new ComPluginService();
                 if (ns != null)
                 {
                     svc.Namespace = ns.FullName;
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private string BuildServiceInputName(string name, string typeName)
+        string BuildServiceInputName(string name, string typeName)
         {
             try
             {

@@ -14,15 +14,15 @@ namespace Warewolf.Studio.Core
 {
     public class DllListingModel : BindableBase, IDllListingModel, IEquatable<DllListingModel>
     {
-        private readonly IManagePluginSourceModel _updateManager;
-        private readonly IManageComPluginSourceModel _comUpdateManager;
-        private bool _isExpanded;
-        private bool _isVisible;
-        private readonly IFileListing _dllListing;
-        private ObservableCollection<IDllListingModel> _children;
-        private string _filter;
-        private bool _progressVisibility;
-        private int _currentProgress;
+        readonly IManagePluginSourceModel _updateManager;
+        readonly IManageComPluginSourceModel _comUpdateManager;
+        bool _isExpanded;
+        bool _isVisible;
+        readonly IFileListing _dllListing;
+        ObservableCollection<IDllListingModel> _children;
+        string _filter;
+        bool _progressVisibility;
+        int _currentProgress;
         bool _isSelected;
         bool _isExpanderVisible;
         readonly bool _isCom;
@@ -76,7 +76,7 @@ namespace Warewolf.Studio.Core
             _isCom = true;
         }
 
-        private void Expanding()
+        void Expanding()
         {
             if (!_isCom)
             {
@@ -257,7 +257,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private void SetPluginIsExpanderVisible()
+        void SetPluginIsExpanderVisible()
         {
             if (_isExpanded && _updateManager != null && (_children == null || _children.Count == 0))
             {
@@ -314,7 +314,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private void FilterChildren(string searchTerm)
+        void FilterChildren(string searchTerm)
         {
             foreach (var dllListing in _children)
             {
@@ -323,7 +323,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private void SetIsVisible(string searchTerm)
+        void SetIsVisible(string searchTerm)
         {
             IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
         }

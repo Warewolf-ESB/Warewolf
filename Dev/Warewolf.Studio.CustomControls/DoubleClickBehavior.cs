@@ -18,7 +18,7 @@ namespace Warewolf.Studio.CustomControls
             base.OnDetaching();
         }
 
-        private void AssociatedObjectOnMouseDoubleClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
+        void AssociatedObjectOnMouseDoubleClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             AssociatedObject.SelectAll();
         }

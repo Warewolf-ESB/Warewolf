@@ -45,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     var result = ResourceCatalog.Instance.GetModels(theWorkspace.ID, sourceType);
                     if (result != null)
                     {
-                        Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                        var serializer = new Dev2JsonSerializer();
                         return serializer.SerializeToBuilder(result);
                     }
                 }

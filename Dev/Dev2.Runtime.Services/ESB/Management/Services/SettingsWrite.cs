@@ -109,7 +109,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         static string ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var values = new Dictionary<string, StringBuilder> { { valuesKey, serializer.SerializeToBuilder(valuesValue) } };
             return service.Execute(values, theWorkspace).ToString();
         }

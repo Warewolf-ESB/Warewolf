@@ -62,7 +62,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary> 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -71,8 +71,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             try
@@ -84,7 +84,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(dataObject.Environment, update);
                 }
 
-                string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
+                var input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
@@ -138,13 +138,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(IExecutionEnvironment environment,int update)
+        void AddDebugInputItem(IExecutionEnvironment environment, int update)
         {
             var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, Expression);
             AddDebugInputItem(new DebugEvalResult(calc, "fx =", environment, update));
         }
 
-        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
+        void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
         {
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }

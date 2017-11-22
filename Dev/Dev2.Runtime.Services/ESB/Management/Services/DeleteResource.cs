@@ -26,8 +26,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
     public class DeleteResource : IEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _resourceCatalog;
-        private readonly ITestCatalog _testCatalog;
+        readonly IResourceCatalog _resourceCatalog;
+        readonly ITestCatalog _testCatalog;
 
         public DeleteResource(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
         {
@@ -60,13 +60,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 string type = null;
 
                 values.TryGetValue("ResourceID", out StringBuilder tmp);
-                Guid resourceId = Guid.Empty;
+                var resourceId = Guid.Empty;
                 if (tmp != null)
                 {
                     if (!Guid.TryParse(tmp.ToString(), out resourceId))

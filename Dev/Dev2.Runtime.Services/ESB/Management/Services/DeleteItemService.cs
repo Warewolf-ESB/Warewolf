@@ -28,7 +28,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteItemService : IEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {

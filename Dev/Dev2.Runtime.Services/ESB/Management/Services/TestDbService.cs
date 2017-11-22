@@ -33,8 +33,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 
@@ -42,8 +42,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 values.TryGetValue("DbService", out StringBuilder resourceDefinition);
 
-                IDatabaseService src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
-                
+                var src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
+
                 var parameters = src.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
                 
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id) ?? new DbSource
@@ -62,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = source
                 };
 
-                ServiceModel.Services services = new ServiceModel.Services();
+                var services = new ServiceModel.Services();
                 Recordset output = null;
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         DataTable ToDataTable(Recordset output)
         {
-            DataTable dt = new DataTable(output.Name);
+            var dt = new DataTable(output.Name);
 
             foreach (var recordsetField in output.Fields)
             {

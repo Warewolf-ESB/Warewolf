@@ -38,7 +38,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             try
             {
-                string guidCsv = string.Empty;
+                var guidCsv = string.Empty;
                 string type = null;
 
                 values.TryGetValue("GuidCsv", out StringBuilder tmp);
@@ -55,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var resources = ResourceCatalog.Instance.GetResourceList(theWorkspace.ID, new Dictionary<string, string> { { "guidCsv", guidCsv }, { "type", type } });
 
                 IList<SerializableResource> resourceList = resources.Select(r=>new FindResourceHelper().SerializeResourceForStudio(r,theWorkspace.ID)).ToList();
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(resourceList));
 

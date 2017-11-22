@@ -331,7 +331,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
-            string[] cols = new string[3];
+            var cols = new string[3];
             cols[0] = "15";
             cols[1] = "10";
             cols[2] = "20";
@@ -351,7 +351,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
-            string[] cols = new string[3];
+            var cols = new string[3];
             cols[0] = "30";
             cols[1] = "10";
             cols[2] = "20";
@@ -496,7 +496,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
-            String[] cols = new String[3];
+            var cols = new String[3];
             cols[0] = DateTime.Now.ToString();
             cols[1] = (DateTime.Now - TimeSpan.FromMinutes(5)).ToString();
             cols[2] = (DateTime.Now + TimeSpan.FromMinutes(10)).ToString();
@@ -515,7 +515,7 @@ namespace Dev2.Data.Tests.Operations
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
-            string[] cols = new string[3];
+            var cols = new string[3];
             cols[0] = "30.0";
             cols[1] = "10.0";
             cols[2] = "20.0";

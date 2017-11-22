@@ -39,13 +39,13 @@ namespace Dev2.Settings
         [JsonIgnore]
         public static readonly DependencyProperty HelpTextProperty = DependencyProperty.Register("HelpText", typeof(string), typeof(SettingsItemViewModel), new PropertyMetadata(null,OnHelpTextChanged));
 
-        
-        private static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+
+        static void OnHelpTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel?.UpdateHelpText(e.NewValue as string?? "");
+            mainViewModel?.HelpViewModel?.UpdateHelpText(e.NewValue as string ?? "");
         }
-        
+
         public bool IsDirty
         {
             get { return (bool)GetValue(IsDirtyProperty); }
@@ -74,7 +74,7 @@ namespace Dev2.Settings
     {
         protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
-            JsonProperty property = base.CreateProperty(member, memberSerialization);
+            var property = base.CreateProperty(member, memberSerialization);
 
             if (property.PropertyName == "Dispatcher")
             {

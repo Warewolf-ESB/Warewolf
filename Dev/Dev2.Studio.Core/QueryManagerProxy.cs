@@ -498,20 +498,20 @@ namespace Dev2.Studio.Core
             return pluginActions;
         }
 
-        private IList<IPluginAction> GetPluginActions(IPluginSource source, INamespaceItem ns, ICommunicationController comsController, Dev2JsonSerializer serializer)
+        IList<IPluginAction> GetPluginActions(IPluginSource source, INamespaceItem ns, ICommunicationController comsController, Dev2JsonSerializer serializer)
         {
             comsController.AddPayloadArgument(nameof(source), serializer.SerializeToBuilder(source));
             comsController.AddPayloadArgument("namespace", serializer.SerializeToBuilder(ns));
             var workspaceId = Connection.WorkspaceID;
             var result = comsController.ExecuteCommand<ExecuteMessage>(Connection, workspaceId);
-            if(result == null || result.HasError)
+            if (result == null || result.HasError)
             {
-                if(!Connection.IsConnected)
+                if (!Connection.IsConnected)
                 {
                     ShowServerDisconnectedPopup();
                     return new List<IPluginAction>();
                 }
-                if(result != null)
+                if (result != null)
                 {
                     throw new WarewolfSupportServiceException(result.Message.ToString(), null);
                 }

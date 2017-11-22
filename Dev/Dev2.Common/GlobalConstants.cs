@@ -375,7 +375,7 @@ where pn.nspname = 'public';
         
         public static readonly int NetworkComputerNameQueryFreq = 900000;
 
-        private static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);
+        static TimeSpan transactionTimeout = new TimeSpan(1, 0, 0, 0);
 
         public static readonly string AnythingToXmlPathSeperator = ",";
         public static readonly string AnytingToXmlCommaToken = "__COMMA__";
@@ -471,7 +471,7 @@ where pn.nspname = 'public';
         }
 
         public static readonly int AddPopupTimeDelay = 2000;
-        private static GenericPrincipal _user;
+        static GenericPrincipal _user;
         public static readonly double RowHeight = 30;
         public static readonly double RowHeaderHeight = 30;
 

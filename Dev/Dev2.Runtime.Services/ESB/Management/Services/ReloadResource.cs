@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage result = new ExecuteMessage { HasError = false };
+            var result = new ExecuteMessage { HasError = false };
 
             string resourceID = null;
             string resourceType = null;
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
 

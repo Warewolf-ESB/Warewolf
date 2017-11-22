@@ -19,11 +19,11 @@ namespace Dev2.Common.DateAndTime
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats =
+        static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats =
             new Dictionary<string, Func<DateTime, DateTime, double>>();
 
-        private DateTime _input1;
-        private DateTime _input2;
+        DateTime _input1;
+        DateTime _input2;
 
         #endregion Class Members
 
@@ -50,7 +50,7 @@ namespace Dev2.Common.DateAndTime
 
             result = "";
             //Creation of parser to get the DateTime Objects
-            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
+            var dateTimeParser = DateTimeConverterFactory.CreateParser();
 
             //try create the first DateTime object
             bool noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTo.Input1, dateTimeDiffTo.InputFormat,
@@ -91,7 +91,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Creates a list of all valid Output Formats
         /// </summary>
-        private static void CreateOutputFormatTypes()
+        static void CreateOutputFormatTypes()
         {
             OutputFormats.Add("Years", ReturnYears);
             OutputFormats.Add("Months", ReturnMonths);
@@ -114,7 +114,7 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnYears(DateTime input1, DateTime input2)
+        static double ReturnYears(DateTime input1, DateTime input2)
         {
             int result = 0;
             if (input2.Year != input1.Year)
@@ -145,7 +145,7 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnMonths(DateTime input1, DateTime input2)
+        static double ReturnMonths(DateTime input1, DateTime input2)
         {
             int tmpYears = input2.Year - input1.Year;
 
@@ -177,9 +177,9 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnDays(DateTime input1, DateTime input2)
+        static double ReturnDays(DateTime input1, DateTime input2)
         {
-            TimeSpan timeDiff = input2 - input1;
+            var timeDiff = input2 - input1;
             double result = timeDiff.TotalDays;
             return result;
         }
@@ -190,9 +190,9 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnWeeks(DateTime input1, DateTime input2)
+        static double ReturnWeeks(DateTime input1, DateTime input2)
         {
-            TimeSpan timeDiff = input2 - input1;
+            var timeDiff = input2 - input1;
             double result = timeDiff.TotalDays / 7;
             return result;
         }
@@ -203,9 +203,9 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnHours(DateTime input1, DateTime input2)
+        static double ReturnHours(DateTime input1, DateTime input2)
         {
-            TimeSpan timeDiff = input2 - input1;
+            var timeDiff = input2 - input1;
             double result = timeDiff.TotalHours;
             return result;
         }
@@ -216,9 +216,9 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnMinutes(DateTime input1, DateTime input2)
+        static double ReturnMinutes(DateTime input1, DateTime input2)
         {
-            TimeSpan timeDiff = input2 - input1;
+            var timeDiff = input2 - input1;
             double result = timeDiff.TotalMinutes;
             return result;
         }
@@ -229,9 +229,9 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnSeconds(DateTime input1, DateTime input2)
+        static double ReturnSeconds(DateTime input1, DateTime input2)
         {
-            TimeSpan timeDiff = input2 - input1;
+            var timeDiff = input2 - input1;
             double result = timeDiff.TotalSeconds;
             return result;
         }
@@ -242,9 +242,9 @@ namespace Dev2.Common.DateAndTime
         /// <param name="input1"></param>
         /// <param name="input2"></param>
         /// <returns></returns>
-        private static double ReturnSplitSeconds(DateTime input1, DateTime input2)
+        static double ReturnSplitSeconds(DateTime input1, DateTime input2)
         {
-            TimeSpan timeDiff = input2 - input1;
+            var timeDiff = input2 - input1;
             double result = timeDiff.TotalMilliseconds;
             return result;
         }

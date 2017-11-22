@@ -14,11 +14,11 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchTestsForDeploy : DefaultEsbManagementEndpoint
     {
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Fetch Tests for deploy Service", GlobalConstants.WarewolfInfo);
@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     serviceTestModelTO.Password = SecurityEncryption.Encrypt(serviceTestModelTO.Password);
                 }
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
+                var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));
                 message.HasError = false;
                 

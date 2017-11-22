@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.CreateJSON
             return DataGrid.GetFocusElement(0);
         }
 
-        private void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
+        void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
         {
             e.Row.Tag = e.Row.GetIndex();
         }

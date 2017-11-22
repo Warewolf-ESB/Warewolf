@@ -30,7 +30,7 @@ namespace Dev2.CustomControls.Converters
         /// <param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             if (value is TimeSpan)
             {

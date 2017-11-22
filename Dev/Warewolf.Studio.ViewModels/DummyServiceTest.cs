@@ -15,8 +15,8 @@ namespace Warewolf.Studio.ViewModels
     public class DummyServiceTest : IServiceTestModel, INewServiceResource
     {
 #pragma warning disable 649
-        private readonly bool _isNewTest;
-        private ICommand _newCommand;
+        readonly bool _isNewTest;
+        ICommand _newCommand;
 #pragma warning restore 649
 
         public DummyServiceTest(Action<bool> createNewAction)

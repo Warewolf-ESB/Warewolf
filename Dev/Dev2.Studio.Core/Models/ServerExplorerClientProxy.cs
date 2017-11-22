@@ -23,7 +23,7 @@ namespace Dev2.Models
         public ICommunicationControllerFactory CommunicationControllerFactory { get; private set; }
 
         public IEnvironmentConnection Connection => _connection;
-        private readonly IEnvironmentConnection _connection;
+        readonly IEnvironmentConnection _connection;
 
         public ServerExplorerClientProxy(IEnvironmentConnection connection, ICommunicationControllerFactory communicationControllerFactory)
         {

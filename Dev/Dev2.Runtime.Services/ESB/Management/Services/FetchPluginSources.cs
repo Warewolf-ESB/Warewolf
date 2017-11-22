@@ -19,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
 
             
-            List<PluginSourceDefinition> list = Resources.GetResourceList<PluginSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+            var list = Resources.GetResourceList<PluginSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 if (a is PluginSource res)
                 {

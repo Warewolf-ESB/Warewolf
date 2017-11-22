@@ -22,8 +22,8 @@ namespace Dev2.Studio.Core.ViewModels
     {
         #region Class Members
 
-        private readonly IServer _server;
-        private IContextualResourceModel _contexttualResourceModel;
+        readonly IServer _server;
+        IContextualResourceModel _contexttualResourceModel;
 
         #endregion Class Members
 

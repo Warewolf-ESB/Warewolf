@@ -20,7 +20,7 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class WebServiceContainer : EsbExecutionContainer
     {
-        private readonly IServiceExecution _webserviceExecution;
+        readonly IServiceExecution _webserviceExecution;
 
         public WebServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
             : base(sa, dataObj, theWorkspace, esbChannel)

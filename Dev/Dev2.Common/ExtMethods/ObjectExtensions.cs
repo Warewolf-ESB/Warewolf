@@ -53,17 +53,17 @@ namespace Dev2.Common.ExtMethods
 
         };
 
-        private static T Deserialize<T>(string message)
+        static T Deserialize<T>(string message)
         {
             return JsonConvert.DeserializeObject<T>(message, DeSerializerSettings);
         }
 
-        private static T Deserialize<T>(StringBuilder message)
+        static T Deserialize<T>(StringBuilder message)
         {
             return JsonConvert.DeserializeObject<T>(message.ToString(), DeSerializerSettings);
         }
 
-        private static string Serialize<T>(T message)
+        static string Serialize<T>(T message)
         {
             return JsonConvert.SerializeObject(message, Formatting, SerializerSettings);
         }

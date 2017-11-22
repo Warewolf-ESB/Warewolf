@@ -18,9 +18,9 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
-        private Version _serverVersion;
-        private object _serverInformation;
-        private readonly IEnvironmentViewModel _selectedEnv;
+        Version _serverVersion;
+        object _serverInformation;
+        readonly IEnvironmentViewModel _selectedEnv;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
             :this(shellViewModel, aggregator, statsArea, null)
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ValidateDeploySourceSelectedConnection(object sender)
+        void ValidateDeploySourceSelectedConnection(object sender)
         {
             var connectControlViewModel = sender as ConnectControlViewModel;
             if (connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
@@ -159,7 +159,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateItemForDeploy(Guid environmentId)
+        void UpdateItemForDeploy(Guid environmentId)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
@@ -224,7 +224,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
+        IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
         {
             var itemViewModels = itemViewModelsModel?.AsList()?.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
             var explorerItemViewModels = itemViewModelsModel?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
@@ -271,7 +271,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual Version ServerVersion => _serverVersion ?? (_serverVersion = Version.Parse(SelectedServer.GetServerVersion()));
 
-        private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
+        void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
             var count = SelectedEnvironment.AsList().Count + 1;
             var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
@@ -304,7 +304,7 @@ namespace Warewolf.Studio.ViewModels
             return isCreated;
         }
 
-        private async Task<bool> CreateNewEnvironment(IServer server)
+        async Task<bool> CreateNewEnvironment(IServer server)
         {
             var isLoaded = false;
             if (server == null)
@@ -324,7 +324,7 @@ namespace Warewolf.Studio.ViewModels
             return isLoaded;
         }
 
-        private bool IsDeploy { get; set; }
+        bool IsDeploy { get; set; }
 
         void ServerDisconnected(object _, IServer server)
         {

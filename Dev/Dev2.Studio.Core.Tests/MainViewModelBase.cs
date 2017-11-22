@@ -83,9 +83,9 @@ namespace Dev2.Core.Tests
             EventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
             WindowManager = new Mock<IWindowManager>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockWorkspaceItemRepository = GetworkspaceItemRespository();
+
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             
             var vieFactory = new Mock<IViewFactory>();
@@ -112,9 +112,9 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(WindowManager.Object);
             CustomContainer.Register(PopupController.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockWorkspaceItemRepository = GetworkspaceItemRespository();
+
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             
             var explorerViewModel = new Mock<IExplorerViewModel>();

@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
 
             
-            List<IWebServiceSource> list = Resources.GetResourceList<WebSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
+            var list = Resources.GetResourceList<WebSource>(GlobalConstants.ServerWorkspaceID).Select(a =>
             {
                 if (a is WebSource res)
                 {
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             
         }
 
-        private ResourceCatalog Resources => ResourceCatalog.Instance;
+        ResourceCatalog Resources => ResourceCatalog.Instance;
 
         public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 

@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
     public class TestDbSourceService : IEsbManagementEndpoint
     {
-        private readonly IDbSources _dbSources;
+        readonly IDbSources _dbSources;
 
         public TestDbSourceService()
             : this(new DbSources())
@@ -43,8 +43,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 

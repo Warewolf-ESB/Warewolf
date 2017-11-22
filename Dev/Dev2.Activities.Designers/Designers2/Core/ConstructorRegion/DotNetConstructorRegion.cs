@@ -21,20 +21,20 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 {
     public class DotNetConstructorRegion : IConstructorRegion<IPluginConstructor>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IPluginSource> _source;
-        private readonly INamespaceToolRegion<INamespaceItem> _namespace;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IPluginSource> _source;
+        readonly INamespaceToolRegion<INamespaceItem> _namespace;
+        bool _isEnabled;
 
-        private readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private IPluginConstructor _selectedConstructor;
-        private readonly IPluginServiceModel _model;
-        private ICollection<IPluginConstructor> _constructors;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
-        private bool _isConstructorExpanded;
+        readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
+        Action _sourceChangedAction;
+        IPluginConstructor _selectedConstructor;
+        readonly IPluginServiceModel _model;
+        ICollection<IPluginConstructor> _constructors;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
+        bool _isConstructorExpanded;
 
         public DotNetConstructorRegion()
         {
@@ -111,17 +111,17 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 OnPropertyChanged();
             }
         }
-        
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                
+
                 UpdateBasedOnNamespace();
                 IsRefreshing = false;
-                
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -136,12 +136,12 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateBasedOnNamespace()
+        void UpdateBasedOnNamespace()
         {
             if (_source?.SelectedSource != null)
             {
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
                 OnPropertyChanged("IsConstructorEnabled");
             }
         }
-        private void RestoreIfPrevious(IPluginConstructor value)
+        void RestoreIfPrevious(IPluginConstructor value)
         {
             if (IsAPreviousValue(value) && _selectedConstructor != null)
             {
@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
 
         #region Implementation of IConstructorRegion<IPluginConstructor>
 
-        private void SetSelectedConstructor(IPluginConstructor value)
+        void SetSelectedConstructor(IPluginConstructor value)
         {
             _selectedConstructor = value;
             SavedConstructor = value;
@@ -317,7 +317,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             OnPropertyChanged("SelectedConstructor");
         }
 
-        private void RestorePreviousValues(IPluginConstructor value)
+        void RestorePreviousValues(IPluginConstructor value)
         {
             var toRestore = _previousRegions[value.GetIdentifier()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -326,7 +326,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             }
         }
 
-        private bool IsAPreviousValue(IPluginConstructor value)
+        bool IsAPreviousValue(IPluginConstructor value)
         {
             return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
         }

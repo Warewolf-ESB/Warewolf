@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 };
 
             var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
-            IList<IntellisenseProviderResult> results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
+            var results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
 
             Assert.AreEqual(6, results.Count);
         }

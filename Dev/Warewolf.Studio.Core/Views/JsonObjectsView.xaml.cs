@@ -48,7 +48,7 @@ namespace Dev2.Studio.Core.Views
             ShowDialog();
         }
 
-        private void JsonObjectsView_OnKeyUp(object sender, KeyEventArgs e)
+        void JsonObjectsView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {

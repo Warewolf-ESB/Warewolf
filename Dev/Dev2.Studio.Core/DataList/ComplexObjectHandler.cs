@@ -19,7 +19,7 @@ namespace Dev2.Studio.Core.DataList
 {
     internal class ComplexObjectHandler : IComplexObjectHandler
     {
-        private readonly DataListViewModel _vm;
+        readonly DataListViewModel _vm;
         public ComplexObjectHandler(DataListViewModel vm)
         {
             _vm = vm;
@@ -168,7 +168,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        private void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
+        void ProcessObjectForComplexObjectCollection(IComplexObjectItemModel parentObj, JObject objToProcess)
         {
             if (objToProcess != null)
             {
@@ -209,7 +209,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        private string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
+        string GetNameForArrayComplexObject(XmlNode xmlNode, bool isArray)
         {
             var name = isArray ? xmlNode.Name + "()" : xmlNode.Name;
             return name;
@@ -314,7 +314,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        private void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)
+        void SetComplexObjectParentIsUsed(IComplexObjectItemModel complexObjectItemModel)
         {
             complexObjectItemModel.IsUsed = true;
             if (complexObjectItemModel.Parent != null)

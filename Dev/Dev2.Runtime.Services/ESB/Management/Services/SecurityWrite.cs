@@ -39,7 +39,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(ErrorResource.EmptySecuritySettingsPassed);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             try
             {
@@ -57,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + $" Error: {e.Message}");
             }
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("Success");
 
             return serializer.SerializeToBuilder(msg);
@@ -86,8 +86,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var byteConverter = new ASCIIEncoding();
             var encryptedData = SecurityEncryption.Encrypt(permissions);
-            byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-            using(var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
+            var dataToEncrypt = byteConverter.GetBytes(encryptedData);
+            using (var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
             {
                 outStream.SetLength(0);
                 outStream.Write(dataToEncrypt, 0, dataToEncrypt.Length);

@@ -87,7 +87,7 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         #region Private Methods
 
-        private bool IsXml(string data)
+        bool IsXml(string data)
         {
             bool result = true;
 
@@ -106,7 +106,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             return result;
         }
 
-        private bool IsJson(string data)
+        bool IsJson(string data)
         {
             bool result = true;
 

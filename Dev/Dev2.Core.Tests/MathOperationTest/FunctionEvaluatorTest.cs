@@ -22,7 +22,7 @@ namespace Dev2.Tests.MathOperationTest
     [TestClass]
     public class FunctionEvaluatorTest
     {
-        private IFunctionEvaluator _eval = MathOpsFactory.CreateFunctionEvaluator();
+        IFunctionEvaluator _eval = MathOpsFactory.CreateFunctionEvaluator();
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -158,9 +158,9 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void TryEvaluateFunction_DateFunction_Expected_EvaluationOfDateCorrect()
         {
-            DateTime date = new DateTime(2012, 2, 2);
+            var date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
 
@@ -202,7 +202,7 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void FindFirstLetter_OfWord_Should_ReturnCorrectly()
         {
-            string expression = "LEFT(\"Nkosinathi\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi\",1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)+1,1))";
+            var expression = "LEFT(\"Nkosinathi\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi\",1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)+1,1))";
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 

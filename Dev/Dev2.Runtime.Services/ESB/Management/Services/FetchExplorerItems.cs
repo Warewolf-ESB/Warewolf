@@ -23,7 +23,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchExplorerItems : DefaultEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -37,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new ArgumentNullException(nameof(values));
                 }
                 values.TryGetValue("ReloadResourceCatalogue", out StringBuilder tmp);
-                string reloadResourceCatalogueString = "";
+                var reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {
                     reloadResourceCatalogueString = tmp.ToString();
@@ -79,10 +79,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private CompressedExecuteMessage GetExplorerItems(Dev2JsonSerializer serializer, bool reloadResourceCatalogue)
+        CompressedExecuteMessage GetExplorerItems(Dev2JsonSerializer serializer, bool reloadResourceCatalogue)
         {
             var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(item));
             return message;
         }

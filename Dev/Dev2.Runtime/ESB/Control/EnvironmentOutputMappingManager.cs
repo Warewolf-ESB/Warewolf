@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Control
             return innerEnvironment;
         }
 
-        private static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
+        static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        private static void EvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IEnumerable<IDev2Definition> outputComplexObjectList)
+        static void EvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IEnumerable<IDev2Definition> outputComplexObjectList)
         {
             foreach (var dev2Definition in outputComplexObjectList)
             {
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        private static void EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
+        static void EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
         {
             foreach (var dev2Definition in outputScalarList)
             {
@@ -120,7 +120,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        private static void EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
+        static void EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
         {
             foreach (var recordSetDefinition in outputRecSets.RecordSets)
             {

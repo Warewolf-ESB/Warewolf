@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        private readonly IResourceCatalog _catalog;
+        readonly IResourceCatalog _catalog;
 
         public DuplicateFolderService(IResourceCatalog catalog) => _catalog = catalog;
         
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             values.TryGetValue("NewResourceName", out StringBuilder newResourceName);
             values.TryGetValue("FixRefs", out StringBuilder fixRefs);
             values.TryGetValue("sourcePath", out StringBuilder sourcePath);

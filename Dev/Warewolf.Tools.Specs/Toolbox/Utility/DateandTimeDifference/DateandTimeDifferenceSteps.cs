@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
     [Binding]
     public class DateandTimeDifferenceSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DateandTimeDifferenceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -140,7 +140,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             Thread.CurrentThread.CurrentCulture = currentCulture;
             Thread.CurrentThread.CurrentUICulture = currentCulture;
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

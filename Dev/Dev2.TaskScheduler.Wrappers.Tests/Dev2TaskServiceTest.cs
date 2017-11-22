@@ -18,7 +18,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     public class Dev2TaskServiceTest
     {
         TaskFolder _folder;
-        private TaskService _service;
+        TaskService _service;
         [TestInitialize]
         public void Init()
         {

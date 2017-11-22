@@ -19,7 +19,7 @@ namespace Dev2
     {
         #region Class Members
 
-        private static readonly Dictionary<string, Func<string, string>> _convertFunctions =
+        static readonly Dictionary<string, Func<string, string>> _convertFunctions =
             new Dictionary<string, Func<string, string>>();
 
         #endregion Class Members
@@ -48,7 +48,7 @@ namespace Dev2
         /// <summary>
         ///     Creates a list of all valid Convert Types
         /// </summary>
-        private static void CreateConvertFormatTypes()
+        static void CreateConvertFormatTypes()
         {
             _convertFunctions.Add("UPPER", ConvertToAllUpper);
             _convertFunctions.Add("lower", ConvertToAllLower);
@@ -68,10 +68,10 @@ namespace Dev2
         /// <summary>
         ///     Make the first letter of the word to upper case
         /// </summary>
-        private static string MakeFirstLetterUpper(string word)
+        static string MakeFirstLetterUpper(string word)
         {
             // start by converting entire string to lower case
-            string lowerCase = word.ToLower();
+            var lowerCase = word.ToLower();
             // matches the first sentence of a string, as well as subsequent sentences
             //Juries Bug 8725
             var reg = new Regex(@"(?<=(^|[.;:])\s*)[a-z]", RegexOptions.Compiled | RegexOptions.Multiline);
@@ -83,25 +83,25 @@ namespace Dev2
 
         #region Convert Methods
 
-        private static string ConvertToAllUpper(string stringToConvert)
+        static string ConvertToAllUpper(string stringToConvert)
         {
             return stringToConvert.ToUpper();
         }
 
-        private static string ConvertToAllLower(string stringToConvert)
+        static string ConvertToAllLower(string stringToConvert)
         {
             return stringToConvert.ToLower();
         }
 
-        private static string ConvertToFirstUpper(string stringToConvert)
+        static string ConvertToFirstUpper(string stringToConvert)
         {
             return MakeFirstLetterUpper(stringToConvert);
         }
 
-        private static string ConvertToAllFirstUpper(string stringToConvert)
+        static string ConvertToAllFirstUpper(string stringToConvert)
         {
-            TextInfo txInfo = CultureInfo.CurrentCulture.TextInfo;
-            string str = txInfo.ToTitleCase(stringToConvert);            
+            var txInfo = CultureInfo.CurrentCulture.TextInfo;
+            var str = txInfo.ToTitleCase(stringToConvert);
             return str;
         }
 

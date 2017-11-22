@@ -42,14 +42,14 @@ namespace Dev2.Runtime.Hosting
         readonly object _loadLock = new object();
         ResourceCatalogBuilder Builder { get; set; }
 
-        private readonly ResourceCatalogPluginContainer _catalogPluginContainer;
-        private static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
+        readonly ResourceCatalogPluginContainer _catalogPluginContainer;
+        static readonly Lazy<ResourceCatalog> LazyCat = new Lazy<ResourceCatalog>(() =>
         {
             var c = new ResourceCatalog(EsbManagementServiceLocator.GetServices());
             CompileMessageRepo.Instance.Ping();
             return c;
         }, LazyThreadSafetyMode.PublicationOnly);
-        
+
         public static ResourceCatalog Instance => LazyCat.Value;
 
         [ExcludeFromCodeCoverage]//used by tests for constructor injection
@@ -72,11 +72,11 @@ namespace Dev2.Runtime.Hosting
             _catalogPluginContainer.Build(this);
         }
 
-        private void InitializeWorkspaceResources()
+        void InitializeWorkspaceResources()
         {
             WorkspaceResources = new ConcurrentDictionary<Guid, List<IResource>>();
         }
-        
+
 
         public ConcurrentDictionary<Guid, ManagementServiceResource> ManagementServices => _catalogPluginContainer.LoadProvider.ManagementServices;
         public ConcurrentDictionary<Guid, object> WorkspaceLocks => _catalogPluginContainer.LoadProvider.WorkspaceLocks;
@@ -177,7 +177,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private void BuildResourceActivityCache(IEnumerable<IResource> userServices)
+        void BuildResourceActivityCache(IEnumerable<IResource> userServices)
         {
             if (_parsers.ContainsKey(GlobalConstants.ServerWorkspaceID))
             {
@@ -391,7 +391,7 @@ namespace Dev2.Runtime.Hosting
             _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         }
 
-        private static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
+        static ConcurrentDictionary<Guid, IResourceActivityCache> _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
         bool _loading;
 
         public IDev2Activity Parse(Guid workspaceID, Guid resourceID)

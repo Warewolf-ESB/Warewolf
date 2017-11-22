@@ -18,7 +18,7 @@ namespace Warewolf.Studio.Views
 
         public string GetHeaderText()
         {
-            BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            var be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return HeaderTextBlock.Text;
         }
@@ -30,7 +30,7 @@ namespace Warewolf.Studio.Views
 
         public string GetAssemblyName()
         {
-            BindingExpression be = AssemblyNameTextBox.GetBindingExpression(TextBox.TextProperty);
+            var be = AssemblyNameTextBox.GetBindingExpression(TextBox.TextProperty);
             be?.UpdateTarget();
             return AssemblyNameTextBox.Text;
         }
@@ -44,7 +44,7 @@ namespace Warewolf.Studio.Views
         public void SetAssemblyName(string assemblyName)
         {
             AssemblyNameTextBox.Text = assemblyName;
-            BindingExpression be = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+            var be = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateSource();
         }
 
@@ -54,17 +54,17 @@ namespace Warewolf.Studio.Views
             {
                 case "AssemblyName":
                     AssemblyNameTextBox.Text = input;
-                    BindingExpression assem = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+                    var assem = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
                     assem?.UpdateSource();
                     break;
                 case "ConfigFile":
                     ConfigFileTextbox.Text = input;
-                    BindingExpression config = ConfigFileTextbox.GetBindingExpression(TextBlock.TextProperty);
+                    var config = ConfigFileTextbox.GetBindingExpression(TextBlock.TextProperty);
                     config?.UpdateSource();
                     break;
                 case "GacAssemblyName":
                     GacAssemblyNameTextBox.Text = input;
-                    BindingExpression gac = GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+                    var gac = GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
                     gac?.UpdateSource();
                     break;
                 default:
@@ -97,7 +97,7 @@ namespace Warewolf.Studio.Views
             return false;
         }
 
-        private void GacAssemblyNameTextBox_OnTextChanged(object sender, RoutedEventArgs e)
+        void GacAssemblyNameTextBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             if (sender is IntellisenseTextBox intellisenseTextBox)
             {

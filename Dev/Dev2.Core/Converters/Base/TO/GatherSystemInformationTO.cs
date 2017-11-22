@@ -24,9 +24,9 @@ namespace Dev2
     {
         #region Fields
 
-        private enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
-        private Dictionary<string, List<IActionableErrorInfo>> _errors;
-        private string _result;
+        enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
+        Dictionary<string, List<IActionableErrorInfo>> _errors;
+        string _result;
 
         #endregion
 
@@ -110,7 +110,7 @@ namespace Dev2
 
         #region Private Methods
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
@@ -149,8 +149,8 @@ namespace Dev2
             }
             else
             {
-                List<IActionableErrorInfo> errorsTos = ruleSet.ValidateRules();
-                List<IActionableErrorInfo> actionableErrorInfos =
+                var errorsTos = ruleSet.ValidateRules();
+                var actionableErrorInfos =
                     errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
                     {
                         //

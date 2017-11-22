@@ -34,9 +34,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            DateTime dateTime = (DateTime)value;
+            var dateTime = (DateTime)value;
 
-            if(string.IsNullOrWhiteSpace(Format))
+            if (string.IsNullOrWhiteSpace(Format))
             {
                 var customFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.ffff");
                 return dateTime.ToString(customFormat);

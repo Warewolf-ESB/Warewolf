@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
     public class DropboxFileReadTests
     {
-        private Mock<IDropboxFileRead> CreateDropboxReadMock()
+        Mock<IDropboxFileRead> CreateDropboxReadMock()
         {
             var mock = new Mock<IDropboxFileRead>();
             var successResult = new DropboxListFolderSuccesResult(It.IsAny<ListFolderResult>());
@@ -78,7 +78,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
         {
             //---------------Set up test pack-------------------
             var dropboxFileRead = new DropboxFileRead(true, null, false, false);
-            PrivateObject type = new PrivateObject(dropboxFileRead);
+            var type = new PrivateObject(dropboxFileRead);
             var staticField = type.GetField("_path", BindingFlags.Instance | BindingFlags.NonPublic);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dropboxFileRead);

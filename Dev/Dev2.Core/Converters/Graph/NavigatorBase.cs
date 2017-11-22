@@ -49,17 +49,17 @@ namespace Dev2.Converters.Graph
         {
             foreach (IPath path in paths)
             {
-                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode = rootIndexedValueTreeNode;
+                var IndexedPathSegmentTreeNode = rootIndexedValueTreeNode;
                 int pathSegmentCount = 0;
 
                 while (pathSegmentCount < indexedPathSegments[path].Count)
                 {
-                    IPathSegment pathSegment = indexedPathSegments[path][pathSegmentCount];
+                    var pathSegment = indexedPathSegments[path][pathSegmentCount];
                     if (
                         !IndexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment,
                             out IndexedPathSegmentTreeNode<string> tmpIndexedPathSegmentTreeNode))
                     {
-                        IndexedPathSegmentTreeNode<string> newIndexedPathSegmentTreeNode =
+                        var newIndexedPathSegmentTreeNode =
                             CreatePathSegmentIndexedPathSegmentTreeNode(pathSegment, IndexedPathSegmentTreeNode);
                         IndexedPathSegmentTreeNode.Add(pathSegment.ActualSegment, newIndexedPathSegmentTreeNode);
                         IndexedPathSegmentTreeNode = newIndexedPathSegmentTreeNode;
@@ -136,7 +136,7 @@ namespace Dev2.Converters.Graph
         {
             foreach (IPath path in paths)
             {
-                IndexedPathSegmentTreeNode<string> IndexedPathSegmentTreeNode =
+                var IndexedPathSegmentTreeNode =
                     rootIndexedValueTreeNode[indexedPathSegments[path].Select(p => p.ActualSegment).ToList()];
                 results[path].Add(IndexedPathSegmentTreeNode.CurrentValue);
             }

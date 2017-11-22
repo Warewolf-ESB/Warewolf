@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            object inputValue = value ?? throw new ArgumentNullException("value");
+            var inputValue = value ?? throw new ArgumentNullException("value");
             var resourceKey = inputValue.ToString();
             return Application.Current.Resources[resourceKey];
         }

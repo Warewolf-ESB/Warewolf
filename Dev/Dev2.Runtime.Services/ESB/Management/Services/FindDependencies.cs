@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        private IResourceCatalog _resourceCatalog;
+        IResourceCatalog _resourceCatalog;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -88,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.Message.Append("</graph>");
                 }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
             catch (Exception e)
@@ -141,7 +141,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Private Methods
 
-        private StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
+        StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
         {
             var sb = new StringBuilder();
 
@@ -150,9 +150,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (dependencies != null)
             {
                 sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
-                
+
                 dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-                
+
                 sb.Append("</node>");
                 seenResource.Add(resourceGuid);
                 dependencies.ToList().ForEach(c =>

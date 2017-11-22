@@ -370,7 +370,7 @@ namespace Dev2.Runtime.WebServer.Hubs
             
             SetupEvents();
 
-            Task t = new Task(() =>
+            var t = new Task(() =>
             {
                 var workspaceId = Server.GetWorkspaceID(Context.User.Identity);
                 ResourceCatalog.Instance.LoadServerActivityCache();

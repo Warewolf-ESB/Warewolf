@@ -13,7 +13,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
     public class FetchToolsService : DefaultEsbManagementEndpoint
     {
-        private IToolManager _serverToolManager;
+        IToolManager _serverToolManager;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

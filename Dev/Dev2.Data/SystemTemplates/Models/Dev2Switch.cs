@@ -63,7 +63,7 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public string ToWebModel()
         {
-            string result = JsonConvert.SerializeObject(this);
+            var result = JsonConvert.SerializeObject(this);
 
             return result;
         }

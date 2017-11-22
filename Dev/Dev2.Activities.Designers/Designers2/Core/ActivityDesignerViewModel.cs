@@ -131,8 +131,8 @@ namespace Dev2.Activities.Designers2.Core
 
         protected void RemoveHelpToggle()
         {
-            ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
-            if(activityDesignerToggle != null)
+            var activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
+            if (activityDesignerToggle != null)
             {
                 TitleBarToggles.Remove(activityDesignerToggle);
                 ShowHelp = false;
@@ -307,7 +307,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 if(isChecked)
                 {
-                    ActivityDesignerToggle activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
+                    var activityDesignerToggle = TitleBarToggles.FirstOrDefault(c => c.AutomationID == "HelpToggle");
                 }
                 else
                 {
@@ -330,7 +330,7 @@ namespace Dev2.Activities.Designers2.Core
 
         void ToggleTitleBarVisibility()
         {
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(ModelItem.View);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(ModelItem.View);
             var dataContext = parentContentPane?.DataContext;
             var isSelectedOrMouseOver = IsSelectedOrMouseOver;
             if (dataContext != null && dataContext.GetType().Name == "ServiceTestViewModel")

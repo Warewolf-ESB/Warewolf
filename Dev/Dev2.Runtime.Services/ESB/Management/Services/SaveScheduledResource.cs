@@ -28,9 +28,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class SaveScheduledResource : IEsbManagementEndpoint
     {
-        private IServerSchedulerFactory _schedulerFactory;
+        IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
-        private IResourceCatalog _catalog;
+        IResourceCatalog _catalog;
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;

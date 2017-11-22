@@ -39,18 +39,18 @@ namespace Dev2.Runtime.ESB
 
     public class EsbServiceInvoker : IEsbServiceInvoker, IDisposable
     {
-        private readonly IServiceLocator _serviceLocator;
+        readonly IServiceLocator _serviceLocator;
 
         #region Fields
-        private readonly IEsbChannel _esbChannel;
+        readonly IEsbChannel _esbChannel;
 
-        private readonly IWorkspace _workspace;
+        readonly IWorkspace _workspace;
 
-        private readonly EsbExecuteRequest _request;
+        readonly EsbExecuteRequest _request;
 
         #endregion
 
-        private readonly ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
+        readonly ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
         #region Constructors
 
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.ESB
             _request = request;
         }
 
-        private EsbServiceInvoker(IServiceLocator serviceLocator)
+        EsbServiceInvoker(IServiceLocator serviceLocator)
         {
             _serviceLocator = serviceLocator;
         }
@@ -243,7 +243,7 @@ namespace Dev2.Runtime.ESB
 
                 if (_cache.ContainsKey(dataObject.ResourceID))
                 {
-                    ServiceAction sa = _cache[dataObject.ResourceID];
+                    var sa = _cache[dataObject.ResourceID];
 
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
@@ -253,7 +253,7 @@ namespace Dev2.Runtime.ESB
                 {
                     var resourceId = dataObject.ResourceID;
                     Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());
-                    DynamicService theService = GetService(serviceName, resourceId);
+                    var theService = GetService(serviceName, resourceId);
                     IEsbExecutionContainer executionContainer = null;
 
 
@@ -276,11 +276,11 @@ namespace Dev2.Runtime.ESB
             return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
-        private DynamicService GetService(string serviceName, Guid resourceId)
+        DynamicService GetService(string serviceName, Guid resourceId)
         {
             try
             {
-             
+
                 if (resourceId == Guid.Empty)
                 {
                     return _serviceLocator.FindService(serviceName, _workspace.ID) ?? _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
@@ -294,7 +294,7 @@ namespace Dev2.Runtime.ESB
             }
         }
 
-        private IEsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
+        IEsbExecutionContainer GenerateContainer(ServiceAction serviceAction, IDSFDataObject dataObj, IWorkspace theWorkspace)
         {
             // set the ID for later use ;)
             dataObj.WorkspaceID = _workspace.ID;
@@ -344,9 +344,9 @@ namespace Dev2.Runtime.ESB
             return result;
         }
 
-        private void MapServiceActionDependencies(ServiceAction serviceAction)
+        void MapServiceActionDependencies(ServiceAction serviceAction)
         {
-            if(!string.IsNullOrWhiteSpace(serviceAction?.SourceName))
+            if (!string.IsNullOrWhiteSpace(serviceAction?.SourceName))
             {
                 serviceAction.Source = _serviceLocator.FindSourceByName(serviceAction.SourceName, _workspace.ID);
             }
@@ -364,7 +364,7 @@ namespace Dev2.Runtime.ESB
 
         #region DispatchDebugErrors
 
-        private void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
+        void DispatchDebugErrors(ErrorResultTO errors, IDSFDataObject dataObject, StateType stateType)
         {
             if (errors.HasErrors() && dataObject.IsDebugMode())
             {

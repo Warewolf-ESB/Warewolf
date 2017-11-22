@@ -35,14 +35,14 @@ namespace Dev2.Studio.Core.Models
         IEnvironmentConnection _connection;
         IList<IToolDescriptor> _tools;
         string _version;
-        private string _minversion;
+        string _minversion;
         Dictionary<string, string> _serverInformation;
-        private IExplorerRepository _proxyLayer;
+        IExplorerRepository _proxyLayer;
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
         public event EventHandler AuthorizationServiceSet;
 
-        private void OnAuthorizationServiceSet()
+        void OnAuthorizationServiceSet()
         {
             var handler = AuthorizationServiceSet;
             handler?.Invoke(this, EventArgs.Empty);

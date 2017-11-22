@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 IList<IDebugState> debugItems = serializer.Deserialize<List<IDebugState>>(parseData);
 
                 return debugItems;

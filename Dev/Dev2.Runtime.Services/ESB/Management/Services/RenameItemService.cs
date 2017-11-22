@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
-        private IExplorerServerResourceRepository _serverExplorerRepository;
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

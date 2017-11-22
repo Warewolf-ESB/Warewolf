@@ -58,7 +58,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 schema = tmp.ToString();
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             if (string.IsNullOrEmpty(database))
             {

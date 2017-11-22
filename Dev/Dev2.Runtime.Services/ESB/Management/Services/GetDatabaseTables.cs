@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             if (values == null)
             {

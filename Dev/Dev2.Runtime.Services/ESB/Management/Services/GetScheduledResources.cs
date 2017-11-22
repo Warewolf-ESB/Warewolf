@@ -26,9 +26,9 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetScheduledResources : DefaultEsbManagementEndpoint
     {
-        private IServerSchedulerFactory _schedulerFactory;
+        IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
-        private IResourceCatalog _catalog;
+        IResourceCatalog _catalog;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

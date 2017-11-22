@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
 
         #endregion
 
-        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("a");
         }

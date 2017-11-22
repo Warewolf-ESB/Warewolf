@@ -64,12 +64,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         /// </summary>
         [TestMethod]
         public void CreateMapper_Expected_XmlMapper() {         
-            StringInterrogator stringInterrogator = new StringInterrogator();
+            var stringInterrogator = new StringInterrogator();
 
-            IMapper mapper = stringInterrogator.CreateMapper(XmlGiven());
+            var mapper = stringInterrogator.CreateMapper(XmlGiven());
 
-            Type expected = typeof(XmlMapper);
-            Type actual = mapper.GetType();
+            var expected = typeof(XmlMapper);
+            var actual = mapper.GetType();
 
             Assert.AreEqual(expected, actual);
         }
@@ -79,12 +79,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         /// </summary>
         [TestMethod]
         public void CreateNavigator_Expected_XmlNavigator() {            
-            StringInterrogator stringInterrogator = new StringInterrogator();
+            var stringInterrogator = new StringInterrogator();
 
-            INavigator navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(XmlPath));
+            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(XmlPath));
 
-            Type expected = typeof(XmlNavigator);
-            Type actual = navigator.GetType();
+            var expected = typeof(XmlNavigator);
+            var actual = navigator.GetType();
 
             Assert.AreEqual(expected, actual);
         }

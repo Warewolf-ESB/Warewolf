@@ -22,8 +22,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     internal class ResourceDuplicateProvider : IResourceDuplicateProvider
     {
-        private readonly IResourceCatalog _resourceCatalog;
-        private ITestCatalog _testCatalog;
+        readonly IResourceCatalog _resourceCatalog;
+        ITestCatalog _testCatalog;
 
         public ResourceDuplicateProvider(IResourceCatalog resourceCatalog)
         {
@@ -79,7 +79,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 return null;
             }
         }
-        private IExplorerItem SaveResource(Guid resourceId, string newPath, string newResourceName)
+        IExplorerItem SaveResource(Guid resourceId, string newPath, string newResourceName)
         {
             var result = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, resourceId);
             var xElement = result.ToXElement();
@@ -88,10 +88,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 IsUpgraded = true
             };
             var resource = _resourceCatalog.GetResources(GlobalConstants.ServerWorkspaceID)
-                .FirstOrDefault(p=>p.ResourceID == resourceId);
+                .FirstOrDefault(p => p.ResourceID == resourceId);
             var actionElement = xElement.Element("Action");
             var xamlElement = actionElement?.Element("XamlDefinition");
-            xElement.SetAttributeValue("Name",newResourceName);
+            xElement.SetAttributeValue("Name", newResourceName);
             var resourceID = Guid.NewGuid();
             newResource.ResourceName = newResourceName;
             newResource.ResourceID = resourceID;
@@ -109,12 +109,12 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return ServerExplorerRepository.Instance.UpdateItem(newResource);
         }
 
-        private void SaveTests(Guid oldResourceId, Guid newResourceId)
+        void SaveTests(Guid oldResourceId, Guid newResourceId)
         {
             var serviceTestModelTos = _testCatalog?.Fetch(oldResourceId);
-            if(serviceTestModelTos != null && serviceTestModelTos.Count > 0)
+            if (serviceTestModelTos != null && serviceTestModelTos.Count > 0)
             {
-                foreach(var serviceTestModelTo in serviceTestModelTos)
+                foreach (var serviceTestModelTo in serviceTestModelTos)
                 {
                     serviceTestModelTo.ResourceId = newResourceId;
                 }
@@ -122,7 +122,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        private IEnumerable<IExplorerItem> SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
+        IEnumerable<IExplorerItem> SaveFolders(string sourceLocation, string destination, string newName, bool fixRefences)
         {
             var resourcesToUpdate = new List<IResource>();
             var resourceUpdateMap = new Dictionary<Guid, Guid>();
@@ -153,7 +153,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 parentItem.Children.Add(itemToAdd);
                 items.Add(itemToAdd);
             }
-            
+
             foreach (var resource in resourceToMove)
             {
                 try
@@ -173,7 +173,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                     var savePath = resourcePath;
                     var resourceNameIndex = resourcePath.LastIndexOf(resource.ResourceName, StringComparison.InvariantCultureIgnoreCase);
-                    if(resourceNameIndex >= 0)
+                    if (resourceNameIndex >= 0)
                     {
                         savePath = resourcePath.Substring(0, resourceNameIndex);
                     }
@@ -181,7 +181,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     var subActualPath = savePath.TrimStart('\\');
                     var subTrimEnd = subActualPath.TrimStart('\\').TrimEnd('\\');
                     var idx = subTrimEnd.LastIndexOf("\\", StringComparison.InvariantCultureIgnoreCase);
-                    var name = subTrimEnd.Substring(idx+1);
+                    var name = subTrimEnd.Substring(idx + 1);
                     var subItem = ServerExplorerRepository.Instance.Find(item => item.ResourcePath.ToLowerInvariant().TrimEnd('\\').Equals(subTrimEnd));
                     var itemToAdd = new ServerExplorerItem(name, Guid.NewGuid(), "Folder", new List<IExplorerItem>(), Permissions.Contribute, subTrimEnd)
                     {
@@ -200,7 +200,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 }
             }
-            
+
             if (fixRefences)
             {
 
@@ -222,14 +222,14 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return items;
         }
 
-        private void FixReferences(List<IResource> resourcesToUpdate, Dictionary<Guid, Guid> oldToNewUpdates)
+        void FixReferences(List<IResource> resourcesToUpdate, Dictionary<Guid, Guid> oldToNewUpdates)
         {
             foreach (var updatedResource in resourcesToUpdate)
             {
 
                 var contents = _resourceCatalog.GetResourceContents(GlobalConstants.ServerWorkspaceID, updatedResource.ResourceID);
 
-                
+
                 foreach (var oldToNewUpdate in oldToNewUpdates)
                 {
                     contents = contents.Replace(oldToNewUpdate.Key.ToString().ToLowerInvariant(), oldToNewUpdate.Value.ToString().ToLowerInvariant());
@@ -243,10 +243,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     savePath = resPath.Substring(0, resourceNameIndex);
                 }
 
-                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath);               
-                updatedResource.LoadDependencies(contents.ToXElement());                
+                _resourceCatalog.SaveResource(GlobalConstants.ServerWorkspaceID, updatedResource, contents, savePath);
+                updatedResource.LoadDependencies(contents.ToXElement());
             }
-           
+
         }
     }
 }

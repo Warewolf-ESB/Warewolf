@@ -52,7 +52,7 @@ namespace Dev2.Runtime.Hosting
             var fileName = asm.Location;
 
             versionResource.LoadFrom(fileName);
-            Version v = new Version(versionResource.FileVersion);
+            var v = new Version(versionResource.FileVersion);
 
             return v;
         }

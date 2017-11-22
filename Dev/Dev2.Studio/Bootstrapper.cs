@@ -42,7 +42,7 @@ namespace Dev2
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
 
-        private void AddRegionTypes()
+        void AddRegionTypes()
         {
             CustomContainer.AddToLoadedTypes(typeof(ManagePluginServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageComPluginServiceModel));
@@ -117,8 +117,8 @@ namespace Dev2
         #endregion Public Methods
 
         #region Private Methods
-        
-        private bool CheckWindowsService()
+
+        bool CheckWindowsService()
         {
 #if DEBUG
             return true;
@@ -148,42 +148,42 @@ namespace Dev2
 #endif
         }
 
-        private void CheckPath()
+        void CheckPath()
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if(IsLocal(sysUri))
+            if (IsLocal(sysUri))
             {
                 return;
             }
 
             var popup = new PopupController
-                {
-                    Header = "Load Error",
-                    Description = 
+            {
+                Header = "Load Error",
+                Description =
                         $@"The Design Studio could not be launched from a network location.
                         {Environment.NewLine}Please install the application on your local machine",
-                    Buttons = MessageBoxButton.OK
-                };
+                Buttons = MessageBoxButton.OK
+            };
 
             popup.Show();
 
             Application.Current.Shutdown();
         }
 
-        private bool IsLocal(Uri sysUri)
+        bool IsLocal(Uri sysUri)
         {
-            if(IsUnc(sysUri))
+            if (IsUnc(sysUri))
             {
                 return false;
             }
 
-            if(!IsUnc(sysUri))
+            if (!IsUnc(sysUri))
             {
                 var currentLocation = new DriveInfo(sysUri.AbsolutePath);
-                DriveInfo[] drives = DriveInfo.GetDrives();
-                IEnumerable<DriveInfo> info = drives.Where(c => c.DriveType == DriveType.Network);
-                if(info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
+                var drives = DriveInfo.GetDrives();
+                var info = drives.Where(c => c.DriveType == DriveType.Network);
+                if (info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
                 {
                     return false;
                 }
@@ -196,11 +196,11 @@ namespace Dev2
             return true;
         }
 
-        private static bool IsUnc(Uri sysUri)
+        static bool IsUnc(Uri sysUri)
         {
             return sysUri.IsUnc;
         }
 
-#endregion Private Methods
+        #endregion Private Methods
     }
 }

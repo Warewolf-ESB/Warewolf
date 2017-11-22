@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class TestWcfService : IEsbManagementEndpoint
     {
-        private IResourceCatalog _rescat;
+        IResourceCatalog _rescat;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
@@ -25,14 +25,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Test Wcf Service", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("wcfService", out StringBuilder resourceDefinition);
-                IWcfService service = serializer.Deserialize<IWcfService>(resourceDefinition);
+                var service = serializer.Deserialize<IWcfService>(resourceDefinition);
 
                 var source = ResourceCatalog.Instance.GetResource<WcfSource>(GlobalConstants.ServerWorkspaceID, service.Source.Id);
                 var parameters = service.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();

@@ -23,10 +23,10 @@ namespace Dev2
     {
         #region Fields
 
-        private string _convertType;
-        private Dictionary<string, List<IActionableErrorInfo>> _errors;
-        private string _result;
-        private string _stringToConvert;
+        string _convertType;
+        Dictionary<string, List<IActionableErrorInfo>> _errors;
+        string _result;
+        string _stringToConvert;
 
         #endregion Fields
 
@@ -114,7 +114,7 @@ namespace Dev2
 
         public string WatermarkTextVariable { get; set; }
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
@@ -195,8 +195,8 @@ namespace Dev2
             }
             else
             {
-                List<IActionableErrorInfo> errorsTos = ruleSet.ValidateRules();
-                List<IActionableErrorInfo> actionableErrorInfos =
+                var errorsTos = ruleSet.ValidateRules();
+                var actionableErrorInfos =
                     errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
                     {
                         //
@@ -227,7 +227,7 @@ namespace Dev2
             return Validate(propertyName, ruleSet);
         }
 
-        private RuleSet GetFieldNameRuleSet()
+        RuleSet GetFieldNameRuleSet()
         {
             var ruleSet = new RuleSet();
             return ruleSet;

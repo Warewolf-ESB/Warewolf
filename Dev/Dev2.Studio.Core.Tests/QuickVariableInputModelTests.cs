@@ -55,15 +55,15 @@ namespace Dev2.Core.Tests
         public void QuickVariableInput_Using_Case_Convert_Check_Row_Count_Expected_3()
 
         {
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            var activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
 
-            ModelItem modelItem = TestModelItemFactory.CreateModelItem(activity);
+            var modelItem = TestModelItemFactory.CreateModelItem(activity);
 
 
-            QuickVariableInputModel model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
+            var model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
             int colCount = model.GetCollectionCount();
 
             Assert.AreEqual(3, colCount);
@@ -74,11 +74,11 @@ namespace Dev2.Core.Tests
         public void QuickVariableInput_Using_Case_Convert_Add_List_To_Collection_Overwrite_False_Expected_5()
 
         {
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            var activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
-            QuickVariableInputModel model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
+            var model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
             IList<string> listToAdd = new List<string>();
             listToAdd.Add("[[Add1]]");
             listToAdd.Add("[[Add2]]");
@@ -95,11 +95,11 @@ namespace Dev2.Core.Tests
         public void QuickVariableInput_Using_Case_Convert_Add_List_To_Collection_Overwrite_True_Expected_5()
 
         {
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            var activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
-            QuickVariableInputModel model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
+            var model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
             IList<string> listToAdd = new List<string>();
             listToAdd.Add("[[Add1]]");
             listToAdd.Add("[[Add2]]");
@@ -248,11 +248,11 @@ namespace Dev2.Core.Tests
         public void QuickVariableInputViewModel_AddCommand_RecordSet_ShouldPass()
         {
             //------------Setup for test--------------------------
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity();
+            var activity = new DsfCaseConvertActivity();
             activity.ConvertCollection.Add(new CaseConvertTO("[[result1]]", "UPPER", "[[result1]]", 1));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result2]]", "UPPER", "[[result2]]", 2));
             activity.ConvertCollection.Add(new CaseConvertTO("[[result3]]", "UPPER", "[[result3]]", 3));
-            QuickVariableInputModel model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
+            var model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
             var quickVariableInputViewModel = new QuickVariableInputViewModel(model);
 
             //------------Execute Test---------------------------

@@ -30,8 +30,8 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
             get;
             set;
         }
-        
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+
+        void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

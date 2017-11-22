@@ -22,35 +22,35 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IManageComPluginSourceModel> _updateManagerMock;
-        private Mock<IEventAggregator> _aggregatorMock;
-        private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IComPluginSource> _pluginSourceMock;
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
-        private Mock<IFileListing> _selectedDllMock;
-        private Action<Action> _dispatcherAction;
-        private string _pluginSourceName;
-        private string _warewolfServerName;
-        private string _selectedDllFullName;
+        Mock<IManageComPluginSourceModel> _updateManagerMock;
+        Mock<IEventAggregator> _aggregatorMock;
+        Mock<IAsyncWorker> _asyncWorkerMock;
+        Mock<IComPluginSource> _pluginSourceMock;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
+        Mock<IFileListing> _selectedDllMock;
+        Action<Action> _dispatcherAction;
+        string _pluginSourceName;
+        string _warewolfServerName;
+        string _selectedDllFullName;
 
-        private List<string> _changedProperties;
-        private ManageComPluginSourceViewModel _target;
+        List<string> _changedProperties;
+        ManageComPluginSourceViewModel _target;
 
-        private List<string> _changedPropertiesParameterless;
-        private ManageComPluginSourceViewModel _targetParameterless;
+        List<string> _changedPropertiesParameterless;
+        ManageComPluginSourceViewModel _targetParameterless;
 
-        private List<string> _changedPropertiesPluginSource;
-        private ManageComPluginSourceViewModel _targetPluginSource;
+        List<string> _changedPropertiesPluginSource;
+        ManageComPluginSourceViewModel _targetPluginSource;
 
-        private List<string> _changedPropertiesRequestServiceNameViewModel;
-        private ManageComPluginSourceViewModel _targetRequestServiceNameViewModel;
+        List<string> _changedPropertiesRequestServiceNameViewModel;
+        ManageComPluginSourceViewModel _targetRequestServiceNameViewModel;
 
-        private List<string> _changedPropertiesPluginSourceAction;
-        private ManageComPluginSourceViewModel _targetPluginSourceAction;
+        List<string> _changedPropertiesPluginSourceAction;
+        ManageComPluginSourceViewModel _targetPluginSourceAction;
 
-        private List<string> _changedPropertiesRequestServiceNameViewModelAction;
-        private ManageComPluginSourceViewModel _targetRequestServiceNameViewModelAction;
+        List<string> _changedPropertiesRequestServiceNameViewModelAction;
+        ManageComPluginSourceViewModel _targetRequestServiceNameViewModelAction;
 
         #endregion Fields
 
@@ -876,7 +876,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.DllListings = new ObservableCollection<IDllListingModel> { listingMock.Object,listingMock1.Object,listingMock2.Object };
             _changedProperties.Clear();
 
-            PrivateObject p = new PrivateObject(_target);
+            var p = new PrivateObject(_target);
             p.SetField("_originalDllListings", originalList);
             //act
             _target.SearchTerm = expectedValue;

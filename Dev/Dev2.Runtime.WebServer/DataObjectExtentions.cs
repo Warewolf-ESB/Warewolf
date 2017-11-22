@@ -202,7 +202,7 @@ namespace Dev2.Runtime.WebServer
             resource = localResource;
         }
 
-        private static void MapServiceToDataObjects(IDSFDataObject dataObject, IResource localResource)
+        static void MapServiceToDataObjects(IDSFDataObject dataObject, IResource localResource)
         {
             dataObject.ServiceName = localResource.ResourceName;
             dataObject.ResourceID = localResource.ResourceID;

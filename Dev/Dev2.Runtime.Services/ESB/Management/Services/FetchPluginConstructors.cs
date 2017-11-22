@@ -18,7 +18,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchPluginConstructors : DefaultEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _catalog;
+        readonly IResourceCatalog _catalog;
 
         public FetchPluginConstructors(IResourceCatalog catalog)
         {
@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 
@@ -51,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     svc.Source = src;
                 }
                 var serviceConstructorList = services.Constructors(svc, Guid.Empty, Guid.Empty);
-                List<IPluginConstructor> constructors = serviceConstructorList.Select(a => new PluginConstructor
+                var constructors = serviceConstructorList.Select(a => new PluginConstructor
                 {
                     ConstructorName = BuildConstructorName(a.Parameters.Select(parameter => parameter.ShortTypeName)),
                     Inputs = a.Parameters.Cast<IConstructorParameter>().ToList(),
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private string BuildConstructorName(IEnumerable<string> parameters)
+        string BuildConstructorName(IEnumerable<string> parameters)
         {
             var enumerable = parameters as string[] ?? parameters.ToArray();
             var name = new StringBuilder(".ctor ");

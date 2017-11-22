@@ -20,7 +20,7 @@ namespace System.Windows.Controls
 {
     internal class BindingEvaluator<T> : FrameworkElement
     {
-        private Binding _binding;
+        Binding _binding;
 
         #region public T Value
 

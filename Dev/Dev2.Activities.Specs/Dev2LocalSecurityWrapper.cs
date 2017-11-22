@@ -11,7 +11,7 @@ namespace Dev2.Activities.Specs
         // Import the LSA functions
 
         [DllImport("advapi32.dll", PreserveSig = true)]
-        private static extern UInt32 LsaOpenPolicy(
+        static extern UInt32 LsaOpenPolicy(
             ref LSA_UNICODE_STRING SystemName,
             ref LSA_OBJECT_ATTRIBUTES ObjectAttributes,
             Int32 DesiredAccess,
@@ -29,20 +29,20 @@ namespace Dev2.Activities.Specs
         public static extern void FreeSid(IntPtr pSid);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true, PreserveSig = true)]
-        private static extern bool LookupAccountName(
+        static extern bool LookupAccountName(
             string lpSystemName, string lpAccountName,
             IntPtr psid,
             ref int cbsid,
             StringBuilder domainName, ref int cbdomainLength, ref int use);
 
         [DllImport("advapi32.dll")]
-        private static extern bool IsValidSid(IntPtr pSid);
+        static extern bool IsValidSid(IntPtr pSid);
 
         [DllImport("advapi32.dll")]
-        private static extern long LsaClose(IntPtr ObjectHandle);
+        static extern long LsaClose(IntPtr ObjectHandle);
 
         [DllImport("kernel32.dll")]
-        private static extern int GetLastError();
+        static extern int GetLastError();
 
         //[DllImport("advapi32.dll")]
         //private static extern long LsaNtStatusToWinError(long status);
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Specs
 
         // define the structures
 
-        private enum LSA_AccessPolicy : long
+        enum LSA_AccessPolicy : long
         {
             POLICY_VIEW_LOCAL_INFORMATION = 0x00000001L,
             POLICY_VIEW_AUDIT_INFORMATION = 0x00000002L,
@@ -69,7 +69,7 @@ namespace Dev2.Activities.Specs
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct LSA_OBJECT_ATTRIBUTES
+        struct LSA_OBJECT_ATTRIBUTES
         {
             public int Length;
             public IntPtr RootDirectory;
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct LSA_UNICODE_STRING
+        struct LSA_UNICODE_STRING
         {
             public UInt16 Length;
             public UInt16 MaximumLength;

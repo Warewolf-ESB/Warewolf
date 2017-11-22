@@ -63,11 +63,11 @@ namespace Dev2.Core.Tests
             var task = new Task<bool>(() => true);
             task.RunSynchronously();
             var helpViewWrapper = new Mock<IHelpViewWrapper>();
-            Frame webBrowser = new Frame();   
+            var webBrowser = new Frame();
             helpViewWrapper.SetupGet(m => m.WebBrowser).Returns(webBrowser);
             helpViewWrapper.Setup(m => m.Navigate(It.IsAny<string>())).Verifiable();
             var helpViewModel = new HelpViewModel(helpViewWrapper.Object, false);
-            HelpView helpView = new HelpView();
+            var helpView = new HelpView();
             helpViewWrapper.SetupGet(m => m.HelpView).Returns(helpView);
             //------------Execute Test---------------------------
             await helpViewModel.LoadBrowserUri(uri);

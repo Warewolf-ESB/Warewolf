@@ -23,7 +23,7 @@ namespace Dev2.Data.SystemTemplates.Models
 {
     public class Dev2DecisionStack : IDev2DataModel, IDev2FlowModel
     {
-        private string _ver = "1.0.0";
+        string _ver = "1.0.0";
 
         #region Properties
 
@@ -55,7 +55,7 @@ namespace Dev2.Data.SystemTemplates.Models
         public string ToWebModel()
         {
 
-            string result = JsonConvert.SerializeObject(this);
+            var result = JsonConvert.SerializeObject(this);
 
             return result;
         }
@@ -76,7 +76,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
         {
 
-            string result = ToWebModel();
+            var result = ToWebModel();
 
             result = result.Replace("\"", "!"); // Quote so it is VB compliant
             return result;
@@ -84,7 +84,7 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
-            StringBuilder result = new StringBuilder("");
+            var result = new StringBuilder("");
 
             int cnt = 0;
 
@@ -156,9 +156,9 @@ namespace Dev2.Data.SystemTemplates.Models
 
             try
             {
-                Dev2DecisionStack dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp.ToString());
+                var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp.ToString());
 
-                if(dds.TheStack != null)
+                if (dds.TheStack != null)
                 {
                     IList<Dev2Decision> toKeep = dds.TheStack.Where(item => item.EvaluationFn != enDecisionType.Choose).ToList();
 

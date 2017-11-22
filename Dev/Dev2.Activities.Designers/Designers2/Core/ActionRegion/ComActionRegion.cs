@@ -21,20 +21,20 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class ComActionRegion : IActionToolRegion<IPluginAction>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IComPluginSource> _source;
-        private readonly INamespaceToolRegion<INamespaceItem> _namespace;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IComPluginSource> _source;
+        readonly INamespaceToolRegion<INamespaceItem> _namespace;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private IPluginAction _selectedAction;
-        private readonly IComPluginServiceModel _model;
-        private ICollection<IPluginAction> _actions;
-        private bool _isActionEnabled;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
-        private bool _isEnabled;
+        Action _sourceChangedAction;
+        IPluginAction _selectedAction;
+        readonly IComPluginServiceModel _model;
+        ICollection<IPluginAction> _actions;
+        bool _isActionEnabled;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
+        bool _isEnabled;
 
         public ComActionRegion()
         {
@@ -109,16 +109,16 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                
+
                 UpdateBasedOnNamespace();
                 IsRefreshing = false;
-                
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -133,12 +133,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateBasedOnNamespace()
+        void UpdateBasedOnNamespace()
         {
             if (_source?.SelectedSource != null)
             {
@@ -188,7 +188,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void RestoreIfPrevious(IPluginAction value)
+        void RestoreIfPrevious(IPluginAction value)
         {
             if (IsAPreviousValue(value) && _selectedAction != null)
             {
@@ -310,7 +310,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #region Implementation of IActionToolRegion<IPluginAction>
 
-        private void SetSelectedAction(IPluginAction value)
+        void SetSelectedAction(IPluginAction value)
         {
             _selectedAction = value;
             SavedAction = value;
@@ -323,13 +323,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         }
 
 
-        private void StorePreviousValues(string actionName)
+        void StorePreviousValues(string actionName)
         {
             _previousRegions.Remove(actionName);
             _previousRegions[actionName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IPluginAction value)
+        void RestorePreviousValues(IPluginAction value)
         {
             var toRestore = _previousRegions[value.GetIdentifier()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -338,7 +338,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool IsAPreviousValue(IPluginAction value)
+        bool IsAPreviousValue(IPluginAction value)
         {
             return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
         }

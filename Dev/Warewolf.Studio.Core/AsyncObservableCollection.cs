@@ -9,7 +9,7 @@ namespace Warewolf.Studio.Core
 {
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
-        private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
+        readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
 
         public AsyncObservableCollection()
         {
@@ -68,7 +68,7 @@ namespace Warewolf.Studio.Core
 
         }
 
-        private void RaiseCollectionChanged(object param)
+        void RaiseCollectionChanged(object param)
         {
             if (!SuppressOnCollectionChanged)
             {
@@ -92,7 +92,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private void RaisePropertyChanged(object param)
+        void RaisePropertyChanged(object param)
         {
             if (!SuppressOnCollectionChanged)
             {

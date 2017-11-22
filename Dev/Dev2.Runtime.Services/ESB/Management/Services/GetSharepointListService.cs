@@ -21,9 +21,9 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
-            if(values == null)
+            if (values == null)
             {
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
@@ -36,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if(string.IsNullOrEmpty(serializedSource))
             {
-                ExecuteMessage message = new ExecuteMessage();
+                var message = new ExecuteMessage();
                 message.HasError = true;
                 message.SetMessage(ErrorResource.NoSharepointServerSet);
                 Dev2Logger.Debug(ErrorResource.NoSharepointServerSet, GlobalConstants.WarewolfDebug);
@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Get Sharepoint Server Lists. " + source.Server, GlobalConstants.WarewolfDebug);
-                List<SharepointListTo> lists = runtimeSource.LoadLists();
+                var lists = runtimeSource.LoadLists();
                 return serializer.SerializeToBuilder(lists);
             }
             catch(Exception ex)

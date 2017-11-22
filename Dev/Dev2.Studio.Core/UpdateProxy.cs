@@ -33,7 +33,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveServerSourceService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -51,7 +51,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestConnectionService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ServerSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -69,7 +69,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestDbSourceService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -89,7 +89,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveDbSourceService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbSource", serialiser.SerializeToBuilder(toDbSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -102,7 +102,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveDbService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(dbService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -115,7 +115,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestDbService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("DbService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -135,7 +135,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveWebserviceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -148,7 +148,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWebserviceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("WebserviceSource", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -166,7 +166,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveSharepointServerService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("SharepointServer", serialiser.SerializeToBuilder(resource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -179,7 +179,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestSharepointServerService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             var sharepointSource = new SharepointSource
             {
                 AuthenticationType = resource.AuthenticationType,
@@ -206,7 +206,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWebService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("WebService", serialiser.SerializeToBuilder(service));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -227,7 +227,7 @@ namespace Dev2.Studio.Core
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("Save" +
                                                                                  "WebService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("Webservice", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -240,7 +240,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SavePluginSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("PluginSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -254,7 +254,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveComPluginSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ComPluginSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -267,7 +267,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveOAuthSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("OAuthSource", serialiser.SerializeToBuilder(source));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -280,7 +280,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestPluginService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("PluginService", serialiser.SerializeToBuilder(plugin));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -301,7 +301,7 @@ namespace Dev2.Studio.Core
 
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestComPluginService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ComPluginService", serialiser.SerializeToBuilder(plugin));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -321,7 +321,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestEmailServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -341,7 +341,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestExchangeServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(emailServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -361,7 +361,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveEmailServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("EmailServiceSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -378,7 +378,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveExchangeServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("ExchangeSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -391,7 +391,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveRabbitMQServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -405,7 +405,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestRabbitMQServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("RabbitMQServiceSource", serialiser.SerializeToBuilder(rabbitMqServiceSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -425,7 +425,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("SaveWcfServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(model));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output.HasError)
@@ -438,7 +438,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWcfServiceSource");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("WcfSource", serialiser.SerializeToBuilder(wcfServerSource));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -458,7 +458,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("TestWcfService");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("wcfService", serialiser.SerializeToBuilder(wcfService));
             var output = comsController.ExecuteCommand<IExecuteMessage>(con, GlobalConstants.ServerWorkspaceID);
             if (output == null)
@@ -480,7 +480,7 @@ namespace Dev2.Studio.Core
         {
             var con = Connection;
             var comsController = CommunicationControllerFactory.CreateController("DirectDeploy");
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             comsController.AddPayloadArgument("resourceIDsToDeploy", serialiser.SerializeToBuilder(resourceIDsToDeploy));
             comsController.AddPayloadArgument("deployTests", new StringBuilder(deployTests.ToString()));
             comsController.AddPayloadArgument("destinationEnvironmentId", serialiser.SerializeToBuilder(destinationEnvironment));

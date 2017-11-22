@@ -27,7 +27,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersions : DefaultEsbManagementEndpoint
     {
-        private IServerVersionRepository _serverExplorerRepository;
+        IServerVersionRepository _serverExplorerRepository;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {

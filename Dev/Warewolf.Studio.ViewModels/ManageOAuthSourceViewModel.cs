@@ -18,23 +18,23 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageOAuthSourceViewModel : SourceBaseImpl<IOAuthSource>, IManageOAuthSourceViewModel
     {
-        private readonly IManageOAuthSourceModel _updateManager;
+        readonly IManageOAuthSourceModel _updateManager;
 
-        private string _oauth2State;
-        private string _name;
-        private string _appKey;
-        private string _selectedOAuthProvider;
-        private List<string> _types;
-        private IOAuthSource _oAuthSource;
-        private bool _testPassed;
-        private bool _testFailed;
-        private bool _testing;
-        private string _testMessage;
-        private Uri _authUri;
-        private IWebBrowser _webBrowser;
-        private readonly string _redirectUri = Resources.Languages.Core.OAuthSourceRedirectUri;
-        private string _path;
-        private string _accessToken;
+        string _oauth2State;
+        string _name;
+        string _appKey;
+        string _selectedOAuthProvider;
+        List<string> _types;
+        IOAuthSource _oAuthSource;
+        bool _testPassed;
+        bool _testFailed;
+        bool _testing;
+        string _testMessage;
+        Uri _authUri;
+        IWebBrowser _webBrowser;
+        readonly string _redirectUri = Resources.Languages.Core.OAuthSourceRedirectUri;
+        string _path;
+        string _accessToken;
 
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
@@ -90,7 +90,7 @@ namespace Warewolf.Studio.ViewModels
             });
         }
 
-        private void SetupCommands()
+        void SetupCommands()
         {
             OkCommand = new DelegateCommand(Save, CanSave);
             TestCommand = new DelegateCommand(() =>
@@ -112,12 +112,12 @@ namespace Warewolf.Studio.ViewModels
             return TestPassed && !string.IsNullOrEmpty(AccessToken);
         }
 
-        private bool CanTest()
+        bool CanTest()
         {
             return SelectedOAuthProvider != null && !string.IsNullOrWhiteSpace(AppKey);
         }
 
-        private void SetupAuthorizeUri()
+        void SetupAuthorizeUri()
         {
             _oauth2State = Guid.NewGuid().ToString("N");
             if (!string.IsNullOrEmpty(AppKey))
@@ -177,7 +177,7 @@ namespace Warewolf.Studio.ViewModels
                         AccessToken = string.Empty;
                         HasAuthenticated = false;
 
-                        string errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
+                        var errorDescription = HttpUtility.ParseQueryString(uri.ToString()).Get("error_description");
 
                         TestMessage = errorDescription ?? "Authentication failed";
                     }
@@ -405,7 +405,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SaveConnection()
+        void SaveConnection()
         {
             if (_oAuthSource == null)
             {
@@ -448,7 +448,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void Save(IOAuthSource source)
+        void Save(IOAuthSource source)
         {
             try
             {
@@ -462,7 +462,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetupHeaderTextFromExisting()
+        void SetupHeaderTextFromExisting()
         {
             if (_oAuthSource != null)
             {
@@ -470,7 +470,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IOAuthSource ToSource()
+        IOAuthSource ToSource()
         {
             if (_oAuthSource == null)
             {

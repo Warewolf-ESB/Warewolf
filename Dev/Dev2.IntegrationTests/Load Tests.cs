@@ -40,15 +40,15 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
 
 
             dtb.AddTokenOp("-", false);
 
-            IDev2Tokenizer dt = dtb.Generate();
+            var dt = dtb.Generate();
 
             int opCnt = 0;
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             while (dt.HasMoreOps() && opCnt < 100000)
             {
@@ -67,15 +67,15 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
 
 
             dtb.AddTokenOp("AB-", false);
 
-            IDev2Tokenizer dt = dtb.Generate();
+            var dt = dtb.Generate();
 
             int opCnt = 0;
-            Stopwatch sw = new Stopwatch();
+            var sw = new Stopwatch();
             sw.Start();
             while (dt.HasMoreOps() && opCnt < 35000)
             {
@@ -97,8 +97,8 @@ namespace Dev2.Integration.Tests
             var pulseTracker = new PulseTracker(2000);
 
             Assert.AreEqual(2000, pulseTracker.Interval);
-            PrivateObject pvt = new PrivateObject(pulseTracker);
-            System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
+            var pvt = new PrivateObject(pulseTracker);
+            var timer = (System.Timers.Timer)pvt.GetField("_timer");
             timer.Elapsed += (sender, e) =>
             {
                 elapsed = true;

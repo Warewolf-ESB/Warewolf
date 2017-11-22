@@ -238,7 +238,7 @@ namespace Dev2.Activities.Designers2.Email
             {
                 return;
             }
-            Uri uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
+            var uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
             var jsonData = testSource.ToString();
 
             var requestInvoker = CreateWebRequestInvoker();

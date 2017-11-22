@@ -31,16 +31,16 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataContractException(ErrorResource.NoParameter);
             }
             string serializedSource = null;
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             values.TryGetValue("SharepointServer", out StringBuilder tmp);
             if(tmp != null)
             {
                 serializedSource = tmp.ToString();
             }
             
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
-            if(string.IsNullOrEmpty(serializedSource))
+            if (string.IsNullOrEmpty(serializedSource))
             {
                 var res = new ExecuteMessage { HasError = true };
                 res.SetMessage(ErrorResource.NoSharepointServerSet);

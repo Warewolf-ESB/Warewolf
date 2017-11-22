@@ -41,7 +41,7 @@ namespace Dev2.Studio.Core.Helpers
             }
             else
             {
-                Type type = source.GetType();
+                var type = source.GetType();
                 foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault || entry.Target.IsAssignableFrom(type)))
                 {
                     entry.Action(source);

@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
-            List<DropBoxSource> resourceList = Resources.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
+            var resourceList = Resources.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
                 .Cast<DropBoxSource>()
                 .ToList();
             return serializer.SerializeToBuilder(resourceList);

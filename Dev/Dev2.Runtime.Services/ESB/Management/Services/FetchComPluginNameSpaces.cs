@@ -24,7 +24,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var dbSource = serializer.Deserialize<ComPluginSourceDefinition>(values["source"]);
                 
-                ComPluginServices services = new ComPluginServices();
+                var services = new ComPluginServices();
                 var src = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
                 var methods = new List<INamespaceItem>();
                 var task = Task.Run(() =>

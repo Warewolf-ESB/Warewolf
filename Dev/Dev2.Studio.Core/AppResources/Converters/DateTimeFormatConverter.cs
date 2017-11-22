@@ -23,7 +23,7 @@ namespace Dev2.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            DateTime dateTime = (DateTime)value;
+            var dateTime = (DateTime)value;
 
             return dateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
         }

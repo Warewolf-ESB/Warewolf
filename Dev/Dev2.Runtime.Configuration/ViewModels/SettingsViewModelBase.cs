@@ -17,7 +17,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
     {
         #region Fields
 
-        private object _object;
+        object _object;
 
         #endregion
 

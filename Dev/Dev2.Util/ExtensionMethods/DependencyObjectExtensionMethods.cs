@@ -22,7 +22,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
             int count = VisualTreeHelper.GetChildrenCount(root);
             for (int i = 0; i < count; i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(root, i);
+                var child = VisualTreeHelper.GetChild(root, i);
                 yield return child;
                 if (depth > 0)
                 {

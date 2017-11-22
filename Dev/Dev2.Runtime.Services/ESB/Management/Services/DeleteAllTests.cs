@@ -15,8 +15,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            CompressedExecuteMessage result = new CompressedExecuteMessage { HasError = false };
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var result = new CompressedExecuteMessage { HasError = false };
+            var jsonSerializer = new Dev2JsonSerializer();
             try
             {
                 values.TryGetValue("excludeList", out StringBuilder excludeTests);
@@ -31,7 +31,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(result);
         }
         
@@ -53,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             set => _testCatalog = value;
         }
 
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
         public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 

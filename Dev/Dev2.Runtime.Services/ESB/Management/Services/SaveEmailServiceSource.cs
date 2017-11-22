@@ -26,16 +26,16 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Save Email Service Source", GlobalConstants.WarewolfInfo);
 
                 values.TryGetValue("EmailServiceSource", out StringBuilder resourceDefinition);
 
-                IEmailServiceSource src = serializer.Deserialize<IEmailServiceSource>(resourceDefinition);
-                EmailSource con = new EmailSource
+                var src = serializer.Deserialize<IEmailServiceSource>(resourceDefinition);
+                var con = new EmailSource
                 {
                     Host = src.HostName,
                     UserName = src.UserName,

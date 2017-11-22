@@ -36,13 +36,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var dbSource = serializer.Deserialize<IDbSource>(values["source"]);
                 
-                ServiceModel.Services services = new ServiceModel.Services();
+                var services = new ServiceModel.Services();
 
                 var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
                 src.ReloadActions = dbSource.ReloadActions;
                 if (dbSource.Type == enSourceType.ODBC)
                 {
-                    DbSource db = new DbSource
+                    var db = new DbSource
                     {
                         DatabaseName = dbSource.DbName,
                         ResourceID = dbSource.Id,
@@ -81,11 +81,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private DbAction CreateDbAction(ServiceMethod a, DbSource src)
+        DbAction CreateDbAction(ServiceMethod a, DbSource src)
         {
-            
+
             var inputs = a.Parameters.Select(b => new ServiceInput(b.Name, b.DefaultValue ?? "") { ActionName = a.Name } as IServiceInput).ToList();
-            
+
             return new DbAction
             {
                 Name = a.Name,

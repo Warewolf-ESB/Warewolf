@@ -73,9 +73,9 @@ namespace BusinessDesignStudio.Unit.Tests
         //readonly Mock<IStudioClientContext> _dataChannel = new Mock<IStudioClientContext>();
         readonly Mock<IResourceModel> _resourceModel = new Mock<IResourceModel>();
         ResourceRepository _repo;
-        private readonly Guid _resourceGuid = Guid.NewGuid();
-        private readonly Guid _serverID = Guid.NewGuid();
-        private readonly Guid _workspaceID = Guid.NewGuid();
+        readonly Guid _resourceGuid = Guid.NewGuid();
+        readonly Guid _serverID = Guid.NewGuid();
+        readonly Guid _workspaceID = Guid.NewGuid();
 
         #endregion Variables
 
@@ -160,8 +160,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void WorkFlowService_HydrateResourceModel_ServerDisconnected_ShowPopup()
         {
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(false);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -366,7 +366,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Assert.IsTrue(resource.ResourceName == "TestWorkflowService");
         }
 
-        private Mock<IEnvironmentConnection> SetupConnection()
+        Mock<IEnvironmentConnection> SetupConnection()
         {
             var rand = new Random();
             var conn = new Mock<IEnvironmentConnection>();
@@ -476,10 +476,10 @@ namespace BusinessDesignStudio.Unit.Tests
             model.Setup(c => c.Category).Returns("NewCar");
             _repo.Save(model.Object);
             //Assert
-            ICollection<IResourceModel> set = _repo.All();
+            var set = _repo.All();
             int cnt = set.Count;
 
-            IResourceModel[] setArray = set.ToArray();
+            var setArray = set.ToArray();
             Assert.IsTrue(cnt == 1 && setArray[0].ResourceName == "NewName");
         }
 
@@ -576,8 +576,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void WorkFlowService_OnDeleteFromWorkspace_Expected_InRepository_UnsaveWF()
         {
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -608,8 +608,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void WorkFlowService_UpdateActiveServer_IsNotNull()
         {
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -624,8 +624,8 @@ namespace BusinessDesignStudio.Unit.Tests
             mockEnvironmentModel.SetupGet(x => x.ResourceRepository).Returns(ResourceRepository);
             mockEnvironmentModel.Setup(x => x.LoadResources());
 
-            Mock<IServer> mockNewEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> connNew = new Mock<IEnvironmentConnection>();
+            var mockNewEnvironmentModel = new Mock<IServer>();
+            var connNew = new Mock<IEnvironmentConnection>();
             connNew.Setup(c => c.IsConnected).Returns(true);
             connNew.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             connNew.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -658,8 +658,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 TestSteps = new List<IServiceTestStep> { new ServiceTestStep(Guid.NewGuid(),"type",new ObservableCollection<IServiceTestOutput>(),StepType.Mock) }                
             };
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -716,8 +716,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 TestSteps = new List<IServiceTestStep> { new ServiceTestStep(Guid.NewGuid(), "type", new ObservableCollection<IServiceTestOutput>(), StepType.Mock) }
             };
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -779,8 +779,8 @@ namespace BusinessDesignStudio.Unit.Tests
 
             };
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -813,8 +813,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void WorkFlowService_OnDeleteFromWorkspace_Expected_InRepository()
         {
             var retVal = new StringBuilder();
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid workspaceID) =>
@@ -883,8 +883,8 @@ namespace BusinessDesignStudio.Unit.Tests
             msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
@@ -916,8 +916,8 @@ namespace BusinessDesignStudio.Unit.Tests
             msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
@@ -950,8 +950,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
 
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
@@ -985,8 +985,8 @@ namespace BusinessDesignStudio.Unit.Tests
             msg.HasError = false;
             var payload = JsonConvert.SerializeObject(msg);
 
-            Mock<IServer> mockEnvironmentModel = new Mock<IServer>();
-            Mock<IEnvironmentConnection> conn = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentModel = new Mock<IServer>();
+            var conn = new Mock<IEnvironmentConnection>();
             conn.Setup(c => c.IsConnected).Returns(true);
             conn.Setup(c => c.ServerEvents).Returns(new EventPublisher());
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload));
@@ -1018,7 +1018,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             Setup();
 
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             var exePayload = JsonConvert.SerializeObject(msg);
 
             _environmentConnection.Setup(envConn => envConn.IsConnected).Returns(false);
@@ -1045,10 +1045,10 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void CreateResourceNoAddressEnvironmentConnection()
         {
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             var exePayload = JsonConvert.SerializeObject(msg);
 
-            Mock<IEnvironmentConnection> environmentConnection = new Mock<IEnvironmentConnection>();
+            var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(prop => prop.IsConnected).Returns(true);
             var rand = new Random();
             var conn = new Mock<IEnvironmentConnection>();
@@ -1071,9 +1071,9 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             //Arrange
             Setup();
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             var exePayload = JsonConvert.SerializeObject(msg);
-            Mock<IEnvironmentConnection> environmentConnection = new Mock<IEnvironmentConnection>();
+            var environmentConnection = new Mock<IEnvironmentConnection>();
             environmentConnection.Setup(prop => prop.AppServerUri).Returns(new Uri("http://localhost:77/dsf"));
             environmentConnection.Setup(prop => prop.IsConnected).Returns(true);
 
@@ -1119,7 +1119,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void GetDependenciesXmlWithNullModelReturnsEmptyString()
         {
-            ResourceRepository resourceRepository = new ResourceRepository(new Mock<IServer>().Object);
+            var resourceRepository = new ResourceRepository(new Mock<IServer>().Object);
             var result = resourceRepository.GetDependenciesXml(null, false);
             Assert.IsTrue(string.IsNullOrEmpty(result.Message.ToString()));
         }
@@ -1129,7 +1129,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -1184,7 +1184,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void GetUniqueDependenciesWithNullModelReturnsEmptyList()
         {
-            ResourceRepository resourceRepository = new ResourceRepository(new Mock<IServer>().Object);
+            var resourceRepository = new ResourceRepository(new Mock<IServer>().Object);
             var result = resourceRepository.GetUniqueDependencies(null);
             Assert.AreEqual(0, result.Count);
         }
@@ -1194,7 +1194,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -1223,7 +1223,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -1255,7 +1255,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var conn = SetupConnection();
 
-            List<ErrorInfo> errors = new List<ErrorInfo>
+            var errors = new List<ErrorInfo>
                 {
                     new ErrorInfo
                         {
@@ -1289,7 +1289,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void FindResourcesByID_With_NullParameters_Expected_ReturnsEmptyList()
         {
-            ResourceRepository resourceRepository = GetResourceRepository();
+            var resourceRepository = GetResourceRepository();
             var result = resourceRepository.FindResourcesByID(null, null, ResourceType.Source);
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
@@ -1299,7 +1299,7 @@ namespace BusinessDesignStudio.Unit.Tests
         public void FindResourcesByID_With_NonNullParameters_Expected_ReturnsNonEmptyList()
         {
             var servers = new List<string> { EnviromentRepositoryTest.Server1ID };
-            ResourceRepository resourceRepository = GetResourceRepository();
+            var resourceRepository = GetResourceRepository();
 
             var res = new SerializableResource { ResourceID = EnviromentRepositoryTest.Server2ID, ResourceName = "Resource" };
             var resList = new List<SerializableResource> { res };
@@ -1322,9 +1322,9 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_FetchResourceDefinition_WhenDefinitionToFetch_ExpectValidXAML()
         {
             //------------Setup for test--------------------------
-            Guid modelID = new Guid();
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var modelID = new Guid();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
@@ -1346,9 +1346,9 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_FetchResourceDefinition_WhenNoDefinitionToFetch_ExpectNothing()
         {
             //------------Setup for test--------------------------
-            Guid modelID = new Guid();
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var modelID = new Guid();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
@@ -1370,17 +1370,17 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_LoadResourceTests_WhenNoTestsToFetch_ExpectNothing()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
 
 
             var serviceTestModel = new List<IServiceTestModelTO>();
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
@@ -1398,17 +1398,17 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_LoadResourceTestsForDeploy_WhenNoTestsToFetch_ExpectNothing()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
 
 
             var serviceTestModel = new List<IServiceTestModelTO>();
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
@@ -1427,17 +1427,17 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_DeleteResourceTests_WhenNoTestNameIsNull_ExpectNothing()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
 
 
             var serviceTestModel = new ServiceTestModelTO();
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
@@ -1456,17 +1456,17 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_DeleteResourceTests_WhenNoResourceIdIsNull_ExpectNothing()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
 
 
             var serviceTestModel = new ServiceTestModelTO();
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
 
             var msgResult = jsonSerializer.Serialize(message);
@@ -1485,17 +1485,17 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_DeleteResourceTests_WhenResultHasError_ExpectNothing()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
 
 
             var msg = new StringBuilder("Error occured");
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(msg);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             message.HasError = true;
 
@@ -1525,8 +1525,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_LoadResourceTests_WhenTestFound_ExpectTestsBack()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
@@ -1542,9 +1542,9 @@ namespace BusinessDesignStudio.Unit.Tests
                     Password = "pass.word1"
                 }
             };
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
@@ -1562,8 +1562,8 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_LoadResourceTestsForDeploy_WhenTestFound_ExpectTestsBack()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
             const string plainText = "pass.word1";
@@ -1580,9 +1580,9 @@ namespace BusinessDesignStudio.Unit.Tests
                     Password = decrypt
                 }
             };
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var payload = jsonSerializer.Serialize(serviceTestModel);
-            CompressedExecuteMessage message = new CompressedExecuteMessage();
+            var message = new CompressedExecuteMessage();
             message.SetMessage(payload);
             var msgResult = jsonSerializer.Serialize(message);
             con.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(msgResult.ToStringBuilder);
@@ -1603,13 +1603,13 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_LoadResourceTests_WhenError_ExpectException()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
-            CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = true };
+            var jsonSerializer = new Dev2JsonSerializer();
+            var message = new CompressedExecuteMessage { HasError = true };
             var stringBuilder = new StringBuilder("An error occured");
             message.SetMessage(jsonSerializer.Serialize(stringBuilder));
             var msgResult = jsonSerializer.Serialize(message);
@@ -1635,13 +1635,13 @@ namespace BusinessDesignStudio.Unit.Tests
         public void ResourceRepository_LoadResourceTestsForDeploy_WhenError_ExpectException()
         {
             //------------Setup for test--------------------------
-            Mock<IServer> env = new Mock<IServer>();
-            Mock<IEnvironmentConnection> con = new Mock<IEnvironmentConnection>();
+            var env = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
             con.Setup(c => c.IsConnected).Returns(true);
             env.Setup(e => e.Connection).Returns(con.Object);
 
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
-            CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = true };
+            var jsonSerializer = new Dev2JsonSerializer();
+            var message = new CompressedExecuteMessage { HasError = true };
             var stringBuilder = new StringBuilder("An error occured");
             message.SetMessage(jsonSerializer.Serialize(stringBuilder));
             var msgResult = jsonSerializer.Serialize(message);
@@ -1668,7 +1668,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void FindSourcesByType_With_NullParameters_Expected_ReturnsEmptyList()
         {
-            ResourceRepository resourceRepository = GetResourceRepository();
+            var resourceRepository = GetResourceRepository();
             var result = resourceRepository.FindSourcesByType<IServer>(null, enSourceType.Dev2Server);
             Assert.IsNotNull(result);
             Assert.AreEqual(0, result.Count);
@@ -1683,8 +1683,8 @@ namespace BusinessDesignStudio.Unit.Tests
             var src = JsonConvert.SerializeObject(resList);
 
             var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
-            ResourceRepository resourceRepository = GetResourceRepository();
-            List<EmailSource> result = resourceRepository.FindSourcesByType<EmailSource>(env.Object, enSourceType.EmailSource);
+            var resourceRepository = GetResourceRepository();
+            var result = resourceRepository.FindSourcesByType<EmailSource>(env.Object, enSourceType.EmailSource);
 
             Assert.AreNotEqual(0, result.Count);
         }
@@ -1698,10 +1698,10 @@ namespace BusinessDesignStudio.Unit.Tests
             var resList = new List<DropBoxSource> { res };
             var src = JsonConvert.SerializeObject(resList);
             var env = EnviromentRepositoryTest.CreateMockEnvironment(true, src);
-            ResourceRepository resourceRepository = GetResourceRepository();
+            var resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            IList<DropBoxSource> result = resourceRepository.GetResourceList<DropBoxSource>(env.Object);
+            var result = resourceRepository.GetResourceList<DropBoxSource>(env.Object);
             //---------------Test Result -----------------------
             Assert.AreNotEqual(0, result.Count);
         }
@@ -1711,10 +1711,10 @@ namespace BusinessDesignStudio.Unit.Tests
         public void GetResourceList_GivenDropboxSource_ShouldCreateCorrectServiceName()
         {
             //---------------Set up test pack-------------------
-            ResourceRepository resourceRepository = GetResourceRepository();
+            var resourceRepository = GetResourceRepository();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            PrivateObject privateObject = new PrivateObject(resourceRepository);
+            var privateObject = new PrivateObject(resourceRepository);
             var invoke = privateObject.Invoke("CreateServiceName", typeof(DropBoxSource));
             //---------------Test Result -----------------------
             var serviceName = invoke.ToString();
@@ -1866,7 +1866,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var id = Guid.NewGuid();
 
-            List<ErrorInfo> errors = new List<ErrorInfo>
+            var errors = new List<ErrorInfo>
             {
                 new ErrorInfo
                     {
@@ -2000,11 +2000,11 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var theID = Guid.NewGuid();
 
-            Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
-            Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
+            var srcRepo = new Mock<IResourceRepository>();
+            var targetRepo = new Mock<IResourceRepository>();
 
-            Mock<IServer> srcModel = new Mock<IServer>();
-            Mock<IServer> targetModel = new Mock<IServer>();
+            var srcModel = new Mock<IServer>();
+            var targetModel = new Mock<IServer>();
 
             // config the repos
             srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
@@ -2018,7 +2018,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var theModel = new ResourceModel(srcModel.Object) { ID = theID };
             deployModels.Add(theModel);
 
-            Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
+            var mockEventAg = new Mock<IEventAggregator>();
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
             IDeployDto dto = new DeployDto { ResourceModels = deployModels };
@@ -2038,11 +2038,11 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var theID = Guid.NewGuid();
 
-            Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
-            Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
+            var srcRepo = new Mock<IResourceRepository>();
+            var targetRepo = new Mock<IResourceRepository>();
 
-            Mock<IServer> srcModel = new Mock<IServer>();
-            Mock<IServer> targetModel = new Mock<IServer>();
+            var srcModel = new Mock<IServer>();
+            var targetModel = new Mock<IServer>();
 
             // config the repos
             srcModel.Setup(sm => sm.ResourceRepository).Returns(srcRepo.Object);
@@ -2052,7 +2052,7 @@ namespace BusinessDesignStudio.Unit.Tests
             targetModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
 
             var theModel = new ResourceModel(srcModel.Object) { ID = theID, ResourceName = "some resource" };
-            Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
+            var mockEventAg = new Mock<IEventAggregator>();
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
             //------------Execute Test---------------------------
@@ -2070,11 +2070,11 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var theID = Guid.NewGuid();
 
-            Mock<IResourceRepository> srcRepo = new Mock<IResourceRepository>();
-            Mock<IResourceRepository> targetRepo = new Mock<IResourceRepository>();
+            var srcRepo = new Mock<IResourceRepository>();
+            var targetRepo = new Mock<IResourceRepository>();
 
-            Mock<IServer> srcEnvModel = new Mock<IServer>();
-            Mock<IServer> targetEnvModel = new Mock<IServer>();
+            var srcEnvModel = new Mock<IServer>();
+            var targetEnvModel = new Mock<IServer>();
 
             // config the repos
             IResourceModel findModel = new ResourceModel(targetEnvModel.Object);
@@ -2086,13 +2086,13 @@ namespace BusinessDesignStudio.Unit.Tests
 
             targetEnvModel.Setup(tm => tm.ResourceRepository).Returns(targetRepo.Object);
 
-            Mock<IResourceModel> reloadedResource = new Mock<IResourceModel>();
+            var reloadedResource = new Mock<IResourceModel>();
             reloadedResource.Setup(res => res.ResourceName).Returns("Resource");
             reloadedResource.Setup(res => res.DisplayName).Returns("My New Resource");
             reloadedResource.Setup(res => res.ID).Returns(theID);
             reloadedResource.Setup(res => res.WorkflowXaml).Returns(new StringBuilder("NewXaml"));
 
-            List<IResourceModel> reloadResources = new List<IResourceModel> { reloadedResource.Object };
+            var reloadResources = new List<IResourceModel> { reloadedResource.Object };
 
 
 
@@ -2101,7 +2101,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var theModel = new ResourceModel(srcEnvModel.Object) { ID = theID };
             deployModels.Add(theModel);
 
-            Mock<IEventAggregator> mockEventAg = new Mock<IEventAggregator>();
+            var mockEventAg = new Mock<IEventAggregator>();
             mockEventAg.Setup(m => m.Publish(It.IsAny<object>()));
 
             IDeployDto dto = new DeployDto { ResourceModels = deployModels };
@@ -2113,9 +2113,9 @@ namespace BusinessDesignStudio.Unit.Tests
 
         }
 
-        private void Marshal(System.Action action)
+        void Marshal(System.Action action)
         {
-            
+
         }
 
         #endregion
@@ -2143,10 +2143,10 @@ namespace BusinessDesignStudio.Unit.Tests
         #region Helper Methods
 
 
-        private SerializableResource BuildSerializableResourceFromName(string name, string typeOf, bool isNewResource = false)
+        SerializableResource BuildSerializableResourceFromName(string name, string typeOf, bool isNewResource = false)
         {
 
-            SerializableResource sr = new SerializableResource
+            var sr = new SerializableResource
             {
                 ResourceCategory = "Test Category",
                 DataList = "",
@@ -2171,7 +2171,7 @@ namespace BusinessDesignStudio.Unit.Tests
         /// <param name="isValid"></param>
         /// <param name="cat"></param>
         /// <returns></returns>
-        private StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, string theType = "WorkflowService", List<ErrorInfo> errors = null, bool isValid = true, string cat = "Test Category")
+        StringBuilder BuildResourceObjectFromGuids(IEnumerable<Guid> ids, string theType = "WorkflowService", List<ErrorInfo> errors = null, bool isValid = true, string cat = "Test Category")
         {
             if (errors == null)
             {
@@ -2195,7 +2195,7 @@ namespace BusinessDesignStudio.Unit.Tests
             return new StringBuilder(serviceObj);
         }
 
-        private ResourceRepository GetResourceRepository(Permissions permissions = Permissions.Administrator)
+        ResourceRepository GetResourceRepository(Permissions permissions = Permissions.Administrator)
         {
             var conn = SetupConnection();
 
@@ -2216,7 +2216,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestCategory("ResourceRepository_HasDependencies")]
         public void FindResourcesByID_HasDependencies_ExpectFalse()
         {
-            ResourceRepository resourceRepository = GetResourceRepository();
+            var resourceRepository = GetResourceRepository();
             var result = resourceRepository.HasDependencies(new Mock<IContextualResourceModel>().Object);
             Assert.IsFalse(result);
 
@@ -2229,7 +2229,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -2261,7 +2261,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -2287,8 +2287,8 @@ namespace BusinessDesignStudio.Unit.Tests
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
-            WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
-            PrivateObject p = new PrivateObject(resRepo);
+            var perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
+            var p = new PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm });
         }
         [TestMethod]
@@ -2298,7 +2298,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
 
@@ -2325,8 +2325,8 @@ namespace BusinessDesignStudio.Unit.Tests
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
-            WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
-            PrivateObject p = new PrivateObject(resRepo);
+            var perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
+            var p = new PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm });
         }
 
@@ -2337,7 +2337,7 @@ namespace BusinessDesignStudio.Unit.Tests
         {
             var mockConnection = new Mock<IEnvironmentConnection>();
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage(TestDependencyGraph.ToString());
             var payload = new StringBuilder(JsonConvert.SerializeObject(msg));
             var auth = new Mock<IAuthorizationService>();
@@ -2357,8 +2357,8 @@ namespace BusinessDesignStudio.Unit.Tests
                 resRepo.Add(resourceModel);
             }
 
-            WindowsGroupPermission perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
-            WindowsGroupPermission perm2 = new WindowsGroupPermission { ResourceID = Guid.Empty, IsServer = true, Permissions = Permissions.Execute };
+            var perm = new WindowsGroupPermission { ResourceID = testResources.First().ID };
+            var perm2 = new WindowsGroupPermission { ResourceID = Guid.Empty, IsServer = true, Permissions = Permissions.Execute };
 
             mockSecurityService.Setup(service => service.Permissions).Returns(new ReadOnlyCollection<WindowsGroupPermission>(new List<WindowsGroupPermission> { perm }));
             auth.Setup(a => a.SecurityService).Returns(mockSecurityService.Object);
@@ -2369,7 +2369,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             testEnvironmentModel2.Setup(e => e.ResourceRepository).Returns(resRepo);
 
-            PrivateObject p = new PrivateObject(resRepo);
+            var p = new PrivateObject(resRepo);
             p.Invoke("ReceivePermissionsModified", new List<WindowsGroupPermission> { perm, perm2 });
         }
 
@@ -2382,7 +2382,7 @@ namespace BusinessDesignStudio.Unit.Tests
             //Arrange
             Setup();
 
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             var exePayload = JsonConvert.SerializeObject(msg);
 
             _environmentConnection.Setup(envConn => envConn.IsConnected).Returns(false);
@@ -2395,7 +2395,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
 
             _repo.SaveToServer(_resourceModel.Object);
-            PrivateObject p = new PrivateObject(_repo);
+            var p = new PrivateObject(_repo);
             Assert.AreEqual(1, ((List<IResourceModel>)p.GetField("_resourceModels")).Count);
         }
 
@@ -2409,7 +2409,7 @@ namespace BusinessDesignStudio.Unit.Tests
             Setup();
             var conn = SetupConnection();
 
-            StringBuilder sentPayLoad = new StringBuilder();
+            var sentPayLoad = new StringBuilder();
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Callback((StringBuilder o, Guid g1) =>
                 {
                     sentPayLoad = o;
@@ -2418,7 +2418,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             _repo.GetDatabaseTableColumns(new DbSource { DatabaseName = "TestDB", ConnectionString = "MyConn", Server = "AzureServer" }, new DbTable { Schema = "Master", TableName = "Transactions" });
 
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             var esbExecuteRequest = jsonSerializer.Deserialize<EsbExecuteRequest>(sentPayLoad);
             StringAssert.Contains(esbExecuteRequest.Args["Schema"].ToString(), "Master");
             StringAssert.Contains(esbExecuteRequest.Args["TableName"].ToString(), "Transactions");

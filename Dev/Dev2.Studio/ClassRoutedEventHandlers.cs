@@ -21,7 +21,7 @@ namespace Dev2.Studio
     {
         #region Fields
 
-        private static bool _registered;
+        static bool _registered;
 
         #endregion Fields
 
@@ -46,7 +46,7 @@ namespace Dev2.Studio
         {
             Application.Current.Dispatcher.BeginInvoke(new Action(() =>
             {
-                IPopupController popup = CustomContainer.Get<IPopupController>();
+                var popup = CustomContainer.Get<IPopupController>();
                 popup.Show(Warewolf.Studio.Resources.Languages.Core.IntellisenseTabInserted,
                     Warewolf.Studio.Resources.Languages.Core.IntellisenseTabInsertedHeader, MessageBoxButton.OK, MessageBoxImage.Information, GlobalConstants.Dev2MessageBoxDesignSurfaceTabPasteDialog, false, false, true, false, false, false);
             }), null);
