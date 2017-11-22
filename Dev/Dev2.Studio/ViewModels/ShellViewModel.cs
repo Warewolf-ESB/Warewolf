@@ -108,7 +108,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _showStartPageCommand;
         bool _canDebug = true;
         bool _menuExpanded;
-
+        IApplicationTracker _applicationTracker;
         public IPopupController PopupProvider { get; set; }
 
         private IServerRepository ServerRepository { get; }
@@ -489,7 +489,7 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
         }
 
@@ -1321,9 +1321,11 @@ namespace Dev2.Studio.ViewModels
         public void NewService(string resourcePath)
         {           
             _worksurfaceContextManager.NewService(resourcePath);
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
                                                 Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
+            }
         }
 
         public void NewServerSource(string resourcePath)
@@ -1421,9 +1423,11 @@ namespace Dev2.Studio.ViewModels
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
                                           Warewolf.Studio.Resources.Languages.TrackEventMenu.Deploy);
+            }
             _worksurfaceContextManager.AddDeploySurface(items);
         }
 

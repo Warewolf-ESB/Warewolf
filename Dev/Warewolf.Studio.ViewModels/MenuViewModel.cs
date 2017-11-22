@@ -56,8 +56,11 @@ namespace Warewolf.Studio.ViewModels
             SupportCommand = new DelegateCommand(() =>
             {
                 var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                applicationTracker.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
-                                                    Resources.Languages.TrackEventHelp.Help);
+                if (applicationTracker != null)
+                {
+                    applicationTracker.TrackEvent(Resources.Languages.TrackEventHelp.EventCategory,
+                                                        Resources.Languages.TrackEventHelp.Help);
+                }
                 Process.Start(Resources.Languages.HelpText.WarewolfHelpURL);
             });
 

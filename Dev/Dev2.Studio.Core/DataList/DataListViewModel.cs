@@ -67,8 +67,11 @@ namespace Dev2.Studio.ViewModels.DataList
         public bool CanSortItems => HasItems();
 
         private RelayCommand _inputVariableCheckboxCommand;
-
+     
         private RelayCommand _outputVariableCheckboxCommand;
+
+        private IApplicationTracker _applicationTracker;
+
         public ObservableCollection<DataListHeaderItemModel> BaseCollection
         {
             get => _baseCollection;
@@ -95,10 +98,11 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void FilterCollection(string searchText)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory,
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory,
                                                 TrackEventVariables.VariablesSearch, searchText);
-
+            }
             if (_scalarCollection != null && _scalarCollection.Count > 1)
             {
                 for (int index = _scalarCollection.Count - 1; index >= 0; index--)
@@ -294,6 +298,8 @@ namespace Dev2.Studio.ViewModels.DataList
             _scalarHandler = new ScalarHandler(this);
             _recordsetHandler = new RecordsetHandler(this);
             _helper = new DataListViewModelHelper(this);
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
+
         }
 
         public IJsonObjectsView JsonObjectsView => CustomContainer.GetInstancePerRequestType<IJsonObjectsView>();
@@ -407,8 +413,10 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public void LogToRevulytics(string eventCategory,string eventName)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(eventCategory, eventName);
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(eventCategory, eventName);
+            }
 
         }
 
@@ -1000,7 +1008,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         private void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+          
             if (resourceModel != Resource)
             {
                 return;
@@ -1010,11 +1018,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 SetIsUsedDataListItems(listOfUnused, false);
                 string[] unusedVariables = listOfUnused.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
-
-                applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory, 
-                                                    Warewolf.Studio.Resources.Languages.TrackEventVariables.UnusedVariables,
-                                                    string.Join(",", unusedVariables));
-
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory, TrackEventVariables.UnusedVariables, string.Join(",", unusedVariables));
+                }
             }
             else
             {
@@ -1025,11 +1032,10 @@ namespace Dev2.Studio.ViewModels.DataList
             {
                 SetIsUsedDataListItems(listOfUsed, true);
                 string[] usedVariables = listOfUsed.Select(u => "Field : " + u.Field + " Display Name : " + u.DisplayValue).ToList().ToArray();
-
-                applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventVariables.EventCategory,
-                                                    Warewolf.Studio.Resources.Languages.TrackEventVariables.UsedVariables,
-                                                    string.Join(",", usedVariables));
-
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackCustomEvent(TrackEventVariables.EventCategory, TrackEventVariables.UsedVariables, string.Join(",", usedVariables));
+                }
             }
         }
 

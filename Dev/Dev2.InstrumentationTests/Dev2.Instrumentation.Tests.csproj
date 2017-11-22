@@ -37,7 +37,7 @@
   <ItemGroup>
     <Reference Include="ruiSDKDotNet_5.1.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\Desktop\ru\ruiSDKDotNet_5.1.0.dll</HintPath>
+      <HintPath>..\Binaries\ruiSDKDotNet_5.1.0.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />

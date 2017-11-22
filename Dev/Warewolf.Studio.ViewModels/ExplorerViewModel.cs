@@ -232,9 +232,11 @@ namespace Warewolf.Studio.ViewModels
             if (Environments != null)
             {
                 var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventExplorer.EventCategory,
-                                                    Resources.Languages.TrackEventExplorer.ExplorerSearch,filter);
-                
+                if (applicationTracker != null)
+                {
+                    applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventExplorer.EventCategory,
+                                                    Resources.Languages.TrackEventExplorer.ExplorerSearch, filter);
+                }
                 foreach (var environmentViewModel in Environments)
                 {
                     environmentViewModel.Filter(filter);

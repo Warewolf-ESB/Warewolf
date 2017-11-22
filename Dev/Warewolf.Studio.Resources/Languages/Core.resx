@@ -552,4 +552,7 @@ Please contact your Warewolf System Administrator.</value>
     
 Please note that tabs are fully supported at runtime, in variables and when reading from files.</value>
   </data>
+  <data name="RevulyticsSdkError" xml:space="preserve">
+    <value>Revulytics sdk error</value>
+  </data>
 </root>

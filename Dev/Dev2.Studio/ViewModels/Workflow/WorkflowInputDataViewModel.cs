@@ -55,7 +55,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         bool _canDebug;
         readonly IPopupController _popupController;
         private RelayCommand _cancelCommand;
-
+        IApplicationTracker _applicationTracker;
         #endregion Fields
 
         public event Action DebugExecutionStart;
@@ -69,17 +69,19 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void OnDebugExecutionStart()
         {
-            // Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.DebugClicked);
-
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
                                                 Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F6Debug);
+            }
             var handler = DebugExecutionStart;
             handler?.Invoke();
         }
 
         public WorkflowInputDataViewModel(IServiceDebugInfoModel input, Guid sessionId)
         {
+
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             VerifyArgument.IsNotNull(@"input", input);
             CanDebug = true;
             CanViewInBrowser = true;
@@ -323,10 +325,11 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!IsInError)
             {
-                var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-                applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
+                if (_applicationTracker != null)
+                {
+                    _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
                                                     Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.ViewInBrowser);
-                //Tracker.TrackEvent(TrackerEventGroup.Workflows, TrackerEventName.ViewInBrowserClicked);
+                }
                 DoSaveActions();
                 string payload = BuildWebPayLoad();
                 SendViewInBrowserRequest(payload);

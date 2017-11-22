@@ -4,7 +4,7 @@ using System.Reflection;
 using Dev2.Common;
 using Dev2.Util;
 using RUISDK_5_1_0;
-
+using Warewolf.Studio.Resources.Languages;
 namespace Dev2.Instrumentation
 {
     /// <summary>
@@ -90,16 +90,16 @@ namespace Dev2.Instrumentation
             }
             catch (RUISDKCreationException ex)
             {
-                Dev2Logger.Error("Error in initializing rui sdk", ex, "Revulytics sdk error");
+                Dev2Logger.Error("Error in initializing rui sdk", ex, Core.RevulyticsSdkError);
             }
             catch (ArgumentNullException e)
             {
-                Dev2Logger.Error("Error in config settings", e, "Revulytics sdk error");
+                Dev2Logger.Error("Error in config settings", e, Core.RevulyticsSdkError);
             }
 
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in EnableAppplicationTracker method", e, "Revulytics sdk error");
+                Dev2Logger.Error("Error in EnableAppplicationTracker method", e, Core.RevulyticsSdkError);
             }
         }
 
@@ -116,7 +116,7 @@ namespace Dev2.Instrumentation
 
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in DisableAppplicationTracker method", e, "Revulytics sdk error");
+                Dev2Logger.Error("Error in DisableAppplicationTracker method", e, Core.RevulyticsSdkError);
             }
         }
 
@@ -253,7 +253,7 @@ namespace Dev2.Instrumentation
         {
             var errormMessage = $"{DateTime.Now:g} :: Tracker Error -> {result}";
 
-            Dev2Logger.Error(errormMessage, "Revulytics sdk error");
+            Dev2Logger.Error(errormMessage, Core.RevulyticsSdkError);
         }
 
         /// <summary>
@@ -266,7 +266,7 @@ namespace Dev2.Instrumentation
             if (result!= RUIResult.ok)
             {
                 var errormMessage = $"{DateTime.Now:g} :: Tracker Error -> {result}";
-                Dev2Logger.Error(errormMessage, "Revulytics sdk error");
+                Dev2Logger.Error(errormMessage, Core.RevulyticsSdkError);
             }
         }
     }
