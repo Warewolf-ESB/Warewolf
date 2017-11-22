@@ -25,8 +25,9 @@ namespace Dev2.Core.Tests.ConverterTests
         {
             //------------Setup for test--------------------------
             var dateTimeToStringConverter = new DateTimeToStringConverter();
-
             //------------Execute Test---------------------------
+            var stringObj=dateTimeToStringConverter.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(stringObj));
             var convertedValue = dateTimeToStringConverter.Convert("some data", null, null, null);
             //------------Assert Results-------------------------
             Assert.IsNotInstanceOfType(convertedValue, typeof(string));
