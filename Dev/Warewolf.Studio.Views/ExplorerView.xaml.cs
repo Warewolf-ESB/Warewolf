@@ -75,12 +75,12 @@ namespace Warewolf.Studio.Views
                             if (destination.DataContext is IExplorerItemViewModel dropTarget && dropTarget.IsFolder)
                             {
                                 var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                                itemViewModel.Move(dropTarget);
+                                itemViewModel.MoveAsync(dropTarget);
                             }
                             if (destination.DataContext is IEnvironmentViewModel destEnv)
                             {
                                 var itemViewModel = (IExplorerItemViewModel)explorerItemViewModel;
-                                itemViewModel.Move(destEnv);
+                                itemViewModel.MoveAsync(destEnv);
                             }
                             else
                             {

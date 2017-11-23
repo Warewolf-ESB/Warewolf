@@ -1,7 +1,7 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -197,7 +197,7 @@ namespace Warewolf.Studio.ViewModels
             DisplayName = server.DisplayName;
             RefreshCommand = new DelegateCommand(async () =>
             {
-                await Refresh();
+                await RefreshAsync();
             });
             IsServerIconVisible = true;
             SelectAction = selectAction ?? (a => { });
@@ -217,7 +217,7 @@ namespace Warewolf.Studio.ViewModels
                  {
                      Application.Current.Dispatcher.Invoke(async () =>
                      {
-                         await Refresh();
+                         await RefreshAsync();
                      }, DispatcherPriority.Background);
 
                  }
@@ -249,7 +249,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task Refresh()
+        private async Task RefreshAsync()
         {
             var isDeploy = Children.Any(a => AllowResourceCheck);
             await Load(isDeploy, true);
