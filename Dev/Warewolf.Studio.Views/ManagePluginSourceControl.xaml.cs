@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using Dev2.Common.Interfaces;
 using Dev2.UI;
 using Infragistics.Controls.Menus;
@@ -11,21 +10,13 @@ namespace Warewolf.Studio.Views
 {
     public partial class ManagePluginSourceControl : IView, ICheckControlEnabledView
     {
-        public ManagePluginSourceControl()
-        {
-            InitializeComponent();
-        }
+        public ManagePluginSourceControl() => InitializeComponent();
 
         public string GetHeaderText()
         {
             var be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return HeaderTextBlock.Text;
-        }
-
-        XamDataTreeNode GetItem()
-        {
-            return null;
         }
 
         public string GetAssemblyName()
@@ -48,30 +39,6 @@ namespace Warewolf.Studio.Views
             be?.UpdateSource();
         }
 
-        public void SetTextBoxValue(string controlName, string input)
-        {
-            switch (controlName)
-            {
-                case "AssemblyName":
-                    AssemblyNameTextBox.Text = input;
-                    var assem = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
-                    assem?.UpdateSource();
-                    break;
-                case "ConfigFile":
-                    ConfigFileTextbox.Text = input;
-                    var config = ConfigFileTextbox.GetBindingExpression(TextBlock.TextProperty);
-                    config?.UpdateSource();
-                    break;
-                case "GacAssemblyName":
-                    GacAssemblyNameTextBox.Text = input;
-                    var gac = GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
-                    gac?.UpdateSource();
-                    break;
-                default:
-                    break;
-            }
-        }
-
         public bool GetControlEnabled(string controlName)
         {
             switch (controlName)
@@ -85,11 +52,11 @@ namespace Warewolf.Studio.Views
                     return ConfigFileTextbox.IsEnabled;
                 case "GacAssemblyName":
                     return GacAssemblyNameTextBox.IsEnabled;
-                case "AssemblyNameButton":
+                case nameof(AssemblyNameButton):
                     return AssemblyNameButton.IsEnabled;
-                case "ConfigFileButton":
+                case nameof(ConfigFileButton):
                     return ConfigFileButton.IsEnabled;
-                case "GacAssemblyNameButton":
+                case nameof(GacAssemblyNameButton):
                     return GacAssemblyNameButton.IsEnabled;
                 default:
                     break;
