@@ -63,7 +63,7 @@ namespace Dev2.Runtime.Hosting
                 TestCatalog = Runtime.TestCatalog.Instance,
                 ExplorerItemFactory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance),
                 Directory = new DirectoryWrapper(),
-                VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper())
+                VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper())
 
             };
 
@@ -512,8 +512,6 @@ namespace Dev2.Runtime.Hosting
                 newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
             }
             var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
-            var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.xml";
-            var destination = $"{DirectoryStructureFromPath(newResourcePath) + "\\" + resource.ResourceName + ".xml"}";
             var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.bite";
             var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".bite"}";
             if (_file.Exists(source))
