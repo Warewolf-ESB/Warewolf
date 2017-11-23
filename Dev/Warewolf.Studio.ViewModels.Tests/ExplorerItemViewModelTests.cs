@@ -33,6 +33,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         private Mock<IExplorerRepository> _explorerRepositoryMock;
         private Mock<IPopupController> _popupControllerMock;
         private Mock<IWindowsGroupPermission> _windowsGroupPermissionsMock;
+        private Mock<IExplorerTooltips> _explorerTooltips;
 
         #endregion Fields
 
@@ -53,6 +54,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.Permissions)
                 .Returns(new List<IWindowsGroupPermission> { _windowsGroupPermissionsMock.Object });
             _popupControllerMock = new Mock<IPopupController>();
+            _explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(_explorerTooltips.Object);
             _target = new ExplorerItemViewModel(_serverMock.Object, _explorerTreeItemMock.Object,
                 a => { }, _shellViewModelMock.Object, _popupControllerMock.Object);
         }
@@ -325,7 +328,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.SetupGet(it => it.EnvironmentID).Returns(Guid.NewGuid());
 
             //act
-            _target.NewRabbitMQSourceSourceCommand.Execute(null);
+            _target.NewRabbitMqSourceSourceCommand.Execute(null);
             Assert.IsTrue(_target.NewServerCommand.CanExecute(null));
 
             //assert
@@ -1153,7 +1156,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewExchangeSourceSourceCommand = _target.NewExchangeSourceSourceCommand.CanExecute(null);
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
-            var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            var canCreateNewRabbitMqSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canViewSwaggerCommand = _target.ViewSwaggerCommand.CanExecute(null);
             var canViewApisJsonCommand = _target.ViewApisJsonCommand.CanExecute(null);
 
@@ -1275,7 +1278,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.AreVersionsVisible = true;
             //assert
             var version = (VersionViewModel)_target.Children[0];
-            Assert.AreEqual("Hide Version History", _target.VersionHeader);
+            Assert.AreEqual(Resources.Languages.Core.HideVersionHistoryLabel, _target.VersionHeader);
             Assert.IsTrue(version.IsVersion);
             Assert.AreEqual("v.someVerNum 02022013 000000 gfedew", version.ResourceName);
             Assert.AreEqual(_target.ResourceId, version.ResourceId);
@@ -1375,7 +1378,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.AreVersionsVisible = false;
             //assert
             Assert.IsFalse(_target.Children.Any());
-            Assert.AreEqual("Show Version History", _target.VersionHeader);
+            Assert.AreEqual(Resources.Languages.Core.ShowVersionHistoryLabel, _target.VersionHeader);
 
             Assert.IsTrue(isAreVersionsVisibleChanged);
             Assert.IsTrue(isChildrenChanged);

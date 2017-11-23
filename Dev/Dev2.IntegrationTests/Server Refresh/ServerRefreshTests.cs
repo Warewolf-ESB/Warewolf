@@ -17,6 +17,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
     {
         const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.bite";
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Run_a_workflow_to_test_server_refresh()
         {
             SetupPermissions();
@@ -76,7 +77,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        private Task<string> ExececuteRequest(Uri url)
+        public Task<string> ExececuteRequest(Uri url)
         {
             try
             {

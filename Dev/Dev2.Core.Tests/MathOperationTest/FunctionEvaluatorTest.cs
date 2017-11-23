@@ -196,6 +196,40 @@ namespace Dev2.Tests.MathOperationTest
         }
 
         /// <summary>
+        /// Tests that an expression that accesses the date capabilities of infrigistics mixed with string literal date format results in
+        /// a valid evaluation.
+        /// </summary>
+        [TestMethod]
+        public void FindFirstLetter_OfWord_Should_ReturnCorrectly()
+        {
+            string expression = "LEFT(\"Nkosinathi\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi\",1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)+1,1))";
+
+            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+
+            if (hasSucceeded)
+            {
+                Assert.AreEqual("N", result);
+            }
+            else
+            {
+                Assert.Fail("Evaluator is unable to find first letter of word");
+            }
+
+             expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
+
+             hasSucceeded = _eval.TryEvaluateFunction(expression, out string result1, out string error1);
+
+            if (hasSucceeded)
+            {
+                Assert.AreEqual("NS", result1);
+            }
+            else
+            {
+                Assert.Fail("Evaluator is unable to find first letter of word");
+            }
+        }
+
+        /// <summary>
         /// Tests that the imaginary square root function of the infrigistics library evaluates correctly when used with
         /// a unary operator and an integer literal.
         /// </summary>

@@ -77,7 +77,8 @@ namespace Dev2.Runtime.WebServer
             }
             else
             {
-                List<IServiceTestModelTO> testResults = RunSingleTestBatch(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
+
+                List<IServiceTestModelTO> testResults = dataObject.TestName == "*" ? RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, dataObject.ResourceID) : RunSingleTestBatch(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
                 const string TrxExtension = ".tests.trx";
                 if (!serviceName.EndsWith(TrxExtension, StringComparison.CurrentCultureIgnoreCase))
                 {
@@ -101,7 +102,8 @@ namespace Dev2.Runtime.WebServer
             var allTests = testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
             var taskList = new List<Task>();
             var testResults = new List<IServiceTestModelTO>();
-            foreach (var test in allTests.Where(to => to.Enabled))
+            var test = allTests.FirstOrDefault(t => t.TestName.Equals(dataObject.TestName, StringComparison.InvariantCultureIgnoreCase));
+            if(test!=null)
             {
                 dataObject.ResourceID = test.ResourceId;
                 var dataObjectClone = dataObject.Clone();
@@ -127,8 +129,8 @@ namespace Dev2.Runtime.WebServer
                 dataObjectClone.Environment = new ExecutionEnvironment();
                 dataObjectClone.TestName = test.TestName;
                 var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
-                dataObjectClone.ServiceName = res.ResourceName;
-                var resourcePath = res.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
+                dataObjectClone.ServiceName = res?.ResourceName;
+                var resourcePath = res?.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
                 var lastTask = GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
                     serializer, testResults, dataObjectClone);
                 taskList.Add(lastTask);

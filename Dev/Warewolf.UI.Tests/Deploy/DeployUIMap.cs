@@ -94,6 +94,17 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerConectControl.Combobox.RemoteConnectionIntegrationText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
         }
 
+        [When(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
+        [Then(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
+        [Given(@"I Select LocalServerSource From Deploy Tab Destination Server Combobox")]
+        public void Select_LocalServerSource_From_Deploy_Tab_Destination_Server_Combobox()
+        {
+            UIMap.WaitForControlVisible(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.ToggleButton);
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsLocalServerSource);
+            Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DestinationServerConectControl.Combobox.LocalServerSourceText.Exists, "Selected source server in deploy is not Remote Connection Integration (Connected).");
+        }
+
         [When(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
         [Then(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
         [Given(@"I Select LocalhostConnected From Deploy Tab Source Server Combobox")]
@@ -289,7 +300,15 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = true;
         }
-        
+
+        [When(@"I DeSelect Deploy First Source Item")]
+        [Then(@"I DeSelect Deploy First Source Item")]
+        [Given(@"I DeSelect Deploy First Source Item")]
+        public void DeSelect_Deploy_First_Source_Item()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.SourceServerName.FirstExplorerTreeItem.CheckBox.Checked = false;
+        }
+
         [When(@"I Click Deploy Tab Deploy Button")]
         public void Click_Deploy_Tab_Deploy_Button()
         {

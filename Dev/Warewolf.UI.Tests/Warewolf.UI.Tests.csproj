@@ -150,12 +150,14 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Merge\MergeAssignConflictsTest.cs" />
     <Compile Include="Merge\MergeDialogUIMap.cs">
       <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Merge\MergeDialogUIMap.Designer.cs">
       <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="Merge\MergeConflictsTests.cs" />
     <Compile Include="Merge\MergeVariableConflictsTest.cs" />
     <Compile Include="Merge\MergeSwitchConflictsTest.cs" />
     <Compile Include="Merge\MergeDecisionConflictsTest.cs" />
@@ -208,6 +210,7 @@
       <DependentUpon>SharepointSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Shortcut Keys\Shortcut Keys.cs" />
+    <Compile Include="Studio Shutdown\Studio ShutdownTests.cs" />
     <Compile Include="Tabs and Panes\PinUnpinPanes.cs" />
     <Compile Include="Tabs and Panes\WorkflowTabs.cs" />
     <Compile Include="UIMap.cs">

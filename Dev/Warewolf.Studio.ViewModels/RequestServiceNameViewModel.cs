@@ -22,6 +22,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
+using System.Text;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -42,9 +43,6 @@ namespace Warewolf.Studio.ViewModels
         MessageBoxResult ViewResult { get; set; }
         private IServerRepository _serverRepository;
 
-        public RequestServiceNameViewModel()
-        {
-        }
 #pragma warning disable 1998
 #pragma warning disable 1998
         private async Task<IRequestServiceNameViewModel> InitializeAsync(IEnvironmentViewModel environmentViewModel, string selectedPath, string header, IExplorerItemViewModel explorerItemViewModel = null)
@@ -57,7 +55,7 @@ namespace Warewolf.Studio.ViewModels
             _header = header;
             _explorerItemViewModel = explorerItemViewModel;
             OkCommand = new DelegateCommand(SetServiceName, () => string.IsNullOrEmpty(ErrorMessage) && HasLoaded);
-            DuplicateCommand = new DelegateCommand(CallDuplicateService, CanDuplicate);
+            DuplicateCommand = new DelegateCommand(CallDuplicateService, () => CanDuplicate());
             CancelCommand = new DelegateCommand(CloseView, CanClose);
             Name = header;
             IsDuplicate = explorerItemViewModel != null;
@@ -92,30 +90,20 @@ namespace Warewolf.Studio.ViewModels
 
         private void CallDuplicateService()
         {
+            if (ExplorerItemViewModelRename() != null)
+            {
+                return;
+            }
             ObservableCollection<IExplorerItemViewModel> childItems = null;
             try
             {
                 IsDuplicating = true;
-
-                if (_explorerItemViewModel.IsFolder)
-                {
-                    _lazyComs = new CommunicationController { ServiceName = "DuplicateFolderService" };
-                    _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
-                }
-                _lazyComs.AddPayloadArgument("NewResourceName", Name);
-
-                if (!_explorerItemViewModel.IsFolder)
-                {
-                    _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
-                }
-
-                _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
-                _lazyComs.AddPayloadArgument("destinationPath", Path);
+                SetupLazyComs();
 
                 var executeCommand = _lazyComs.ExecuteCommand<ResourceCatalogDuplicateResult>(_lazyCon ?? _serverRepository.ActiveServer?.Connection, GlobalConstants.ServerWorkspaceID);
+                var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                 if (executeCommand == null)
                 {
-                    var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                     environmentViewModel?.RefreshCommand.Execute(null);
                     CloseView();
                     ViewResult = MessageBoxResult.OK;
@@ -124,10 +112,8 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (executeCommand.Status == ExecStatus.Success)
                     {
-                        var duplicatedItems = executeCommand.DuplicatedItems;
-                        var environmentViewModel = SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault();
                         var parentItem = SelectedItem ?? _explorerItemViewModel.Parent;
-                        childItems = environmentViewModel?.CreateExplorerItemModels(duplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
+                        childItems = environmentViewModel?.CreateExplorerItemModels(executeCommand.DuplicatedItems, _explorerItemViewModel.Server, parentItem, false, false);
                         var explorerItemViewModels = parentItem.Children;
                         explorerItemViewModels.AddRange(childItems);
                         parentItem.Children = explorerItemViewModels;
@@ -146,18 +132,39 @@ namespace Warewolf.Studio.ViewModels
             }
             finally
             {
-                ConnectControlSingleton.Instance.ReloadServer();
-
-                if (childItems != null)
-                {
-                    foreach (var childItem in childItems.Where(model => model.ResourceType == "Dev2Server"))
-                    {
-                        FireServerSaved(childItem.ResourceId);
-                    }
-                }
-
+                ReloadServerEvents(childItems);
                 IsDuplicating = false;
             }
+        }
+
+        private void ReloadServerEvents(ObservableCollection<IExplorerItemViewModel> childItems)
+        {
+            ConnectControlSingleton.Instance.ReloadServer();
+            if (childItems != null)
+            {
+                foreach (var childItem in childItems.Where(model => model.ResourceType == "Dev2Server"))
+                {
+                    FireServerSaved(childItem.ResourceId);
+                }
+            }
+        }
+
+        private void SetupLazyComs()
+        {
+            if (_explorerItemViewModel.IsFolder)
+            {
+                _lazyComs = new CommunicationController { ServiceName = "DuplicateFolderService" };
+                _lazyComs.AddPayloadArgument("FixRefs", FixReferences.ToString());
+            }
+            _lazyComs.AddPayloadArgument("NewResourceName", Name);
+
+            if (!_explorerItemViewModel.IsFolder)
+            {
+                _lazyComs.AddPayloadArgument("ResourceID", _explorerItemViewModel.ResourceId.ToString());
+            }
+
+            _lazyComs.AddPayloadArgument("sourcePath", _explorerItemViewModel.ResourcePath);
+            _lazyComs.AddPayloadArgument("destinationPath", Path);
         }
 
         private void FireServerSaved(Guid savedServerId, bool isDeleted = false)
@@ -234,7 +241,6 @@ namespace Warewolf.Studio.ViewModels
             return ret.InitializeAsync(environmentViewModel, selectedPath, header, explorerItemViewModel);
         }
 
-
         private void CloseView()
         {
             _view.RequestClose();
@@ -244,6 +250,10 @@ namespace Warewolf.Studio.ViewModels
 
         private void SetServiceName()
         {
+            if (ExplorerItemViewModelRename() != null)
+            {
+                return;
+            }
             var path = Path;
             if (!string.IsNullOrEmpty(path))
             {
@@ -271,35 +281,26 @@ namespace Warewolf.Studio.ViewModels
                         }
                         parent = parent.Parent;
                     }
-                    var path = "";
+                    var path = new StringBuilder();
                     if (parentNames.Count > 0)
                     {
                         for (var index = parentNames.Count; index > 0; index--)
                         {
                             var parentName = parentNames[index - 1];
-                            path = path + "\\" + parentName;
+                            path.Append(path + "\\" + parentName);
                         }
                     }
                     if (selectedItem.ResourceType == "Folder")
                     {
-                        path = path + "\\" + selectedItem.ResourceName;
+                        path.Append("\\" + selectedItem.ResourceName);
                     }
-                    return path;
+                    return path.ToString();
                 }
                 return "";
             }
-
         }
-        private IExplorerTreeItem _treeItem;
         private bool _isDuplicating;
-        private IExplorerTreeItem SelectedItem
-        {
-            get
-            {
-                _treeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
-                return _treeItem;
-            }
-        }
+        private IExplorerTreeItem SelectedItem => SingleEnvironmentExplorerViewModel?.SelectedItem;
 
         private void RaiseCanExecuteChanged()
         {
@@ -313,8 +314,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _view = CustomContainer.GetInstancePerRequestType<IRequestServiceNameView>();
 
-            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel,
-                Guid.Empty, false);
+            SingleEnvironmentExplorerViewModel = new SingleEnvironmentExplorerViewModel(_environmentViewModel, Guid.Empty, false);
             SingleEnvironmentExplorerViewModel.PropertyChanged += SingleEnvironmentExplorerViewModelPropertyChanged;
             SingleEnvironmentExplorerViewModel.SearchText = string.Empty;
 
@@ -329,8 +329,7 @@ namespace Warewolf.Studio.ViewModels
                     });
                 }
                 _environmentViewModel.IsSaveDialog = true;
-                _environmentViewModel.Children?.Flatten(model => model.Children)
-                    .Apply(model => model.IsSaveDialog = true);
+                _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = true);
             }
             catch (Exception)
             {
@@ -341,11 +340,17 @@ namespace Warewolf.Studio.ViewModels
             ValidateName();
             _view.DataContext = this;
             _view.ShowView();
+            
+            UpdateEnvironment();
 
+            return ViewResult;
+        }
+
+        private void UpdateEnvironment()
+        {
             _environmentViewModel.Filter(string.Empty);
             _environmentViewModel.IsSaveDialog = false;
-            _environmentViewModel.Children?.Flatten(model => model.Children)
-                .Apply(model => model.IsSaveDialog = false);
+            _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.IsSaveDialog = false);
 
             var windowsGroupPermission = _environmentViewModel.Server?.Permissions?[0];
             if (windowsGroupPermission != null)
@@ -356,13 +361,7 @@ namespace Warewolf.Studio.ViewModels
             var permissions = _environmentViewModel.Server?.GetPermissions(_environmentViewModel.ResourceId);
             if (permissions != null)
             {
-                if (_environmentViewModel.Children != null)
-                {
-                    foreach (var explorerItemViewModel in _environmentViewModel.Children.Flatten(model => model.Children))
-                    {
-                        explorerItemViewModel.SetPermissions((Permissions)permissions);
-                    }
-                }
+                _environmentViewModel.Children?.Flatten(model => model.Children).Apply(model => model.SetPermissions((Permissions)permissions));
             }
 
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
@@ -370,8 +369,6 @@ namespace Warewolf.Studio.ViewModels
             {
                 mainViewModel.ExplorerViewModel.SearchText = string.Empty;
             }
-
-            return ViewResult;
         }
 
         public ResourceName ResourceName => _resourceName;
@@ -440,16 +437,20 @@ namespace Warewolf.Studio.ViewModels
                 var explorerTreeItem = SingleEnvironmentExplorerViewModel.SelectedItem;
                 if (explorerTreeItem != null && explorerTreeItem.ResourceType == "Folder")
                 {
-                    return explorerTreeItem.Children.Any(model => model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != "Folder");
+                    return explorerTreeItem.Children.Any(model => model.ResourceName.Equals(requestedServiceName) && model.ResourceType != "Folder");
                 }
                 if (SingleEnvironmentExplorerViewModel.Environments.FirstOrDefault() != null)
                 {
                     var explorerItemViewModels = SingleEnvironmentExplorerViewModel.Environments.First().Children;
-                    if (IsDuplicate)
+                    return explorerItemViewModels != null && explorerItemViewModels.Any(model =>
                     {
-                        return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower());
-                    }
-                    return explorerItemViewModels != null && explorerItemViewModels.Any(model => requestedServiceName != null && model.ResourceName != null && model.ResourceName.ToLower() == requestedServiceName.ToLower() && model.ResourceType != "Folder");
+                        var areSame = requestedServiceName != null && model.ResourceName != null && model.ResourceName.Equals(requestedServiceName);
+                        if (!IsDuplicate)
+                        {
+                            areSame &= model.ResourceType != "Folder";
+                        }
+                        return areSame;
+                    });
                 }
             }
             return false;
@@ -490,6 +491,17 @@ namespace Warewolf.Studio.ViewModels
                 ViewModelUtils.RaiseCanExecuteChanged(DuplicateCommand);
                 ViewModelUtils.RaiseCanExecuteChanged(CancelCommand);
             }
+        }
+
+        public ICommand DoneCommand => IsDuplicate ? DuplicateCommand : OkCommand;
+
+        public IExplorerItemViewModel ExplorerItemViewModelRename()
+        {
+            return _environmentViewModel?.Children.Flatten(model => model.Children).FirstOrDefault(model => model.IsRenaming);
+        }
+        public IExplorerItemViewModel ExplorerItemViewModelIsSelected()
+        {
+            return _environmentViewModel?.Children.Flatten(model => model.Children).FirstOrDefault(model => model.IsSelected);
         }
 
         public void Dispose()

@@ -148,6 +148,86 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployEmptyServer")]
+        public void PopupController_ShowDeployEmptyServer_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string Description = Warewolf.Studio.Resources.Languages.Core.DeployEmptyServerDescription;
+            string Header = Warewolf.Studio.Resources.Languages.Core.DeployEmptyServerHeader;
+
+            popupController.ShowDeployNoResourcesToDeploy(Header, Description);
+            
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual(Header, header);
+            Assert.AreEqual(Description, description);
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployEmptyFolder")]
+        public void PopupController_ShowDeployEmptyFolder_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            string description = string.Empty;
+            string header = string.Empty;
+            MessageBoxButton buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            string Description = Warewolf.Studio.Resources.Languages.Core.DeployEmptyFolderDescription;
+            string Header = Warewolf.Studio.Resources.Languages.Core.DeployEmptyFolderHeader;
+
+            popupController.ShowDeployNoResourcesToDeploy(Header, Description);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual(Header, header);
+            Assert.AreEqual(Description, description);
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
         [TestCategory("PopupController_ShowDeployConflict")]
         public void PopupController_ShowDeployConflictTwo_SetProperties_AllPropertiesDisplayed()
         {

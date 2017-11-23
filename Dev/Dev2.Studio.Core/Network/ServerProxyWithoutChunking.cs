@@ -45,14 +45,9 @@ using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using Warewolf.Resource.Errors;
 
-
-
-
-
-
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IEnvironmentConnection
+    public class ServerProxyWithoutChunking : IEnvironmentConnection,IDisposable
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
@@ -699,31 +694,25 @@ namespace Dev2.Network
             task.Wait(100);
         }
         
-        public void Dispose()
-        {
-        }
-        
         public Guid ID { get; private set; }
 
-        public bool Equals(IEnvironmentConnection other)
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (other == null)
+            if (!_disposedValue)
             {
-                return false;
+                if (disposing)
+                {
+                    _reconnectHeartbeat.Dispose();
+                }                
+                _disposedValue = true;
             }
-            var isEqual = other.ID == ID && other.AuthenticationType == AuthenticationType &&
-                          other.AppServerUri.Equals(AppServerUri) && other.WebServerUri.Equals(WebServerUri);
-            return isEqual;
         }
-
-        public override bool Equals(object obj)
+       
+        public void Dispose()
         {
-            return Equals(obj as IEnvironmentConnection);
-        }
-
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
+            Dispose(true);
         }
     }
 

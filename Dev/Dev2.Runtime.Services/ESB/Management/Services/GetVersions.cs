@@ -30,16 +30,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetVersions : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
         private IServerVersionRepository _serverExplorerRepository;
 
         public override string HandlesType()
@@ -88,7 +78,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public IServerVersionRepository ServerVersionRepo
         {
-            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper()); }
+            get { return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper()); }
             set { _serverExplorerRepository = value; }
         }
     }
