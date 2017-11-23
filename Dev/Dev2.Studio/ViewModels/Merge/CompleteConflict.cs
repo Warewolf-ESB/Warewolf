@@ -51,7 +51,7 @@ namespace Dev2.ViewModels.Merge
             if (ReferenceEquals(null, obj))
             {
                 return false;
-            }            
+            }
             if (obj.GetType() != GetType())
             {
                 return false;
@@ -78,7 +78,7 @@ namespace Dev2.ViewModels.Merge
         bool _isArmSelectionAllowed;
 
         public event Action<IArmConnectorConflict,bool, string,string,string> OnChecked;
-        
+
         public bool IsChecked
         {
             get => _isChecked;
@@ -131,7 +131,7 @@ namespace Dev2.ViewModels.Merge
             if (ReferenceEquals(null, obj))
             {
                 return false;
-            }            
+            }
             if (obj.GetType() != GetType())
             {
                 return false;
@@ -272,21 +272,6 @@ namespace Dev2.ViewModels.Merge
                 childrenMatch &= completeConflict.All(check);
             }
             return current && childrenMatch;
-        }
-
-        public bool ValidateContainerTool(IMergeToolModel parentItem)
-        {
-            var mergeToolModel = parentItem as MergeToolModel;
-
-            switch (mergeToolModel?.ActivityDesignerViewModel.GetType().Name)
-            {
-                case "SequenceDesignerViewModel":
-                case "SelectAndApplyDesignerViewModel":
-                case "ForeachDesignerViewModel":
-                    return true;
-                default:
-                    return false;
-            }
         }
     }
 }
