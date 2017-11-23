@@ -25,9 +25,7 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         IResourceCatalog _rescat;
         IWebServices _webServices;
-
-
-
+        
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;

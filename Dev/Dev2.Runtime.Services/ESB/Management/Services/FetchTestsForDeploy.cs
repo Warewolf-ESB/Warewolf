@@ -6,34 +6,19 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 
-
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-
-    public class FetchTestsForDeploy : IEsbManagementEndpoint
+    public class FetchTestsForDeploy : DefaultEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
@@ -80,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType() };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -89,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchTestsForDeploy";
         }

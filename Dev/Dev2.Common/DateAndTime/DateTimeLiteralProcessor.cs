@@ -156,29 +156,26 @@ namespace Dev2.Common.DateAndTime
 
             if (dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out List<int> lookupLengths))
             {
-                //
-                // Perform all forward lookups
-                //
                 List<string> lookupResults =
                     lookupLengths.Select(i => DateTimeParser.ForwardLookup(formatArray, startPosition, i)).ToList();
 
                 int count = 0;
                 while (count < lookupResults.Count && nothingDied)
                 {
-                    //
-                    // Check if forward lookup result is a known date time format part
-                    //
                     if (dateTimeFormatPartOptions.TryGetValue(lookupResults[count], out List<IDateTimeFormatPartOptionTO> tmp))
                     {
                         result = lookupResults[count];
                         count = lookupResults.Count;
                     }
-                    else if (count == lookupLengths.Count - 1)
+                    else
                     {
-                        nothingDied = false;
-                        error =
-                            string.Concat("Failed to find any format part matches in forward lookups from character '",
-                                forwardLookupIndex, "' at index ", startPosition, " of format.");
+                        if (count == lookupLengths.Count - 1)
+                        {
+                            nothingDied = false;
+                            error =
+                                string.Concat("Failed to find any format part matches in forward lookups from character '",
+                                    forwardLookupIndex, "' at index ", startPosition, " of format.");
+                        }
                     }
 
                     count++;

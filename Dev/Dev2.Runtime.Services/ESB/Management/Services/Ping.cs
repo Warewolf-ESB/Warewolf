@@ -20,17 +20,14 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Basic sanity test ;)
-    /// </summary>
-    public class Ping : IEsbManagementEndpoint
+    public class Ping : DefaultEsbManagementEndpoint
     {
         public Ping()
         {
             Now = () => DateTime.Now;
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage {HasError = false};
 
@@ -43,12 +40,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public Func<DateTime> Now { get; set; }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "Ping";
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService ds = new DynamicService {Name = HandlesType()};
 

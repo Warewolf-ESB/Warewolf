@@ -72,9 +72,8 @@ namespace Dev2.Activities.Designers2.FindIndex
             }
         }
         
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        string Index { set { SetProperty(value); } get { return GetProperty<string>(); } }
-        string Direction { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        string Index { set => SetProperty(value); get => GetProperty<string>(); }
+        string Direction { set => SetProperty(value); get => GetProperty<string>(); }
         
         public override void Validate()
         {

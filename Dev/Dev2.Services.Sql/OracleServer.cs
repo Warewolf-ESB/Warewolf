@@ -382,7 +382,7 @@ namespace Dev2.Services.Sql
 
         private DataTable GetSchema(IDbConnection connection)
         {
-            const string CommandText = GlobalConstants.SchemaQueryOracle;
+            string CommandText = GlobalConstants.SchemaQueryOracle;
             if (_isTesting)
             {
                 DataTable proceduresDataTable = new DataTable();

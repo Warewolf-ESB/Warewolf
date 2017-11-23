@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data.Settings;
@@ -26,24 +25,9 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Checks a users permissions on the local file system
-    /// </summary>
-    public class SettingsRead : IEsbManagementEndpoint
+    public class SettingsRead : DefaultEsbManagementEndpoint
     {
-
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             var settings = new Settings();
@@ -87,7 +71,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return new LoggingSettingsRead();
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var dynamicService = new DynamicService
             {
@@ -107,7 +91,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return dynamicService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "SettingsReadService";
         }

@@ -149,10 +149,11 @@ namespace Dev2.Studio.Core.Helpers
 
     internal class InstallerResources
     {
+        protected InstallerResources()
+        {
+        }
 
         public static bool InstallerTesting => ConfigurationManager.AppSettings["InstallerTesting"] == null || bool.Parse(ConfigurationManager.AppSettings["InstallerTesting"]);
-
-
         public static string WarewolfVersion => InstallerTesting ? ConfigurationManager.AppSettings["TestVersionLocation"] : ConfigurationManager.AppSettings["VersionLocation"];
         public static string WarewolfChecksum => InstallerTesting ? ConfigurationManager.AppSettings["TestCheckSumLocation"] : ConfigurationManager.AppSettings["CheckSumLocation"];
     }

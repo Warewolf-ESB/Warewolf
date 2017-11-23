@@ -295,7 +295,7 @@ namespace Dev2.Services.Sql
 
         private DataTable GetSchema(IDbConnection connection)
         {
-            const string CommandText = GlobalConstants.SchemaQueryPostgreSql;
+            string CommandText = GlobalConstants.SchemaQueryPostgreSql;
             using (var command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);

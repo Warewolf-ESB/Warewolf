@@ -13,14 +13,10 @@ using System.Collections.Generic;
 using System.Xml;
 using Dev2.Common.Interfaces.Data;
 
-
-
 namespace Dev2.DataList.Contract
-
 {
     public abstract class LanguageParser
     {
-
         private readonly string _elementTag;
         const string _nameAttribute = "Name";
         private readonly string _mapsToAttribute;
@@ -35,7 +31,7 @@ namespace Dev2.DataList.Contract
         const string _magicEval = "[[";
         const string _outputMapsToAdjust = "Name";
 
-        internal LanguageParser(string elementTag, string mapsTo, bool defaultValueToMapsTo)
+        protected LanguageParser(string elementTag, string mapsTo, bool defaultValueToMapsTo)
         {
             _elementTag = elementTag;
             _mapsToAttribute = mapsTo;

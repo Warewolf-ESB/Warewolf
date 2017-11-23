@@ -39,11 +39,6 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 
-
-
-
-
-
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public abstract class AbstractWebRequestHandler : IRequestHandler
@@ -62,11 +57,6 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog,IAuthorizationService authorizationService)
-            :this(catalog,testCatalog)
-        {
-            _authorizationService = authorizationService;
-        }
         protected AbstractWebRequestHandler(IResourceCatalog catalog
                                             , ITestCatalog testCatalog
                                             , IDSFDataObject dataObject
@@ -74,6 +64,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                             , IWorkspaceRepository repository)
                                             : this(catalog, testCatalog)
         {
+#pragma warning disable S3010 // For testing
             _dataObject = dataObject;
             _authorizationService = authorizationService;
             _repository = repository;
@@ -83,6 +74,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             _resourceCatalog = catalog;
             _testCatalog = testCatalog;
+#pragma warning restore S3010
         }
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
@@ -93,18 +85,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceGuid = SetWorkspaceId(workspaceId, workspaceRepository);
 
             var allErrors = new ErrorResultTO();
-            var dataObject = _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-            {
-                IsFromWebServer = true
-                ,
-                ExecutingUser = user
-                ,
-                ServiceName = serviceName
-                ,
-                WorkspaceID = workspaceGuid
-                ,
-                ExecutionID = Guid.NewGuid()
-            };
+            var dataObject = CreateNewDsfDataObject(webRequest, serviceName, user, workspaceGuid);
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
             dataObject.SetupForRemoteInvoke(headers);
@@ -131,7 +112,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            
+
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
@@ -139,7 +120,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ErrorResultTO errors = null;
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
-                if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
+                if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
                     formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
                     return new StringResponseWriter(executePayload, formatter.ContentType);
@@ -148,9 +129,12 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                 allErrors.MergeErrors(errors);
             }
-            else if (!canExecute)
+            else
             {
-                allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                if (!canExecute)
+                {
+                    allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                }
             }
 
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
@@ -190,6 +174,18 @@ namespace Dev2.Runtime.WebServer.Handlers
             };
             return executionDto.CreateResponseWriter();
 
+        }
+
+        private static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid)
+        {
+            return _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            {
+                IsFromWebServer = true,
+                ExecutingUser = user,
+                ServiceName = serviceName,
+                WorkspaceID = workspaceGuid,
+                ExecutionID = Guid.NewGuid()
+            };
         }
 
         private static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
@@ -283,9 +279,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     pairs.Add(keyValue[0], keyValue[1]);
                 }
-                else if (keyValue.Length == 1)
+                else
                 {
-                    if (keyValue[0].IsXml() || keyValue[0].IsJSON())
+                    if (keyValue.Length == 1 && (keyValue[0].IsXml() || keyValue[0].IsJSON()))
                     {
                         pairs.Add(keyValue[0], keyValue[0]);
                     }

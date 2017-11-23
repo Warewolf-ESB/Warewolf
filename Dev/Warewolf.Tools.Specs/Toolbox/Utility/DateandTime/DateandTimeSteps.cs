@@ -64,19 +64,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
 
             var dateTime = new DsfDateTimeActivity
-                {
-                    Result = ResultVariable,
-                    DateTime = inputDate,
-                    InputFormat = inputFormat,
-                    OutputFormat = outputFormat,
-                    TimeModifierType = timeModifierType,
-                    TimeModifierAmountDisplay = timeModifierAmount
-                };
+            {
+                Result = ResultVariable,
+                DateTime = inputDate,
+                InputFormat = inputFormat,
+                OutputFormat = outputFormat,
+                TimeModifierType = timeModifierType,
+                TimeModifierAmountDisplay = timeModifierAmount
+            };
 
             TestStartNode = new FlowStep
-                {
-                    Action = dateTime
-                };
+            {
+                Action = dateTime
+            };
 
             scenarioContext.Add("activity", dateTime);
         }
@@ -136,9 +136,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out string actualValue, out string error);
-            
+
             TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            
+
             converter.ConvertFrom(actualValue);
         }
 
@@ -149,14 +149,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out string actualValue, out string error);
-            if(actualValue != null)
+            if (actualValue != null)
             {
                 //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
                 actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
-                if(expectedResult.Contains("A.D.") || expectedResult.Contains("AD"))
+                if (expectedResult.Contains("A.D.") || expectedResult.Contains("AD"))
                 {
                     var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
-                    if(eraValue == -1) //The Era value does not use punctuation
+                    if (eraValue == -1) //The Era value does not use punctuation
                     {
                         actualValue = actualValue.Replace("A.D.", "AD");
                         expectedResult = expectedResult.Replace("A.D.", "AD");
@@ -189,7 +189,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
             else
             {
-                if(actualValue != null)
+                if (actualValue != null)
                 {
                     actualValue = actualValue.Replace('"', ' ').Trim();
                     Assert.AreEqual(expectedResult, actualValue);
@@ -205,9 +205,23 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out string actualValue, out string error);
             Assert.IsTrue(actualValue.Contains("."));
-            
+
 
         }
+
+        [Then(@"the datetime result should contain milliseconds Standard Format")]
+        public void ThenTheDatetimeResultShouldContainMillisecondsStandardFormat()
+        {
+            var result = scenarioContext.Get<IDSFDataObject>("result");
+
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out string actualValue, out string error);
+
+            var parsed = DateTime.Parse(actualValue, CultureInfo.InvariantCulture);
+            var milliseconds = parsed.Millisecond;
+            Assert.AreEqual(0, milliseconds);
+        }
+
 
     }
 }

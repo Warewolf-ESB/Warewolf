@@ -32,7 +32,11 @@ namespace Dev2.Data.SystemTemplates.Models
         public int TotalDecisions => TheStack.Count;
 
         [JsonIgnore]
-        public string Version { get { return _ver; } set { _ver = value; } }
+        public string Version
+        {
+            get => _ver;
+            set => _ver = value;
+        }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Dev2ModelType ModelName => Dev2ModelType.Dev2DecisionStack;

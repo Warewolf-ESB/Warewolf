@@ -37,7 +37,6 @@ namespace Warewolf.Studio.ViewModels
         bool _testing;
         string _headerText;
         private bool _enableSend;
-
         private bool _isDisposed;
 
         public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator)
@@ -685,30 +684,17 @@ namespace Warewolf.Studio.ViewModels
                 RequestServiceNameViewModel.Result?.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
-            Dispose(true);
+            DisposeManageEmailSourceViewModel(true);
         }
-
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+        
+        void DisposeManageEmailSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
                 if (disposing)
                 {
-                    // Dispose managed resources.
                     _token?.Dispose();
                 }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

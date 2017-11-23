@@ -212,9 +212,12 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     ViewModel.Expand();
                 }
-                else if (ViewModel.ShowLarge)
+                else
                 {
-                    ViewModel.Collapse();
+                    if (ViewModel.ShowLarge)
+                    {
+                        ViewModel.Collapse();
+                    }
                 }
             }
         }
@@ -392,12 +395,15 @@ namespace Dev2.Activities.Designers2.Core
                             _showCollapseLargeView.Header = "Collapse Large View";
                             _showCollapseLargeView.Icon = icon;
                         }
-                        else if (ViewModel.ShowSmall)
+                        else
                         {
-                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
-                            var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                            _showCollapseLargeView.Header = "Show Large View";
-                            _showCollapseLargeView.Icon = icon;
+                            if (ViewModel.ShowSmall)
+                            {
+                                var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Expand, Brushes.Black);
+                                var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
+                                _showCollapseLargeView.Header = "Show Large View";
+                                _showCollapseLargeView.Icon = icon;
+                            }
                         }
                     }
                 }

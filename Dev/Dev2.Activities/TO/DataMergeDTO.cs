@@ -71,11 +71,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        public bool IsPaddingFocused { get { return _isPaddingFocused; } set { OnPropertyChanged(ref _isPaddingFocused, value); } }
+        public bool IsPaddingFocused { get => _isPaddingFocused; set => OnPropertyChanged(ref _isPaddingFocused, value); }
 
-        public bool IsAtFocused { get { return _isAtFocused; } set { OnPropertyChanged(ref _isAtFocused, value); } }
+        public bool IsAtFocused { get => _isAtFocused; set => OnPropertyChanged(ref _isAtFocused, value); }
 
-        public bool IsFieldNameFocused { get { return _isFieldNameFocused; } set { OnPropertyChanged(ref _isFieldNameFocused, value); } }
+        public bool IsFieldNameFocused { get => _isFieldNameFocused; set => OnPropertyChanged(ref _isFieldNameFocused, value); }
 
         public bool Inserted { get; set; }
 
@@ -104,11 +104,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
+        public bool EnableAt { get => _enableAt; set => OnPropertyChanged(ref _enableAt, value); }
 
-        public bool EnablePadding { get { return _enablePadding; } set { OnPropertyChanged(ref _enablePadding, value); } }
+        public bool EnablePadding { get => _enablePadding; set => OnPropertyChanged(ref _enablePadding, value); }
 
-        public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
+        public int IndexNumber { get => _indexNum; set => OnPropertyChanged(ref _indexNum, value); }
 
         [FindMissing]
         public string InputVariable

@@ -69,3 +69,4 @@ Dev/SonarQube/SolutionBinding.sqconfig
 /Dev/.axoCover/settings.json
 /Dev/.axoCover/reports
 /Dev/.axoCover/runs
+/Dev/Dev2.IntegrationTests/TestEditorFlakeyTests.cs

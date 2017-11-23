@@ -20,13 +20,12 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ServiceModel.Data
 {
-    // PBI 953 - 2013.05.16 - TWR - Created
     public class EmailSource : Resource, IResourceSource,IEmailSource
     {
-        public static int DefaultTimeout = 100000; // (100 seconds)
-        public static int DefaultPort = 25;
-        public static int SslPort = 465;
-        public static int TlsPort = 587;
+        public static readonly int DefaultTimeout = 100000; // (100 seconds)
+        public static readonly int DefaultPort = 25;
+        public static readonly int SslPort = 465;
+        public static readonly int TlsPort = 587;
 
         #region Properties
 

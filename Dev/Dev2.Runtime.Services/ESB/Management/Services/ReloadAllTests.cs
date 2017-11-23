@@ -12,15 +12,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-
-    public class ReloadAllTests : IEsbManagementEndpoint
+    public class ReloadAllTests : DefaultEsbManagementEndpoint
     {
         private ITestCatalog _testCatalog;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             try
@@ -50,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType() };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
@@ -59,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return newDs;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "ReloadAllTests";
         }

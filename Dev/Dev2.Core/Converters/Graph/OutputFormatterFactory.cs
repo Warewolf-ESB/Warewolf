@@ -13,7 +13,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    public class OutputFormatterFactory
+    public static class OutputFormatterFactory
     {
         public static IOutputFormatter CreateOutputFormatter(IOutputDescription outputDescription)
         {

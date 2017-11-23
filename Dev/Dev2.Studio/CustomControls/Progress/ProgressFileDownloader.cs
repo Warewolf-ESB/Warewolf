@@ -39,15 +39,15 @@ namespace Dev2.CustomControls.Progress
         #endregion
 
         #region CTOR
-        public ProgressFileDownloader(Window owner) // cant cover this because a window needs to be shown to be a parent of something else. 
+        public ProgressFileDownloader(Window owner)
             : this(new Dev2WebClient(new WebClient()), new FileWrapper(), new CryptoProvider(new SHA256CryptoServiceProvider()))
         {
             _owner = owner;
         }
 
-        public static Func<Window, Action, IProgressNotifier> GetProgressDialogViewModel = (owner, cancelAction) => DialogViewModel(owner, cancelAction);
+        private static Func<Window, Action, IProgressNotifier> getProgressDialogViewModel = (owner, cancelAction) => DialogViewModel(owner, cancelAction);
 
-        
+
         static IProgressNotifier DialogViewModel(Window owner, Action cancelAction)
         {
             var dialog = new ProgressDialog(owner);
@@ -128,6 +128,7 @@ namespace Dev2.CustomControls.Progress
         #region OnDownloadFileCompleted
 
         public Action<string> ShutDownAction { get; set; }
+        public static Func<Window, Action, IProgressNotifier> GetProgressDialogViewModel { get => getProgressDialogViewModel; set => getProgressDialogViewModel = value; }
 
         static void ShutdownAndInstall(string fileName)
         {

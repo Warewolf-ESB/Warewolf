@@ -205,15 +205,8 @@ namespace Dev2.Runtime.ESB
             return result;
         }
 
-        /// <summary>
-        /// Generates the invoke container.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceId">The service unique identifier.</param>
-        /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
-        /// <param name="masterDataListId">The master data list unique identifier.</param>
-        /// <returns></returns>
-        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke) => GenerateInvokeContainer(dataObject, serviceId, isLocalInvoke, default(Guid));
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId)
         {
             if (isLocalInvoke)
             {
@@ -221,10 +214,8 @@ namespace Dev2.Runtime.ESB
                 if (_cache.ContainsKey(dataObject.ResourceID))
                 {
                     sa = _cache[dataObject.ResourceID];
-
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
-
 
                 var theService = _serviceLocator.FindService(serviceId, _workspace.ID);
                 if (theService != null && theService.Actions.Any())
@@ -244,16 +235,8 @@ namespace Dev2.Runtime.ESB
             return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
 
-
-        /// <summary>
-        /// Generates the invoke container.
-        /// </summary>
-        /// <param name="dataObject">The data object.</param>
-        /// <param name="serviceName">Name of the service.</param>
-        /// <param name="isLocalInvoke">if set to <c>true</c> [is local invoke].</param>
-        /// <param name="masterDataListId">The master data list unique identifier.</param>
-        /// <returns></returns>
-        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke) => GenerateInvokeContainer(dataObject, serviceName, isLocalInvoke, default(Guid));
+        public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke, Guid masterDataListId)
         {
             if (isLocalInvoke)
             {

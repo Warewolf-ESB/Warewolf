@@ -57,24 +57,26 @@ namespace Dev2.Activities.Designers2.DateTime
 
             if(string.IsNullOrWhiteSpace(value))
             {
-                viewModel.TimeModifierAmountDisplay = value;
+                viewModel.SetTimeModifierAmountDisplay(value);
             }
             viewModel.TimeModifierType = value;
         }
+        
+        string TimeModifierType { set => SetProperty(value); get {return  GetProperty<string>();} }
 
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        string TimeModifierType { set { SetProperty(value);} get {return  GetProperty<string>();} }
-        string TimeModifierAmountDisplay { set { SetProperty(value); } }
-        string InputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
-        string OutputFormat { set => SetProperty(value); get { return GetProperty<string>(); } }
-        public override void Validate()
-        {
-        }
+        private void SetTimeModifierAmountDisplay(string value) { SetProperty(value); }
+        string InputFormat { set => SetProperty(value); get => GetProperty<string>(); }
+        string OutputFormat { set => SetProperty(value); get => GetProperty<string>(); }
 
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+        }
+
+        public override void Validate()
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -18,11 +18,13 @@ using System.Security.Principal;
 
 namespace Dev2.Common.Common
 {
-    /// <summary>
-    /// </summary>
     public class GetComputerNames
     {
         private static List<string> _currentComputerNames;
+
+        protected GetComputerNames()
+        {
+        }
 
         public static List<string> ComputerNames
         {
@@ -41,11 +43,7 @@ namespace Dev2.Common.Common
         {
             _currentComputerNames = StandardComputerNameQuery();
         }
-
-        /// <summary>
-        ///     Query for Network Computer Names
-        /// </summary>
-        /// <returns></returns>
+        
         private static List<string> StandardComputerNameQuery()
         {
             WindowsIdentity wi = WindowsIdentity.GetCurrent();

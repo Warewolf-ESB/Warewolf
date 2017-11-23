@@ -79,21 +79,23 @@ namespace Dev2.Utils
                     
                     for(int i = 0; i < allNodes.Count; i++)
                     {
-                        if(allNodes[i] is DatalistRecordSetNode)
+                        if (allNodes[i] is DatalistRecordSetNode)
                         {
                             var refNode = allNodes[i] as DatalistRecordSetNode;
                             string nodeName = refNode.GetRepresentationForEvaluation();
                             nodeName = nodeName.Substring(2, nodeName.Length - 4);
                             result.Add(nodeName);
                         }
-                        else if(allNodes[i] is DatalistReferenceNode)
+                        else
                         {
-                            var refNode = allNodes[i] as DatalistReferenceNode;
-                            string nodeName = refNode.GetRepresentationForEvaluation();
-                            nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                            result.Add(nodeName);
+                            if (allNodes[i] is DatalistReferenceNode)
+                            {
+                                var refNode = allNodes[i] as DatalistReferenceNode;
+                                string nodeName = refNode.GetRepresentationForEvaluation();
+                                nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                                result.Add(nodeName);
+                            }
                         }
-
                     }
                 }
             }

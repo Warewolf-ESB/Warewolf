@@ -28,10 +28,7 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Checks a users permissions on the local file system
-    /// </summary>
-    public class SecurityRead : IEsbManagementEndpoint
+    public class SecurityRead : DefaultEsbManagementEndpoint
     {
         readonly TimeSpan _cacheTimeout = new TimeSpan(1, 0, 0);
         private IResourceCatalog _resourceCatalog;
@@ -52,7 +49,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Any;
         }
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Debug("Start Security Read", GlobalConstants.WarewolfDebug);
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
@@ -169,7 +166,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return 1;
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var dynamicService = new DynamicService
             {
@@ -189,7 +186,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return dynamicService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "SecurityReadService";
         }

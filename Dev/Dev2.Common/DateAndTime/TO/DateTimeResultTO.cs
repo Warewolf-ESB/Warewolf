@@ -66,12 +66,15 @@ namespace Dev2.Common.DateAndTime.TO
                     Hours += 12;
                 }
             }
-            else if (AmPm == DateTimeAmPm.am)
+            else
             {
-                Is24H = true;
-                if (Hours >= 12)
+                if (AmPm == DateTimeAmPm.am)
                 {
-                    Hours -= 12;
+                    Is24H = true;
+                    if (Hours >= 12)
+                    {
+                        Hours -= 12;
+                    }
                 }
             }
         }

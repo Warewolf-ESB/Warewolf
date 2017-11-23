@@ -82,9 +82,12 @@ namespace Warewolf.Studio.CustomControls
             {
                 scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset - offset); //Scroll up. 
             }
-            else if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list? 
+            else
             {
-                scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset); //Scroll down.     
+                if (verticalPos > container.ActualHeight - tolerance) //Bottom of visible list? 
+                {
+                    scrollViewer.ScrollToVerticalOffset(scrollViewer.VerticalOffset + offset); //Scroll down.     
+                }
             }
         }
 

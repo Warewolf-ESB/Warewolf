@@ -227,7 +227,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 IsLoading = true;
-                isConnected = await Connect(_selectedConnection);
+                isConnected = await Connect(_selectedConnection).ConfigureAwait(true);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
@@ -242,7 +242,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 IsLoading = true;
                 IsConnecting = true;
-                var isConnected = await ConnectOrDisconnect();
+                var isConnected = await ConnectOrDisconnect().ConfigureAwait(true);
                 if (_selectedConnection.IsConnected && isConnected)
                 {
                     Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);

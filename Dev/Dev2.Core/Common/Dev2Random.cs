@@ -86,13 +86,10 @@ namespace Dev2.Common
         private uint DecimalPlaces(double x)
         {
             uint places = 0;
-            
-            
-            for (; x * Math.Pow(10, places) % 1 != 0; places++)
+            while (!((x * Math.Pow(10, places) % 1).Equals(0)))
             {
-                ;
+                places++;
             }
-
             return places;
         }
         private string GenerateLetters(int length, ref int seed)

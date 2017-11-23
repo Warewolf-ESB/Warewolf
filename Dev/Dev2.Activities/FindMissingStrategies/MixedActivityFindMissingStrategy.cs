@@ -103,7 +103,7 @@ namespace Dev2.FindMissingStrategies
                     results.Add(dsAct.Result);
                 }
             }
-            else if(activityType == typeof(DsfDataMergeActivity))
+            else if (activityType == typeof(DsfDataMergeActivity))
             {
                 if (activity is DsfDataMergeActivity dmAct)
                 {
@@ -114,7 +114,7 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if(activityType == typeof(DsfXPathActivity))
+            else if (activityType == typeof(DsfXPathActivity))
             {
                 if (activity is DsfXPathActivity xpAct)
                 {
@@ -125,7 +125,7 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if(activityType == typeof(DsfSqlBulkInsertActivity))
+            else if (activityType == typeof(DsfSqlBulkInsertActivity))
             {
                 if (activity is DsfSqlBulkInsertActivity sbiAct)
                 {
@@ -136,18 +136,21 @@ namespace Dev2.FindMissingStrategies
                     }
                 }
             }
-            else if(activityType == typeof(DsfFindRecordsMultipleCriteriaActivity))
+            else
             {
-                if (activity is DsfFindRecordsMultipleCriteriaActivity frmAct)
+                if (activityType == typeof(DsfFindRecordsMultipleCriteriaActivity))
                 {
-                    results.AddRange(InternalFindMissing(frmAct.ResultsCollection));
-                    if (!string.IsNullOrEmpty(frmAct.FieldsToSearch))
+                    if (activity is DsfFindRecordsMultipleCriteriaActivity frmAct)
                     {
-                        results.Add(frmAct.FieldsToSearch);
-                    }
-                    if (!string.IsNullOrEmpty(frmAct.Result))
-                    {
-                        results.Add(frmAct.Result);
+                        results.AddRange(InternalFindMissing(frmAct.ResultsCollection));
+                        if (!string.IsNullOrEmpty(frmAct.FieldsToSearch))
+                        {
+                            results.Add(frmAct.FieldsToSearch);
+                        }
+                        if (!string.IsNullOrEmpty(frmAct.Result))
+                        {
+                            results.Add(frmAct.Result);
+                        }
                     }
                 }
             }

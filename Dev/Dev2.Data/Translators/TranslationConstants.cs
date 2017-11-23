@@ -13,7 +13,7 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.DataList.Contract.Translators
 {
-    public class TranslationConstants
+    public static class TranslationConstants
     {
         public static readonly Array systemTags = Enum.GetValues(typeof(enSystemTag));
     }

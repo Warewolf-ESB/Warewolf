@@ -22,9 +22,8 @@ using Newtonsoft.Json.Serialization;
 namespace Dev2.Settings
 {
     public abstract class SettingsItemViewModel : DependencyObject, INotifyPropertyChanged
-    {
-        
-        public SettingsItemViewModel()
+    {        
+        protected SettingsItemViewModel()
         {
             CloseHelpCommand = new DelegateCommand(o => CloseHelp());
         }

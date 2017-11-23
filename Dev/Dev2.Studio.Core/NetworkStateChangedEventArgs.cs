@@ -11,10 +11,14 @@ namespace Dev2.Studio.Core
         {
             switch (state.ToState)
             {
-                case NetworkState.Connecting: _state = ConnectionNetworkState.Connecting; break;
-                case NetworkState.Offline: _state = ConnectionNetworkState.Disconnected; break;
-                case NetworkState.Online: _state = ConnectionNetworkState.Connected; break;
+                case NetworkState.Connecting:
+                    _state = ConnectionNetworkState.Connecting;
+                    break;
+                case NetworkState.Online:
+                    _state = ConnectionNetworkState.Connected;
+                    break;
                 default:
+                    _state = ConnectionNetworkState.Disconnected;
                     break;
             }
 

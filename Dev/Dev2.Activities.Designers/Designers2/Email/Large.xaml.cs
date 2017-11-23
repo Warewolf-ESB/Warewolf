@@ -27,7 +27,7 @@ namespace Dev2.Activities.Designers2.Email
             return InitialFocusElement;
         }
 
-        public string ThePassword { get { return ThePasswordBox.Password; } set { ThePasswordBox.Password = value; } }
+        public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
 
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {

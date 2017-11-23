@@ -23,8 +23,6 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Studio.Core;
 
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageComPluginSourceViewModel : SourceBaseImpl<IComPluginSource>, IManageComPluginSourceViewModel
@@ -479,7 +477,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
+            set
+            {
+                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+                _requestServiceNameViewModel.Start();
+            }
         }
 
         public ICommand OkCommand { get; set; }
@@ -498,10 +500,10 @@ namespace Warewolf.Studio.ViewModels
         protected override void OnDispose()
         {
             RequestServiceNameViewModel?.Dispose();
-            Dispose(true);
+            DisposeManageComPluginSourceViewModel(true);
         }
         
-        void Dispose(bool disposing)
+        void DisposeManageComPluginSourceViewModel(bool disposing)
         {
             if (!_isDisposed && !disposing)
             {

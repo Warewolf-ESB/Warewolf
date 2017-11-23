@@ -79,20 +79,20 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             
         }
 
-        public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
+        public bool EnableAt { get => _enableAt; set => OnPropertyChanged(ref _enableAt, value); }
 
-        public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
+        public int IndexNumber { get => _indexNum; set => OnPropertyChanged(ref _indexNum, value); }
 
         public List<string> OutList { get; set; }
 
-        public bool Include { get { return _include; } set { OnPropertyChanged(ref _include, value); } }
+        public bool Include { get => _include; set => OnPropertyChanged(ref _include, value); }
 
         [FindMissing]
-        public string EscapeChar { get { return _escapeChar; } set { OnPropertyChanged(ref _escapeChar, value); } }
+        public string EscapeChar { get => _escapeChar; set => OnPropertyChanged(ref _escapeChar, value); }
 
-        public bool IsEscapeCharFocused { get { return _isEscapeCharFocused; } set { OnPropertyChanged(ref _isEscapeCharFocused, value); } }
+        public bool IsEscapeCharFocused { get => _isEscapeCharFocused; set => OnPropertyChanged(ref _isEscapeCharFocused, value); }
 
-        public bool IsEscapeCharEnabled { get { return _isEscapeCharEnabled; } set { OnPropertyChanged(ref _isEscapeCharEnabled, value); } }
+        public bool IsEscapeCharEnabled { get => _isEscapeCharEnabled; set => OnPropertyChanged(ref _isEscapeCharEnabled, value); }
 
         [FindMissing]
         public string OutputVariable
@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsOutputVariableFocused { get { return _isOutputVariableFocused; } set { OnPropertyChanged(ref _isOutputVariableFocused, value); } }
+        public bool IsOutputVariableFocused { get => _isOutputVariableFocused; set => OnPropertyChanged(ref _isOutputVariableFocused, value); }
 
         public string SplitType
         {
@@ -131,7 +131,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsAtFocused { get { return _isAtFocused; } set { OnPropertyChanged(ref _isAtFocused, value); } }
+        public bool IsAtFocused { get => _isAtFocused; set => OnPropertyChanged(ref _isAtFocused, value); }
 
         public bool CanRemove()
         {

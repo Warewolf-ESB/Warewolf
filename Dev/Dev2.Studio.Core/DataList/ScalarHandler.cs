@@ -54,9 +54,12 @@ namespace Dev2.Studio.Core.DataList
                     {
                         _vm.ScalarCollection.Add(scalar);
                     }
-                    else if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
+                    else
                     {
-                        _vm.ScalarCollection.Add(scalar);
+                        if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
+                        {
+                            _vm.ScalarCollection.Add(scalar);
+                        }
                     }
                 }
             }
@@ -70,9 +73,12 @@ namespace Dev2.Studio.Core.DataList
                     {
                         _vm.ScalarCollection.Add(scalar);
                     }
-                    else if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
+                    else
                     {
-                        _vm.ScalarCollection.Add(scalar);
+                        if (scalar.DisplayName.ToUpper().StartsWith(_vm.SearchText.ToUpper()))
+                        {
+                            _vm.ScalarCollection.Add(scalar);
+                        }
                     }
                 }
             }

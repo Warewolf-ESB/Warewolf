@@ -47,7 +47,6 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void RenameFolder_Updates_The_Workflow_Url()
         {
-            //const string ExistingFloder = "Acceptance Tests";
             const string AcceptanceTestsRenamed = "Acceptance Tests_Renamed";
             const string WorkflowName = "LoopTest";
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Tests";

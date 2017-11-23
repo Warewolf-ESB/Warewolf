@@ -164,9 +164,8 @@ namespace Dev2.Activities.Designers2.Foreach
             }
             return false;
         }
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        enForEachType ForEachType { set { SetProperty(value); } get { return GetProperty<enForEachType>(); } }
+        
+        enForEachType ForEachType { set => SetProperty(value); get => GetProperty<enForEachType>(); }
 
 
         public override void Validate()

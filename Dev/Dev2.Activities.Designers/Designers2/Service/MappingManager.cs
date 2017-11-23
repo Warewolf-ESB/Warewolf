@@ -312,7 +312,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 serviceDesignerViewModel.ValidationMemoManager.UpdateLastValidationMemoWithVersionChanged();
                 _resourcesUpdated = true;
-                serviceDesignerViewModel.ValidationMemoManager.VersionsDifferent = true;
+                serviceDesignerViewModel.ValidationMemoManager.SetVersionsDifferent(true);
             }
         }
     }

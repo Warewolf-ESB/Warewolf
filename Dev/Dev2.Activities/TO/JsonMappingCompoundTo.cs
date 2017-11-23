@@ -77,9 +77,12 @@ namespace Dev2.TO
                             {
                                 _evalResultAsObject = true;
                             }
-                            else if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
+                            else
                             {
-                                _evalResultAsObject = false;
+                                if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
+                                {
+                                    _evalResultAsObject = false;
+                                }
                             }
                         }
                     }

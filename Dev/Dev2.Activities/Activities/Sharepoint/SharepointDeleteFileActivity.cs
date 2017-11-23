@@ -113,7 +113,7 @@ namespace Dev2.Activities.Sharepoint
                             string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
                             string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
-                            var result = Delete(sharepointSource,serverPath);
+                            var result = Delete(sharepointSource, serverPath);
 
                             int indexToUpsertTo = 1;
 
@@ -125,13 +125,16 @@ namespace Dev2.Activities.Sharepoint
                                 indexToUpsertTo++;
                             }
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            var result = Delete(sharepointSource, serverPath);
-
-                            foreach (var folder in result)
+                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                             {
-                                outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                var result = Delete(sharepointSource, serverPath);
+
+                                foreach (var folder in result)
+                                {
+                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                }
                             }
                         }
                     }

@@ -101,17 +101,20 @@ namespace Dev2.Activities.Designers2.Core
         {
             if(!_isToggleCheckedChanged)
             {
-                if(propertyName == ShowLargeProperty.Name)
+                if (propertyName == ShowLargeProperty.Name)
                 {
                     _isToggleCheckedChanged = true;
                     ShowQuickVariableInput = false;
                 }
-                else if(propertyName == ShowQuickVariableInputProperty.Name)
+                else
                 {
-                    if(PreviousView == ShowLargeProperty.Name)
+                    if (propertyName == ShowQuickVariableInputProperty.Name)
                     {
-                        _isToggleCheckedChanged = true;
-                        ShowLarge = false;
+                        if (PreviousView == ShowLargeProperty.Name)
+                        {
+                            _isToggleCheckedChanged = true;
+                            ShowLarge = false;
+                        }
                     }
                 }
                 _isToggleCheckedChanged = false;

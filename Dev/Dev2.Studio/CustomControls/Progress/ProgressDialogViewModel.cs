@@ -94,14 +94,9 @@ namespace Dev2.CustomControls.Progress
                 return _progressValue;
             }
             set
-            {
-                
-                if(_progressValue != value)
-                
-                {
-                    _progressValue = value;
-                    OnPropertyChanged();
-                }
+            {                
+                _progressValue = value;
+                OnPropertyChanged();
             }
         }
         public bool IsCancelButtonEnabled

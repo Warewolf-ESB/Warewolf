@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Data.TO;
 using Newtonsoft.Json;
-
+using Dev2.Common;
 
 namespace Dev2.Scheduler
 {
@@ -139,6 +139,7 @@ namespace Dev2.Scheduler
                 OnPropertyChanged("StatusAlt");
             }
         }
+
         [JsonIgnore]
         public SchedulerStatus StatusAlt
         {
@@ -146,15 +147,13 @@ namespace Dev2.Scheduler
             {
                 return _status;
             }
-            
             set
             {
-            
-                    IsDirty = true;
-               
-                _status = _status ==SchedulerStatus.Disabled?SchedulerStatus.Enabled : SchedulerStatus.Disabled;
+                IsDirty = true;
+                _status = _status==SchedulerStatus.Disabled?SchedulerStatus.Enabled:SchedulerStatus.Disabled;
                 OnPropertyChanged("StatusAlt");
                 OnPropertyChanged("Status");
+                Dev2Logger.Info("Scheduled Resource Alt Status set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
 

@@ -25,7 +25,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class RollbackTo : IEsbManagementEndpoint
+    public class RollbackTo : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -41,14 +41,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #region Implementation of ISpookyLoadable<string>
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "RollbackTo";
         }
 
         #endregion
 
-        #region Implementation of IEsbManagementEndpoint
+        #region Implementation of DefaultEsbManagementEndpoint
 
         /// <summary>
         /// Executes the service
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         /// <param name="values">The values.</param>
         /// <param name="theWorkspace">The workspace.</param>
         /// <returns></returns>
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             var execMessage = new ExecuteMessage { HasError = false };
@@ -93,7 +93,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
             ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };

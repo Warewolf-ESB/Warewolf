@@ -286,9 +286,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.None;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.None;
+                    }
                 }
             }
             else
@@ -313,9 +316,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.None;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.None;
+                    }
                 }
             }
             else
@@ -324,9 +330,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.Output;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.Output;
+                    }
                 }
             }
            NotifyIOPropertyChanged();

@@ -96,6 +96,8 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DragDropHelpers_PreventDrop_GetDataReturnsExplorerItemModelWorkflowService_ReturnsFalse()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
             //------------Setup for test--------------------------
             AppSettings.LocalHost = "http://localhost";
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object);

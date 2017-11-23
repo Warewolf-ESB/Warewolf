@@ -284,7 +284,7 @@ namespace Dev2.Services.Sql
 
         private DataTable GetSchema(IDbConnection connection)
         {
-            const string CommandText = GlobalConstants.SchemaQueryMySql;
+            string CommandText = GlobalConstants.SchemaQueryMySql;
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);

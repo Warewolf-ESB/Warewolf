@@ -21,18 +21,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for AssignActivity
-    /// </summary>
-    [TestClass]
-    
+    [TestClass]    
     public class MultiAssignActivityTest : BaseActivityUnitTest
     {
-
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         #region Additional test attributes
@@ -836,7 +827,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
+            string expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -857,7 +848,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , fieldCollection);
 
             IDSFDataObject result = ExecuteProcess();
-            const string expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
+            string expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -889,6 +880,28 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(expected, actual);
         }
 
+        [TestMethod]
+        public void MutiAssign_CalculateMode_ValidComplexExpression()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            var expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
+
+            SetupArguments(
+                            "<ADL><Variable></Variable></ADL>"
+                          , "<root><Variable></Variable></root>"
+                          , fieldCollection);
+
+            IDSFDataObject result = ExecuteProcess();
+            const string expected = "NS";
+
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
+
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(expected, actual);
+        }
         [TestMethod]
         public void MutiAssign_ErrorHandeling_Expected_ErrorTag()
         {

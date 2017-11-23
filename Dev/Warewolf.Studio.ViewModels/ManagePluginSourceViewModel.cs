@@ -20,9 +20,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IManagePluginSourceViewModel
@@ -416,10 +413,10 @@ namespace Warewolf.Studio.ViewModels
         protected override void OnDispose()
         {
             RequestServiceNameViewModel?.Dispose();
-            Dispose(true);
+            DisposeManagePluginSourceViewModel(true);
         }
         
-        void Dispose(bool disposing)
+        void DisposeManagePluginSourceViewModel(bool disposing)
         {
             if (!_isDisposed && !disposing)
             {

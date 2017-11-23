@@ -40,16 +40,12 @@ namespace Dev2.Runtime.ServiceModel
             _fetchComputers = fetchComputersFn;
             _hubFactory = hubFactory;
         }
-
-        // POST: Service/Connections/Search
-
+        
         public List<string> GetNames()
         {
             return _fetchComputers.Invoke();
         }
-
-        // POST: Service/Connections/Test
-
+        
         public ValidationResult CanConnectToServer(Dev2.Data.ServiceModel.Connection connection)
         {
             var result = new ValidationResult

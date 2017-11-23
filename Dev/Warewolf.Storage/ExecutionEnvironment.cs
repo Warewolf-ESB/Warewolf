@@ -624,14 +624,17 @@ namespace Warewolf.Storage
                         BuildIndexMap(jsonIdentifierExpression.Item, exp, indexMap, null);
                     }
                 }
-                else if (var.IsRecordSetExpression)
+                else
                 {
-                    if (var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
+                    if (var.IsRecordSetExpression)
                     {
-                        var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
-                        foreach (var index in indexes)
+                        if (var is LanguageAST.LanguageExpression.RecordSetExpression recSetExpression)
                         {
-                            indexMap.Add(exp.Replace(@"(*).", $"({index})."));
+                            var indexes = EvalRecordSetIndexes(@"[[" + recSetExpression.Item.Name + @"(*)]]", 0);
+                            foreach (var index in indexes)
+                            {
+                                indexMap.Add(exp.Replace(@"(*).", $"({index})."));
+                            }
                         }
                     }
                 }

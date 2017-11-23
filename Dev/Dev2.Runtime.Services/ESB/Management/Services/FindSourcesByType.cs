@@ -26,9 +26,9 @@ namespace Dev2.Runtime.ESB.Management.Services
     /// Find resources by type
     /// </summary>
 
-    public class FindSourcesByType : IEsbManagementEndpoint
+    public class FindSourcesByType : DefaultEsbManagementEndpoint
     {
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             var findSourcesByTypeAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
 
@@ -74,7 +74,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return findSourcesByTypeService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FindSourcesByType";
         }

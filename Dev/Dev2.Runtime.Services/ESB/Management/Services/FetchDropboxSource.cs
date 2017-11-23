@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
@@ -14,12 +12,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
-    public class FetchDropBoxSource : IEsbManagementEndpoint
+    public class FetchDropBoxSource : DefaultEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<out string>
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchDropBoxSources";
         }
@@ -27,14 +24,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         #endregion
 
         #region Implementation of IEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             List<DropBoxSource> resourceList = Resources.GetResourceList<DropBoxSource>(GlobalConstants.ServerWorkspaceID)
@@ -42,12 +33,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 .ToList();
             return serializer.SerializeToBuilder(resourceList);
         }
-
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public DynamicService CreateServiceEntry()
+        
+        public override DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
@@ -61,15 +48,5 @@ namespace Dev2.Runtime.ESB.Management.Services
         public ResourceCatalog Resources => ResourceCatalog.Instance;
 
         #endregion
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
     }
 }
