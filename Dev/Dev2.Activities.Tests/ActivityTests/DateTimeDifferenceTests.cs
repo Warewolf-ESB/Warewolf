@@ -16,7 +16,7 @@ using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.Common;
 
 namespace ActivityUnitTests.ActivityTests
 
@@ -97,7 +97,7 @@ namespace ActivityUnitTests.ActivityTests
 
             // remove test datalist ;)
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual,error);
         }
 
         [TestMethod]

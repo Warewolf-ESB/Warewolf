@@ -122,7 +122,7 @@ namespace Dev2.Common.DateAndTime
                     //
                     // Get output format parts
                     //
-                    nothingDied = DateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
+                    nothingDied = dateTimeParser.TryGetDateTimeFormatParts(outputFormat, out formatParts, out error);
 
                     if (nothingDied)
                     {
