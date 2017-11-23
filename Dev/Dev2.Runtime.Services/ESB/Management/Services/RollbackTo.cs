@@ -66,8 +66,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public IServerVersionRepository ServerVersionRepo
         {
-            get => _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper());
-            set => _serverExplorerRepository = value;
+            get => return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper()); 
+            set => _serverExplorerRepository = value; 
         }
 
         #endregion
