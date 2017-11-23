@@ -128,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (string.IsNullOrEmpty(Input1))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat), "now()", "Input 1", "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat), "now()", "Input 1", "="));
                     }
                     else
                     {
@@ -137,7 +137,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (string.IsNullOrEmpty(Input2))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat), "now()", "Input 2", "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat), "now()", "Input 2", "="));
                     }
                     else
                     {

@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -23,7 +23,7 @@ using Dev2.Activities.Designers2.DateTime;
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
     [TestClass]
-    public class DateTimeViewModelTests
+    public class DotNetDateTimeViewModelTests
     {
         [TestMethod]
         public void DateTimeDesignerViewModel_ShouldSetInputFormat_WhenNoInputFormat()

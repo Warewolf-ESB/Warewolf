@@ -443,7 +443,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             string inputString = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
-            string defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
             string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
             var IsParseable = _parser.TryParseDateTime(inputString, null, out IDateTimeResultTO dateTimeResult, out string result);
 
@@ -461,7 +461,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             string inputString = string.Empty;
             string formatString = string.Empty;
 
-            string defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
             string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
             var IsParseable = _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
 
