@@ -289,6 +289,21 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowDeployNoResourcesToDeploy(string header, string description)
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = header;
+            Description = description;
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
         public MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion)
         {
             Buttons = MessageBoxButton.OKCancel;

@@ -577,7 +577,8 @@ namespace Dev2.Tests.Runtime.WebServer
                 Variables = new NameValueCollection()
                 {
                     {"IsDebug","true"}
-                }
+                },
+                WebServerUrl = ""
             };
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World", null, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
@@ -602,7 +603,16 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupGet(o => o.ReturnType).Returns(EmitionTypes.TEST);
             dataObject.SetupGet(o => o.TestName).Returns("*");
             dataObject.Setup(o => o.Clone()).Returns(dataObject.Object);
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
             var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+                .Returns(new List<IResource>()
+                {
+                   resource.Object
+                });
             var testCatalog = new Mock<ITestCatalog>();
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
             serviceTestModelTO.Setup(to => to.Enabled).Returns(true);
@@ -622,7 +632,8 @@ namespace Dev2.Tests.Runtime.WebServer
                 Variables = new NameValueCollection()
                 {
                     {"IsDebug","true"}
-                }
+                },
+                WebServerUrl = ""
             };
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World", null, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
@@ -683,7 +694,16 @@ namespace Dev2.Tests.Runtime.WebServer
             communicationContext.Setup(context => context.Request.QueryString).Returns(new NameValueCollection());
             var dataObject = new Mock<IDSFDataObject>();
             var authorizationService = new Mock<IAuthorizationService>();
+            var resource = new Mock<IResource>();
+            var resourceId = Guid.NewGuid();
+            resource.SetupGet(resource1 => resource1.ResourceID).Returns(resourceId);
+            resource.Setup(resource1 => resource1.GetResourcePath(It.IsAny<Guid>())).Returns(@"Home\HelloWorld");
             var resourceCatalog = new Mock<IResourceCatalog>();
+            resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
+                .Returns(new List<IResource>()
+                {
+                   resource.Object
+                });
             var testCatalog = new Mock<ITestCatalog>();
             var wRepo = new Mock<IWorkspaceRepository>();
             wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
@@ -1747,6 +1767,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 });
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ResourceID);
+            dataObject.Setup(o => o.TestName).Returns("*");
             dataObject.SetupProperty(o => o.TestsResourceIds);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -1773,6 +1794,7 @@ namespace Dev2.Tests.Runtime.WebServer
                 .Returns(new List<IResource>());
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ResourceID);
+            dataObject.Setup(o => o.TestName).Returns("*");
             dataObject.SetupProperty(o => o.TestsResourceIds);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

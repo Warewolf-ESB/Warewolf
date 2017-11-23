@@ -12,7 +12,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Dev2.Integration.Tests</RootNamespace>
     <AssemblyName>Dev2.IntegrationTests</AssemblyName>
-    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <SccProjectName>SAK</SccProjectName>
@@ -59,30 +59,26 @@
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
+    <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Database Tools Refresh\DatabaseServiceInputChangeTests.cs" />
+    <Compile Include="Database Tools Refresh\SqlHelper.cs" />
     <Compile Include="Load Tests.cs" />
-    <Compile Include="Merge\CustomGitOpsTests.cs" />
-    <Compile Include="Merge\MergeFactoryTests.cs" />
-    <Compile Include="Merge\ParseServiceForDifferencesTests.cs" />
-    <Compile Include="Merge\TestHelper.cs" />
-    <Compile Include="XML\MergeRemote\XmlResource.cs" />
-    <Compile Include="XML\XmlResource.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <EmbeddedResource Include="TestData\testresult.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
     <Reference Include="AdornedControl">
       <HintPath>..\Binaries\AdornedControl.dll</HintPath>
     </Reference>
     <Reference Include="Caliburn.Micro, Version=1.4.1.0, Culture=neutral, PublicKeyToken=8e5891231f2ed21f, processorArchitecture=MSIL">
       <HintPath>..\packages\Caliburn.Micro.1.4.1\lib\net45\Caliburn.Micro.dll</HintPath>
       <Private>True</Private>
-    </Reference>
-    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Castle.Core.4.2.0\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
     <Reference Include="DEV2.MultiPartFormPasser">
       <HintPath>..\Binaries\DEV2.MultiPartFormPasser.dll</HintPath>
@@ -111,15 +107,6 @@
       <EmbedInteropTypes>True</EmbedInteropTypes>
       <HintPath>Test References\Microsoft.mshtml.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.Mvvm.Desktop, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.Mvvm.Desktop.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Practices.Prism.SharedInterfaces, Version=1.1.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Prism.Mvvm.1.1.1\lib\net45\Microsoft.Practices.Prism.SharedInterfaces.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\MSTest.TestFramework.1.1.18\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.dll</HintPath>
     </Reference>
@@ -130,8 +117,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\Microsoft.Windows.Shell.dll</HintPath>
     </Reference>
-    <Reference Include="Moq, Version=4.7.137.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.7.137\lib\net45\Moq.dll</HintPath>
+    <Reference Include="Moq, Version=4.2.1510.2205, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
+      <HintPath>..\packages\Moq.4.2.1510.2205\lib\net40\Moq.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="MvvmFoundation.Wpf">
       <HintPath>..\Binaries\MvvmFoundation.Wpf.dll</HintPath>
@@ -141,6 +129,9 @@
     </Reference>
     <Reference Include="Nuane.SftpLite">
       <HintPath>..\Binaries\Sftp Server\Nuane.SftpLite.dll</HintPath>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.12.1.2400\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -177,6 +168,7 @@
     <Reference Include="System.Runtime.DurableInstancing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
@@ -202,8 +194,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Internal Services\GetComputerNamesTests.cs" />
-    <Compile Include="Merge\MergeWorkflowViewModelIntergrationTests.cs" />
-    <Compile Include="Properties\TestStrings.Designer.cs" />
+    <Compile Include="Properties\TestStrings.Designer.cs">
+      <DependentUpon>TestStrings.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Server Refresh\ServerRefreshTests.cs" />
     <Compile Include="Server Test\InternalServices\FindDependenciesServiceTest.cs" />
     <Compile Include="Server Test\InternalServices\FindResourceServiceTest.cs" />
@@ -220,6 +215,7 @@
     </Compile>
     <Compile Include="Services.Sql\SqlServerTestUtils.cs" />
     <Compile Include="Services.Sql\SqlDatabaseBrokerTests.cs" />
+    <Compile Include="SqlParallelRunStressTests.cs" />
     <Compile Include="Sql\WorkflowsTests.cs" />
     <Compile Include="Helpers\TestHelper.cs" />
     <Compile Include="Test utils\ServerCommonDirectory.cs" />
@@ -241,7 +237,11 @@
       <LastGenOutput>ParserStrings.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Properties\TestStrings.resx" />
+    <EmbeddedResource Include="Properties\TestStrings.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>TestStrings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="TestResource.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>TestResource.Designer.cs</LastGenOutput>
@@ -249,7 +249,24 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceDecision.xml" />
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_1_636465118385389893_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_2_636465118417350181_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_3_636465118438843826_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_4_636465118457085391_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_5_636465118492924213_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="TestData\VersionControl\df29beba-1957-414b-8d63-8aed88a6bf34_6_636465118541785216_Save.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Server Test\Workspace\XML\Calculate_RecordSet_Subtract.xml" />
@@ -274,6 +291,10 @@
       <Project>{df3ca7cd-16b7-465e-a7db-91951dfc330f}</Project>
       <Name>ConsoleAppToTestExecuteCommandLineActivity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Activities.Designers\Dev2.Activities.Designers.csproj">
+      <Project>{b95b724a-b052-4e18-98a4-88072c8df2c2}</Project>
+      <Name>Dev2.Activities.Designers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
       <Project>{0A369A8B-0906-47EB-8EEE-CA20E9D4F151}</Project>
       <Name>Dev2.Activities</Name>
@@ -285,6 +306,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Core.Tests\Dev2.Core.Tests.csproj">
+      <Project>{6a65d99b-61c5-4376-b4f7-71a503f9351f}</Project>
+      <Name>Dev2.Core.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
       <Project>{6007c1f1-ce38-474a-a88c-0c05a77bc415}</Project>
@@ -342,21 +367,21 @@
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Dev2.Studio\Dev2.Studio.csproj">
-      <Project>{62247a80-2266-4295-a8f6-a05507e2796e}</Project>
-      <Name>Dev2.Studio</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Dev2.Util\Dev2.Util.csproj">
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.MergeParser\Warewolf.MergeParser.csproj">
-      <Project>{01b6f143-3f8c-4545-b06f-57d2c5ae7c9c}</Project>
-      <Name>Warewolf.MergeParser</Name>
+    <ProjectReference Include="..\Warewolf.Core\Warewolf.Core.csproj">
+      <Project>{8fd23ce0-02bb-48e1-a914-ba467938ce78}</Project>
+      <Name>Warewolf.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage\Warewolf.Storage.csproj">
       <Project>{b3d070e0-11c1-4c1c-81a5-e680c1494945}</Project>
       <Name>Warewolf.Storage</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Studio.ViewModels\Warewolf.Studio.ViewModels.csproj">
+      <Project>{c52b12c2-6a1d-4c4f-a878-cf283662a226}</Project>
+      <Name>Warewolf.Studio.ViewModels</Name>
     </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
@@ -369,31 +394,12 @@
     <EmbeddedResource Include="Server Test\Workspace\XML\Bug_10528_Result.xml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceSwitch.xml">
+    <EmbeddedResource Include="TestData\LoopTest.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceSequence.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceForEach.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\SameResourceSelectAndApply.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\SelectAndApplyExample.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\MergeRemote\Decision\SimpleNestedDecision.xml" />
-    <EmbeddedResource Include="XML\MergeRemote\Hello World.xml" />
-    <EmbeddedResource Include="XML\MergeRemote\Switch\SimpleNestedSwitch.xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="XML\MergeRemote\OriginalWorkFlowName.xml" />
+    <Folder Include="VersionStrategy\" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

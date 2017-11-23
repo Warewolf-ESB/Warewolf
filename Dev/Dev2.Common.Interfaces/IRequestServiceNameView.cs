@@ -7,22 +7,13 @@ namespace Dev2.Common.Interfaces
         void ShowView();
 
         void RequestClose();
-
-
     
         void EnterName(string serviceName);
-
     
         bool IsSaveButtonEnabled();
-
     
         string GetValidationMessage();
 
-
-    
         void Cancel();
-
-    
-        void Save();
     }
 }

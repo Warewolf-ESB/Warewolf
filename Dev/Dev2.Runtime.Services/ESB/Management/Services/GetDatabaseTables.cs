@@ -114,31 +114,32 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Get Database Tables. " + dbSource.DatabaseName, GlobalConstants.WarewolfInfo);
-                var tables = new DbTableList();
-                DataTable columnInfo;
-                switch (dbSource.ServerType)
+                var tables = new DbTableList();                
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
-
-                    case enSourceType.SqlDatabase:
-                        {
-                            using (var connection = new SqlConnection(dbSource.ConnectionString))
+                    DataTable columnInfo = null;
+                    switch (dbSource.ServerType)
+                    {
+                        case enSourceType.SqlDatabase:
                             {
-                                connection.Open();
-                                columnInfo = connection.GetSchema("Tables");
+                                using (var connection = new SqlConnection(dbSource.ConnectionString))
+                                {
+                                    connection.Open();
+                                    columnInfo = connection.GetSchema("Tables");
+                                }
+                                break;
                             }
-                            break;
-                        }
-                    default:
-                        {
-                            using (var connection = new MySqlConnection(dbSource.ConnectionString))
+                        default:
                             {
-                                connection.Open();
-                                columnInfo = connection.GetSchema("Tables");
+                                using (var connection = new MySqlConnection(dbSource.ConnectionString))
+                                {
+                                    connection.Open();
+                                    columnInfo = connection.GetSchema("Tables");
+                                }
+                                break;
                             }
-                            break;
-                        }
-                }
-
+                    }
+               
                 if (columnInfo != null)
                 {
                     foreach (DataRow row in columnInfo.Rows)
@@ -154,24 +155,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                 }
-                if (tables.Items.Count == 0)
-                {
-                    tables.HasErrors = true;
-                    const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
-                                          + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
+                    if (tables.Items.Count == 0)
+                    {
+                        tables.HasErrors = true;
+                        const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
+                                              + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
 
-                    if (dbSource.AuthenticationType == AuthenticationType.User)
-                    {
-                        tables.Errors = string.Format(ErrorFormat,
-                            "SQL Authentication (User: '" + dbSource.UserID + "')",
-                            "EXECUTE AS USER = '" + dbSource.UserID + "';\r\n",
-                            "\r\nREVERT;");
+                        if (dbSource.AuthenticationType == AuthenticationType.User)
+                        {
+                            tables.Errors = string.Format(ErrorFormat,
+                                "SQL Authentication (User: '" + dbSource.UserID + "')",
+                                "EXECUTE AS USER = '" + dbSource.UserID + "';\r\n",
+                                "\r\nREVERT;");
+                        }
+                        else
+                        {
+                            tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
+                        }
                     }
-                    else
-                    {
-                        tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
-                    }
-                }
+                });
                 return serializer.SerializeToBuilder(tables);
             }
             catch (Exception ex)

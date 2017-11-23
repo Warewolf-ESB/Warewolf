@@ -783,6 +783,22 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
                 return this.mConnectedLocalhostText;
             }
         }
+        
+        public WpfText LocalServerSourceText
+        {
+            get
+            {
+                if ((this.mLocalServerSourceText == null))
+                {
+                    this.mLocalServerSourceText = new WpfText(this);
+                    #region Search Criteria
+                    this.mLocalServerSourceText.SearchProperties[WpfText.PropertyNames.Name] = "Local Server Source (Connected)";
+                    this.mLocalServerSourceText.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mLocalServerSourceText;
+            }
+        }
         #endregion
         
         #region Fields
@@ -791,6 +807,8 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
         private WpfText mRemoteConnectionIntegrationText;
         
         private WpfText mConnectedLocalhostText;
+        
+        private WpfText mLocalServerSourceText;
         #endregion
     }
     

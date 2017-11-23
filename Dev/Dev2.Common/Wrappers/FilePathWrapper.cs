@@ -18,9 +18,9 @@ namespace Dev2.Common.Wrappers
         {
             return Path.GetFileName(filePath);
         }
-        public string Combine(string path1, string path2)
+        public string Combine(params string[] paths)
         {
-            return Path.Combine(path1, path2);
+            return System.IO.Path.Combine(paths);
         }
     }
 }

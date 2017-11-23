@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
-
+using Dev2.Data.Util;
 
 namespace Warewolf.Storage.Tests
 {
@@ -372,6 +372,17 @@ namespace Warewolf.Storage.Tests
             _environment.Assign(VariableA, "SomeValue", 0);
             var evalToExpression = _environment.EvalToExpression(VariableA, 0);
             Assert.AreEqual("[[a]]", evalToExpression);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ExecutionEnvironmentEvalComplexCalcExpression_ShouldNotReplaceSpaces()
+        {
+            Assert.IsNotNull(_environment);
+            _environment.Assign("[[FirstNames]]", "Bob", 0);
+            var calcExpr = "!~calculation~!FIND(\" \",[[FirstNames]],1)!~~calculation~!";
+            var evalResult = _environment.Eval(calcExpr, 0);
+            Assert.AreEqual("!~calculation~!FIND(\" \",\"Bob\",1)!~~calculation~!", ExecutionEnvironment.WarewolfEvalResultToString(evalResult));
         }
 
         [TestMethod]

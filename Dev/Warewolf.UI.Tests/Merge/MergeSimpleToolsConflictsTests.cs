@@ -10,6 +10,7 @@ namespace Warewolf.UI.Tests.Merge
     public partial class MergeSimpleToolsConflictsTests
     {
         public const string MergeWfWithVersion = "MergeWfWithVersion";
+        public const string MergeAllConflicting = "MergeAllConflicting";
 
         [TestMethod]
         [TestCategory("Merge")]
@@ -17,16 +18,6 @@ namespace Warewolf.UI.Tests.Merge
         {
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.Exists);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.Exists, "Workflow surface did not open.");
-        }
-
-        [TestMethod]
-        [TestCategory("Merge")]
-        public void Select_All_Radio_Buttons_Enables_Save()
-        {
-            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.MergeButton.KeepCurrentCheckbox.Selected = true;
-            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton.FirstAssign_Difference.Selected = true;
-            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem3.MergeItemExpander.MergeButton.ThirdAssign_Current.Selected = true;
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled);
         }
 
         [TestMethod]

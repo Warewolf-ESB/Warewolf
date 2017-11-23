@@ -215,6 +215,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
             Assert.AreEqual("0", MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row1.DataCell.DataCombobox.DataTextbox.Text, "SQL Server large view inputs row 1 data textbox text is not equal to S");
         }
 
+        [When(@"I Type 0 Into SQL Server Large View Inputs Row2 Data Textbox")]
+        public void Type_0_Into_SQL_Server_Large_View_Inputs_Row2_Data_Textbox()
+        {
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row2.DataCell.DataCombobox.DataTextbox.Text = "0";
+            Assert.AreEqual("0", MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkflowSurfaceContext.UIContentDockManagerCustom.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SqlServerDatabase.LargeView.InputsTable.Row2.DataCell.DataCombobox.DataTextbox.Text, "SQL Server large view inputs row 2 data textbox text is not equal to S");
+        }
+
         [When(@"I Type 0 Into SQL Server Large View Test Inputs Row1 Test Data Textbox")]
         public void Type_0_Into_SQL_Server_Large_View_Test_Inputs_Row1_Test_Data_Textbox()
         {

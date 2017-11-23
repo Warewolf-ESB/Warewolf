@@ -1657,6 +1657,90 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMergeTreeItem3;
             }
         }
+        
+        public MergeTreeItem4 MergeTreeItem4
+        {
+            get
+            {
+                if ((this.mMergeTreeItem4 == null))
+                {
+                    this.mMergeTreeItem4 = new MergeTreeItem4(this);
+                }
+                return this.mMergeTreeItem4;
+            }
+        }
+        
+        public MergeTreeItem5 MergeTreeItem5
+        {
+            get
+            {
+                if ((this.mMergeTreeItem5 == null))
+                {
+                    this.mMergeTreeItem5 = new MergeTreeItem5(this);
+                }
+                return this.mMergeTreeItem5;
+            }
+        }
+        
+        public MergeTreeItem6 MergeTreeItem6
+        {
+            get
+            {
+                if ((this.mMergeTreeItem6 == null))
+                {
+                    this.mMergeTreeItem6 = new MergeTreeItem6(this);
+                }
+                return this.mMergeTreeItem6;
+            }
+        }
+        
+        public MergeTreeItem7 MergeTreeItem7
+        {
+            get
+            {
+                if ((this.mMergeTreeItem7 == null))
+                {
+                    this.mMergeTreeItem7 = new MergeTreeItem7(this);
+                }
+                return this.mMergeTreeItem7;
+            }
+        }
+        
+        public MergeTreeItem8 MergeTreeItem8
+        {
+            get
+            {
+                if ((this.mMergeTreeItem8 == null))
+                {
+                    this.mMergeTreeItem8 = new MergeTreeItem8(this);
+                }
+                return this.mMergeTreeItem8;
+            }
+        }
+        
+        public MergeTreeItem9 MergeTreeItem9
+        {
+            get
+            {
+                if ((this.mMergeTreeItem9 == null))
+                {
+                    this.mMergeTreeItem9 = new MergeTreeItem9(this);
+                }
+                return this.mMergeTreeItem9;
+            }
+        }
+        
+        public MergeTreeItem10 MergeTreeItem10
+        {
+            get
+            {
+                if ((this.mMergeTreeItem10 == null))
+                {
+                    this.mMergeTreeItem10 = new MergeTreeItem10(this);
+                }
+                return this.mMergeTreeItem10;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1667,6 +1751,20 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         private MergeTreeItem2 mMergeTreeItem2;
         
         private MergeTreeItem3 mMergeTreeItem3;
+        
+        private MergeTreeItem4 mMergeTreeItem4;
+        
+        private MergeTreeItem5 mMergeTreeItem5;
+        
+        private MergeTreeItem6 mMergeTreeItem6;
+        
+        private MergeTreeItem7 mMergeTreeItem7;
+        
+        private MergeTreeItem8 mMergeTreeItem8;
+        
+        private MergeTreeItem9 mMergeTreeItem9;
+        
+        private MergeTreeItem10 mMergeTreeItem10;
         #endregion
     }
     
@@ -1992,6 +2090,57 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
         public MergeItemExpander MergeItemExpander
         {
             get
@@ -2006,6 +2155,12 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
         private MergeItemExpander mMergeItemExpander;
         #endregion
     }
@@ -2321,6 +2476,57 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
         public MergeItemExpander1 MergeItemExpander
         {
             get
@@ -2335,6 +2541,12 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
         private MergeItemExpander1 mMergeItemExpander;
         #endregion
     }
@@ -2415,6 +2627,40 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                     #endregion
                 }
                 return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference_RadioButton
+        {
+            get
+            {
+                if ((this.mDifference_RadioButton == null))
+                {
+                    this.mDifference_RadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mDifference_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference_RadioButton;
+            }
+        }
+        
+        public WpfRadioButton Current_RadioButton
+        {
+            get
+            {
+                if ((this.mCurrent_RadioButton == null))
+                {
+                    this.mCurrent_RadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mCurrent_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent_RadioButton;
             }
         }
         
@@ -2506,6 +2752,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference_RadioButton;
+        
+        private WpfRadioButton mCurrent_RadioButton;
         
         private WpfRadioButton mSecondAssign_Diff_RadioButton_Curr_RadioButton;
         
@@ -2707,6 +2957,57 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         }
         
         #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
         public MergeSubTreeItem MergeSubTreeItem
         {
             get
@@ -2733,6 +3034,12 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         #endregion
         
         #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
         private MergeSubTreeItem mMergeSubTreeItem;
         
         private MergeItemExpander2 mMergeItemExpander;
@@ -3050,6 +3357,1546 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
     {
         
         public MergeButton9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem4 : WpfTreeItem
+    {
+        
+        public MergeTreeItem4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "4";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeSubTreeItem1 MergeSubTreeItem
+        {
+            get
+            {
+                if ((this.mMergeSubTreeItem == null))
+                {
+                    this.mMergeSubTreeItem = new MergeSubTreeItem1(this);
+                }
+                return this.mMergeSubTreeItem;
+            }
+        }
+        
+        public MergeItemExpander3 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander3(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeSubTreeItem1 mMergeSubTreeItem;
+        
+        private MergeItemExpander3 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeSubTreeItem1 : WpfTreeItem
+    {
+        
+        public MergeSubTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Name] = "Dev2.ViewModels.Merge.CompleteConflict";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public SubTreeItem1 SubTreeItem
+        {
+            get
+            {
+                if ((this.mSubTreeItem == null))
+                {
+                    this.mSubTreeItem = new SubTreeItem1(this);
+                }
+                return this.mSubTreeItem;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SubTreeItem1 mSubTreeItem;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SubTreeItem1 : WpfExpander
+    {
+        
+        public SubTreeItem1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public ChildrenConflictsTree4 ChildrenConflictsTree
+        {
+            get
+            {
+                if ((this.mChildrenConflictsTree == null))
+                {
+                    this.mChildrenConflictsTree = new ChildrenConflictsTree4(this);
+                }
+                return this.mChildrenConflictsTree;
+            }
+        }
+        
+        public MergeButton11 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton11(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private ChildrenConflictsTree4 mChildrenConflictsTree;
+        
+        private MergeButton11 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ChildrenConflictsTree4 : WpfTree
+    {
+        
+        public ChildrenConflictsTree4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTree.PropertyNames.AutomationId] = "UI_TreeViewExpanderTemplateChildTreeView_AutoID";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public FirstTool1 FirstTool
+        {
+            get
+            {
+                if ((this.mFirstTool == null))
+                {
+                    this.mFirstTool = new FirstTool1(this);
+                }
+                return this.mFirstTool;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private FirstTool1 mFirstTool;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class FirstTool1 : WpfTreeItem
+    {
+        
+        public FirstTool1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeExpander4 MergeExpander
+        {
+            get
+            {
+                if ((this.mMergeExpander == null))
+                {
+                    this.mMergeExpander = new MergeExpander4(this);
+                }
+                return this.mMergeExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeExpander4 mMergeExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeExpander4 : WpfExpander
+    {
+        
+        public MergeExpander4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton10 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton10(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton10 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton10 : WpfButton
+    {
+        
+        public MergeButton10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mNoConflicts;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton11 : WpfButton
+    {
+        
+        public MergeButton11(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Decision_Current_RadioButton
+        {
+            get
+            {
+                if ((this.mDecision_Current_RadioButton == null))
+                {
+                    this.mDecision_Current_RadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDecision_Current_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mDecision_Current_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDecision_Current_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDecision_Current_RadioButton;
+            }
+        }
+        
+        public WpfRadioButton Decision_Diff_RadioButton
+        {
+            get
+            {
+                if ((this.mDecision_Diff_RadioButton == null))
+                {
+                    this.mDecision_Diff_RadioButton = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDecision_Diff_RadioButton.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mDecision_Diff_RadioButton.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDecision_Diff_RadioButton.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDecision_Diff_RadioButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mDecision_Current_RadioButton;
+        
+        private WpfRadioButton mDecision_Diff_RadioButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander3 : WpfExpander
+    {
+        
+        public MergeItemExpander3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton12 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton12(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton12 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton12 : WpfButton
+    {
+        
+        public MergeButton12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        
+        private WpfText mNoConflicts;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem5 : WpfTreeItem
+    {
+        
+        public MergeTreeItem5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "5";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeItemExpander4 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander4(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeItemExpander4 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander4 : WpfExpander
+    {
+        
+        public MergeItemExpander4(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton13 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton13(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton13 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton13 : WpfButton
+    {
+        
+        public MergeButton13(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem6 : WpfTreeItem
+    {
+        
+        public MergeTreeItem6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "6";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeItemExpander5 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander5(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeItemExpander5 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander5 : WpfExpander
+    {
+        
+        public MergeItemExpander5(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton14 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton14(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton14 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton14 : WpfButton
+    {
+        
+        public MergeButton14(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem7 : WpfTreeItem
+    {
+        
+        public MergeTreeItem7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "7";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeItemExpander6 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander6(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeItemExpander6 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander6 : WpfExpander
+    {
+        
+        public MergeItemExpander6(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton15 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton15(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton15 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton15 : WpfButton
+    {
+        
+        public MergeButton15(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem8 : WpfTreeItem
+    {
+        
+        public MergeTreeItem8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "8";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeItemExpander7 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander7(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeItemExpander7 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander7 : WpfExpander
+    {
+        
+        public MergeItemExpander7(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton16 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton16(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton16 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton16 : WpfButton
+    {
+        
+        public MergeButton16(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem9 : WpfTreeItem
+    {
+        
+        public MergeTreeItem9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "9";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeItemExpander8 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander8(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeItemExpander8 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander8 : WpfExpander
+    {
+        
+        public MergeItemExpander8(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton17 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton17(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton17 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton17 : WpfButton
+    {
+        
+        public MergeButton17(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfButton.PropertyNames.AutomationId] = "HeaderSite";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton ThirdAssign_Difference
+        {
+            get
+            {
+                if ((this.mThirdAssign_Difference == null))
+                {
+                    this.mThirdAssign_Difference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Difference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderDifferenceHeaderRB_AutoID";
+                    this.mThirdAssign_Difference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Difference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Difference;
+            }
+        }
+        
+        public WpfRadioButton ThirdAssign_Current
+        {
+            get
+            {
+                if ((this.mThirdAssign_Current == null))
+                {
+                    this.mThirdAssign_Current = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mThirdAssign_Current.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_TreeViewExpanderCurrentHeaderRB_AutoID";
+                    this.mThirdAssign_Current.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mThirdAssign_Current.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mThirdAssign_Current;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mThirdAssign_Difference;
+        
+        private WpfRadioButton mThirdAssign_Current;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeTreeItem10 : WpfTreeItem
+    {
+        
+        public MergeTreeItem10(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTreeItem.PropertyNames.Instance] = "10";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfRadioButton Current
+        {
+            get
+            {
+                if ((this.mCurrent == null))
+                {
+                    this.mCurrent = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mCurrent.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_CurrentNodeArmRB_AutoID";
+                    this.mCurrent.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mCurrent.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mCurrent;
+            }
+        }
+        
+        public WpfText NoConflicts
+        {
+            get
+            {
+                if ((this.mNoConflicts == null))
+                {
+                    this.mNoConflicts = new WpfText(this);
+                    #region Search Criteria
+                    this.mNoConflicts.SearchProperties[WpfText.PropertyNames.AutomationId] = "MergeToolNoConflictIcon";
+                    this.mNoConflicts.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mNoConflicts.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mNoConflicts;
+            }
+        }
+        
+        public WpfRadioButton Difference
+        {
+            get
+            {
+                if ((this.mDifference == null))
+                {
+                    this.mDifference = new WpfRadioButton(this);
+                    #region Search Criteria
+                    this.mDifference.SearchProperties[WpfRadioButton.PropertyNames.AutomationId] = "UI_DifferenceNodeArmRB_AutoID";
+                    this.mDifference.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mDifference.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mDifference;
+            }
+        }
+        
+        public MergeItemExpander9 MergeItemExpander
+        {
+            get
+            {
+                if ((this.mMergeItemExpander == null))
+                {
+                    this.mMergeItemExpander = new MergeItemExpander9(this);
+                }
+                return this.mMergeItemExpander;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfRadioButton mCurrent;
+        
+        private WpfText mNoConflicts;
+        
+        private WpfRadioButton mDifference;
+        
+        private MergeItemExpander9 mMergeItemExpander;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeItemExpander9 : WpfExpander
+    {
+        
+        public MergeItemExpander9(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "TreeViewExpander";
+            this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public MergeButton18 MergeButton
+        {
+            get
+            {
+                if ((this.mMergeButton == null))
+                {
+                    this.mMergeButton = new MergeButton18(this);
+                }
+                return this.mMergeButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MergeButton18 mMergeButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MergeButton18 : WpfButton
+    {
+        
+        public MergeButton18(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
