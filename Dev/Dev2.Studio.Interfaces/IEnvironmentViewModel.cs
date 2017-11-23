@@ -52,7 +52,6 @@ namespace Dev2.Studio.Interfaces
         void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions);
 
         Action SelectAll { get; set; }
-        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
         Task<bool> Load();
 

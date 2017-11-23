@@ -324,6 +324,10 @@ namespace Dev2.Core.Tests.Settings
         [TestCategory("SchedulerViewModel_Trigger")]
         public void SchedulerViewModel_SaveCommand_AfterSave_IsDirtyFalse()
         {
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             //------------Setup for test--------------------------
             ScheduleTrigger scheduleTrigger = new ScheduleTrigger(TaskState.Ready, new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger()), new Dev2TaskService(new TaskServiceConvertorFactory()), new TaskServiceConvertorFactory());
             var scheduleResource = new ScheduledResource("Task", SchedulerStatus.Disabled, DateTime.Now, scheduleTrigger, "TestWf", Guid.NewGuid().ToString());

@@ -646,7 +646,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.CalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculate(env, 0, GlobalConstants.CalculateTextConvertPrefix + "Sum([[Rec()]])" + GlobalConstants.CalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(GlobalConstants.CalculateTextConvertPrefix + "Sum(3)" + GlobalConstants.CalculateTextConvertSuffix+","+ GlobalConstants.CalculateTextConvertPrefix + "Sum(c)" + GlobalConstants.CalculateTextConvertSuffix, CommonFunctions.evalResultToString(res));
         }
@@ -659,7 +659,7 @@ namespace WarewolfParsingTest
             //------------Setup for test--------------------------
             var env = CreateEnvironmentWithData();
             //------------Execute Test---------------------------
-            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum( [[Rec()]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
+            var res = EvaluationFunctions.evalForCalculateAggregate(env, 0, GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum([[Rec()]])" + GlobalConstants.AggregateCalculateTextConvertSuffix);
             //------------Assert Results-------------------------
             Assert.AreEqual(CommonFunctions.evalResultToString(res), GlobalConstants.AggregateCalculateTextConvertPrefix + "Sum(3,c)" + GlobalConstants.AggregateCalculateTextConvertSuffix);
         }

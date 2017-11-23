@@ -525,7 +525,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert executing agai
 	  And "WorkflowWithAssignAndSQLBulkInsert" contains an Assign "InsertData" as
 	  | variable    | value    |
 	  | [[rec().a]] | Warewolf |
-	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  And "WorkflowWithAssignAndSQLBulkInsert" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlServerSource" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
 	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
 	  | Id     |                     | false      | int          |           | true            |
 	  | Name   | [[rec().a]]         | false      | varchar      | 50        | false           |
@@ -552,7 +552,7 @@ Scenario: Workflow with multiple tools Assign and SQL Bulk Insert with negative 
 	  And "WorkflowWithAssignAndSQLBulk" contains an Assign "InsertData" as
 	  | variable    | value |
 	  | [[rec().a]] | Warewolf     |
-	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "testingDBSrc" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
+	  And "WorkflowWithAssignAndSQLBulk" contains an SQL Bulk Insert "BulkInsert" using database "NewSqlServerSource" and table "dbo.MailingList" and KeepIdentity set "false" and Result set "[[result]]" as
 	  | Column | Mapping             | IsNullable | DataTypeName | MaxLength | IsAutoIncrement |
 	  | Id     |                     | false      | int          |           | true            |
 	  | Name   | [[rec(-1).a]]       | false      | varchar      | 50        | false           |
@@ -1755,7 +1755,8 @@ Scenario: Workflow Assign and Find Record index
 	  And the "Record" in Workflow "WFWithAssignandFindRecordindexTool" debug outputs as   
 	  | # |                                  |
 	  | 1 | [[rec(1).a]]         =  Warewolf |	 	 
-		 
+	  
+
 Scenario Outline: Testing Length with two variables in Result field
       Given I have a workflow "WorkflowforLength"
       And "WorkflowforLength" contains an Assign "Rec To Convert" as

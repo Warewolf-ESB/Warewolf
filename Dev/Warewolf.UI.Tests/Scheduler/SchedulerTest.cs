@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests.Scheduler
             UIMap.Click_Save_RibbonButton();
             Assert.IsTrue(SchedulerUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SchedulerTab.WorkSurfaceContext.SchedulerView.SchedulesList.GenericResourceListItem.Exists, "Generic Resource schedule did not save.");
             SchedulerUIMap.Click_HelloWorldSchedule_EnableOrDisableCheckbox();
-            SchedulerUIMap.Click_HelloWorldSchedule_EraseSchedulerButton();
+            SchedulerUIMap.Click_Schedule_EraseSchedulerButton();
             DialogsUIMap.Click_MessageBox_Yes();
             SchedulerUIMap.Click_SchedulerTab_CloseButton();
         }

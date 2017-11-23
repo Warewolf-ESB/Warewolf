@@ -29,7 +29,6 @@ namespace Dev2.Studio.Interfaces
         string EditToolTip { get; }
         string ActivityName { get; }
 
-
         ICommand ViewSwaggerCommand { get; set; }
         ICommand MergeCommand { get; set; }
         ICommand OpenCommand { get; set; }
@@ -45,13 +44,11 @@ namespace Dev2.Studio.Interfaces
         bool CanCreateSchedule { get; set; }
         bool CanViewRunAllTests { get; set; }
         bool CanContribute { get; set; }
-        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
         IVersionInfo VersionInfo { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
         Task<bool> Move(IExplorerTreeItem destination);
-
     
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();

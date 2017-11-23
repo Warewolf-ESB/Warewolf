@@ -639,6 +639,18 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
                 return this.mGenericResourceListItem;
             }
         }
+        
+        public UILoadTestiListItem UILoadTestiListItem
+        {
+            get
+            {
+                if ((this.mUILoadTestiListItem == null))
+                {
+                    this.mUILoadTestiListItem = new UILoadTestiListItem(this);
+                }
+                return this.mUILoadTestiListItem;
+            }
+        }
         #endregion
         
         #region Fields
@@ -649,6 +661,8 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         private HelloWorldListItem mHelloWorldListItem;
         
         private GenericResourceListItem mGenericResourceListItem;
+        
+        private UILoadTestiListItem mUILoadTestiListItem;
         #endregion
     }
     
@@ -847,6 +861,60 @@ namespace Warewolf.UI.Tests.Scheduler.SchedulerUIMapClasses
         private WpfCheckBox mEnableOrDisableCheckBox;
         
         private WpfButton mEraseScheduleButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class UILoadTestiListItem : WpfListItem
+    {
+        
+        public UILoadTestiListItem(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfListItem.PropertyNames.Name] = "Name:Tests UI Load Testing ResourceId:43a5f2d3-4023-4b80-8afe-7c7ac0d703b4";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfCheckBox EnabledCheckbox
+        {
+            get
+            {
+                if ((this.mEnabledCheckbox == null))
+                {
+                    this.mEnabledCheckbox = new WpfCheckBox(this);
+                    #region Search Criteria
+                    this.mEnabledCheckbox.SearchProperties[WpfCheckBox.PropertyNames.HelpText] = "Enable or Disable the schedule";
+                    this.mEnabledCheckbox.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mEnabledCheckbox;
+            }
+        }
+        
+        public WpfButton DeleteButton
+        {
+            get
+            {
+                if ((this.mDeleteButton == null))
+                {
+                    this.mDeleteButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteButton.SearchProperties[WpfButton.PropertyNames.Name] = "";
+                    this.mDeleteButton.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mDeleteButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfCheckBox mEnabledCheckbox;
+        
+        private WpfButton mDeleteButton;
         #endregion
     }
     
