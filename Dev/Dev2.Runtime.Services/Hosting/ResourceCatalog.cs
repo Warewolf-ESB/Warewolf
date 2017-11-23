@@ -56,7 +56,7 @@ namespace Dev2.Runtime.Hosting
         public ResourceCatalog(IEnumerable<DynamicService> managementServices = null)
         {
             InitializeWorkspaceResources();
-            _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper());
+            _serverVersionRepository = new ServerVersionRepository(new VersionStrategy(), this, _directoryWrapper, EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper());
             _catalogPluginContainer = new ResourceCatalogPluginContainer(_serverVersionRepository, WorkspaceResources, managementServices);
             _catalogPluginContainer.Build(this);
             
