@@ -678,7 +678,7 @@
 								                      Header="Merge"
                                                       Style="{StaticResource MenuItemStyle}"
 								                      IsEnabled="{Binding CanMerge}"
-								                      ToolTip="{Binding MergeTooltip}"
+								                      ToolTip="{Binding ExplorerTooltips.MergeTooltip}"
                                                       Visibility="{Binding IsMergeVisible, Converter={StaticResource BoolToVisibilityConverter}}">
                                                 <MenuItem.Icon>
                                                     <Image Style="{StaticResource MergeIcon}"/>
