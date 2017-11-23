@@ -31,7 +31,7 @@ namespace Dev2.Studio.InterfaceImplementors
         readonly ISyntaxTreeBuilderHelper _syntaxTreeBuilderHelper;
 
         #region Static Members
-        private static HashSet<string> _functionNames;
+        private static HashSet<string> _functionNames = new HashSet<string>(StringComparer.Ordinal);
         private static readonly IList<IntellisenseProviderResult> EmptyResults = new List<IntellisenseProviderResult>();
         #endregion
 
@@ -73,14 +73,6 @@ namespace Dev2.Studio.InterfaceImplementors
             IntellisenseProviderType = IntellisenseProviderType.NonDefault;
             IFrameworkRepository<IFunction> functionList = MathOpsFactory.FunctionRepository();
             functionList.Load();
-            bool creatingFunctions = false;
-
-            if(_functionNames == null)
-            {
-                creatingFunctions = true;
-                _functionNames = new HashSet<string>(StringComparer.Ordinal);
-            }
-
             IntellisenseResult = functionList.All().Select(currentFunction =>
             {
                 string description = currentFunction.Description;
@@ -89,11 +81,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 {
                     dropDownDescription = description.Substring(0, 77) + "...";
                 }
-
-                if (creatingFunctions)
-                {
-                    _functionNames.Add(currentFunction.FunctionName);
-                }
+                _functionNames.Add(currentFunction.FunctionName);
 
                 IntellisenseProviderResult result = new IntellisenseProviderResult(this, currentFunction.FunctionName, dropDownDescription, description, currentFunction.arguments?.ToArray() ?? new string[0], currentFunction.ArgumentDescriptions?.ToArray() ?? new string[0]);
                 return result;

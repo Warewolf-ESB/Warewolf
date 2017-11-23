@@ -126,16 +126,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if(dataObject.IsDebugMode())
             {
                 var data = dataObject.Environment.Eval(dataObject.Environment.ToStar(SortField), update);
-                if(data.IsWarewolfAtomListresult)
+                if (data.IsWarewolfAtomListresult)
                 {
                     var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
                     AddDebugOutputItem(new DebugItemWarewolfAtomListResult(lst, "", "", SortField, "", "", "="));
                 }
-                else if (data.IsWarewolfAtomResult)
+                else
                 {
-                    if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
+                    if (data.IsWarewolfAtomResult)
                     {
-                        AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
+                        if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
+                        {
+                            AddDebugOutputItem(new DebugItemStaticDataParams("", SortField, "", "="));
+                        }
                     }
                 }
             }
@@ -149,15 +152,18 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             if (data.IsWarewolfAtomListresult)
             {
                 var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                AddDebugInputItem(new DebugItemWarewolfAtomListResult(lst,"","",expression, labelText,"","="));
+                AddDebugInputItem(new DebugItemWarewolfAtomListResult(lst, "", "", expression, labelText, "", "="));
                 AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
             }
-            else if (data.IsWarewolfAtomResult)
+            else
             {
-                if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
+                if (data.IsWarewolfAtomResult)
                 {
-                    AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));
-                    AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
+                    if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atomData && atomData.Item.IsNothing)
+                    {
+                        AddDebugInputItem(new DebugItemStaticDataParams("", expression, labelText, "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(SelectedSort, "Sort Order"));
+                    }
                 }
             }
         }

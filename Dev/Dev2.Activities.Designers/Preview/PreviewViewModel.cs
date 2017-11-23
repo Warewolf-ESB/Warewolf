@@ -45,13 +45,13 @@ namespace Dev2.Activities.Preview
             }
         }
 
-        public bool IsPreviewFocused { get { return _isPreviewFocused; } set { OnPropertyChanged(ref _isPreviewFocused, value); } }
+        public bool IsPreviewFocused { get => _isPreviewFocused; set => OnPropertyChanged(ref _isPreviewFocused, value); }
 
-        public string Output { get { return _output; } set { OnPropertyChanged(ref _output, value); } }
+        public string Output { get => _output; set => OnPropertyChanged(ref _output, value); }
 
         public ObservableCollection<ObservablePair<string, string>> Inputs { get; set; }
 
-        public Visibility InputsVisibility { get { return _inputsVisibility; } set { OnPropertyChanged(ref _inputsVisibility, value); } }
+        public Visibility InputsVisibility { get => _inputsVisibility; set => OnPropertyChanged(ref _inputsVisibility, value); }
 
         void OnPreviewRequested(object obj)
         {

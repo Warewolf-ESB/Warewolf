@@ -235,7 +235,6 @@ namespace Dev2.Core.Tests
             item.SetupGet(i => i.ID).Returns(FirstResourceId);
             list.Add(item.Object);
             MockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
-            MockWorkspaceRepo.Setup(c => c.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             MockWorkspaceRepo.Setup(c => c.Remove(FirstResource.Object)).Verifiable();
             return MockWorkspaceRepo;
         }

@@ -188,7 +188,6 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         /// Tests that null datetime values are correctly handled by the Formatter
         /// </summary>
         [TestMethod]
-        [ExpectedException(typeof(NullReferenceException))]
         public void FormatDateTimeNULLorEmpty_Expected_ErrorMessageReturnedByFormatter()
         {
             IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
@@ -204,7 +203,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
             else
             {
-                Assert.IsTrue(!string.IsNullOrEmpty(errorMsg));
+                Assert.AreEqual("String reference not set to an instance of a String.\r\nParameter name: s", errorMsg);
             }
         }
 
@@ -224,23 +223,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string expected = "1988/10/14";
 
             Assert.AreEqual(expected, result);
-        }
+        }       
         
-        /// <summary>
-        /// Tests that if the input format is null, the formatter assumes current culture default date time formatting and tries invariant culture
-        /// </summary>
-        [TestMethod]
-        public void FormatInputFormatNULLorEmptyExpectedDefaultFormatUsed()
-        {
-            IDateTimeOperationTO dateTimeTO = new DateTimeOperationTO();
-            dateTimeTO.DateTime = new DateTime(2013,05,06,10,29,50).ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
-            dateTimeTO.InputFormat = null;
-            dateTimeTO.OutputFormat = @"yyyy'/'mm'/'dd' '12h':'min':'ss' 'am/pm";
-            formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
-            const string expected = "2013/05/06 10:29:50 AM";
-
-            Assert.AreEqual(expected, result, "Date time did not default input format to en-US");
-        }
          
 
         /// <summary>

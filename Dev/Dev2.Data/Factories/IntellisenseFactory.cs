@@ -11,8 +11,10 @@
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 
-namespace Dev2.DataList.Contract {
-    public class IntellisenseFactory {
+namespace Dev2.DataList.Contract
+{
+    public static class IntellisenseFactory
+    {
 
         public static IIntellisenseResult CreateErrorResult(int start, int end, IDataListVerifyPart opt, string msg, enIntellisenseErrorCode code, bool isClosed) {
             return new IntellisenseResult(start, end, opt, msg, enIntellisenseResultType.Error, code, isClosed);

@@ -88,16 +88,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Dev2Logger.Info($"Rename Item. Path:{explorerItem.ResourcePath} NewPath:{newName}", GlobalConstants.WarewolfInfo);
                     item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
                 }
-                else if (folderToBeRenamed != null)
+                else
                 {
-                    explorerItem = new ServerExplorerItem()
+                    if (folderToBeRenamed != null)
                     {
-                        ResourceType = "Folder",
-                        ResourcePath = folderToBeRenamed.ToString()
+                        explorerItem = new ServerExplorerItem()
+                        {
+                            ResourceType = "Folder",
+                            ResourcePath = folderToBeRenamed.ToString()
 
-                    };
-                    item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
-                    
+                        };
+                        item = ServerExplorerRepo.RenameItem(explorerItem, newName.ToString(), GlobalConstants.ServerWorkspaceID);
+                    }
                 }
             }
             catch(Exception e)

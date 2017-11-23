@@ -45,14 +45,9 @@ using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
 using Warewolf.Resource.Errors;
 
-
-
-
-
-
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IEnvironmentConnection
+    public class ServerProxyWithoutChunking : IEnvironmentConnection,IDisposable
     {
         System.Timers.Timer _reconnectHeartbeat;
         private const int MillisecondsTimeout = 10000;
@@ -141,7 +136,7 @@ namespace Dev2.Network
         {
             if (ReceivedResourceAffectedMessage != null)
             {
-                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId)).ConfigureAwait(false).GetAwaiter().GetResult();
+                var result = Task.Run(async () => await EsbProxy.Invoke<string>("FetchResourcesAffectedMemo", resourceId).ConfigureAwait(true)).GetAwaiter().GetResult();
                 if (!string.IsNullOrWhiteSpace(result))
                 {
                     var obj = _serializer.Deserialize<CompileMessageList>(result);
@@ -215,11 +210,10 @@ namespace Dev2.Network
                     UpdateIsAuthorized(false);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     break;
+                default:
                 case ConnectionStateWrapped.Disconnected:
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     HasDisconnected();
-                    break;
-                default:
                     break;
             }
         }
@@ -260,97 +254,10 @@ namespace Dev2.Network
                 aex.Handle(ex =>
                 {
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    if (ex is HttpClientException hex)
+                    if (ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
                     {
-                        switch (hex.Response.StatusCode)
-                        {
-                            case HttpStatusCode.Unauthorized:
-                            case HttpStatusCode.Forbidden:
-                                UpdateIsAuthorized(false);
-                                throw new UnauthorizedAccessException();
-                            case HttpStatusCode.Continue:
-                                break;
-                            case HttpStatusCode.SwitchingProtocols:
-                                break;
-                            case HttpStatusCode.OK:
-                                break;
-                            case HttpStatusCode.Created:
-                                break;
-                            case HttpStatusCode.Accepted:
-                                break;
-                            case HttpStatusCode.NonAuthoritativeInformation:
-                                break;
-                            case HttpStatusCode.NoContent:
-                                break;
-                            case HttpStatusCode.ResetContent:
-                                break;
-                            case HttpStatusCode.PartialContent:
-                                break;
-                            case HttpStatusCode.MultipleChoices:
-                                break;
-                            case HttpStatusCode.MovedPermanently:
-                                break;
-                            case HttpStatusCode.Found:
-                                break;
-                            case HttpStatusCode.SeeOther:
-                                break;
-                            case HttpStatusCode.NotModified:
-                                break;
-                            case HttpStatusCode.UseProxy:
-                                break;
-                            case HttpStatusCode.Unused:
-                                break;
-                            case HttpStatusCode.TemporaryRedirect:
-                                break;
-                            case HttpStatusCode.BadRequest:
-                                break;
-                            case HttpStatusCode.PaymentRequired:
-                                break;
-                            case HttpStatusCode.NotFound:
-                                break;
-                            case HttpStatusCode.MethodNotAllowed:
-                                break;
-                            case HttpStatusCode.NotAcceptable:
-                                break;
-                            case HttpStatusCode.ProxyAuthenticationRequired:
-                                break;
-                            case HttpStatusCode.RequestTimeout:
-                                break;
-                            case HttpStatusCode.Conflict:
-                                break;
-                            case HttpStatusCode.Gone:
-                                break;
-                            case HttpStatusCode.LengthRequired:
-                                break;
-                            case HttpStatusCode.PreconditionFailed:
-                                break;
-                            case HttpStatusCode.RequestEntityTooLarge:
-                                break;
-                            case HttpStatusCode.RequestUriTooLong:
-                                break;
-                            case HttpStatusCode.UnsupportedMediaType:
-                                break;
-                            case HttpStatusCode.RequestedRangeNotSatisfiable:
-                                break;
-                            case HttpStatusCode.ExpectationFailed:
-                                break;
-                            case HttpStatusCode.UpgradeRequired:
-                                break;
-                            case HttpStatusCode.InternalServerError:
-                                break;
-                            case HttpStatusCode.NotImplemented:
-                                break;
-                            case HttpStatusCode.BadGateway:
-                                break;
-                            case HttpStatusCode.ServiceUnavailable:
-                                break;
-                            case HttpStatusCode.GatewayTimeout:
-                                break;
-                            case HttpStatusCode.HttpVersionNotSupported:
-                                break;
-                            default:
-                                break;
-                        }
+                        UpdateIsAuthorized(false);
+                        throw new UnauthorizedAccessException();
                     }
                     throw ex;
                 });
@@ -414,97 +321,10 @@ namespace Dev2.Network
                     }
 
                     Dev2Logger.Error(this, aex, "Warewolf Error");
-                    if (ex is HttpClientException hex)
+                    if (ex is HttpClientException hex && (hex.Response.StatusCode == HttpStatusCode.Unauthorized || hex.Response.StatusCode == HttpStatusCode.Forbidden))
                     {
-                        switch (hex.Response.StatusCode)
-                        {
-                            case HttpStatusCode.Unauthorized:
-                            case HttpStatusCode.Forbidden:
-                                UpdateIsAuthorized(false);
-                                throw new UnauthorizedAccessException();
-                            case HttpStatusCode.Continue:
-                                break;
-                            case HttpStatusCode.SwitchingProtocols:
-                                break;
-                            case HttpStatusCode.OK:
-                                break;
-                            case HttpStatusCode.Created:
-                                break;
-                            case HttpStatusCode.Accepted:
-                                break;
-                            case HttpStatusCode.NonAuthoritativeInformation:
-                                break;
-                            case HttpStatusCode.NoContent:
-                                break;
-                            case HttpStatusCode.ResetContent:
-                                break;
-                            case HttpStatusCode.PartialContent:
-                                break;
-                            case HttpStatusCode.MultipleChoices:
-                                break;
-                            case HttpStatusCode.MovedPermanently:
-                                break;
-                            case HttpStatusCode.Found:
-                                break;
-                            case HttpStatusCode.SeeOther:
-                                break;
-                            case HttpStatusCode.NotModified:
-                                break;
-                            case HttpStatusCode.UseProxy:
-                                break;
-                            case HttpStatusCode.Unused:
-                                break;
-                            case HttpStatusCode.TemporaryRedirect:
-                                break;
-                            case HttpStatusCode.BadRequest:
-                                break;
-                            case HttpStatusCode.PaymentRequired:
-                                break;
-                            case HttpStatusCode.NotFound:
-                                break;
-                            case HttpStatusCode.MethodNotAllowed:
-                                break;
-                            case HttpStatusCode.NotAcceptable:
-                                break;
-                            case HttpStatusCode.ProxyAuthenticationRequired:
-                                break;
-                            case HttpStatusCode.RequestTimeout:
-                                break;
-                            case HttpStatusCode.Conflict:
-                                break;
-                            case HttpStatusCode.Gone:
-                                break;
-                            case HttpStatusCode.LengthRequired:
-                                break;
-                            case HttpStatusCode.PreconditionFailed:
-                                break;
-                            case HttpStatusCode.RequestEntityTooLarge:
-                                break;
-                            case HttpStatusCode.RequestUriTooLong:
-                                break;
-                            case HttpStatusCode.UnsupportedMediaType:
-                                break;
-                            case HttpStatusCode.RequestedRangeNotSatisfiable:
-                                break;
-                            case HttpStatusCode.ExpectationFailed:
-                                break;
-                            case HttpStatusCode.UpgradeRequired:
-                                break;
-                            case HttpStatusCode.InternalServerError:
-                                break;
-                            case HttpStatusCode.NotImplemented:
-                                break;
-                            case HttpStatusCode.BadGateway:
-                                break;
-                            case HttpStatusCode.ServiceUnavailable:
-                                break;
-                            case HttpStatusCode.GatewayTimeout:
-                                break;
-                            case HttpStatusCode.HttpVersionNotSupported:
-                                break;
-                            default:
-                                break;
-                        }
+                        UpdateIsAuthorized(false);
+                        throw new UnauthorizedAccessException();
                     }
                     throw new NotConnectedException();
                 });
@@ -773,10 +593,7 @@ namespace Dev2.Network
         public AuthenticationType AuthenticationType { get; }
         public string UserName { get; }
         public string Password { get; }
-
-        /// <summary>
-        /// <code>True</code> unless server returns Unauthorized or Forbidden status.
-        /// </summary>
+        
         public bool IsAuthorized { get; set; }
         public IAsyncWorker AsyncWorker { get; }
 
@@ -817,7 +634,7 @@ namespace Dev2.Network
                 throw new ArgumentNullException(nameof(payload));
             }
 
-            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId)).Result;
+            var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId).ConfigureAwait(true)).Result;
             return result;
 
         }
@@ -841,7 +658,7 @@ namespace Dev2.Network
             var result = new StringBuilder();
             try
             {
-                await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId);
+                await EsbProxy.Invoke<Receipt>("ExecuteCommand", envelope, true, workspaceId, Guid.Empty, messageId).ConfigureAwait(true);
                 var fragmentInvoke = await EsbProxy.Invoke<string>("FetchExecutePayloadFragment", new FutureReceipt { PartID = 0, RequestID = messageId }).ConfigureAwait(false);
                 result.Append(fragmentInvoke);
 
@@ -876,40 +693,26 @@ namespace Dev2.Network
         {
             task.Wait(100);
         }
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-        }
-
-        #endregion
-
         
         public Guid ID { get; private set; }
 
-        public bool Equals(IEnvironmentConnection other)
+        private bool _disposedValue;
+
+        protected virtual void Dispose(bool disposing)
         {
-            if (other == null)
+            if (!_disposedValue)
             {
-                return false;
+                if (disposing)
+                {
+                    _reconnectHeartbeat.Dispose();
+                }                
+                _disposedValue = true;
             }
-            var isEqual = other.ID == ID && other.AuthenticationType == AuthenticationType &&
-                          other.AppServerUri.Equals(AppServerUri) && other.WebServerUri.Equals(WebServerUri);
-            return isEqual;
         }
-
-        public override bool Equals(object obj)
+       
+        public void Dispose()
         {
-            return Equals(obj as IEnvironmentConnection);
-        }
-
-        public override int GetHashCode()
-        {
-            return ID.GetHashCode();
+            Dispose(true);
         }
     }
 

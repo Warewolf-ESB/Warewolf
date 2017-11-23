@@ -47,11 +47,17 @@ namespace Dev2.Common.Utils
                 return String.Empty;
             }
 
-            text = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
+            string cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
 
             var offset = 0;
             var output = new StringBuilder();
-            Action<StringBuilder, int> tabs = (sb, pos) => { for (var i = 0; i < pos; i++) { sb.Append("\t"); } };
+            Action<StringBuilder, int> tabs = (sb, pos) => 
+            {
+                for (var i = 0; i < pos; i++)
+                {
+                    sb.Append("\t");
+                }
+            };
             Func<string, int, char?> previousNotEmpty = (s, i) =>
             {
                 if (string.IsNullOrEmpty(s) || i <= 0)
@@ -96,9 +102,9 @@ namespace Dev2.Common.Utils
                 return next;
             };
 
-            for (var i = 0; i < text.Length; i++)
+            for (var i = 0; i < cleanText.Length; i++)
             {
-                var chr = text[i];
+                var chr = cleanText[i];
 
                 if (chr.ToString() == "{")
                 {
@@ -124,7 +130,7 @@ namespace Dev2.Common.Utils
                 {
                     output.Append(chr);
 
-                    var next = nextNotEmpty(text, i);
+                    var next = nextNotEmpty(cleanText, i);
 
                     if (next != null && next.ToString() != "]")
                     {
@@ -135,7 +141,7 @@ namespace Dev2.Common.Utils
                 }
                 else if (chr.ToString() == "]")
                 {
-                    var prev = previousNotEmpty(text, i);
+                    var prev = previousNotEmpty(cleanText, i);
 
                     if (prev != null && prev.ToString() != "[")
                     {

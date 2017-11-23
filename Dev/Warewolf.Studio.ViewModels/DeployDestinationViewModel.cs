@@ -18,10 +18,23 @@ namespace Warewolf.Studio.ViewModels
             : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server); };
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server).ConfigureAwait(true); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            ValidateEnvironments(shellViewModel);
+        }
+
+        private void ValidateEnvironments(IShellViewModel shellViewModel)
+        {
+            foreach (var env in shellViewModel?.ExplorerViewModel?.Environments)
+            {
+                var exists = Environments.FirstOrDefault(model => model.ResourceId == env.ResourceId);
+                if (env.IsConnected && exists == null)
+                {
+                    Environments.Add(env);
+                }
+            }
         }
 
         private void ServerDisconnected(object sender, IServer server)
@@ -34,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
         {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true);
+            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true).ConfigureAwait(true);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;

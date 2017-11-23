@@ -263,7 +263,8 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetUserRolesInformation(IIdentity currentIdentity = null)
+        public string GetUserRolesInformation() => GetUserRolesInformation(null);
+        public string GetUserRolesInformation(IIdentity currentIdentity)
         {
             var stringBuilder = new StringBuilder();
             WindowsIdentity identity = currentIdentity as WindowsIdentity ?? WindowsIdentity.GetCurrent();

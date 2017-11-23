@@ -268,20 +268,26 @@ namespace Dev2.Studio.Views.Workflow
                 InsertEmptyRow();
                 e.Handled = true;
             }
-            else if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.Delete)
+            else
             {
-                DeleteLastRow();
-                e.Handled = true;
+                if (e.KeyboardDevice.Modifiers == ModifierKeys.Shift && e.Key == Key.Delete)
+                {
+                    DeleteLastRow();
+                    e.Handled = true;
+                }
             }
             if ((e.KeyboardDevice.Modifiers == ModifierKeys.Shift && (e.KeyboardDevice.IsKeyDown(Key.Tab) || e.Key == Key.Tab)) || e.KeyboardDevice.IsKeyDown(Key.Up))
             {
                 MoveToPreviousRow(vm);
                 e.Handled = true;
             }
-            else if (e.KeyboardDevice.IsKeyDown(Key.Tab) || e.KeyboardDevice.IsKeyDown(Key.Down))
+            else
             {
-                MoveToNextRow(vm);
-                e.Handled = true;
+                if (e.KeyboardDevice.IsKeyDown(Key.Tab) || e.KeyboardDevice.IsKeyDown(Key.Down))
+                {
+                    MoveToNextRow(vm);
+                    e.Handled = true;
+                }
             }
         }
 
@@ -378,10 +384,13 @@ namespace Dev2.Studio.Views.Workflow
                             vm.IsInError = true;
                         }
                     }
-                    else if (tabItem.Header.ToString() == "JSON")
+                    else
                     {
-                        vm.XmlData = GetXmlDataFromJson();
-                        vm.SetWorkflowInputData();
+                        if (tabItem.Header.ToString() == "JSON")
+                        {
+                            vm.XmlData = GetXmlDataFromJson();
+                            vm.SetWorkflowInputData();
+                        }
                     }
                 }
             }

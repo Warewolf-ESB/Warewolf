@@ -9,11 +9,9 @@
 // *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 // */
 
-using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.DynamicServices;
@@ -22,11 +20,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchPerformanceCounters : IEsbManagementEndpoint
+    public class FetchPerformanceCounters : DefaultEsbManagementEndpoint
     {
         #region Implementation of ISpookyLoadable<out string>
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "FetchPerformanceCounters";
         }
@@ -34,27 +32,16 @@ namespace Dev2.Runtime.ESB.Management.Services
         #endregion
 
         #region Implementation of IEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(Manager.Counters);
         }
-
-
+        
         private IPerformanceCounterRepository Manager => CustomContainer.Get<IPerformanceCounterRepository>();
-
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public DynamicService CreateServiceEntry()
+        
+        public override DynamicService CreateServiceEntry()
         {
             var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
 
@@ -66,15 +53,5 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
         #endregion
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
     }
 }

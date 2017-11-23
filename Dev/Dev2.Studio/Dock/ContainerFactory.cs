@@ -646,11 +646,7 @@ namespace Dev2.Studio.Dock
         #region Base class overrides
 
         #region ApplyItemContainerStyle
-        /// <summary>
-        /// Used to apply a style to the container for an item
-        /// </summary>
-        /// <param name="container">The container associated with the item</param>
-        /// <param name="item">The item from the source collection</param>
+
         protected override void ApplyItemContainerStyle(DependencyObject container, object item)
         {
             Style style = ContainerStyle;
@@ -665,11 +661,14 @@ namespace Dev2.Studio.Dock
                 container.SetValue(AppliedStyleProperty, KnownBoxes.FalseBox);
                 container.SetValue(FrameworkElement.StyleProperty, style);
             }
-            else if(true.Equals(container.GetValue(AppliedStyleProperty)))
+            else
             {
-                // if we don't get a style now but we applied one previously clear it
-                container.ClearValue(AppliedStyleProperty);
-                container.ClearValue(FrameworkElement.StyleProperty);
+                if (true.Equals(container.GetValue(AppliedStyleProperty)))
+                {
+                    // if we don't get a style now but we applied one previously clear it
+                    container.ClearValue(AppliedStyleProperty);
+                    container.ClearValue(FrameworkElement.StyleProperty);
+                }
             }
         }
         #endregion //ApplyItemContainerStyle

@@ -29,7 +29,6 @@ namespace Dev2.Settings.Perfcounters
 
         public static IList<IPerformanceCountersByResource> GetResourceCountersTo(this IPerformanceCounterTo to)
         {
-
             var res = new List<IPerformanceCountersByResource>();
             var ids = to.ResourceCounters;
             foreach(var resourcePerformanceCounter in ids)
@@ -42,13 +41,17 @@ namespace Dev2.Settings.Perfcounters
                 }
                 switch (resourcePerformanceCounter.PerfCounterType)
                 {
-                    case WarewolfPerfCounterType.AverageExecutionTime: current.AverageExecutionTime = true; break;
-                    case WarewolfPerfCounterType.ExecutionErrors: current.TotalErrors = true; break;
-                    case WarewolfPerfCounterType.ConcurrentRequests: current.ConcurrentRequests = true; break;
-                    case WarewolfPerfCounterType.RequestsPerSecond: current.RequestPerSecond = true; break;
-                    case WarewolfPerfCounterType.ServicesNotFound:
+                    case WarewolfPerfCounterType.AverageExecutionTime:
+                        current.AverageExecutionTime = true;
                         break;
-                    case WarewolfPerfCounterType.NotAuthorisedErrors:
+                    case WarewolfPerfCounterType.ExecutionErrors:
+                        current.TotalErrors = true;
+                        break;
+                    case WarewolfPerfCounterType.ConcurrentRequests:
+                        current.ConcurrentRequests = true;
+                        break;
+                    case WarewolfPerfCounterType.RequestsPerSecond:
+                        current.RequestPerSecond = true;
                         break;
                     default:
                         break;

@@ -79,9 +79,12 @@ namespace Dev2
             {
                 result = true;
             }
-            else if (isFragment)
+            else
             {
-                result = true;
+                if (isFragment)
+                {
+                    result = true;
+                }
             }
 
             return result;

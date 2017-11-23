@@ -632,9 +632,12 @@ namespace Warewolf.Studio.ViewModels
                     {
                         SelectedPort = "3143";
                     }
-                    else if (Protocol == "http" && SelectedPort == "3143")
+                    else
                     {
-                        SelectedPort = "3142";
+                        if (Protocol == "http" && SelectedPort == "3143")
+                        {
+                            SelectedPort = "3142";
+                        }
                     }
 
                 }

@@ -278,29 +278,6 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("WebServerController_InvokeService")]
-        public void WebServerController_InvokeService_WebsitePathNameMethod_InvokesWebsiteServiceHandler()
-        {
-            //------------Setup for test--------------------------
-            var requestVariables = new NameValueCollection
-            {
-                { "website", WebSite },
-                { "path", "Service" },
-                { "name", "Resources" },
-                { "action", "PathsAndNames" },
-            };
-            var controller = new TestWebServerController(HttpMethod.Post);
-
-            //------------Execute Test---------------------------
-            controller.InvokeService(WebSite, "Service", "Resources", "PathsAndNames");
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(typeof(WebsiteServiceHandler), controller.ProcessRequestHandlerType);
-            CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
-        }
-
-        [TestMethod]
-        [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerController_Execute")]
         public void WebServerController_Execute_Post_InvokesWebPostRequestHandler()
         {
@@ -318,6 +295,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             Assert.AreEqual(typeof(WebPostRequestHandler), controller.ProcessRequestHandlerType);
             CollectionAssert.AreEqual(requestVariables, controller.ProcessRequestVariables);
         }
+
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("WebServerController_Execute")]

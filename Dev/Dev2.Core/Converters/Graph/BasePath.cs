@@ -21,8 +21,7 @@ namespace Unlimited.Framework.Converters.Graph
     {
         #region Constructor
 
-        
-        public BasePath()
+        protected BasePath()
         {
             ActualPath = "";
             DisplayPath = "";

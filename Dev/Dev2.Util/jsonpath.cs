@@ -343,24 +343,26 @@ namespace Dev2.Util
                     Trace(tail, value, path);
                     Walk(atom, tail, value, path, WalkTree);
                 }
-                else if (atom.Length > 2 && atom[0] == '(' && atom[atom.Length - 1] == ')') // [(exp)]
+                else if (atom.Length > 2 && atom[0] == '(' && atom[atom.Length - 1] == ')')
                 {
                     Trace(_eval(atom, value, path.Substring(path.LastIndexOf(';') + 1)) + ";" + tail, value, path);
                 }
-                else if (atom.Length > 3 && atom[0] == '?' && atom[1] == '(' && atom[atom.Length - 1] == ')') // [?(exp)]
+                else if (atom.Length > 3 && atom[0] == '?' && atom[1] == '(' && atom[atom.Length - 1] == ')')
                 {
                     Walk(atom, tail, value, path, WalkFiltered);
                 }
                 else if (RegExp(@"^(-?[0-9]*):(-?[0-9]*):?([0-9]*)$").IsMatch(atom))
-                    // [start:end:step] Phyton slice syntax
                 {
                     Slice(atom, tail, value, path);
                 }
-                else if (atom.IndexOf(',') >= 0) // [name1,name2,...]
+                else
                 {
-                    foreach (string part in RegExp(@"'?,'?").Split(atom))
+                    if (atom.IndexOf(',') >= 0) 
                     {
-                        Trace(part + ";" + tail, value, path);
+                        foreach (string part in RegExp(@"'?,'?").Split(atom))
+                        {
+                            Trace(part + ";" + tail, value, path);
+                        }
                     }
                 }
             }
@@ -382,17 +384,20 @@ namespace Dev2.Util
 
                 if (_system.IsArray(value))
                 {
-                    var list = (IList) value;
+                    var list = (IList)value;
                     for (int i = 0; i < list.Count; i++)
                     {
                         callback(i, loc, expr, value, path);
                     }
                 }
-                else if (_system.IsObject(value))
+                else
                 {
-                    foreach (string key in _system.GetMembers(value))
+                    if (_system.IsObject(value))
                     {
-                        callback(key, loc, expr, value, path);
+                        foreach (string key in _system.GetMembers(value))
+                        {
+                            callback(key, loc, expr, value, path);
+                        }
                     }
                 }
             }

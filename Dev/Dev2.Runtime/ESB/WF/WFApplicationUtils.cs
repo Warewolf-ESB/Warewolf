@@ -61,9 +61,12 @@ namespace Dev2.Runtime.ESB.WF
             {
                 existingErrors = errorMessage;
             }
-            else if (!existingErrors.Contains(errorMessage))
+            else
             {
-                existingErrors += Environment.NewLine + errorMessage;
+                if (!existingErrors.Contains(errorMessage))
+                {
+                    existingErrors += Environment.NewLine + errorMessage;
+                }
             }
             var name = "localhost";
             var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);

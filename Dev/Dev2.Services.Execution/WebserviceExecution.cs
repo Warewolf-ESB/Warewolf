@@ -44,7 +44,8 @@ namespace Dev2.Services.Execution
             WebServices.ExecuteRequest(service, true, out errors);
         }
 
-        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater = null)
+        protected object ExecuteService(int update, out ErrorResultTO errors) => ExecuteService(update, out errors, null);
+        protected override object ExecuteService(int update, out ErrorResultTO errors, IOutputFormatter formater)
         {
             Service.Source = Source;
             ExecuteWebRequest(Service, out errors);

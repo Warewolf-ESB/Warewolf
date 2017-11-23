@@ -17,9 +17,8 @@ using Dev2.Data.Util;
 
 
 namespace Dev2.DataList.Contract
-
 {
-    public class DataListCleaningUtils
+    public static class DataListCleaningUtils
     {
         public static List<string> SplitIntoRegions(string result)
         {

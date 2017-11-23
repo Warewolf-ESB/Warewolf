@@ -5,21 +5,20 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Interfaces;
-using Dev2;
-using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModelCommandController
     {
-        private static IShellViewModel _shellViewModel;
-        static IPopupController _popupController;
+        IShellViewModel _shellViewModel;
+        IPopupController _popupController;
 
         public ExplorerItemViewModelCommandController(IShellViewModel shellViewModel, IPopupController popupController)
         {
             _shellViewModel = shellViewModel;
             _popupController = popupController;
         }
+
         public void RollbackCommand(IExplorerRepository explorerRepository, IExplorerTreeItem parent, Guid resourceId, string versionNumber)
         {
             var output = explorerRepository.Rollback(resourceId, versionNumber);
@@ -36,21 +35,6 @@ namespace Warewolf.Studio.ViewModels
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            if (applicationTracker != null)
-            {
-                if (item.ResourceName == "Shared Resources Server")
-                {
-                    applicationTracker.TrackEvent(Resources.Languages.TrackEventExplorer.EventCategory,
-                                                  Resources.Languages.TrackEventExplorer.SharedResourcesServer);
-                }
-                if (item.ResourceName == "Hello World")
-                {
-                    applicationTracker.TrackEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory,
-                                                       Resources.Languages.TrackEventWorkflowTabs.HelloWorld);
-                }
-            }
-
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;
@@ -252,8 +236,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
-        {
-            
+        {            
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
             {
                 ResourcePath = explorerItem.ResourcePath + "\\" + name,

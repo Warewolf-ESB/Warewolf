@@ -41,8 +41,8 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_destination?.SelectedEnvironment != null && _destination.SelectedEnvironment.AsList().Count <= 0)
             {
-                await _destination.SelectedEnvironment.Load(true, true);
-                CheckDestinationPersmisions();
+                await _destination.SelectedEnvironment.Load(true, true).ConfigureAwait(true);
+                CheckDestinationPermissions();
             }
         }
 
@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void CheckDestinationPersmisions()
+        public void CheckDestinationPermissions()
         {
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
@@ -271,7 +271,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
-            CheckDestinationPersmisions();
+            CheckDestinationPermissions();
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();

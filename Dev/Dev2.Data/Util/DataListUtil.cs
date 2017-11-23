@@ -424,7 +424,6 @@ namespace Dev2.Data.Util
 
             if (!isXml)
             {
-                // we need to adjust. there might be a silly encoding issue with first char!
                 if (trimedData.Length > 1 && trimedData[1] == '<' && trimedData[2] == '?')
                 {
                     trimedData = trimedData.Substring(1);
@@ -433,9 +432,12 @@ namespace Dev2.Data.Util
                 {
                     trimedData = trimedData.Substring(2);
                 }
-                else if (trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
+                else
                 {
-                    trimedData = trimedData.Substring(3);
+                    if (trimedData.Length > 3 && trimedData[3] == '<' && trimedData[4] == '?')
+                    {
+                        trimedData = trimedData.Substring(3);
+                    }
                 }
             }
             var bomMarkUtf8 = Encoding.UTF8.GetString(Encoding.UTF8.GetPreamble());
@@ -447,21 +449,9 @@ namespace Dev2.Data.Util
             trimedData = trimedData.Replace("\0", "");
             return trimedData;
         }
-
-        /// <summary>
-        /// Removes the recordset brackets from a value.
-        /// </summary>
-        /// <param name="value">The value.</param>
-        /// <returns></returns>
+        
         public static string RemoveRecordsetBracketsFromValue(string value) => RecSetCommon.RemoveRecordsetBracketsFromValue(value);
-
-        /// <summary>
-        /// Creates a recordset display value.
-        /// </summary>
-        /// <param name="recsetName">Name of the recordset.</param>
-        /// <param name="colName">Name of the column.</param>
-        /// <param name="indexNum">The index number.</param>
-        /// <returns></returns>
+        
         public static string CreateRecordsetDisplayValue(string recsetName, string colName, string indexNum) => RecSetCommon.CreateRecordsetDisplayValue(recsetName, colName, indexNum);
 
         public static void UpsertTokens(Collection<ObservablePair<string, string>> target, IDev2Tokenizer tokenizer) => UpsertTokens(target, tokenizer, null, null, true);
@@ -544,9 +534,12 @@ namespace Dev2.Data.Util
             {
                 db.ArgumentType = enDev2ArgumentType.Input;
             }
-            else if (direction == enDev2ColumnArgumentDirection.Output)
+            else
             {
-                db.ArgumentType = enDev2ArgumentType.Output;
+                if (direction == enDev2ColumnArgumentDirection.Output)
+                {
+                    db.ArgumentType = enDev2ArgumentType.Output;
+                }
             }
 
             db.Definitions = GenerateDefsFromDataList(datalist, direction);

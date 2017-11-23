@@ -138,7 +138,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     catch(Exception e)
                     {
-                        allErrors.AddError(e.Message);
+                        allErrors.AddError(e.StackTrace);
                         dataObject.Environment.Assign(RecordsLength, "0", update);
                         AddDebugOutputItem(new DebugItemStaticDataParams("0", RecordsLength, "", "="));
                     }

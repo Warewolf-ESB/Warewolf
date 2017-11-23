@@ -409,9 +409,12 @@ namespace Dev2.ViewModels.QuickVariableInput
                     {
                         dtb.AddTokenOp("\n", false);
                     }
-                    else if (stringToSplit.Contains("\r"))
+                    else
                     {
-                        dtb.AddTokenOp("\r", false);
+                        if (stringToSplit.Contains("\r"))
+                        {
+                            dtb.AddTokenOp("\r", false);
+                        }
                     }
                     break;
 
@@ -453,12 +456,15 @@ namespace Dev2.ViewModels.QuickVariableInput
                 }
 
             }
-            else if (SplitType == "Chars")
+            else
             {
-                if (string.IsNullOrEmpty(SplitToken))
+                if (SplitType == "Chars")
                 {
-                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
-                    return false;
+                    if (string.IsNullOrEmpty(SplitToken))
+                    {
+                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
+                        return false;
+                    }
                 }
             }
 

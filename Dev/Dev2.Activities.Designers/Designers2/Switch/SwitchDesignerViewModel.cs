@@ -75,15 +75,18 @@ namespace Dev2.Activities.Designers2.Switch
             set
             {
                 _switchVariable = value;
-                if(string.IsNullOrEmpty(value))
+                if (string.IsNullOrEmpty(value))
                 {
                     DisplayText = "Switch";
                     DisplayName = "Switch";
                 }
-                else if(!_hascustomeDisplayText ||string.IsNullOrEmpty(DisplayText) )
+                else
                 {
-                    DisplayText = value;
-                    DisplayName = value;
+                    if (!_hascustomeDisplayText || string.IsNullOrEmpty(DisplayText))
+                    {
+                        DisplayText = value;
+                        DisplayName = value;
+                    }
                 }
             }
         }

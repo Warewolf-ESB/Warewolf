@@ -151,7 +151,8 @@ namespace Dev2.Utilities
             SetNamespaces(builder);
         }
 
-        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = GlobalConstants.Resultscache;
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache { get => resultscache; set => resultscache = value; }
+        private static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = GlobalConstants.Resultscache;
 
         private void SetNamespaces(object target)
         {

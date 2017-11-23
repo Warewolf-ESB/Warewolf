@@ -15,10 +15,8 @@ using Dev2.Common.Interfaces.Enums;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class SaveRabbitMQServiceSource : IEsbManagementEndpoint
     {
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             return Guid.Empty;

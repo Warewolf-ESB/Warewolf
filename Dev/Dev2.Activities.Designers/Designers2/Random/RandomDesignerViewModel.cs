@@ -99,9 +99,8 @@ namespace Dev2.Activities.Designers2.Random
                 viewModel.RandomType = (enRandomType)Dev2EnumConverter.GetEnumFromStringDiscription(value, typeof(enRandomType)); 
             }
         }
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        enRandomType RandomType { set { SetProperty(value); } get { return GetProperty<enRandomType>(); } }
+        
+        enRandomType RandomType { set => SetProperty(value); get => GetProperty<enRandomType>(); }
 
         public override void Validate()
         {

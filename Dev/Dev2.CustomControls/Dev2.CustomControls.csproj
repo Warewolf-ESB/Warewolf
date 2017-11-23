@@ -85,10 +85,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -101,13 +97,11 @@
     </None>
     <Compile Include="Behavior\DataGridWatermarkModifier.cs" />
     <Compile Include="Behavior\ThumbResizeBehavior.cs" />
-    <Compile Include="Controls\SimpleGridSplitter.cs" />
     <Compile Include="Converters\BoolToStringConvert.cs" />
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />
     <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
-    <Compile Include="Behavior\EmptyListBoxWaterMarkBehavior.cs" />
     <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>

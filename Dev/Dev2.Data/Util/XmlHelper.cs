@@ -27,9 +27,7 @@ namespace Dev2.Data.Util
                                                          "<DL>","</DL>"
                                                        };
         const string AdlRoot = "ADL";
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
+
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             string trimedData = data.Trim();
@@ -98,9 +96,6 @@ namespace Dev2.Data.Util
                 {
                     result = CleanupNaughtyTags(veryNaughtyTags, result);
                 }
-
-                // we now need to remove non-valid chars from the stream
-
                 int start = result.IndexOf("<", StringComparison.Ordinal);
                 if (start >= 0)
                 {
@@ -124,13 +119,7 @@ namespace Dev2.Data.Util
 
             return result;
         }
-
-        /// <summary>
-        /// Cleanups the naughty tags.
-        /// </summary>
-        /// <param name="toRemove">To remove.</param>
-        /// <param name="payload">The payload.</param>
-        /// <returns></returns>
+        
         private static string CleanupNaughtyTags(string[] toRemove, string payload)
         {
             bool foundOpen = false;
@@ -143,31 +132,32 @@ namespace Dev2.Data.Util
                 {
                     foundOpen = true;
                 }
-                else if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
+                else
                 {
-                    // close tag
-                    if (foundOpen)
+                    if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
                     {
-                        // remove data between
-                        int loc = i - 1;
-                        if (loc >= 0)
+                        if (foundOpen)
                         {
-                            int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
-                            int end = result.IndexOf(myTag, StringComparison.Ordinal);
-                            if (start < end && start >= 0)
+                            int loc = i - 1;
+                            if (loc >= 0)
                             {
-                                string canidate = result.Substring(start, end - start + myTag.Length);
-                                string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
+                                int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
+                                int end = result.IndexOf(myTag, StringComparison.Ordinal);
+                                if (start < end && start >= 0)
+                                {
+                                    string canidate = result.Substring(start, end - start + myTag.Length);
+                                    string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
+                                    result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
+                                }
                             }
                         }
-                    }
-                    else
-                    {
-                        result = result.Replace(myTag, "");
-                    }
+                        else
+                        {
+                            result = result.Replace(myTag, "");
+                        }
 
-                    foundOpen = false;
+                        foundOpen = false;
+                    }
                 }
             }
 

@@ -118,13 +118,16 @@ namespace Dev2.Intellisense.Helper
             {
                 bQueryUncShares = GetServerNameFromInput(searchPath, ref queryCollection, ref sFileServer);
             }
-            if(bQueryUncShares)
+            if (bQueryUncShares)
             {
                 GetSharesInformationFromSpecifiedServer(sFileServer, queryCollection);
             }
-            else if(queryCollection.Count==0)
+            else
             {
-                queryCollection = GetFilesAndFoldersIncludingNetwork(searchPath, queryCollection, directorySeparatorChar);
+                if (queryCollection.Count == 0)
+                {
+                    queryCollection = GetFilesAndFoldersIncludingNetwork(searchPath, queryCollection, directorySeparatorChar);
+                }
             }
             return queryCollection;
         }
@@ -134,19 +137,22 @@ namespace Dev2.Intellisense.Helper
             var fileServer = searchPath.Substring(2, searchPath.Length - 3);
             var c = searchPath[searchPath.Length - 1];
             bool bQueryUncShares =false;
-            if(searchPath[0] == SlashC && searchPath[1] == SlashC && c == SlashC && !fileServer.Contains("\\"))
+            if (searchPath[0] == SlashC && searchPath[1] == SlashC && c == SlashC && !fileServer.Contains("\\"))
             {
                 bQueryUncShares = true;
                 sFileServer = fileServer;
             }
-            else if (searchPath[0] == SlashC && searchPath[1] == SlashC && c != SlashC && !fileServer.Contains("\\"))
+            else
             {
-                fileServer = searchPath.Substring(2);
-                if(_computerNameCache.Count == 0)
+                if (searchPath[0] == SlashC && searchPath[1] == SlashC && c != SlashC && !fileServer.Contains("\\"))
                 {
-                    GetComputerNamesOnNetwork("\\",queryCollection);
+                    fileServer = searchPath.Substring(2);
+                    if (_computerNameCache.Count == 0)
+                    {
+                        GetComputerNamesOnNetwork("\\", queryCollection);
+                    }
+                    queryCollection = _computerNameCache.Where(s => s.ToLower().Contains(fileServer.ToLower())).ToList();
                 }
-                queryCollection = _computerNameCache.Where(s => s.ToLower().Contains(fileServer.ToLower())).ToList();
             }
             return bQueryUncShares;
         }

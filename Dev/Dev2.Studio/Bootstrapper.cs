@@ -102,30 +102,14 @@ namespace Dev2
         }
 
         #endregion
-
-
-
+        
         protected override void OnStartup(object sender, StartupEventArgs e)
         {
-
-            
-            
-            
-            bool start = true;
-            
-            
-            
-#if !DEBUG
-            start = CheckWindowsService();
-#endif
-
-            
-            if(start)
+            if(CheckWindowsService())
             {
                 base.OnStartup(sender, e);
             }
-            else
-            
+            else            
             {
                 Application.Shutdown();
             }
@@ -144,10 +128,12 @@ namespace Dev2
         #endregion Public Methods
 
         #region Private Methods
-
-#if !DEBUG
+        
         private bool CheckWindowsService()
         {
+#if DEBUG
+            return true;
+#else
             IWindowsServiceManager windowsServiceManager = CustomContainer.Get<IWindowsServiceManager>();
             IPopupController popup = CustomContainer.Get<IPopupController>();
             ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
@@ -170,8 +156,8 @@ namespace Dev2
             }
 
             return false;
-        }
 #endif
+        }
 
         private void CheckPath()
         {

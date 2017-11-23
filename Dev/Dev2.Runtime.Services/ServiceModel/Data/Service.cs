@@ -184,8 +184,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #endregion
 
         #region CreateOutputsRecordsetList
-
-        // BUG 9626 - 2013.06.11 - TWR : refactored
+        
         protected RecordsetList CreateOutputsRecordsetList(XElement action)
         {
             var result = new RecordsetList();
@@ -199,7 +198,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                 if(description == null)
                 {
-                    // we need to handle old plugins ;)
                     outputDescriptionStr =
                         outputDescriptionStr.Replace("<JSON />", "")
                                             .Replace("</Dev2XMLResult>", "")
@@ -209,8 +207,6 @@ namespace Dev2.Runtime.ServiceModel.Data
 
                     description = outputDescriptionSerializationService.Deserialize(outputDescriptionStr);
                 }
-
-                // TODO : Get Result Coming Back ;)
 
                 OutputDescription = description;
 
@@ -227,7 +223,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             foreach(var output in action.Descendants("Output"))
             {
                 var rsName = output.AttributeSafe("RecordsetName");
-                var rsAlias = output.AttributeSafe("Recordset");  // legacy - should be RecordsetAlias
+                var rsAlias = output.AttributeSafe("Recordset");
                 var fieldName = output.AttributeSafe("OriginalName");
                 var fieldAlias = output.AttributeSafe("MapsTo");
 
@@ -267,8 +263,7 @@ namespace Dev2.Runtime.ServiceModel.Data
         #endregion
 
         #region CreateOutputsXml
-
-        // BUG 9626 - 2013.06.11 - TWR : refactored
+        
         public IEnumerable<XElement> CreateOutputsXml(IEnumerable<Recordset> recordsets)
         {
             var outputDescription = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
@@ -338,7 +333,5 @@ namespace Dev2.Runtime.ServiceModel.Data
         }
 
         #endregion
-
-
     }
 }

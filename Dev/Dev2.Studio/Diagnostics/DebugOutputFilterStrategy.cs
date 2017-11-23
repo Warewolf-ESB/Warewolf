@@ -138,9 +138,12 @@ namespace Dev2.Diagnostics
                     return true;
                 }
             }
-            else if (content is string && content.ToString().ToLower().Contains(filterText))
+            else
             {
-                return true;
+                if (content is string && content.ToString().ToLower().Contains(filterText))
+                {
+                    return true;
+                }
             }
 
             return false;

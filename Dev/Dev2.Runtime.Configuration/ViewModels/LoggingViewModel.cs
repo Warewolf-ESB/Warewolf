@@ -214,11 +214,11 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public void UpdatePostWorkflow(IWorkflowDescriptor postWorkflow)
         {
-            if(postWorkflow == null && !string.IsNullOrWhiteSpace(PostWorkflowName))
+            if (postWorkflow == null && !string.IsNullOrWhiteSpace(PostWorkflowName))
             {
                 ClearPostWorkflow(false);
             }
-            else if(postWorkflow != null)
+            else if (postWorkflow != null)
             {
                 LoggingSettings.PostWorkflow =
                     LoggingSettings.Workflows
@@ -227,10 +227,13 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 PostWorkflowName = postWorkflow.ResourceName;
                 LoadServiceInputs();
             }
-            else if(!string.IsNullOrWhiteSpace(PostWorkflowName))
+            else
             {
-                LoggingSettings.PostWorkflow = null;
-                LoggingSettings.ServiceInput = string.Empty;
+                if (!string.IsNullOrWhiteSpace(PostWorkflowName))
+                {
+                    LoggingSettings.PostWorkflow = null;
+                    LoggingSettings.ServiceInput = string.Empty;
+                }
             }
         }
 

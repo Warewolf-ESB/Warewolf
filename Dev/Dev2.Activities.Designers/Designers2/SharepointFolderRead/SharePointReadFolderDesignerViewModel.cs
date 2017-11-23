@@ -45,9 +45,9 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
             mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
         
-        public bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        public bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        public bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        public bool IsFilesAndFoldersSelected { set => SetProperty(value); get => GetProperty<bool>(); }
+        public bool IsFoldersSelected { set => SetProperty(value); get => GetProperty<bool>(); }
+        public bool IsFilesSelected { set => SetProperty(value); get => GetProperty<bool>(); }
         public string ServerInputPath => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()

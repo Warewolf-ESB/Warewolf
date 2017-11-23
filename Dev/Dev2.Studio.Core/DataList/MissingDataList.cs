@@ -57,18 +57,19 @@ namespace Dev2.Studio.Core.DataList
                             select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
                     }
                 }
-                else if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 &&
-                         dataListItem.IsEditable)
+                else
                 {
-                    // skip it if unused and exclude is on ;)
-                    if (excludeUnusedItems && !dataListItem.IsUsed)
+                    if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 && dataListItem.IsEditable)
                     {
-                        continue;
-                    }
+                        if (excludeUnusedItems && !dataListItem.IsUsed)
+                        {
+                            continue;
+                        }
 
-                    missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
-                            dataListItem.Description));
+                        missingWorkflowParts.Add(
+                            IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
+                                dataListItem.Description));
+                    }
                 }
             }
             return missingWorkflowParts;

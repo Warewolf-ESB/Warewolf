@@ -41,12 +41,13 @@ namespace Dev2.Diagnostics
 
         #region public properties
 
-        public const int MaxItemDispatchCount = 10;
-        public const int MaxCharDispatchCount = 150;
-        public const int ActCharDispatchCount = 100;
+        public static readonly int MaxItemDispatchCount = 10;
+        public static readonly int MaxCharDispatchCount = 150;
+        public static readonly int ActCharDispatchCount = 100;
 
-        public static List<DebugItem> EmptyList = new List<DebugItem>();
         public List<IDebugItemResult> ResultsList { get; set; }
+        public static List<DebugItem> EmptyList { get => emptyList; set => emptyList = value; }
+        private static List<DebugItem> emptyList = new List<DebugItem>();
 
         #endregion properties
 

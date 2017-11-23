@@ -52,13 +52,16 @@ namespace Dev2.Runtime.WebServer.Responses
             if(contentLength > WebServerStartup.SizeCapForDownload && _enforceSizeCap)
             {
                 string extension = null;
-                if(ContentTypes.Json.Equals(_contentType))
+                if (ContentTypes.Json.Equals(_contentType))
                 {
                     extension = "json";
                 }
-                else if(ContentTypes.Xml.Equals(_contentType))
+                else
                 {
-                    extension = "xml";
+                    if (ContentTypes.Xml.Equals(_contentType))
+                    {
+                        extension = "xml";
+                    }
                 }
                 if(extension != null)
                 {

@@ -129,12 +129,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        string ExecuteActionString
+        private void SetExecuteActionString(string value)
         {
-            set
-            {
-                _modelItem.SetProperty("ExecuteActionString", value);
-            }
+            _modelItem.SetProperty("ExecuteActionString", value);
         }
 
         public string ProcedureName
@@ -326,7 +323,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             if (value != null)
             {
                 ProcedureName = value.Name;
-                ExecuteActionString = value.ExecuteAction;
+                SetExecuteActionString(value.ExecuteAction);
             }
 
             OnPropertyChanged("SelectedAction");

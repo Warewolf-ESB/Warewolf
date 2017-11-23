@@ -17,7 +17,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Runtime.ESB.Management.Services
 {
 
-    public class GetDllListings : IEsbManagementEndpoint
+    public class GetDllListings : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             ExecuteMessage msg = new ExecuteMessage();
             Dev2JsonSerializer serializer = new Dev2JsonSerializer();
@@ -170,7 +170,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return dllListing;
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
             DynamicService findDirectoryService = new DynamicService
             {
@@ -190,7 +190,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return findDirectoryService;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "GetDllListingsService";
         }

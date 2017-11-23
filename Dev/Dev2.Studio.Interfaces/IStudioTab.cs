@@ -9,17 +9,15 @@
 */
 
 
-
+using System;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IStudioTab
+    public interface IStudioTab : IDisposable
     {
         bool DoDeactivate(bool showMessage);
 
         bool IsDirty { get; }
-
-        void Dispose();
 
         void CloseView();
     }

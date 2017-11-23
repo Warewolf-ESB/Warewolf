@@ -40,39 +40,29 @@ namespace Dev2.Session
 
         private IActivityIOOperationsEndPoint _debugOptsEndPoint;
         private IActivityIOPath _debugPath;
-
-        /// <summary>
-        ///     Init the Debug Session
-        /// </summary>
-        /// <param name="to"></param>
-        /// <returns></returns>
+        
         public DebugTO InitDebugSession(DebugTO to)
         {
             DebugTO tmp;
-
-            to.Error = string.Empty;
-
-            // Bootstrap the operations
+            to.Error = string.Empty;            
             if (to.BaseSaveDirectory != null)
             {
                 BootstrapPersistence(to.BaseSaveDirectory);
                 InitPersistSettings();
             }
-            else if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
+            else
             {
-                BootstrapPersistence(_rootPath);
-                InitPersistSettings();
+                if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
+                {
+                    BootstrapPersistence(_rootPath);
+                    InitPersistSettings();
+                }
             }
-
             if (to.BaseSaveDirectory == null)
             {
-                // set the save location
                 to.BaseSaveDirectory = _rootPath;
             }
-
-
             to.DataListHash = to.DataList != null ? to.DataList.GetHashCode() : -1;
-
             lock (SettingsLock)
             {
                 if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
@@ -84,7 +74,6 @@ namespace Dev2.Session
                 }
                 else
                 {
-                    // if no XML data copy over the DataList
                     to.XmlData = to.RememberInputs ? to.XmlData : "<DataList></DataList>";                 
                 }
                 to.BinaryDataList = new DataListModel();
@@ -94,12 +83,7 @@ namespace Dev2.Session
             tmp?.CleanUp();
             return to;
         }
-
-        /// <summary>
-        ///     Save the debug session data
-        /// </summary>
-        /// <param name="to"></param>
-        /// <returns></returns>
+        
         public DebugTO PersistDebugSession(DebugTO to)
         {
             lock (SettingsLock)
@@ -112,13 +96,10 @@ namespace Dev2.Session
 
                 if (to.RememberInputs)
                 {
-                    // update the current TO
                     _debugPersistSettings[to.WorkflowID] = to;
                 }
                 else
                 {
-                    // no longer relavent, remove it
-
                     if (_debugPersistSettings.TryGetValue(to.WorkflowID, out DebugTO tmp))
                     {
                         _debugPersistSettings[to.WorkflowID].CleanUp();
@@ -127,8 +108,7 @@ namespace Dev2.Session
                 }
 
                 var settingList = new List<SaveDebugTO>();
-
-                // build the list
+                
                 foreach (string key in _debugPersistSettings.Keys)
                 {
 
@@ -138,8 +118,6 @@ namespace Dev2.Session
                         settingList.Add(that);
                     }
                 }
-
-                // push to disk
                 using (Stream s = File.Open(_debugPersistPath, FileMode.Truncate))
                 {
                     var bf = new XmlSerializer(typeof (List<SaveDebugTO>));

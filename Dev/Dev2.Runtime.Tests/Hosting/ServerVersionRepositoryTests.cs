@@ -19,6 +19,11 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Common;
+using System.IO;
+using System.Threading;
+using System.Collections.Generic;
+using Dev2.Common.Wrappers;
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -31,10 +36,10 @@ namespace Dev2.Tests.Runtime.Hosting
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
-        
+
         public void ServerVersionRepostory_Ctor_Null_strategy()
         {
-            
+
             var strat = new Mock<IVersionStrategy>();
             var cat = new Mock<IResourceCatalog>();
             var resourceId = Guid.NewGuid();
@@ -145,7 +150,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static ServerVersionRepository CreateServerVersionRepository(IVersionStrategy strat, IResourceCatalog cat, IDirectory dir, string rootPath, IFile file)
         {
-
             var serverVersionRepostory = new ServerVersionRepository(strat, cat, dir, rootPath, file);
             return serverVersionRepostory;
         }
@@ -363,7 +367,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(res.VersionHistory.Count, 1);
             cat.Verify(a => a.SaveResource(Guid.Empty, It.IsAny<StringBuilder>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
-            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService",  false));
+            cat.Verify(a => a.DeleteResource(Guid.Empty, "moon", "WorkflowService", false));
         }
 
 
@@ -479,113 +483,6 @@ namespace Dev2.Tests.Runtime.Hosting
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ServerVersionRepostory_Move")]
-        public void ServerVersionRepostory_Move_VersionDoesExist()
-        {
-
-            var strat = new Mock<IVersionStrategy>();
-            var cat = new Mock<IResourceCatalog>();
-            var resourceId = Guid.NewGuid();
-            var versionId = Guid.NewGuid();
-            var file = new Mock<IFile>();
-            var dir = new Mock<IDirectory>();
-            const string rootPath = "bob";
-            var dt = DateTime.Now;
-            bool moov = false;
-            var resource = new Mock<IResource>();
-            resource.Setup(a => a.ResourceName).Returns("moon");
-            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
-            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
-            resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
-            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
-            file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b)=>
-            {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
-                    
-            });
-
-            //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
-            //------------Execute Test---------------------------
-            serverVersionRepostory.MoveVersions(resourceId, "222aaa", "moot\\boot");
-
-            file.Verify(a => a.Move(It.IsAny<string>(),It.IsAny<string>()));
-            Assert.IsTrue(moov);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ServerVersionRepostory_Move")]
-        public void ServerVersionRepostory_Move_VersionInfoDoesNotExist()
-        {
-
-            var strat = new Mock<IVersionStrategy>();
-            var cat = new Mock<IResourceCatalog>();
-            var resourceId = Guid.NewGuid();
-            var versionId = Guid.NewGuid();
-            var file = new Mock<IFile>();
-            var dir = new Mock<IDirectory>();
-            const string rootPath = "bob";
-            var dt = DateTime.Now;
-            bool moov = false;
-            var resource = new Mock<IResource>();
-            resource.Setup(a => a.ResourceName).Returns("moon");
-            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
-            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
-            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
-            file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
-            {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
-
-            });
-
-            //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
-            //------------Execute Test---------------------------
-            serverVersionRepostory.MoveVersions(resourceId, "222aaa", "moot\\boot");
-
-
-            Assert.IsFalse(moov);
-        }
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ServerVersionRepostory_Move")]
-        public void ServerVersionRepostory_Move_VersionDoesExistDirectoryDoesNotExist()
-        {
-
-            var strat = new Mock<IVersionStrategy>();
-            var cat = new Mock<IResourceCatalog>();
-            var resourceId = Guid.NewGuid();
-            var versionId = Guid.NewGuid();
-            var file = new Mock<IFile>();
-            var dir = new Mock<IDirectory>();
-            const string rootPath = "bob";
-            var dt = DateTime.Now;
-            bool moov = false;
-            var resource = new Mock<IResource>();
-            resource.Setup(a => a.ResourceName).Returns("moon");
-            resource.Setup(a => a.ToStringBuilder()).Returns(new StringBuilder("bob"));
-            cat.Setup(a => a.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(resource.Object).Verifiable();
-            resource.Setup(a => a.VersionInfo).Returns(new VersionInfo(dt, "mook", "usr", "12345", resourceId, versionId));
-            dir.Setup(a => a.GetFiles(It.IsAny<string>())).Returns(new[] { versionId + "_2_" + dt.Ticks + "_jjj" });
-            file.Setup(a => a.Move(It.IsAny<string>(), It.IsAny<string>())).Callback((string a, string b) =>
-            {
-                moov = a.Contains(versionId.ToString()) && b.Contains(versionId.ToString()) && b.Contains("222aaa");
-
-            });
-            dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-            //------------Setup for test--------------------------
-            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
-            //------------Execute Test---------------------------
-            serverVersionRepostory.MoveVersions(resourceId, "222aaa", "moot\\boot");
-
-            file.Verify(a => a.Move(It.IsAny<string>(), It.IsAny<string>()));
-            Assert.IsTrue(moov);
-            dir.Verify(a=>a.CreateIfNotExists(It.IsAny<string>()));
-        }
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
         [TestCategory("ServerVersionRepostory_Delete")]
         public void ServerVersionRepostory_Delete_VersionDoesNotExist()
         {
@@ -619,6 +516,135 @@ namespace Dev2.Tests.Runtime.Hosting
 
         }
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
+        public void ServerVersionRepostory_CleanUpOldVersionControlStructure_Given_ResourcePath_Does_Not_Exist()
+        {
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            var _directoryWrapper = new Mock<IDirectory>();
+            _directoryWrapper.Setup(p => p.GetDirectories(It.IsAny<string>())).Returns(new string[0]);
+            serverVersionRepostory.CleanUpOldVersionControlStructure(_directoryWrapper.Object);
+            //------------Assert Results-------------------------
+            _directoryWrapper.Verify(p => p.GetFiles(It.IsAny<string>()), Times.Never());
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
+        public void ServerVersionRepostory_CleanUpOldVersionControlStructure()
+        {
+            string versionFileName = "OldFile.bite";
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            SetUpVersionFile(versionFileName);
+            Assert.IsTrue(File.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName));
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
+            var _directoryWrapper = new DirectoryWrapper();
+            serverVersionRepostory.CleanUpOldVersionControlStructure(_directoryWrapper);
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
+            if (File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)))
+            {
+                File.Delete(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName));
+            }
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("ServerVersionRepostory_CleanUpOldVersionControlStructure")]
+        public void ServerVersionRepostory_CleanUpOldVersionControlStructure_MultipleFolders()
+        {
+            string versionFileName = "OldFile.bite";
+            var strat = new Mock<IVersionStrategy>();
+            var cat = new Mock<IResourceCatalog>();
+            var file = new Mock<IFile>();
+            var dir = new Mock<IDirectory>();
+            const string rootPath = "bob";
+            var subDirs = new List<string>
+            {
+                "\\FolderA","\\FolderB", "\\FolderA\\SubFolderA"
+            };
+            var versions = SetUpMultipleFolderVersionFile(subDirs, versionFileName);
+            foreach (var item in versions)
+            {
+                Assert.IsTrue(File.Exists(item));
+            }
+            //------------Setup for test--------------------------
+            var serverVersionRepostory = CreateServerVersionRepository(strat.Object, cat.Object, dir.Object, rootPath, file.Object);
+            //------------Execute Test---------------------------
+            Assert.IsFalse(File.Exists(Path.Combine(EnvironmentVariables.VersionsPath, versionFileName)));
+            var _directoryWrapper = new DirectoryWrapper();
+            serverVersionRepostory.CleanUpOldVersionControlStructure(_directoryWrapper);
+            //------------Assert Results-------------------------
+            var newVersions = new List<string>
+            {
+                Path.Combine(EnvironmentVariables.VersionsPath, "OldFile1.bite"), Path.Combine(EnvironmentVariables.VersionsPath, "OldFile2.bite"), Path.Combine(EnvironmentVariables.VersionsPath, "OldFile3.bite")
+            };
+            foreach (var item in newVersions)
+            {
+                Assert.IsTrue(File.Exists(item), item + " was not created as part of CleanUpOldVersionControlStructure");
+                File.Delete(item);
+            }
+            Directory.Delete(EnvironmentVariables.ResourcePath + subDirs[0], true);
+            Directory.Delete(EnvironmentVariables.ResourcePath + subDirs[1], true);
+        }
+
+        private static List<string> SetUpMultipleFolderVersionFile(List<string> subDirs, string versionFileName)
+        {
+            List<string> versionFiles = new List<string>();
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
+            }
+            foreach (var dir in subDirs)
+            {
+                var path = EnvironmentVariables.ResourcePath + dir;
+                if (!Directory.Exists(path))
+                {
+                    Directory.CreateDirectory(path);
+                }
+                if (!Directory.Exists(path + "\\VersionControl\\"))
+                {
+                    Directory.CreateDirectory(path + "\\VersionControl\\");
+                }
+                var index = subDirs.IndexOf(dir) + 1;
+                var fileName = versionFileName.Replace(".bite", index + ".bite");
+                var file = File.Create(path + "\\VersionControl\\" + fileName);
+                versionFiles.Add(file.Name);
+                file.Dispose();
+            }
+            return versionFiles;
+        }
+        private static void SetUpVersionFile(string versionFileName)
+        {
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath))
+            {
+                Directory.CreateDirectory(EnvironmentVariables.ResourcePath);
+            }
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl"))
+            {
+                Directory.CreateDirectory(EnvironmentVariables.ResourcePath + "\\VersionControl");
+            }
+            if (!File.Exists(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName))
+            {
+                var file = File.Create(EnvironmentVariables.ResourcePath + "\\VersionControl\\" + versionFileName);
+                file.Dispose();
+            }
+        }
         string CreateFileName(Guid versionId, int version)
         {
             return $"{versionId}_{version}_{DateTime.Now.Ticks}_bob";

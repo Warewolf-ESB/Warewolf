@@ -20,7 +20,7 @@ namespace Dev2.Activities
     public class DsfSqlServerDatabaseActivity : DsfActivity
     {
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
 
@@ -30,7 +30,7 @@ namespace Dev2.Activities
             Type = "SQL Server Database";
             DisplayName = "SQL Server Database";
         }
-        
+
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
             var execErrors = new ErrorResultTO();
@@ -44,12 +44,17 @@ namespace Dev2.Activities
             }
             if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
+                if (databaseServiceExecution.SourceIsNull())
+                {
+                    databaseServiceExecution.GetSource(SourceId);
+                }
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
             }
+
             ServiceExecution.Execute(out execErrors, update);
             var fetchErrors = execErrors.FetchErrors();
-            foreach(var error in fetchErrors)
+            foreach (var error in fetchErrors)
             {
                 dataObject.Environment.Errors.Add(error);
             }
@@ -77,7 +82,7 @@ namespace Dev2.Activities
         }
 
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
-        {            
+        {
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
@@ -86,16 +91,13 @@ namespace Dev2.Activities
             {
                 databaseServiceExecution.ProcedureName = ExecuteActionString;
             }
-            
+
             ServiceExecution.GetSource(SourceId);
-            ServiceExecution.SetSourceId(SourceId);
-            ServiceExecution.BeforeExecution(tmpErrors);
         }
 
         protected override void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
             base.AfterExecutionCompleted(tmpErrors);
-            ServiceExecution.AfterExecution(tmpErrors);
         }
 
 

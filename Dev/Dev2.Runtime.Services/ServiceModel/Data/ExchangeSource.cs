@@ -16,14 +16,13 @@ namespace Dev2.Runtime.ServiceModel.Data
     public class ExchangeSource : Resource, IExchange, IResourceSource
     {
         private ExchangeService _exchangeService;
-
         
         private IExchangeEmailSender _emailSender;
 
-        public static int DefaultTimeout = 100000; // (100 seconds)
-        public static int DefaultPort = 25;
-        public static int SslPort = 465;
-        public static int TlsPort = 587;
+        public static readonly int DefaultTimeout = 100000;
+        public static readonly int DefaultPort = 25;
+        public static readonly int SslPort = 465;
+        public static readonly int TlsPort = 587;
 
         public override bool IsSource => true;
 

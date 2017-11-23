@@ -60,9 +60,13 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
+<<<<<<< HEAD
 using Dev2.Instrumentation.Factory;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
+=======
+using Dev2.Studio.Interfaces;
+>>>>>>> bde01f291371d02daf407f38b86762485e7c3247
 
 namespace Dev2.Studio
 
@@ -105,6 +109,7 @@ namespace Dev2.Studio
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
         {
+<<<<<<< HEAD
           
 
             CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
@@ -115,6 +120,10 @@ namespace Dev2.Studio
                 applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             }
 
+=======
+            Tracker.StartStudio();
+            ShutdownMode = ShutdownMode.OnMainWindowClose;
+>>>>>>> bde01f291371d02daf407f38b86762485e7c3247
             Task.Factory.StartNew(() =>
                 {
                     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
@@ -150,7 +159,7 @@ namespace Dev2.Studio
 #endif
         }
 
-        public static ISplashView SplashView;
+        private static ISplashView _splashView;
 
         private ManualResetEvent _resetSplashCreated;
         private Thread _splashThread;
@@ -171,7 +180,7 @@ namespace Dev2.Studio
             if(_shellViewModel != null)
             {
                 CreateDummyWorkflowDesignerForCaching();
-                SplashView.CloseSplash();
+                SplashView.CloseSplash(false);
                 CheckForDuplicateResources();
                 var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
                 if (!File.Exists(settingsConfigFile))
@@ -257,6 +266,7 @@ namespace Dev2.Studio
             CustomContainer.Register<IEventAggregator>(new EventAggregator());
             CustomContainer.Register<IPopupController>(new PopupController());
             CustomContainer.Register<IAsyncWorker>(new AsyncWorker());
+            CustomContainer.Register<IExplorerTooltips>(new ExplorerTooltips());
             CustomContainer.Register<IWarewolfWebClient>(new WarewolfWebClient(new WebClient { Credentials = CredentialCache.DefaultCredentials }));
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => new RequestServiceNameView());
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
@@ -278,6 +288,7 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
+<<<<<<< HEAD
             
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
@@ -287,6 +298,10 @@ namespace Dev2.Studio
                 applicationTracker.DisableAppplicationTracker();
             }
         
+=======
+            Tracker.Stop();
+            SplashView.CloseSplash(true);
+>>>>>>> bde01f291371d02daf407f38b86762485e7c3247
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
@@ -315,29 +330,22 @@ namespace Dev2.Studio
             Environment.Exit(0);
         }
 
-        #region Implementation of IApp
-
-        #region Implementation of IApp
 
         public new void Shutdown()
         {
             try
             {
+                SplashView.CloseSplash(true);
                 base.Shutdown();
-            }
-            
-            catch
-            
+            }            
+            catch (Exception e) 
             {
-                // Best effort ;)
+                Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
             ForceShutdown();
         }
 
-        #endregion
-
-        #endregion
-
+      
         public bool ShouldRestart { get; set; }
 
         public bool HasShutdownStarted
@@ -351,6 +359,8 @@ namespace Dev2.Studio
                 _hasShutdownStarted = value;
             }
         }
+
+        public static ISplashView SplashView { get => _splashView; set => _splashView = value; }
 
         private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {

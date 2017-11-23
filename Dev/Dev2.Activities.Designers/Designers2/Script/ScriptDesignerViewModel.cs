@@ -93,9 +93,12 @@ namespace Dev2.Activities.Designers2.Script
 
         public static readonly DependencyProperty ScriptTypeTextProperty =
             DependencyProperty.Register("ScriptTypeDefaultText", typeof(string), typeof(ScriptDesignerViewModel), new PropertyMetadata(null));
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        enScriptType ScriptType { set { SetProperty(value); } get { return GetProperty<enScriptType>(); } }
+        
+        enScriptType ScriptType
+        {
+            set => SetProperty(value);
+            get => GetProperty<enScriptType>();
+        }
 
         public override void Validate()
         {

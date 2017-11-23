@@ -32,8 +32,6 @@ namespace Dev2.Runtime.ESB.Management.Services
         ISecurityWrapper _securityWrapper;
         private IResourceCatalog _catalog;
         
-        
-        
         public DeleteScheduledResource()
         {
 
@@ -48,6 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             return AuthorizationContext.Administrator;
         }
+
         public string HandlesType()
         {
             return "DeleteScheduledResourceService";

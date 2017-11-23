@@ -11,17 +11,13 @@
 using System;
 using System.Linq;
 using System.Reflection;
-
+using Warewolf.Resource.Messages;
 
 
 namespace Dev2.Data.Decisions.Operations
 {
-    /// <summary>
-    /// Used to annotate DecisionTypes with user friendly values
-    /// </summary>
     public class DecisionTypeDisplayValue : Attribute
     {
-
         internal DecisionTypeDisplayValue(string displayValue)
         {
             DisplayValue = displayValue;
@@ -29,10 +25,7 @@ namespace Dev2.Data.Decisions.Operations
 
         public string DisplayValue { get; set; }
     }    
-
-    /// <summary>
-    /// Used to extract the display value for a decision enum
-    /// </summary>
+    
     public static class DecisionDisplayHelper
     {
         public static string GetDisplayValue(enDecisionType typeOf)
@@ -53,137 +46,52 @@ namespace Dev2.Data.Decisions.Operations
 
         public static string GetFailureMessage(enDecisionType decisionType)
         {
-            
-            string errorMsg = string.Empty;
             switch (decisionType)
             {
-                case enDecisionType.Choose:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_Choose;
-                    break;
-                case enDecisionType.IsError:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsError;
-                    break;
-                case enDecisionType.IsNotError:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotError;
-                    break;
-                case enDecisionType.IsNull:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNull;
-                    break;
-                case enDecisionType.IsNotNull:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotNull;
-                    break;
-                case enDecisionType.IsNumeric:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNumeric;
-                    break;
-                case enDecisionType.IsNotNumeric:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotNumeric;
-                    break;
-                case enDecisionType.IsText:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsText;
-                    break;
-                case enDecisionType.IsNotText:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotText;
-                    break;
-                case enDecisionType.IsAlphanumeric:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsAlphanumeric;
-                    break;
-                case enDecisionType.IsNotAlphanumeric:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotAlphanumeric;
-                    break;
-                case enDecisionType.IsXML:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsXML;
-                    break;
-                case enDecisionType.IsNotXML:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotXML;
-                    break;
-                case enDecisionType.IsDate:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsDate;
-                    break;
-                case enDecisionType.IsNotDate:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotDate;
-                    break;
-                case enDecisionType.IsEmail:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsEmail;
-                    break;
-                case enDecisionType.IsNotEmail:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotEmail;
-                    break;
-                case enDecisionType.IsRegEx:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsRegEx;
-                    break;
-                case enDecisionType.NotRegEx:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_NotRegEx;
-                    break;
-                case enDecisionType.IsEqual:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_Equals;
-                    break;
-                case enDecisionType.IsNotEqual:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotEqual;
-                    break;
-                case enDecisionType.IsLessThan:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsLessThan;
-                    break;
-                case enDecisionType.IsLessThanOrEqual:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsLessThanOrEqual;
-                    break;
-                case enDecisionType.IsGreaterThan:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsGreaterThan;
-                    break;
-                case enDecisionType.IsGreaterThanOrEqual:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsGreaterThanOrEqual;
-                    break;
-                case enDecisionType.IsContains:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsContains;
-                    break;
-                case enDecisionType.NotContain:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_NotContain;
-                    break;
-                case enDecisionType.IsEndsWith:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsEndsWith;
-                    break;
-                case enDecisionType.NotEndsWith:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_NotEndsWith;
-                    break;
-                case enDecisionType.IsStartsWith:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsStartsWith;
-                    break;
-                case enDecisionType.NotStartsWith:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_NotStartsWith;
-                    break;
-                case enDecisionType.IsBetween:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsBetween;
-                    break;
-                case enDecisionType.NotBetween:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_NotBetween;
-                    break;
-                case enDecisionType.IsBinary:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsBinary;
-                    break;
-                case enDecisionType.IsNotBinary:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotBinary;
-                    break;
-                case enDecisionType.IsHex:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsHex;
-                    break;
-                case enDecisionType.IsNotHex:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotHex;
-                    break;
-                case enDecisionType.IsBase64:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsBase64;
-                    break;
-                case enDecisionType.IsNotBase64:
-                    errorMsg = Warewolf.Resource.Messages.Messages.Test_FailureMessage_IsNotBase64;
-                    break;
-                default:
-                    break;
+                case enDecisionType.Choose: return Messages.Test_FailureMessage_Choose;
+                case enDecisionType.IsError: return Messages.Test_FailureMessage_IsError;
+                case enDecisionType.IsNotError: return Messages.Test_FailureMessage_IsNotError;
+                case enDecisionType.IsNull: return Messages.Test_FailureMessage_IsNull;
+                case enDecisionType.IsNotNull: return Messages.Test_FailureMessage_IsNotNull;
+                case enDecisionType.IsNumeric: return Messages.Test_FailureMessage_IsNumeric;
+                case enDecisionType.IsNotNumeric: return Messages.Test_FailureMessage_IsNotNumeric;
+                case enDecisionType.IsText: return Messages.Test_FailureMessage_IsText;
+                case enDecisionType.IsNotText:return Messages.Test_FailureMessage_IsNotText;
+                case enDecisionType.IsAlphanumeric: return Messages.Test_FailureMessage_IsAlphanumeric;
+                case enDecisionType.IsNotAlphanumeric: return Messages.Test_FailureMessage_IsNotAlphanumeric;
+                case enDecisionType.IsXML: return Messages.Test_FailureMessage_IsXML;
+                case enDecisionType.IsNotXML: return Messages.Test_FailureMessage_IsNotXML;
+                case enDecisionType.IsDate: return Messages.Test_FailureMessage_IsDate;
+                case enDecisionType.IsNotDate: return Messages.Test_FailureMessage_IsNotDate;
+                case enDecisionType.IsEmail: return Messages.Test_FailureMessage_IsEmail;
+                case enDecisionType.IsNotEmail: return Messages.Test_FailureMessage_IsNotEmail;
+                case enDecisionType.IsRegEx: return Messages.Test_FailureMessage_IsRegEx;
+                case enDecisionType.NotRegEx: return Messages.Test_FailureMessage_NotRegEx;
+                case enDecisionType.IsEqual: return Messages.Test_FailureMessage_Equals;
+                case enDecisionType.IsNotEqual: return Messages.Test_FailureMessage_IsNotEqual;
+                case enDecisionType.IsLessThan: return Messages.Test_FailureMessage_IsLessThan;
+                case enDecisionType.IsLessThanOrEqual: return Messages.Test_FailureMessage_IsLessThanOrEqual;
+                case enDecisionType.IsGreaterThan: return Messages.Test_FailureMessage_IsGreaterThan;
+                case enDecisionType.IsGreaterThanOrEqual: return Messages.Test_FailureMessage_IsGreaterThanOrEqual;
+                case enDecisionType.IsContains: return Messages.Test_FailureMessage_IsContains;
+                case enDecisionType.NotContain: return Messages.Test_FailureMessage_NotContain;
+                case enDecisionType.IsEndsWith: return Messages.Test_FailureMessage_IsEndsWith;
+                case enDecisionType.NotEndsWith: return Messages.Test_FailureMessage_NotEndsWith;
+                case enDecisionType.IsStartsWith: return Messages.Test_FailureMessage_IsStartsWith;
+                case enDecisionType.NotStartsWith: return Messages.Test_FailureMessage_NotStartsWith;
+                case enDecisionType.IsBetween: return Messages.Test_FailureMessage_IsBetween;
+                case enDecisionType.NotBetween: return Messages.Test_FailureMessage_NotBetween;
+                case enDecisionType.IsBinary: return Messages.Test_FailureMessage_IsBinary;
+                case enDecisionType.IsNotBinary: return Messages.Test_FailureMessage_IsNotBinary;
+                case enDecisionType.IsHex: return Messages.Test_FailureMessage_IsHex;
+                case enDecisionType.IsNotHex: return Messages.Test_FailureMessage_IsNotHex;
+                case enDecisionType.IsBase64: return Messages.Test_FailureMessage_IsBase64;
+                case enDecisionType.IsNotBase64: return Messages.Test_FailureMessage_IsNotBase64;
+                default: return string.Empty;
             }
-            return errorMsg;
         }
     }
-
-    /// <summary>
-    /// Decision types for the wizard
-    /// </summary>
+    
     public enum enDecisionType
     {
         [DecisionTypeDisplayValue("Not a Valid Decision Type")] Choose,

@@ -13,7 +13,7 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    public class DataSourceShapeFactory
+    public static class DataSourceShapeFactory
     {
         public static IDataSourceShape CreateDataSourceShape()
         {

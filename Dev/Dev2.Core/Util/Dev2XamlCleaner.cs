@@ -13,9 +13,6 @@ using System.Text.RegularExpressions;
 
 namespace Dev2.Util
 {
-    /// <summary>
-    ///     Used to clean the XAML def upon changes
-    /// </summary>
     public class Dev2XamlCleaner
     {
         private const string replacePrefix = "assembly=";
