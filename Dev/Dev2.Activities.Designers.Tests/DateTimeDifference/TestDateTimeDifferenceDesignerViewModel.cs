@@ -22,4 +22,13 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         public string InputFormat { set { SetProperty(value); } get { return GetProperty<string>(); } }
         public string OutputType { get { return GetProperty<string>(); } set { SetProperty(value); } }
     }
+    public class TestDotNetDateTimeDifferenceDesignerViewModel : Dev2.Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesignerViewModel
+    {
+        public TestDotNetDateTimeDifferenceDesignerViewModel(ModelItem modelItem)
+            : base(modelItem)
+        {
+        }
+        public string InputFormat { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        public string OutputType { get { return GetProperty<string>(); } set { SetProperty(value); } }
+    }
 }
