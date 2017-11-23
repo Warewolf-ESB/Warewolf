@@ -78,67 +78,27 @@ namespace Warewolf.Studio.Core
 
         void Expanding()
         {
-            if (!_isCom)
+            var comChildren = _children.ToList();
+            if (_isCom && IsExpanded && Children != null && comChildren.Count > 5)
             {
-                if (Name == "GAC" && IsExpanded)
+                ProgressVisibility = true;
+                _children = new AsyncObservableCollection<IDllListingModel>(comChildren.Take(5));
+                var allChildrenCount = comChildren.Count;
+                TotalChildrenCount = allChildrenCount;
+                Task.Factory.StartNew(() =>
                 {
-                    if (Children != null)
+                    while (_children.Count < allChildrenCount)
                     {
-                        var gacChildren = _children.ToList();
-                        if (gacChildren.Count > 5)
+                        var items = comChildren.Skip(ChildrenCount).Take(25);
+                        var col = _children as AsyncObservableCollection<IDllListingModel>;
+                        col?.AddRange(items.ToList());
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
                         {
-                            ProgressVisibility = true;
-                            _children = new AsyncObservableCollection<IDllListingModel>(gacChildren.Take(5));
-                            var allChildrenCount = gacChildren.Count;
-                            TotalChildrenCount = allChildrenCount;
-                            Task.Factory.StartNew(() =>
-                            {
-                                while (_children.Count < allChildrenCount)
-                                {
-                                    var items = gacChildren.Skip(ChildrenCount).Take(25);
-                                    var col = _children as AsyncObservableCollection<IDllListingModel>;
-                                    col?.AddRange(items.ToList());
-                                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
-                                    {
-                                        CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
-                                        OnPropertyChanged(() => ChildrenCount);
-                                    }));
-                                }
-                            });
-                        }
+                            CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
+                            OnPropertyChanged(() => ChildrenCount);
+                        }));
                     }
-                }
-            }
-            else
-            {
-                if (IsExpanded)
-                {
-                    if (Children != null)
-                    {
-                        var comChildren = _children.ToList();
-                        if (comChildren.Count > 5)
-                        {
-                            ProgressVisibility = true;
-                            _children = new AsyncObservableCollection<IDllListingModel>(comChildren.Take(5));
-                            var allChildrenCount = comChildren.Count;
-                            TotalChildrenCount = allChildrenCount;
-                            Task.Factory.StartNew(() =>
-                            {
-                                while (_children.Count < allChildrenCount)
-                                {
-                                    var items = comChildren.Skip(ChildrenCount).Take(25);
-                                    var col = _children as AsyncObservableCollection<IDllListingModel>;
-                                    col?.AddRange(items.ToList());
-                                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
-                                    {
-                                        CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
-                                        OnPropertyChanged(() => ChildrenCount);
-                                    }));
-                                }
-                            });
-                        }
-                    }
-                }
+                });
             }
         }
 
