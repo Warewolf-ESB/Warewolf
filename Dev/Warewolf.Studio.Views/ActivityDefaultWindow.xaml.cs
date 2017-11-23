@@ -36,10 +36,6 @@ namespace Warewolf.Studio.Views
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
-        #region Implementation of IComponentConnector
-
-        #endregion
-
         void DoneButton_OnClick(object sender, RoutedEventArgs e)
         {
             bool valid = true;
