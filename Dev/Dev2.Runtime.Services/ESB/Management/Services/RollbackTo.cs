@@ -19,7 +19,6 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-using Dev2.Runtime.ESB.Management;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
