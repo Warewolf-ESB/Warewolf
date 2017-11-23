@@ -15,7 +15,7 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-
+using System.Windows.Controls;
 
 namespace Warewolf.UIBindingTests.PluginSource
 {
@@ -252,9 +252,33 @@ namespace Warewolf.UIBindingTests.PluginSource
                     break;
             }
 
-            sourceControl.SetTextBoxValue(controlName, input);
+            SetTextBoxValue(sourceControl, controlName, input);
             var isSameAsViewModel = input.Equals(assemblyNameOnViewModel, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isSameAsViewModel);
+        }
+
+        void SetTextBoxValue(ManagePluginSourceControl sourceControl, string controlName, string input)
+        {
+            switch (controlName)
+            {
+                case "AssemblyName":
+                    sourceControl.AssemblyNameTextBox.Text = input;
+                    var assem = sourceControl.AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+                    assem?.UpdateSource();
+                    break;
+                case "ConfigFile":
+                    sourceControl.ConfigFileTextbox.Text = input;
+                    var config = sourceControl.ConfigFileTextbox.GetBindingExpression(TextBlock.TextProperty);
+                    config?.UpdateSource();
+                    break;
+                case "GacAssemblyName":
+                    sourceControl.GacAssemblyNameTextBox.Text = input;
+                    var gac = sourceControl.GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+                    gac?.UpdateSource();
+                    break;
+                default:
+                    break;
+            }
         }
 
         [Then(@"""(.*)"" value is ""(.*)""")]
