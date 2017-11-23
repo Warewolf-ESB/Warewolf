@@ -106,7 +106,6 @@
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Behavior\ActualSizeBindingBehavior.cs" />
-    <Compile Include="Converters\DoubleToMarginLeftConverter.cs" />
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />
     <Compile Include="Converters\MultipleBoolToEnabledConverter.cs" />
@@ -117,7 +116,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />
     <Compile Include="Utils\WatermarkSential.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WatermarkTextBox.cs" />

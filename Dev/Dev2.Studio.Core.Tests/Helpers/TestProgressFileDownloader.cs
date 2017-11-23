@@ -20,20 +20,10 @@ namespace Dev2.CustomControls.Progress
         {
         }
 
-        public void TestCancelDownload()
-        {
-            Cancel();
-        }
+        public void TestCancelDownload() => Cancel();
 
-        public void TestRehydrateDialog(string fileName, int progressPercent, long totalBytes)
-        {
-            RehydrateDialog(fileName, progressPercent, totalBytes);
-        }
-        
+        public void TestRehydrateDialog(string fileName, int progressPercent, long totalBytes) => RehydrateDialog(fileName, progressPercent, totalBytes);
 
-        public IProgressNotifier GetProgressDialog()
-        {
-            return ProgressDialog;
-        }
+        public IProgressNotifier GetProgressDialog() => ProgressDialog;
     }
 }
