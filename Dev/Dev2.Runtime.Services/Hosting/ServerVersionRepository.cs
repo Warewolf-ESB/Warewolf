@@ -35,14 +35,17 @@ namespace Dev2.Runtime.Hosting
 {
     public class ServerVersionRepository : IServerVersionRepository
     {
-        readonly IVersionStrategy _versionStrategy;
-        readonly IResourceCatalog _catalogue;
-        readonly IDirectory _directory;
-        readonly IFile _file;
+        private readonly IVersionStrategy _versionStrategy;
+        private readonly IResourceCatalog _catalogue;
+        private readonly IDirectory _directory;
+        private readonly IFile _file;
+        private readonly IFilePath _filePath;
         protected static readonly object LockObject = new object();
         readonly string _rootPath;
+        readonly string _envVersionFolder;
+        readonly string _resourcePath;
 
-        public ServerVersionRepository(IVersionStrategy versionStrategy, IResourceCatalog catalogue, IDirectory directory, string rootPath, IFile file)
+        public ServerVersionRepository(IVersionStrategy versionStrategy, IResourceCatalog catalogue, IDirectory directory, string rootPath, IFile file, IFilePath filePath)
         {
             VerifyArgument.AreNotNull(new Dictionary<string, object>
             {          {"versionStrategy", versionStrategy},
@@ -57,6 +60,9 @@ namespace Dev2.Runtime.Hosting
             _directory = directory;
             _rootPath = rootPath;
             _file = file;
+            _filePath = filePath;
+            _envVersionFolder = EnvironmentVariables.VersionsPath;
+            _resourcePath = EnvironmentVariables.ResourcePath;
         }
 
         public IList<IExplorerItem> GetVersions(Guid resourceId)
@@ -66,9 +72,30 @@ namespace Dev2.Runtime.Hosting
             {
                 return new List<IExplorerItem>();
             }
-            var files = _directory.GetFiles(EnvironmentVariables.VersionsPath).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
-            return files.Select(a => CreateVersionFromFilePath(a, resource, EnvironmentVariables.VersionsPath)).OrderByDescending(a => a.VersionInfo.DateTimeStamp).Take(GlobalConstants.VersionCount).ToList();
+            var versionFolder = _filePath.Combine(_envVersionFolder, resourceId.ToString());
+            var files = _directory.GetFiles(versionFolder);
+            return files.Select(a => CreateVersionFromFilePath(a, resource, _envVersionFolder))
+                        .OrderByDescending(a => a.VersionInfo.DateTimeStamp)
+                        .Take(GlobalConstants.VersionCount)
+                        .ToList();
         }
+        string GetVersionFolderFromResource(string resourcePath)
+        {
+            var path = _filePath.Combine(_rootPath, GetDirectoryFromResource(resourcePath), GlobalConstants.VersionFolder);
+            _directory.CreateIfNotExists(path);
+
+            return path;
+        }
+
+        string GetFolderFromResource(string resourcePath)
+        {
+            var path = _filePath.Combine(_rootPath, GetDirectoryFromResource(resourcePath));
+            _directory.CreateIfNotExists(path);
+
+            return path;
+        }
+
+
 
         public void MoveVersions(Guid resourceId, string newPath, string resourcePath)
         {
@@ -79,31 +106,24 @@ namespace Dev2.Runtime.Hosting
                 return;
             }
 
-            var files = _directory.GetFiles(EnvironmentVariables.VersionsPath).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
+            var files = _directory.GetFiles(_envVersionFolder).Where(a => a.Contains(resource.VersionInfo.VersionId.ToString()));
             IEnumerable<string> enumerable = files as IList<string> ?? files.ToList();
 
-            enumerable.ForEach(a => _file.Move(a, Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(a))));
+            enumerable.ForEach(a => _file.Move(a, _filePath.Combine(_envVersionFolder, _filePath.GetFileName(a))));
         }
 
         public StringBuilder GetVersion(IVersionInfo version, string resourcePath)
         {
-            var resource = _catalogue.GetResource(Guid.Empty, version.ResourceId);
-
-            var files = _directory.GetFiles(EnvironmentVariables.VersionsPath).FirstOrDefault(a => a.Contains(string.Format("{0}_{1}_", resource.VersionInfo.VersionId.ToString(), version.VersionNumber)));
-            if (string.IsNullOrEmpty(files))
+            var versionFolder = _filePath.Combine(_envVersionFolder, version.ResourceId.ToString());
+            var v = _directory.GetFiles(versionFolder)
+                .Where(p=>_filePath.GetFileName(p).StartsWith(version.VersionNumber))
+                .FirstOrDefault();
+            if (string.IsNullOrEmpty(v))
             {
                 throw new VersionNotFoundException("Version Does not exist");
             }
 
-            return new StringBuilder(_file.ReadAllText(files));
-        }
-
-        string GetFolderFromResource(string resourcePath)
-        {
-            var path = Path.Combine(_rootPath, GetDirectoryFromResource(resourcePath));
-            _directory.CreateIfNotExists(path);
-
-            return path;
+            return new StringBuilder(_file.ReadAllText(v));
         }
 
         IExplorerItem CreateVersionFromFilePath(string path, IResource resource, string resourcePath)
@@ -119,24 +139,24 @@ namespace Dev2.Runtime.Hosting
         {
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
-            if (parts.Length != 4)
+            if (parts.Length != 3)
             {
                 throw new Exception(ErrorResource.InvalidVersion);
             }
 
-            return new VersionInfo(new DateTime(long.Parse(parts[2])), parts[3], "", parts[1], resourceId, Guid.Parse(parts[0]));
+            return new VersionInfo(new DateTime(long.Parse(parts[1])), parts[2], "", parts[0], resourceId, resourceId);
         }
 
         string CreateNameFromPath(string path)
         {
             var name = new FileInfo(path).Name;
             var parts = name.Split('_');
-            if (parts.Length != 4)
+            if (parts.Length != 3)
             {
                 throw new Exception(ErrorResource.InvalidVersion);
             }
 
-            return $"v.{parts[1]}  {new DateTime(long.Parse(parts[2]))}  {parts[3].Replace(".xml", "")}";
+            return $"v.{parts[0]}  {new DateTime(long.Parse(parts[1]))}  {parts[2].Replace(".xml", "")}";
         }
 
         static string GetDirectoryFromResource(string resourcePath)
@@ -194,13 +214,22 @@ namespace Dev2.Runtime.Hosting
         public IList<IExplorerItem> DeleteVersion(Guid resourceId, string versionNumber, string resourcePath)
         {
             var resource = _catalogue.GetResource(Guid.Empty, resourceId);
-            var files = _directory.GetFiles(EnvironmentVariables.VersionsPath).FirstOrDefault(a => a.Contains($"{resource.VersionInfo.VersionId.ToString()}_{versionNumber}_"));
-            _file.Delete(files);
+            var versionFolder = GetVersionFolderPath(resource.ResourceID.ToString());
+            var v = _directory.GetFiles(versionFolder)
+                .Where(p => _filePath.GetFileName(p).StartsWith(versionNumber))
+                .FirstOrDefault();
+            _file.Delete(v);
             return GetVersions(resourceId);
         }
 
+        string GetVersionFolderPath(string resourceId)
+        {
+            var versionFolder = _filePath.Combine(_envVersionFolder, resourceId);
+            return versionFolder;
+        }
         public void StoreVersion(IResource resource, string userName, string reason, Guid workSpaceId, string resourcePath)
         {
+            var versionFolder = GetVersionFolderPath(resource.ResourceID.ToString());
             var _userName = userName;
             if (workSpaceId == Guid.Empty)
             {
@@ -211,19 +240,20 @@ namespace Dev2.Runtime.Hosting
 
                 lock (LockObject)
                 {
-                    var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
+                   var old = _catalogue.GetResource(Guid.Empty, resource.ResourceID);
                     if (old == null)
                     { return; }
                     var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                     old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, _userName, reason);
 
-                    var fileName = $"{old.VersionInfo.VersionId}_{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
-                    if (!_file.Exists(Path.Combine(EnvironmentVariables.VersionsPath, fileName)))
+                    var fileName = $"{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
+                    if (!_file.Exists(_filePath.Combine(versionFolder, fileName)))
                     {
-                        var sourceFile = Path.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
+                        var sourceFile = _filePath.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
                         if (_file.Exists(sourceFile))
                         {
-                            _file.Copy(sourceFile, Path.Combine(EnvironmentVariables.VersionsPath, fileName));
+                            _directory.CreateIfNotExists(versionFolder);
+                            _file.Copy(sourceFile, _filePath.Combine(versionFolder, fileName));
                         }
                     }
 
@@ -240,15 +270,42 @@ namespace Dev2.Runtime.Hosting
 
         public void CleanUpOldVersionControlStructure(IDirectory directory)
         {
+            Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { PerformCleanUp(directory); });
+        }
+
+        private void PerformCleanUp(IDirectory directory)
+        {
+            var resources = _catalogue.GetResources(GlobalConstants.ServerWorkspaceID).Where(p => !p.ResourceType.Equals("ReservedService"));
+
+            foreach (var item in resources)
+            {
+                if (item?.VersionInfo == null)
+                {
+                    continue;
+                }
+                var versionPath = item.GetResourcePath(GlobalConstants.ServerWorkspaceID);
+                var path = GetVersionFolderFromResource(versionPath);
+                var files = _directory.GetFiles(path).Where(a => a.Contains(item.VersionInfo.VersionId.ToString()));
+                var folderName = _filePath.Combine(_envVersionFolder, item.ResourceID.ToString());
+                foreach (var pathForVersion in files)
+                {
+                    directory.CreateIfNotExists(folderName);
+                    var parts = _filePath.GetFileName(pathForVersion).Split('_');
+                    var name = string.Format("{0}_{1}_{2}", parts[1], parts[2], parts[3]);
+                    string destination = _filePath.Combine(folderName, name);
+                    if (!_file.Exists(destination))
+                    {
+                        _file.Move(pathForVersion, destination);
+                    }
+                }
+            }
             try
             {
                 var partialName = "VersionControl";
-                var dirs = directory.GetDirectories(EnvironmentVariables.ResourcePath, "*" + partialName + "*");
+                var dirs = directory.GetDirectories(_resourcePath, "*" + partialName + "*");
                 foreach (var item in dirs)
                 {
-                    var files = directory.GetFiles(item).Where(p=>File.Exists(p));
-                    files.ForEach(p => File.Move(p, Path.Combine(EnvironmentVariables.VersionsPath, Path.GetFileName(p))));
-                    Directory.Delete(item, true);
+                    directory.Delete(item, true);
                 }
             }
             catch (Exception e)

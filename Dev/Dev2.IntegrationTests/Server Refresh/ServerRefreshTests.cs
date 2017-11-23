@@ -77,7 +77,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        Task<string> ExececuteRequest(Uri url)
+        public Task<string> ExececuteRequest(Uri url)
         {
             try
             {
