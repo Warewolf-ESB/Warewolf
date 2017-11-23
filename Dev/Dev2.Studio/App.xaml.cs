@@ -60,13 +60,13 @@ using Warewolf.Studio.Views;
 using Dev2.Studio.Diagnostics;
 using Dev2.Studio.ViewModels;
 using Dev2.Util;
-<<<<<<< HEAD
+
 using Dev2.Instrumentation.Factory;
 using Dev2.Studio.Utils;
 using System.Security.Claims;
-=======
+
 using Dev2.Studio.Interfaces;
->>>>>>> bde01f291371d02daf407f38b86762485e7c3247
+
 
 namespace Dev2.Studio
 
@@ -108,9 +108,7 @@ namespace Dev2.Studio
 
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
         protected override void OnStartup(StartupEventArgs e)
-        {
-<<<<<<< HEAD
-          
+        {        
 
             CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
             //Create configuration for action tracker and start
@@ -120,10 +118,10 @@ namespace Dev2.Studio
                 applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             }
 
-=======
+
             Tracker.StartStudio();
             ShutdownMode = ShutdownMode.OnMainWindowClose;
->>>>>>> bde01f291371d02daf407f38b86762485e7c3247
+
             Task.Factory.StartNew(() =>
                 {
                     var path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Warewolf", "Feedback");
@@ -288,7 +286,6 @@ namespace Dev2.Studio
 
         protected override void OnExit(ExitEventArgs e)
         {
-<<<<<<< HEAD
             
             var applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
@@ -298,10 +295,9 @@ namespace Dev2.Studio
                 applicationTracker.DisableAppplicationTracker();
             }
         
-=======
-            Tracker.Stop();
+
             SplashView.CloseSplash(true);
->>>>>>> bde01f291371d02daf407f38b86762485e7c3247
+
             // this is already handled ;)
             _shellViewModel?.PersistTabs(true);
             ProgressFileDownloader.PerformCleanup(new DirectoryWrapper(), GlobalConstants.VersionDownloadPath, new FileWrapper());
