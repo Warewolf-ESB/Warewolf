@@ -146,6 +146,7 @@
     <Compile Include="Explorer\Folders.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Explorer\Rename.cs" />
+    <Compile Include="Explorer\ShowServerVersion.cs" />
     <Compile Include="Explorer\View Swagger.cs" />
     <Compile Include="Explorer\VersionHistory.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
