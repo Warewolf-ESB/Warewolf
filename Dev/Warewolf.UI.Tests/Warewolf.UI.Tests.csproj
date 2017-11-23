@@ -157,6 +157,7 @@
     <Compile Include="Merge\MergeDialogUIMap.Designer.cs">
       <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
     </Compile>
+    <Compile Include="Merge\MergeConflictsTests.cs" />
     <Compile Include="Merge\MergeVariableConflictsTest.cs" />
     <Compile Include="Merge\MergeSwitchConflictsTest.cs" />
     <Compile Include="Merge\MergeDecisionConflictsTest.cs" />
