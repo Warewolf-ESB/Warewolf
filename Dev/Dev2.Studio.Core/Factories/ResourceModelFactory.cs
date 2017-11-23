@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,10 +19,8 @@ using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common;
 using System.IO;
-using Dev2.Runtime.ServiceModel.Data;
 
 namespace Dev2.Studio.Core.Factories
-
 {
     public static class ResourceModelFactory
     {
@@ -36,14 +34,14 @@ namespace Dev2.Studio.Core.Factories
 
         public static IContextualResourceModel CreateResourceModel(IServer environment, IResource resource, XDocument xElement)
         {
-            IContextualResourceModel contextualResource = CreateResourceModel(environment);
+            var contextualResource = CreateResourceModel(environment);
             contextualResource.ID = resource.ResourceID;
             contextualResource.UserPermissions = Permissions.Contribute;
             contextualResource.Category = Path.Combine(EnvironmentVariables.ResourcePath, resource.ResourceName);
             if (resource.ResourceType == "WorkflowService" || resource.ResourceType == "Workflow")
             {
                 var def = xElement.Element("Service").Element("Action").Element("XamlDefinition").ToStringBuilder();
-                XElement xaml = def.Unescape().Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "").ToXElement();
+                var xaml = def.Unescape().Replace("<XamlDefinition>", "").Replace("</XamlDefinition>", "").ToXElement();
                 contextualResource.WorkflowXaml = xaml.ToString(SaveOptions.DisableFormatting).ToStringBuilder();
                 return SetResourceProperties(resource.ResourceType, resource.ResourceName, resource.ResourceName, contextualResource);
             }
@@ -59,7 +57,7 @@ namespace Dev2.Studio.Core.Factories
         {
             try
             {
-                IContextualResourceModel resource = CreateResourceModel(environment);
+                var resource = CreateResourceModel(environment);
                 resource.ResourceName = resourceName;
                 resource.ID = Guid.NewGuid();
                 resource.UserPermissions = environment.AuthorizationService != null ? environment.AuthorizationService.GetResourcePermissions(resource.ID) : Permissions.Contribute;
@@ -72,7 +70,7 @@ namespace Dev2.Studio.Core.Factories
             return null;
         }
 
-        private static IContextualResourceModel SetResourceProperties(string resourceType, string resourceName, string displayName, IContextualResourceModel resource)
+        static IContextualResourceModel SetResourceProperties(string resourceType, string resourceName, string displayName, IContextualResourceModel resource)
         {
             switch (resourceType)
             {

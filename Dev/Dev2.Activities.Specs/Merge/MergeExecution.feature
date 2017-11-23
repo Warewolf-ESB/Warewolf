@@ -15,14 +15,14 @@ Scenario: Merge AssignOnlyWithNoOutput Workflow with Same Version
 
 
 Scenario: Merge VersionHelloWorld Workflow 
-	 Given I Load workflow "Hello World" from "localhost"
+	 Given I Load workflow "MergeHelloWorld" from "localhost"
 	 And I Load workflow "VersionHelloWorld" from "Remote Connection Integration"	 
 	 When Merge Window is opened with "VersionHelloWorld"
-	 Then Current workflow contains "6" tools
-	 And Different workflow contains "7" tools
-	 And Merge conflicts count is "7"
+	 Then Current workflow contains "8" tools
+	 And Different workflow contains "8" tools
+	 And Merge conflicts count is "8"
 	 And Merge variable conflicts is false
-	 And Merge window has "0" Conflicting tools
+	 And Merge window has "1" Conflicting tools
 
 Scenario: Merge WorkFlowWithOneScalar Same VariableList
 	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
@@ -68,34 +68,34 @@ Scenario: Merge Workflow with Assign tool As First Tool And Split tool as Second
 	 Given I Load workflow "WorkflowWithDifferentToolSequence" from "localhost"
 	 And I Load workflow "WorkflowWithDifferentToolSequence" from "Remote Connection Integration"	 
 	 When Merge Window is opened with "WorkflowWithDifferentToolSequence"
-	 Then Current workflow contains "2" tools
-	 And Different workflow contains "2" tools
-	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is "0" 
+	 Then Current workflow contains "3" tools
+	 And Different workflow contains "3" tools
+	 And Merge conflicts count is "3"
+	 And Merge variable conflicts is false
 
 Scenario: Merge Workflow Containing SequenceTool With Different Children Count
 	 Given I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "localhost"
 	 And I Load workflow "WorkflowWithSequenceToolWithDifferentChildren" from "Remote Connection Integration"	 
 	 When Merge Window is opened with "WorkflowWithSequenceToolWithDifferentChildren"
-	 Then Current workflow contains "2" tools
-	 And Different workflow contains "2" tools
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is "0" 
+	 And Merge variable conflicts is false
 
 Scenario: Merge Workflow Containing SequenceTool With Different Children Sequence
 	 Given I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "localhost"
 	 And I Load workflow "WorkflowWithSequenceToolWithChildrenInDifferentOrder" from "Remote Connection Integration"	 
 	 When Merge Window is opened with "WorkflowWithSequenceToolWithChildrenInDifferentOrder"
-	 Then Current workflow contains "2" tools
-	 And Different workflow contains "2" tools
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is "0" 
+	 And Merge variable conflicts is false
 
 Scenario: Merge Workflow Containing Same tools But disconnected Arms
 	 Given I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "localhost"
 	 And I Load workflow "WorkflowWithAssignToolsWithDisconnectedArms" from "Remote Connection Integration"	 
 	 When Merge Window is opened with "WorkflowWithAssignToolsWithDisconnectedArms"
-	 Then Current workflow contains "2" tools
-	 And Different workflow contains "2" tools
+	 Then Current workflow contains "1" tools
+	 And Different workflow contains "1" tools
 	 And Merge conflicts count is "1"
-	 And Merge variable conflicts is "0" 
+	 And Merge variable conflicts is false

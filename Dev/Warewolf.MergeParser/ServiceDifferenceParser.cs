@@ -22,7 +22,7 @@ namespace Warewolf.MergeParser
     {
         readonly IActivityParser _activityParser;
         readonly IResourceDefinationCleaner _definationCleaner;
-        ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);        
+        readonly ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);        
 
         public ServiceDifferenceParser()
             : this(CustomContainer.Get<IActivityParser>(), new ResourceDefinationCleaner())
@@ -35,8 +35,8 @@ namespace Warewolf.MergeParser
             VerifyArgument.IsNotNull(nameof(definationCleaner), definationCleaner);
             _activityParser = activityParser;
             _definationCleaner = definationCleaner;
-        }   
-        
+        }
+
         public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetConflictTrees(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
             var currentTree = BuildTree(current, true);
@@ -56,7 +56,7 @@ namespace Warewolf.MergeParser
             if (loadFromServer)
             {
                 var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
-                if (msg != null)
+                if (msg != null && msg.Message.Length > 0)
                 {
                     xaml = msg.Message;
                 }
@@ -79,7 +79,7 @@ namespace Warewolf.MergeParser
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
             var allNodes = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
-            var idsLocations = new List<(string uniqueId, Point location)>();            
+            var idsLocations = new List<(string uniqueId, Point location)>();
             foreach(var n in allNodes)
             {
                 var loc = GetShapeLocation(wd, n);
@@ -131,20 +131,20 @@ namespace Warewolf.MergeParser
         {
             return _flowNodes;
         }
-                          
+
         public bool NodeHasConflict(string uniqueId)
         {
             var hasConflict = _conflicts.SingleOrDefault(p => p.Key.Equals(uniqueId));
             return hasConflict.Value;
         }
-        private List<KeyValuePair<string, bool>> _conflicts;
+        List<KeyValuePair<string, bool>> _conflicts;
 
         public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
             var trees = GetConflictTrees(current, difference, loadworkflowFromServer);
-            return trees;            
+            return trees;
         }
-                 
+
         static Point GetShapeLocation(WorkflowDesigner wd, ModelItem modelItem)
         {
             var shapeLocation = new Point();

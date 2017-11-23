@@ -150,7 +150,7 @@ namespace Dev2.ViewModels.Merge
             var itemsToAdd = new List<IConflict>();
             foreach (var addConflict in conflicts)
             {
-                var foundConflicts = findFunction?.Invoke(addConflict, armConnectorConflicts); 
+                var foundConflicts = findFunction?.Invoke(addConflict, armConnectorConflicts);
                 foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
                 {
                     AddToTempConflictList(conflicts, itemsToAdd, found);
@@ -159,7 +159,7 @@ namespace Dev2.ViewModels.Merge
             conflicts.AddRange(itemsToAdd);
         }
 
-        static IEnumerable<IArmConnectorConflict> FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));         
+        static IEnumerable<IArmConnectorConflict> FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
         static IEnumerable<IArmConnectorConflict> FindForCurrent(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
         static bool FindMatchingConnector(string connectorId, string conflictId) => connectorId == conflictId;
 
@@ -195,7 +195,6 @@ namespace Dev2.ViewModels.Merge
                         UniqueId = id,
                         Key = connector.Key,
                         HasConflict = true
-
                     };
                     var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);
                     armConnector.HasConflict = true;
@@ -219,7 +218,7 @@ namespace Dev2.ViewModels.Merge
                     Key = connector.Key,
                     HasConflict = true
                 };
-                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);                
+                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);
                 armConnector.CurrentArmConnector = mergeArmConnectorConflict;
                 armConnector.DifferentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector);
                 armConnector.CurrentArmConnector.OnChecked += ArmCheck;
@@ -292,7 +291,7 @@ namespace Dev2.ViewModels.Merge
         bool _canSave;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
         IDataListViewModel _dataListViewModel;
-        private List<IConflict> _seenConflicts;
+        List<IConflict> _seenConflicts;
 
         void SourceOnConflictModelChanged(object sender, IConflictModelFactory args)
         {
@@ -332,10 +331,7 @@ namespace Dev2.ViewModels.Merge
 
         public IDataListViewModel DataListViewModel
         {
-            get
-            {
-                return _dataListViewModel;
-            }
+            get => _dataListViewModel;
             set
             {
                 _dataListViewModel = value;
@@ -475,13 +471,13 @@ namespace Dev2.ViewModels.Merge
         }
 
         IConflict GetNextConflict(IConflict conflict)
-        {            
-            var idx = _conflicts.IndexOf(conflict);           
+        {
+            var idx = _conflicts.IndexOf(conflict);
             var nextConflict = MoveNext(idx);
             while (_seenConflicts.Contains(nextConflict) && nextConflict!=null)
             {
                 idx = idx + 1;
-                nextConflict = MoveNext(idx);                
+                nextConflict = MoveNext(idx);
             }
             _seenConflicts.Add(nextConflict);
             return nextConflict;
