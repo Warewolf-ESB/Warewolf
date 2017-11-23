@@ -55,8 +55,15 @@ namespace Dev2.Activities.Designers2.DateTime
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string TimeModifierType { set { SetProperty(value);} get {return  GetProperty<string>();} }
-        string TimeModifierAmountDisplay { set { SetProperty(value); } }
+        string TimeModifierType
+        {
+            set { SetProperty(value);}
+            get {return  GetProperty<string>();}
+        }
+        string TimeModifierAmountDisplay
+        {
+            set { SetProperty(value); }
+        }
 
         public override void Validate()
         {
