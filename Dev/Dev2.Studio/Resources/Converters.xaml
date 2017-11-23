@@ -24,7 +24,6 @@
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisConverter" />    
     <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
     <converters:NegateVisibilityConverter x:Key="NegateVisibilityConverter" />
-    <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
     <converters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter" />
     <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
     <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />
