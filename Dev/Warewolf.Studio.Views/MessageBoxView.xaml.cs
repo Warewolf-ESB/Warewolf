@@ -12,9 +12,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for MessageBoxView.xaml
-    /// </summary>
     public partial class MessageBoxView
     {
         readonly Grid _blackoutGrid = new Grid();
@@ -81,10 +78,8 @@ namespace Warewolf.Studio.Views
                 if (Application.Current != null)
                 {
                     var windowCollection = Application.Current.Windows;
-
                     foreach (var window in windowCollection)
                     {
-
                         if (window is Window window1 && window1.Name != "MainViewWindow")
                         {
                             window1.Close();

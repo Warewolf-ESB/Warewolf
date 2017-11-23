@@ -134,7 +134,7 @@
       <DependentUpon>ExchangeSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Explorer\Context Menu.cs" />
-    <Compile Include="Explorer\DeleteExplorerResource.cs" />
+    <Compile Include="Explorer\Delete.cs" />
     <Compile Include="Explorer\DragAndDrop.cs" />
     <Compile Include="Explorer\ExplorerUIMap.cs">
       <DependentUpon>ExplorerUIMap.uitest</DependentUpon>

@@ -8,10 +8,10 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
 // ReSharper disable InconsistentNaming
 
-namespace Warewolf.UI.Tests
+namespace Warewolf.UI.Tests.Explorer
 {
     [CodedUITest]
-    public class DeleteExplorerResource
+    public class Delete
     {
         const string flowSwitch = "DeleteExplorerResourceTestFile";
         const string flowSequence = "DeleteResourceRemovalTestFile";
@@ -28,6 +28,16 @@ namespace Warewolf.UI.Tests
             DialogsUIMap.Click_MessageBox_Yes();
             UIMap.WaitForSpinner(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             ExplorerUIMap.Click_Explorer_Refresh_Button();
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void DeleteDialog_PressEscape_ClosesDialogWindow()
+        {
+            ExplorerUIMap.Filter_Explorer(flowSwitch);
+            ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
+            DialogsUIMap.WhenIHitEscapeKeyOnTheKeyboardOnMessagebox();
+            Assert.IsFalse(DialogsUIMap.MessageBoxWindow.Exists, "Delete dialog still open after pressing escape key.");
         }
 
         [TestMethod]
