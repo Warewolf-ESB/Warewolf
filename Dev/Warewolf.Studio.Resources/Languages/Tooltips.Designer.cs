@@ -793,7 +793,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
         ///Leaving this field blank will assume the default date time format.
         ///To escape text or non-date information use &apos;around the text you want to escape&apos;. 
-        ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; HH &apos;hours and&apos; m &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeToolTipInputformat {
             get {
@@ -805,7 +805,7 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
         ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
         ///To include text or non-date information use &apos;around the text you want to escape&apos;. 
-        ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; 24hr &apos;hours and&apos; min &apos;minutes.&apos;.
+        ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; HH &apos;hours and&apos; m &apos;minutes.&apos;.
         /// </summary>
         public static string DateTimeToolTipOutputformat {
             get {

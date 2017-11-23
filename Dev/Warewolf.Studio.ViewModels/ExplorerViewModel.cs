@@ -23,17 +23,11 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Common;
 
-
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
     {
-
         protected ObservableCollection<IEnvironmentViewModel> _environments;
-
         protected string _searchText;
         private bool _isRefreshing;
         private IExplorerTreeItem _selectedItem;
@@ -50,21 +44,15 @@ namespace Warewolf.Studio.ViewModels
 
         private void CreateFolder()
         {
-            if (SelectedItem != null)
+            if (SelectedItem != null && SelectedItem.CreateFolderCommand.CanExecute(null))
             {
-                if (SelectedItem.CreateFolderCommand.CanExecute(null))
-                {
-                    SelectedItem.CreateFolderCommand.Execute(null);
-                }
+                SelectedItem.CreateFolderCommand.Execute(null);
             }
         }
 
         public bool IsFromActivityDrop
         {
-            get
-            {
-                return _fromActivityDrop;
-            }
+            get => _fromActivityDrop;
             set
             {
                 if (value != _fromActivityDrop)
@@ -78,10 +66,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsRefreshing
         {
-            get
-            {
-                return _isRefreshing;
-            }
+            get => _isRefreshing;
             set
             {
                 _isRefreshing = value;
@@ -93,7 +78,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerTreeItem SelectedItem
         {
-            get { return _selectedItem; }
+            get => _selectedItem;
             set
             {
                 if (!Equals(_selectedItem, value))
@@ -108,7 +93,7 @@ namespace Warewolf.Studio.ViewModels
 
         public object[] SelectedDataItems
         {
-            get { return _selectedDataItems; }
+            get => _selectedDataItems;
             set
             {
                 _selectedDataItems = value;
@@ -122,10 +107,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual ObservableCollection<IEnvironmentViewModel> Environments
         {
-            get
-            {
-                return _environments;
-            }
+            get => _environments;
             set
             {
                 if (value != null)
@@ -153,10 +135,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual string SearchText
         {
-            get
-            {
-                return _searchText;
-            }
+            get => _searchText;
             set
             {
                 if (_searchText == value)
@@ -180,7 +159,6 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-
                 await RefreshEnvironment(environmentViewModel, true).ConfigureAwait(true);
             }
         }
@@ -275,10 +253,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CreateFolderCommand { get; }
         public bool AllowDrag
         {
-            get
-            {
-                return _allowDrag;
-            }
+            get => _allowDrag;
             set
             {
                 _allowDrag = value;
@@ -290,7 +265,6 @@ namespace Warewolf.Studio.ViewModels
         {
             if (id != Guid.Empty)
             {
-
                 foreach (var environmentViewModel in Environments)
                 {
                     environmentViewModel.SelectItem(id, a => SelectedItem = a);
@@ -346,7 +320,6 @@ namespace Warewolf.Studio.ViewModels
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
             localhostEnvironment.IsSelected = true;
-            
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
             {
@@ -459,10 +432,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;

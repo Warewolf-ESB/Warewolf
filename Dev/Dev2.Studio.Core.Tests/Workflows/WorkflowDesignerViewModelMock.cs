@@ -31,12 +31,12 @@ namespace Dev2.Core.Tests.Workflows
     {
         readonly Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
 
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IExternalProcessExecutor processExecutor, bool createDesigner = false)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
-                new SynchronousAsyncWorker(), processExecutor,
+                new SynchronousAsyncWorker(),
                 createDesigner, false)
         {            
             _wd = _moq.Object;
@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
+                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
         {
             //_moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -55,7 +55,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
+                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
         {
             //_moq.SetupAllProperties();
             _wd = _moq.Object;
@@ -66,7 +66,7 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, new SynchronousAsyncWorker(), processExecutor, createDesigner, false)
+                popupController, new SynchronousAsyncWorker(), createDesigner, false)
         {            
             _wd = _moq.Object;
         }

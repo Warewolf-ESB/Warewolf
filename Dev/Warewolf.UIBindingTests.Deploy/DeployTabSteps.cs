@@ -20,8 +20,7 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Dev2.Threading;
-
-
+using Dev2.ConnectionHelpers;
 
 namespace Warewolf.UIBindingTests.Deploy
 {
@@ -40,8 +39,12 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             Core.Utils.SetupResourceDictionary();
             var serverRepo = new Mock<IServerRepository>();
+            var connectControlSingleton = new Mock<IConnectControlSingleton>();
+            CustomContainer.Register(connectControlSingleton.Object);
 
-            
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+
             var shell = GetMockShellVm(true, localhostString);
             var shellViewModel = GetMockShellVm(false, destinationServerString);
             serverRepo.Setup(repository => repository.ActiveServer).Returns(shellViewModel.ActiveServer);
@@ -116,6 +119,11 @@ namespace Warewolf.UIBindingTests.Deploy
             var shell = new Mock<IShellViewModel>();
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
+            var env = new Mock<IEnvironmentViewModel>();
+            shell.SetupGet(model => model.ExplorerViewModel.Environments).Returns(new Caliburn.Micro.BindableCollection<IEnvironmentViewModel>()
+            {
+                env.Object
+            });
             var containsKey = ScenarioContext.Current.ContainsKey(localhostString);
             if (!containsKey)
             {

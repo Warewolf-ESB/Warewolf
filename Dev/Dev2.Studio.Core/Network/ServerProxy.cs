@@ -60,18 +60,6 @@ namespace Dev2.Network
             SetupPassthroughEvents();
         }
 
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            _wrappedConnection.Dispose();
-        }
-
-        #endregion
-
         #region Implementation of IEnvironmentConnection
 
         public IEventPublisher ServerEvents => _wrappedConnection.ServerEvents;

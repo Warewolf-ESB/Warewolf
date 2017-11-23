@@ -135,15 +135,21 @@ namespace Dev2.Activities
 
                 var currentOptions = BuildSqlBulkCopyOptions();
                 var runtimeDatabase = ResourceCatalog.GetResource<DbSource>(dataObject.WorkspaceID, Database.ResourceID);
-                if(runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
-                {
-                    DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList, update);
-                }
-                else
-                {
-                    DoInsertForSqlServer(runtimeDatabase, currentOptions, dataObject, allErrors, batchItr, parametersIteratorCollection, timeoutItr, ref errorResultTo, ref addExceptionToErrorList, update);
-                }
 
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
+                {
+                    if (!allErrors.HasErrors())
+                    {
+                        if (runtimeDatabase.ServerType == enSourceType.MySqlDatabase)
+                        {
+                            DoInsertForMySql(runtimeDatabase, currentOptions, parametersIteratorCollection, batchItr, timeoutItr, dataObject, errorResultTo, allErrors, ref addExceptionToErrorList, update);
+                        }
+                        else
+                        {
+                            DoInsertForSqlServer(runtimeDatabase, currentOptions, dataObject, allErrors, batchItr, parametersIteratorCollection, timeoutItr, ref errorResultTo, ref addExceptionToErrorList, update);
+                        }
+                    }
+                });
                 allErrors.MergeErrors(errorResultTo);
             }
             catch(Exception e)
