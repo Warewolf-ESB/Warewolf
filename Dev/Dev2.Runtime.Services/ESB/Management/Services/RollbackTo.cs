@@ -19,6 +19,7 @@ using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+using Dev2.Runtime.ESB.Management;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
@@ -66,8 +67,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         
         public IServerVersionRepository ServerVersionRepo
         {
-            get => return _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper()); 
-            set => _serverExplorerRepository = value; 
+            get => _serverExplorerRepository ?? new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper());
+            set => _serverExplorerRepository = value;
         }
 
         #endregion
