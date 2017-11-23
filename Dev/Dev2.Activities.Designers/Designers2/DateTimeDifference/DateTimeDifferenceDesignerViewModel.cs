@@ -47,7 +47,11 @@ namespace Dev2.Activities.Designers2.DateTimeDifference
         }
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        string OutputType { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        string OutputType
+        {
+            set { SetProperty(value); }
+            get { return GetProperty<string>(); }
+        }
 
         public override void Validate()
         {
