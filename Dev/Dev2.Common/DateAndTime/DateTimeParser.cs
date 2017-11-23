@@ -22,7 +22,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.DateAndTime
 {
-
     public class DateTimeParser : IDateTimeParser
     {
         /// <summary>
@@ -42,10 +41,10 @@ namespace Dev2.Common.DateAndTime
         private static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
         protected static Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
         protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions =new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         public static Dictionary<string, ITimeZoneTO> TimeZones = new Dictionary<string, ITimeZoneTO>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet= new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet =new Dictionary<char, List<int>>();
+        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        private static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
 
         static DateTimeParser()
         {
@@ -80,14 +79,10 @@ namespace Dev2.Common.DateAndTime
             _dateTimeFormatPartOptionsForDotNet = dateTimeFormatPartsForDotNet.DateTimeFormatPartOptionsForDotNet;
         }
 
-        protected virtual void BuildDateTimeFormatParts()
-        {
-        }
-
         /// <summary>
         ///     Creates a DateTime instance from a specified string and format.
         /// </summary>
-        public virtual bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
+        public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
         {
             bool nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
 
@@ -242,7 +237,7 @@ namespace Dev2.Common.DateAndTime
             {
                 inputFormat =
                     TranslateDotNetToDev2Format(
-                        GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
+                        GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
             }
             else
             {

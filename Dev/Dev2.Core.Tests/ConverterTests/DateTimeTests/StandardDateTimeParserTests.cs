@@ -1,4 +1,4 @@
-/*
+﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
@@ -23,7 +23,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
     /// Summary description for DateTimeParserTests
     /// </summary>
     [TestClass]
-    public class DateTimeParserTests
+    public class StandardDateTimeParserTests
     {
         static IDateTimeParser _parser;
 
@@ -41,7 +41,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            _parser = DateTimeConverterFactory.CreateParser();
+            _parser = DateTimeConverterFactory.CreateStandardParser();
         }
 
         // Use ClassCleanup to run code after all tests in a class have run
@@ -70,7 +70,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_AllArgsValid_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
             const string inputString = "14101988";
-            const string formatString = "ddmmyyyy";
+            const string formatString = "ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -92,7 +92,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithSimpleLiteral_Expected_InputStringParsedCorrectly()
         {
             const string inputString = "My birthday is : 14101988";
-            const string formatString = "'My birthday is : 'ddmmyyyy";
+            const string formatString = "'My birthday is : 'ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -114,7 +114,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithInferredLiteral_Expected_InputCorrectlyParsed()
         {
             const string inputString = "Please Give Cake On : 14101988";
-            const string formatString = "Please Give Cake On : ddmmyyyy";
+            const string formatString = "Please Give Cake On : ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -136,7 +136,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithInferredLiteralContainingEscapedLiteralCharacter_Expected_InputParsedWithEscapedCharactersIncluded()
         {
             const string inputString = "Please Give ' Cake On : 14101988";
-            const string formatString = "Please Give \\' Cake On : ddmmyyyy";
+            const string formatString = "Please Give \\' Cake On : ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -159,7 +159,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithMixedInferredAndDelimtedLiteralRegions_Expected_InputRegionCorrectlyParsedForDateTimeValues()
         {
             const string inputString = "Please Give Cake On : 14101988";
-            const string formatString = "Please Give \'Cake On :\' ddmmyyyy";
+            const string formatString = "Please Give \'Cake On :\' ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -181,7 +181,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInInferredLiteralRegion_Expected_InputParsedCorrectly()
         {
             const string inputString = "Please Give ' Cake On : 14101988";
-            const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
+            const string formatString = "'Please Give '' Cake On : 'ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -203,7 +203,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithDoubleEscapedLiteralCharacterInLiteralRegion_Expected_InputParsedOutCorrectly()
         {
             const string inputString = "Please Give ' Cake On : 14101988";
-            const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
+            const string formatString = "'Please Give '' Cake On : 'ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -225,7 +225,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacter_Expected_DateParsedCorrectly()
         {
             const string inputString = "Brendon's birthday is : 14101988";
-            const string formatString = "'Brendon\\'s birthday is : 'ddmmyyyy";
+            const string formatString = "'Brendon\\'s birthday is : 'ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -247,7 +247,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithLiteralContainingTheLiteralEscapeCharacterAndAnEscapeCharacter_Expected_EscapedCharacter()
         {
             const string inputString = "Brendon\\'s birthday is : 14101988";
-            const string formatString = "'Brendon\\\\\\'s birthday is : 'ddmmyyyy";
+            const string formatString = "'Brendon\\\\\\'s birthday is : 'ddMMyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -313,7 +313,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithSlashed_Expected_DateTimeParsedOut()
         {
             const string inputString = "14/10/1988";
-            const string formatString = "dd'/'mm'/'yyyy";
+            const string formatString = "dd'/'MM'/'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -335,7 +335,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithDotes_Expected_DateTimeParsedOUtCorrectlyWithDotExcluded()
         {
             const string inputString = "14.10.1988";
-            const string formatString = "dd'.'mm'.'yyyy";
+            const string formatString = "dd'.'MM'.'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -357,7 +357,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_DateTime_WithDashesUsingNumeric_Expected_InputDataParsedOutAccordingToInputFormat()
         {
             const string inputString = "14-10-1988";
-            const string formatString = "dd'-'mm'-'yyyy";
+            const string formatString = "dd'-'MM'-'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
             DateTime returnDate = dateTimeResult.ToDateTime();
@@ -437,13 +437,13 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
                 Assert.Fail("Incorrect object returned");
             }
         }
-        
+
         [TestMethod]
         public void TryParseDateTimeWithInputFormatNULLExpectedDefaultFormatUsed()
         {
             string inputString = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
-            string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
+            string defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
             var IsParseable = _parser.TryParseDateTime(inputString, null, out IDateTimeResultTO dateTimeResult, out string result);
 
@@ -461,7 +461,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             string inputString = string.Empty;
             string formatString = string.Empty;
 
-            string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
+            string defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
             string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
             var IsParseable = _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
 
@@ -480,7 +480,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryParseDateTime_ComplexArgsWithoutTrailingSpaces_Expected_ParserReturnsCorrectlyFormattedDateString()
         {
             const string InputString = "Year 44 week 43 yearweak (UTC+02:00) Harare, Pretoria | South Africa Standard Time | South Africa Standard Time | October | Oct | 10 | 290 | Sunday | Sun | 7 |16 | 22 | 2044/10/16 10:25:36.953 PM A.D.";
-            const string FormatString = "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | 24h | yyyy/mm/dd 12h:min:ss.sp am/pm Era";
+            const string FormatString = "'Year' yy 'week' ww 'yearweak' ZZZ | ZZ | Z | MM | M | m | dy | DW | dW | dw |d | HH | yyyy/mm/dd hh:min:ss.sp gg Era";
 
             Assert.IsTrue(_parser.TryParseDateTime(InputString, FormatString, out IDateTimeResultTO dateTimeResult, out string result), "Cannot parse valid date time");
             var returnDate = dateTimeResult.ToDateTime();
@@ -1564,7 +1564,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatOfDayoftheMonthExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "d, dd, ddd, dddd";
 
             //execute
@@ -1577,7 +1577,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatOfMonthExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "MMMM, MMM, MM, M";
 
             //execute
@@ -1590,7 +1590,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForYearsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "yyyyy, yyyy, yy, y, yyy";
 
             //execute
@@ -1603,7 +1603,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForLongDateExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "dddd, dd MMMM yyyy";
 
             //execute
@@ -1616,7 +1616,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForShortDateExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "MM/dd/yyyy";
 
             //execute
@@ -1633,7 +1633,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForHoursExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "h, hh, H, HH";
 
             //execute
@@ -1646,7 +1646,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForMinutesExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "m, mm";
 
             //execute
@@ -1659,7 +1659,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForSecondsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "s, ss";
 
             //execute
@@ -1672,7 +1672,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForSplitSecondsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "f, ff, fff, ffff, ffffff, fffffff,";
 
             //execute
@@ -1685,7 +1685,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForNonZeroSplitSecondsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "F- FF- FFF- FFFF- FFFFFF- FFFFFFF-";
 
             //execute
@@ -1698,7 +1698,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForShortTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "HH:mm";
 
             //execute
@@ -1711,7 +1711,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForLongTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "HH:mm:ss.fffffff";
 
             //execute
@@ -1728,7 +1728,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForTimeZoneExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "K";
 
             //execute
@@ -1741,7 +1741,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForTimeZonesExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "'Hours offset from UTC: 'z', Hours offset from UTC, with a leading zero: 'zz', Offset with minutes: 'zzz";
 
             //execute
@@ -1754,7 +1754,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForRoundTripExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
             //execute
@@ -1771,7 +1771,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForAmpmDesignatorExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "t, tt";
 
             //execute
@@ -1784,7 +1784,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForEraExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "g, gg";
 
             //execute
@@ -1797,7 +1797,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForFullDateShortTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "dddd, dd MMMM yyyy HH:mm";
 
             //execute
@@ -1810,7 +1810,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForFullLongTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
+            IDateTimeParser translatingParser = DateTimeConverterFactory.CreateStandardParser();
             string inputFormat = "dddd', 'dd MMMM yyyy HH:mm:ss";
 
             //execute
@@ -1923,7 +1923,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("GetDayOfWeekInt", BindingFlags.Static | BindingFlags.NonPublic);
             var result = methodInfo.Invoke(dateTimeParser, new object[] { DayOfWeek.Sunday });
             //---------------Test Result -----------------------
-            Assert.AreEqual(7 , int.Parse(result.ToString()));
+            Assert.AreEqual(7, int.Parse(result.ToString()));
         }
     }
 
