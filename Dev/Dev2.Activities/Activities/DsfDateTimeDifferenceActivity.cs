@@ -19,7 +19,6 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -29,7 +28,6 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
@@ -37,7 +35,6 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
     public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
     {
 
@@ -102,14 +99,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             return new List<string> { Result };
         }
-
-
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-        }
-
-
+        
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
