@@ -17,9 +17,7 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using NodaTime;
-using System.Diagnostics;
-using System.IO;
+
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -137,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-        [Timeout(60000)]
+
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
 
         {
@@ -164,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-        [Timeout(60000)]
+
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
 
         {
@@ -188,9 +186,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                 GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
-                Assert.AreNotEqual("0", actual);
+                Assert.IsTrue(actual != "0");
             }
-            Assert.AreNotEqual("0", actual);
+            Assert.IsTrue(actual != "0");
         }
         #endregion DateTime Tests
 
