@@ -110,7 +110,7 @@ namespace Dev2.Activities
 
         public virtual string GetDateTimeFormatInformation()
         {
-            var dateTimeParser = new DateTimeParser();
+            var dateTimeParser = new Dev2DateTimeParser();
             var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out string error);
             return translatedDateTimeFormat;
         }

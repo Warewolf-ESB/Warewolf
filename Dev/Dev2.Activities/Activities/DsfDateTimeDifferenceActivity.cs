@@ -37,7 +37,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
-    
+    [ToolDescriptorInfo("Utility-DateTimeDifference", "Date Time Diff", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time_Diff")]
     public class DsfDateTimeDifferenceActivity : DsfActivityAbstract<string>, IDateTimeDiffTO
     {
 
@@ -104,6 +104,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
+        protected override void CacheMetadata(NativeActivityMetadata metadata)
+        {
+            base.CacheMetadata(metadata);
+        }
+
+
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
@@ -128,7 +134,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     if (string.IsNullOrEmpty(Input1))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat), "now()", "Input 1", "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat), "now()", "Input 1", "="));
                     }
                     else
                     {
@@ -137,7 +143,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                     if (string.IsNullOrEmpty(Input2))
                     {
-                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat), "now()", "Input 2", "="));
+                        AddDebugInputItem(new DebugItemStaticDataParams(DateTime.Now.ToString(GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat), "now()", "Input 2", "="));
                     }
                     else
                     {
@@ -171,12 +177,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         OutputType);
                     //Create a DateTimeComparer using the DateTimeConverterFactory
                     IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-                    //Call the TryComparer method on the DateTimeComparer and pass it the IDateTimeDiffTO created from the ConvertToDateTimeDiffTO Method                
-                    string result;
-                    string error;
                     string expression = Result;
 
-                    if (comparer.TryCompare(transObj, out result, out error))
+                    if (comparer.TryCompare(transObj, out string result, out string error))
                     {
                         if (DataListUtil.IsValueRecordset(Result) &&
                            DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)

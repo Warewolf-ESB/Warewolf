@@ -18,7 +18,7 @@ namespace Dev2.Common.DateAndTime
 {
     public class StandardDateTimeParser : DateTimeParser
     {
-        static StandardDateTimeParser()
+        public StandardDateTimeParser()
         {
             var dateTimeFormatPart = new NewDateTimeFormatPart(TimeZones);
             dateTimeFormatPart.Build();

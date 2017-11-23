@@ -33,7 +33,7 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public static IDateTimeParser CreateParser()
         {
-            return new DateTimeParser();
+            return new Dev2DateTimeParser();
         }
 
         public static IDateTimeParser CreateStandardParser()

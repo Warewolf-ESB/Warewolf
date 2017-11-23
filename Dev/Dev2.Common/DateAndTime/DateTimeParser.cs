@@ -22,7 +22,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common.DateAndTime
 {
-    public class DateTimeParser : IDateTimeParser
+    public abstract class DateTimeParser : IDateTimeParser
     {
         /// <summary>
         ///     used to describe the position of the parser relative to escaped regions
@@ -39,19 +39,19 @@ namespace Dev2.Common.DateAndTime
         public static readonly char DateLiteralCharacter = '\'';
 
         protected  static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
-        protected static Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
-        protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        protected Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
+        protected Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         public static Dictionary<string, ITimeZoneTO> TimeZones = new Dictionary<string, ITimeZoneTO>();
         private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         private static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
 
-        static DateTimeParser()
+        protected DateTimeParser()
         {
             InitializeBuilders();
         }
 
-        private static void InitializeBuilders()
+        private void InitializeBuilders()
         {
             var timeZoneBuilder = new TimeZoneBuilder.TimeZoneBuilder();
             timeZoneBuilder.Build();
@@ -150,7 +150,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Breaks a date time format up into parts
         /// </summary>
-        internal static bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
+        public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
             out string error)
         {
             return TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
@@ -160,7 +160,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Breaks a date time format up into parts
         /// </summary>
-        static bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
+        bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
             bool nothingDied = true;
 
@@ -303,7 +303,7 @@ namespace Dev2.Common.DateAndTime
         }
 
 
-        private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
+        private  bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
             bool nothingDied = true;
 
