@@ -242,7 +242,7 @@ namespace Dev2.Common.DateAndTime
             {
                 inputFormat =
                     TranslateDotNetToDev2Format(
-                        GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
+                        GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
             }
             else
             {

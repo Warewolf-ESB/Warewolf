@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             var modelItem = CreateModelItem();
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var expectedDefaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
             Assert.AreEqual(expectedDefaultFormat, viewModel.InputFormat);
         }
 
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers.Tests.DateTimeDifference
         {
             var modelItem = CreateModelItem("yyyy-mm-dd");
             var viewModel = new TestDateTimeDifferenceDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var expectedDefaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
             Assert.AreNotEqual(expectedDefaultFormat, viewModel.InputFormat);
             Assert.AreEqual("yyyy-mm-dd", viewModel.InputFormat);
         }
