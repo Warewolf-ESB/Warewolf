@@ -9,9 +9,6 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for SplashPage.xaml
-    /// </summary>
     public partial class SplashPage : ISplashView
     {
         readonly Grid _blackoutGrid = new Grid();

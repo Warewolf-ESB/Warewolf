@@ -840,12 +840,11 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem);
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.SourcesMenuItem.NewSharepointSource);
         }
-
-        [Given(@"I Click Show Server Version From Explorer Context Menu")]
+        
         [When(@"I Click Show Server Version From Explorer Context Menu")]
-        [Then(@"I Click Show Server Version From Explorer Context Menu")]
-        public void Click_ShowServerVersion_From_ExplorerContextMenu()
+        public void Select_ShowServerVersion_From_ExplorerContextMenu()
         {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost, MouseButtons.Right, ModifierKeys.None, new Point(72, 8));
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.ShowServerVersion, new Point(45, 13));
         }
 

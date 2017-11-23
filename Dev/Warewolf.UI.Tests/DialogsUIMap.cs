@@ -110,13 +110,19 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         {
             Keyboard.SendKeys(DecisionOrSwitchDialog, "{Escape}", ModifierKeys.None);
         }
-
-        [Given(@"I Hit Escape Key On The Keyboard on Messagebox")]
+        
         [When(@"I Hit Escape Key On The Keyboard on Messagebox")]
-        [Then(@"I Hit Escape Key On The Keyboard on Messagebox")]
         public void WhenIHitEscapeKeyOnTheKeyboardOnMessagebox()
         {
             Keyboard.SendKeys(MessageBoxWindow, "{Escape}", ModifierKeys.None);
+            MessageBoxWindow.WaitForControlNotExist(6000);
+        }
+
+        [When(@"I Hit Escape Key On The Splash Screen")]
+        public void WhenIHitEscapeKeyOnTheKeyboardOnSplashScreen()
+        {
+            Keyboard.SendKeys(SplashPageWindow, "{Escape}", ModifierKeys.None);
+            SplashPageWindow.WaitForControlNotExist(6000);
         }
 
         [Then(@"The Case Dialog Must Be Open")]
