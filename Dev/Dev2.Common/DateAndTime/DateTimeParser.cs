@@ -218,72 +218,173 @@ namespace Dev2.Common.DateAndTime
 
             return nothingDied;
         }
-        /// <summary>
-        ///     Parses the given data using the specified format
-        /// </summary>
+
         private bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {
-            var nothingDied = true;
-            var originalInputFormat = inputFormat;
+            bool nothingDied = true;
+
             result = new DateTimeResultTO();
             error = "";
+            var originalInputFormat = inputFormat;
+            string originalData = data;
+            int culturesTried = 0;
+            const int MaxAttempts = 8;
             if (string.IsNullOrWhiteSpace(data))
             {
-                data = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
+                originalData = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
             }
 
             if (string.IsNullOrWhiteSpace(inputFormat))
             {
                 originalInputFormat =
                     TranslateDotNetToDev2Format(
-                        GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
+                        GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
             }
-
-            char[] dateTimeArray = data.ToArray();
-            int position = 0;
-
-
-            nothingDied = TryGetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
-            if (!string.IsNullOrEmpty(error))
+            else
             {
-                return false;
+                culturesTried = MaxAttempts;
             }
-            if (nothingDied)
+            while (culturesTried <= MaxAttempts)
             {
-                int count = 0;
-                while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
+                char[] dateTimeArray = originalData.ToArray();
+                int position = 0;
+
+
+                nothingDied = TryGetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
+                if (!string.IsNullOrEmpty(error))
                 {
-                    var formatPart = formatParts[count];
+                    return false;
+                }
+                if (nothingDied)
+                {
 
-                    if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
-                        out int resultLength, out error))
+                    int count = 0;
+                    while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
-                        position += resultLength;
+                        IDateTimeFormatPartTO formatPart = formatParts[count];
+
+                        if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
+                            out int resultLength, out error))
+                        {
+                            position += resultLength;
+                        }
+                        else
+                        {
+                            //clear invalid result!
+                            result = new DateTimeResultTO();
+                            nothingDied = false;
+                        }
+
+                        count++;
+                    }
+                    if (!nothingDied)
+                    {
+                        originalInputFormat = MatchInputFormatToCulture(ref error, culturesTried);
+
+                        if (culturesTried >= MaxAttempts)
+                        {
+                            if (!IsBlankResult(result))
+                            {
+                                //Return the result if it isn't blank
+                                nothingDied = true;
+                            }
+                            else
+                            {
+                                //no result, throw error
+                                error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
+                            }
+                        }
+                        else
+                        {
+                            nothingDied = true;
+                        }
+
+                        culturesTried++;
                     }
                     else
                     {
-                        result = new DateTimeResultTO();
-                        nothingDied = false;
+                        //Stop trying different formats
+                        culturesTried = MaxAttempts + 1;
                     }
-
-                    count++;
                 }
-                if (!nothingDied)
+                else
                 {
-                    if (!IsBlankResult(result))
-                    {
-                        nothingDied = true;
-                    }
-                    else
-                    {
-                        error = string.Format(ErrorResource.CannorParseInputDateTimeWithGivenFormat, error);
-                    }
+                    culturesTried++;
                 }
             }
+
             return nothingDied;
         }
 
+
+        private string MatchInputFormatToCulture(ref string error, int culturesTried)
+        {
+            string inputFormat = "";
+            switch (culturesTried)
+            {
+                case 0:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
+                    break;
+
+                case 1:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            CultureInfo.InvariantCulture.DateTimeFormat.FullDateTimePattern, out error);
+                    break;
+
+                case 2:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern + " " +
+                            CultureInfo.InvariantCulture.DateTimeFormat.LongTimePattern, out error);
+                    break;
+
+                case 3:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            new CultureInfo("en-ZA").DateTimeFormat.FullDateTimePattern, out error);
+                    break;
+
+                case 4:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            new CultureInfo("en-ZA").DateTimeFormat.ShortDatePattern + " " +
+                            new CultureInfo("en-ZA").DateTimeFormat.LongTimePattern, out error);
+                    break;
+
+                case 5:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            new CultureInfo("en-US").DateTimeFormat.FullDateTimePattern, out error);
+                    break;
+
+                case 6:
+                    inputFormat =
+                        TranslateDotNetToDev2Format(
+                            new CultureInfo("en-US").DateTimeFormat.ShortDatePattern + " " +
+                            new CultureInfo("en-US").DateTimeFormat.LongTimePattern, out error);
+                    break;
+
+                case 7:
+                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                    string finalPattern = shortPattern + " " + longPattern;
+                    if (finalPattern.Contains("ss"))
+                    {
+                        finalPattern =
+                            finalPattern.Insert(finalPattern.IndexOf("ss", StringComparison.Ordinal) + 2,
+                                ".fff");
+                    }
+                    inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
+                    break;
+                default:
+                    break;
+            }
+            return inputFormat;
+        }
 
         private static bool IsBlankResult(IDateTimeResultTO result)
         {
