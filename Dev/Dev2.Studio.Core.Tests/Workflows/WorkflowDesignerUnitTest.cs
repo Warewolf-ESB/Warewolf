@@ -1775,6 +1775,7 @@ namespace Dev2.Core.Tests.Workflows
             unsavedResourceModel.Setup(model => model.ResourceName).Returns("Unsaved 1");
             unsavedResourceModel.Setup(model => model.WorkflowXaml).Returns(new StringBuilder("workflow xaml"));
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
+            unsavedResourceModel.Setup(a => a.Environment.ResourceRepository.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
             var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", false, false,"");
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
@@ -1782,7 +1783,7 @@ namespace Dev2.Core.Tests.Workflows
             //------------Assert Results-------------------------
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>()), Times.Never());
-            repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
+            unsavedResourceModel.Verify(a => a.Environment.ResourceRepository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
             Assert.AreEqual(workflowLink, wd.DisplayWorkflowLink);
             wd.Dispose();
 
@@ -1865,12 +1866,13 @@ namespace Dev2.Core.Tests.Workflows
             var unsavedResourceModel = new Mock<IContextualResourceModel>();
             unsavedResourceModel.Setup(model => model.ResourceName).Returns("Unsaved 1");
             unsavedResourceModel.Setup(r => r.Environment).Returns(env.Object);
+            unsavedResourceModel.Setup(a => a.Environment.ResourceRepository.SaveToServer(It.IsAny<IResourceModel>())).Returns(new ExecuteMessage());
             var saveUnsavedWorkflowMessage = new SaveUnsavedWorkflowMessage(unsavedResourceModel.Object, "new name", "new category", true,false,"");
             //------------Execute Test---------------------------
             wd.Handle(saveUnsavedWorkflowMessage);
             //------------Assert Results-------------------------
             eventAggregator.Verify(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>()), Times.Once());
-            repo.Verify(repository => repository.SaveToServer(It.IsAny<IResourceModel>()), Times.Once());
+            unsavedResourceModel.Verify(a => a.Environment.ResourceRepository.SaveToServer(It.IsAny<IResourceModel>()));
 
         }
 
