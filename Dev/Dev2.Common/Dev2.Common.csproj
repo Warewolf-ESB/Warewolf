@@ -162,7 +162,6 @@
     <Compile Include="ExtMethods\TypeExtensions.cs" />
     <Compile Include="FileResource.cs" />
     <Compile Include="GlobalConstants.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />
     <Compile Include="IncludeApi.cs" />
     <Compile Include="Interfaces\IAssignManager.cs" />
