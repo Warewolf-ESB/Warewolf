@@ -10,9 +10,6 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ManageOAuthSourceControl.xaml
-    /// </summary>
     public partial class ManageOAuthSourceControl : IView, ICheckControlEnabledView, IWebBrowser
     {
         public ManageOAuthSourceControl()
@@ -35,10 +32,7 @@ namespace Warewolf.Studio.Views
             };
         }
 
-        public void Navigate(Uri uri)
-        {
-            WebBrowserHost.Navigate(uri);
-        }
+        public void Navigate(Uri uri) => WebBrowserHost.Navigate(uri);
 
         public event Action<Uri> Navigated;
 
@@ -86,10 +80,7 @@ namespace Warewolf.Studio.Views
 
         #region Implementation of ICheckControlEnabledView
 
-        public bool GetControlEnabled(string controlName)
-        {
-            return false;
-        }
+        public bool GetControlEnabled(string controlName) => false;
 
         #endregion
     }
