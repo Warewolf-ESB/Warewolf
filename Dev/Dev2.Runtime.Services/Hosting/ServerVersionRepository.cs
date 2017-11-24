@@ -246,10 +246,10 @@ namespace Dev2.Runtime.Hosting
                     var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                     old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, _userName, reason);
 
-                    var fileName = $"{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
+                    var fileName = $"{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.bite";
                     if (!_file.Exists(_filePath.Combine(versionFolder, fileName)))
                     {
-                        var sourceFile = _filePath.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
+                        var sourceFile = _filePath.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".bite";
                         if (_file.Exists(sourceFile))
                         {
                             _directory.CreateIfNotExists(versionFolder);
