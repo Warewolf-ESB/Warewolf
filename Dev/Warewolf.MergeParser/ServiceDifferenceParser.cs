@@ -22,7 +22,7 @@ namespace Warewolf.MergeParser
     {
         readonly IActivityParser _activityParser;
         readonly IResourceDefinationCleaner _definationCleaner;
-        readonly ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);        
+        readonly ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _flowNodes = new ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)>(StringComparer.OrdinalIgnoreCase);
 
         public ServiceDifferenceParser()
             : this(CustomContainer.Get<IActivityParser>(), new ResourceDefinationCleaner())
@@ -56,7 +56,7 @@ namespace Warewolf.MergeParser
             if (loadFromServer)
             {
                 var msg = resourceModel.Environment?.ResourceRepository.FetchResourceDefinition(resourceModel.Environment, workspace, resourceModel.ID, true);
-                if (msg != null && msg.Message.Length > 0)
+                if (msg != null && msg.Message.Length != 0)
                 {
                     xaml = msg.Message;
                 }
@@ -78,17 +78,13 @@ namespace Warewolf.MergeParser
             var modelService = wd.Context.Services.GetService<ModelService>();
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
-            var allNodes = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
-            var idsLocations = new List<(string uniqueId, Point location)>();
-            foreach(var n in allNodes)
+            if (flowchartDiff.StartNode != null)
             {
-                var loc = GetShapeLocation(wd, n);
-                var id = _activityParser.Parse(new List<IDev2Activity>(), n)?.UniqueID;
-                idsLocations.Add((id, loc));
-
+                return new List<ConflictTreeNode>();
             }
-            var startNode = ModelItemUtils.CreateModelItem(flowchartDiff.StartNode);
+            var idsLocations = GetIdLocations(wd, modelService);
             var nodes = new List<ConflictTreeNode>();
+            var startNode = ModelItemUtils.CreateModelItem(flowchartDiff.StartNode);
             if (startNode != null)
             {
                 var start = _activityParser.Parse(new List<IDev2Activity>(), startNode);
@@ -98,6 +94,19 @@ namespace Warewolf.MergeParser
                 BuildItems(idsLocations, nodes, start, startConflictNode);
             }
             return nodes;
+        }
+
+        List<(string uniqueId, Point location)> GetIdLocations(WorkflowDesigner wd, ModelService modelService)
+        {
+            var allNodes = modelService.Find(modelService.Root, typeof(FlowNode)).ToList();
+            var idsLocations = new List<(string uniqueId, Point location)>();
+            foreach (var n in allNodes)
+            {
+                var loc = GetShapeLocation(wd, n);
+                var id = _activityParser.Parse(new List<IDev2Activity>(), n)?.UniqueID;
+                idsLocations.Add((id, loc));
+            }
+            return idsLocations;
         }
 
         static void BuildItems(List<(string uniqueId, Point location)> idsLocations, List<ConflictTreeNode> nodes, IDev2Activity start, ConflictTreeNode startConflictNode)

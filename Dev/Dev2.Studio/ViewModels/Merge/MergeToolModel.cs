@@ -38,13 +38,12 @@ namespace Dev2.ViewModels.Merge
         [JsonIgnore]
         public ImageSource MergeIcon
         {
+            get => _mergeIcon;
             set
             {
                 _mergeIcon = value;
                 OnPropertyChanged(() => MergeIcon);
-           
             }
-            get => _mergeIcon;
         }
         public string MergeDescription
         {
@@ -67,7 +66,6 @@ namespace Dev2.ViewModels.Merge
                     SomethingModelToolChanged?.Invoke(current, this);
                 }
                 OnPropertyChanged(() => IsMergeChecked);
-                
             }
         }
 
