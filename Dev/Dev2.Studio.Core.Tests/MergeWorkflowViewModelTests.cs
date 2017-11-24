@@ -8,9 +8,6 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Collections.Generic;
 using System;
-using System.Activities;
-using Dev2.Studio.Core.Activities.Utils;
-using System.Activities.Presentation.Model;
 using Dev2.ViewModels.Merge;
 using Warewolf.MergeParser;
 using Dev2.Activities;
@@ -916,13 +913,360 @@ namespace Dev2.Core.Tests
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
                 //---------------Execute Test ----------------------
-                var aaaa =(bool) methodToRun.Invoke(mergeWorkflowViewModel, new object[] { check });
+                var aaaa = (bool)methodToRun.Invoke(mergeWorkflowViewModel, new object[] { check });
                 //---------------Test Result -----------------------
-                Assert.IsTrue(aaaa);               
+                Assert.IsTrue(aaaa);
 
             }
         }
 
-       
+
+        [TestMethod]
+        public void UpdateHelpDescriptor_PassThrough_VerifyCall()
+        {
+
+            //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
+            var resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
+
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
+            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
+            var b = new ArmConnectorConflict();
+            var activity = new Mock<IDev2Activity>();
+            List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            string iniqueId = Guid.NewGuid().ToString();
+            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            activity.Setup(p => p.ArmConnectors()).Returns(arms);
+            activity.Setup(p => p.UniqueID).Returns(iniqueId);
+            b.Key = iniqueId;
+            b.UniqueId = iniqueId.ToGuid();
+            Func<IConflict, bool> check = (c) => { if (c.UniqueId == Guid.Empty) return false; return true; };
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
+                mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
+            }
+        }
+
+        [TestMethod]
+        public void IsVariablesEnabled_Test_propertyChanges()
+        {
+            //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
+            var resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
+
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
+            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
+            var b = new ArmConnectorConflict();
+            var activity = new Mock<IDev2Activity>();
+            List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            string iniqueId = Guid.NewGuid().ToString();
+            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            activity.Setup(p => p.ArmConnectors()).Returns(arms);
+            activity.Setup(p => p.UniqueID).Returns(iniqueId);
+            b.Key = iniqueId;
+            b.UniqueId = iniqueId.ToGuid();
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
+                mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
+                bool wasCalled=false;
+
+                Assert.IsFalse(mergeWorkflowViewModel.IsVariablesEnabled);
+                mergeWorkflowViewModel.PropertyChanged += (a, p) => 
+                {
+                    if (p.PropertyName == "IsVariablesEnabled")
+                    {
+                        wasCalled = true;
+                    }
+                };
+
+                mergeWorkflowViewModel.IsVariablesEnabled = true;
+
+                Assert.IsTrue(wasCalled);
+            }
+        }
+        [TestMethod]
+        public void HasVariablesConflict_Test_propertyChanges()
+        {
+            //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
+            var resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
+
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
+            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
+            var b = new ArmConnectorConflict();
+            var activity = new Mock<IDev2Activity>();
+            List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            string iniqueId = Guid.NewGuid().ToString();
+            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            activity.Setup(p => p.ArmConnectors()).Returns(arms);
+            activity.Setup(p => p.UniqueID).Returns(iniqueId);
+            b.Key = iniqueId;
+            b.UniqueId = iniqueId.ToGuid();
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
+                mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
+                bool wasCalled = false;
+
+                Assert.IsFalse(mergeWorkflowViewModel.HasVariablesConflict);
+                mergeWorkflowViewModel.PropertyChanged += (a, p) =>
+                {
+                    if (p.PropertyName == "HasVariablesConflict")
+                    {
+                        wasCalled = true;
+                    }
+                };
+
+                mergeWorkflowViewModel.HasVariablesConflict = true;
+
+                Assert.IsTrue(wasCalled);
+            }
+        }
+
+        [TestMethod]
+        public void HasWorkflowNameConflict_Test_propertyChanges()
+        {
+            //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
+            var resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
+
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
+            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
+            var b = new ArmConnectorConflict();
+            var activity = new Mock<IDev2Activity>();
+            List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            string iniqueId = Guid.NewGuid().ToString();
+            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            activity.Setup(p => p.ArmConnectors()).Returns(arms);
+            activity.Setup(p => p.UniqueID).Returns(iniqueId);
+            b.Key = iniqueId;
+            b.UniqueId = iniqueId.ToGuid();
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
+                mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
+                bool wasCalled = false;
+
+                Assert.IsFalse(mergeWorkflowViewModel.HasWorkflowNameConflict);
+                mergeWorkflowViewModel.PropertyChanged += (a, p) =>
+                {
+                    if (p.PropertyName == "HasWorkflowNameConflict")
+                    {
+                        wasCalled = true;
+                    }
+                };
+
+                mergeWorkflowViewModel.HasWorkflowNameConflict = true;
+
+                Assert.IsTrue(wasCalled);
+            }
+        }
+
+        [TestMethod]
+        public void HasMergeStarted_Test_propertyChanges()
+        {
+            //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
+            var resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
+
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
+            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
+            var b = new ArmConnectorConflict();
+            var activity = new Mock<IDev2Activity>();
+            List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            string iniqueId = Guid.NewGuid().ToString();
+            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            activity.Setup(p => p.ArmConnectors()).Returns(arms);
+            activity.Setup(p => p.UniqueID).Returns(iniqueId);
+            b.Key = iniqueId;
+            b.UniqueId = iniqueId.ToGuid();
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
+                mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
+                bool wasCalled = false;
+
+                Assert.IsTrue(mergeWorkflowViewModel.HasMergeStarted);
+                mergeWorkflowViewModel.PropertyChanged += (a, p) =>
+                {
+                    if (p.PropertyName == "HasMergeStarted")
+                    {
+                        wasCalled = true;
+                    }
+                };
+
+                mergeWorkflowViewModel.HasMergeStarted = true;
+
+                Assert.IsTrue(wasCalled);
+            }
+        }
+
+        [TestMethod]
+        public void CanSave_Test_propertyChanges()
+        {
+            //---------------Set up test pack-------------------
+            var applicationAdapter = new Mock<IApplicationAdaptor>();
+            CustomContainer.Register(applicationAdapter.Object);
+
+            var mockServer = new Mock<IServer>();
+            var mockshell = new Mock<IShellViewModel>();
+            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
+            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
+            CustomContainer.Register(mockServer.Object);
+            CustomContainer.Register(mockshell.Object);
+            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
+            var resourceDefinationCleaner = new ResourceDefinationCleaner();
+            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
+            var dev2JsonSerializer = new Dev2JsonSerializer();
+            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
+
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
+              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
+            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
+
+            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
+            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            mockshell.Setup(p => p.HelpViewModel.UpdateHelpText("aaa")).Verifiable();
+            var b = new ArmConnectorConflict();
+            var activity = new Mock<IDev2Activity>();
+            List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            string iniqueId = Guid.NewGuid().ToString();
+            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            activity.Setup(p => p.ArmConnectors()).Returns(arms);
+            activity.Setup(p => p.UniqueID).Returns(iniqueId);
+            b.Key = iniqueId;
+            b.UniqueId = iniqueId.ToGuid();
+            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
+            {
+                mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
+                mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
+                bool wasCalled = false;
+
+                Assert.IsTrue(mergeWorkflowViewModel.CanSave);
+                mergeWorkflowViewModel.PropertyChanged += (a, p) =>
+                {
+                    if (p.PropertyName == "CanSave")
+                    {
+                        wasCalled = true;
+                    }
+                };
+
+                mergeWorkflowViewModel.CanSave = true;
+
+                Assert.IsTrue(wasCalled);
+            }
+        }
+
     }
 }
