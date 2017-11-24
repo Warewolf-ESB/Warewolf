@@ -185,7 +185,7 @@ namespace Dev2.Studio.ViewModels
             _contextualResourceModel = null;
             if (!File.Exists(e)) { return false; }
             ActiveServer.ResourceRepository.Load();
-            string fileName = string.Empty;
+            var fileName = string.Empty;
             fileName = Path.GetFileNameWithoutExtension(e);
             var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
             var serverRepo = CustomContainer.Get<IServerRepository>();
