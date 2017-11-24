@@ -1401,31 +1401,6 @@ namespace Dev2.Core.Tests
             SortCleanup();
         }
 
-        [TestMethod]
-        public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
-        {
-            //Initialize
-            Setup();
-            for (var i = 2500; i > 0; i--)
-            {
-                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
-            }
-            var timeBefore = DateTime.Now;
-
-            //Execute
-            _dataListViewModel.SortCommand.Execute(null);
-
-            TimeSpan endTime = DateTime.Now.Subtract(timeBefore);
-            //Assert
-            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar1750", _dataListViewModel.ScalarCollection[1750].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar2500", _dataListViewModel.ScalarCollection[2500].DisplayName, "Sort datalist with large list failed");
-            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 2500 variables. Took {endTime}");
-
-            SortCleanup();
-        }
-
         #endregion
 
         #region Validator tests
