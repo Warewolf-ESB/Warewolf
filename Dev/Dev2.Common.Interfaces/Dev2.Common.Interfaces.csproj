@@ -324,7 +324,6 @@
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IResourceHolder.cs" />
     <Compile Include="IResourceSource.cs" />
-    <Compile Include="PermissionsChangedArgs.cs" />
     <Compile Include="IServerSource.cs" />
     <Compile Include="IServiceTestModelTO.cs" />
     <Compile Include="IServiceTestStep.cs" />
