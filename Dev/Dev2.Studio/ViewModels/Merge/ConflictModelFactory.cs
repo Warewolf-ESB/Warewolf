@@ -134,7 +134,7 @@ namespace Dev2.ViewModels.Merge
             var activityType = node.Activity.GetType();
 
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
-            if (actual != null)
+            if (actual == null)
             {
                 return null;
             }
