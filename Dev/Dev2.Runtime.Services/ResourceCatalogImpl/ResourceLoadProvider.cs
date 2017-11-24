@@ -518,7 +518,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
         static T GetResource<T>(StringBuilder resourceContents) where T : Resource, new()
         {
-            if (resourceContents == null)
+            if (resourceContents == null || string.IsNullOrEmpty(resourceContents.ToString()) || resourceContents.Length == 0)
             {
                 return default(T);
             }

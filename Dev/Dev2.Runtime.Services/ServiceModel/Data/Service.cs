@@ -67,6 +67,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         protected XElement CreateXml(enActionType actionType, string actionName, Resource source, RecordsetList recordsets, params object[] actionContent)
         {
+            VerifyArgument.IsNotNull("source", source);
             var action = new XElement("Action",
                 new XAttribute("Name", actionName),
                 new XAttribute("Type", actionType),
