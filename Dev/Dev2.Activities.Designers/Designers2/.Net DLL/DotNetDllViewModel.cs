@@ -1,13 +1,19 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Windows;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Core.Extensions;
@@ -23,32 +29,28 @@ using Dev2.Communication;
 using Dev2.Providers.Errors;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
-using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Windows;
 using Warewolf.Core;
+
+
 
 namespace Dev2.Activities.Designers2.Net_DLL
 {
     public class DotNetDllViewModel : CustomToolWithRegionBase, IDotNetViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDotNetInputRegion _inputArea;
-        private ISourceToolRegion<IPluginSource> _sourceRegion;
-        private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
-        private IActionToolRegion<IPluginAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDotNetInputRegion _inputArea;
+        ISourceToolRegion<IPluginSource> _sourceRegion;
+        INamespaceToolRegion<INamespaceItem> _namespaceRegion;
+        IActionToolRegion<IPluginAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
-        private const string DoneText = "Done";
-        private const string FixText = "Fix";
-        private const string OutputDisplayName = " - Outputs";
+        const string DoneText = "Done";
+        const string FixText = "Fix";
+        const string OutputDisplayName = " - Outputs";
 
-        private readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
-
+        readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
+        
         public DotNetDllViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -64,7 +66,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManagePluginServiceInputViewModel(this, Model));
@@ -80,7 +82,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManagePluginServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManagePluginServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -116,7 +118,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        private void UpdateLastValidationMemoWithSourceNotFoundError()
+        void UpdateLastValidationMemoWithSourceNotFoundError()
         {
             var memo = new DesignValidationMemo
             {
@@ -150,7 +152,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             UpdateDesignValidationErrors(memo.Errors);
         }
 
-        private void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
+        void UpdateDesignValidationErrors(IEnumerable<IErrorInfo> errors)
         {
             DesignValidationErrors.Clear();
             foreach (var error in errors)
@@ -184,6 +186,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 {
                     DesignValidationErrors.Add(new ErrorInfo() { ErrorType = ErrorType.Critical, Message = designValidationError });
                 }
+
             }
             if (Errors.Count <= 0)
             {
@@ -193,7 +196,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             InitializeProperties();
         }
 
-        private void UpdateWorstError()
+        void UpdateWorstError()
         {
             if (DesignValidationErrors.Count == 0)
             {
@@ -230,8 +233,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
         public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-
-        private void InitializeProperties()
+        void InitializeProperties()
         {
             Properties = new List<KeyValuePair<string, string>>();
             AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
@@ -239,7 +241,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.FullName);
         }
 
-        private void AddProperty(string key, string value)
+        void AddProperty(string key, string value)
         {
             if (!string.IsNullOrEmpty(value))
             {
@@ -266,7 +268,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -277,7 +279,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 SetValue(IsWorstErrorReadOnlyProperty, value);
             }
         }
-
         public static readonly DependencyProperty IsWorstErrorReadOnlyProperty =
             DependencyProperty.Register("IsWorstErrorReadOnly", typeof(bool), typeof(DotNetDllViewModel), new PropertyMetadata(false));
 
@@ -286,22 +287,22 @@ namespace Dev2.Activities.Designers2.Net_DLL
             get { return (ErrorType)GetValue(WorstErrorProperty); }
             private set { SetValue(WorstErrorProperty, value); }
         }
-
         public static readonly DependencyProperty WorstErrorProperty =
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(DotNetDllViewModel), new PropertyMetadata(ErrorType.None));
 
-        private bool _generateOutputsVisible;
-        private ServiceInputBuilder _builder;
+        bool _generateOutputsVisible;
+        ServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
         string Type => GetProperty<string>();
 
-        private void FixErrors()
+
+        void FixErrors()
         {
         }
 
-        private void AddTitleBarMappingToggle()
+        void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
         }
@@ -318,7 +319,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        #endregion Overrides of ActivityDesignerViewModel
+        #endregion
 
         #region Overrides of CustomToolWithRegionBase
 
@@ -394,6 +395,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 if (OutputsRegion.Outputs.Count > 0)
                 {
                     OutputsRegion.IsEnabled = true;
+
                 }
                 ErrorRegion = new ErrorRegion();
                 regions.Add(ErrorRegion);
@@ -409,7 +411,7 @@ namespace Dev2.Activities.Designers2.Net_DLL
 
         public ErrorRegion ErrorRegion { get; private set; }
 
-        #endregion Overrides of CustomToolWithRegionBase
+        #endregion
 
         #region Implementation of IDatabaseServiceViewModel
 
@@ -427,7 +429,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 OnPropertyChanged();
             }
         }
-
         public ISourceToolRegion<IPluginSource> SourceRegion
         {
             get
@@ -440,7 +441,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 OnPropertyChanged();
             }
         }
-
         public INamespaceToolRegion<INamespaceItem> NamespaceRegion
         {
             get
@@ -453,7 +453,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 OnPropertyChanged();
             }
         }
-
         public IDotNetInputRegion InputArea
         {
             get
@@ -466,7 +465,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 OnPropertyChanged();
             }
         }
-
         public IOutputsToolRegion OutputsRegion
         {
             get
@@ -479,7 +477,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
                 OnPropertyChanged();
             }
         }
-
         public bool GenerateOutputsVisible
         {
             get
@@ -545,9 +542,9 @@ namespace Dev2.Activities.Designers2.Net_DLL
             }
         }
 
-        private IPluginServiceModel Model { get; set; }
+        IPluginServiceModel Model { get; set; }
 
-        private void SetRegionVisibility(bool value)
+        void SetRegionVisibility(bool value)
         {
             InputArea.IsEnabled = value;
             OutputsRegion.IsEnabled = value && OutputsRegion.Outputs.Count > 0;
@@ -555,6 +552,6 @@ namespace Dev2.Activities.Designers2.Net_DLL
             SourceRegion.IsEnabled = value;
         }
 
-        #endregion Implementation of IDatabaseServiceViewModel
+        #endregion
     }
 }

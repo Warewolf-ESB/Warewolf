@@ -16,8 +16,12 @@ namespace Dev2.Common.Interfaces
 {
     public interface IPluginService
     {
+        string Name { get; set; }
+        Guid Id { get; set; }
         IPluginSource Source { get; set; }
         IList<IServiceInput> Inputs { get; set; }
+        IList<IServiceOutputMapping> OutputMappings { get; set; }
+        string Path { get; set; }
         IPluginConstructor Constructor { get; set; }
         INamespaceItem Namespace { get; set; }
         IPluginAction Action { get; set; }
