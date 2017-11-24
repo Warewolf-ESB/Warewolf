@@ -30,7 +30,8 @@ namespace Warewolf.Studio.Core
             {
                 throw new ArgumentNullException(nameof(items));
             }
-            
+
+
             if (items.Count > 0)
             {
                 try
@@ -40,6 +41,7 @@ namespace Warewolf.Studio.Core
                     {
                         Add(item);
                     }
+
                 }
                 finally
                 {
@@ -51,6 +53,8 @@ namespace Warewolf.Studio.Core
 
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
+
+
             if (SynchronizationContext.Current == _synchronizationContext)
             {
                 // Execute the CollectionChanged event on the current thread
@@ -71,6 +75,7 @@ namespace Warewolf.Studio.Core
                 // We are in the creator thread, call the base implementation directly
                 base.OnCollectionChanged((NotifyCollectionChangedEventArgs)param);
             }
+
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
