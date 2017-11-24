@@ -78,7 +78,7 @@ namespace Warewolf.MergeParser
             var modelService = wd.Context.Services.GetService<ModelService>();
             var workflowHelper = new WorkflowHelper();
             var flowchartDiff = workflowHelper.EnsureImplementation(modelService).Implementation as Flowchart;
-            if (flowchartDiff.StartNode != null)
+            if (flowchartDiff.StartNode == null)
             {
                 return new List<ConflictTreeNode>();
             }
