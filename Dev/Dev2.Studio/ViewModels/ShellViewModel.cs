@@ -194,10 +194,12 @@ namespace Dev2.Studio.ViewModels
                 _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
                 if (_contextualResourceModel != null)
                 {
+                    var ctResourceModel = _contextualResourceModel;
                     OpenResource(_contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
-                    if (_contextualResourceModel.ResourceType == ResourceType.WorkflowService || _contextualResourceModel.ResourceType == ResourceType.Service)
+                    if (ctResourceModel.ResourceType == ResourceType.WorkflowService
+                        || ctResourceModel.ResourceType == ResourceType.Service)
                     {
-                        SaveDialogHelper.ShowNewWorkflowSaveDialog(_contextualResourceModel, loadingFromServer: false, originalPath: e);
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(ctResourceModel, false, e);
                     }
                 }
             }
