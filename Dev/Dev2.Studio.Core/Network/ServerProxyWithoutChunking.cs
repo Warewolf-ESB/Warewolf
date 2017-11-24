@@ -1,26 +1,13 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Net.Security;
-using System.Network;
-using System.Security.Claims;
-using System.Security.Cryptography.X509Certificates;
-using System.Security.Principal;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
-using System.Windows;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Explorer;
@@ -43,15 +30,28 @@ using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Microsoft.AspNet.SignalR.Client;
 using ServiceStack.Messaging.Rcon;
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Security;
+using System.Network;
+using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Principal;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Timers;
+using System.Windows;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Network
 {
-    public class ServerProxyWithoutChunking : IEnvironmentConnection,IDisposable
+    public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
-        System.Timers.Timer _reconnectHeartbeat;
-        const int MillisecondsTimeout = 10000;
-        readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
+        private System.Timers.Timer _reconnectHeartbeat;
+        private const int MillisecondsTimeout = 10000;
+        private readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public ServerProxyWithoutChunking(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
@@ -59,7 +59,7 @@ namespace Dev2.Network
             AuthenticationType = AuthenticationType.Windows;
         }
 
-        static bool IsShuttingDown { get; set; }
+        private static bool IsShuttingDown { get; set; }
 
         public ServerProxyWithoutChunking(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
@@ -83,7 +83,6 @@ namespace Dev2.Network
             HubConnection.StateChanged += HubConnectionStateChanged;
             InitializeEsbProxy();
             AsyncWorker = worker;
-
         }
 
         public IPrincipal Principal { get; private set; }
@@ -114,7 +113,7 @@ namespace Dev2.Network
             }
         }
 
-        void InitializeEsbProxy()
+        private void InitializeEsbProxy()
         {
             if (EsbProxy == null)
             {
@@ -151,15 +150,14 @@ namespace Dev2.Network
                     }
                 }
             }
-            
         }
 
-        void HubConnectionOnClosed()
+        private void HubConnectionOnClosed()
         {
             HasDisconnected();
         }
 
-        void HasDisconnected()
+        private void HasDisconnected()
         {
             Dev2Logger.Debug("*********** Hub connection down", "Warewolf Debug");
             IsConnected = false;
@@ -175,20 +173,19 @@ namespace Dev2.Network
             }
         }
 
-        void OnWorkspaceIdReceived(Guid obj)
+        private void OnWorkspaceIdReceived(Guid obj)
         {
             AddDebugWriter(obj);
             WorkspaceID = obj;
         }
 
-        void OnServerIdReceived(Guid obj)
+        private void OnServerIdReceived(Guid obj)
         {
             ServerID = obj;
         }
 
-        void OnDebugStateReceived(string objString)
+        private void OnDebugStateReceived(string objString)
         {
-
             var obj = _serializer.Deserialize<DebugState>(objString);
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
         }
@@ -203,6 +200,7 @@ namespace Dev2.Network
                     UpdateIsAuthorized(true);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Offline, NetworkState.Online));
                     break;
+
                 case ConnectionStateWrapped.Connecting:
                 case ConnectionStateWrapped.Reconnecting:
                     IsConnected = false;
@@ -210,6 +208,7 @@ namespace Dev2.Network
                     UpdateIsAuthorized(false);
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
                     break;
+
                 default:
                 case ConnectionStateWrapped.Disconnected:
                     OnNetworkStateChanged(new NetworkStateEventArgs(NetworkState.Online, NetworkState.Offline));
@@ -295,7 +294,6 @@ namespace Dev2.Network
                 }
                 if (HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connecting)
                 {
-
                     ServicePointManager.ServerCertificateValidationCallback = ValidateServerCertificate;
                     await HubConnection.Start();
                     if (HubConnection.State == ConnectionStateWrapped.Disconnected)
@@ -344,7 +342,7 @@ namespace Dev2.Network
             return true;
         }
 
-        void ConnectionRetry()
+        private void ConnectionRetry()
         {
             HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
             var popup = CustomContainer.Get<IPopupController>();
@@ -368,12 +366,12 @@ namespace Dev2.Network
             });
         }
 
-        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        private bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {
             return true;
         }
 
-        void HandleConnectError(Exception e)
+        private void HandleConnectError(Exception e)
         {
             Dev2Logger.Error(this, e, "Warewolf Error");
             StartReconnectTimer();
@@ -404,8 +402,7 @@ namespace Dev2.Network
             }
         }
 
-
-        void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
+        private void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
             if (!IsConnecting)
             {
@@ -537,18 +534,18 @@ namespace Dev2.Network
 
         public IHubConnectionWrapper HubConnection { get; }
 
-        void OnHubConnectionError(Exception exception)
+        private void OnHubConnectionError(Exception exception)
         {
             Dev2Logger.Error(this, exception, "Warewolf Error");
         }
 
-        void OnMemoReceived(string objString)
+        private void OnMemoReceived(string objString)
         {
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
-        void OnPermissionsMemoReceived(string objString)
+        private void OnPermissionsMemoReceived(string objString)
         {
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
@@ -564,7 +561,7 @@ namespace Dev2.Network
 
         public Action<IExplorerItem> ItemAddedMessageAction { get; set; }
 
-        void OnItemAddedMessageReceived(string obj)
+        private void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
@@ -572,7 +569,8 @@ namespace Dev2.Network
         }
 
         public Action<IExplorerItem> ItemItemDeletedMessageAction { get; set; }
-        void OnItemDeletedMessageReceived(string obj)
+
+        private void OnItemDeletedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
@@ -580,7 +578,8 @@ namespace Dev2.Network
         }
 
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
-        void OnItemUpdatedMessageReceived(string obj)
+
+        private void OnItemUpdatedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             ItemItemUpdatedMessageAction?.Invoke(serverExplorerItem);
@@ -593,26 +592,27 @@ namespace Dev2.Network
         public AuthenticationType AuthenticationType { get; }
         public string UserName { get; }
         public string Password { get; }
-        
+
         public bool IsAuthorized { get; set; }
         public IAsyncWorker AsyncWorker { get; }
 
         public event EventHandler<NetworkStateEventArgs> NetworkStateChanged;
+
         public event EventHandler PermissionsChanged;
 
-        void RaisePermissionsChanged()
+        private void RaisePermissionsChanged()
         {
             PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
 
-        void RaisePermissionsModified(List<WindowsGroupPermission> args)
+        private void RaisePermissionsModified(List<WindowsGroupPermission> args)
         {
             PermissionsModified?.Invoke(this, args);
         }
 
-        void UpdateIsAuthorized(bool isAuthorized)
+        private void UpdateIsAuthorized(bool isAuthorized)
         {
             if (IsAuthorized != isAuthorized)
             {
@@ -636,8 +636,8 @@ namespace Dev2.Network
 
             var result = Task.Run(async () => await ExecuteCommandAsync(payload, workspaceId).ConfigureAwait(true)).Result;
             return result;
-
         }
+
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder payload, Guid workspaceId)
         {
             if (payload == null || payload.Length == 0)
@@ -696,7 +696,7 @@ namespace Dev2.Network
 
         public Guid ID { get; private set; }
 
-        bool _disposedValue;
+        private bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {
@@ -705,11 +705,11 @@ namespace Dev2.Network
                 if (disposing)
                 {
                     _reconnectHeartbeat.Dispose();
-                }                
+                }
                 _disposedValue = true;
             }
         }
-       
+
         public void Dispose()
         {
             Dispose(true);
