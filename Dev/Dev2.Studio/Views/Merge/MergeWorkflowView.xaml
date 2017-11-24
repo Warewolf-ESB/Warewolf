@@ -669,6 +669,7 @@
                                                 BorderThickness="0" 
                                                 Margin="0,0,-2,0" 
                                                 DataContext="{Binding CurrentArmConnector}"
+                                                IsEnabled="{Binding IsMergeEnabled}"
                                                 AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
                                             <DockPanel x:Name="CurrentNodeArmDockPanel" 
                                                        LastChildFill="False"
@@ -694,7 +695,6 @@
                                                                  Margin="0,0,5,0"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
                                                                  Style="{StaticResource MergeRadioButtonStyle}"
-                                                                 Visibility="{Binding IsArmSelectionAllowed, Converter={StaticResource BoolToVisibilityConverter}}"
                                                                  AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
                                                     </RadioButton>
                                                 </StackPanel>
@@ -712,6 +712,7 @@
                                                 Background="{StaticResource WarewolfPanelGreyBrush}" 
                                                 BorderBrush="#CFD6E1" 
                                                 Margin="2,0,0,0" 
+                                                Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverter}}"
                                                 AutomationProperties.AutomationId="UI_DifferenceNodeArmBorder_AutoID">
                                             <Border.Style>
                                                 <Style>
@@ -727,10 +728,10 @@
                                             </Border.Style>
                                             <DockPanel x:Name="DifferenceNodeArmDockPanel" 
                                                        LastChildFill="False"
-                                                       Visibility="{Binding HasConflict, Converter={StaticResource BoolToVisibilityConverter}}"
+                                                       DataContext="{Binding DifferentArmConnector}"
+                                                       IsEnabled="{Binding IsMergeEnabled}"
                                                        AutomationProperties.AutomationId="UI_DifferenceNodeArmDockPanel_AutoID">
                                                 <StackPanel Name="DifferenceNodeArmSP" 
-                                                            DataContext="{Binding DifferentArmConnector}"
                                                             DockPanel.Dock="Left" 
                                                             Orientation="Horizontal" 
                                                             AutomationProperties.AutomationId="UI_DifferenceNodeArmSP_AutoID">
