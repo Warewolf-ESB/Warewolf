@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Dev2.Activities.Designers.Tests.SqlServer;
+﻿using Dev2.Activities.Designers.Tests.SqlServer;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Common.Interfaces.Core;
@@ -7,10 +6,8 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Collections.Generic;
 using Warewolf.Core;
-
-
-
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -36,7 +33,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             Assert.IsNotNull(vm.CloseCommand);
             Assert.IsNotNull(vm.CloseCommand);
-
         }
 
         [TestMethod]
@@ -72,7 +68,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             Assert.IsTrue(calledOk);
         }
 
-
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_MethodName")]
@@ -92,9 +87,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.IsTrue(called);
-
-
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("SqlServer_MethodName")]
@@ -113,7 +107,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.AreEqual(inputview, clone);
-
         }
 
         [TestMethod]
@@ -135,7 +128,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.IsTrue(inputview.Errors.Count == 1);
-
         }
 
         [TestMethod]
@@ -157,7 +149,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.IsTrue(inputview.Errors.Count == 1);
-
         }
 
         [TestMethod]
@@ -178,7 +169,6 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //------------Assert Results-------------------------
             Assert.IsTrue(true, "Error RestoreRegion should do nothing");
-
         }
 
         [TestMethod]
@@ -192,8 +182,18 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity();
 
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
-            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
-            inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
+            var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod)
+            {
+                Model = new DatabaseService
+                {
+                    Source = new DbSourceDefinition(),
+                    Action = new DbAction
+                    {
+                        Inputs = new List<IServiceInput>(),
+                        Name = "bob"
+                    },
+                }
+            };
             inputview.ExecuteTest();
             //------------Execute Test---------------------------
 

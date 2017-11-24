@@ -9,19 +9,14 @@
 */
 
 using Dev2.Common.Interfaces.DB;
-using System;
 using System.Collections.Generic;
 
 namespace Dev2.Common.Interfaces
 {
     public class PluginServiceDefinition : IPluginService
     {
-        public string Name { get; set; }
-        public Guid Id { get; set; }
         public IPluginSource Source { get; set; }
         public IList<IServiceInput> Inputs { get; set; }
-        public IList<IServiceOutputMapping> OutputMappings { get; set; }
-        public string Path { get; set; }
         public IPluginConstructor Constructor { get; set; }
         public INamespaceItem Namespace { get; set; }
         public IPluginAction Action { get; set; }
