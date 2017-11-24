@@ -1,11 +1,4 @@
-﻿using System;
-using System.Activities.Presentation.Model;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using Dev2.Activities.Designers2.Core.ActionRegion;
+﻿using Dev2.Activities.Designers2.Core.ActionRegion;
 using Dev2.Activities.Designers2.Net_Dll_Enhanced;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
@@ -14,7 +7,6 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Providers.Errors;
 using Dev2.Runtime.ServiceModel.Data;
@@ -22,10 +14,16 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using TestingDotnetDllCascading;
 using Warewolf.Core;
 using Warewolf.Testing;
-
 
 namespace Dev2.Activities.Designers.Tests.DotNetDll
 {
@@ -79,8 +77,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(vm.Properties);
             Assert.AreEqual(1, vm.Properties.Count);
         }
-        
-       
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -99,9 +95,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             var modelx = vm.ToModel();
             Assert.IsNotNull(modelx);
-
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -121,7 +115,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             vm.ClearValidationMemoWithNoFoundError();
             Assert.AreEqual(vm.DesignValidationErrors[0].Message, string.Empty);
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -148,7 +141,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
         [TestCategory("DotNetDllEnhancedViewModel_Handle")]
         public void DotNetDllEnhancedViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
-            //------------Setup for test--------------------------      
+            //------------Setup for test--------------------------
             var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
@@ -162,7 +155,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             //------------Assert Results-------------------------
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -183,7 +175,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsTrue(vm.Errors.Count > 0);
             Assert.AreEqual("bob", vm.Errors[0].Message);
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -226,7 +217,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsNotNull(inf);
             Assert.AreEqual("bob error", inf.Message);
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -324,9 +314,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.AreEqual(activity.SourceId, selectedSource.Id);
             Assert.AreEqual("Source1", selectedSource.Name);
             Assert.AreEqual("GACAssemblyName", selectedSource.GACAssemblyName);
-
         }
-
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -353,7 +341,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                 FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 JsonObject = jsonString,
-
             };
             mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
             var activity = new DsfEnhancedDotNetDllActivity
@@ -442,7 +429,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                 FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 JsonObject = jsonString,
-
             };
             mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
             var activity = new DsfEnhancedDotNetDllActivity
@@ -510,7 +496,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                 FullName = typeof(Food).FullName
                 ,
                 AssemblyLocation = typeof(Food).Assembly.Location
-
             };
             var objectResult = dotNetDllEnhancedViewModel.OutputsRegion.ObjectResult;
             Assert.AreEqual("JsonObject", objectResult);
@@ -545,7 +530,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                 FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 JsonObject = jsonString,
-
             };
             mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
             var pluginConstructor = new PluginConstructor
@@ -630,7 +614,6 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
                 FullName = type.FullName,
                 AssemblyLocation = type.Assembly.Location,
                 JsonObject = jsonString,
-
             };
             mock.Setup(model => model.GetNameSpacesWithJsonRetunrs(It.IsAny<IPluginSource>())).Returns(new List<INamespaceItem> { namespaceItem });
             var activity = new DsfEnhancedDotNetDllActivity
@@ -948,11 +931,11 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
 
             var emptyMethod = methodToolRegions[2];
             Assert.IsNull(emptyMethod.SelectedMethod);
-
         }
 
-        static readonly Guid id = Guid.NewGuid();
-        static Mock<IPluginServiceModel> SetupEmptyMockSource()
+        private static readonly Guid id = Guid.NewGuid();
+
+        private static Mock<IPluginServiceModel> SetupEmptyMockSource()
         {
             var ps = new Mock<IPluginServiceModel>();
             ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource> { new PluginSourceDefinition { Id = id } });
@@ -961,21 +944,38 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             return ps;
         }
 
-        static ModelItem CreateModelItem()
+        private static ModelItem CreateModelItem()
         {
             var activity = new DsfEnhancedDotNetDllActivity();
             return ModelItemUtils.CreateModelItem(activity);
         }
 
-        static ModelItem CreateModelItemWithValues()
+        private static ModelItem CreateModelItemWithValues()
         {
             var activity = new DsfEnhancedDotNetDllActivity
             {
                 MethodsToRun = new List<IPluginAction>(new[]
                 {
-                    new PluginAction { FullName = "bob", Inputs = new List<IServiceInput> { new ServiceInput { Name = "a", Value = "b" } } }
+                    new PluginAction
+                    {
+                        FullName = "bob",
+                        Inputs = new List<IServiceInput>
+                        {
+                            new ServiceInput
+                            {
+                                Name = "a",
+                                Value = "b"
+                            }
+                        }
+                    }
                 }),
-                Namespace = new NamespaceItem { AssemblyLocation = "d", AssemblyName = "e", FullName = "f", MethodName = "g" },
+                Namespace = new NamespaceItem
+                {
+                    AssemblyLocation = "d",
+                    AssemblyName = "e",
+                    FullName = "f",
+                    MethodName = "g"
+                },
                 SourceId = id
             };
             return ModelItemUtils.CreateModelItem(activity);
