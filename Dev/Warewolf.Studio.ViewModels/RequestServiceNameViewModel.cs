@@ -497,7 +497,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerItemViewModel ExplorerItemViewModelRename()
         {
-            return _environmentViewModel?.Children.Flatten(model => model.Children).FirstOrDefault(model => model.IsRenaming);
+            return _environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(model => model.IsRenaming);
         }
         public IExplorerItemViewModel ExplorerItemViewModelIsSelected()
         {
