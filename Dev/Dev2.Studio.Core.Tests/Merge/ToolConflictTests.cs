@@ -4,7 +4,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Merge
 {
     [TestClass]
-    public class CompleteConflictTests
+    public class ToolConflictTests
     {
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
