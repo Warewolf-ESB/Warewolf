@@ -18,6 +18,8 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Interfaces;
 using System.Activities;
+using System.Windows.Media;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.Foreach
 {
@@ -32,6 +34,11 @@ namespace Dev2.Activities.Designers2.Foreach
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_For_Each;
             var dataFunc = modelItem.Properties["DataFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
+            var type = dataFunc?.Handler?.GetType();
+            if (type != null)
+            {
+                DataFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
+            }
         }
 
         public IList<string> ForeachTypes { get; private set; }
@@ -178,6 +185,15 @@ namespace Dev2.Activities.Designers2.Foreach
 
         public static readonly DependencyProperty DataFuncDisplayNameProperty =
             DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(ForeachDesignerViewModel), new PropertyMetadata(null));
+
+        public ImageSource DataFuncIcon
+        {
+            get { return (ImageSource)GetValue(DataFuncIconProperty); }
+            set { SetValue(DataFuncIconProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataFuncIconProperty =
+            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(ForeachDesignerViewModel), new PropertyMetadata(null));
 
         public override void Validate()
         {
