@@ -39,7 +39,6 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class ServiceTestExecutionContainer : EsbExecutionContainer
     {
-        IImpersonator _impersonator;
         readonly EsbExecuteRequest _request;
 
         public ServiceTestExecutionContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
@@ -48,12 +47,6 @@ namespace Dev2.Runtime.ESB.Execution
             _request = request;
             TstCatalog = TestCatalog.Instance;
             ResourceCat = ResourceCatalog.Instance;
-        }
-
-        public ServiceTestExecutionContainer(IImpersonator impersonator, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
-            : this(sa, dataObj, theWorkspace, esbChannel, request)
-        {
-            _impersonator = impersonator;
         }
 
         protected ITestCatalog TstCatalog { get; set; }
@@ -130,10 +123,6 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (serviceTestModelTo.AuthenticationType == AuthenticationType.User)
             {
-                if (_impersonator == null)
-                {
-                    _impersonator = new Impersonator();
-                }
                 var userName = serviceTestModelTo.UserName;
                 var domain = "";
                 if (userName.Contains("\\"))
@@ -151,14 +140,10 @@ namespace Dev2.Runtime.ESB.Execution
                         domain = userName.Substring(atIndex + 1);
                     }
                 }
-                var hasImpersonated = _impersonator.ImpersonateForceDecrypt(userName, domain, serviceTestModelTo.Password);
-                if (!hasImpersonated)
-                {
-                    var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
-                    var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
-                    DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
-                    DataObject.StopExecution = true;
-                }
+                var resource = ResourceCat.GetResource(GlobalConstants.ServerWorkspaceID, DataObject.ResourceID);
+                var testNotauthorizedmsg = string.Format(Warewolf.Resource.Messages.Messages.Test_NotAuthorizedMsg, resource?.ResourceName);
+                DataObject.Environment.AllErrors.Add(testNotauthorizedmsg);
+                DataObject.StopExecution = true;
             }
             else
             {
