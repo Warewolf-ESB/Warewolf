@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -47,36 +47,8 @@ namespace Dev2.Providers.Logs
             }
         }
 
-        public override void Write(string value)
-        {
-            try
-            {
-                Dev2Logger.Info(value, GlobalConstants.WarewolfInfo);
-            }
-            catch(ObjectDisposedException)
-            {
-                //ignore this exception
-            }
-        }
+        public override void Write(string message) => Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
 
-        public override void WriteLine(string value)
-        {
-            try
-            {
-
-                Dev2Logger.Info(value, GlobalConstants.WarewolfInfo);
-
-            }
-            catch(ObjectDisposedException)
-            {
-                //ignore this exception
-            }
-        }
-
-
-        protected override void Dispose(bool disposing)
-        {
-      
-        }
+        public override void WriteLine(string message) => Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
     }
 }
