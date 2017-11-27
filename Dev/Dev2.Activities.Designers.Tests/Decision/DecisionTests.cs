@@ -20,8 +20,8 @@ using Dev2.Studio.Interfaces;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-
+using Dev2.Data.TO;
+using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Activities.Designers.Tests.Decision
 {
@@ -590,8 +590,10 @@ namespace Dev2.Activities.Designers.Tests.Decision
             item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
             //------------Execute Test---------------------------
+            var userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(IExecutionEnvironment>().Object, Dev2DecisionMode.AND, out ErrorResultTO errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("Testing", viewModel.DisplayText);
+            Assert.AreEqual("some user friendly model", userFriendlyModel, "User friendly model was not generated correctly for decision on multiple starred recordsets.");
         }
 
         static ModelItem CreateModelItem(string displayName = "Find")

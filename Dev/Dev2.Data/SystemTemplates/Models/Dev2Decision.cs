@@ -143,7 +143,6 @@ namespace Dev2.Data.SystemTemplates.Models
                     }
                     errors = allErrors;
                     return "If " + expandStarredIndices;
-
                 }
                 if (DataListUtil.GetRecordsetIndexType(Col1) == enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) == enRecordsetIndexType.Star || DataListUtil.GetRecordsetIndexType(Col1) != enRecordsetIndexType.Star && DataListUtil.GetRecordsetIndexType(Col2) != enRecordsetIndexType.Star)
                 {
@@ -178,7 +177,6 @@ namespace Dev2.Data.SystemTemplates.Models
                     }
                     errors = allErrors;
                     return "If " + expandStarredIndices;
-
                 }
                 errors = allErrors;
                 return "If " + Col1 + " " + fn + " " + Col2 + " ";
@@ -197,7 +195,7 @@ namespace Dev2.Data.SystemTemplates.Models
                 return "If " + Col1 + " " + fn + " " + Col2 + " and " + Col3;
             }
             errors = allErrors;
-            return "<< Internal Error Generating Decision Model: Populated Column Count Cannot Exeed 3 >>";
+            return "<< Internal Error Generating Decision Model: Populated Column Count Cannot Exceed 3 >>";
         }
 
         string ResolveStarredIndices(IExecutionEnvironment env, string mode, out ErrorResultTO errors)
