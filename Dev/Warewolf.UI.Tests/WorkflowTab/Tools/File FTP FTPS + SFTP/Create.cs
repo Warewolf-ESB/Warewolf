@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Tools
         [TestCategory("File Tools")]
         public void PathCreateTool_FileSystemIntellisenseProvider_UITest()
         {
-            FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit.Text = "\\tst-ci-remote\";
+            FileToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PathCreate.SmallViewContentCustom.FileOrFolderComboBox.TextEdit.Text = @"\\tst-ci-remote\";
             Playback.Wait(5000);
             Assert.IsTrue(UIMap.MainStudioWindow.IntellisenseOptionsList.FirstOption.Exists, "No file system provided intellisense results are showing.");
         }
