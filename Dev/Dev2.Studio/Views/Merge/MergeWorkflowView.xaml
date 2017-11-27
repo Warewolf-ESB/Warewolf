@@ -671,6 +671,18 @@
                                                 DataContext="{Binding CurrentArmConnector}"
                                                 IsEnabled="{Binding IsMergeEnabled}"
                                                 AutomationProperties.AutomationId="UI_CurrentNodeArmBorder_AutoID">
+                                            <Border.Style>
+                                                <Style TargetType="{x:Type Border}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                            <Setter Property="Border.Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding IsContained}" Value="True">
+                                                            <Setter Property="Border.Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Border.Style>
                                             <DockPanel x:Name="CurrentNodeArmDockPanel" 
                                                        LastChildFill="False"
                                                        AutomationProperties.AutomationId="UI_CurrentNodeArmDockPanel_AutoID">
