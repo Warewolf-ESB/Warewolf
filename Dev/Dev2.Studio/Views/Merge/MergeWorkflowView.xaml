@@ -694,8 +694,19 @@
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
-                                                                 Style="{StaticResource MergeRadioButtonStyle}"
                                                                  AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
+                                                        <RadioButton.Style>
+                                                            <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
+                                                                <Style.Triggers>
+                                                                    <DataTrigger Binding="{Binding ElementName=NodeArmNoConflictIcon, Path=Visibility}" Value="Visible">
+                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                    <DataTrigger Binding="{Binding IsContained}" Value="True">
+                                                                        <Setter Property="RadioButton.Visibility" Value="Collapsed"/>
+                                                                    </DataTrigger>
+                                                                </Style.Triggers>
+                                                            </Style>
+                                                        </RadioButton.Style>
                                                     </RadioButton>
                                                 </StackPanel>
                                             </DockPanel>
