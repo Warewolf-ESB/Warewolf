@@ -41,6 +41,7 @@ Scenario: Deploy Conflicting Resource With Resource In A Different Path
 	And I Click Deploy Tab Deploy Button
 	And I Select Remote Connection Integration From Explorer
 	And I Filter the Explorer with "ResourceToDeployInADifferentPath"
+	And I Refresh Explorer
 	Then First remote Item should be "ResourceToDeployInADifferentPath"
 
 Scenario: Changing Selected Server On Deploy Source While Connected To Remote Server On the Explorer
