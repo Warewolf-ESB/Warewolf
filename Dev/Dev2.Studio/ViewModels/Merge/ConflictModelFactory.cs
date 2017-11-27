@@ -52,36 +52,51 @@ namespace Dev2.ViewModels.Merge
 
             if (DataListViewModel.ScalarCollection?.Count <= 1)
             {
-                DataListViewModel.ScalarCollection?.Apply(model =>
-                {
-                    model.IsVisible = false;
-                    model.IsExpanded = false;
-                    model.IsEditable = false;
-                });
+                UpdateScalarVisibility();
             }
             if (DataListViewModel.RecsetCollection?.Count <= 1)
             {
-                DataListViewModel.RecsetCollection?.Apply(model =>
-                {
-                    model.IsVisible = false;
-                    model.IsExpanded = false;
-                    model.IsEditable = false;
-                    model.Children?.Apply(child =>
-                    {
-                        child.IsVisible = false;
-                        child.IsExpanded = false;
-                        child.IsEditable = false;
-                    });
-                });
+                UpdateRecordSetVisibility();
             }
             if (DataListViewModel.ComplexObjectCollection?.Count <= 1)
             {
-                DataListViewModel.ComplexObjectCollection?.Apply(model =>
-                {
-                    model.IsVisible = false;
-                    model.Children?.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
-                });
+                UpdateComplexObjectVisibility();
             }
+        }
+
+        void UpdateScalarVisibility()
+        {
+            DataListViewModel.ScalarCollection?.Apply(model =>
+            {
+                model.IsVisible = false;
+                model.IsExpanded = false;
+                model.IsEditable = false;
+            });
+        }
+
+        void UpdateRecordSetVisibility()
+        {
+            DataListViewModel.RecsetCollection?.Apply(model =>
+            {
+                model.IsVisible = false;
+                model.IsExpanded = false;
+                model.IsEditable = false;
+                model.Children?.Apply(child =>
+                {
+                    child.IsVisible = false;
+                    child.IsExpanded = false;
+                    child.IsEditable = false;
+                });
+            });
+        }
+
+        void UpdateComplexObjectVisibility()
+        {
+            DataListViewModel.ComplexObjectCollection?.Apply(model =>
+            {
+                model.IsVisible = false;
+                model.Children?.Flatten(a => a.Children).Apply(a => a.IsVisible = false);
+            });
         }
 
         public string WorkflowName { get; set; }
@@ -119,55 +134,60 @@ namespace Dev2.ViewModels.Merge
             var activityType = node.Activity.GetType();
 
             DesignerAttributeMap.DesignerAttributes.TryGetValue(activityType, out var actual);
-            if (actual != null)
+            if (actual == null)
             {
-                ActivityDesignerViewModel instance;
-                if (actual == typeof(SwitchDesignerViewModel))
-                {
-                    var dsfSwitch = node as DsfSwitch;
-                    instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
-                }
-                else if (actual == typeof(ServiceDesignerViewModel))
-                {
-                    var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
-                    var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
-                    instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
-                }
-                else if (node.Activity is IAdapterActivity a)
-                {
-                    var inode = ModelItemUtils.CreateModelItem(a.GetInnerNode());
-                    instance = Activator.CreateInstance(actual, inode) as ActivityDesignerViewModel;
-                }
-                else
-                {
-                    instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
-                }
-
-                var mergeToolModel = new MergeToolModel
-                {
-                    ActivityDesignerViewModel = instance,
-                    MergeIcon = modelItem.GetImageSourceForTool(),
-                    MergeDescription = node.Activity.GetDisplayName(),
-                    UniqueId = node.Activity.UniqueID.ToGuid(),
-                    FlowNode = node.Activity.GetFlowNode(),
-                    IsMergeVisible = node.IsInConflict,
-                    ModelItem = modelItem,
-                    NodeLocation = node.Location,
-                    Parent = parentItem,
-                    HasParent = parentItem != null,
-                    ParentDescription = parentLabelDescription,
-                    IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true",
-                    NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign"
-                };
-
-                modelItem.PropertyChanged += (sender, e) =>
-                {
-                    OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
-                };
-
-                return mergeToolModel;
+                return null;
             }
-            return null;
+            ActivityDesignerViewModel instance;
+            if (actual == typeof(SwitchDesignerViewModel))
+            {
+                var dsfSwitch = node as DsfSwitch;
+                instance = Activator.CreateInstance(actual, modelItem, dsfSwitch?.Switch ?? "") as ActivityDesignerViewModel;
+            }
+            else if (actual == typeof(ServiceDesignerViewModel))
+            {
+                var resourceId = ModelItemUtils.TryGetResourceID(modelItem);
+                var childResourceModel = _resourceModel.Environment.ResourceRepository.LoadContextualResourceModel(resourceId);
+                instance = Activator.CreateInstance(actual, modelItem, childResourceModel) as ActivityDesignerViewModel;
+            }
+            else if (node.Activity is IAdapterActivity a)
+            {
+                var inode = ModelItemUtils.CreateModelItem(a.GetInnerNode());
+                instance = Activator.CreateInstance(actual, inode) as ActivityDesignerViewModel;
+            }
+            else
+            {
+                instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
+            }
+
+            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance);
+            return mergeToolModel;
+        }
+
+        private MergeToolModel CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, string parentLabelDescription, ActivityDesignerViewModel instance)
+        {
+            var mergeToolModel = new MergeToolModel
+            {
+                ActivityDesignerViewModel = instance,
+                MergeIcon = modelItem.GetImageSourceForTool(),
+                MergeDescription = node.Activity.GetDisplayName(),
+                UniqueId = node.Activity.UniqueID.ToGuid(),
+                FlowNode = node.Activity.GetFlowNode(),
+                IsMergeVisible = node.IsInConflict,
+                ModelItem = modelItem,
+                NodeLocation = node.Location,
+                Parent = parentItem,
+                HasParent = parentItem != null,
+                ParentDescription = parentLabelDescription,
+                IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true",
+                NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign"
+            };
+
+            modelItem.PropertyChanged += (sender, e) =>
+            {
+                OnModelItemChanged?.Invoke(modelItem, mergeToolModel);
+            };
+            return mergeToolModel;
         }
 
         public event ConflictModelChanged SomethingConflictModelChanged;
