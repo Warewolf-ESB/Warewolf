@@ -168,6 +168,15 @@
     <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
     <Compile Include="Designers2\Core\InputRegion\ServiceInputNameValueComparer.cs" />
     <Compile Include="Designers2\Core\ViewPropertyBuilder.cs" />
+    <Compile Include="Designers2\Foreach\SmallErrorView.xaml.cs">
+      <DependentUpon>SmallErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\SelectAndApply\SmallErrorView.xaml.cs">
+      <DependentUpon>SmallErrorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\Sequence\SmallErrorView.xaml.cs">
+      <DependentUpon>SmallErrorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
@@ -1487,6 +1496,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\Foreach\SmallErrorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\FormatNumber\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -1915,6 +1928,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\SelectAndApply\SmallErrorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Designers2\Sequence\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1926,6 +1943,10 @@
     <Page Include="Designers2\Sequence\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\Sequence\SmallErrorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\Sequence\VerticalConnector.xaml">
       <SubType>Designer</SubType>
