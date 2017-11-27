@@ -261,6 +261,7 @@
     <Compile Include="MainViewModelBase.cs" />
     <Compile Include="Merge\ArmConnectorConflictTests.cs" />
     <Compile Include="Merge\ConflictModelFactoryTests.cs" />
+    <Compile Include="Merge\MergeArmConnectorConflictTests.cs" />
     <Compile Include="Merge\MergeToolModelTests.cs" />
     <Compile Include="Merge\ToolConflictTests.cs" />
     <Compile Include="ShellViewModelMock.cs" />
