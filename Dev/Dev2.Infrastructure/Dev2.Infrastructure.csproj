@@ -180,7 +180,6 @@
     <Compile Include="Services\Security\WebServerRequestType.cs" />
     <Compile Include="Services\Security\WindowsGroupPermission.cs" />
     <Compile Include="Services\Security\WindowsGroupPermissionComparer.cs" />
-    <Compile Include="Services\Security\WindowsGroupPermissionEqualityComparer.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Shared Models\CompileMessageList.cs" />
     <Compile Include="Shared Models\CompileMessageTO.cs" />
