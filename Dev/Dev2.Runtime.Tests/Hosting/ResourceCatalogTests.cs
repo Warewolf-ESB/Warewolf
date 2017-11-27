@@ -3208,15 +3208,12 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, resourceList);
 
         }
-     
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(XmlException))]
         public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
         {
             //------------Setup for test--------------------------
-
             var path = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
@@ -3224,14 +3221,12 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
-            //------------Assert Precondition-----------------
             //------------Execute Test---------------------------
             var resourceList = rc.GetResource<PluginSource>(Guid.NewGuid(), Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsNull(resourceList);
-
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentNullException))]
