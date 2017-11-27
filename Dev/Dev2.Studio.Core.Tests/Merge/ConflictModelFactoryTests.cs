@@ -40,6 +40,25 @@ namespace Dev2.Core.Tests.Merge
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
+        public void ConflictModelFactory_AutoProperties_tests()
+        {
+            //------------Setup for test--------------------------
+            var model = new ConflictModelFactory();
+            //------------Execute Test---------------------------
+            Assert.AreEqual(default(string), model.ServerName);
+            Assert.AreEqual(default(string), model.WorkflowName);
+            //------------Assert Results-------------------------
+
+            model.ServerName = "";
+            model.WorkflowName = "";
+
+            Assert.AreNotEqual(default(string), model.ServerName);
+            Assert.AreNotEqual(default(string), model.WorkflowName);
+
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void ConflictModelFactory_IsVariablesChecked_DefaultConstruction_ShouldBeFalse()
         {
             //------------Setup for test--------------------------
