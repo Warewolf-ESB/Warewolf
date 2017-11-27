@@ -155,9 +155,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
@@ -271,9 +269,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
             var testObj = new PrivateType(serviceTestExecutionContainer.GetType());
             var test = SetupServiceTestSteps();
             testObj.InvokeStatic("UpdateTestWithStepValues", test.Object);
@@ -331,9 +327,7 @@ Test Failed because of some reasons
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
             var testObj = new PrivateObject(serviceTestExecutionContainer);
             var output = new Mock<IServiceTestOutput>();
             output.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
@@ -378,9 +372,7 @@ Test Failed because of some reasons
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
             var testObj = new PrivateObject(serviceTestExecutionContainer);
             var output = new Mock<IServiceTestOutput>();
             output.Setup(testOutput => testOutput.AssertOp).Returns("There is An Error");
@@ -451,13 +443,6 @@ Test Failed because of some reasons
             }
             public ServiceTestExecutionContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
                 : base(sa, dataObj, theWorkspace, esbChannel, request)
-            {
-                TstCatalog = catalog;
-                ResourceCat = resourceCatalog;
-            }
-
-            public ServiceTestExecutionContainerMock(IImpersonator imp, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
-                : base(imp, sa, dataObj, theWorkspace, esbChannel, request)
             {
                 TstCatalog = catalog;
                 ResourceCat = resourceCatalog;
