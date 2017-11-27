@@ -154,7 +154,7 @@ namespace Dev2.ViewModels.Merge
             var itemsToAdd = new List<IConflict>();
             foreach (var addConflict in conflicts)
             {
-                var foundConflicts = findFunction?.Invoke(addConflict, armConnectorConflicts);
+                var foundConflicts = FindForDiff(addConflict,armConnectorConflicts);
                 foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
                 {
                     AddToTempConflictList(conflicts, itemsToAdd, found);
@@ -163,9 +163,9 @@ namespace Dev2.ViewModels.Merge
             conflicts.AddRange(itemsToAdd);
         }
 
-        static IEnumerable<IArmConnectorConflict> FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
+        static IEnumerable<IArmConnectorConflict> FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()) && FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
         static IEnumerable<IArmConnectorConflict> FindForCurrent(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
-        static bool FindMatchingConnector(string connectorId, string conflictId) => connectorId == conflictId;
+        static bool FindMatchingConnector(string connectorId, string conflictId) => connectorId == conflictId || connectorId == Guid.Empty.ToString();
 
         static void AddToTempConflictList(List<IConflict> conflicts, List<IConflict> itemsToAdd, IArmConnectorConflict found)
         {
