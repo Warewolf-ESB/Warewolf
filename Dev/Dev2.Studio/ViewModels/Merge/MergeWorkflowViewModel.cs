@@ -106,6 +106,8 @@ namespace Dev2.ViewModels.Merge
                 if (foundConflict == null)
                 {
                     conflict = new ToolConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
+                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                    conflict.CurrentViewModel.Container = conflict;
                     conflicts.Add(conflict);
                 }
                 else
@@ -186,9 +188,6 @@ namespace Dev2.ViewModels.Merge
                     foundConnector.DifferentArmConnector = mergeArmConnectorConflict;
                     var hasConflict = !foundConnector.CurrentArmConnector.Equals(foundConnector.DifferentArmConnector);
                     foundConnector.HasConflict = hasConflict;
-                    foundConnector.DifferentArmConnector.IsArmSelectionAllowed = hasConflict;
-                    foundConnector.CurrentArmConnector.IsArmSelectionAllowed = hasConflict;
-                    foundConnector.IsMergeExpanderEnabled = hasConflict;
                 }
                 else
                 {
@@ -199,11 +198,11 @@ namespace Dev2.ViewModels.Merge
                         HasConflict = true
                     };
                     var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector);
-                    armConnector.HasConflict = true;
                     armConnector.DifferentArmConnector = mergeArmConnectorConflict;
                     armConnector.CurrentArmConnector = EmptyMergeArmConnectorConflict(id,armConnector);
                     armConnector.CurrentArmConnector.OnChecked += ArmCheck;
                     armConnector.DifferentArmConnector.OnChecked += ArmCheck;
+                    armConnector.HasConflict = true;
                     armConnectorConflicts.Add(armConnector);
                 }
             }
@@ -225,7 +224,6 @@ namespace Dev2.ViewModels.Merge
                 armConnector.DifferentArmConnector = EmptyMergeArmConnectorConflict(id, armConnector);
                 armConnector.CurrentArmConnector.OnChecked += ArmCheck;
                 armConnector.DifferentArmConnector.OnChecked += ArmCheck;
-                armConnector.CurrentArmConnector.IsArmSelectionAllowed = true;
                 armConnector.HasConflict = true;
                 if (armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
                 {
@@ -286,8 +284,11 @@ namespace Dev2.ViewModels.Merge
             {
                 WorkflowDesignerViewModel.RemoveStartNodeConnection();
             }
-            WorkflowDesignerViewModel.AddItem(model);
-            WorkflowDesignerViewModel.SelectedItem = model.ModelItem;
+            if (model.ModelItem != null)
+            {
+                WorkflowDesignerViewModel.AddItem(model);
+                WorkflowDesignerViewModel.SelectedItem = model.ModelItem;
+            }
         }
 #pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
         bool _canSave;
