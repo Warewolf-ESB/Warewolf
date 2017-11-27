@@ -39,6 +39,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
 using Dev2.Instrumentation;
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
@@ -73,6 +74,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         private readonly Action<IContextualResourceModel, bool, System.Action> _saveDialogAction;
         private IStudioCompileMessageRepoFactory _studioCompileMessageRepoFactory;
         private IResourceChangeHandlerFactory _resourceChangeHandlerFactory;
+
+        private IApplicationTracker _applicationTracker;
 
         #endregion private fields
 
@@ -170,6 +173,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceViewModel = workSurfaceViewModel ?? throw new ArgumentNullException(nameof(workSurfaceViewModel));
 
             _windowManager = CustomContainer.Get<IWindowManager>();
+
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
             if (WorkSurfaceViewModel is IWorkflowDesignerViewModel model)
             {
@@ -399,10 +404,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void Debug(IContextualResourceModel resourceModel, bool isDebug)
         {
-
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.Debug);
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory, TrackEventDebugOutput.Debug);
+            }
             if (resourceModel?.Environment == null || !resourceModel.Environment.IsConnected)
             {
                 return;
@@ -474,11 +479,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickViewInBrowser()
         {
-           
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F7Browser);
-
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F7Browser);
+            }
             if (!ContextualResourceModel.IsWorkflowSaved)
             {
                 var successfuleSave = Save(ContextualResourceModel, true);
@@ -508,9 +512,11 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public void QuickDebug()
         {
-            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
-            applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F6Debug);
+
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F6Debug);
+            }
             if (DebugOutputViewModel.IsProcessing)
             {
                 StopExecution();

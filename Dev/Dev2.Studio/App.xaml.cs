@@ -117,9 +117,7 @@ namespace Dev2.Studio
             {
                 applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             }
-
-
-            Tracker.StartStudio();
+            
             ShutdownMode = ShutdownMode.OnMainWindowClose;
 
             Task.Factory.StartNew(() =>
