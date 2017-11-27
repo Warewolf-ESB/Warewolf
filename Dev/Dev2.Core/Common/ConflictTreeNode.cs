@@ -1,4 +1,13 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
@@ -12,6 +21,7 @@ namespace Dev2.Common
             Activity = act;
             UniqueId = act.UniqueID;
             Location = location;
+            IsInConflict = true;
         }
 
         public void AddChild(IConflictTreeNode node,string name)
@@ -22,12 +32,11 @@ namespace Dev2.Common
             }
             Children.Add((name, node));
         }
-        
 
 #pragma warning disable S1541 // Methods and properties should not be too complex
         public bool Equals(IConflictTreeNode other)
 #pragma warning restore S1541 // Methods and properties should not be too complex
-        {            
+        {
             if (other == null)
             {
                 IsInConflict = true;
@@ -35,7 +44,7 @@ namespace Dev2.Common
             }
             var equals = true;
             equals &= other.UniqueId == UniqueId;
-            equals &= other.Activity.Equals(Activity);         
+            equals &= other.Activity.Equals(Activity);
             equals &= (other.Children != null || Children == null);
             equals &= (other.Children == null || Children != null);
             equals &= (Children == null || Children.SequenceEqual(other.Children ?? new List<(string uniqueId, IConflictTreeNode node)>()));
@@ -74,6 +83,5 @@ namespace Dev2.Common
         public IDev2Activity Activity { get; }
         public Point Location { get; }
         public bool IsInConflict { get; set; }
-               
     }
 }
