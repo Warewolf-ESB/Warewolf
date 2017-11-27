@@ -533,6 +533,10 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 Col2 = "[[recset(*).field]]",
                 Col3 = "[[recset(*).field]]"
             };
+            var mockedEnvironment = new Mock<IExecutionEnvironment>();
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            var userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out ErrorResultTO errors);
+            Assert.AreEqual("If Some Value Is Between Some Value AND Some Value", userFriendlyModel, "User friendly model was not generated correctly for decision on multiple starred recordsets.");
             var item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
             dev2Decision = new Dev2Decision
@@ -542,6 +546,9 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 Col2 = "[[recset(*).field]]",
                 Col3 = "[[val]]"
             };
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out errors);
+            Assert.AreEqual("If Some Value Is Between Some Value AND [[val]]", userFriendlyModel, "User friendly model was not generated correctly.");
             item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
             dev2Decision = new Dev2Decision
@@ -551,16 +558,21 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 Col2 = "[[val]]",
                 Col3 = "[[recset(*).field]]"
             };
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out errors);
+            Assert.AreEqual("If Some Value Is Between [[val]] AND Some Value", userFriendlyModel, "User friendly model was not generated correctly.");
             item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
-            dev2Decision = new Dev2Decision
+            var dev2Decision4 = new Dev2Decision
             {
                 Col1 = "[[val]]",
                 EvaluationFn = enDecisionType.IsBetween,
                 Col2 = "[[recset(*).field]]",
                 Col3 = "[[recset(*).field]]"
             };
-            item = new DecisionTO(dev2Decision, 1);
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out errors);
+            item = new DecisionTO(dev2Decision4, 1);
             viewModel.Collection.Insert(0, item);
             dev2Decision = new Dev2Decision
             {
@@ -569,6 +581,9 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 Col2 = "[[val]]",
                 Col3 = "[[recset(*).field]]"
             };
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out errors);
+            Assert.AreEqual("If [[val]] Is Between [[val]] AND Some Value", userFriendlyModel, "User friendly model was not generated correctly.");
             item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
             dev2Decision = new Dev2Decision
@@ -578,6 +593,9 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 Col2 = "[[recset(*).field]]",
                 Col3 = "[[val]]"
             };
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out errors);
+            Assert.AreEqual("If [[val]] Is Between Some Value AND [[val]]", userFriendlyModel, "User friendly model was not generated correctly.");
             item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
             dev2Decision = new Dev2Decision
@@ -587,13 +605,14 @@ namespace Dev2.Activities.Designers.Tests.Decision
                 Col2 = "[[val]]",
                 Col3 = "[[val]]"
             };
+            mockedEnvironment.Setup(env => env.EvalAsListOfStrings(It.IsAny<string>(), It.IsAny<int>())).Returns(new List<string> { "Some Value" });
+            userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(mockedEnvironment.Object, Dev2DecisionMode.AND, out errors);
+            Assert.AreEqual("If Some Value Is Between [[val]] AND [[val]]", userFriendlyModel, "User friendly model was not generated correctly.");
             item = new DecisionTO(dev2Decision, 1);
             viewModel.Collection.Insert(0, item);
             //------------Execute Test---------------------------
-            var userFriendlyModel = dev2Decision.GenerateUserFriendlyModel(IExecutionEnvironment>().Object, Dev2DecisionMode.AND, out ErrorResultTO errors);
             //------------Assert Results-------------------------
             Assert.AreEqual("Testing", viewModel.DisplayText);
-            Assert.AreEqual("some user friendly model", userFriendlyModel, "User friendly model was not generated correctly for decision on multiple starred recordsets.");
         }
 
         static ModelItem CreateModelItem(string displayName = "Find")

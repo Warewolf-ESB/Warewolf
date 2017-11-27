@@ -400,23 +400,15 @@ namespace Dev2.Data.Util
             try
             {
                 result = env.EvalAsListOfStrings(expression, update);
-
             }
             catch (Exception err)
             {
                 errors.AddError(err.Message);
-
             }
-
 
             return result;
         }
-
-        /// <summary>
-        /// Adjusts for encoding issues.
-        /// </summary>
-        /// <param name="payload">The payload.</param>
-        /// <returns></returns>
+        
         public static string AdjustForEncodingIssues(string payload)
         {
             var trimedData = payload.Trim();
