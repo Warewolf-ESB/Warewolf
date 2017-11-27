@@ -117,6 +117,17 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Height > 0 && WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Width > 0, "Step icon is not visible after duplicate.");
         }
 
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void Add_Service_Input_Row()
+        {
+            UIMap.Click_View_Tests_In_Explorer_Context_Menu("Recordset Input");
+            WorkflowServiceTestingUIMap.Click_Create_New_Tests(true, 1);
+            WorkflowServiceTestingUIMap.Update_Test_Name("New Test");
+            Keyboard.SendKeys("{TAB}{TAB}{TAB}{TAB}Value");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row2.Exists, "Second row not created after enting text into the first row of the inputs table.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]
