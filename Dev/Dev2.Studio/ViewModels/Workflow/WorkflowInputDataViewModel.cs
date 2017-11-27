@@ -34,7 +34,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-
+using Warewolf.Studio.Resources.Languages;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {
@@ -68,8 +68,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (_applicationTracker != null)
             {
-                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
-                                                Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.F6Debug);
+                _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,TrackEventDebugOutput.F6Debug);
             }
             var handler = DebugExecutionStart;
             handler?.Invoke();
@@ -226,6 +225,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
+        // Set to true in case of any error popup message.
         public bool IsInError { private get; set; }
         
         public void Save()
@@ -293,12 +293,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void ViewInBrowser()
         {
+            // Do not log user action in case of error.
             if (!IsInError)
             {
                 if (_applicationTracker != null)
                 {
-                    _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.EventCategory,
-                                                    Warewolf.Studio.Resources.Languages.TrackEventDebugOutput.ViewInBrowser);
+                    _applicationTracker.TrackEvent(TrackEventDebugOutput.EventCategory,
+                                                   TrackEventDebugOutput.ViewInBrowser);
                 }
                 DoSaveActions();
                 string payload = BuildWebPayLoad();
