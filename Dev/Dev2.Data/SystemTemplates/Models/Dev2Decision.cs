@@ -267,7 +267,10 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + Col2 + " AND " + allCol3Values[0]);
                 allCol1Values.RemoveAt(0);
-                allCol3Values.RemoveAt(0);
+                if (allCol3Values.Count > 0)
+                {
+                    allCol3Values.RemoveAt(0);
+                }
                 for (var i = 0; i < Math.Max(allCol1Values.Count, allCol3Values.Count); i++)
                 {
                     if (i > allCol1Values.Count)
@@ -289,7 +292,10 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0] + " AND " + Col3);
                 allCol1Values.RemoveAt(0);
-                allCol2Values.RemoveAt(0);
+                if (allCol2Values.Count > 0)
+                {
+                    allCol2Values.RemoveAt(0);
+                }
                 for (var i = 0; i < Math.Max(allCol1Values.Count, allCol2Values.Count); i++)
                 {
                     if (i > allCol1Values.Count)
@@ -312,8 +318,14 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 expandStarredIndices.Append(allCol1Values[0] + " " + fn + " " + allCol2Values[0] + " AND " + allCol3Values[0]);
                 allCol1Values.RemoveAt(0);
-                allCol2Values.RemoveAt(0);
-                allCol3Values.RemoveAt(0);
+                if (allCol2Values.Count > 0)
+                {
+                    allCol2Values.RemoveAt(0);
+                }
+                if (allCol3Values.Count > 0)
+                {
+                    allCol3Values.RemoveAt(0);
+                }
                 for (var i = 0; i < Math.Max(allCol1Values.Count, Math.Max(allCol2Values.Count, allCol3Values.Count)); i++)
                 {
                     if (i > allCol1Values.Count)
