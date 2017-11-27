@@ -13,6 +13,8 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
 using System.Windows;
 using System.Activities;
+using System.Windows.Media;
+using Dev2.Studio.Core.Activities.Utils;
 
 namespace Dev2.Activities.Designers2.SelectAndApply
 {
@@ -25,6 +27,11 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_LoopConstruct_Select_and_Apply;
             var dataFunc = modelItem.Properties["ApplyActivityFunc"]?.ComputedValue as ActivityFunc<string, bool>;
             DataFuncDisplayName = dataFunc?.Handler == null ? "" : dataFunc?.Handler?.DisplayName;
+            var type = dataFunc?.Handler?.GetType();
+            if (type != null)
+            {
+                DataFuncIcon = ModelItemUtils.GetImageSourceForToolFromType(type);
+            }
         }
 
         public string DataFuncDisplayName
@@ -35,6 +42,15 @@ namespace Dev2.Activities.Designers2.SelectAndApply
 
         public static readonly DependencyProperty DataFuncDisplayNameProperty =
             DependencyProperty.Register("DataFuncDisplayName", typeof(string), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
+
+        public ImageSource DataFuncIcon
+        {
+            get { return (ImageSource)GetValue(DataFuncIconProperty); }
+            set { SetValue(DataFuncIconProperty, value); }
+        }
+
+        public static readonly DependencyProperty DataFuncIconProperty =
+            DependencyProperty.Register("DataFuncIcon", typeof(ImageSource), typeof(SelectAndApplyDesignerViewModel), new PropertyMetadata(null));
 
         public override void Validate()
         {
