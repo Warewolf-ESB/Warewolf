@@ -17,7 +17,7 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class ComplexObjectHandler : IComplexObjectHandler
+    class ComplexObjectHandler : IComplexObjectHandler
     {
         readonly DataListViewModel _vm;
         public ComplexObjectHandler(DataListViewModel vm)
@@ -361,7 +361,7 @@ namespace Dev2.Studio.Core.DataList
         }
     }
 
-    internal class StringCompexObjectEqualityComparer : IEqualityComparer<string>
+    class StringCompexObjectEqualityComparer : IEqualityComparer<string>
     {
         #region Implementation of IEqualityComparer<in string>
 

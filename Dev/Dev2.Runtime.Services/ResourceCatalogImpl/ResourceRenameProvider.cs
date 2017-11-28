@@ -16,7 +16,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceRenameProvider : IResourceRenameProvider
+    class ResourceRenameProvider : IResourceRenameProvider
     {
         readonly IResourceCatalog _resourceCatalog;
         readonly IServerVersionRepository _versionRepository;

@@ -7,7 +7,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class TimeZoneBuilder : ITimeZoneBuilder
+    class TimeZoneBuilder : ITimeZoneBuilder
     {
 
         #region Implementation of IDateTimeParserBuilder

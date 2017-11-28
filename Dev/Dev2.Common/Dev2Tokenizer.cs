@@ -17,7 +17,7 @@ using System.Text;
 
 namespace Dev2.Common
 {
-    internal class Dev2Tokenizer : IDev2Tokenizer, IDisposable
+    class Dev2Tokenizer : IDev2Tokenizer, IDisposable
     {
         readonly CharEnumerator _charEnumerator;
         readonly bool _isReversed;
@@ -62,7 +62,7 @@ namespace Dev2.Common
             return result;
         }
 
-        private void MoveOpPointer()
+        void MoveOpPointer()
         {
             _opPointer++;
 
@@ -84,7 +84,7 @@ namespace Dev2.Common
             }
         }
 
-        private bool HasMoreData()
+        bool HasMoreData()
         {
             bool result;
 
@@ -92,9 +92,9 @@ namespace Dev2.Common
 
             return result;
         }
-        
+
         #endregion Private Method
-        
+
         public bool HasMoreOps()
         {
             return _hasMoreOps;

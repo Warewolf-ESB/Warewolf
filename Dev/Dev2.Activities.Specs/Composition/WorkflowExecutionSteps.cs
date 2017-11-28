@@ -846,9 +846,6 @@ namespace Dev2.Activities.Specs.Composition
                 case "plugin":
                     activity = new DsfPluginActivity();
                     break;
-                case "webservice":
-                    activity = new DsfWebserviceActivity();
-                    break;
                 case "workflow":
                     activity = new DsfWorkflowActivity();
                     break;

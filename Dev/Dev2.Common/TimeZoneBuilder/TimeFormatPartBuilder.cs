@@ -7,7 +7,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class TimeFormatPartBuilder : ITimeFormatPartBuilder
+    class TimeFormatPartBuilder : ITimeFormatPartBuilder
     {
         readonly Dictionary<string, ITimeZoneTO> _timeZones;
         readonly AssignManager _assignManager;

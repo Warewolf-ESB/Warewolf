@@ -17,18 +17,18 @@ namespace WarewolfCOMIPC
         #region Private Constants
 
         const int SOk = 0; //From WinError.h
-        private const int LocaleSystemDefault = 2 << 10; //From WinNT.h == 2048 == 0x800
+        const int LocaleSystemDefault = 2 << 10; //From WinNT.h == 2048 == 0x800
 
-		#endregion
+        #endregion
 
-		#region Public Methods
+        #region Public Methods
 
-		/// <summary>
-		/// Gets whether the specified object implements IDispatch.
-		/// </summary>
-		/// <param name="obj">An object to check.</param>
-		/// <returns>True if the object implements IDispatch.  False otherwise.</returns>
-		public static bool ImplementsIDispatch(object obj)
+        /// <summary>
+        /// Gets whether the specified object implements IDispatch.
+        /// </summary>
+        /// <param name="obj">An object to check.</param>
+        /// <returns>True if the object implements IDispatch.  False otherwise.</returns>
+        public static bool ImplementsIDispatch(object obj)
 		{
 			bool result = obj is IDispatchInfo;
 			return result;
@@ -126,31 +126,31 @@ namespace WarewolfCOMIPC
         /// <param name="dispatch">An object that implements IDispatch.</param>
         /// <param name="throwIfNotFound">Whether an exception should be thrown if a Type can't be obtained.</param>
         /// <returns>A .NET Type that can be used with reflection.</returns>
-        private static Type GetType(IDispatchInfo dispatch, bool throwIfNotFound)
-		{
-			RequireReference(dispatch, "dispatch");
+        static Type GetType(IDispatchInfo dispatch, bool throwIfNotFound)
+        {
+            RequireReference(dispatch, "dispatch");
 
-			Type result = null;
+            Type result = null;
             int hr = dispatch.GetTypeInfoCount(out int typeInfoCount);
             if (hr == SOk && typeInfoCount > 0)
-			{
-				// Type info isn't usually culture-aware for IDispatch, so we might as well pass
-				// the default locale instead of looking up the current thread's LCID each time
-				// (via CultureInfo.CurrentCulture.LCID).
-				dispatch.GetTypeInfo(0, LocaleSystemDefault, out result);
-			}
+            {
+                // Type info isn't usually culture-aware for IDispatch, so we might as well pass
+                // the default locale instead of looking up the current thread's LCID each time
+                // (via CultureInfo.CurrentCulture.LCID).
+                dispatch.GetTypeInfo(0, LocaleSystemDefault, out result);
+            }
 
-			if (result == null && throwIfNotFound)
-			{
-				// If the GetTypeInfoCount called failed, throw an exception for that.
-				Marshal.ThrowExceptionForHR(hr);
+            if (result == null && throwIfNotFound)
+            {
+                // If the GetTypeInfoCount called failed, throw an exception for that.
+                Marshal.ThrowExceptionForHR(hr);
 
-				// Otherwise, throw the same exception that Type.GetType would throw.
-				throw new TypeLoadException();
-			}
+                // Otherwise, throw the same exception that Type.GetType would throw.
+                throw new TypeLoadException();
+            }
 
-			return result;
-		}
+            return result;
+        }
 
         /// <summary>
         /// Tries to get the DISPID for the requested member name.

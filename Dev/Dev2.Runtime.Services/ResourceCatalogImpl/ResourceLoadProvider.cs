@@ -25,7 +25,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceLoadProvider : IResourceLoadProvider
+    class ResourceLoadProvider : IResourceLoadProvider
     {
         readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
         ConcurrentDictionary<string, List<DynamicServiceObjectBase>> FrequentlyUsedServices { get; } = new ConcurrentDictionary<string, List<DynamicServiceObjectBase>>();

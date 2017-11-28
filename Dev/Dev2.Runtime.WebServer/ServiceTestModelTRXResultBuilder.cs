@@ -16,7 +16,7 @@ using System.Text;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class ServiceTestModelTRXResultBuilder
+    static class ServiceTestModelTRXResultBuilder
     {
         public static string BuildTestResultTRX(string ServiceName, List<IServiceTestModelTO> TestResults)
         {

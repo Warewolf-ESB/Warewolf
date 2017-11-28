@@ -31,13 +31,13 @@ namespace Dev2.Studio.Core.Models
 {
     public class Server : ObservableObject, IServer
     {
-        private IAuthorizationService _authorizationService;
-        private IEnvironmentConnection _connection;
-        private IList<IToolDescriptor> _tools;
-        private string _version;
-        private string _minversion;
-        private Dictionary<string, string> _serverInformation;
-        private IExplorerRepository _proxyLayer;
+        IAuthorizationService _authorizationService;
+        IEnvironmentConnection _connection;
+        IList<IToolDescriptor> _tools;
+        string _version;
+        string _minversion;
+        Dictionary<string, string> _serverInformation;
+        IExplorerRepository _proxyLayer;
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
 
@@ -45,7 +45,7 @@ namespace Dev2.Studio.Core.Models
 
         public event EventHandler AuthorizationServiceSet;
 
-        private void OnAuthorizationServiceSet()
+        void OnAuthorizationServiceSet()
         {
             var handler = AuthorizationServiceSet;
             handler?.Invoke(this, EventArgs.Empty);
@@ -64,7 +64,7 @@ namespace Dev2.Studio.Core.Models
             Initialize(id, environmentConnection, resourceRepository);
         }
 
-        private void Initialize(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository)
+        void Initialize(Guid id, IEnvironmentConnection environmentConnection, IResourceRepository resourceRepository)
         {
             VerifyArgument.IsNotNull("environmentConnection", environmentConnection);
             CanStudioExecute = true;
@@ -79,17 +79,17 @@ namespace Dev2.Studio.Core.Models
             Connection.ItemAddedMessageAction += ItemAdded;
         }
 
-        private void RaiseNetworkStateChangeEvent(object sender, NetworkStateEventArgs e)
+        void RaiseNetworkStateChangeEvent(object sender, NetworkStateEventArgs e)
         {
             NetworkStateChanged?.Invoke(new NetworkStateChangedEventArgs(e), this);
         }
 
-        private void RaisePermissionsModifiedEvent(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
+        void RaisePermissionsModifiedEvent(object sender, List<WindowsGroupPermission> windowsGroupPermissions)
         {
             Permissions = windowsGroupPermissions.Select(permission => permission as IWindowsGroupPermission).ToList();
         }
 
-        private void ItemAdded(IExplorerItem obj)
+        void ItemAdded(IExplorerItem obj)
         {
             ItemAddedEvent?.Invoke(obj);
         }
@@ -278,13 +278,13 @@ namespace Dev2.Studio.Core.Models
 
         #region Event Handlers
 
-        private void RaiseIsConnectedChanged(bool isOnline)
+        void RaiseIsConnectedChanged(bool isOnline)
         {
             IsConnectedChanged?.Invoke(this, new ConnectedEventArgs { IsConnected = isOnline });
             OnPropertyChanged("IsConnected");
         }
 
-        private void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
+        void OnNetworkStateChanged(object sender, NetworkStateEventArgs e)
         {
             RaiseNetworkStateChanged(e.ToState == NetworkState.Online || e.ToState == NetworkState.Connecting);
             if (e.ToState == NetworkState.Connecting || e.ToState == NetworkState.Offline)
@@ -305,7 +305,7 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        private void RaiseNetworkStateChanged(bool isOnline)
+        void RaiseNetworkStateChanged(bool isOnline)
         {
             RaiseIsConnectedChanged(isOnline);
             if (!isOnline)
@@ -350,7 +350,7 @@ namespace Dev2.Studio.Core.Models
             return new ClientAuthorizationService(new ClientSecurityService(environmentConnection), isLocalConnection);
         }
 
-        private void OnAuthorizationServicePermissionsChanged(object sender, EventArgs eventArgs)
+        void OnAuthorizationServicePermissionsChanged(object sender, EventArgs eventArgs)
         {
             OnPropertyChanged("IsAuthorizedDeployTo");
             OnPropertyChanged("IsAuthorizedDeployFrom");

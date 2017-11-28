@@ -21,7 +21,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
     /// <summary>
     /// This is the group operations class used in the installer
     /// </summary>
-    internal class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
+    class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
     {
         const string WarewolfGroup = "Warewolf Administrators";
         const string AdministratorsGroup = "Administrators";

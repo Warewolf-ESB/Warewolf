@@ -33,7 +33,7 @@ namespace Dev2.Runtime.Hosting
     /// Transfer FileStream and ResourcePath together
     /// </summary>
     
-    internal class ResourceBuilderTO
+    class ResourceBuilderTO
     
     {
         internal string FilePath;

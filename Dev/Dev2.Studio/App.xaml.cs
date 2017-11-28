@@ -78,7 +78,7 @@ namespace Dev2.Studio
         Mutex _processGuard = null;
 
 
-        private AppExceptionHandler _appExceptionHandler;
+        AppExceptionHandler _appExceptionHandler;
         bool _hasShutdownStarted;
 
         public App()

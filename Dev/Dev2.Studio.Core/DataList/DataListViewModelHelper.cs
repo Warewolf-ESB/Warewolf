@@ -8,7 +8,7 @@ using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class DataListViewModelHelper : IDataListViewModelHelper
+    class DataListViewModelHelper : IDataListViewModelHelper
     {
         readonly DataListViewModel _dataListViewModel;
 

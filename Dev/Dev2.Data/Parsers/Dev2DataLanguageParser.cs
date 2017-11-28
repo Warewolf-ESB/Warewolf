@@ -300,13 +300,13 @@ namespace Dev2.Data.Parsers
 
         static bool ShouldAddToRegion(string payload, char cur, char prev, int i, bool shouldAddToRegion, char charToCheck) => _parserHelper.ShouldAddToRegion(payload, cur, prev, i, shouldAddToRegion, charToCheck);
 
-        private IList<IIntellisenseResult> ExtractActualIntellisenseOptions(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
+        IList<IIntellisenseResult> ExtractActualIntellisenseOptions(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts)
         {
             var tmp = new StringBuilder(payload.Payload);
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
-            
+
             if (payload != null)
-            
+
             {
                 var parts = tmp.ToString().Split('.');
                 var search = parts[0].ToLower();
@@ -348,7 +348,7 @@ namespace Dev2.Data.Parsers
                     result.Add(AddErrorToResults(isRs, parts[0], e, !payload.HangingOpen));
                 }
             }
-            
+
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
 
             result
@@ -489,11 +489,11 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        private IList<IIntellisenseResult> ExtractIntellisenseOptions(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
+        IList<IIntellisenseResult> ExtractIntellisenseOptions(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, bool addCompleteParts, IList<IDev2DataLanguageIntellisensePart> additionalParts = null)
         {
             var tmp = new StringBuilder(payload.Payload);
             IList<IIntellisenseResult> result = new List<IIntellisenseResult>();
-            
+
             if (payload.Payload == string.Empty && payload.HangingOpen)
             {
                 ProcessForOnlyOpenRegion(payload, refParts, result);
@@ -513,7 +513,7 @@ namespace Dev2.Data.Parsers
                     }
                 }
             }
-            
+
             IList<IIntellisenseResult> realResults = new List<IIntellisenseResult>();
             result.ToList().ForEach(r => ProcessResults(realResults, r));
             return result;
@@ -871,7 +871,7 @@ namespace Dev2.Data.Parsers
             => _recordSetUtil.ProcessNonRecordsetFields(payload, result, t1);
 
 
-        private void ProcessRecordSetFields(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
+        void ProcessRecordSetFields(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, IDev2DataLanguageIntellisensePart t1)
             => _recordSetUtil.ProcessRecordSetFields(payload, addCompleteParts, result, t1);
 
 

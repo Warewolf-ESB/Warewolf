@@ -25,7 +25,7 @@ namespace System.Windows.Controls
     /// <summary>
     /// A static class providing methods for working with the visual tree.  
     /// </summary>
-    internal static class VisualTreeExtensions
+    static class VisualTreeExtensions
     {
         /// <summary>
         /// Retrieves all the visual children of a framework element.

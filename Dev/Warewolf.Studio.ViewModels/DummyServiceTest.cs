@@ -105,7 +105,7 @@ namespace Warewolf.Studio.ViewModels
         #endregion
     }
 
-    internal interface INewServiceResource
+    interface INewServiceResource
     {
         ICommand CreateTestCommand { get; set; }
     }

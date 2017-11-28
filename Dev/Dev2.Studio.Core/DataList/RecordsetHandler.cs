@@ -14,7 +14,7 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class RecordsetHandler : IRecordsetHandler
+    class RecordsetHandler : IRecordsetHandler
     {
         readonly DataListViewModel _vm;
 

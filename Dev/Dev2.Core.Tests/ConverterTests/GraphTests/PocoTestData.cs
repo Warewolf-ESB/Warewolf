@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests
 {
-    internal class PocoTestData
+    class PocoTestData
     {
         public string Name { get; set; }
         public int Age { get; set; }

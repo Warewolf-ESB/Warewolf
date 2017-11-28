@@ -735,7 +735,7 @@ namespace Dev2.Studio.ViewModels.DataList
             return false;
         }
 
-        private OptomizedObservableCollection<IDataListItemModel> CreateFullDataList() => _helper.CreateFullDataList();
+        OptomizedObservableCollection<IDataListItemModel> CreateFullDataList() => _helper.CreateFullDataList();
 
         void SortItems()
         {

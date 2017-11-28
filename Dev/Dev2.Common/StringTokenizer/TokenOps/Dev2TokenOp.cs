@@ -17,7 +17,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
-    internal class Dev2TokenOp : IDev2SplitOp
+    class Dev2TokenOp : IDev2SplitOp
     {
         readonly string _escapeChar;
         readonly bool _include;

@@ -13,7 +13,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Converters
 {
-    internal class Dev2BaseConversionBroker : IBaseConversionBroker
+    class Dev2BaseConversionBroker : IBaseConversionBroker
     {
         readonly IBaseConverter _from;
         readonly IBaseConverter _to;

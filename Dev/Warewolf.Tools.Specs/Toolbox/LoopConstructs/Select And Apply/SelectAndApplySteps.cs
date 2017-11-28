@@ -252,7 +252,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         }
     }
 
-    internal class SelectAndApplyTestTool : DsfNativeActivity<string>
+    class SelectAndApplyTestTool : DsfNativeActivity<string>
     {
         public SelectAndApplyTestTool()
             : base(false, "")

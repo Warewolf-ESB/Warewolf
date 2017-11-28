@@ -13,7 +13,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    internal class DsfSwitchMock : DsfSwitch
+    class DsfSwitchMock : DsfSwitch
     {
         public DsfSwitchMock(DsfFlowSwitchActivity activity)
             : base(activity)

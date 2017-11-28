@@ -19,7 +19,7 @@ using Dev2.Data.TO;
 
 namespace Dev2.DataList.Contract
 {
-    internal class DataListIntellisenseBuilder
+    class DataListIntellisenseBuilder
     {
         const string DescAttribute = "Description";
 

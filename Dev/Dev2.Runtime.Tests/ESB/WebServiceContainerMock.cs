@@ -10,18 +10,15 @@
 
 using System;
 using Dev2.Data.TO;
-using Dev2.DynamicServices.Objects;
-using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
-using Dev2.Workspaces;
+using Dev2.Services.Execution;
 
 namespace Dev2.Tests.Runtime.ESB
 {
     public class WebServiceContainerMock : WebServiceContainer
     {
-        
-        public WebServiceContainerMock(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel)
-            : base(sa, dataObj, theWorkspace, esbChannel)
+        public WebServiceContainerMock(IServiceExecution webServiceExecution) 
+            : base(webServiceExecution)
         {
         }
 

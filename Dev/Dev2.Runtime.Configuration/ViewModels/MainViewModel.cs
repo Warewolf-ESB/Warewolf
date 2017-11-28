@@ -171,7 +171,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
         Func<XElement, XElement> SaveCallback { get; set; }
         System.Action CancelCallback { get; set; }
 
-        private System.Action SettingChangedCallback { get; set; }
+        System.Action SettingChangedCallback { get; set; }
 
 
         #endregion

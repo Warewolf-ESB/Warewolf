@@ -1,18 +1,13 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
@@ -27,28 +22,31 @@ using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Control;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Workspaces;
+using System;
+using System.Collections.Concurrent;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using Warewolf.Resource.Errors;
-
 
 namespace Dev2.Runtime.ESB
 
 {
-
     #region Invokes Endpoint and returns responses to the Caller
-
 
     public class EsbServiceInvoker : IEsbServiceInvoker, IDisposable
     {
         readonly IServiceLocator _serviceLocator;
 
         #region Fields
+
         readonly IEsbChannel _esbChannel;
 
         readonly IWorkspace _workspace;
 
         readonly EsbExecuteRequest _request;
 
-        #endregion
+        #endregion Fields
 
         readonly ConcurrentDictionary<Guid, ServiceAction> _cache = new ConcurrentDictionary<Guid, ServiceAction>();
 
@@ -63,7 +61,7 @@ namespace Dev2.Runtime.ESB
             : this(new ServiceLocator())
         {
             _esbChannel = esbChannel;
-            
+
             _workspace = workspace;
 
             _request = request;
@@ -74,9 +72,10 @@ namespace Dev2.Runtime.ESB
             _serviceLocator = serviceLocator;
         }
 
-        #endregion
+        #endregion Constructors
 
         #region Travis New Methods
+
         /// <summary>
         /// Invokes the specified service as per the dataObject against theHost
         /// </summary>
@@ -107,12 +106,11 @@ namespace Dev2.Runtime.ESB
                 }
                 else
                 {
-
                     try
                     {
                         Dev2Logger.Debug("Finding service", dataObject.ExecutionID.ToString());
                         var theService = serviceId == Guid.Empty ? _serviceLocator.FindService(serviceName, _workspace.ID) : _serviceLocator.FindService(serviceId, _workspace.ID);
-                        
+
                         if (theService == null)
                         {
                             if (!dataObject.IsServiceTestExecution)
@@ -143,7 +141,6 @@ namespace Dev2.Runtime.ESB
 
                                 errors.AddError(string.Format(ErrorResource.ServiceNotFound, serviceName));
                             }
-
                         }
                         else if (theService.Actions.Count <= 1)
                         {
@@ -156,17 +153,17 @@ namespace Dev2.Runtime.ESB
                             }
                             Dev2Logger.Debug("Mapping Action Dependencies", dataObject.ExecutionID.ToString());
                             MapServiceActionDependencies(theStart);
-                            
+
                             if (theStart != null)
                             {
                                 theStart.Service = theService;
                                 theStart.DataListSpecification = theService.DataListSpecification;
                                 Dev2Logger.Debug("Getting container", dataObject.ExecutionID.ToString());
                                 var container = GenerateContainer(theStart, dataObject, _workspace);
-                                container.Execute(out errors, 0);                                
-                                
+                                container.Execute(out errors, 0);
                             }
-                            #endregion
+
+                            #endregion Execute ESB container
                         }
                         else
                         {
@@ -206,6 +203,7 @@ namespace Dev2.Runtime.ESB
         }
 
         public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke) => GenerateInvokeContainer(dataObject, serviceId, isLocalInvoke, default(Guid));
+
         public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, Guid serviceId, bool isLocalInvoke, Guid masterDataListId)
         {
             if (isLocalInvoke)
@@ -236,26 +234,24 @@ namespace Dev2.Runtime.ESB
         }
 
         public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke) => GenerateInvokeContainer(dataObject, serviceName, isLocalInvoke, default(Guid));
+
         public IEsbExecutionContainer GenerateInvokeContainer(IDSFDataObject dataObject, string serviceName, bool isLocalInvoke, Guid masterDataListId)
         {
             if (isLocalInvoke)
             {
-
                 if (_cache.ContainsKey(dataObject.ResourceID))
                 {
                     var sa = _cache[dataObject.ResourceID];
 
                     return GenerateContainer(sa, dataObject, _workspace);
                 }
-                
                 else
-                
+
                 {
                     var resourceId = dataObject.ResourceID;
                     Dev2Logger.Debug($"Getting DynamicService: {serviceName}", dataObject.ExecutionID.ToString());
                     var theService = GetService(serviceName, resourceId);
                     IEsbExecutionContainer executionContainer = null;
-
 
                     if (theService != null && theService.Actions.Any())
                     {
@@ -271,7 +267,6 @@ namespace Dev2.Runtime.ESB
 
                     return executionContainer;
                 }
-
             }
             return GenerateContainer(new ServiceAction { ActionType = enActionType.RemoteService }, dataObject, null);
         }
@@ -280,7 +275,6 @@ namespace Dev2.Runtime.ESB
         {
             try
             {
-
                 if (resourceId == Guid.Empty)
                 {
                     return _serviceLocator.FindService(serviceName, _workspace.ID) ?? _serviceLocator.FindService(serviceName, GlobalConstants.ServerWorkspaceID); //Check the workspace is it something we are working on if not use the server version
@@ -311,33 +305,17 @@ namespace Dev2.Runtime.ESB
                     case enActionType.InvokeManagementDynamicService:
                         result = new InternalServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel, _request);
                         break;
-                    case enActionType.InvokeWebService:
-                        result = new WebServiceContainer(serviceAction, dataObj, theWorkspace, _esbChannel);
-                        break;
 
                     case enActionType.Workflow:
                         result = new PerfmonExecutionContainer(new WfExecutionContainer(serviceAction, dataObj, theWorkspace, _esbChannel));
                         break;
+
                     case enActionType.RemoteService:
                         result = new RemoteWorkflowExecutionContainer(serviceAction, dataObj, null, _esbChannel);
                         break;
-                    case enActionType.BizRule:
-                        break;
-                    case enActionType.InvokeStoredProc:
-                        break;
-                    case enActionType.InvokeDynamicService:
-                        break;
-                    case enActionType.InvokeServiceMethod:
-                        break;
-                    case enActionType.Plugin:
-                        break;
-                    case enActionType.ComPlugin:
-                        break;
-                    case enActionType.Switch:
-                        break;
-                    case enActionType.Unknown:
-                        break;
+
                     default:
+                        result = null;
                         break;
                 }
             }
@@ -352,15 +330,15 @@ namespace Dev2.Runtime.ESB
             }
         }
 
-        #endregion
+        #endregion Travis New Methods
 
         #region IDisposable Members
 
         public void Dispose()
-        {            
+        {
         }
 
-        #endregion
+        #endregion IDisposable Members
 
         #region DispatchDebugErrors
 
@@ -399,9 +377,8 @@ namespace Dev2.Runtime.ESB
             }
         }
 
-        #endregion
-
+        #endregion DispatchDebugErrors
     }
 
-    #endregion
+    #endregion Invokes Endpoint and returns responses to the Caller
 }

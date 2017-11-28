@@ -25,10 +25,7 @@ using LSA_HANDLE = System.IntPtr;
 
 
 [StructLayout(LayoutKind.Sequential)]
-
-
-
-internal struct LSA_OBJECT_ATTRIBUTES
+struct LSA_OBJECT_ATTRIBUTES
 {
     internal int Length;
     internal LSA_HANDLE RootDirectory;
@@ -39,7 +36,7 @@ internal struct LSA_OBJECT_ATTRIBUTES
 }
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-internal struct LSA_UNICODE_STRING
+struct LSA_UNICODE_STRING
 {
     internal ushort Length;
     internal ushort MaximumLength;
@@ -48,13 +45,13 @@ internal struct LSA_UNICODE_STRING
 }
 
 [StructLayout(LayoutKind.Sequential)]
-internal struct LSA_ENUMERATION_INFORMATION
+struct LSA_ENUMERATION_INFORMATION
 {
     internal LSA_HANDLE PSid;
 }
 
 
-internal static class Win32Sec
+static class Win32Sec
 {
     [DllImport("advapi32", CharSet = CharSet.Unicode, SetLastError = true), SuppressUnmanagedCodeSecurity]
     internal static extern uint LsaOpenPolicy(
@@ -265,7 +262,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
     }
 
-    private void TestReturnValue(uint ReturnValue)
+    void TestReturnValue(uint ReturnValue)
     {
         if (ReturnValue == 0)
         {
@@ -290,7 +287,7 @@ public class SecurityWrapper : ISecurityWrapper
         }
         throw new Win32Exception(Win32Sec.LsaNtStatusToWinError((int)ReturnValue));
     }
-    
+
     public void Dispose()
     {
         if (lsaHandle != IntPtr.Zero)

@@ -18,7 +18,7 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Scheduler
 {
-    internal class SchedulerTaskManager
+    class SchedulerTaskManager
     {
         readonly SchedulerViewModel _schedulerViewModel;
         int _newTaskCounter = 1;

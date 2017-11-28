@@ -544,7 +544,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         #endregion
     }
-    internal class InputViewForTest : ManageDatabaseServiceInputViewModel
+    class InputViewForTest : ManageDatabaseServiceInputViewModel
     {
         public InputViewForTest(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
             : base(model, serviceModel)

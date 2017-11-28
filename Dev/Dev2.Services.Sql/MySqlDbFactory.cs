@@ -9,7 +9,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class MySqlDbFactory : IDbFactory
+    class MySqlDbFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 

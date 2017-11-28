@@ -238,17 +238,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             return moqModel.Object;
         }
 
-        private IContextualResourceModel CreateResourceModelWithMoreSave()
-		{
-			var moqModel = new Mock<IContextualResourceModel>();
-			moqModel.SetupAllProperties();
-			moqModel.Setup(model => model.DisplayName).Returns("My WF");
-			moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
-			moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success });
-			return moqModel.Object;
-		}
+        IContextualResourceModel CreateResourceModelWithMoreSave()
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true);
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success });
+            return moqModel.Object;
+        }
 
-		[TestMethod]
+        [TestMethod]
 		[Owner("Nkosinathi Sangweni")]
 		public void OnCreation_GivenIsNew_ShouldHaveModel()
 		{
@@ -2574,15 +2574,15 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IContextualResourceModel CreateResourceModelWithSingleScalarOutput()
-		{
-			var resourceModel = CreateResourceModel();
-			var dataListViewModel = new DataListViewModel();
-			dataListViewModel.InitializeDataListViewModel(resourceModel);
-			dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
-			dataListViewModel.WriteToResourceModel();
-			return resourceModel;
-		}
+        IContextualResourceModel CreateResourceModelWithSingleScalarOutput()
+        {
+            var resourceModel = CreateResourceModel();
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
+            dataListViewModel.WriteToResourceModel();
+            return resourceModel;
+        }
 
         Mock<IContextualResourceModel> CreateResourceModelWithSingleScalarOutputMock()
         {
@@ -2597,22 +2597,22 @@ namespace Warewolf.Studio.ViewModels.Tests
             return moqModel;
         }
 
-        private IContextualResourceModel CreateMockResourceModelWithSingleScalarOutput()
-		{
-			var moqModel = new Mock<IContextualResourceModel>();
-			moqModel.SetupAllProperties();
-			moqModel.Setup(model => model.DisplayName).Returns("My WF");
-			var resourceModel = moqModel.Object;
-			var dataListViewModel = new DataListViewModel();
-			dataListViewModel.InitializeDataListViewModel(resourceModel);
-			dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
-			dataListViewModel.WriteToResourceModel();
-			moqModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
-			moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success }).Verifiable();
-			moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true).Verifiable();
-			moqModel.Setup(model => model.Environment.IsConnected).Returns(true).Verifiable();
-			return moqModel.Object;
-		}
+        IContextualResourceModel CreateMockResourceModelWithSingleScalarOutput()
+        {
+            var moqModel = new Mock<IContextualResourceModel>();
+            moqModel.SetupAllProperties();
+            moqModel.Setup(model => model.DisplayName).Returns("My WF");
+            var resourceModel = moqModel.Object;
+            var dataListViewModel = new DataListViewModel();
+            dataListViewModel.InitializeDataListViewModel(resourceModel);
+            dataListViewModel.ScalarCollection.Add(new ScalarItemModel("msg", enDev2ColumnArgumentDirection.Output));
+            dataListViewModel.WriteToResourceModel();
+            moqModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
+            moqModel.Setup(model => model.Environment.ResourceRepository.SaveTests(It.IsAny<IResourceModel>(), It.IsAny<List<IServiceTestModelTO>>())).Returns(new TestSaveResult() { Result = SaveResult.Success }).Verifiable();
+            moqModel.Setup(model => model.Environment.Connection.IsConnected).Returns(true).Verifiable();
+            moqModel.Setup(model => model.Environment.IsConnected).Returns(true).Verifiable();
+            return moqModel.Object;
+        }
 
         Mock<IContextualResourceModel> CreateMockResourceModel()
         {

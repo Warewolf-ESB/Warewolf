@@ -24,7 +24,7 @@ namespace System.Windows.Controls
     /// <summary>
     /// Names and helpers for visual states in the controls.
     /// </summary>
-    internal static class VisualStates
+    static class VisualStates
     {
         #region GroupCommon
         /// <summary>

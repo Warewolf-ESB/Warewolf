@@ -22,7 +22,7 @@ using Dev2.PathOperations;
 
 namespace Dev2.Session
 {
-    internal class Dev2StudioSessionBroker : IDev2StudioSessionBroker
+    class Dev2StudioSessionBroker : IDev2StudioSessionBroker
     {
         #region Static Conts
 

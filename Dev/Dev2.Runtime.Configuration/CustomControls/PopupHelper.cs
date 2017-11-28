@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace System.Windows.Controls
 {
-    internal class PopupHelper
+    class PopupHelper
     {
 #if SILVERLIGHT
         private bool _hasControlLoaded;
@@ -188,18 +188,18 @@ namespace System.Windows.Controls
             handler?.Invoke(this, e);
         }
 
-        private void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
+        void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            if(e?.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
+            if (e?.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
             {
-                if(Popup != null)
+                if (Popup != null)
                 {
                     Popup.IsOpen = false;
                 }
                 OnClosed(EventArgs.Empty);
             }
         }
-        
+
         public void BeforeOnApplyTemplate()
         {
             if(UsesClosingVisualState)
@@ -271,7 +271,7 @@ namespace System.Windows.Controls
             Arrange();
         }
 
-        private void Popup_Closed(object sender, EventArgs e)
+        void Popup_Closed(object sender, EventArgs e)
         {
             OnClosed(EventArgs.Empty);
         }
@@ -282,7 +282,7 @@ namespace System.Windows.Controls
             handler?.Invoke(this, e);
         }
 
-        private void OnUpdateVisualStates(EventArgs e)
+        void OnUpdateVisualStates(EventArgs e)
         {
             var handler = UpdateVisualStates;
             handler?.Invoke(this, e);
@@ -293,7 +293,7 @@ namespace System.Windows.Controls
             OnFocusChanged(EventArgs.Empty);
         }
 
-        private void PopupChild_LostFocus(object sender, RoutedEventArgs e)
+        void PopupChild_LostFocus(object sender, RoutedEventArgs e)
         {
             OnFocusChanged(EventArgs.Empty);
         }

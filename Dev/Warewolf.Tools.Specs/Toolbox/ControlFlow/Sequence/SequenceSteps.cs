@@ -623,7 +623,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         }
     }
 
-    internal class TestDebugWriter : IDebugWriter
+    class TestDebugWriter : IDebugWriter
     {
         public List<IDebugState> DebugStates
         {

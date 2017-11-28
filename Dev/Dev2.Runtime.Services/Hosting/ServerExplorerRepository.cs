@@ -317,7 +317,7 @@ namespace Dev2.Runtime.Hosting
             return new ExplorerRepositoryResult(result.Status, result.Message);
         }
 
-        private IExplorerRepositoryResult DeleteFolder(IExplorerItem itemToDelete, Guid workSpaceId)
+        IExplorerRepositoryResult DeleteFolder(IExplorerItem itemToDelete, Guid workSpaceId)
         {
             var deleteResult = DeleteFolder(itemToDelete.ResourcePath, true, workSpaceId);
             if (deleteResult.Status == ExecStatus.Success)

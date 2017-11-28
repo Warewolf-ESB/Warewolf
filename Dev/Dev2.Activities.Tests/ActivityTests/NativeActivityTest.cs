@@ -534,7 +534,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
     }
 
-    internal class TestNativeActivity : DsfNativeActivity<string>
+    class TestNativeActivity : DsfNativeActivity<string>
     {
 
         public TestNativeActivity(bool isExecuteAsync, string displayName)
@@ -589,7 +589,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
     }
 
-    internal class TestExecutionService : IExecutableService
+    class TestExecutionService : IExecutableService
     {
         #region Implementation of IExecutableService
 

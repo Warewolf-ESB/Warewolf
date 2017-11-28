@@ -171,7 +171,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
                  { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
                  { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
-                { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },

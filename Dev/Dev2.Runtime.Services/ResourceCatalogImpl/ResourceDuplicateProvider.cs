@@ -20,7 +20,7 @@ using ServiceStack.Common;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceDuplicateProvider : IResourceDuplicateProvider
+    class ResourceDuplicateProvider : IResourceDuplicateProvider
     {
         readonly IResourceCatalog _resourceCatalog;
         ITestCatalog _testCatalog;

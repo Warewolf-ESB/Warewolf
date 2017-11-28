@@ -17,7 +17,7 @@ using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class MissingDataList : IMissingDataList
+    class MissingDataList : IMissingDataList
     {
         readonly ObservableCollection<IRecordSetItemModel> _recsetCollection;
         readonly ObservableCollection<IScalarItemModel> _scalarCollection;

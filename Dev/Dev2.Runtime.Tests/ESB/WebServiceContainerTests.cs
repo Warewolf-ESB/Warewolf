@@ -18,6 +18,7 @@ using Dev2.DynamicServices.Objects;
 using Dev2.Interfaces;
 using Dev2.Runtime.ESB.Execution;
 using Dev2.Runtime.Hosting;
+using Dev2.Services.Execution;
 using Dev2.Tests.Runtime.XML;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -149,14 +150,14 @@ namespace Dev2.Tests.Runtime.ESB
             if(!isFaulty)
             {
 
-                container = new WebServiceContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object)
+                container = new WebServiceContainerMock(new Mock<IServiceExecution>().Object)
                 {
                     WebRequestRespsonse = response
                 };
             }
             else
             {
-                container = new FaultyWebServiceContainerMock(sa, dataObj.Object, workspace.Object, esbChannel.Object)
+                container = new FaultyWebServiceContainerMock(new Mock<IServiceExecution>().Object)
                 {
                     WebRequestRespsonse = string.Empty
                 };
@@ -182,10 +183,10 @@ namespace Dev2.Tests.Runtime.ESB
 
     }
 
-    internal class FaultyWebServiceContainerMock : WebServiceContainerMock
+    class FaultyWebServiceContainerMock : WebServiceContainerMock
     {
-        public FaultyWebServiceContainerMock(ServiceAction sa, IDSFDataObject dsfDataObject, IWorkspace workspace, IEsbChannel esbChannel)
-            : base(sa, dsfDataObject, workspace, esbChannel)
+        public FaultyWebServiceContainerMock(IServiceExecution webServiceExecution) 
+            : base(webServiceExecution)
         {
         }
 
