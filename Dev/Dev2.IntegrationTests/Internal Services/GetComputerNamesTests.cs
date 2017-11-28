@@ -19,9 +19,6 @@ namespace Dev2.Integration.Tests.CommonTest
         [TestMethod]
         public void GetComputerNamesListExpectListOfComputerNames()
         {
-            //------------Execute Test---------------------------
-            GetComputerNames.GetComputerNamesList();
-            //------------Assert Results-------------------------
             Assert.IsNotNull(GetComputerNames.ComputerNames);
             Assert.IsTrue(GetComputerNames.ComputerNames.Count >= 1);
         }
