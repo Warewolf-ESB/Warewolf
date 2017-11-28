@@ -44,10 +44,6 @@ namespace Warewolf.MergeParser
 #pragma warning disable S1481 // Unused local variables should be removed
             var hasConflict = currentTree.Zip(diffTree, (curr, diff) => curr.Equals(diff)).ToList();
 #pragma warning restore S1481 // Unused local variables should be removed
-            if (diffTree.Count > currentTree.Count)
-            {
-                return (diffTree, currentTree);
-            }
             return (currentTree, diffTree);
         }
 
