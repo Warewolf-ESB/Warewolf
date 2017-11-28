@@ -22,7 +22,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2Decision : IDev2DataModel
+    public class Dev2Decision
     {
         const int TotalCols = 3;
 

@@ -15,21 +15,12 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2Switch : IDev2DataModel, IDev2FlowModel
+    public class Dev2Switch : IDev2FlowModel
     {
-        [JsonIgnore]
-        public string Version => "1.0.0";
         [JsonConverter(typeof(StringEnumConverter))]
         public Dev2ModelType ModelName => Dev2ModelType.Dev2Switch;
         public string SwitchVariable { get; set; }
         public string SwitchExpression { get; set; }
-        public string ToWebModel() => JsonConvert.SerializeObject(this);
-
-        public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
-        {
-            errors = new ErrorResultTO();
-            return "on " + SwitchVariable;
-        }
 
         #region Implementation of IDev2FlowModel
 
