@@ -181,16 +181,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         protected void DoErrorHandling(IDSFDataObject dataObject, int update)
-        {            
-            if (dataObject.Environment.HasErrors())
+        {
+            if (dataObject.Environment.HasErrors() && !(this is DsfFlowDecisionActivity))
             {
-                if (!(this is DsfFlowDecisionActivity))
+                string errorString = "";
+                if (dataObject.Environment.AllErrors.Count > 0)
                 {
-                    string errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last().Union(dataObject.Environment.Errors.Last()));
-                    if (!string.IsNullOrEmpty(errorString))
-                    {
-                        PerformCustomErrorHandling(dataObject, errorString, update);
-                    }
+                    errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last());
+                }
+                if (dataObject.Environment.Errors.Count > 0)
+                {
+                    errorString += string.Join(Environment.NewLine, dataObject.Environment.Errors.Last());
+                }
+                if (!string.IsNullOrEmpty(errorString))
+                {
+                    PerformCustomErrorHandling(dataObject, errorString, update);
                 }
             }
         }
@@ -219,7 +224,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-                dataObject.Environment.Assign(OnErrorVariable, "", update);
                 if (IsEndedOnError)
                 {
                     PerformStopWorkflow(dataObject);
