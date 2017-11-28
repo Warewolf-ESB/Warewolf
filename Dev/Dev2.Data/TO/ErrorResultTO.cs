@@ -49,7 +49,11 @@ namespace Dev2.Data.TO
         /// <param name="msg"></param>
         public void RemoveError(string msg)
         {
-            _errorList.Remove(msg.ToStringBuilder());
+            var found = _errorList.FirstOrDefault(s => s.ToString() == msg);
+            if (found != null)
+            {
+                _errorList.Remove(found);
+            }
         }
 
         /// <summary>
