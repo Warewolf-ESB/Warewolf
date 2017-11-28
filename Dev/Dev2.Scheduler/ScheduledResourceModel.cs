@@ -143,13 +143,7 @@ namespace Dev2.Scheduler
         }
 
         public string DebugHistoryPath => _debugHistoryPath;
-
-        /// <summary>
-        ///     Get the list of resource from windows task scheduler where
-        ///     has an action that is an exec action
-        ///     path matches warewolf agent path
-        /// </summary>
-        /// <returns></returns>
+        
         public ObservableCollection<IScheduledResource> GetScheduledResources()
         {
             try
@@ -252,7 +246,7 @@ namespace Dev2.Scheduler
                 }
             }
 
-            throw new InvalidScheduleException($"Invalid resource found:{arg.Definition.Data}"); // this should not be reachable because isvaliddev2task checks same conditions
+            throw new Exception($"Invalid resource found:{arg.Definition.Data}"); // this should not be reachable because isvaliddev2task checks same conditions
         }
 
         public int ArgCount => 3;
