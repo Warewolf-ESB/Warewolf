@@ -326,6 +326,10 @@ namespace Dev2.ViewModels.Merge
                 }
                 var completeConflict = Conflicts.First.Value as IToolConflict;
                 completeConflict.IsMergeExpanderEnabled = completeConflict.HasConflict;
+                if (completeConflict.IsChecked)
+                {
+                    return;
+                }
                 if (completeConflict.HasConflict)
                 {
                     completeConflict.DiffViewModel.IsMergeEnabled = completeConflict.HasConflict;
@@ -367,6 +371,10 @@ namespace Dev2.ViewModels.Merge
                 }
                 args.Container.IsMergeExpanderEnabled = args.Container.HasConflict;
                 AddActivity(args);
+                if (args.Container.IsChecked)
+                {
+                    return;
+                }
                 var conflict = UpdateNextEnabledState(args.Container);
                 if (conflict is IToolConflict nextConflict)
                 {
@@ -587,7 +595,7 @@ namespace Dev2.ViewModels.Merge
         }
         public bool CanSave
         {
-            get => All(conflict => conflict.IsChecked);
+            get => All(conflict => conflict.IsChecked) && Conflicts.Any(a => a.HasConflict);
             set
             {
                 _canSave = value;
@@ -612,7 +620,7 @@ namespace Dev2.ViewModels.Merge
             get => _hasMergeStarted;
             set
             {
-                _hasMergeStarted = value;
+                _hasMergeStarted = value && Conflicts.Any(a => a.HasConflict);
                 if (_hasMergeStarted)
                 {
                     SetDisplayName(_hasMergeStarted);
