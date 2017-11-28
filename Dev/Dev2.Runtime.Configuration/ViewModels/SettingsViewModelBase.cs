@@ -9,7 +9,6 @@
 */
 
 using Caliburn.Micro;
-using Dev2.Runtime.Configuration.Services;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
@@ -48,8 +47,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 OnUnderlyingObjectChanged();
             }
         }
-
-        public ICommunicationService CommunicationService { get; set; }
 
         #endregion
 

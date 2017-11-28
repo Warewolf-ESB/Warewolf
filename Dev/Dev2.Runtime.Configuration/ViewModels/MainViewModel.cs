@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -17,8 +16,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Warewolf.Resource.Errors;
 
@@ -55,8 +52,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
             SaveCallback = saveCallback;
             CancelCallback = cancelCallback;
             SettingChangedCallback = settingChangedCallback;
-
-            CommunicationService = new WebCommunicationService();
         }
 
         bool SetConfiguration(XElement configurationXml)
@@ -169,8 +164,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public Settings.Configuration Configuration { get; private set; }
 
-        public ICommunicationService CommunicationService { get; set; }
-
         #endregion
 
         #region Private Properties
@@ -274,25 +267,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
             Errors.Add(error);
             ErrorsVisible = Errors.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
-
-        SettingsViewModelBase CreateViewModel(Type viewModelType, object Object)
-        {
-            SettingsViewModelBase viewModel = null;
-            try
-            {
-                viewModel = Activator.CreateInstance(viewModelType) as SettingsViewModelBase;
-            }
-            finally
-            {
-                if (viewModel != null)
-                {
-                    viewModel.CommunicationService = CommunicationService;
-                    viewModel.Object = Object;
-                }
-            }
-
-            return viewModel;
-        }
+        
         #endregion
     }
 }
