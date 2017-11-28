@@ -104,6 +104,8 @@ namespace Dev2.Studio.ActivityDesigners
             {
                 { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
+                  { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
@@ -117,6 +119,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDeleteRecordActivity), typeof(Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
                 { typeof(DsfDotNetDateTimeActivity),typeof(Activities.Designers2.DateTimStandard.DateTimeDesigner) },
                 { typeof(DsfDotNetDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
+                { typeof(DsfDateTimeActivity),typeof(Activities.Designers2.DateTimStandard.DateTimeDesigner) },
+                { typeof(DsfDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
                 { typeof(DsfDotNetGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
