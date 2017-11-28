@@ -173,7 +173,7 @@ namespace Dev2.Instrumentation.Tests
             var tracker = RevulyticsTracker.GetTrackerInstance();
             string productVersion = "1.0.0.0";
             string username = "windows\\raju";
-            tracker.EnableAppplicationTracker(productVersion, username);
+            tracker.EnableAppplicationTracker(productVersion, username);            
         }
 
         /// <summary>

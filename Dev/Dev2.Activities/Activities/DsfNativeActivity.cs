@@ -151,10 +151,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             OnBeforeExecute(context);
 
             try
-            {
-              
-                OnExecute(context);
-                
+            {              
+                OnExecute(context);                
             }
             catch (Exception ex)
             {
@@ -1015,9 +1013,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual IDev2Activity Execute(IDSFDataObject data, int update)
         {
             try
-            {
-                var className = GetType().Name;
-               
+            {   
                 _debugInputs = new List<DebugItem>();
                 _debugOutputs = new List<DebugItem>();
                 ExecuteTool(data, update);
