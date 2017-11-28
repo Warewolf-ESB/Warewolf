@@ -181,13 +181,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         protected void DoErrorHandling(IDSFDataObject dataObject, int update)
-        {
-            string errorString = dataObject.Environment.FetchErrors();
-            _tmpErrors.AddError(errorString);
-            if (_tmpErrors.HasErrors())
+        {            
+            if (dataObject.Environment.HasErrors())
             {
                 if (!(this is DsfFlowDecisionActivity))
                 {
+                    string errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last().Union(dataObject.Environment.Errors.Last()));
                     if (!string.IsNullOrEmpty(errorString))
                     {
                         PerformCustomErrorHandling(dataObject, errorString, update);
@@ -220,7 +219,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             finally
             {
-
+                dataObject.Environment.Assign(OnErrorVariable, "", update);
                 if (IsEndedOnError)
                 {
                     PerformStopWorkflow(dataObject);
