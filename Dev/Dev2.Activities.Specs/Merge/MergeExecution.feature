@@ -22,7 +22,7 @@ Scenario: Merge VersionHelloWorld Workflow
 	 And Different workflow contains "8" tools
 	 And Merge conflicts count is "8"
 	 And Merge variable conflicts is false
-	 And Merge window has "1" Conflicting tools
+	 And Merge window has "2" Conflicting tools
 
 Scenario: Merge WorkFlowWithOneScalar Same VariableList
 	 Given I Load workflow "WorkFlowWithOneScalar" from "localhost"
