@@ -46,16 +46,6 @@ namespace Warewolf.Studio.CustomControls {
                 new PropertyMetadata());
         static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
-
-        static DependencyProperty searchEventTimeDelayProperty =
-            DependencyProperty.Register(
-                "SearchEventTimeDelay",
-                typeof(Duration),
-                typeof(SearchTextBox),
-                new FrameworkPropertyMetadata(
-                    new Duration(new TimeSpan(0, 0, 0, 0, 500)),
-                    OnSearchEventTimeDelayChanged));
-
         public static readonly RoutedEvent SearchEvent = 
             EventManager.RegisterRoutedEvent(
                 "Search",
@@ -74,37 +64,15 @@ namespace Warewolf.Studio.CustomControls {
                 new FrameworkPropertyMetadata(typeof(SearchTextBox)));
         }
 
-        readonly DispatcherTimer _searchEventDelayTimer;
-
-        public SearchTextBox()
-        {
-            _searchEventDelayTimer = new DispatcherTimer {Interval = SearchEventTimeDelay.TimeSpan};
-            _searchEventDelayTimer.Tick += OnSeachEventDelayTimerTick;           
-        }
-
         protected override void OnLostKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnLostKeyboardFocus(e);
             HasText = Text.Length != 0;
         }
 
-        void OnSeachEventDelayTimerTick(object o, EventArgs e) {
-            _searchEventDelayTimer.Stop();
-            RaiseSearchEvent();
-        }
-
-        static void OnSearchEventTimeDelayChanged(
-            DependencyObject o, DependencyPropertyChangedEventArgs e) {
-            if (o is SearchTextBox stb)
-            {
-                stb._searchEventDelayTimer.Interval = ((Duration)e.NewValue).TimeSpan;
-                stb._searchEventDelayTimer.Stop();
-            }
-        }
-
         protected override void OnTextChanged(TextChangedEventArgs e) {
             base.OnTextChanged(e);
-            
+
             HasText = Text.Length != 0;
             if (!HasText)
             {
@@ -112,7 +80,6 @@ namespace Warewolf.Studio.CustomControls {
             }
         }
 
-       
         protected override void OnKeyDown(KeyEventArgs e) {
             if (e.Key == Key.Escape && SearchMode == SearchMode.Instant) {
                 Text = "";
@@ -157,11 +124,7 @@ namespace Warewolf.Studio.CustomControls {
             get { return (bool)GetValue(HasTextProperty); }
             private set { SetValue(HasTextPropertyKey, value); }
         }
-
-        public Duration SearchEventTimeDelay {
-            get { return (Duration)GetValue(SearchEventTimeDelayProperty); }
-            set { SetValue(SearchEventTimeDelayProperty, value); }
-        }
+        
         public string ClearSearchToolTip
         {
             get
@@ -173,8 +136,7 @@ namespace Warewolf.Studio.CustomControls {
                 SetValue(ClearSearchToolTipProperty, value);
             }
         }
-
-        public static DependencyProperty SearchEventTimeDelayProperty { get => searchEventTimeDelayProperty; set => searchEventTimeDelayProperty = value; }
+        
         public static DependencyProperty HasTextProperty { get => hasTextProperty; set => hasTextProperty = value; }
         public static DependencyProperty SearchModeProperty { get => searchModeProperty; set => searchModeProperty = value; }
         public static DependencyProperty ClearSearchCommandProperty { get => clearSearchCommandProperty; set => clearSearchCommandProperty = value; }

@@ -1,22 +1,22 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Dev2.Common;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.TO;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
@@ -50,17 +50,15 @@ namespace Dev2.Data.SystemTemplates.Models
 
         public string DisplayText { get; set; }
 
-        #endregion
+        #endregion Properties
 
         public string ToWebModel()
         {
-
             var result = JsonConvert.SerializeObject(this);
 
             return result;
         }
 
-    
         public void AddModelItem(Dev2Decision item)
         {
             TheStack.Add(item);
@@ -71,13 +69,9 @@ namespace Dev2.Data.SystemTemplates.Models
             return idx < TotalDecisions ? TheStack[idx] : null;
         }
 
-        
         public string ToVBPersistableModel()
-
         {
-
             var result = ToWebModel();
-
             result = result.Replace("\"", "!"); // Quote so it is VB compliant
             return result;
         }
@@ -90,11 +84,11 @@ namespace Dev2.Data.SystemTemplates.Models
 
             errors = new ErrorResultTO();
             // build the output for decisions
-            foreach(Dev2Decision dd in TheStack)
+            foreach (Dev2Decision dd in TheStack)
             {
                 result.Append(dd.GenerateUserFriendlyModel(env, Mode, out errors));
                 // append mode if not at end
-                if(cnt + 1 < TheStack.Count)
+                if (cnt + 1 < TheStack.Count)
                 {
                     result.Append(Mode);
                 }
@@ -110,12 +104,10 @@ namespace Dev2.Data.SystemTemplates.Models
             return result.ToString();
         }
 
-        
         public static string FromVBPersitableModelToJSON(string val)
 
         {
             return val.Replace("!", "\"");
-
         }
 
         /// <summary>
@@ -126,11 +118,11 @@ namespace Dev2.Data.SystemTemplates.Models
         public static string ExtractModelFromWorkflowPersistedData(string val)
         {
             int start = val.IndexOf("(", StringComparison.Ordinal);
-            if(start > 0)
+            if (start > 0)
             {
                 int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
 
-                if(end > start)
+                if (end > start)
                 {
                     start += 2;
                     val = val.Substring(start, end - start);
@@ -149,7 +141,6 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string RemoveDummyOptionsFromModel(StringBuilder val)
         {
-
             var tmp = val.Replace(@"""EvaluationFn"":""Choose...""", @"""EvaluationFn"":""Choose""");
 
             // Hydrate and remove Choose options ;)
@@ -167,15 +158,13 @@ namespace Dev2.Data.SystemTemplates.Models
 
                 tmp = new StringBuilder(JsonConvert.SerializeObject(dds));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Dev2Logger.Error("Dev2DecisionStack", ex, GlobalConstants.WarewolfError);
                 // Best effort ;)
             }
 
-
             return tmp.ToString();
-
         }
 
         /// <summary>
@@ -189,6 +178,5 @@ namespace Dev2.Data.SystemTemplates.Models
 
             return toReplace.Aggregate(val, (current, r) => current.Replace(r, ""));
         }
-
     }
 }
