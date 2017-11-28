@@ -123,8 +123,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Services\ICommunicationService.cs" />
-    <Compile Include="Services\WebCommunicationService.cs" />
     <Compile Include="Settings\BackupSettings.cs" />
     <Compile Include="Settings\LoggingSettings.cs" />
     <Compile Include="Settings\SecuritySettings.cs" />
@@ -132,7 +130,6 @@
     <Compile Include="Settings\SettingsBase.cs" />
     <Compile Include="ViewModels\Base\DelegateCommand.cs" />
     <Compile Include="ViewModels\Base\RelayCommand.cs" />
-    <Compile Include="ViewModels\LoggingViewModel.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\SettingsViewModelBase.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
