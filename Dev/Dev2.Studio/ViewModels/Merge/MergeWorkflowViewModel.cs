@@ -587,7 +587,7 @@ namespace Dev2.ViewModels.Merge
         }
         public bool CanSave
         {
-            get => All(conflict => conflict.IsChecked);
+            get => All(conflict => conflict.IsChecked) && Conflicts.Any(a => a.HasConflict);
             set
             {
                 _canSave = value;
@@ -612,7 +612,7 @@ namespace Dev2.ViewModels.Merge
             get => _hasMergeStarted;
             set
             {
-                _hasMergeStarted = value;
+                _hasMergeStarted = value && Conflicts.Any(a => a.HasConflict);
                 if (_hasMergeStarted)
                 {
                     SetDisplayName(_hasMergeStarted);
