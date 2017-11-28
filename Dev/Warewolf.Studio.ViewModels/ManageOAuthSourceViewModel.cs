@@ -39,23 +39,15 @@ namespace Warewolf.Studio.ViewModels
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel)
             : base("OAuth")
         {
-            if (updateManager == null)
-            {
-                throw new ArgumentNullException(nameof(updateManager));
-            }
-            if (requestServiceNameViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(requestServiceNameViewModel));
-            }
-            _updateManager = updateManager;
-            RequestServiceNameViewModel = requestServiceNameViewModel;
+            _updateManager = updateManager ?? throw new ArgumentNullException(nameof(updateManager));
+            RequestServiceNameViewModel = requestServiceNameViewModel ?? throw new ArgumentNullException(nameof(requestServiceNameViewModel));
             Header = Resources.Languages.Core.OAuthSourceNewHeaderLabel;
             Types = new List<string>
             {
                 "Dropbox"
             };
             SelectedOAuthProvider = Types[0];
-            CookieHelper.Clear();
+            CookieHelper.InternetSetOption(IntPtr.Zero, CookieHelper.InternetOptionEndBrowserSession, IntPtr.Zero, 0);
             HasAuthenticated = false;
             SetupCommands();
         }
@@ -63,20 +55,15 @@ namespace Warewolf.Studio.ViewModels
         public ManageOAuthSourceViewModel(IManageOAuthSourceModel updateManager, IOAuthSource oAuthSource,IAsyncWorker asyncWorker)
             : base("OAuth")
         {
-            if (updateManager == null)
-            {
-                throw new ArgumentNullException(nameof(updateManager));
-            }
             if (oAuthSource == null)
             {
                 throw new ArgumentNullException(nameof(oAuthSource));
             }
-            _updateManager = updateManager;
+            _updateManager = updateManager ?? throw new ArgumentNullException(nameof(updateManager));
             Types = new List<string>
             {
                 "Dropbox"
             };
-
 
             asyncWorker.Start(() => updateManager.FetchSource(oAuthSource.ResourceID), source =>
             {
