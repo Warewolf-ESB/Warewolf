@@ -122,7 +122,6 @@
     <Compile Include="DragDropExtension.cs" />
     <Compile Include="SearchTextBox.cs" />
     <Compile Include="VariableTextBox.cs" />
-    <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
