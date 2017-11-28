@@ -1960,7 +1960,7 @@ namespace Dev2.Core.Tests
                 mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
                 bool wasCalled = false;
 
-                Assert.IsTrue(mergeWorkflowViewModel.HasMergeStarted);
+                Assert.IsFalse(mergeWorkflowViewModel.HasMergeStarted);
                 mergeWorkflowViewModel.PropertyChanged += (a, p) =>
                 {
                     if (p.PropertyName == "HasMergeStarted")
@@ -1972,7 +1972,7 @@ namespace Dev2.Core.Tests
                 mergeWorkflowViewModel.HasMergeStarted = true;
 
                 Assert.IsTrue(wasCalled);
-                Assert.IsTrue(mergeWorkflowViewModel.IsDirty);
+                Assert.IsFalse(mergeWorkflowViewModel.IsDirty);
             }
         }
 
@@ -2021,7 +2021,7 @@ namespace Dev2.Core.Tests
                 mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
                 bool wasCalled = false;
 
-                Assert.IsTrue(mergeWorkflowViewModel.CanSave);
+                Assert.IsFalse(mergeWorkflowViewModel.CanSave);
                 mergeWorkflowViewModel.PropertyChanged += (a, p) =>
                 {
                     if (p.PropertyName == "CanSave")
