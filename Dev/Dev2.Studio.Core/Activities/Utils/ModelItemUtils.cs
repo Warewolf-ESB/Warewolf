@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -21,7 +21,6 @@ using Dev2.Studio.Core.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 
-
 namespace Dev2.Studio.Core.Activities.Utils
 {
     public static class ModelItemUtils
@@ -35,30 +34,25 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             if (propertyName != null)
             {
-                if (modelItem != null)
+                var modelProperty = modelItem?.Properties[propertyName];
+                if (modelProperty != null)
                 {
-                    var modelProperty = modelItem.Properties[propertyName];
-                    if (modelProperty != null)
+                    if (modelProperty.PropertyType == typeof(InArgument<T>))
                     {
-
-                        if (modelProperty.PropertyType == typeof(InArgument<T>))
-                        {
-                            modelProperty.SetValue(InArgument<T>.FromValue(value));
-                        }
-                        else
-                        {
-                            modelProperty.SetValue(value);
-                        }
+                        modelProperty.SetValue(InArgument<T>.FromValue(value));
+                    }
+                    else
+                    {
+                        modelProperty.SetValue(value);
                     }
                 }
             }
         }
 
-
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
+            var ec = new EditingContext();
+            var mtm = new ModelTreeManager(ec);
 
             return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
         }
@@ -71,8 +65,8 @@ namespace Dev2.Studio.Core.Activities.Utils
 
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
+            var ec = new EditingContext();
+            var mtm = new ModelTreeManager(ec);
 
             mtm.Load(objectToMakeModelItem);
 
@@ -97,13 +91,10 @@ namespace Dev2.Studio.Core.Activities.Utils
                     value = modelProperty.ComputedValue;
                 }
 
-                if (value != null)
+                if (value != null && typeof(T) == typeof(Guid))
                 {
-                    if (typeof(T) == typeof(Guid))
-                    {
-                        Guid.TryParse(value.ToString(), out Guid guid);
-                        value = guid;
-                    }
+                    Guid.TryParse(value.ToString(), out Guid guid);
+                    value = guid;
                 }
             }
             return (T)value;
@@ -112,7 +103,7 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static object GetProperty(string propertyName, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties[propertyName];
-            return modelProperty != null ? modelProperty.ComputedValue : null;
+            return modelProperty?.ComputedValue;
         }
 
         public static object GetProperty(this ModelItem modelItem, string propertyName)
@@ -151,14 +142,18 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static ImageSource GetImageSourceForTool(this ModelItem modelItem)
         {
             var computedValue = modelItem.GetCurrentValue();
-            if (computedValue is FlowStep)
+            if (computedValue is FlowStep && modelItem.Content?.Value != null)
             {
-                if (modelItem.Content?.Value != null)
-                {
-                    computedValue = modelItem.Content.Value.GetCurrentValue();
-                }
+                computedValue = modelItem.Content.Value.GetCurrentValue();
             }
+
             var type = computedValue.GetType();
+            var image = GetImageSourceForToolFromType(type);
+            return image;
+        }
+        public static ImageSource GetImageSourceForToolFromType(Type itemType)
+        {
+            var type = itemType;
             if (type.Name == "DsfDecision" || type.Name == "FlowDecision")
             {
                 type = typeof(DsfFlowDecisionActivity);
@@ -175,7 +170,6 @@ namespace Dev2.Studio.Core.Activities.Utils
                 return application?.TryFindResource(desc.Icon) as ImageSource;
             }
             return application?.TryFindResource("Explorer-WorkflowService") as ImageSource;
-
         }
     }
 }

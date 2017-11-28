@@ -26,13 +26,8 @@ namespace Dev2.CustomControls
             ActivityDesignerHelper.DesignerAttributes.TryGetValue(vm.ModelItem.ItemType, out var designerType);
             if (designerType != null)
             {
-                template = GetContainerActivityTemplate(designerType, vm);
-                if (template != null)
-                {
-                    return ReturnDataTemplate(template, vm);
-                }
                 assemblyName = designerType.Assembly.FullName;
-                typeName = designerType.Namespace + ".Large";
+                typeName = GetContainerActivityTypeName(designerType);
             }
             else
             {
@@ -48,7 +43,7 @@ namespace Dev2.CustomControls
                         return TemplateGenerator.CreateDataTemplate(() => userControl);
                     }
                 }
-                else if (vm.ModelItem?.ItemType == typeof(DsfDecision) || vm.ModelItem?.ItemType ==typeof( DsfFlowDecisionActivity))
+                else if (vm.ModelItem?.ItemType == typeof(DsfDecision) || vm.ModelItem?.ItemType == typeof(DsfFlowDecisionActivity))
                 {
                     assemblyName = System.Reflection.Assembly.GetAssembly(typeof(Activities.Designers2.Decision.Large)).FullName;
                     typeName = "Dev2.Activities.Designers2.Decision.Large";
@@ -69,28 +64,22 @@ namespace Dev2.CustomControls
             return TemplateGenerator.CreateDataTemplate(() => template);
         }
 
-        private static ActivityDesignerTemplate GetContainerActivityTemplate(Type designerType, ActivityDesignerViewModel vm)
+        private static string GetContainerActivityTypeName(Type designerType)
         {
-            Type type;
+            string typeName;
+            var name = designerType.Namespace;
             switch (designerType.Name)
             {
                 case "SequenceDesigner":
-                    type = typeof(Activities.Designers2.Sequence.Large);
-                    break;
                 case "SelectAndApplyDesigner":
-                    type = typeof(Activities.Designers2.SelectAndApply.Large);
-                    vm.ModelItem.Properties["ApplyActivityFunc"]?.SetValue(null);
-                    break;
                 case "ForeachDesigner":
-                    type = typeof(Activities.Designers2.Foreach.Large);
-                    vm.ModelItem.Properties["DataFunc"]?.SetValue(null);
+                    typeName = name + ".SmallErrorView";
                     break;
                 default:
-                    return null;
+                    typeName = name + ".Large";
+                    break;
             }
-            var insta = Activator.CreateInstance(type, new object[] { true });
-            var template = insta as ActivityDesignerTemplate;
-            return template;
+            return typeName;
         }
     }
 }
