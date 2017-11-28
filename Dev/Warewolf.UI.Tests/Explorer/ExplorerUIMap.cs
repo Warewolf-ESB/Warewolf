@@ -234,7 +234,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
-        
+
         [When(@"I Select Remote Connection Integration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
@@ -311,7 +311,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
-        
+
         [When(@"I RightClick Explorer Localhost First Item")]
         public void RightClick_Explorer_Localhost_FirstItem()
         {
@@ -486,7 +486,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));
         }
-        
+
         [When(@"I Click Edit Server Button From Explorer Connect Control")]
         public void Click_EditServerButton_From_ExplorerConnectControl()
         {
@@ -567,18 +567,17 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
         }
-        
+
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
-            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != FilterText)
-                MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
         [When(@"I validate and delete the existing resource with ""(.*)""")]
         public void WhenIValidateAndDeleteTheExistingResourceWith(string resourceName)
         {
-            string resourcePath =  @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
+            string resourcePath = @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
 
             if (File.Exists(resourcePath))
             {
@@ -978,7 +977,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
         }
-        
+
         [When(@"I Select Deploy From Explorer Context Menu")]
         public void Select_Deploy_From_ExplorerContextMenu()
         {
@@ -1136,7 +1135,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(61, 15));
             Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(7, 12));
         }
-        
+
         [When(@"I Collapse Localhost")]
         public void Collapse_Localhost()
         {
