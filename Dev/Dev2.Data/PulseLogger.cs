@@ -83,8 +83,7 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
