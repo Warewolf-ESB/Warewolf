@@ -8,9 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
 using System.Collections.Generic;
-using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Communication;
 
@@ -18,27 +16,12 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class RemoteDebugItemParser
     {
-        protected RemoteDebugItemParser()
-        {
-        }
-
         public static IList<IDebugState> ParseItems(string data)
         {
-            try
-            {
-                var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
-                var serializer = new Dev2JsonSerializer();
-                IList<IDebugState> debugItems = serializer.Deserialize<List<IDebugState>>(parseData);
-
-                return debugItems;
-            }
-            catch(Exception e)
-            {
-                Dev2Logger.Error("RemoteDebugItemParser", e, GlobalConstants.WarewolfError);
-            }
-
-            return null;
+            var parseData = data.Replace("Dev2.Diagnostics.DebugState", "Dev2.Diagnostics.Debug.DebugState");
+            var serializer = new Dev2JsonSerializer();
+            IList<IDebugState> debugItems = serializer.Deserialize<List<IDebugState>>(parseData);
+            return debugItems;
         }
-
     }
 }
