@@ -126,12 +126,12 @@ namespace Dev2.Util
         {
             if (obj == null)
             {
-                throw new ArgumentNullException("obj");
+                throw new ArgumentNullException(nameof(obj));
             }
 
             if (output == null)
             {
-                throw new ArgumentNullException("output");
+                throw new ArgumentNullException(nameof(output));
             }
 
             var i = new Interpreter(output, ValueSystem, ScriptEvaluator);
@@ -227,95 +227,22 @@ namespace Dev2.Util
             }
         }
 
-        sealed class BasicValueSystem : IJsonPathValueSystem
-        {
-            public bool HasMember(object value, string member)
-            {
-                if (IsPrimitive(value))
-                {
-                    return false;
-                }
-
-                if (value is IDictionary dict)
-                {
-                    return dict.Contains(member);
-                }
-
-                if (value is IList list)
-                {
-                    int index = ParseInt(member, -1);
-                    return index >= 0 && index < list.Count;
-                }
-
-                return false;
-            }
-
-            public object GetMemberValue(object value, string member)
-            {
-                if (IsPrimitive(value))
-                {
-                    throw new ArgumentException("value");
-                }
-
-                if (value is IDictionary dict)
-                {
-                    return dict[member];
-                }
-
-                var list = (IList)value;
-                int index = ParseInt(member, -1);
-                if (index >= 0 && index < list.Count)
-                {
-                    return list[index];
-                }
-
-                return null;
-            }
-
-            public IEnumerable GetMembers(object value)
-            {
-                return ((IDictionary)value).Keys;
-            }
-
-            public bool IsObject(object value)
-            {
-                return value is IDictionary;
-            }
-
-            public bool IsArray(object value)
-            {
-                return value is IList;
-            }
-
-            public bool IsPrimitive(object value)
-            {
-                if (value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-
-                return Type.GetTypeCode(value.GetType()) != TypeCode.Object;
-            }
-        }
-
         sealed class Interpreter
         {
-            static readonly IJsonPathValueSystem DefaultValueSystem = new BasicValueSystem();
-
             static readonly char[] Colon = { ':' };
             static readonly char[] Semicolon = { ';' };
             readonly JsonPathScriptEvaluator _eval;
             readonly JsonPathResultAccumulator _output;
             readonly IJsonPathValueSystem _system;
 
-            public Interpreter(JsonPathResultAccumulator output, IJsonPathValueSystem valueSystem,
+            public Interpreter(JsonPathResultAccumulator output, IJsonPathValueSystem system,
                 JsonPathScriptEvaluator eval)
             {
                 Debug.Assert(output != null);
 
                 _output = output;
                 _eval = eval;
-                _system = valueSystem ?? DefaultValueSystem;
+                _system = system;
             }
 
             public void Trace(string expr, object value, string path)

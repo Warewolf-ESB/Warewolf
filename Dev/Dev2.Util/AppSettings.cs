@@ -20,6 +20,7 @@ namespace Dev2.Util
         static string _serviceName;
         public static string ServiceName => _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
 
+#if !DEBUG
         public static bool CollectUsageStats
         {
             get
@@ -28,5 +29,6 @@ namespace Dev2.Util
                 return collectUsageStats;
             }
         }
+#endif
     }
 }
