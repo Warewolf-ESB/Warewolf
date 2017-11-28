@@ -1,22 +1,22 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Dev2.Data.Decisions.Operations;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
+using System;
+using System.Collections.Generic;
+using System.Text;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
@@ -68,20 +68,7 @@ namespace Dev2.Data.SystemTemplates.Models
         [JsonConverter(typeof(StringEnumConverter))]
         public enDecisionType EvaluationFn { get; set; }
 
-        [JsonIgnore]
-        public string Version => "1.0.0";
-
-        [JsonIgnore]
-        public Dev2ModelType ModelName => Dev2ModelType.Dev2Decision;
-
-        #endregion
-
-        public string ToWebModel()
-        {
-            var result = JsonConvert.SerializeObject(this);
-
-            return result;
-        }
+        #endregion Properties
 
         public string GenerateUserFriendlyModel(IExecutionEnvironment env, Dev2DecisionMode mode, out ErrorResultTO errors)
         {
@@ -348,10 +335,6 @@ namespace Dev2.Data.SystemTemplates.Models
             return null;
         }
 
-        /// <summary>
-        /// Fetches the cols as array.
-        /// </summary>
-        /// <returns></returns>
         public string[] FetchColsAsArray()
         {
             var result = new string[TotalCols];
@@ -371,15 +354,11 @@ namespace Dev2.Data.SystemTemplates.Models
                 Col3 = string.Empty;
             }
 
-
             result[0] = Col1.Replace("\\\\", "\\");
             result[1] = Col2.Replace("\\\\", "\\");
             result[2] = Col3.Replace("\\\\", "\\");
 
-
             return result;
-
         }
-
     }
 }
