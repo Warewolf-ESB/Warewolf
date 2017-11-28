@@ -35,10 +35,7 @@ namespace Dev2.Common.Common
             }
         }
 
-        public static void GetComputerNamesList()
-        {
-            _currentComputerNames = StandardComputerNameQuery();
-        }
+        public static void GetComputerNamesList() => _currentComputerNames = StandardComputerNameQuery();
 
         static List<string> StandardComputerNameQuery()
         {
