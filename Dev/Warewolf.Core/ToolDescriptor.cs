@@ -42,18 +42,9 @@ namespace Warewolf.Core
         }
 
         public bool Equals(WarewolfType other) => throw new NotImplementedException();
-
         public override int GetHashCode() => throw new NotImplementedException();
-
-        public static bool operator ==(WarewolfType left, WarewolfType right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(WarewolfType left, WarewolfType right)
-        {
-            return !Equals(left, right);
-        }
+        public static bool operator ==(WarewolfType left, WarewolfType right) => Equals(left, right);
+        public static bool operator !=(WarewolfType left, WarewolfType right) => !Equals(left, right);
 
         #endregion
     }

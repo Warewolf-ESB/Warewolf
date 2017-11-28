@@ -21,7 +21,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2DecisionStack : IDev2DataModel, IDev2FlowModel
+    public class Dev2DecisionStack : IDev2FlowModel
     {
         string _ver = "1.0.0";
 
@@ -30,13 +30,6 @@ namespace Dev2.Data.SystemTemplates.Models
         public IList<Dev2Decision> TheStack { get; set; }
 
         public int TotalDecisions => TheStack.Count;
-
-        [JsonIgnore]
-        public string Version
-        {
-            get => _ver;
-            set => _ver = value;
-        }
 
         [JsonConverter(typeof(StringEnumConverter))]
         public Dev2ModelType ModelName => Dev2ModelType.Dev2DecisionStack;
