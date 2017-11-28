@@ -32,18 +32,14 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
         {
-
-            if (__name__.EndsWith("apis.json"))
+            if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
                 var path = __name__.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
-                if (path.Any())
+                if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
-                    {
-                        path[0] = null;
-                    }
-
+                    path[0] = null;
                 }
+
                 var requestVar = new NameValueCollection
                 {
                     {"path", path[0]},
@@ -76,7 +72,6 @@ namespace Dev2.Runtime.WebServer.Controllers
 
         HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
         {
-
             var requestVariables = new NameValueCollection
             {
                 { "path", __url__ },
@@ -87,7 +82,6 @@ namespace Dev2.Runtime.WebServer.Controllers
             var httpResponseMessage = ProcessRequest<WebGetRequestHandler>(requestVariables);
             return httpResponseMessage;
         }
-
 
         [HttpGet]
         [HttpPost]
@@ -104,7 +98,6 @@ namespace Dev2.Runtime.WebServer.Controllers
             }
             return ExecuteWorkflow(__name__, false);
         }
-
 
         [HttpGet]
         [HttpPost]
