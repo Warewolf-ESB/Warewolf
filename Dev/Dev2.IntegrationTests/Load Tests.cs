@@ -1,12 +1,11 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Tests.Runtime.Util;
-using System.Diagnostics;
-using Dev2.Integration.Tests.Properties;
-using System.Threading;
-using Dev2.Common;
-using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
+﻿using Dev2.Common;
 using Dev2.Data;
+using Dev2.Integration.Tests.Properties;
+using Dev2.Tests.Runtime.Util;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Diagnostics;
+using System.Threading;
 
 namespace Dev2.Integration.Tests
 {
@@ -42,7 +41,6 @@ namespace Dev2.Integration.Tests
         {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
 
-
             dtb.AddTokenOp("-", false);
 
             var dt = dtb.Generate();
@@ -58,7 +56,7 @@ namespace Dev2.Integration.Tests
             sw.Stop();
 
             long exeTime = sw.ElapsedMilliseconds;
-            
+
             Console.WriteLine(@"Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 100000 && exeTime < 1300, "Expecting it to take 1300 ms but it took " + exeTime + " ms.");
         }
@@ -68,7 +66,6 @@ namespace Dev2.Integration.Tests
         public void Three_Token_Perfomance_Op()
         {
             var dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
-
 
             dtb.AddTokenOp("AB-", false);
 
@@ -85,7 +82,7 @@ namespace Dev2.Integration.Tests
             sw.Stop();
 
             long exeTime = sw.ElapsedMilliseconds;
-            
+
             Console.WriteLine("Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 35000 && exeTime < 2500, "It took [ " + exeTime + " ]");
         }

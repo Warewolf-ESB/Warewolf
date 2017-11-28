@@ -4,8 +4,6 @@ using System.Net;
 using System.Threading.Tasks;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
-using Newtonsoft.Json.Linq;
 
 namespace Dev2.Integration.Tests.Server_Refresh
 {
@@ -20,7 +18,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
             Parallel.For(1, 10, a =>
             {
-                var passRequest = ExececuteRequest(new Uri(url1));
+                var passRequest = ExecuteRequest(new Uri(url1));
                 list.Add(passRequest);
                 passRequest.ContinueWith((b) =>
                 {
@@ -29,7 +27,6 @@ namespace Dev2.Integration.Tests.Server_Refresh
 
             });
             Task.WaitAll(list.ToArray());
-
         }
 
         [TestMethod]
@@ -39,7 +36,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             List<Task> list = new List<Task>();
                        
 
-            var passRequest = ExececuteRequest(new Uri(url1));
+            var passRequest = ExecuteRequest(new Uri(url1));
             list.Add(passRequest);
             passRequest.ContinueWith((b) =>
             {
@@ -83,7 +80,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        Task<string> ExececuteRequest(Uri url)
+        internal static Task<string> ExecuteRequest(Uri url)
         {
             try
             {
