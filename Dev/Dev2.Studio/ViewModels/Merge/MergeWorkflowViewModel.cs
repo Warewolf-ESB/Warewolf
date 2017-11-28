@@ -130,7 +130,7 @@ namespace Dev2.ViewModels.Merge
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.DiffViewModel.Container = conflict;
                 conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
-                ShowArmConnectors(conflicts, armConnectorConflicts, null);
+                ShowArmConnectors(conflicts, armConnectorConflicts);
                 AddDiffArmConnectors(armConnectorConflicts, treeItem, id);                
             }
         }
@@ -153,26 +153,23 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel.Container = conflict;
                 conflict.HasConflict = treeItem.IsInConflict;
                 conflicts.Add(conflict);                
-                ShowArmConnectors(conflicts, armConnectorConflicts, null);
+                ShowArmConnectors(conflicts, armConnectorConflicts);
                 AddArmConnectors(armConnectorConflicts, treeItem, id);
             }
         }
 
-        static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts,Func<IConflict,List<IArmConnectorConflict>, IEnumerable<IArmConnectorConflict>> findFunction)
+        static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
         {
             var itemsToAdd = new List<IConflict>();
-            //foreach (var addConflict in conflicts)
+            var foundConflicts = ShouldShowArmConnector(conflicts.Select(a => a.UniqueId.ToString()), armConnectorConflicts);
+            foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
             {
-                var foundConflicts = FindForDiff(conflicts.Select(a=>a.UniqueId.ToString()),armConnectorConflicts);
-                foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
-                {
-                    AddToTempConflictList(conflicts, itemsToAdd, found);
-                }
+                AddToTempConflictList(conflicts, itemsToAdd, found);
             }
             conflicts.AddRange(itemsToAdd);
         }
 
-        static IEnumerable<IArmConnectorConflict> FindForDiff(IEnumerable<string> toolIds, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => {
+        static IEnumerable<IArmConnectorConflict> ShouldShowArmConnector(IEnumerable<string> toolIds, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => {
             var foundCurrentDestination = FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, toolIds);
             var foundDiffDestination = FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, toolIds);
             var foundCurrentSource = FindMatchingConnector(s.CurrentArmConnector.SourceUniqueId, toolIds);
@@ -180,33 +177,20 @@ namespace Dev2.ViewModels.Merge
             var hasValues = foundCurrentDestination && foundDiffDestination && foundCurrentSource && foundDiffSource;
             if (!hasValues)
             {
-                if (s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() && foundCurrentDestination)
+                if (s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() && s.DifferentArmConnector.DestinationUniqueId == Guid.Empty.ToString() && foundDiffDestination && foundDiffSource)
                 {
                     return true;
                 }
-                if (s.DifferentArmConnector.DestinationUniqueId == Guid.Empty.ToString() && foundDiffDestination)
+                if (s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString() && s.DifferentArmConnector.SourceUniqueId == Guid.Empty.ToString() && foundDiffDestination && foundDiffSource)
                 {
                     return true;
-                }
-                if (s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString() && foundCurrentSource)
-                {
-                    return true;
-                }
-                if (s.DifferentArmConnector.SourceUniqueId == Guid.Empty.ToString() && foundDiffSource)
-                {
-                    return true;
-                }
+                }                
             }
             return hasValues;
         });
-        //static IEnumerable<IArmConnectorConflict> FindForCurrent(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
         static bool FindMatchingConnector(string connectorId, IEnumerable<string> toolIds)
         {
             var found = toolIds.Contains(connectorId);
-            //if (!found)
-            //{
-            //    found = connectorId == Guid.Empty.ToString();
-            //}
             return found;
         }
 
