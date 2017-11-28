@@ -74,14 +74,14 @@ namespace Dev2.Tests.Runtime.WebServer
         [TestCategory("WebServerRequest")]
         public void WebServerRequest_GetContentEncoding_ParseSimpleEncoding()
         {
-            var headers = new NameValueCollection
+            var Content = new StringContent("Number42", Encoding.UTF8)
             {
-                { "Content-Encoding", "utf8" }
+                Headers = { ContentType = new MediaTypeHeaderValue("text/plain") }
             };
-            var request = CreateHttpRequest(out string content, out NameValueCollection boundVars, out NameValueCollection queryStr, out headers);
+            Content.Headers.Add("Content-Encoding", "utf8");
 
             //------------Execute Test---------------------------
-            var ContentEncoding = request.Content.GetContentEncoding();
+            var ContentEncoding = Content.GetContentEncoding();
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Encoding.UTF8, ContentEncoding, "WebServerRequest parsed the wrong content encoding.");
