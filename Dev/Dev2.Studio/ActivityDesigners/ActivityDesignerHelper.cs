@@ -125,6 +125,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
+                   { typeof(DsfDotNetCalculateActivity), typeof(CalculateDesigner) },
+                { typeof(DsfDotNetAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
                 { typeof(DsfPathCopy), typeof(CopyDesigner) },
