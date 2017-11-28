@@ -330,17 +330,13 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             var item = itemx is bool && (bool) itemx;
             return item ;
-
         }
-
 
         private bool CanDelete(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsUsed;
         }
-
-
 
         public ICommand ClearSearchTextCommand { get; private set; }
 
@@ -410,7 +406,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-
         public void LogToRevulytics(string eventCategory,string eventName)
         {
             if (_applicationTracker != null)
@@ -419,7 +414,6 @@ namespace Dev2.Studio.ViewModels.DataList
             }
 
         }
-
 
         public void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed)
         {
@@ -1010,8 +1004,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         private void ShowUnusedDataListVariables(IResourceModel resourceModel, IList<IDataListVerifyPart> listOfUnused, IList<IDataListVerifyPart> listOfUsed)
-        {
-          
+        {          
             if (resourceModel != Resource)
             {
                 return;

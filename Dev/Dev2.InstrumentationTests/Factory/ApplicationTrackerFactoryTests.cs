@@ -16,10 +16,6 @@ namespace Dev2.Instrumentation.Factory.Tests
         {
             IApplicationTracker applicationTracker = ApplicationTrackerFactory.GetApplicationTrackerProvider();
             Assert.IsNotNull(applicationTracker, "Unable to get RevulyticsTracker");
-        }
-
-    
-
-
+        }  
     }
 }
