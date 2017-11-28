@@ -1,4 +1,14 @@
-﻿using Dev2.Common.Interfaces;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.Workflow;
@@ -349,6 +359,10 @@ namespace Dev2.ViewModels.Merge
                 }
                 var completeConflict = Conflicts.First.Value as IToolConflict;
                 completeConflict.IsMergeExpanderEnabled = completeConflict.HasConflict;
+                if (completeConflict.IsChecked)
+                {
+                    return;
+                }
                 if (completeConflict.HasConflict)
                 {
                     completeConflict.DiffViewModel.IsMergeEnabled = completeConflict.HasConflict;
@@ -390,6 +404,10 @@ namespace Dev2.ViewModels.Merge
                 }
                 args.Container.IsMergeExpanderEnabled = args.Container.HasConflict;
                 AddActivity(args);
+                if (args.Container.IsChecked)
+                {
+                    return;
+                }
                 var conflict = UpdateNextEnabledState(args.Container);
                 if (conflict is IToolConflict nextConflict)
                 {
@@ -610,7 +628,7 @@ namespace Dev2.ViewModels.Merge
         }
         public bool CanSave
         {
-            get => All(conflict => conflict.IsChecked);
+            get => All(conflict => conflict.IsChecked) && Conflicts.Any(a => a.HasConflict);
             set
             {
                 _canSave = value;
@@ -635,7 +653,7 @@ namespace Dev2.ViewModels.Merge
             get => _hasMergeStarted;
             set
             {
-                _hasMergeStarted = value;
+                _hasMergeStarted = value && Conflicts.Any(a => a.HasConflict);
                 if (_hasMergeStarted)
                 {
                     SetDisplayName(_hasMergeStarted);

@@ -391,7 +391,8 @@ where pn.nspname = 'public';
         public static readonly string WarewolfInfo = "Warewolf Info";
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
-        
+        public static readonly string WarewolfWarn = "Warewolf Warn";
+
         public static readonly string ResourcePickerWorkflowString = "DsfWorkflowActivity";
 
         public static readonly string SerializableResourceQuote = "__QUOTE__";

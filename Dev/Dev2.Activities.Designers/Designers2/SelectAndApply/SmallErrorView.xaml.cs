@@ -9,19 +9,19 @@
 */
 
 using System.Windows;
-using System;
-using System.Collections.Generic;
 
-namespace Dev2.Common
+namespace Dev2.Activities.Designers2.SelectAndApply
 {
-    public interface IConflictTreeNode : IEquatable<IConflictTreeNode>
+    public partial class SmallErrorView
     {
-        IDev2Activity Activity { get; }
-        List<(string uniqueId, IConflictTreeNode node)> Children { get; }
-        bool IsInConflict { get; set; }
-        Point Location { get; }
-        string UniqueId { get; set; }
+        public SmallErrorView()
+        {
+            InitializeComponent();
+        }
 
-        void AddChild(IConflictTreeNode node,string name);
+        protected override IInputElement GetInitialFocusElement()
+        {
+            return InitialFocusElement;
+        }
     }
 }

@@ -344,6 +344,7 @@
     <Compile Include="IServiceTestModel.cs" />
     <Compile Include="ITestCatalog.cs" />
     <Compile Include="IToolboxView.cs" />
+    <Compile Include="IToolConflict.cs" />
     <Compile Include="IUpdatesHelp.cs" />
     <Compile Include="ISharepointListTo.cs" />
     <Compile Include="ISharepointReadListTo.cs" />

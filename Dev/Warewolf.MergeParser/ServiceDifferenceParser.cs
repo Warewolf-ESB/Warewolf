@@ -1,4 +1,14 @@
-﻿using System.Activities.Presentation.Model;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System.Activities.Presentation.Model;
 using System.Activities.Statements;
 using System.Activities.Presentation.Services;
 using System;
@@ -42,7 +52,7 @@ namespace Warewolf.MergeParser
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
 #pragma warning disable S1481 // Unused local variables should be removed
-            var hasConflict = currentTree.Zip(diffTree, (curr, diff) => curr.Equals(diff)).ToList();
+            var hasConflict = currentTree.Zip(diffTree, (curr, diff) => curr.Equals(diff)).Union(diffTree.Zip(currentTree, (curr,diff)=>curr.Equals(diff))).ToList();
 #pragma warning restore S1481 // Unused local variables should be removed
             return (currentTree, diffTree);
         }
