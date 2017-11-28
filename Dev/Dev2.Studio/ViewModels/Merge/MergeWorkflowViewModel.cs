@@ -567,7 +567,11 @@ namespace Dev2.ViewModels.Merge
                     _resourceModel.DataList = CurrentConflictModel.IsVariablesChecked ? CurrentConflictModel.DataListViewModel.WriteToResourceModel() : DifferenceConflictModel.DataListViewModel.WriteToResourceModel();
                 }
                 _resourceModel.WorkflowXaml = WorkflowDesignerViewModel.ServiceDefinition;
-                _resourceModel.Environment.ResourceRepository.Save(_resourceModel);
+                _resourceModel.Environment.ResourceRepository.SaveToServer(_resourceModel);
+
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                mainViewModel?.CloseResource(_resourceModel.ID, _resourceModel.Environment.EnvironmentID);
+                mainViewModel?.OpenCurrentVersion(_resourceModel.ID, _resourceModel.Environment.EnvironmentID);
             }
             catch (Exception ex)
             {

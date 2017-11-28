@@ -1117,7 +1117,7 @@ namespace Dev2.Core.Tests
             CreateFullExportsAndVm();
             var versionChecker = Mock.Get(ShellViewModel.Version);
             versionChecker.Setup(v => v.CommunityPageUri).Verifiable();
-            ShellViewModel.ShowStartPage();
+            ShellViewModel.ShowStartPageAsync();
             versionChecker.Verify(v => v.CommunityPageUri);
         }
 
@@ -3702,7 +3702,7 @@ namespace Dev2.Core.Tests
             var viewModel = new ShellViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, browserPopupController.Object);
 
             //------------Execute Test---------------------------
-            var isDownloading = viewModel.IsDownloading();
+            var isDownloading = ShellViewModel.IsDownloading();
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
         }
@@ -3728,7 +3728,7 @@ namespace Dev2.Core.Tests
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>())).Returns(viewMock.Object);
             var viewModel = new ShellViewModelMock(eventPublisher.Object, asyncWorker.Object, environmentRepository.Object, versionChecker.Object, vieFactory.Object, false, browserPopupController.Object);
             //------------Execute Test---------------------------
-            var isDownloading = viewModel.IsDownloading();
+            var isDownloading = ShellViewModel.IsDownloading();
             //------------Assert Results-------------------------
             Assert.IsFalse(isDownloading);
         }

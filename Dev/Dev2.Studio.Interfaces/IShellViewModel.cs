@@ -131,7 +131,7 @@ namespace Dev2.Studio.Interfaces
         bool ResourceCalled { get; set; }
 
         void DisplayDialogForNewVersion();
-        Task<bool> CheckForNewVersion();
+        Task<bool> CheckForNewVersionAsync();
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
         void OpenCurrentVersion(Guid resourceId, Guid environmentId);

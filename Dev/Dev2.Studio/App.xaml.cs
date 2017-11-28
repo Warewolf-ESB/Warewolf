@@ -175,7 +175,7 @@ namespace Dev2.Studio
                 }
                 else
                 {
-                    _shellViewModel.ShowStartPage();
+                    _shellViewModel.ShowStartPageAsync();
                 }
                 CheckForDuplicateResources();
                 var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -203,7 +203,7 @@ namespace Dev2.Studio
             {
                 foreach (var item in e.Args)
                 {
-                    _shellViewModel.LoadWorkflow(item.Replace("\"", ""));
+                    _shellViewModel.LoadWorkflowAsync(item.Replace("\"", ""));
                 }
             }
         }
