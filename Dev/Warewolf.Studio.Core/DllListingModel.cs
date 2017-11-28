@@ -1,13 +1,18 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
 using Dev2.Common.Interfaces;
-using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 
 namespace Warewolf.Studio.Core
@@ -44,7 +49,6 @@ namespace Warewolf.Studio.Core
                 IsExpanderVisible = IsDirectory;
                 IsVisible = true;
                 _dllListing = dllListing;
-                ExpandingCommand = new DelegateCommand(Expanding);
             }
             _isCom = false;
         }
@@ -71,38 +75,8 @@ namespace Warewolf.Studio.Core
                 IsExpanderVisible = IsDirectory;
                 IsVisible = true;
                 _dllListing = dllListing;
-                ExpandingCommand = new DelegateCommand(Expanding);
             }
             _isCom = true;
-        }
-
-        void Expanding()
-        {
-            if (_children != null)
-            {
-                var comChildren = _children.ToList();
-                if (_isCom && IsExpanded && Children != null && comChildren.Count > 5)
-                {
-                    ProgressVisibility = true;
-                    _children = new AsyncObservableCollection<IDllListingModel>(comChildren.Take(5));
-                    var allChildrenCount = comChildren.Count;
-                    TotalChildrenCount = allChildrenCount;
-                    Task.Factory.StartNew(() =>
-                    {
-                        while (_children.Count < allChildrenCount)
-                        {
-                            var items = comChildren.Skip(ChildrenCount).Take(25);
-                            var col = _children as AsyncObservableCollection<IDllListingModel>;
-                            col?.AddRange(items.ToList());
-                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ContextIdle, new Action(() =>
-                            {
-                                CurrentProgress = (int)Math.Round((double)(100 * ChildrenCount) / TotalChildrenCount);
-                                OnPropertyChanged(() => ChildrenCount);
-                            }));
-                        }
-                    });
-                }
-            }
         }
 
         public int TotalChildrenCount { get; set; }
@@ -170,28 +144,21 @@ namespace Warewolf.Studio.Core
                 }
             }
         }
+
         public string ClsId { get; set; }
         public bool Is32Bit { get; set; }
-
-        public ICommand ExpandingCommand { get; set; }
-
         public string FullName { get; set; }
-
         ICollection<IFileListing> IFileListing.Children { get; set; }
 
         public bool IsSelected
         {
-            get
-            {
-                return _isSelected;
-            }
+            get => _isSelected;
             set
             {
                 _isSelected = value;
                 if (_isSelected)
                 {
                     IsExpanded = true;
-                    Expanding();
                 }
 
                 OnPropertyChanged(() => IsSelected);
@@ -200,7 +167,7 @@ namespace Warewolf.Studio.Core
 
         public bool IsExpanded
         {
-            get { return _isExpanded; }
+            get => _isExpanded;
             set
             {
                 if (!_isCom)
@@ -240,7 +207,7 @@ namespace Warewolf.Studio.Core
 
         public bool IsExpanderVisible
         {
-            get { return _isExpanderVisible; }
+            get => _isExpanderVisible;
             set
             {
                 _isExpanderVisible = value;
@@ -286,14 +253,11 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        void SetIsVisible(string searchTerm)
-        {
-            IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
-        }
+        void SetIsVisible(string searchTerm) => IsVisible = Name.ToLowerInvariant().Contains(searchTerm.ToLowerInvariant());
 
         public bool IsVisible
         {
-            get { return _isVisible; }
+            get => _isVisible;
             set
             {
                 _isVisible = value;

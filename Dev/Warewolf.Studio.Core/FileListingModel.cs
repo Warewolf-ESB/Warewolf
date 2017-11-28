@@ -138,8 +138,6 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        public ICommand ExpandingCommand { get; set; }
-
         public string FullName { get; set; }
 
         ICollection<IFileListing> IFileListing.Children { get; set; }
