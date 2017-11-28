@@ -1,6 +1,7 @@
 ﻿using Dev2.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
@@ -77,7 +78,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
             //---------------Set up test pack-------------------
             var uniqueId = Guid.NewGuid().ToString();
             var activities = new System.Collections.ObjectModel.Collection<System.Activities.Activity>();
-            var activity = new DsfSequenceActivity() { UniqueID = uniqueId, Activities = activities};
+            var activity = new DsfSequenceActivity() { UniqueID = uniqueId, Activities = activities };
             var activity1 = new DsfSequenceActivity() { UniqueID = uniqueId, Activities = activities };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(activity);
@@ -102,7 +103,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
             var activities2 = new System.Collections.ObjectModel.Collection<System.Activities.Activity>
             {
                 new DsfDataSplitActivity
-                {                    
+                {
                 }
             };
 
@@ -114,6 +115,34 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.Sequence
             var @equals = activity.Equals(activity1);
             //---------------Test Result -----------------------
             Assert.IsFalse(@equals);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void GetChildrenNodes_Given_Activities_ActivityTools()
+        {
+            //---------------Set up test pack-------------------
+            var uniqueId = Guid.NewGuid().ToString();
+            var activities = new System.Collections.ObjectModel.Collection<System.Activities.Activity>
+            {
+                new DsfDataMergeActivity
+                {
+                }
+            };
+            var activities2 = new System.Collections.ObjectModel.Collection<System.Activities.Activity>
+            {
+                new DsfDataSplitActivity
+                {
+                }
+            };
+
+            var activity = new DsfSequenceActivity() { UniqueID = uniqueId, Activities = activities };
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(activity.GetChildrenNodes());
+            //---------------Execute Test ----------------------
+            var nodes = activity.GetChildrenNodes();
+            //---------------Test Result -----------------------
+            Assert.AreEqual(1, nodes.Count());
         }
     }
 }
