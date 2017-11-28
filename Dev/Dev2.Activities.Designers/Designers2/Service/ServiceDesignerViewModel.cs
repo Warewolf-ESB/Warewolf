@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             ValidationMemoManager = new ValidationMemoManager(this);
             MappingManager = new MappingManager(this);
-            if (modelItem.ItemType != typeof(DsfDatabaseActivity) && modelItem.ItemType != typeof(DsfPluginActivity) && modelItem.ItemType != typeof(DsfWebserviceActivity))
+            if (modelItem.ItemType != typeof(DsfDatabaseActivity) && modelItem.ItemType != typeof(DsfPluginActivity))
             {
                 AddTitleBarEditToggle();
             }

@@ -82,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         public override string HandlesType() => "GetDirectoriesRelativeToServerService";
     }
 
-    internal class JsonTreeNode
+    class JsonTreeNode
     {
         public JsonTreeNode(IExplorerItem explorerItem)
         {

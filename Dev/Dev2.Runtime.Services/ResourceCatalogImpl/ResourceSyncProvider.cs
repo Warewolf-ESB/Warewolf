@@ -6,7 +6,7 @@ using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceSyncProvider: IResourceSyncProvider
+    class ResourceSyncProvider: IResourceSyncProvider
     {
         #region Implementation of IResourceSyncProvider
 

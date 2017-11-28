@@ -18,7 +18,7 @@ using System.Windows.Data;
 
 namespace System.Windows.Controls
 {
-    internal class BindingEvaluator<T> : FrameworkElement
+    class BindingEvaluator<T> : FrameworkElement
     {
         Binding _binding;
 

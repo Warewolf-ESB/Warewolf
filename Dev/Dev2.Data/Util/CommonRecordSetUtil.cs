@@ -7,7 +7,7 @@ using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Util
 {
-    internal class CommonRecordSetUtil : ICommonRecordSetUtil
+    class CommonRecordSetUtil : ICommonRecordSetUtil
     {
         const string EmptyBrackets = "()";
         #region Implementation of ICommonRecordSetUtil

@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Dev2.CustomControls
 {
-    internal class WatermarkAdorner : Adorner
+    class WatermarkAdorner : Adorner
     {
         #region Private Fields
 

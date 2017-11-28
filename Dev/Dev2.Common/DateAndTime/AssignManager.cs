@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.DateAndTime
 {
-    internal class AssignManager : IAssignManager
+    class AssignManager : IAssignManager
     {
         readonly Dictionary<string, ITimeZoneTO> _timeZoneTos;
 

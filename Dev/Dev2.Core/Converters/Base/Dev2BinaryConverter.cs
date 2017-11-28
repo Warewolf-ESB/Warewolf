@@ -16,7 +16,7 @@ using Dev2.DynamicServices;
 
 namespace Dev2.Converters
 {
-    internal class Dev2BinaryConverter : IBaseConverter
+    class Dev2BinaryConverter : IBaseConverter
     {
         public string ConvertToBase(byte[] payload)
         {

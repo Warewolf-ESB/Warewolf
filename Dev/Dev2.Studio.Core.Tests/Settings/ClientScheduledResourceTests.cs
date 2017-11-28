@@ -186,7 +186,7 @@ namespace Dev2.Core.Tests.Settings
         #endregion
     }
 
-    internal class ScheduledResourceForTest : IScheduledResource
+    class ScheduledResourceForTest : IScheduledResource
     {
         bool _isNewItem;
         bool _isDirty;

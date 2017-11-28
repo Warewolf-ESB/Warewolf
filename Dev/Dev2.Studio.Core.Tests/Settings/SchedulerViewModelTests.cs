@@ -2085,7 +2085,7 @@ namespace Dev2.Core.Tests.Settings
 
     }
 
-    internal class SchedulerViewModelForTest : SchedulerViewModel
+    class SchedulerViewModelForTest : SchedulerViewModel
     {
         public SchedulerViewModelForTest(IServer env) : base( a => env)
         {
@@ -2127,7 +2127,7 @@ namespace Dev2.Core.Tests.Settings
         #endregion
     }
 
-    internal class ScheduleTaskManagerStub : SchedulerTaskManager
+    class ScheduleTaskManagerStub : SchedulerTaskManager
     {
         public ScheduleTaskManagerStub(SchedulerViewModel schedulerViewModel, Task<IResourcePickerDialog> getResourcePicker)
             : base(schedulerViewModel, getResourcePicker)

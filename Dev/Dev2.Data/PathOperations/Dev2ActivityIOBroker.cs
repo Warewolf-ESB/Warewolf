@@ -27,7 +27,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.PathOperations
 {    
-    internal class Dev2ActivityIOBroker : IActivityOperationsBroker
+    class Dev2ActivityIOBroker : IActivityOperationsBroker
     {
         readonly IFile _fileWrapper;
         readonly ICommon _common;

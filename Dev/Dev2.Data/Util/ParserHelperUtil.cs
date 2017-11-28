@@ -13,7 +13,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Util
 {
-    internal class ParserHelperUtil : IParserHelper
+    class ParserHelperUtil : IParserHelper
     {
         #region Implementation of IParserHelper
 

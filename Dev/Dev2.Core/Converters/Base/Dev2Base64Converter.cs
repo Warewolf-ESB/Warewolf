@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters
 {
-    internal class Dev2Base64Converter : IBaseConverter
+    class Dev2Base64Converter : IBaseConverter
     {
         public bool IsType(string payload)
         {

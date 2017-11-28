@@ -13,7 +13,7 @@ using Dev2.Web;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class DataObjectExtentions
+    static class DataObjectExtentions
     {
         public static string SetEmitionType(this IDSFDataObject dataObject, string serviceName, NameValueCollection headers)
         {

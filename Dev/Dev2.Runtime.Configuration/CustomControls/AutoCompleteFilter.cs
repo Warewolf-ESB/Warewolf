@@ -11,7 +11,7 @@
 
 namespace System.Windows.Controls
 {
-    internal static class AutoCompleteSearch
+    static class AutoCompleteSearch
     {
         public static AutoCompleteFilterPredicate<string> GetFilter(AutoCompleteFilterMode FilterMode)
         {

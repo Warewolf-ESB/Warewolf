@@ -5,7 +5,7 @@ using Dev2.Studio.Interfaces;
 
 namespace Dev2.Studio.Core
 {
-    internal class ExplorerDeleteProvider: IExplorerDeleteProvider
+    class ExplorerDeleteProvider: IExplorerDeleteProvider
     {
         readonly IExplorerRepository _repository;
 

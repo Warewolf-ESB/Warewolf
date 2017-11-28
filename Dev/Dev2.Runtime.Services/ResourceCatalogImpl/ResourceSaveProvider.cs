@@ -28,7 +28,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceSaveProvider : IResourceSaveProvider
+    class ResourceSaveProvider : IResourceSaveProvider
     {
         readonly IResourceCatalog _resourceCatalog;
         readonly IServerVersionRepository _serverVersionRepository;

@@ -294,7 +294,7 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
+        static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
@@ -345,8 +345,8 @@ namespace Dev2.Services.Sql
                         var table = new DataTable("SingleValues");
                         table.Columns.AddRange(singleOutParams.Select(parameter => new DataColumn(parameter.ParameterName)).ToArray());
                         table.LoadDataRow(singleOutParams.Select(parameter => parameter.Value).ToArray(), true);
-                        return handler(new OracleDataAdapter()); 
-                    }                    
+                        return handler(new OracleDataAdapter());
+                    }
                 }
                 var oraDa = new OracleDataAdapter(command as OracleCommand);
                 using (oraDa)

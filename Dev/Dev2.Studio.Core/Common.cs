@@ -4,7 +4,7 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Studio.Core
 {
-    internal static class Common
+    static class Common
     {
         public const string RootTag = "DataList";
         public const string Description = "Description";

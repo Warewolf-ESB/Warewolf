@@ -10,7 +10,7 @@ using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class ScalarHandler : IScalarHandler
+    class ScalarHandler : IScalarHandler
     {
         readonly DataListViewModel _vm;
 

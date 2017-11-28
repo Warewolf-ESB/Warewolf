@@ -6,7 +6,7 @@ using System.Windows.Media;
 
 namespace Warewolf.Studio.CustomControls
 {
-    internal class WatermarkAdorner : Adorner
+    class WatermarkAdorner : Adorner
     {
         #region Private Fields
 

@@ -904,7 +904,7 @@ namespace System.Windows.Controls
             UpdateVisualState(true);
         }
 
-        private void OnDropDownFocusChanged(object sender, EventArgs e)
+        void OnDropDownFocusChanged(object sender, EventArgs e)
         {
             FocusChanged(HasFocus());
         }
@@ -985,14 +985,14 @@ namespace System.Windows.Controls
 
 #endif
 
-        private void DropDownPopupClosed(object sender, EventArgs e)
+        void DropDownPopupClosed(object sender, EventArgs e)
         {
-            if(IsDropDownOpen)
+            if (IsDropDownOpen)
             {
                 IsDropDownOpen = false;
             }
-            
-            if(_popupHasOpened)
+
+            if (_popupHasOpened)
             {
 #if SILVERLIGHT
                 OnDropDownClosed(new RoutedPropertyChangedEventArgs<bool>(true, false));
@@ -1001,7 +1001,7 @@ namespace System.Windows.Controls
 #endif
             }
         }
-        
+
         protected override AutomationPeer OnCreateAutomationPeer()
         {
             return new AutoCompleteBoxAutomationPeer(this);
@@ -1271,9 +1271,9 @@ namespace System.Windows.Controls
             UpdateTextValue(value, null);
         }
 
-        private void UpdateTextValue(string value, bool? userInitiated)
+        void UpdateTextValue(string value, bool? userInitiated)
         {
-            if((userInitiated == null || userInitiated == true) && Text != value)
+            if ((userInitiated == null || userInitiated == true) && Text != value)
             {
                 _ignoreTextPropertyChange++;
                 Text = value;
@@ -1289,13 +1289,13 @@ namespace System.Windows.Controls
                 Text = value;
                 OnTextChanged(new RoutedEventArgs(TextChangedEvent));
             }
-            
-            if((userInitiated == null || userInitiated == false) && TextBox != null && TextBox.Text != value)
+
+            if ((userInitiated == null || userInitiated == false) && TextBox != null && TextBox.Text != value)
             {
                 _ignoreTextPropertyChange++;
                 TextBox.Text = value ?? string.Empty;
-                
-                if(Text == value || Text == null)
+
+                if (Text == value || Text == null)
                 {
 #if SILVERLIGHT
                     OnTextChanged(new RoutedEventArgs());
@@ -1443,9 +1443,9 @@ namespace System.Windows.Controls
             }
         }
 
-        private object TryGetMatch(string searchText, ObservableCollection<object> view, AutoCompleteFilterPredicate<string> predicate)
+        object TryGetMatch(string searchText, ObservableCollection<object> view, AutoCompleteFilterPredicate<string> predicate)
         {
-            if(view != null && view.Count > 0)
+            if (view != null && view.Count > 0)
             {
                 return view.FirstOrDefault(o => predicate(searchText, FormatValue(o)));
             }
@@ -1466,14 +1466,14 @@ namespace System.Windows.Controls
         }
 
 
-        private void RefreshView()
+        void RefreshView()
         {
-            if(_items == null)
+            if (_items == null)
             {
                 ClearView();
                 return;
             }
-            
+
             var text = Text ?? string.Empty;
             bool stringFiltering = TextFilter != null;
             bool objectFiltering = FilterMode == AutoCompleteFilterMode.Custom && TextFilter == null;
@@ -1484,18 +1484,18 @@ namespace System.Windows.Controls
             foreach (object item in items)
             {
                 bool inResults = !(stringFiltering || objectFiltering);
-                if(!inResults)
+                if (!inResults)
                 {
                     inResults = stringFiltering ? TextFilter(text, FormatValue(item)) : ItemFilter(text, item);
                 }
 
-                if(viewCount > viewIndex && inResults && _view[viewIndex] == item)
+                if (viewCount > viewIndex && inResults && _view[viewIndex] == item)
                 {
                     viewIndex++;
                 }
-                else if(inResults)
+                else if (inResults)
                 {
-                    if(viewCount > viewIndex && _view[viewIndex] != item)
+                    if (viewCount > viewIndex && _view[viewIndex] != item)
                     {
                         _view.RemoveAt(viewIndex);
                         _view.Insert(viewIndex, item);
@@ -1503,7 +1503,7 @@ namespace System.Windows.Controls
                     }
                     else
                     {
-                        if(viewIndex == viewCount)
+                        if (viewIndex == viewCount)
                         {
                             _view.Add(item);
                         }
@@ -1515,7 +1515,7 @@ namespace System.Windows.Controls
                         viewCount++;
                     }
                 }
-                else if(viewCount > viewIndex && _view[viewIndex] == item)
+                else if (viewCount > viewIndex && _view[viewIndex] == item)
                 {
                     _view.RemoveAt(viewIndex);
                     viewCount--;
@@ -1588,7 +1588,7 @@ namespace System.Windows.Controls
         #region Selection Adapter
 
         [ExcludeFromCodeCoverage]
-        private void OnAdapterSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void OnAdapterSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             SelectedItem = _adapter.SelectedItem;
         }
@@ -1637,9 +1637,9 @@ namespace System.Windows.Controls
             UpdateVisualState(true);
         }
 
-        private void OpenDropDown(bool oldValue, bool newValue)
+        void OpenDropDown(bool oldValue, bool newValue)
         {
-            if(DropDownPopup != null)
+            if (DropDownPopup != null)
             {
                 DropDownPopup.IsOpen = true;
             }
@@ -1650,7 +1650,7 @@ namespace System.Windows.Controls
             OnDropDownOpened(new RoutedPropertyChangedEventArgs<bool>(oldValue, newValue, DropDownOpenedEvent));
 #endif
         }
-        
+
         protected void CloseDropDown(bool oldValue, bool newValue)
         {
             if(_popupHasOpened)

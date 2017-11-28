@@ -49,9 +49,9 @@ namespace Dev2.Network
 {
     public class ServerProxyWithoutChunking : IEnvironmentConnection, IDisposable
     {
-        private System.Timers.Timer _reconnectHeartbeat;
-        private const int MillisecondsTimeout = 10000;
-        private readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
+        System.Timers.Timer _reconnectHeartbeat;
+        const int MillisecondsTimeout = 10000;
+        readonly Dev2JsonSerializer _serializer = new Dev2JsonSerializer();
 
         public ServerProxyWithoutChunking(Uri serverUri)
             : this(serverUri.ToString(), CredentialCache.DefaultNetworkCredentials, new AsyncWorker())
@@ -59,7 +59,7 @@ namespace Dev2.Network
             AuthenticationType = AuthenticationType.Windows;
         }
 
-        private static bool IsShuttingDown { get; set; }
+        static bool IsShuttingDown { get; set; }
 
         public ServerProxyWithoutChunking(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
@@ -113,7 +113,7 @@ namespace Dev2.Network
             }
         }
 
-        private void InitializeEsbProxy()
+        void InitializeEsbProxy()
         {
             if (EsbProxy == null)
             {
@@ -152,12 +152,12 @@ namespace Dev2.Network
             }
         }
 
-        private void HubConnectionOnClosed()
+        void HubConnectionOnClosed()
         {
             HasDisconnected();
         }
 
-        private void HasDisconnected()
+        void HasDisconnected()
         {
             Dev2Logger.Debug("*********** Hub connection down", "Warewolf Debug");
             IsConnected = false;
@@ -173,18 +173,18 @@ namespace Dev2.Network
             }
         }
 
-        private void OnWorkspaceIdReceived(Guid obj)
+        void OnWorkspaceIdReceived(Guid obj)
         {
             AddDebugWriter(obj);
             WorkspaceID = obj;
         }
 
-        private void OnServerIdReceived(Guid obj)
+        void OnServerIdReceived(Guid obj)
         {
             ServerID = obj;
         }
 
-        private void OnDebugStateReceived(string objString)
+        void OnDebugStateReceived(string objString)
         {
             var obj = _serializer.Deserialize<DebugState>(objString);
             ServerEvents.Publish(new DebugWriterWriteMessage { DebugState = obj });
@@ -342,7 +342,7 @@ namespace Dev2.Network
             return true;
         }
 
-        private void ConnectionRetry()
+        void ConnectionRetry()
         {
             HubConnection.Stop(new TimeSpan(0, 0, 0, 10));
             var popup = CustomContainer.Get<IPopupController>();
@@ -366,12 +366,12 @@ namespace Dev2.Network
             });
         }
 
-        private bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
+        bool ValidateServerCertificate(object sender, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslpolicyerrors)
         {
             return true;
         }
 
-        private void HandleConnectError(Exception e)
+        void HandleConnectError(Exception e)
         {
             Dev2Logger.Error(this, e, "Warewolf Error");
             StartReconnectTimer();
@@ -402,7 +402,7 @@ namespace Dev2.Network
             }
         }
 
-        private void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
+        void OnReconnectHeartbeatElapsed(object sender, ElapsedEventArgs args)
         {
             if (!IsConnecting)
             {
@@ -534,18 +534,18 @@ namespace Dev2.Network
 
         public IHubConnectionWrapper HubConnection { get; }
 
-        private void OnHubConnectionError(Exception exception)
+        void OnHubConnectionError(Exception exception)
         {
             Dev2Logger.Error(this, exception, "Warewolf Error");
         }
 
-        private void OnMemoReceived(string objString)
+        void OnMemoReceived(string objString)
         {
             var obj = _serializer.Deserialize<DesignValidationMemo>(objString);
             ServerEvents.PublishObject(obj);
         }
 
-        private void OnPermissionsMemoReceived(string objString)
+        void OnPermissionsMemoReceived(string objString)
         {
             var obj = _serializer.Deserialize<PermissionsModifiedMemo>(objString);
             try
@@ -561,7 +561,7 @@ namespace Dev2.Network
 
         public Action<IExplorerItem> ItemAddedMessageAction { get; set; }
 
-        private void OnItemAddedMessageReceived(string obj)
+        void OnItemAddedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
@@ -570,7 +570,7 @@ namespace Dev2.Network
 
         public Action<IExplorerItem> ItemItemDeletedMessageAction { get; set; }
 
-        private void OnItemDeletedMessageReceived(string obj)
+        void OnItemDeletedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             serverExplorerItem.ServerId = ID;
@@ -579,7 +579,7 @@ namespace Dev2.Network
 
         public Action<IExplorerItem> ItemItemUpdatedMessageAction { get; set; }
 
-        private void OnItemUpdatedMessageReceived(string obj)
+        void OnItemUpdatedMessageReceived(string obj)
         {
             var serverExplorerItem = _serializer.Deserialize<ServerExplorerItem>(obj);
             ItemItemUpdatedMessageAction?.Invoke(serverExplorerItem);
@@ -600,19 +600,19 @@ namespace Dev2.Network
 
         public event EventHandler PermissionsChanged;
 
-        private void RaisePermissionsChanged()
+        void RaisePermissionsChanged()
         {
             PermissionsChanged?.Invoke(this, EventArgs.Empty);
         }
 
         public event EventHandler<List<WindowsGroupPermission>> PermissionsModified;
 
-        private void RaisePermissionsModified(List<WindowsGroupPermission> args)
+        void RaisePermissionsModified(List<WindowsGroupPermission> args)
         {
             PermissionsModified?.Invoke(this, args);
         }
 
-        private void UpdateIsAuthorized(bool isAuthorized)
+        void UpdateIsAuthorized(bool isAuthorized)
         {
             if (IsAuthorized != isAuthorized)
             {
@@ -696,7 +696,7 @@ namespace Dev2.Network
 
         public Guid ID { get; private set; }
 
-        private bool _disposedValue;
+        bool _disposedValue;
 
         protected virtual void Dispose(bool disposing)
         {

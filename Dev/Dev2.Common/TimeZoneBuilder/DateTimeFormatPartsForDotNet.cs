@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class DateTimeFormatPartsForDotNet: IDateTimeFormatPartsForDotNet
+    class DateTimeFormatPartsForDotNet: IDateTimeFormatPartsForDotNet
     {
         Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatPartsForDotNetLu { get; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptionsForDotNet { get; }

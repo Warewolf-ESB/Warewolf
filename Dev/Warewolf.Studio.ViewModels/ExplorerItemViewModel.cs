@@ -1055,7 +1055,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateFolderItems(bool? value, bool? isResourceChecked)
+        void UpdateFolderItems(bool? value, bool? isResourceChecked)
         {
             _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
             Task.Run(() =>

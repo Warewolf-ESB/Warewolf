@@ -95,7 +95,7 @@ namespace System.Windows.Controls
             sv?.ScrollToTop();
         }
 
-        private void OnSelectorMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        void OnSelectorMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             OnCommit();
         }

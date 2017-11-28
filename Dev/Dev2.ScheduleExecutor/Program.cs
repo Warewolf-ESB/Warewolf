@@ -30,7 +30,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.ScheduleExecutor
 {
-    internal class Program
+    class Program
     {
         const string WarewolfTaskSchedulerPath = "\\warewolf\\";
         static readonly string OutputPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{GlobalConstants.SchedulerDebugPath}";
@@ -348,15 +348,15 @@ namespace Dev2.ScheduleExecutor
 
 
 
-        private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
+        static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {
             var processRecordSet = new List<IDebugItemResult>();
             var recSetName = recordSetElement.Name.LocalName;
             var xAttribute = recordSetElement.Attribute("Index");
-            if(xAttribute != null)
+            if (xAttribute != null)
             {
                 var index = xAttribute.Value;
-                
+
                 foreach (var xElement in elements)
                 {
                     var debugItemResult = new DebugItemResult

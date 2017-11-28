@@ -6,7 +6,7 @@ using Dev2.Common;
 
 namespace Dev2.Activities.Specs
 {
-    internal class Dev2LocalSecurityWrapper
+    class Dev2LocalSecurityWrapper
     {
         // Import the LSA functions
 

@@ -115,7 +115,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         }
     }
 
-    internal class UnExistingType: BasePath
+    class UnExistingType: BasePath
     {
         #region Overrides of BasePath
 

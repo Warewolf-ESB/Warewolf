@@ -19,7 +19,7 @@ using Dev2.Common;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class ServiceTestExecutor
+    static class ServiceTestExecutor
     {
         public static async Task GetTaskForTestExecution(string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ICollection<IServiceTestModelTO> testResults, IDSFDataObject dataObjectClone)
         {

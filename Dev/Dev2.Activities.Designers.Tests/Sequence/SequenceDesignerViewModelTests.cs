@@ -274,25 +274,6 @@ namespace Dev2.Activities.Designers.Tests.Sequence
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
-        public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfWebserviceActivity_ActivityNotAdded()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
-            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            var modelItem = ModelItemUtils.CreateModelItem(new DsfWebserviceActivity());
-            //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SmallViewItem = modelItem;
-            //------------Assert Results-------------------------
-            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
         public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfDbServiceActivity_ActivityNotAdded()
         {
             //------------Setup for test--------------------------

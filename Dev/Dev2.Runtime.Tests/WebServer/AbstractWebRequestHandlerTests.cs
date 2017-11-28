@@ -1807,7 +1807,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
     #region AbstractWebRequestHandlerMock
 
-    internal class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
+    class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
         public AbstractWebRequestHandlerMock(IDSFDataObject dataObject, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, IWorkspaceRepository repository)
             : base(catalog, testCatalog, dataObject, service, repository)

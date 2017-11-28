@@ -19,7 +19,7 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace System.Windows.Controls
 {
-    internal sealed class InteractionHelper
+    sealed class InteractionHelper
     {
 
         public Control Control { get; private set; }
@@ -116,10 +116,10 @@ namespace System.Windows.Controls
             UpdateVisualState(false);
         }
 
-        private void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
             bool enabled = (bool)e.NewValue;
-            if(!enabled)
+            if (!enabled)
             {
                 IsPressed = false;
                 IsMouseOver = false;
@@ -128,7 +128,7 @@ namespace System.Windows.Controls
 
             UpdateVisualState(true);
         }
-        
+
         public void OnApplyTemplateBase()
         {
             UpdateVisualState(false);

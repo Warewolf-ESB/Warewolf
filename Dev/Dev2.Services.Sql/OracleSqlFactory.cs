@@ -8,7 +8,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class OracleSqlFactory : IDbFactory
+    class OracleSqlFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 

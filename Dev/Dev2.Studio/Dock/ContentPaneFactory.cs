@@ -174,7 +174,7 @@ namespace Dev2.Studio.Dock
             }
         }
 
-        private void SetTabName(ContentPane pane, object item)
+        void SetTabName(ContentPane pane, object item)
         {
             if (item is WorkSurfaceContextViewModel model)
             {
@@ -186,7 +186,7 @@ namespace Dev2.Studio.Dock
                 pane.Name = item.ToString();
             }
         }
-        
+
         protected sealed override void ValidateContainerType(Type elementType)
         {
             if(!typeof(ContentPane).IsAssignableFrom(elementType))

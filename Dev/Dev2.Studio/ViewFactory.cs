@@ -6,7 +6,7 @@ using Warewolf.Studio.Views;
 
 namespace Dev2
 {
-    internal class ViewFactory : IViewFactory
+    class ViewFactory : IViewFactory
     {
         readonly ConcurrentDictionary<string, Func<IView>> _viewMap =
             new ConcurrentDictionary<string, Func<IView>>();

@@ -57,14 +57,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         string _outputsToken = "*";
 
 
-        private ForEachBootstrapTO operationalData;
+        ForEachBootstrapTO operationalData;
 
 
         #endregion Variables
 
         #region Properties
 
-        
+
         public enForEachType ForEachType { get; set; }
 
 
