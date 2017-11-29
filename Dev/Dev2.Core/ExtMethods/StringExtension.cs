@@ -59,7 +59,7 @@ namespace Dev2
                 "yyyy.mm.dd",
                 "yyyy.dd.mm"
             };
-            var d = new DateTimeParser();
+            var d = new Dev2DateTimeParser();
             int count = 0;
             while (!result && count < acceptedDateFormats.Count)
             {

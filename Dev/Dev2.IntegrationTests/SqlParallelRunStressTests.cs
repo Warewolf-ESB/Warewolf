@@ -11,30 +11,10 @@ namespace Dev2.Integration.Tests.Server_Refresh
     public class SqlParallelRunStressTests
     {
         [TestMethod]
-        public void Run_a_Tests_to_Verify_ParallelSqlExecutionONAllDatabaseTools()
-        {
-            var url1 = "http://localhost:3142/secure/AllDatabaseTests.tests";
-            var list = new List<Task>();
-
-            Parallel.For(1, 10, a =>
-            {
-                var passRequest = ExecuteRequest(new Uri(url1));
-                list.Add(passRequest);
-                passRequest.ContinueWith((b) =>
-                {
-                    StringAssert.Contains(b.Result, "\"Result\": \"Passed\"");
-                });
-
-            });
-            Task.WaitAll(list.ToArray());
-        }
-
-        [TestMethod]
         public void TestUsingQlinkTrailerCreationWorkflow()
         {
             var url1 = "http://localhost:3142/secure/QLINK/WriteProcess/QlinkTrailerCreation.tests";
-            List<Task> list = new List<Task>();
-                       
+            var list = new List<Task>();
 
             var passRequest = ExecuteRequest(new Uri(url1));
             list.Add(passRequest);

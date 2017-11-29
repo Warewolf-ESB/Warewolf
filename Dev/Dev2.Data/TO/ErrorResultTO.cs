@@ -15,6 +15,8 @@ using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Data.TO;
 using Warewolf.Resource.Errors;
+using Dev2.Common.Common;
+using System.Linq;
 
 namespace Dev2.Data.TO
 {
@@ -22,7 +24,7 @@ namespace Dev2.Data.TO
     public class ErrorResultTO : IErrorResultTO
     {
 
-        readonly IList<string> _errorList = new List<string>();
+        private readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
 
         /// <summary>
         /// Adds the error.
@@ -34,9 +36,9 @@ namespace Dev2.Data.TO
         {
             if(!string.IsNullOrEmpty(msg))
             {
-                if(checkForDuplicates && !_errorList.Contains(msg) || !checkForDuplicates)
+                if(checkForDuplicates && !_errorList.Contains(msg.ToStringBuilder()) || !checkForDuplicates)
                 {
-                    _errorList.Add(msg);
+                    _errorList.Add(msg.ToStringBuilder());
                 }
             }
         }
@@ -47,7 +49,11 @@ namespace Dev2.Data.TO
         /// <param name="msg"></param>
         public void RemoveError(string msg)
         {
-            _errorList.Remove(msg);
+            var found = _errorList.FirstOrDefault(s => s.ToString() == msg);
+            if (found != null)
+            {
+                _errorList.Remove(found);
+            }
         }
 
         /// <summary>
@@ -56,7 +62,7 @@ namespace Dev2.Data.TO
         /// <returns></returns>
         public IList<string> FetchErrors()
         {
-            return _errorList;
+            return _errorList.Select(e=>e.ToString()).ToList();
         }
 
         /// <summary>
@@ -82,7 +88,7 @@ namespace Dev2.Data.TO
                 // Flipping Union does not appear to work
                 foreach (string wtf in toMerge.FetchErrors())
                 {
-                    _errorList.Add(wtf);
+                    _errorList.Add(wtf.ToStringBuilder());
                 }
 
                 toMerge.ClearErrors();
@@ -101,7 +107,7 @@ namespace Dev2.Data.TO
         {
             var result = new StringBuilder();
 
-            foreach (string e in _errorList)
+            foreach(StringBuilder e in _errorList)
             {
                 result.Append(e);
                 if(_errorList.IndexOf(e) + 1 < _errorList.Count)
@@ -128,9 +134,9 @@ namespace Dev2.Data.TO
             }
 
             int errCnt = 0;
-            foreach(string e in _errorList)
+            foreach(StringBuilder e in _errorList)
             {
-                var formattedMsg = FormatErrorMessage(e);
+                var formattedMsg = FormatErrorMessage(e.ToString());
                 if(asXml)
                 {
                     result.Append(GlobalConstants.InnerErrorTag);

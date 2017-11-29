@@ -495,6 +495,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [When(@"I Refresh Explorer")]
         public void Click_Explorer_Refresh_Button()
         {
+            UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerRefreshButton, new Point(10, 10));
             UIMap.WaitForSpinner(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.Spinner);
         }
@@ -569,8 +570,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
-            if (MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text != FilterText)
-                MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
+            MainStudioWindow.DockManager.SplitPaneLeft.Explorer.SearchTextBox.Text = FilterText;
         }
 
         [When(@"I validate and delete the existing resource with ""(.*)""")]

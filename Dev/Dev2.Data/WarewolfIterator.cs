@@ -6,6 +6,7 @@ using Dev2.Data.Util;
 using Dev2.MathOperations;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Data
 {
@@ -15,6 +16,8 @@ namespace Dev2.Data
         CommonFunctions.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
         readonly int _maxValue;
         int _currentValue;
+        private readonly FunctionEvaluatorOption _functionEvaluatorOption;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
@@ -25,6 +28,13 @@ namespace Dev2.Data
             SetupForWarewolfRecordSetResult(warewolfEvalResult);
             _maxValue = _listResult?.Item.Count(atom => atom != null) ?? 1;
             _currentValue = 0;
+            _functionEvaluatorOption = FunctionEvaluatorOption.Dev2DateTimeFormat;
+        }
+
+        public WarewolfIterator(CommonFunctions.WarewolfEvalResult warewolfEvalResult, FunctionEvaluatorOption functionEvaluatorOption)
+            : this(warewolfEvalResult)
+        {
+            _functionEvaluatorOption = functionEvaluatorOption;
         }
 
         void SetupForWarewolfRecordSetResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
@@ -94,9 +104,9 @@ namespace Dev2.Data
             return _scalarResult != null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToStringErrorIfNull(_scalarResult.Item)) : null;
         }
 
-        static string DoCalcution(string warewolfAtomToString)
+        private string DoCalcution(string warewolfAtomToString)
         {
-            if(warewolfAtomToString == null)
+            if (warewolfAtomToString == null)
             {
                 return null;
             }
@@ -104,7 +114,7 @@ namespace Dev2.Data
 
             if (isCalcEvaluation)
             {
-                var functionEvaluator = new FunctionEvaluator();
+                var functionEvaluator = new FunctionEvaluator(_functionEvaluatorOption);
                 var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out string eval, out string error);
                 warewolfAtomToString = eval;
                 if (eval == cleanExpression.Replace("\"", "") && cleanExpression.Contains("\""))

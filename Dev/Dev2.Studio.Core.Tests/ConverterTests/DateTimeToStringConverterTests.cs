@@ -25,8 +25,9 @@ namespace Dev2.Core.Tests.ConverterTests
         {
             //------------Setup for test--------------------------
             var dateTimeToStringConverter = new DateTimeToStringConverter();
-
             //------------Execute Test---------------------------
+            var stringObj=dateTimeToStringConverter.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(stringObj));
             var convertedValue = dateTimeToStringConverter.Convert("some data", null, null, null);
             //------------Assert Results-------------------------
             Assert.IsNotInstanceOfType(convertedValue, typeof(string));
@@ -43,7 +44,7 @@ namespace Dev2.Core.Tests.ConverterTests
             //------------Execute Test---------------------------
             var convertedValue = dateTimeToStringConverter.Convert(dateTimeToConvert, null, null, null);
             //------------Assert Results-------------------------
-            Assert.AreEqual("01/02/2014 10:15:52.0520", convertedValue);
+            Assert.AreEqual("2014/01/02 10:15:52.0520 AM", convertedValue);
         }
 
         [TestMethod]
