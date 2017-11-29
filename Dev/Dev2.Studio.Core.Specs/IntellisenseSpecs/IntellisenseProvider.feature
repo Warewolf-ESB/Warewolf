@@ -14,15 +14,20 @@ Scenario Outline: Insert for All FilterType and DateTime Provider
 	Then the result text should be '<result>'
 	And the caret position will be '<caretposition>'
 	Examples: 
-	| testName | varlist                        | filterType | input     | index | dropDownList                                                             | option          | result              | provider          | caretposition |
-	| 1        | <var/><var2/><rec><var/></rec> | All        | a         | 1     | [[rec(*).var]],[[rec().var]],[[var]],[[var2]],am/pm                      | am/pm           | am/pm               | Default, DateTime | 5             |
-	| 2        | <ww/><min/><rec><minss/></rec> | All        | m         | 1     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,min,mm,MM                   | min             | min                 | Default, DateTime | 3             |
-	| 3        | <ww/><min/><rec><minss/></rec> | All        | text[[m]] | 7     | [[rec(*).minss]],[[rec().minss]],[[min]]                                | [[rec().minss]] | text[[rec().minss]] | Default, DateTime | 19            |
-	| 5        | <ww/><min/><rec><minss/></rec> | All        | text mi   | 7     | [[rec(*).minss]],[[rec().minss]],[[min]],min                             | min             | text min            | Default, DateTime | 8             |
-	| 6        | <ww/><min/><rec><minss/></rec> | All        | text m    | 6     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,min,mm,MM                   | min             | text min            | Default, DateTime | 8             |
-	| 7        | <ww/><min/><rec><minss/></rec> | All        | text mute | 6     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,min,mm,MM                   | min             | text min            | Default, DateTime | 8             |
-	| 8        | <ww/><min/><rec><minss/></rec> | All        | text mute | 6     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,min,mm,MM                   | [[min]]         | text [[min]]        | Default, DateTime | 12            |
-	| 9        | <ww/><min/><rec><minss/></rec> | All        | [[min]]y  | 8     | yy,yyyy                                                                  | yy              | [[min]]yy           | Default, DateTime | 9             |
+	| testName | varlist                        | filterType | input       | index | dropDownList                                               | option          | result              | provider          | caretposition |
+	| 1        | <var/><var2/><rec><var/></rec> | All        | t           | 2     | tt                                                         | tt              | tt                  | Default, DateTime | 2             |
+	| 2        | <ww/><min/><rec><minss/></rec> | All        | m           | 1     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,MM,MMMM,mm,MM | MMMM            | MMMM                | Default, DateTime | 4             |
+	| 3        | <ww/><min/><rec><minss/></rec> | All        | text[[m]]   | 7     | [[rec(*).minss]],[[rec().minss]],[[min]]                   | [[rec().minss]] | text[[rec().minss]] | Default, DateTime | 19            |
+	| 5        | <ww/><min/><rec><minss/></rec> | All        | text mm     | 7     | MM,MMMM,mm,MM                                              | mm              | text mm             | Default, DateTime | 7             |
+	| 6        | <ww/><min/><rec><minss/></rec> | All        | text MMMM   | 9     | MMMM                                                       | MMMM            | text MMMM           | Default, DateTime | 9             |
+	| 7        | <ww/><min/><rec><minss/></rec> | All        | text mute   | 6     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,MM,MMMM,mm,MM | m               | text m              | Default, DateTime | 6             |
+	| 8        | <ww/><min/><rec><minss/></rec> | All        | text mute   | 6     | [[rec(*).minss]],[[rec().minss]],[[min]],m,M,MM,MMMM,mm,MM | [[min]]         | text [[min]]        | Default, DateTime | 12            |
+	| 9        | <ww/><min/><rec><minss/></rec> | All        | [[min]]y    | 8     | yy,yyyy,y,yyy                                              | yy              | [[min]]yy           | Default, DateTime | 9             |
+	| 10       | <var/><var2/><rec><var/></rec> | All        | K           | 1     | K                                                          | K               | K                   | Default, DateTime | 1             |
+	| 11       | <ww/><min/><rec><minss/></rec> | All        | HH          | 1     | HH,H,h,hh                                                  | HH              | HH                  | Default, DateTime | 2             |
+	| 12       | <ww/><min/><rec><minss/></rec> | All        | dddd        | 4     | dddd                                                       | dddd            | dddd                | Default, DateTime | 4             |
+	| 13       | <ww/><min/><rec><minss/></rec> | All        | text gg     | 6     | gg                                                         | gg              | text gg             | Default, DateTime | 7             |
+	| 14       | <ww/><min/><rec><minss/></rec> | All        | text FFFFFF | 9     | FFFFFF,FFFF,FFFFF,FFFFFFF                                                     | FFFFFF          | text FFFFFF         | Default, DateTime | 11             |
 	
 Scenario Outline: Insert for All FilterType and File Provider
 	Given I have the following variable list '<varlist>'
