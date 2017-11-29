@@ -275,58 +275,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsWebServiceService_ShouldCorrectServiceInContainer()
-        {
-            //---------------Set up test pack-------------------
-            var newGuid = Guid.NewGuid();
-            var _cache = new ConcurrentDictionary<Guid, ServiceAction>();
-            _cache.TryAdd(newGuid, new ServiceAction
-            {
-                Name = "Name"
-                ,
-                ActionType = enActionType.InvokeWebService
-                ,
-                DataListSpecification = new StringBuilder("<DataList></DataList>")
-            });
-            //GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
-            var channel = new Mock<IEsbChannel>();
-            var workSpace = new Mock<IWorkspace>();
-            var obj = new Mock<IDSFDataObject>();
-            var locater = new Mock<IServiceLocator>();
-            obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            var executeRequest = new EsbExecuteRequest
-            {
-                Args = new Dictionary<string, StringBuilder>(),
-                ServiceName = "SomeService"
-            };
-            locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            
-
-            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            var privateObject = new PrivateObject(invoker);
-            privateObject.SetField("_serviceLocator", locater.Object);
-            privateObject.SetField("_cache", _cache);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(invoker);
-            //---------------Execute Test ----------------------
-            try
-            {
-                var executionContainer = invoker.GenerateInvokeContainer(obj.Object, newGuid, true);
-                //---------------Test Result -----------------------
-                Assert.IsNotNull(executionContainer);
-                obj.VerifyGet(o => o.ResourceID);
-                var condition = executionContainer is WebServiceContainer;
-                Assert.IsTrue(condition);
-            }
-            catch (Exception e)
-            {
-                //Expected break for Web services, 
-                Assert.AreEqual("Root element is missing.", e.Message);
-            }
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
         public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsPerfmonExecutionService_ShouldCorrectServiceInContainer()
         {
             //---------------Set up test pack-------------------
