@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -43,10 +43,7 @@ namespace Dev2.Activities
 
         public IGetSystemInformation GetSystemInformation
         {
-            get
-            {
-                return _getSystemInformation ?? (_getSystemInformation = new GetSystemInformationStandardHelper());
-            }
+            get => _getSystemInformation ?? (_getSystemInformation = new GetSystemInformationStandardHelper());
             set
             {
                 _getSystemInformation = value;
@@ -66,7 +63,7 @@ namespace Dev2.Activities
 
         private void CleanArgs()
         {
-            int count = 0;
+            var count = 0;
             while (count < SystemInformationCollection.Count)
             {
                 if (string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
@@ -82,13 +79,13 @@ namespace Dev2.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             if (dataObject.ExecutingUser != null)
             {
@@ -129,7 +126,7 @@ namespace Dev2.Activities
                 dataObject.Environment.CommitAssign();
                 if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
@@ -147,15 +144,14 @@ namespace Dev2.Activities
             }
             finally
             {
-                // Handle Errors
                 HandleErrors(dataObject, update, allErrors);
             }
         }
 
         private void HandleNoErrorsFound(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, GatherSystemInformationTO item)
         {
-            string val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
-            string expression = item.Result;
+            var val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
+            var expression = item.Result;
 
             var regions = DataListCleaningUtils.SplitIntoRegions(expression);
             if (regions.Count > 1)
@@ -186,7 +182,7 @@ namespace Dev2.Activities
             {
                 if (hasErrors)
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
@@ -292,11 +288,9 @@ namespace Dev2.Activities
             {
                 foreach (Tuple<string, string> t in updates)
                 {
-                    // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
+                    var t1 = t;
                     var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
 
-                    // issues updates
                     foreach (var a in items)
                     {
                         a.Result = t.Item2;
@@ -311,11 +305,9 @@ namespace Dev2.Activities
             {
                 foreach (Tuple<string, string> t in updates)
                 {
-                    // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
+                    var t1 = t;
                     var items = SystemInformationCollection.Where(c => !string.IsNullOrEmpty(c.Result) && c.Result.Equals(t1.Item1));
 
-                    // issues updates
                     foreach (var a in items)
                     {
                         a.Result = t.Item2;
@@ -341,16 +333,16 @@ namespace Dev2.Activities
         private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
-            ModelItemCollection mic = modelProperty?.Collection;
+            var mic = modelProperty?.Collection;
             if (mic == null)
             {
                 return;
             }
-            List<GatherSystemInformationTO> listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
+            var listOfValidRows = SystemInformationCollection.Where(c => !c.CanRemove()).ToList();
             if (listOfValidRows.Count > 0)
             {
-                GatherSystemInformationTO gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
-                int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
+                var gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
+                var startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
                 foreach (string s in listToAdd)
                 {
                     mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
@@ -364,15 +356,15 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        private static void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
-            ModelItemCollection mic = modelProperty?.Collection;
+            var mic = modelProperty?.Collection;
             if (mic == null)
             {
                 return;
             }
-            int startIndex = 0;
+            var startIndex = 0;
             const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
             mic.Clear();
             foreach (string s in listToAdd)
@@ -383,7 +375,7 @@ namespace Dev2.Activities
             CleanUpCollection(mic, modelItem, startIndex);
         }
 
-        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        private static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
@@ -397,7 +389,7 @@ namespace Dev2.Activities
             }
         }
 
-        private string CreateDisplayName(ModelItem modelItem, int count)
+        private static string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
