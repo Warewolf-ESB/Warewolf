@@ -100,7 +100,7 @@ namespace Dev2.Services.Execution
                         try
                         {
                             SqlExecution(invokeErrors, update);
-                            ErrorResult.MergeErrors(invokeErrors);
+                            _errorResult.MergeErrors(invokeErrors);
                             return Guid.NewGuid();
                         }
                         catch (Exception e)
@@ -113,27 +113,27 @@ namespace Dev2.Services.Execution
                 case enSourceType.MySqlDatabase:
                     {
                         object result = MySqlExecution(invokeErrors, update);
-                        ErrorResult.MergeErrors(invokeErrors);
+                        _errorResult.MergeErrors(invokeErrors);
                         return result;
                     }
 
                 case enSourceType.Oracle:
                     {
                         object result = OracleExecution(invokeErrors, update);
-                        ErrorResult.MergeErrors(invokeErrors);
+                        _errorResult.MergeErrors(invokeErrors);
                         return result;
                     }
 
                 case enSourceType.ODBC:
                     {
                         object result = OdbcExecution(invokeErrors, update);
-                        ErrorResult.MergeErrors(invokeErrors);
+                        _errorResult.MergeErrors(invokeErrors);
                         return result;
                     }
                 case enSourceType.PostgreSQL:
                     {
                         object result = PostgreSqlExecution(invokeErrors, update);
-                        ErrorResult.MergeErrors(invokeErrors);
+                        _errorResult.MergeErrors(invokeErrors);
                         return result;
                     }
                 default:

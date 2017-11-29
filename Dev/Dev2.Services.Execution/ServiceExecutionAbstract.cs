@@ -40,7 +40,7 @@ namespace Dev2.Services.Execution
     {
         // Plugins need to handle formatting inside the RemoteObjectHandler 
         // and NOT here otherwise serialization issues occur!
-        protected readonly ErrorResultTO ErrorResult;
+        protected readonly ErrorResultTO _errorResult;
 
         /// <summary>
         ///     Construction for ServiceExecution
@@ -52,7 +52,7 @@ namespace Dev2.Services.Execution
         /// </param>
         protected ServiceExecutionAbstract(IDSFDataObject dataObj, bool handlesOutputFormatting = true)
         {
-            ErrorResult = new ErrorResultTO();
+            _errorResult = new ErrorResultTO();
             DataObj = dataObj;
             HandlesOutputFormatting = handlesOutputFormatting;
             _catalog = ResourceCatalog.Instance;
@@ -73,7 +73,7 @@ namespace Dev2.Services.Execution
         {
             //This execution will throw errors from the constructor
             errors = new ErrorResultTO();
-            errors.MergeErrors(ErrorResult);
+            errors.MergeErrors(_errorResult);
             ExecuteImpl(out errors, update);
             return DataObj.DataListID;
         }
@@ -96,7 +96,7 @@ namespace Dev2.Services.Execution
                      catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
             if (Source == null)
             {
-                ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
+                _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                     Service.Source.ResourceID, Service.Source.ResourceName));
             }
         }
@@ -111,7 +111,7 @@ namespace Dev2.Services.Execution
                 Source = dbSources.Cast<TSource>().FirstOrDefault(p => p.ResourceID.Equals(sourceId));
                 if (Source == null)
                 {
-                    ErrorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
+                    _errorResult.AddError(string.Format(ErrorResource.ErrorRetrievingDBSourceForResource,
                         Service?.Source?.ResourceID, Service?.Source?.ResourceName));
                 }
             }
@@ -123,7 +123,7 @@ namespace Dev2.Services.Execution
                       catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
             if (Service == null)
             {
-                ErrorResult.AddError(string.Format(ErrorResource.ErrorLoadingResource, DataObj.ResourceID));
+                _errorResult.AddError(string.Format(ErrorResource.ErrorLoadingResource, DataObj.ResourceID));
                 return false;
             }
             return true;
@@ -224,7 +224,7 @@ namespace Dev2.Services.Execution
                 disposable?.Dispose();
 
                 // ensure errors bubble up ;)
-                errors.MergeErrors(ErrorResult);
+                errors.MergeErrors(_errorResult);
             }
         }
 
@@ -412,14 +412,11 @@ namespace Dev2.Services.Execution
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
-                    // if use passed in empty input they only wanted the shape ;)
-                    if (input.Length > 0)
-                    {
-                    }
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);                    
                 }
             }
         }
+
         void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, int level = 0)
         {
             // spin through each element in the XML
