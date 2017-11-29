@@ -131,6 +131,5 @@ namespace Dev2.Runtime.WebServer.Controllers
             var requestVariables = new NameValueCollection();
             return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
         }
-
     }
 }

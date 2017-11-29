@@ -133,6 +133,7 @@
     <Compile Include="ConverterTests\DateTimeTests\DateTimeComparerTests.cs" />
     <Compile Include="ConverterTests\DateTimeTests\DateTimeFormatterTests.cs" />
     <Compile Include="ConverterTests\DateTimeTests\DateTimeParserTests.cs" />
+    <Compile Include="ConverterTests\DateTimeTests\StandardDateTimeParserTests.cs" />
     <Compile Include="ConverterTests\GraphTests\DataBrowserTests.cs" />
     <Compile Include="ConverterTests\GraphTests\DataTable Test\DataTableMapperTest.cs" />
     <Compile Include="ConverterTests\GraphTests\OutputTests\OutputDescriptionSerializationServiceTests.cs" />

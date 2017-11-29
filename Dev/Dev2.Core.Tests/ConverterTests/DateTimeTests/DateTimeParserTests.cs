@@ -443,8 +443,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             var inputString = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
-            var defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
+            string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
+            string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
             var IsParseable = _parser.TryParseDateTime(inputString, null, out IDateTimeResultTO dateTimeResult, out string result);
 
             const string s = "Default format: {0}\nTranslated format: {1}\nDateTime.Now= {2}\nResult: {3}";
@@ -461,8 +461,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var inputString = string.Empty;
             var formatString = string.Empty;
 
-            var defaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
+            string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
+            string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
             var IsParseable = _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
 
             const string s = "Default format: {0}\nTranslated format: {1}\nDateTime.Now= {2}\nResult: {3}";
@@ -1564,8 +1564,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatOfDayoftheMonthExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "d, dd, ddd, dddd";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "d, dd, ddd, dddd";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1577,8 +1577,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatOfMonthExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "MMMM, MMM, MM, M";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "MMMM, MMM, MM, M";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1590,8 +1590,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForYearsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "yyyyy, yyyy, yy, y, yyy";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "yyyyy, yyyy, yy, y, yyy";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1603,8 +1603,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForLongDateExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "dddd, dd MMMM yyyy";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "dddd, dd MMMM yyyy";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1616,8 +1616,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForShortDateExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "MM/dd/yyyy";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "MM/dd/yyyy";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1633,8 +1633,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForHoursExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "h, hh, H, HH";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "h, hh, H, HH";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1646,8 +1646,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForMinutesExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "m, mm";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "m, mm";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1659,8 +1659,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForSecondsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "s, ss";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "s, ss";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1672,8 +1672,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForSplitSecondsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "f, ff, fff, ffff, ffffff, fffffff,";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "f, ff, fff, ffff, ffffff, fffffff,";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1685,8 +1685,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForNonZeroSplitSecondsExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "F- FF- FFF- FFFF- FFFFFF- FFFFFFF-";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "F- FF- FFF- FFFF- FFFFFF- FFFFFFF-";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1698,8 +1698,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForShortTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "HH:mm";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "HH:mm";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1711,8 +1711,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForLongTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "HH:mm:ss.fffffff";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "HH:mm:ss.fffffff";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1728,8 +1728,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForTimeZoneExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "K";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "K";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1741,8 +1741,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForTimeZonesExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "'Hours offset from UTC: 'z', Hours offset from UTC, with a leading zero: 'zz', Offset with minutes: 'zzz";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "'Hours offset from UTC: 'z', Hours offset from UTC, with a leading zero: 'zz', Offset with minutes: 'zzz";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1754,8 +1754,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForRoundTripExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'fffffffK";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1771,8 +1771,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForAmpmDesignatorExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "t, tt";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "t, tt";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1784,8 +1784,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForEraExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "g, gg";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "g, gg";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1797,8 +1797,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForFullDateShortTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "dddd, dd MMMM yyyy HH:mm";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "dddd, dd MMMM yyyy HH:mm";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1810,8 +1810,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TranslateFormatFromDotNetWhereFormatForFullLongTimeExpectedInDev2Format()
         {
             //initialize
-            IDateTimeParser translatingParser = new DateTimeParser();
-            var inputFormat = "dddd', 'dd MMMM yyyy HH:mm:ss";
+            IDateTimeParser translatingParser = new Dev2DateTimeParser();
+            string inputFormat = "dddd', 'dd MMMM yyyy HH:mm:ss";
 
             //execute
             inputFormat = translatingParser.TranslateDotNetToDev2Format(inputFormat, out string error);
@@ -1926,4 +1926,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             Assert.AreEqual(7 , int.Parse(result.ToString()));
         }
     }
+
+
+
 }

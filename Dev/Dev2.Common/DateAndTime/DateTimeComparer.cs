@@ -15,15 +15,16 @@ using System.Globalization;
 
 namespace Dev2.Common.DateAndTime
 {
+
     public class DateTimeComparer : IDateTimeComparer
     {
         #region Class Members
 
-        static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats =
+        protected static readonly Dictionary<string, Func<DateTime, DateTime, double>> OutputFormats =
             new Dictionary<string, Func<DateTime, DateTime, double>>();
 
-        DateTime _input1;
-        DateTime _input2;
+        protected DateTime _input1;
+        protected DateTime _input2;
 
         #endregion Class Members
 
@@ -44,17 +45,18 @@ namespace Dev2.Common.DateAndTime
 
         #region Methods
 
-        public bool TryCompare(IDateTimeDiffTO dateTimeDiffTo, out string result, out string error)
+        public virtual bool TryCompare(IDateTimeDiffTO dateTimeDiffTo, out string result, out string error)
         {
             //local variable declarations
 
             result = "";
             //Creation of parser to get the DateTime Objects
-            var dateTimeParser = DateTimeConverterFactory.CreateParser();
+            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateParser();
+            IDateTimeResultTO tmpRes;
 
             //try create the first DateTime object
             bool noErrorOccured = dateTimeParser.TryParseDateTime(dateTimeDiffTo.Input1, dateTimeDiffTo.InputFormat,
-                out IDateTimeResultTO tmpRes, out error);
+                out tmpRes, out error);
             if (noErrorOccured)
             {
                 //Set the first DateTime object
@@ -70,7 +72,8 @@ namespace Dev2.Common.DateAndTime
                 _input2 = tmpRes.ToDateTime();
 
                 //Try get the function according to what the OutputType is
-                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTo.OutputType, out Func<DateTime, DateTime, double> returnedFunc);
+                Func<DateTime, DateTime, double> returnedFunc;
+                noErrorOccured = OutputFormats.TryGetValue(dateTimeDiffTo.OutputType, out returnedFunc);
 
                 if (returnedFunc != null)
                 {
@@ -127,12 +130,9 @@ namespace Dev2.Common.DateAndTime
                     {
                         result++;
                     }
-                    else
+                    else if (result > 0)
                     {
-                        if (result > 0)
-                        {
-                            result--;
-                        }
+                        result--;
                     }
                 }
             }
@@ -158,12 +158,9 @@ namespace Dev2.Common.DateAndTime
                 {
                     result++;
                 }
-                else
+                else if (result > 0)
                 {
-                    if (result > 0)
-                    {
-                        result--;
-                    }
+                    result--;
                 }
             }
 

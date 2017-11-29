@@ -11,6 +11,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
     public class WorkflowServiceTestingTests
     {
         public const string HelloWorld = "Hello World";
+        public const string HelloWorldNew = "HelloWorldNew";
         public const string xPath = "Utility - XPath";
         public const string RandomWorkFlow = "RandomToolWorkFlow";
         public const string RandomNewWorkFlow = "RandomToolNewWorkFlow";
@@ -110,6 +111,17 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         public void Click_Duplicate_Test_Button()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorld);
+            Assert.IsFalse(UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
+            WorkflowServiceTestingUIMap.Select_First_Test();
+            WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
+        }
+
+        [TestMethod]
+        [TestCategory("Workflow Testing")]
+        public void Click_Duplicate_Test_Button_AssertIcon()
+        {
+            UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorldNew);
             Assert.IsFalse(UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
             WorkflowServiceTestingUIMap.Select_First_Test();
             WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();

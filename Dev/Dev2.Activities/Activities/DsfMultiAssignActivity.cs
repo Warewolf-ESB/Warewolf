@@ -20,14 +20,12 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Dev2.MathOperations;
-using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -35,7 +33,6 @@ using WarewolfParserInterop;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Data-Assign", "Assign", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Assign")]
     public class DsfMultiAssignActivity : DsfActivityAbstract<string>
     {
         public static readonly string CalculateTextConvertPrefix = GlobalConstants.CalculateTextConvertPrefix;
