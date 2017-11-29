@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Net;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
@@ -100,6 +102,37 @@ namespace Warewolf.UI.Tests
             ExplorerUIMap.Click_EditServerButton_From_ExplorerConnectControl();
             SettingsUIMap.ChangeServerAuthenticationType();
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer), "Remote server is still loaded in the Explorer after clicking edit in the connect control.");
+        }
+
+        [TestMethod]
+        [TestCategory("Explorer")]
+        public void PublicApisJson_Requires_ExecutePermission()
+        {
+            using (var client = new WebClient
+            {
+                Credentials = CredentialCache.DefaultNetworkCredentials
+            })
+            {
+                try
+                {
+                    client.DownloadString(new Uri("http://localhost:3142/public/Hello%20World/apis.json"));
+                }
+                catch (WebException e)
+                {
+                    StringAssert.Contains(e.Message, "Forbidden");
+                }
+            }
+            UIMap.Click_Settings_RibbonButton();
+            SettingsUIMap.Check_Public_Execute();
+            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled.");
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+            using (var client = new WebClient
+            {
+                Credentials = CredentialCache.DefaultNetworkCredentials
+            })
+            {
+                StringAssert.Contains(client.DownloadString(new Uri("http://localhost:3142/public/Hello%20World/apis.json")), "\"Url\": \"localhost:3142/Hello World/apis.json\"");
+            }
         }
 
         #region Additional test attributes
