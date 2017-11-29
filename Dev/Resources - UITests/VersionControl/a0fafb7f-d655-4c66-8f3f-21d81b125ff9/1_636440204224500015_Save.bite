@@ -1,5 +1,5 @@
 
-<Service ID="a0fafb7f-d655-4c66-8f3f-21d81b125ff9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeWithDecision" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6506.13655">
+<Service ID="a0fafb7f-d655-4c66-8f3f-21d81b125ff9" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeWithDecision" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6542.14246">
   <DisplayName>MergeDecision</DisplayName>
   <Category>ExamplesMerge\MergeDecision</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
