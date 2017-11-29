@@ -105,6 +105,7 @@ namespace Dev2.ViewModels.Merge
         {
             if (diffTree == null || diffTree.Count == 0)
             {
+                ShowArmConnectors(conflicts, armConnectorConflicts);
                 return;
             }
             foreach (var treeItem in diffTree)
@@ -130,9 +131,8 @@ namespace Dev2.ViewModels.Merge
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.DiffViewModel.Container = conflict;
                 conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
-
                 AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
-                ShowArmConnectors(conflicts, armConnectorConflicts, FindForDiff);
+                ShowArmConnectors(conflicts, armConnectorConflicts);
             }
         }
 
@@ -155,27 +155,44 @@ namespace Dev2.ViewModels.Merge
                 conflict.HasConflict = treeItem.IsInConflict;
                 conflicts.Add(conflict);
                 AddArmConnectors(armConnectorConflicts, treeItem, id);
-                ShowArmConnectors(conflicts, armConnectorConflicts, FindForCurrent);
             }
         }
 
-        static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts,Func<IConflict,List<IArmConnectorConflict>, IEnumerable<IArmConnectorConflict>> findFunction)
+        static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
         {
             var itemsToAdd = new List<IConflict>();
-            foreach (var addConflict in conflicts)
+            var foundConflicts = ShouldShowArmConnector(conflicts.Select(a => a.UniqueId.ToString()), armConnectorConflicts);
+            foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
             {
-                var foundConflicts = findFunction?.Invoke(addConflict, armConnectorConflicts);
-                foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
-                {
-                    AddToTempConflictList(conflicts, itemsToAdd, found);
-                }
+                AddToTempConflictList(conflicts, itemsToAdd, found);
             }
             conflicts.AddRange(itemsToAdd);
         }
 
-        static IEnumerable<IArmConnectorConflict> FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
-        static IEnumerable<IArmConnectorConflict> FindForCurrent(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, addConflict.UniqueId.ToString()));
-        static bool FindMatchingConnector(string connectorId, string conflictId) => connectorId == conflictId;
+        static IEnumerable<IArmConnectorConflict> ShouldShowArmConnector(IEnumerable<string> toolIds, List<IArmConnectorConflict> armConnectorConflicts) => armConnectorConflicts.Where(s => {
+            var foundCurrentDestination = FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, toolIds);
+            var foundDiffDestination = FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, toolIds);
+            var foundCurrentSource = FindMatchingConnector(s.CurrentArmConnector.SourceUniqueId, toolIds);
+            var foundDiffSource = FindMatchingConnector(s.DifferentArmConnector.SourceUniqueId, toolIds);
+            var hasValues = foundCurrentDestination && foundDiffDestination && foundCurrentSource && foundDiffSource;
+            if (!hasValues)
+            {
+                if ((s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundDiffDestination && foundDiffSource)
+                {
+                    return true;
+                }
+                if ((s.DifferentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.DifferentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundCurrentDestination && foundCurrentSource)
+                {
+                    return true;
+                }
+            }
+            return hasValues;
+        });
+        static bool FindMatchingConnector(string connectorId, IEnumerable<string> toolIds)
+        {
+            var found = toolIds.Contains(connectorId);
+            return found;
+        }
 
         static void AddToTempConflictList(List<IConflict> conflicts, List<IConflict> itemsToAdd, IArmConnectorConflict found)
         {
@@ -557,17 +574,26 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
+                var resourceId = _resourceModel.ID;
                 if (HasWorkflowNameConflict)
                 {
                     var resourceName = CurrentConflictModel.IsWorkflowNameChecked ? CurrentConflictModel.WorkflowName : DifferenceConflictModel.WorkflowName;
-                    _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(_resourceModel.ID, resourceName);
+                    _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, resourceName);
                 }
                 if (HasVariablesConflict)
                 {
                     _resourceModel.DataList = CurrentConflictModel.IsVariablesChecked ? CurrentConflictModel.DataListViewModel.WriteToResourceModel() : DifferenceConflictModel.DataListViewModel.WriteToResourceModel();
                 }
                 _resourceModel.WorkflowXaml = WorkflowDesignerViewModel.ServiceDefinition;
-                _resourceModel.Environment.ResourceRepository.Save(_resourceModel);
+                _resourceModel.Environment.ResourceRepository.SaveToServer(_resourceModel);
+
+                HasMergeStarted = false;
+
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                var environmentID = _resourceModel.Environment.EnvironmentID;
+                mainViewModel?.CloseResource(resourceId, environmentID);
+                mainViewModel?.CloseResourceMergeView(resourceId, _resourceModel.ServerID, environmentID);
+                mainViewModel?.OpenCurrentVersion(resourceId, environmentID);
             }
             catch (Exception ex)
             {

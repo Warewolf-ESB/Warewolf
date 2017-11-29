@@ -89,6 +89,7 @@ namespace Dev2.Studio.Interfaces
         void CreateTest(Guid resourceId);
         void RunAllTests(Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
+        void CloseResourceMergeView(Guid resourceId, Guid serverId, Guid environmentId);
         void BrowserDebug(Guid resourceId, IServer server);
         void StudioDebug(Guid resourceId, IServer server);
         void CopyUrlLink(Guid resourceId, IServer server);
@@ -131,7 +132,7 @@ namespace Dev2.Studio.Interfaces
         bool ResourceCalled { get; set; }
 
         void DisplayDialogForNewVersion();
-        Task<bool> CheckForNewVersion();
+        Task<bool> CheckForNewVersionAsync();
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
         void OpenCurrentVersion(Guid resourceId, Guid environmentId);

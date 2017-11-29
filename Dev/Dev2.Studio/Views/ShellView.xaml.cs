@@ -409,7 +409,7 @@ namespace Dev2.Studio.Views
                     e.Cancel = true;
                 }
 
-                if (shellViewModel.IsDownloading())
+                if (ShellViewModel.IsDownloading())
                 {
                     e.Cancel = true;
                 }
