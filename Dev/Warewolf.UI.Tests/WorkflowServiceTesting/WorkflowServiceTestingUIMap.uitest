@@ -6124,9 +6124,9 @@
                                                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
-                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                     <PropertyCondition Name="ControlType">Expander</PropertyCondition>
-                                                    <PropertyCondition Name="AutomationId">UI_ServiceTestTestStepExpander_Assign a value to Name if blank (1)_AutoID</PropertyCondition>
+                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                    <PropertyCondition Name="AutomationId" Operator="Contains">UI_ServiceTestTestStepExpander</PropertyCondition>
                                                   </AndCondition>
                                                   <SupportLevel>0</SupportLevel>
                                                   <Descendants>
