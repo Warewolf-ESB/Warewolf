@@ -337,6 +337,29 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(successful, "Deploy failed.");
         }
 
+        [When(@"I Click Deploy Tab Deploy Button with no version conflict dialog")]
+        public void Click_Deploy_Tab_Deploy_Button_no_version_conflict_dialog()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton);
+            WaitForDeploySuccessSkippingVersionConflicts();
+        }
+
+        void WaitForDeploySuccessSkippingVersionConflicts()
+        {
+            bool seenVersionConflict = false;
+            bool seenConflict = false;
+            bool successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+            if (!successful)
+            {
+                successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+                if (!successful)
+                {
+                    successful = TryWaitForADeployMessageDialog(ref seenConflict, ref seenVersionConflict);
+                }
+            }
+            Assert.IsTrue(successful, "Deploy failed.");
+        }
+
         bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict, ref bool seenSecondVersionConflict)
         {
             bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
@@ -353,6 +376,35 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             {
                 seenSecondVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
                 if (seenSecondVersionConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            if (!seenConflict)
+            {
+                seenConflict = DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists;
+                if (seenConflict && OKButtonReady)
+                {
+                    Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+                    return false;
+                }
+            }
+            var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
+            if (successful && OKButtonReady)
+            {
+                Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
+            }
+            return successful;
+        }
+
+        bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict)
+        {
+            bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            if (!seenVersionConflict && !seenConflict)
+            {
+                seenVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
+                if (seenVersionConflict && OKButtonReady)
                 {
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                     return false;

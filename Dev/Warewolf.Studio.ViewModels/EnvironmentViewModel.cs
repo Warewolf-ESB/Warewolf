@@ -73,6 +73,7 @@ namespace Warewolf.Studio.ViewModels
             var connectControlSingleton = CustomContainer.Get<IConnectControlSingleton>();
             _connectControlSingleton = connectControlSingleton ?? ConnectControlSingleton.Instance;
         }
+
         public EnvironmentViewModel(IServer server, IShellViewModel shellViewModel, bool isDialog = false, Action<IExplorerItemViewModel> selectAction = null)
             : this()
         {

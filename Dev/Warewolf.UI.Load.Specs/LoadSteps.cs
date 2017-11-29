@@ -5,14 +5,42 @@ using TechTalk.SpecFlow;
 using Warewolf.UI.Tests;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using System.Diagnostics;
+using System.IO;
+using System.Net;
+using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 
 namespace Warewolf.UI.Load.Specs
 {
     [Binding]
     class LoadSteps
     {
-        [AfterScenario("SchedulerView")]
-        public void RemoveScheduledTasks()
+        [Given(@"there are 30 duplicates of All Tools workflow in the explorer")]
+        public void CallDuplicateService_GivenValidComsController_ShouldDuplicate()
+        {
+            UIMap.AssertStudioIsRunning();
+            if (!File.Exists(Environment.ExpandEnvironmentVariables("%programdata%\\Warewolf\\Resources\\All Tools 29")))
+            {
+                UIMap.Click_Settings_RibbonButton();
+                SettingsUIMap.Check_Public_Contribute();
+                if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
+                {
+                    UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
+                }
+                for (var i = 0; i < 30; i++)
+                {
+                    using (var webClient = new WebClient())
+                    {
+                        webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                        webClient.DownloadData("http://localhost:3142/services/DuplicateResourceService?NewResourceName=All%20Tools%20" + i.ToString() + "&ResourceID=8c1f16c0-b753-41a1-bd5b-6c65326d188d&sourcePath=All%20Tools&destinationPath=");
+                    }
+                }
+                ExplorerUIMap.Click_Explorer_Refresh_Button();
+            }
+        }
+
+        [AfterFeature]
+        public static void RemoveScheduledTasks()
         {
             var localTaskService = ScenarioContext.Current.Get<TaskService>("localTaskService");
             var numberOfTasks = ScenarioContext.Current.Get<String>("numberOfTasks");
@@ -126,7 +154,37 @@ namespace Warewolf.UI.Load.Specs
             }
         }
 
-        private UIMap _UIMap; 
+        private UIMap _UIMap;
+
+        SettingsUIMap SettingsUIMap
+        {
+            get
+            {
+                if (_SettingsUIMap == null)
+                {
+                    _SettingsUIMap = new SettingsUIMap();
+                }
+
+                return _SettingsUIMap;
+            }
+        }
+
+        private SettingsUIMap _SettingsUIMap;
+
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
+
+                return _ExplorerUIMap;
+            }
+        }
+
+        private ExplorerUIMap _ExplorerUIMap;
 
         #endregion
     }
