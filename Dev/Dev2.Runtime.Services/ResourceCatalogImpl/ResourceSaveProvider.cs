@@ -140,9 +140,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 }
             }
 
-            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, true, savedPath, reason);
+            var result = ((ResourceCatalog)_resourceCatalog).SaveImpl(workspaceID, resource, contents, savedPath, reason);
 
-            if (result.Status == ExecStatus.Success)
+            if (result != null && result.Status == ExecStatus.Success)
             {
                 if (workspaceID == GlobalConstants.ServerWorkspaceID)
                 {
@@ -386,8 +386,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     tx.Complete();
                     saveResult = ResourceCatalogResultBuilder.CreateSuccessResult($"{(updated ? "Updated" : "Added")} {resource.ResourceType} '{resource.ResourceName}'");
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     Transaction.Current.Rollback();
                     throw;
                 }

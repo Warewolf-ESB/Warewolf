@@ -89,8 +89,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
             dataObject.SetupForRemoteInvoke(headers);
-            dataObject.SetEmitionType(serviceName, headers);
-            dataObject.SetupForTestExecution(webRequest, serviceName, headers);
+            dataObject.SetEmitionType(webRequest, serviceName, headers);
+            dataObject.SetupForTestExecution(serviceName, headers);
             if (dataObject.ServiceName == null)
             {
                 dataObject.ServiceName = serviceName;
@@ -120,7 +120,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ErrorResultTO errors = null;
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
-                if (dataObject.ReturnType == EmitionTypes.TEST)
+                if ((dataObject.ReturnType == EmitionTypes.TEST || dataObject.ReturnType == EmitionTypes.TRX) && dataObject.TestName == "*")
                 {
                     formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
                     return new StringResponseWriter(executePayload, formatter.ContentType);
@@ -140,7 +140,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             if (dataObject.IsServiceTestExecution)
             {
-                executePayload = ServiceTestExecutor.SetpForTestExecution(serializer, esbExecuteRequest, dataObject);
+                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
             if (dataObject.IsDebugFromWeb)

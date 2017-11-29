@@ -309,7 +309,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.XML", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
-            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+            dataObject.VerifyGet(o => o.ReturnType);
         }
 
         [TestMethod]
@@ -350,7 +350,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.JSON", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
-            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+            dataObject.VerifyGet(o => o.ReturnType);
         }
 
         [TestMethod]
@@ -388,7 +388,44 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Once);
             dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
             dataObject.VerifySet(o => o.TestName = "*", Times.Once);
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTestsTRX_ShouldSetDataobjectsTRXOptions()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests.trx"
+            };
+            Common.Utilities.ServerUser = principal.Object;
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "*", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TRX, Times.Once);
+            dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
+            dataObject.VerifySet(o => o.TestName = "*", Times.Once);
         }
 
         [TestMethod]
@@ -1593,7 +1630,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var invoke = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
             Assert.AreEqual(ServiceName, invoke);
@@ -1613,7 +1650,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual(ServiceName, emitionType);
@@ -1629,7 +1666,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, null);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, null);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual(ServiceName, emitionType);
@@ -1648,7 +1685,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1669,13 +1706,34 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual("hello World", emitionType);
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void SetEmitionType_GivenServiceNameEndsWithteststrx_ShouldSetDataObjectContentTypeTRX()
+        {
+            //---------------Set up test pack-------------------
+            const string ServiceName = "hello World.tests";
+            NameValueCollection collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
+            Assert.AreEqual("hello World", emitionType);
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
@@ -1689,7 +1747,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1711,7 +1769,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.TestName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1734,7 +1792,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Exactly(1));
@@ -1769,6 +1827,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.Setup(o => o.TestName).Returns("*");
             dataObject.SetupProperty(o => o.TestsResourceIds);
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
@@ -1787,7 +1846,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var webRequestTO = new WebRequestTO()
             {
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
-                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"
+                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"                
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
@@ -1796,6 +1855,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.Setup(o => o.TestName).Returns("*");
             dataObject.SetupProperty(o => o.TestsResourceIds);
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
