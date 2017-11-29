@@ -154,6 +154,7 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel.Container = conflict;
                 conflict.HasConflict = treeItem.IsInConflict;
+                //ShowArmConnectors(conflicts, armConnectorConflicts);
                 conflicts.Add(conflict);                
                 AddArmConnectors(armConnectorConflicts, treeItem, id);
             }
@@ -162,7 +163,7 @@ namespace Dev2.ViewModels.Merge
         static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
         {
             var itemsToAdd = new List<IConflict>();
-            var foundConflicts = ShouldShowArmConnector(conflicts.Select(a => a.UniqueId.ToString()), armConnectorConflicts);
+            var foundConflicts = ShouldShowArmConnector(conflicts.Where(s => s is IToolConflict).Select(a => a.UniqueId.ToString()), armConnectorConflicts);
             foreach (var found in foundConflicts ?? new List<IArmConnectorConflict>())
             {
                 AddToTempConflictList(conflicts, itemsToAdd, found);
@@ -178,7 +179,7 @@ namespace Dev2.ViewModels.Merge
             var hasValues = foundCurrentDestination && foundDiffDestination && foundCurrentSource && foundDiffSource;
             if (!hasValues)
             {
-                if ((s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundDiffDestination && foundDiffSource)
+                if ((s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundDiffDestination && foundDiffSource )
                 {
                     return true;
                 }
