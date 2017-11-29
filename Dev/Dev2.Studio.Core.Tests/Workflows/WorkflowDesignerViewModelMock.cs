@@ -51,6 +51,15 @@ namespace Dev2.Core.Tests.Workflows
             //_moq.SetupAllProperties();
             _wd = _moq.Object;
         }
+        public WorkflowDesignerViewModelMock(IWorkflowDesignerWrapper workflowDesignerWrapper, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, WorkflowDesigner workflowDesigner, bool createDesigner = false )
+           : base(workflowDesignerWrapper,
+               eventAggregator,
+               resource, workflowHelper,
+               new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
+        {
+            //_moq.SetupAllProperties();
+            _wd = workflowDesigner;
+        }
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, ModelService modelService, bool createDesigner = false)
             : base(
                 eventAggregator,

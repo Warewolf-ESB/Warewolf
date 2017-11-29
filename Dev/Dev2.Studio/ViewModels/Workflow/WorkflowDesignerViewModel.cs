@@ -180,7 +180,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="asyncWorker"></param>
         /// <param name="createDesigner">Create a new designer flag</param>
         /// <param name="liteInit"> Lite initialise designer. Testing only</param>
-
+        public WorkflowDesignerViewModel(IWorkflowDesignerWrapper workflowDesignerHelper, IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
+            : this(eventPublisher, resource, workflowHelper, popupController, asyncWorker, createDesigner, liteInit)
+        {
+            _workflowDesignerHelper = workflowDesignerHelper;
+        }
+        private readonly IWorkflowDesignerWrapper _workflowDesignerHelper;
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
         {
@@ -210,6 +215,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataListViewModel = DataListViewModelFactory.CreateDataListViewModel(_resourceModel);
             DebugOutputViewModel = new DebugOutputViewModel(_resourceModel.Environment.Connection.ServerEvents, CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ResourceModel);
             _firstWorkflowChange = true;
+            _workflowDesignerHelper = new WorkflowDesignerWrapper();
         }
 
         public void SetPermission(Permissions permission)
@@ -1162,7 +1168,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (_isPaste || string.IsNullOrEmpty(act.UniqueID))
                 {
                     act.UniqueID = Guid.NewGuid().ToString();
-                }               
+                }
                 _modelItems = _modelService.Find(_modelService.Root, typeof(IDev2Activity));
             }
             if (computedValue is Activity)
@@ -3109,7 +3115,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             var step = GetRegularActivityFromNodeCollection(sourceUniqueId);
             if (step != null)
-            {                
+            {
                 var next = GetItemFromNodeCollection(destinationUniqueId);
                 SetNext(next, step);
             }
@@ -3239,8 +3245,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             get
             {
-                var root = _wd.Context.Services.GetService<ModelService>().Root;
-                var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+                var service = _workflowDesignerHelper.GetService<ModelService>(_wd);
+                var root = service.Root;
+                service = _workflowDesignerHelper.GetService<ModelService>(_wd);
+                var chart = service.Find(root, typeof(Flowchart)).FirstOrDefault();
 
                 var nodes = chart?.Properties["Nodes"]?.Collection;
                 return nodes;
@@ -3253,8 +3261,9 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public void AddItem(IMergeToolModel model)
         {
-            var root = _wd.Context.Services.GetService<ModelService>().Root;
-            var chart = _wd.Context.Services.GetService<ModelService>().Find(root, typeof(Flowchart)).FirstOrDefault();
+            var bbb = _workflowDesignerHelper.GetService<ModelService>(_wd);
+            var root = bbb.Root;
+            var chart = _workflowDesignerHelper.GetService<ModelService>(_wd).Find(root, typeof(Flowchart)).FirstOrDefault();
 
             var nodes = chart?.Properties["Nodes"]?.Collection;
             if (nodes == null)
@@ -3304,7 +3313,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SetShapeLocation(ModelItem modelItem, Point location)
         {
-            ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
+            var service = _workflowDesignerHelper.GetService<ViewStateService>(_wd);
+            //ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
             //var modelItem = ModelItemUtils.CreateModelItem(flowNode);
 
             service.RemoveViewState(modelItem, "ShapeLocation");
