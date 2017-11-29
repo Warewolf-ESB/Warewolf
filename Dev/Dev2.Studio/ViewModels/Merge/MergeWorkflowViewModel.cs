@@ -105,6 +105,7 @@ namespace Dev2.ViewModels.Merge
         {
             if (diffTree == null || diffTree.Count == 0)
             {
+                ShowArmConnectors(conflicts, armConnectorConflicts);
                 return;
             }
             foreach (var treeItem in diffTree)
@@ -130,8 +131,9 @@ namespace Dev2.ViewModels.Merge
                 conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.DiffViewModel.Container = conflict;
                 conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
+                AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
                 ShowArmConnectors(conflicts, armConnectorConflicts);
-                AddDiffArmConnectors(armConnectorConflicts, treeItem, id);                
+                
             }
         }
 
@@ -153,7 +155,6 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel.Container = conflict;
                 conflict.HasConflict = treeItem.IsInConflict;
                 conflicts.Add(conflict);                
-                ShowArmConnectors(conflicts, armConnectorConflicts);
                 AddArmConnectors(armConnectorConflicts, treeItem, id);
             }
         }
@@ -177,11 +178,11 @@ namespace Dev2.ViewModels.Merge
             var hasValues = foundCurrentDestination && foundDiffDestination && foundCurrentSource && foundDiffSource;
             if (!hasValues)
             {
-                if (s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() && s.DifferentArmConnector.DestinationUniqueId == Guid.Empty.ToString() && foundDiffDestination && foundDiffSource)
+                if ((s.CurrentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundDiffDestination && foundDiffSource)
                 {
                     return true;
                 }
-                if (s.CurrentArmConnector.SourceUniqueId == Guid.Empty.ToString() && s.DifferentArmConnector.SourceUniqueId == Guid.Empty.ToString() && foundDiffDestination && foundDiffSource)
+                if ((s.DifferentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.DifferentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundCurrentDestination && foundCurrentSource)
                 {
                     return true;
                 }                
