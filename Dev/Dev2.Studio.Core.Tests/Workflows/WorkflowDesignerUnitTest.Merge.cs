@@ -13,9 +13,11 @@ using System;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Workflows
@@ -73,15 +75,21 @@ namespace Dev2.Core.Tests.Workflows
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
             Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
             var modelService = new Mock<ModelService>();
+            var viewStateService = new Mock<ViewStateService>();
             var chart = new Flowchart();
             var flowChart = ModelItemUtils.CreateModelItem(chart);
-            modelService.Setup(p => p.Root).Returns(flowChart);
-            _moq.Setup(a => a.Context.Services.GetService<ModelService>()).Returns(modelService.Object);
-            var wd = new WorkflowDesignerViewModelMock(crm.Object, wh.Object, eventAggregator.Object, false, _moq.Object);
+            modelService.Setup(p => p.Root).Returns(flowChart).Verifiable();
+            modelService.Setup(p => p.Find(flowChart, typeof(Flowchart))).Returns(() => new List<ModelItem>() { flowChart }).Verifiable();
+            var dHelper = new Mock<IWorkflowDesignerWrapper>();
+            dHelper.Setup(p => p.GetService<ModelService>(It.IsAny<WorkflowDesigner>())).Returns(modelService.Object).Verifiable();
+            dHelper.Setup(p => p.GetService<ViewStateService>(It.IsAny<WorkflowDesigner>())).Returns(viewStateService.Object);
+            var wd = new WorkflowDesignerViewModelMock(dHelper.Object, crm.Object, wh.Object, eventAggregator.Object, _moq.Object);
             var obj = new Mock<IMergeToolModel>();
             wd.AddItem(obj.Object);
-
-
+            dHelper.VerifyAll();
+            modelService.VerifyAll();
+            viewStateService.Verify(p => p.RemoveViewState(It.IsAny<ModelItem>(), It.IsAny<string>()));
+            viewStateService.Verify(p => p.StoreViewState(It.IsAny<ModelItem>(), It.IsAny<string>(),It.IsAny<Point>()));
         }
     }
 }
