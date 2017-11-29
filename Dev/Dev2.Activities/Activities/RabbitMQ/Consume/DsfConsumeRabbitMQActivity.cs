@@ -367,7 +367,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 if (DataListUtil.IsValueScalar(Response))
                 {
-                    if (_messages != null)
+                    if (_messages != null && _messages.Count > 0)
                     {
                         dataObject.Environment.Assign(Response, _messages.Last(), update);
                     }
