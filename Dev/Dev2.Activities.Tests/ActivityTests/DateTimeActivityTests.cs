@@ -119,7 +119,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , "2013/02/07 08:38:56.953 PM"
                          , "yyyy/mm/dd 12h:min:ss.sp am/pm"
                          , "yyyy/mm/dd 12h:min:ss.sp am/pm"
-                         , "Split Secs"
+                         , "Milliseconds"
                          , 327
                          , "[[MyTestResult]]");
 

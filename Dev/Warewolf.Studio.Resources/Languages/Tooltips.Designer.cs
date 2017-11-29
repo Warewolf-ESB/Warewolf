@@ -791,9 +791,9 @@ namespace Warewolf.Studio.Resources.Languages {
         /// <summary>
         ///   Looks up a localized string similar to Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
         ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
-        ///Leaving this field blank will assume the default date time format.
-        ///To escape text or non-date information use &apos;around the text you want to escape&apos;. 
-        ///e.g. Time is now 15 hours and 33 minutes. Would have an input format of &apos;Time is now&apos; HH &apos;hours and&apos; m &apos;minutes.&apos;.
+        ///Leaving this field blank will assume the default date time format. To escape text or non-date information use &apos;around the text you want to escape&apos;. 
+        ///e.g. Time is now 15 hours, 33 minutes, 10 seconds and 9944 milliseconds. 
+        ///Would have an input format of &apos;Time is now&apos; HH &apos;hours,&apos; mm [rest of string was truncated]&quot;;.
         /// </summary>
         public static string DateTimeToolTipInputformat {
             get {
@@ -805,7 +805,8 @@ namespace Warewolf.Studio.Resources.Languages {
         ///   Looks up a localized string similar to Describe the format you would like the date time to be returned in.
         ///The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
         ///To include text or non-date information use &apos;around the text you want to escape&apos;. 
-        ///e.g. Time is now 15 hours and 33 minutes. Would have an output format of &apos;Time is now&apos; HH &apos;hours and&apos; m &apos;minutes.&apos;.
+        ///e.g. Time is now 15 hours, 33 minutes, 10 seconds and 9944 milliseconds. 
+        ///Would have an input format of &apos;Time is now&apos; HH &apos;hours,&apos; mm &apos;minutes,&apos; ss &apos;seconds and&apos; FFFF &apos; milliseconds&apos;.
         /// </summary>
         public static string DateTimeToolTipOutputformat {
             get {
