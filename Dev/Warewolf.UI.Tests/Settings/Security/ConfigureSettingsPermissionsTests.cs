@@ -108,6 +108,12 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void PublicApisJson_Requires_ExecutePermission()
         {
+            UIMap.Click_Settings_RibbonButton();
+            SettingsUIMap.Uncheck_Public_Execute();
+            if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
+            {
+                Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+            }
             using (var client = new WebClient
             {
                 Credentials = CredentialCache.DefaultNetworkCredentials
@@ -122,10 +128,11 @@ namespace Warewolf.UI.Tests
                     StringAssert.Contains(e.Message, "Forbidden");
                 }
             }
-            UIMap.Click_Settings_RibbonButton();
             SettingsUIMap.Check_Public_Execute();
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled.");
-            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+            if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
+            {
+                Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+            }
             using (var client = new WebClient
             {
                 Credentials = CredentialCache.DefaultNetworkCredentials
