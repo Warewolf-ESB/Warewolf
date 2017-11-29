@@ -160,9 +160,31 @@ namespace Dev2.Tests.MathOperationTest
         {
             DateTime date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            string expected = date.ToShortDateString();
 
             bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
+
+            if (hasSucceeded)
+            {
+                Assert.IsTrue(actual.StartsWith(expected));
+            }
+            else
+            {
+                Assert.Fail("Date Calculation not being performed as expected");
+            }
+        }
+
+        /// <summary>
+        /// Tests that an expression that accesses the date capabilities of infrigistics evaluates correctly.
+        /// </summary>
+        [TestMethod]
+        public void TryEvaluateFunction_DateFunction_Expected_EvaluationOfDateCorrect_DotnetFormat()
+        {
+            DateTime date = new DateTime(2012, 2, 2);
+            const string expression = @"Date(2012,2,2)";
+            string expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var eval = new FunctionEvaluator(Common.Interfaces.Diagnostics.Debug.FunctionEvaluatorOption.DotNetDateTimeFormat);
+            bool hasSucceeded = eval.TryEvaluateFunction(expression, out string actual, out string error);
 
             if (hasSucceeded)
             {
