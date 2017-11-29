@@ -145,6 +145,7 @@
     <Compile Include="IUserMessageProvider.cs" />
     <Compile Include="IWebActivity.cs" />
     <Compile Include="IWorkflowDesignerViewModel.cs" />
+    <Compile Include="IWorkflowDesignerWrapper.cs" />
     <Compile Include="IWorkSurfaceObject.cs" />
     <Compile Include="NetworkStateChanged.cs" />
   </ItemGroup>
