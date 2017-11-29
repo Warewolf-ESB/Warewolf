@@ -668,6 +668,30 @@ namespace Dev2.Core.Tests
         }
 
         [TestMethod]
+        [TestCategory("MainViewModel_CloseResourceMergeView")]
+        [Description("An exisiting workflow with unsaved changes that is saved, must commit the resource model.")]
+        [Owner("Pieter Terblanche")]
+        public void MainViewModel_CloseResourceMergeView()
+        {
+            CreateFullExportsAndVm();
+            Assert.IsTrue(ShellViewModel.Items.Count == 2);
+            FirstResource.Setup(r => r.IsWorkflowSaved).Returns(false);
+            FirstResource.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
+            FirstResource.Setup(r => r.Commit()).Verifiable();
+            FirstResource.Setup(r => r.Rollback()).Verifiable();
+            var resourceId = Guid.NewGuid();
+            FirstResource.Setup(a => a.ID).Returns(resourceId);
+            PopupController.Setup(s => s.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(MessageBoxResult.Yes);
+            var mckEnv = new Mock<IServerRepository>();
+            var mockEnv = new Mock<IServer>();
+            mckEnv.Setup(a => a.Get(resourceId)).Returns(mockEnv.Object);
+            var res = new Mock<IResourceRepository>();
+            mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
+            res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
+            ShellViewModel.CloseResourceMergeView(resourceId, ServerId, mockEnv.Object.EnvironmentID);
+        }
+
+        [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("MainViewModel_CloseWorkSurfaceContext")]
         public void MainViewModel_CloseWorkSurfaceContext_UnsavedWorkflowAndResourceCanSaveIsFalse_ResourceModelIsNotSaved()

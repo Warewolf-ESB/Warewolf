@@ -1,5 +1,5 @@
 
-<Service ID="be5f9d5b-a5a3-41ba-b616-57ad8c779b0d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeAssign" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6535.18321">
+<Service ID="be5f9d5b-a5a3-41ba-b616-57ad8c779b0d" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeAssign" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6542.14246">
   <DisplayName>MergeAssign</DisplayName>
   <Category>ExamplesMerge\MergeAssign</Category>
   <IsNewWorkflow>false</IsNewWorkflow>

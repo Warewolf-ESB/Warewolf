@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             Assert.IsFalse(provider.HandlesResultInsertion);
             Assert.AreEqual(IntellisenseProviderType.NonDefault, provider.IntellisenseProviderType);
             Assert.IsNotNull(provider.IntellisenseResults);
-            Assert.AreEqual(24, provider.IntellisenseResults.Count);
+            Assert.AreEqual(30, provider.IntellisenseResults.Count);
             Assert.IsFalse(provider.Optional);
         }
 
@@ -53,7 +53,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
             var dateTimeIntellisenseProvider = new DateTimeIntellisenseProvider();
             IList<IntellisenseProviderResult> results = dateTimeIntellisenseProvider.GetIntellisenseResults(context);
 
-            Assert.AreEqual(6, results.Count);
+            Assert.AreEqual(4, results.Count);
         }
 
         [TestMethod]

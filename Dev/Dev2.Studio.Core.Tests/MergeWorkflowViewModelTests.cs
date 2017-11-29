@@ -1390,7 +1390,7 @@ namespace Dev2.Core.Tests
                 //---------------Execute Test ----------------------
                 mergeWorkflowViewModel.Save();
                 //---------------Test Result -----------------------
-                currentResourceModel.Verify(p => p.Environment.ResourceRepository.Save(currentResourceModel.Object));
+                currentResourceModel.Verify(p => p.Environment.ResourceRepository.SaveToServer(currentResourceModel.Object));
             }
         }
 
@@ -1443,7 +1443,7 @@ namespace Dev2.Core.Tests
                 mergeWorkflowViewModel.Save();
                 //---------------Test Result -----------------------
                 currentResourceModel.Verify(p => p.Environment.ExplorerRepository.UpdateManagerProxy.Rename(currentResourceModel.Object.ID, currentResourceModel.Object.ResourceName));
-                currentResourceModel.Verify(p => p.Environment.ResourceRepository.Save(currentResourceModel.Object));
+                currentResourceModel.Verify(p => p.Environment.ResourceRepository.SaveToServer(currentResourceModel.Object));
             }
         }
         [TestMethod]
@@ -1504,7 +1504,7 @@ namespace Dev2.Core.Tests
                 currentFactory.Verify(p => p.DataListViewModel.WriteToResourceModel());
                 currentFactory.Verify(p => p.IsVariablesChecked);
                 currentResourceModel.VerifySet(q => q.DataList= It.IsAny<string>());
-                currentResourceModel.Verify(p => p.Environment.ResourceRepository.Save(currentResourceModel.Object));
+                currentResourceModel.Verify(p => p.Environment.ResourceRepository.SaveToServer(currentResourceModel.Object));
             }
         }
 
@@ -1565,7 +1565,7 @@ namespace Dev2.Core.Tests
                 diffFactory.Verify(p => p.DataListViewModel.WriteToResourceModel());
                 currentFactory.Verify(p => p.IsVariablesChecked);
                 currentResourceModel.VerifySet(q => q.DataList = It.IsAny<string>());
-                currentResourceModel.Verify(p => p.Environment.ResourceRepository.Save(currentResourceModel.Object));
+                currentResourceModel.Verify(p => p.Environment.ResourceRepository.SaveToServer(currentResourceModel.Object));
             }
         }
         [TestMethod]

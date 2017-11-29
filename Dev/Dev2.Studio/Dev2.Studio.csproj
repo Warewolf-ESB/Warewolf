@@ -309,6 +309,7 @@
     <Compile Include="Factory\MergeFactory.cs" />
     <Compile Include="Properties\Annotations.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" Condition="!Exists('..\AssemblyCommonInfo.cs')" />
+    <Compile Include="WorkflowDesignerWrapper.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>

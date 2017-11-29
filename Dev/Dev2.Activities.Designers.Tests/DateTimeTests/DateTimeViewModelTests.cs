@@ -16,10 +16,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Moq.Protected;
-using Dev2.Studio.Core.Activities.Utils;
-using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Globalization;
-using Dev2.Common;
+
+
 
 namespace Dev2.Activities.Designers.Tests.DateTimeTests
 {
@@ -27,58 +25,62 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
     public class DateTimeViewModelTests
     {
         [TestMethod]
-        public void DateTimeDesignerViewModel_ShouldSetInputFormat_WhenNoInputFormat()
+        [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
+        [Description("DateTime ViewModel clears the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to a blank string")]
+        [Owner("Ashley Lewis")]
+
+        public void DateTimeActivityViewModel_SelectedTimeModifierTypeChange_SelectedTimeModifierTypeSetToABlankString_TimeModifierAmountDisplayCleared()
+
         {
-            var modelItem = CreateModelItem();
-            var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
-            Assert.AreEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
+            //init
+            var expected = string.Empty;
+            const string TimeModifierAmountDisplay = "TimeModifierAmountDisplay";
+
+            var prop = new Mock<ModelProperty>();
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var mockModel = new Mock<ModelItem>();
+
+            prop.Setup(p => p.SetValue(expected)).Verifiable();
+            properties.Add(TimeModifierAmountDisplay, prop);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", TimeModifierAmountDisplay, true).Returns(prop.Object);
+            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
+
+            //exe
+            var viewModel = new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
+            viewModel.Validate();
+            //assert
+            prop.Verify(c => c.SetValue(expected), Times.Once(), "Find Records ViewModel does not clear the match data property of the model item when it's no longer needed");
+            Assert.IsTrue(viewModel.HasLargeView);
         }
 
         [TestMethod]
-        public void DateTimeDesignerViewModel_ShouldNotSetInputFormat_WhenInputFormat()
-        {
-            var modelItem = CreateModelItemWithInputFormat("yyyy-mm-dd");
-            var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
-            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
-            Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
-        }
+        [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
+        [Description("DateTime ViewModel does not clear the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to some string")]
+        [Owner("Ashley Lewis")]
 
-        [TestMethod]
-        public void DateTimeDesignerViewModel_ShouldSetOutputFormat_WhenNoInputFormat()
-        {
-            var modelItem = CreateModelItem();
-            var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
-            Assert.AreEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
-        }
+        public void DateTimeActivityViewModel_SelectedTimeModifierTypeChange_SelectedTimeModifierTypeSetToABlankString_TimeModifierAmountDisplayNotCleared()
 
-        [TestMethod]
-        public void DateTimeDesignerViewModel_ShouldNotSetOutputFormat_WhenOutputFormat()
         {
-            var modelItem = CreateModelItemWithOutputFormat("yyyy-mm-dd");
-            var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
-            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
-            Assert.AreEqual("yyyy-mm-dd", po.GetProperty("OutputFormat"));
-        }
+            //init
+            var expected = "Some Data";
+            const string MatchDataPropertyName = "TimeModifierAmountDisplay";
 
-        [TestMethod]
-        public void DateTimeDesignerViewModel_ShouldNotSetInputOrOutputFormat_WhenInputAndOutputFormat()
-        {
-            var modelItem = CreateModelItemWithInputOutputFormat("yyyy-mm-dd", "MM/dd/yyyy");
-            var viewModel = new DateTimeDesignerViewModel(modelItem);
-            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
-            var po = new PrivateObject(viewModel);
-            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
-            Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
-            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
-            Assert.AreEqual("MM/dd/yyyy", po.GetProperty("OutputFormat"));
+            var prop = new Mock<ModelProperty>();
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var mockModel = new Mock<ModelItem>();
+
+            prop.Setup(p => p.SetValue(expected)).Verifiable();
+            properties.Add(MatchDataPropertyName, prop);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", MatchDataPropertyName, true).Returns(prop.Object);
+            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
+
+            //exe
+            new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
+
+            //assert
+            prop.Verify(c => c.SetValue(expected), Times.Never(), "Find Records ViewModel does not clear the match data property of the model item when it's no longer needed");
         }
 
         [TestMethod]
@@ -111,36 +113,6 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
-        }
-
-        static ModelItem CreateModelItem()
-        {
-            return ModelItemUtils.CreateModelItem(new DsfDateTimeActivity());
-        }
-
-        static ModelItem CreateModelItemWithInputFormat(string dateTimeFormat)
-        {
-            return ModelItemUtils.CreateModelItem(new DsfDateTimeActivity
-            {
-                InputFormat = dateTimeFormat
-            });
-        }
-
-        static ModelItem CreateModelItemWithOutputFormat(string dateTimeFormat)
-        {
-            return ModelItemUtils.CreateModelItem(new DsfDateTimeActivity
-            {
-                OutputFormat = dateTimeFormat
-            });
-        }
-
-        static ModelItem CreateModelItemWithInputOutputFormat(string inputDateTimeFormat, string outputDateTimeFormat)
-        {
-            return ModelItemUtils.CreateModelItem(new DsfDateTimeActivity
-            {
-                InputFormat = inputDateTimeFormat,
-                OutputFormat = outputDateTimeFormat
-            });
         }
     }
 }

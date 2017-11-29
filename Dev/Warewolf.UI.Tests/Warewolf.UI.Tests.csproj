@@ -150,6 +150,7 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Merge\MergeAllToolsConflictsTest.cs" />
     <Compile Include="Merge\MergeAssignConflictsTest.cs" />
     <Compile Include="Merge\MergeDialogUIMap.cs">
       <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>

@@ -1030,6 +1030,16 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void CloseResourceMergeView(Guid resourceId, Guid serverId, Guid environmentId)
+        {
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts, resourceId, serverId, environmentId);
+            var mergeViewModelForResource = FindWorkSurfaceContextViewModel(key);
+            if (mergeViewModelForResource != null)
+            {
+                DeactivateItem(mergeViewModelForResource, true);
+            }
+        }
+
         private WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
         {
             return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
