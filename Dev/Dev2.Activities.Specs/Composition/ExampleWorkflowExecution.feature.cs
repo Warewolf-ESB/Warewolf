@@ -267,11 +267,11 @@ this.FeatureBackground();
                         "System Date Time",
                         "DateTime",
                         "System Date Time Format",
-                        "MM/dd/yyyy HH:mm:ss",
+                        "yyyy/MM/dd hh:mm:ss tt",
                         "\"\"",
                         "",
                         "System Date Time Format",
-                        "MM/dd/yyyy HH:mm:ss"});
+                        "yyyy/MM/dd hh:mm:ss tt"});
 #line 63
    testRunner.And("the \"Date and Time(1)\" in WorkFlow \"Utility - Date and Time\" debug inputs as", ((string)(null)), table14, "And ");
 #line hidden
@@ -292,7 +292,7 @@ this.FeatureBackground();
             table16.AddRow(new string[] {
                         "[[nowish]] = DateTime",
                         "System Date Time Format",
-                        "MM/dd/yyyy HH:mm:ss",
+                        "yyyy/MM/dd hh:mm:ss tt",
                         "\"\"",
                         "",
                         "mm/dd/yy 12h:min am/pm"});
@@ -362,7 +362,7 @@ this.FeatureBackground();
                         "System Date Time",
                         "DateTime",
                         "System Date Time Format",
-                        "MM/dd/yyyy HH:mm:ss",
+                        "yyyy/MM/dd hh:mm:ss tt",
                         "\"\"",
                         "",
                         "\"\'Date format yyyy MM dd yields : \' yyyy MM dd"});

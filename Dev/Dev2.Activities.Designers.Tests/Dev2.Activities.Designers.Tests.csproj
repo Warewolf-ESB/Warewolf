@@ -142,6 +142,8 @@
     <Compile Include="Core\WebSourceRegionTest.cs" />
     <Compile Include="CountRecords\CountRecordsDesignerViewModelTests.cs" />
     <Compile Include="CountRecords\TestCountRecordsDesignerViewModel.cs" />
+    <Compile Include="DateTimeDifference\DotNetDateTimeDifferenceDesignerViewModelTests.cs" />
+    <Compile Include="DateTimeTests\DotNetDateTimeViewModelTests.cs" />
     <Compile Include="Decision\DecisionTests.cs" />
     <Compile Include="ComDll\ComDllViewModelTests.cs" />
     <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />

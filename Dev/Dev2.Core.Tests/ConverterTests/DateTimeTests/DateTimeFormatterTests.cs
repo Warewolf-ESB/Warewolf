@@ -203,7 +203,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             }
             else
             {
-                Assert.AreEqual("String reference not set to an instance of a String.\r\nParameter name: s", errorMsg);
+                Assert.AreEqual("Could not parse input datetime with given input format (if you left the input format blank then even after trying default datetime formats from other cultures)", errorMsg);
             }
         }
 

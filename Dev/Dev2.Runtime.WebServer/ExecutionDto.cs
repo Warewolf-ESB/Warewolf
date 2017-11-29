@@ -129,6 +129,7 @@ namespace Dev2.Runtime.WebServer
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
+            dto.ErrorResultTO.ClearErrors();
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 

@@ -14,8 +14,8 @@ namespace Dev2.Common.TimeZoneBuilder
 
         public Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatsParts { get; set; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptions { get; set; }
-        private readonly AssignManager _assignManager;
-        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
+        protected readonly AssignManager _assignManager;
+        protected static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
         public DateTimeFormatPart(Dictionary<string, ITimeZoneTO> timeZones)
         {
             _timeZones = timeZones;
@@ -41,7 +41,7 @@ namespace Dev2.Common.TimeZoneBuilder
         #endregion
 
         #region Private Logic
-        private void AddYearParts()
+        protected virtual void AddYearParts()
         {
             DateTimeFormatsParts.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in 2 digits: 08"));
             DateTimeFormatPartOptions.Add("yy", new List<IDateTimeFormatPartOptionTO>
@@ -57,7 +57,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddMonthParts()
+        protected virtual void AddMonthParts()
         {
             DateTimeFormatsParts.Add("mm", new DateTimeFormatPartTO("mm", false, "Month in 2 digits: 03"));
             DateTimeFormatPartOptions.Add("mm",
@@ -135,7 +135,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddDayParts()
+        protected virtual void AddDayParts()
         {
             DateTimeFormatsParts.Add("d", new DateTimeFormatPartTO("d", false, "Day of month in single digit: 6"));
             DateTimeFormatPartOptions.Add("d",
@@ -156,13 +156,13 @@ namespace Dev2.Common.TimeZoneBuilder
             DateTimeFormatPartOptions.Add("DW",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false, 3, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false, 4, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5, _assignManager.AssignDaysOfWeek),
-                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.DayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false, 6, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false, 3, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false, 4, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5, _assignManager.AssignDaysOfWeek),
+                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.DayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false, 6, _assignManager.AssignDaysOfWeek),
                 });
 
             DateTimeFormatsParts.Add("dW", new DateTimeFormatPartTO("dW", false, "Day of Week text abbreviated: Thu"));
@@ -170,25 +170,25 @@ namespace Dev2.Common.TimeZoneBuilder
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[0].Length, CompareTextValueToDateTimePart.IsTextSunday, false, 7,
                         _assignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[1].Length, CompareTextValueToDateTimePart.IsTextMonday, false, 1,
                         _assignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[2].Length, CompareTextValueToDateTimePart.IsTextTuesday, false, 2,
                         _assignManager.AssignDaysOfWeek, 7),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[3].Length, CompareTextValueToDateTimePart.IsTextWednesday, false,
                         3, _assignManager.AssignDaysOfWeek, 9),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[4].Length, CompareTextValueToDateTimePart.IsTextThursday, false,
                         4, _assignManager.AssignDaysOfWeek, 8),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[5].Length, CompareTextValueToDateTimePart.IsTextFriday, false, 5,
                         _assignManager.AssignDaysOfWeek, 6),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false,
+                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedDayNames[6].Length, CompareTextValueToDateTimePart.IsTextSaturday, false,
                         6, _assignManager.AssignDaysOfWeek, 7),
                 });
 
@@ -209,7 +209,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddWeekParts()
+        protected virtual void AddWeekParts()
         {
             DateTimeFormatsParts.Add("ww", new DateTimeFormatPartTO("ww", false, "Week of year: 09"));
             DateTimeFormatPartOptions.Add("ww",
@@ -227,7 +227,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddHourParts()
+        protected virtual void AddHourParts()
         {
             DateTimeFormatsParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
             DateTimeFormatPartOptions.Add("24h",
@@ -245,7 +245,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddMinuteParts()
+        protected virtual void AddMinuteParts()
         {
             DateTimeFormatsParts.Add("min", new DateTimeFormatPartTO("min", false, "Minutes: 30"));
             DateTimeFormatPartOptions.Add("min",
@@ -255,7 +255,7 @@ namespace Dev2.Common.TimeZoneBuilder
                     new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMinutes, true, null, _assignManager.AssignMinutes),
                 });
         }
-        private void AddSecondParts()
+        protected virtual void AddSecondParts()
         {
             DateTimeFormatsParts.Add("ss", new DateTimeFormatPartTO("ss", false, "Seconds: 29"));
             DateTimeFormatPartOptions.Add("ss",
@@ -275,7 +275,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddOffsetParts()
+        protected virtual void AddOffsetParts()
         {
             DateTimeFormatsParts.Add("am/pm", new DateTimeFormatPartTO("am/pm", false, "am or pm"));
             DateTimeFormatPartOptions.Add("am/pm",
@@ -308,7 +308,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
         }
-        private void AddEraParts()
+        protected virtual void AddEraParts()
         {
             DateTimeFormatsParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
 
