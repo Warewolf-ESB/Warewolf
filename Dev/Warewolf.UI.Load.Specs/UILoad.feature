@@ -4,7 +4,7 @@ Feature: UILoad
 	I can only tolerate so much lag
 
 Scenario: Studio UI Load Test
-	Given The Warewolf Studio is running
+	Given there are 100 duplicates of All Tools workflow in the explorer
 	And I start the timer
 	When I Select Local Server Source From Explorer
 	Then the timer duration is less than "30" seconds
@@ -22,7 +22,7 @@ Scenario: Studio UI Load Test
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost from the source tab
 	And I start the timer
-	When I Click Deploy Tab Deploy Button
+	When I Click Deploy Tab Deploy Button with no version conflict dialog
 	Then the timer duration is less than "160" seconds
 	Given The Warewolf Studio is running
 	And I open "Debug Output UI Load Testing" workflow
