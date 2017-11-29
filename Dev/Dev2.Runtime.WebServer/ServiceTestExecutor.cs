@@ -48,7 +48,7 @@ namespace Dev2.Runtime.WebServer
             await lastTask.ConfigureAwait(true);
         }
 
-        public static string SetpForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)
+        public static string SetupForTestExecution(Dev2JsonSerializer serializer, EsbExecuteRequest esbExecuteRequest,IDSFDataObject dataObject)
         {
             var result = serializer.Deserialize<ServiceTestModelTO>(esbExecuteRequest.ExecuteResult);
             string executePayload;
@@ -69,25 +69,31 @@ namespace Dev2.Runtime.WebServer
         public static DataListFormat ExecuteTests(string serviceName, IDSFDataObject dataObject, DataListFormat formatter,
             IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, IResourceCatalog resourceCatalog, ref string executePayload)
         {
-            if (dataObject.TestsResourceIds?.Any() ?? false)
+            if (dataObject.TestsResourceIds?.Any() ?? false && serviceName == "*")
             {
-                formatter = RunMultipleTestBatchesAndReturnJSON(dataObject, userPrinciple, workspaceGuid, serializer, formatter,
+                if (dataObject.ReturnType == Web.EmitionTypes.TEST)
+                {
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
                     resourceCatalog, testCatalog, ref executePayload);
+                }
+                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
+                {
+                    formatter = dataObject.RunMultipleTestBatchesAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
+                    resourceCatalog, testCatalog, ref executePayload);
+                }
                 dataObject.ResourceID = Guid.Empty;
             }
             else
             {
-
-                var testResults = dataObject.TestName == "*" ? RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, resourceCatalog, testCatalog, dataObject.ResourceID) : RunSingleTestBatch(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
-                const string TrxExtension = ".tests.trx";
-                if (!serviceName.EndsWith(TrxExtension, StringComparison.CurrentCultureIgnoreCase))
+                if (dataObject.ReturnType == EmitionTypes.TEST)
                 {
-                    var objArray = SerializeTestResultsToJSON(serviceName, testResults, ref formatter);
-                    executePayload = serializer.Serialize(objArray);
+                    formatter = dataObject.RunSingleTestBatchAndReturnJSON(userPrinciple, workspaceGuid, serializer, formatter,
+                        serviceName, testCatalog, ref executePayload);
                 }
-                else
+                if (dataObject.ReturnType == Web.EmitionTypes.TRX)
                 {
-                    executePayload = SerializeTestResultsToTRX(serviceName.Replace(TrxExtension, string.Empty), testResults, ref formatter);
+                    formatter = dataObject.RunSingleTestBatchAndReturnTRX(userPrinciple, workspaceGuid, serializer, formatter,
+                        serviceName, testCatalog, ref executePayload);
                 }
 
             }
@@ -95,84 +101,6 @@ namespace Dev2.Runtime.WebServer
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
             return formatter;
-        }
-
-        public static List<IServiceTestModelTO> RunSingleTestBatch(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, string testsResourceId = null)
-        {
-            var allTests = testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
-            var taskList = new List<Task>();
-            var testResults = new List<IServiceTestModelTO>();
-            var test = allTests.FirstOrDefault(t => t.TestName.Equals(dataObject.TestName, StringComparison.InvariantCultureIgnoreCase));
-            if(test!=null)
-            {
-                dataObject.ResourceID = test.ResourceId;
-                var dataObjectClone = dataObject.Clone();
-                dataObjectClone.Environment = new ExecutionEnvironment();
-                dataObjectClone.TestName = test.TestName;
-
-                var lastTask = GetTaskForTestExecution(serviceName, userPrinciple, workspaceGuid,
-                    serializer, testResults, dataObjectClone);
-                taskList.Add(lastTask);
-            }
-            Task.WaitAll(taskList.ToArray());
-            return testResults;
-        }
-
-        public static List<IServiceTestModelTO> RunMultipleTestBatches(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog, Guid testsResourceId)
-        {
-            var allTests = testCatalog.Fetch(testsResourceId);
-            var taskList = new List<Task>();
-            var testResults = new List<IServiceTestModelTO>();
-            foreach (var test in allTests)
-            {
-                var dataObjectClone = dataObject.Clone();
-                dataObjectClone.Environment = new ExecutionEnvironment();
-                dataObjectClone.TestName = test.TestName;
-                var res = catalog.GetResource(GlobalConstants.ServerWorkspaceID, testsResourceId);
-                dataObjectClone.ServiceName = res?.ResourceName;
-                var resourcePath = res?.GetResourcePath(GlobalConstants.ServerWorkspaceID).Replace("\\", "/");
-                var lastTask = GetTaskForTestExecution(resourcePath, userPrinciple, workspaceGuid,
-                    serializer, testResults, dataObjectClone);
-                taskList.Add(lastTask);
-            }
-            Task.WaitAll(taskList.ToArray());
-            return testResults;
-        }
-
-        public static DataListFormat RunMultipleTestBatchesAndReturnJSON(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid,
-                                                                         Dev2JsonSerializer serializer, DataListFormat formatter,
-                                                                         IResourceCatalog catalog, ITestCatalog testCatalog,
-                                                                         ref string executePayload)
-        {
-            foreach (var testsResourceId in dataObject.TestsResourceIds)
-            {
-                var testResults = RunMultipleTestBatches(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog, testsResourceId);
-                formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-                var objArray = (from testRunResult in testResults
-                                where testRunResult != null
-                                select testRunResult.BuildTestResultJSONForWebRequest()
-                                ).ToList();
-                if (objArray.Count > 0)
-                {
-                    executePayload = (executePayload == string.Empty ? "[" : executePayload.TrimEnd("\r\n]".ToCharArray()) + ",") + serializer.Serialize(objArray).TrimStart('[');
-                }
-            }
-            return formatter;
-        }
-
-        public static IEnumerable<JObject> SerializeTestResultsToJSON(string serviceName, List<IServiceTestModelTO> testResults, ref DataListFormat formatter)
-        {
-            formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
-            return (from testRunResult in testResults
-                    where testRunResult != null
-                    select testRunResult.BuildTestResultJSONForWebRequest()
-                    ).ToList();
-        }
-
-        public static string SerializeTestResultsToTRX(string serviceName, List<IServiceTestModelTO> testResults, ref DataListFormat formatter)
-        {
-            formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
-            return ServiceTestModelTRXResultBuilder.BuildTestResultTRX(serviceName, testResults);
         }
     }
 }

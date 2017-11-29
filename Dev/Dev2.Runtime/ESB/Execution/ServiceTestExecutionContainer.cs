@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Activities;
 using System.Collections.Generic;
@@ -51,25 +61,23 @@ namespace Dev2.Runtime.ESB.Execution
 
         protected ITestCatalog TstCatalog { get; set; }
         protected IResourceCatalog ResourceCat { get; set; }
-        
+
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-
             errors = new ErrorResultTO();
             var testCatalog = TstCatalog ?? TestCatalog.Instance;
 
             var result = GlobalConstants.NullDataListID;
 
-
             Dev2Logger.Debug("Entered Wf Container", DataObject.ExecutionID.ToString());
-            
+
             DataObject.ServiceName = ServiceAction.ServiceName;
-            
+
             if (DataObject.ServerID == Guid.Empty)
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
             }
-            
+
             if (DataObject.ResourceID == Guid.Empty && ServiceAction?.Service != null)
             {
                 DataObject.ResourceID = ServiceAction.Service.ID;

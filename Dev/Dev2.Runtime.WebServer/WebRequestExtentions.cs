@@ -68,11 +68,5 @@ namespace Dev2.Runtime.WebServer
             }
             return path.Replace("/", "\\");
         }
-
-        public static bool IsRunAllTestsRequest( this WebRequestTO webRequest, string serviceName)
-        {
-            var isRunAllTestsRequest = !string.IsNullOrEmpty(serviceName) && serviceName == "*" && (webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase));
-            return isRunAllTestsRequest;
-        }
     }
 }
