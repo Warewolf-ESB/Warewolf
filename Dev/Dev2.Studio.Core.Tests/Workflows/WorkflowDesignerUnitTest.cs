@@ -57,8 +57,9 @@ using Dev2.Studio.Interfaces.Enums;
 
 namespace Dev2.Core.Tests.Workflows
 {
+  
     [TestClass]
-    public class WorkflowDesignerUnitTest
+    public partial class WorkflowDesignerUnitTest
     {
         private static bool _isDesignerInited;
 
