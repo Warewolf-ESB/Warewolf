@@ -133,7 +133,6 @@ namespace Dev2.ViewModels.Merge
                 conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
                 AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
                 ShowArmConnectors(conflicts, armConnectorConflicts);
-                
             }
         }
 
@@ -154,7 +153,7 @@ namespace Dev2.ViewModels.Merge
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel.Container = conflict;
                 conflict.HasConflict = treeItem.IsInConflict;
-                conflicts.Add(conflict);                
+                conflicts.Add(conflict);
                 AddArmConnectors(armConnectorConflicts, treeItem, id);
             }
         }
@@ -185,7 +184,7 @@ namespace Dev2.ViewModels.Merge
                 if ((s.DifferentArmConnector.DestinationUniqueId == Guid.Empty.ToString() || s.DifferentArmConnector.SourceUniqueId == Guid.Empty.ToString()) && foundCurrentDestination && foundCurrentSource)
                 {
                     return true;
-                }                
+                }
             }
             return hasValues;
         });
@@ -575,10 +574,11 @@ namespace Dev2.ViewModels.Merge
         {
             try
             {
+                var resourceId = _resourceModel.ID;
                 if (HasWorkflowNameConflict)
                 {
                     var resourceName = CurrentConflictModel.IsWorkflowNameChecked ? CurrentConflictModel.WorkflowName : DifferenceConflictModel.WorkflowName;
-                    _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(_resourceModel.ID, resourceName);
+                    _resourceModel.Environment.ExplorerRepository.UpdateManagerProxy.Rename(resourceId, resourceName);
                 }
                 if (HasVariablesConflict)
                 {
@@ -587,9 +587,13 @@ namespace Dev2.ViewModels.Merge
                 _resourceModel.WorkflowXaml = WorkflowDesignerViewModel.ServiceDefinition;
                 _resourceModel.Environment.ResourceRepository.SaveToServer(_resourceModel);
 
+                HasMergeStarted = false;
+
                 var mainViewModel = CustomContainer.Get<IShellViewModel>();
-                mainViewModel?.CloseResource(_resourceModel.ID, _resourceModel.Environment.EnvironmentID);
-                mainViewModel?.OpenCurrentVersion(_resourceModel.ID, _resourceModel.Environment.EnvironmentID);
+                var environmentID = _resourceModel.Environment.EnvironmentID;
+                mainViewModel?.CloseResource(resourceId, environmentID);
+                mainViewModel?.CloseResourceMergeView(resourceId, _resourceModel.ServerID, environmentID);
+                mainViewModel?.OpenCurrentVersion(resourceId, environmentID);
             }
             catch (Exception ex)
             {
