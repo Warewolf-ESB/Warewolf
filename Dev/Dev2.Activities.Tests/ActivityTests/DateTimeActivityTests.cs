@@ -17,9 +17,7 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using NodaTime;
-using System.Diagnostics;
-using System.IO;
+
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -155,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
+            DateTime actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
@@ -188,9 +186,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
                 GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
 
-                Assert.AreEqual("0", actual);
+                Assert.IsTrue(actual != "0");
             }
-            Assert.AreEqual("0", actual);
+            Assert.IsTrue(actual != "0");
         }
         #endregion DateTime Tests
 
@@ -216,86 +214,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Assert Results-------------------------
             Assert.AreEqual(1, outputs.Count);
             Assert.AreEqual("[[dt]]", outputs[0]);
-        }
-
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        [TestCategory("DsfDateTimeActivity_GetOutputs")]
-        public void DsfDateTimeActivity_CurrentCulture_Called_ShouldPassAllDatesWithoutErrors()
-        {
-            //------------Setup for test--------------------------
-            int faiCount = 0;
-            int passCount = 0;
-            int total = 0;
-            var n = @"C:\Users\nkosinathi.sangweni\Desktop\New Text Document.txt";
-            var allCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
-            foreach (var culture in allCultures)
-            {
-                List<string> cultures = new List<string>();
-                foreach (var format in culture.DateTimeFormat.GetAllDateTimePatterns())
-                {
-                    cultures.Add(format);
-                }
-
-                var now = DateTime.Now;
-
-                foreach (var item in cultures)
-                {
-                    const string currDL = @"<root><MyTestResult></MyTestResult></root>";
-                    SetupArguments(currDL
-                                 , currDL
-                                 , now.ToString()
-                                 , ""
-                                 , item
-                                 , "Years"
-                                 , 10
-                                 , "[[MyTestResult]]");
-
-                    IDSFDataObject result = ExecuteProcess();
-                    var a = now.ToString(item);
-                    GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-                    total++;
-                    try
-                    {
-                        // remove test datalist ;)
-                        var allErrors = result.Environment.FetchErrors();
-                        var hasErrors = string.IsNullOrEmpty(allErrors);
-                        var asDate = DateTime.ParseExact(actual, item, culture, DateTimeStyles.AdjustToUniversal);
-
-
-                        LocalDate localDate = new LocalDate(now.Year, now.Month, now.Day);
-                        LocalDate localDate1 = new LocalDate(asDate.Year, asDate.Month, asDate.Day);
-                        var period = Period.Between(localDate, localDate1);
-
-                        Assert.IsTrue(hasErrors);
-                        if (item.ToUpper().Contains("y".ToUpper()))
-                            Assert.IsTrue(period.Years >= 9, "this format has failed " + item);
-                        else
-                            Assert.AreEqual(a, actual);
-                        passCount++;
-                        //using (var stream = File.AppendText(n))
-                        //{                            
-                        //    stream.WriteLine(item);
-                        //    stream.Flush();
-                        //}
-                       
-                    }
-                    catch (Exception e)
-                    {
-                        // Debug.WriteLine(actual + " "+ item+" "+ culture);
-                        faiCount++;
-                    }
-                }
-            }
-            Debug.WriteLine(faiCount + " " + "failures");
-            Debug.WriteLine(passCount + " " + "Passed");
-            Debug.WriteLine(total + " " + "total");
-
-            //Assert.AreEqual(13590, faiCount);
-            //Assert.AreEqual(15877, passCount);
-            //Assert.AreEqual(29467, total);
-
         }
 
         #region Private Test Methods
