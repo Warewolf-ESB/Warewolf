@@ -371,7 +371,6 @@ where pn.nspname = 'public';
 
         public static readonly string ShortDateTimePattern = CultureInfo.InvariantCulture.DateTimeFormat.ShortDatePattern;
         public static readonly string Dev2DotNetDefaultDateTimeFormat = ShortDateTimePattern + " " + LongTimePattern + ".FFFF";
-        //public static readonly string GlobalDefaultNowFormat = CultureInfo.InvariantCulture.DateTimeFormat.SortableDateTimePattern;
         public static readonly string Dev2CustomDefaultDateTimeFormat = "d MM yyyy 24h:min.ss sp";
         public static readonly int NetworkComputerNameQueryFreq = 900000;
         public static readonly string PreviousLongTimePattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
