@@ -67,6 +67,7 @@
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
     <Compile Include="DebugStateTreeBuilderTests.cs" />
+    <Compile Include="GetComputerNamesTests.cs" />
     <Compile Include="JsonResource.cs" />
     <Compile Include="Utils\ExternalProcessBrowserTests.cs" />
     <None Include="..\Run Tests.ps1">

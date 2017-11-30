@@ -11,7 +11,7 @@
 using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Dev2.Integration.Tests.CommonTest
+namespace Dev2.Common.Tests
 {
     [TestClass]
     public class GetComputerNamesTests

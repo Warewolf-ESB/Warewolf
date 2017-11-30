@@ -193,7 +193,6 @@
     </CodeAnalysisDependentAssemblyPaths>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Internal Services\GetComputerNamesTests.cs" />
     <Compile Include="Properties\TestStrings.Designer.cs">
       <DependentUpon>TestStrings.resx</DependentUpon>
       <AutoGen>True</AutoGen>
