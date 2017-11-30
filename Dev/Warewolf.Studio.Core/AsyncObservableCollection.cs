@@ -34,31 +34,6 @@ namespace Warewolf.Studio.Core
             SuppressOnCollectionChanged = true;
         }
 
-        public void AddRange(IList<T> items)
-        {
-            if (null == items)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
-            
-            if (items.Count > 0)
-            {
-                try
-                {
-                    SuppressOnCollectionChanged = true;
-                    foreach (var item in items)
-                    {
-                        Add(item);
-                    }
-                }
-                finally
-                {
-                    SuppressOnCollectionChanged = false;
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this));
-                }
-            }
-        }
-
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
             if (SynchronizationContext.Current == _synchronizationContext)
