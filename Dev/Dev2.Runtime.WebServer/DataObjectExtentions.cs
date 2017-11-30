@@ -182,7 +182,7 @@ namespace Dev2.Runtime.WebServer
             }
         }
 
-        private static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName)
+        static bool IsRunAllTestsRequest(EmitionTypes returnType, string serviceName)
         {
             return !string.IsNullOrEmpty(serviceName) && (serviceName == "*" || serviceName == ".tests" || serviceName == ".tests.trx") && (returnType == EmitionTypes.TEST || returnType == EmitionTypes.TRX);
         }
@@ -301,7 +301,7 @@ namespace Dev2.Runtime.WebServer
             return formatter;
         }
 
-        private static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, string testsResourceId=null)
+        static List<IServiceTestModelTO> RunAllTestsForWorkflow(IDSFDataObject dataObject, string serviceName, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, ITestCatalog testCatalog, string testsResourceId = null)
         {
             var allTests = testCatalog.Fetch(dataObject.ResourceID) ?? new List<IServiceTestModelTO>();
             var taskList = new List<Task>();
@@ -321,7 +321,7 @@ namespace Dev2.Runtime.WebServer
             return testResults;
         }
 
-        private static List<IServiceTestModelTO> RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog)
+        static List<IServiceTestModelTO> RunListOfTests(IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, IResourceCatalog catalog, ITestCatalog testCatalog)
         {
             var testResults = new List<IServiceTestModelTO>();
             var taskList = new List<Task>();

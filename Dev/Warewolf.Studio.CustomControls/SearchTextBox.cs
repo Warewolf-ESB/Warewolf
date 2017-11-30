@@ -1,18 +1,18 @@
-﻿using System;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
 
-namespace Warewolf.Studio.CustomControls {
-
-    public enum SearchMode {
+namespace Warewolf.Studio.CustomControls
+{
+    public enum SearchMode
+    {
         Instant,
         Delayed,
     }
 
-    public class SearchTextBox : TextBox {
+    public class SearchTextBox : TextBox
+    {
         static DependencyProperty labelTextProperty =
             DependencyProperty.Register(
                 "LabelText",
@@ -44,9 +44,10 @@ namespace Warewolf.Studio.CustomControls {
                 typeof(bool),
                 typeof(SearchTextBox),
                 new PropertyMetadata());
+
         static DependencyProperty hasTextProperty = HasTextPropertyKey.DependencyProperty;
 
-        public static readonly RoutedEvent SearchEvent = 
+        public static readonly RoutedEvent SearchEvent =
             EventManager.RegisterRoutedEvent(
                 "Search",
                 RoutingStrategy.Bubble,
@@ -58,7 +59,8 @@ namespace Warewolf.Studio.CustomControls {
             typeof(string),
             typeof(SearchTextBox));
 
-        static SearchTextBox() {
+        static SearchTextBox()
+        {
             DefaultStyleKeyProperty.OverrideMetadata(
                 typeof(SearchTextBox),
                 new FrameworkPropertyMetadata(typeof(SearchTextBox)));
@@ -70,7 +72,8 @@ namespace Warewolf.Studio.CustomControls {
             HasText = Text.Length != 0;
         }
 
-        protected override void OnTextChanged(TextChangedEventArgs e) {
+        protected override void OnTextChanged(TextChangedEventArgs e)
+        {
             base.OnTextChanged(e);
 
             HasText = Text.Length != 0;
@@ -80,15 +83,19 @@ namespace Warewolf.Studio.CustomControls {
             }
         }
 
-        protected override void OnKeyDown(KeyEventArgs e) {
-            if (e.Key == Key.Escape && SearchMode == SearchMode.Instant) {
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape && SearchMode == SearchMode.Instant)
+            {
                 Text = "";
             }
-            else if ((e.Key == Key.Return || e.Key == Key.Enter) && 
-                SearchMode == SearchMode.Delayed) {
+            else if ((e.Key == Key.Return || e.Key == Key.Enter) &&
+                SearchMode == SearchMode.Delayed)
+            {
                 RaiseSearchEvent();
             }
-            else {
+            else
+            {
                 base.OnKeyDown(e);
             }
         }
@@ -99,51 +106,74 @@ namespace Warewolf.Studio.CustomControls {
             RaiseEvent(args);
         }
 
-        public string LabelText {
-            get { return (string)GetValue(LabelTextProperty); }
-            set { SetValue(LabelTextProperty, value); }
+        public string LabelText
+        {
+            get => (string)GetValue(LabelTextProperty);
+            set => SetValue(LabelTextProperty, value);
         }
 
-        public Brush LabelTextColor {
-            get { return (Brush)GetValue(LabelTextColorProperty); }
-            set { SetValue(LabelTextColorProperty, value); }
+        public Brush LabelTextColor
+        {
+            get => (Brush)GetValue(LabelTextColorProperty);
+            set => SetValue(LabelTextColorProperty, value);
         }
 
         public ICommand ClearSearchCommand
         {
-            get { return (ICommand)GetValue(ClearSearchCommandProperty); }
-            set { SetValue(ClearSearchCommandProperty, value); }
+            get => (ICommand)GetValue(ClearSearchCommandProperty);
+            set => SetValue(ClearSearchCommandProperty, value);
         }
 
-        public SearchMode SearchMode {
-            get { return (SearchMode)GetValue(SearchModeProperty); }
-            set { SetValue(SearchModeProperty, value); }
+        public SearchMode SearchMode
+        {
+            get => (SearchMode)GetValue(SearchModeProperty);
+            set => SetValue(SearchModeProperty, value);
         }
 
-        public bool HasText {
-            get { return (bool)GetValue(HasTextProperty); }
-            private set { SetValue(HasTextPropertyKey, value); }
+        public bool HasText
+        {
+            get => (bool)GetValue(HasTextProperty);
+            private set => SetValue(HasTextPropertyKey, value);
         }
-        
+
         public string ClearSearchToolTip
         {
-            get
-            {
-                return (string)GetValue(ClearSearchToolTipProperty);
-            }
-            set
-            {
-                SetValue(ClearSearchToolTipProperty, value);
-            }
+            get => (string)GetValue(ClearSearchToolTipProperty);
+            set => SetValue(ClearSearchToolTipProperty, value);
         }
-        
-        public static DependencyProperty HasTextProperty { get => hasTextProperty; set => hasTextProperty = value; }
-        public static DependencyProperty SearchModeProperty { get => searchModeProperty; set => searchModeProperty = value; }
-        public static DependencyProperty ClearSearchCommandProperty { get => clearSearchCommandProperty; set => clearSearchCommandProperty = value; }
-        public static DependencyProperty LabelTextColorProperty { get => labelTextColorProperty; set => labelTextColorProperty = value; }
-        public static DependencyProperty LabelTextProperty { get => labelTextProperty; set => labelTextProperty = value; }
 
-        public event RoutedEventHandler Search {
+        public static DependencyProperty HasTextProperty
+        {
+            get => hasTextProperty;
+            set => hasTextProperty = value;
+        }
+
+        public static DependencyProperty SearchModeProperty
+        {
+            get => searchModeProperty;
+            set => searchModeProperty = value;
+        }
+
+        public static DependencyProperty ClearSearchCommandProperty
+        {
+            get => clearSearchCommandProperty;
+            set => clearSearchCommandProperty = value;
+        }
+
+        public static DependencyProperty LabelTextColorProperty
+        {
+            get => labelTextColorProperty;
+            set => labelTextColorProperty = value;
+        }
+
+        public static DependencyProperty LabelTextProperty
+        {
+            get => labelTextProperty;
+            set => labelTextProperty = value;
+        }
+
+        public event RoutedEventHandler Search
+        {
             add { AddHandler(SearchEvent, value); }
             remove { RemoveHandler(SearchEvent, value); }
         }

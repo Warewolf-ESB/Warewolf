@@ -16,7 +16,7 @@ namespace Dev2.Data
         CommonFunctions.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
         readonly int _maxValue;
         int _currentValue;
-        private readonly FunctionEvaluatorOption _functionEvaluatorOption;
+        readonly FunctionEvaluatorOption _functionEvaluatorOption;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
@@ -104,7 +104,7 @@ namespace Dev2.Data
             return _scalarResult != null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToStringErrorIfNull(_scalarResult.Item)) : null;
         }
 
-        private string DoCalcution(string warewolfAtomToString)
+        string DoCalcution(string warewolfAtomToString)
         {
             if (warewolfAtomToString == null)
             {

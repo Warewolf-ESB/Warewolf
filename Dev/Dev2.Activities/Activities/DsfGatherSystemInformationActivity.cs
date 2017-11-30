@@ -73,9 +73,9 @@ namespace Dev2.Activities
         {
             SystemInformationCollection = new List<GatherSystemInformationTO>();
         }
-        
 
-        private void CleanArgs()
+
+        void CleanArgs()
         {
             int count = 0;
             while (count < SystemInformationCollection.Count)
