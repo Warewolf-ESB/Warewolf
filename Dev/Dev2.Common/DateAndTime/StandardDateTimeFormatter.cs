@@ -53,24 +53,28 @@ namespace Dev2.Common.DateAndTime
         }
         public override bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
-            {
-                var internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime?.Trim(), dateTimeTO.InputFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var dateResult);
-                if (internallyParsedValue)
-                {
-                    var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
-                    result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
-                    error = "";
-                }
-                else
-                {
-                    var secondResult = DateTime.Parse(dateTimeTO.DateTime?.Trim(), CultureInfo.InvariantCulture);
-                    var tmpDateTime = PerformDateTimeModification(dateTimeTO, secondResult);
-                    result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
-                    error = "";
 
-                }
-                return true;
+            if (string.IsNullOrEmpty(dateTimeTO.DateTime))
+            {
+                dateTimeTO.DateTime = DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, CultureInfo.InvariantCulture);
             }
+            var internallyParsedValue = DateTime.TryParseExact(dateTimeTO.DateTime?.Trim(), dateTimeTO.InputFormat, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out var dateResult);
+            if (internallyParsedValue)
+            {
+                var tmpDateTime = PerformDateTimeModification(dateTimeTO, dateResult);
+                result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                error = "";
+            }
+            else
+            {
+                var secondResult = DateTime.Parse(dateTimeTO.DateTime?.Trim(), CultureInfo.InvariantCulture);
+                var tmpDateTime = PerformDateTimeModification(dateTimeTO, secondResult);
+                result = tmpDateTime.ToString(dateTimeTO.OutputFormat, CultureInfo.InvariantCulture);
+                error = "";
+
+            }
+            return true;
+
         }
 
         DateTime PerformDateTimeModification(IDateTimeOperationTO dateTimeTO, DateTime tmpDateTime)
