@@ -51,9 +51,19 @@ namespace Warewolf.MergeParser
         {
             var currentTree = BuildTree(current, true);
             var diffTree = BuildTree(difference, loadworkflowFromServer);
-#pragma warning disable S1481 // Unused local variables should be removed
-            var hasConflict = currentTree.Zip(diffTree, (curr, diff) => curr.Equals(diff)).Union(diffTree.Zip(currentTree, (curr,diff)=>curr.Equals(diff))).ToList();
-#pragma warning restore S1481 // Unused local variables should be removed
+            var completeList = currentTree.Concat(diffTree);
+            var groupedItems = completeList.GroupBy(a => a.UniqueId);
+            foreach(var item in groupedItems)
+            {
+                var itemList = item.ToList();
+                var hasConflict = false;
+                if (itemList.Count > 1)
+                {
+                    var item1 = itemList[0];
+                    var item2 = itemList[1];
+                    hasConflict = !item1.Equals(item2);
+                }                
+            }
             return (currentTree, diffTree);
         }
 
