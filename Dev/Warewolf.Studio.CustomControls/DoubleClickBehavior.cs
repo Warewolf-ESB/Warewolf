@@ -12,12 +12,6 @@ namespace Warewolf.Studio.CustomControls
             base.OnAttached();
         }
 
-        protected override void OnDetaching()
-        {
-            AssociatedObject.MouseDoubleClick -= AssociatedObjectOnMouseDoubleClick;
-            base.OnDetaching();
-        }
-
         void AssociatedObjectOnMouseDoubleClick(object sender, MouseButtonEventArgs mouseButtonEventArgs)
         {
             AssociatedObject.SelectAll();
