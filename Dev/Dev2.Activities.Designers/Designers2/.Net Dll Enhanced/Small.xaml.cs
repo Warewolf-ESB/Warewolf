@@ -8,13 +8,25 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System.Windows;
+
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
+    // Interaction logic for Small.xaml
     public partial class Small
     {
         public Small()
         {
             InitializeComponent();
         }
+
+        #region Overrides of ActivityDesignerTemplate
+
+        protected override IInputElement GetInitialFocusElement()
+        {
+            return null;
+        }
+
+        #endregion
     }
 }
