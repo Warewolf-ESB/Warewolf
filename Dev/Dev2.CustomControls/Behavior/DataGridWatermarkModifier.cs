@@ -53,12 +53,6 @@ namespace Dev2.Studio.AppResources.Behaviors
             dataGridItems = AssociatedObject.Items;
         }
 
-        protected override void OnDetaching()
-        {
-            base.OnDetaching();
-            UnsubscribeFromEvents();
-        }
-
         #endregion Override Methods
 
         #region Dependency Properties
