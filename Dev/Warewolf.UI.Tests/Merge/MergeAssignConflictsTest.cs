@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Drawing;
+using System.Windows.Input;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
 using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
@@ -10,13 +11,13 @@ namespace Warewolf.UI.Tests.Merge
     [CodedUITest]
     public class MergeAssignConflictsTest
     {
-        public const string MergeDecision = "MergeAssign";
+        public const string MergeAssign = "MergeAssign";
 
         [TestMethod]
         [TestCategory("Merge")]
         public void RightClick_On_MergeWfWithVersion_Has_Merge_Option()
         {
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeDecision);
+            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeAssign);
         }
         [TestMethod]
         [TestCategory("Merge")]
@@ -49,26 +50,27 @@ namespace Warewolf.UI.Tests.Merge
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Click_On_Merge_With_Decision_And_Difference_Between_Decision_Add_Decision_And_Assigns_On_Design_Surface()
+        public void Click_Keyboard_Delete_On_AssignTool_On_Design_Surface_Is_Disabled()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
-            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.Difference_Decision.Exists, "Assign from difference was not added to the design surface After checking Radio Button");
-            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface.Exists, "Decision from difference was not added to the design surface After checking Radio Button");
+            MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.LeftVariablesRadio.Selected = true;
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface.Exists, "Assign tool was not Added on the Design Surface after selecting variable radio button.");
+            Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface, new Point(10, 10));
+            Keyboard.SendKeys(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface, "{Delete}", ModifierKeys.None);
         }
 
         [TestMethod]
         [TestCategory("Merge")]
-        public void Open_MergeDecisoion_Then_Select_Current_Variables_Auto_Adds_Non_Conflicting_Tools()
+        public void Open_MergeAssign_Then_Select_Current_Variables_Auto_Adds_Non_Conflicting_Tools()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
-            Mouse.Click(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.MergeItemExpander.MergeButton, new Point(10, 10));
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.LeftVariablesRadio.Selected = true;
-            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.Difference_Decision.Exists, "Decision tool was not Added on the Design Surface after selecting variable radio button.");
-            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem5.Difference.Enabled, "Radio button not enabled");
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.FirstAssign_Diff_On_Surface.Exists, "Assign tool was not Added on the Design Surface after selecting variable radio button.");
+            Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.Enabled, "Radio button not enabled");
         }
 
         #region Additional test attributes
@@ -78,7 +80,7 @@ namespace Warewolf.UI.Tests.Merge
         {
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
-            ExplorerUIMap.Open_Context_Menu_For_Service(MergeDecision);
+            ExplorerUIMap.Open_Context_Menu_For_Service(MergeAssign);
         }
 
         public MergeConflictsUIMap MergeConflictsUIMap
