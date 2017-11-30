@@ -13,16 +13,6 @@ namespace Warewolf.Studio.Views
             {
                 var node = nodes.Pop();
                 yield return node;
-                if(node != null)
-                {
-                    foreach (var n in node.Nodes)
-                    {
-                        if (n != null)
-                        {
-                            nodes.Push(n);
-                        }
-                    }
-                }
             }
         }
     }
