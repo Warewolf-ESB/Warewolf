@@ -24,7 +24,7 @@ namespace Dev2.Data.TO
     public class ErrorResultTO : IErrorResultTO
     {
 
-        private readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
+        readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
 
         /// <summary>
         /// Adds the error.

@@ -43,15 +43,15 @@ namespace Dev2.Common.DateAndTime
         protected Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         public static Dictionary<string, ITimeZoneTO> TimeZones = new Dictionary<string, ITimeZoneTO>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
+        static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
 
         protected DateTimeParser()
         {
             InitializeBuilders();
         }
 
-        private void InitializeBuilders()
+        void InitializeBuilders()
         {
             var timeZoneBuilder = new TimeZoneBuilder.TimeZoneBuilder();
             timeZoneBuilder.Build();
@@ -318,7 +318,7 @@ namespace Dev2.Common.DateAndTime
         }
 
 
-        private string MatchInputFormatToCulture(ref string error, int culturesTried)
+        string MatchInputFormatToCulture(ref string error, int culturesTried)
         {
             string inputFormat = "";
             switch (culturesTried)
@@ -386,7 +386,7 @@ namespace Dev2.Common.DateAndTime
             return inputFormat;
         }
 
-        private static bool IsBlankResult(IDateTimeResultTO result)
+        static bool IsBlankResult(IDateTimeResultTO result)
         {
             return result.AmPm == DateTimeAmPm.am &&
                    result.Days == 0 &&
@@ -404,7 +404,7 @@ namespace Dev2.Common.DateAndTime
         }
 
 
-        private  bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
+        bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
             bool nothingDied = true;
 
