@@ -20,13 +20,13 @@ namespace Dev2.Activities.Designers2.Email
             Loaded += OnLoaded;
         }
 
-        private EmailDesignerViewModel ViewModel => DataContext as EmailDesignerViewModel;
+        EmailDesignerViewModel ViewModel => DataContext as EmailDesignerViewModel;
 
         protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
 
         public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
 
-        private void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
             var viewModel = ViewModel;
             if (viewModel != null)
@@ -35,7 +35,7 @@ namespace Dev2.Activities.Designers2.Email
             }
         }
 
-        private void OnPasswordChanged(object sender, RoutedEventArgs e)
+        void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
             var viewModel = ViewModel;
             if (viewModel != null)

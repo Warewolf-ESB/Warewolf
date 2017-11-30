@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -21,14 +20,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             SetInitialFocus();
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return MainGrid;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
 
         void UIElement_OnIsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
