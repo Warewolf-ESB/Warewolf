@@ -19,14 +19,6 @@ namespace Dev2.Activities.Designers2.Oracle
             InitializeComponent();
             SetInitialFocus();
         }
-
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return MainGrid;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
     }
 }
