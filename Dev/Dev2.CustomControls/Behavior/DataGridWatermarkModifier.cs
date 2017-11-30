@@ -46,10 +46,7 @@ namespace Dev2.Studio.AppResources.Behaviors
         protected override void OnAttached()
         {
             base.OnAttached();
-
             SubscribeToEvents();
-
-
             dataGridItems = AssociatedObject.Items;
         }
 
