@@ -197,16 +197,6 @@
     <Compile Include="Designers2\ComDLL\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
-    <Compile Include="Designers2\.Net DLL\DotNetDllDesigner.xaml.cs">
-      <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\.Net DLL\Large.xaml.cs">
-      <DependentUpon>Large.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\.Net DLL\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Designers2\AggregateCalculate\AggregateCalculate.xaml.cs">
       <DependentUpon>AggregateCalculate.xaml</DependentUpon>
     </Compile>
@@ -1297,18 +1287,6 @@
     <Page Include="Designers2\ComDLL\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\.Net DLL\DotNetDllDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\.Net DLL\Large.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\.Net DLL\Small.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\AggregateCalculate\AggregateCalculate.xaml">
       <SubType>Designer</SubType>
