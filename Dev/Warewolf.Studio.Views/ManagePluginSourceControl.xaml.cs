@@ -2,7 +2,6 @@
 using System.Windows.Controls;
 using Dev2.Common.Interfaces;
 using Dev2.UI;
-using Infragistics.Controls.Menus;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
@@ -19,24 +18,10 @@ namespace Warewolf.Studio.Views
             return HeaderTextBlock.Text;
         }
 
-        public string GetAssemblyName()
-        {
-            var be = AssemblyNameTextBox.GetBindingExpression(TextBox.TextProperty);
-            be?.UpdateTarget();
-            return AssemblyNameTextBox.Text;
-        }
-
         public void PerformSave()
         {
             var viewModel = DataContext as ManagePluginSourceViewModel;
             viewModel?.OkCommand.Execute(null);
-        }
-
-        public void SetAssemblyName(string assemblyName)
-        {
-            AssemblyNameTextBox.Text = assemblyName;
-            var be = AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
-            be?.UpdateSource();
         }
 
         public bool GetControlEnabled(string controlName)
@@ -59,9 +44,8 @@ namespace Warewolf.Studio.Views
                 case nameof(GacAssemblyNameButton):
                     return GacAssemblyNameButton.IsEnabled;
                 default:
-                    break;
+                    return false;
             }
-            return false;
         }
 
         void GacAssemblyNameTextBox_OnTextChanged(object sender, RoutedEventArgs e)
