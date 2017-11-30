@@ -174,6 +174,18 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mSelectFilesWindow;
             }
         }
+        
+        public EditObjectDialog EditObjectDialog
+        {
+            get
+            {
+                if ((this.mEditObjectDialog == null))
+                {
+                    this.mEditObjectDialog = new EditObjectDialog();
+                }
+                return this.mEditObjectDialog;
+            }
+        }
         #endregion
         
         #region Fields
@@ -200,6 +212,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private ChooseDLLWindow mChooseDLLWindow;
         
         private SelectFilesWindow mSelectFilesWindow;
+        
+        private EditObjectDialog mEditObjectDialog;
         #endregion
     }
     
@@ -6807,6 +6821,78 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         
         #region Fields
         private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class EditObjectDialog : WpfWindow
+    {
+        
+        public EditObjectDialog()
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfWindow.PropertyNames.Name] = "WindowBorderLess";
+            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
+            this.WindowTitles.Add("WindowBorderLess");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfText TitleText
+        {
+            get
+            {
+                if ((this.mTitleText == null))
+                {
+                    this.mTitleText = new WpfText(this);
+                    #region Search Criteria
+                    this.mTitleText.SearchProperties[WpfText.PropertyNames.Name] = "Object";
+                    this.mTitleText.WindowTitles.Add("WindowBorderLess");
+                    #endregion
+                }
+                return this.mTitleText;
+            }
+        }
+        
+        public WpfEdit ResponseTextbox
+        {
+            get
+            {
+                if ((this.mResponseTextbox == null))
+                {
+                    this.mResponseTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mResponseTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ResponseTextbox";
+                    this.mResponseTextbox.WindowTitles.Add("WindowBorderLess");
+                    #endregion
+                }
+                return this.mResponseTextbox;
+            }
+        }
+        
+        public WpfButton CloseButton
+        {
+            get
+            {
+                if ((this.mCloseButton == null))
+                {
+                    this.mCloseButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mCloseButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "DoneButton";
+                    this.mCloseButton.WindowTitles.Add("WindowBorderLess");
+                    #endregion
+                }
+                return this.mCloseButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfText mTitleText;
+        
+        private WpfEdit mResponseTextbox;
+        
+        private WpfButton mCloseButton;
         #endregion
     }
 }

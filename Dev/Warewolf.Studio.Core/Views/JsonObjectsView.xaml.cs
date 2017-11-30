@@ -9,9 +9,6 @@ using Warewolf.Studio.Core;
 
 namespace Dev2.Studio.Core.Views
 {
-    /// <summary>
-    /// Interaction logic for JsonObjectsView.xaml
-    /// </summary>
     public partial class JsonObjectsView: IJsonObjectsView
     {
         readonly Grid _blackoutGrid = new Grid();
