@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Foreach
 {
     public partial class Small
     {
-        private readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
+        readonly DropEnabledActivityDesignerUtils _dropEnabledActivityDesignerUtils;
 
         public Small()
         {
@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Foreach
 
         ForeachDesignerViewModel ViewModel => DataContext as ForeachDesignerViewModel;
 
-        private void DoDrop(object sender, DragEventArgs e)
+        void DoDrop(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
 

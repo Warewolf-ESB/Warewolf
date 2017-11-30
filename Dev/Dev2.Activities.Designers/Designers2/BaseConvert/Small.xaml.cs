@@ -20,9 +20,6 @@ namespace Dev2.Activities.Designers2.BaseConvert
             DataGrid = SmallDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement();
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement();
     }
 }
