@@ -90,17 +90,21 @@ using Dev2.Activities.WcfEndPoint;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.Decision;
 using Dev2.Activities.Designers2.Switch;
+using Dev2.Activities.DateAndTime;
 
 namespace Dev2
 {
     public static class DesignerAttributeMap
     {
-        
+
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesignerViewModel) },
                 { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesignerViewModel) },
+                { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesignerViewModel) },
+                { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesignerViewModel) },
                 { typeof(DsfDateTimeActivity), typeof(DateTimeDesignerViewModel) },
+                { typeof(DsfDotNetDateTimeActivity), typeof(DateTimeDesignerViewModel) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestDesignerViewModel) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesignerViewModel) },
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesignerViewModel) },
@@ -115,6 +119,8 @@ namespace Dev2
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesignerViewModel) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesignerViewModel) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesignerViewModel) },
+                { typeof(DsfDotNetCalculateActivity), typeof(CalculateDesignerViewModel) },
+                { typeof(DsfDotNetAggregateCalculateActivity), typeof(AggregateCalculateDesignerViewModel) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesignerViewModel) },
                 { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesignerViewModel) },
                 { typeof(DsfPathCopy), typeof(CopyDesignerViewModel) },
@@ -131,6 +137,7 @@ namespace Dev2
                 { typeof(DsfCommentActivity), typeof(CommentDesignerViewModel) },
                 { typeof(DsfSequenceActivity), typeof(SequenceDesignerViewModel) },
                 { typeof(DsfDateTimeDifferenceActivity), typeof(DateTimeDifferenceDesignerViewModel) },
+                { typeof(DsfDotNetDateTimeDifferenceActivity), typeof(DateTimeDifferenceDesignerViewModel) },
                 { typeof(DsfSendEmailActivity), typeof(EmailDesignerViewModel) },
                 { typeof(DsfIndexActivity), typeof(FindIndexDesignerViewModel) },
                 { typeof(DsfRandomActivity), typeof(RandomDesignerViewModel) },
@@ -144,6 +151,7 @@ namespace Dev2
                 { typeof(DsfDataMergeActivity), typeof(DataMergeDesignerViewModel) },
                 { typeof(DsfDataSplitActivity), typeof(DataSplitDesignerViewModel) },
                 { typeof(DsfGatherSystemInformationActivity), typeof(GatherSystemInformationDesignerViewModel) },
+                { typeof(DsfDotNetGatherSystemInformationActivity), typeof(GatherSystemInformationDesignerViewModel) },
                 { typeof(DsfXPathActivity), typeof(XPathDesignerViewModel) },
                 { typeof(DsfActivity), typeof(ServiceDesignerViewModel) },
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesignerViewModel) },
