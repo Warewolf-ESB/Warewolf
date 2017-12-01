@@ -34,10 +34,10 @@ namespace Warewolf.UI.Tests.Explorer
         [TestCategory("Explorer")]
         public void DeleteDialog_PressEscape_ClosesDialogWindow()
         {
-            ExplorerUIMap.Filter_Explorer(flowSwitch);
+            ExplorerUIMap.Filter_Explorer("Hello World");
             ExplorerUIMap.Delete_FirstResource_From_ExplorerContextMenu();
             DialogsUIMap.WhenIHitEscapeKeyOnTheKeyboardOnMessagebox();
-            Assert.IsFalse(DialogsUIMap.MessageBoxWindow.Exists, "Delete dialog still open after pressing escape key.");
+            Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.MessageBoxWindow), "Delete dialog still open after pressing escape key.");
         }
 
         [TestMethod]

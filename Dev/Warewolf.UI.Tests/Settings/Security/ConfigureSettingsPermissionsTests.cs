@@ -109,7 +109,7 @@ namespace Warewolf.UI.Tests
         public void PublicApisJson_Requires_ExecutePermission()
         {
             UIMap.Click_Settings_RibbonButton();
-            SettingsUIMap.Uncheck_Public_Execute();
+            SettingsUIMap.Uncheck_Public_Administrator();
             if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
             {
                 Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
@@ -128,7 +128,7 @@ namespace Warewolf.UI.Tests
                     StringAssert.Contains(e.Message, "Forbidden");
                 }
             }
-            SettingsUIMap.Check_Public_Execute();
+            SettingsUIMap.Check_Public_Administrator();
             if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
             {
                 Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
