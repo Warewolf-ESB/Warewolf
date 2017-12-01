@@ -552,7 +552,6 @@ namespace Dev2.ViewModels.Merge
                 if (conflict is IArmConnectorConflict nextArmConflict)
                 {
                     UpdateNextArmState(nextArmConflict);
-                    UpdateNextArmEnabledState(container, nextArmConflict);
                 }
                 container.IsChecked = isChecked;
             }
