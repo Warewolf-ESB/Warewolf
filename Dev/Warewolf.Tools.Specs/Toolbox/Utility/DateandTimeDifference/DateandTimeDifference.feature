@@ -100,13 +100,13 @@ Scenario: Calculate the number of split seconds between two given dates
 	Given I have a first date "2013-11-29" 
 	And I have a second date "2014-11-01" 
 	And the date format as "yyyy-mm-dd"
-	And I selected output in "Split Secs" 	
+	And I selected output in "Milliseconds" 	
 	When the datetime difference tool is executed
 	Then the difference should be "29116800000"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Input 1    | Input 2    | Input Format | Output In  |
-	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Split Secs |
+	| Input 1    | Input 2    | Input Format | Output In    |
+	| 2013-11-29 | 2014-11-01 | yyyy-mm-dd   | Milliseconds |
 	And the debug output as 
 	|                          |
 	| [[result]] = 29116800000 |
@@ -315,13 +315,13 @@ Scenario: Calculate the number of split seconds
 	Given I have a first date "06/01/2014 08:00:01.00" 
 	And I have a second date "06/01/2014 08:00:01.68" 
 	And the date format as "dd/mm/yyyy 12h:min:ss.sp"
-	And I selected output in "Split Secs" 	
+	And I selected output in "Milliseconds" 	
 	When the datetime difference tool is executed
 	Then the difference should be "68"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Input 1                | Input 2                | Input Format             | Output In  |
-	| 06/01/2014 08:00:01.00 | 06/01/2014 08:00:01.68 | dd/mm/yyyy 12h:min:ss.sp | Split Secs |
+	| Input 1                | Input 2                | Input Format             | Output In    |
+	| 06/01/2014 08:00:01.00 | 06/01/2014 08:00:01.68 | dd/mm/yyyy 12h:min:ss.sp | Milliseconds |
 	And the debug output as 
 	|                 |
 	| [[result]] = 68 |
@@ -331,13 +331,13 @@ Scenario: Calculate the number of split seconds by using default date format
 	Given I have a first date "01/06/2014 08:00:01.00" 
 	And I have a second date "01/06/2014 08:00:01.68" 
 	And the date format as ""
-	And I selected output in "Split Secs" 	
+	And I selected output in "Milliseconds" 	
 	When the datetime difference tool is executed
 	Then the difference should be "68"
 	And the execution has "NO" error
 	And the debug inputs as  
-	| Input 1                | Input 2                | Input Format | Output In  |
-	| 2014/01/06 08:00:01.00 | 2014/01/06 08:00:01.68 | ""           | Split Secs |
+	| Input 1                | Input 2                | Input Format | Output In    |
+	| 2014/01/06 08:00:01.00 | 2014/01/06 08:00:01.68 | ""           | Milliseconds |
 	And the debug output as 
 	|                 |
 	| [[result]] = 68 |
