@@ -96,8 +96,24 @@ namespace Dev2.ViewModels.Merge
             var currentTree = currentChanges.current;
             var diffTree = currentChanges.diff;
             var armConnectorConflicts = new List<IArmConnectorConflict>();
-            ProcessCurrent(currentResourceModel, conflicts, currentTree, armConnectorConflicts);
-            ProcessDiff(differenceResourceModel, conflicts, diffTree, armConnectorConflicts);
+            var orderedCurrentTree = currentTree.OrderBy(u => u.UniqueId).ToList();
+            var orderedDiffTree = diffTree.OrderBy(u => u.UniqueId).ToList();
+            var currentCount = orderedCurrentTree.Count;
+            var diffCount = orderedDiffTree.Count;
+            var maxItems = currentCount >= diffCount ? currentCount : diffCount;
+            for(int i = 0; i < maxItems; i++)
+            {
+                if (i < currentCount)
+                {
+                    ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, orderedCurrentTree[i]);
+                }
+                if (i < diffCount)
+                {
+                    ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, orderedDiffTree[i]);
+                }
+            }
+            //ProcessCurrent(currentResourceModel, conflicts, currentTree, armConnectorConflicts);
+            //ProcessDiff(differenceResourceModel, conflicts, diffTree, armConnectorConflicts);
             return conflicts;
         }
 
@@ -110,30 +126,35 @@ namespace Dev2.ViewModels.Merge
             }
             foreach (var treeItem in diffTree)
             {
-                IToolConflict conflict = null;
-                var node = treeItem;
-                var foundConflict = conflicts.Where(s => s is IToolConflict).Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
-                var id = Guid.Parse(node.UniqueId);
-                if (foundConflict == null)
-                {
-                    conflict = new ToolConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
-                    conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                    conflict.CurrentViewModel.Container = conflict;
-                    conflicts.Add(conflict);
-                }
-                else
-                {
-                    conflict = foundConflict;
-                }
-                var conflictTreeNode = node;
-                var currentFactory = new ConflictModelFactory(differenceResourceModel, conflictTreeNode);
-                conflict.DiffViewModel = currentFactory.Model;
-                conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                conflict.DiffViewModel.Container = conflict;
-                conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
-                AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
-                ShowArmConnectors(conflicts, armConnectorConflicts);
+                ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, treeItem);
             }
+        }
+
+        private void ProcessDiffItem(IContextualResourceModel differenceResourceModel, List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem)
+        {
+            IToolConflict conflict = null;
+            var node = treeItem;
+            var foundConflict = conflicts.Where(s => s is IToolConflict).Cast<IToolConflict>().FirstOrDefault(t => t.UniqueId.ToString() == node.UniqueId);
+            var id = Guid.Parse(node.UniqueId);
+            if (foundConflict == null)
+            {
+                conflict = new ToolConflict { UniqueId = id, CurrentViewModel = EmptyConflictViewModel(id) };
+                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+                conflict.CurrentViewModel.Container = conflict;
+                conflicts.Add(conflict);
+            }
+            else
+            {
+                conflict = foundConflict;
+            }
+            var conflictTreeNode = node;
+            var currentFactory = new ConflictModelFactory(differenceResourceModel, conflictTreeNode);
+            conflict.DiffViewModel = currentFactory.Model;
+            conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            conflict.DiffViewModel.Container = conflict;
+            conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
+            AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
+            ShowArmConnectors(conflicts, armConnectorConflicts);
         }
 
         void ProcessCurrent(IContextualResourceModel currentResourceModel, List<IConflict> conflicts, List<ConflictTreeNode> currentTree, List<IArmConnectorConflict> armConnectorConflicts)
@@ -144,21 +165,24 @@ namespace Dev2.ViewModels.Merge
             }
             foreach (var treeItem in currentTree)
             {
-                var conflict = new ToolConflict();
-                var modelFactory = new ConflictModelFactory(currentResourceModel, treeItem);
-                var id = Guid.Parse(treeItem.UniqueId);
-                conflict.UniqueId = id;
-                conflict.DiffViewModel = EmptyConflictViewModel(id);
-                conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                conflict.CurrentViewModel = modelFactory.Model;
-                conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
-                conflict.CurrentViewModel.Container = conflict;
-                conflict.DiffViewModel.Container = conflict;
-                conflict.HasConflict = treeItem.IsInConflict;
-                ShowArmConnectors(conflicts, armConnectorConflicts);
-                conflicts.Add(conflict);
-                AddArmConnectors(armConnectorConflicts, treeItem, id);
+                ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, treeItem);
             }
+        }
+
+        private void ProcessCurrentItem(IContextualResourceModel currentResourceModel, List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem)
+        {
+            var conflict = new ToolConflict();
+            var modelFactory = new ConflictModelFactory(currentResourceModel, treeItem);
+            var id = Guid.Parse(treeItem.UniqueId);
+            conflict.UniqueId = id;
+            conflict.DiffViewModel = EmptyConflictViewModel(id);
+            conflict.CurrentViewModel = modelFactory.Model;
+            conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
+            conflict.CurrentViewModel.Container = conflict;
+            conflict.HasConflict = treeItem.IsInConflict;
+            ShowArmConnectors(conflicts, armConnectorConflicts);
+            conflicts.Add(conflict);
+            AddArmConnectors(armConnectorConflicts, treeItem, id);
         }
 
         static void ShowArmConnectors(List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts)
