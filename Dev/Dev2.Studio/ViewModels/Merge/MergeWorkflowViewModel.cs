@@ -149,12 +149,14 @@ namespace Dev2.ViewModels.Merge
                 var id = Guid.Parse(treeItem.UniqueId);
                 conflict.UniqueId = id;
                 conflict.DiffViewModel = EmptyConflictViewModel(id);
+                conflict.DiffViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel = modelFactory.Model;
                 conflict.CurrentViewModel.SomethingModelToolChanged += SourceOnModelToolChanged;
                 conflict.CurrentViewModel.Container = conflict;
+                conflict.DiffViewModel.Container = conflict;
                 conflict.HasConflict = treeItem.IsInConflict;
                 ShowArmConnectors(conflicts, armConnectorConflicts);
-                conflicts.Add(conflict);                
+                conflicts.Add(conflict);
                 AddArmConnectors(armConnectorConflicts, treeItem, id);
             }
         }
