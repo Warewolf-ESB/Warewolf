@@ -74,13 +74,14 @@ namespace Warewolf.UI.Load.Specs
             Console.WriteLine("timer stopped after " + totalSeconds + " seconds.");
         }
 
-        [Given(@"I have ""(.*)"" new workflow tabs open")]
-        [When(@"I open ""(.*)"" new workflow tabs")]
+        [Given(@"I have ""(.*)"" All Tools workflows tabs open")]
+        [When(@"I open ""(.*)"" All Tools workflows tabs")]
         public void OpenManyNewWorkflowTabs(string numberOfTabs)
         {
             for(var i = int.Parse(numberOfTabs); i > 0; i--)
             {
-                UIMap.Click_NewWorkflow_RibbonButton();
+                ExplorerUIMap.Filter_Explorer("All Tools " + i.ToString());
+                ExplorerUIMap.Open_Explorer_First_Item_With_Double_Click();
             }
         }
 
