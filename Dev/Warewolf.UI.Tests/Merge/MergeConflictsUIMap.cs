@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
+using System.Drawing;
 using TechTalk.SpecFlow;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
@@ -6,7 +7,15 @@ using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
 namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
 {
     public partial class MergeConflictsUIMap
+
     {
+
+        public void Expand_Designer()
+        {
+            Mouse.StartDragging(MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUI_GridSplitter_AutoIndicator, new Point(3, 395));
+            Mouse.StopDragging(MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem8.MergeItemExpander.MergeButton, new Point(370, 13));
+        }
+
         [Given(@"I have merge conflicts tab open for service ""(.*)""")]
         [When(@"I open merge conflicts tab open for service ""(.*)""")]
         public void OpenMerge_For_Workflow(string workflow)
