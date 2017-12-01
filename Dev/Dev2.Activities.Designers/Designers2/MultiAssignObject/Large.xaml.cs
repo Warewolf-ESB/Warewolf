@@ -12,8 +12,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-
-
 namespace Dev2.Activities.Designers2.MultiAssignObject
 {
     public partial class Large
@@ -24,10 +22,7 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
             DataGrid = LargeDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement(0);
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement(0);
 
         void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
         {
