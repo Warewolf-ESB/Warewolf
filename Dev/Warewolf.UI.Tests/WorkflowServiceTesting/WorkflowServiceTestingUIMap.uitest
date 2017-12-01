@@ -5266,7 +5266,7 @@
                                                                 <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                    <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -5279,7 +5279,7 @@
                                                                     <UIObject ControlType="Table" Id="Table" FriendlyName="SmallDataGrid" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                        <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -5291,7 +5291,7 @@
                                                                         <UIObject ControlType="Row" Id="Row1" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                            <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <SearchConfigurations>
                                                                             <SearchConfiguration>AlwaysSearch</SearchConfiguration>
@@ -5306,7 +5306,7 @@
                                                                             <UIObject ControlType="Cell" Id="Cell3" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                                <WindowTitle>Warewolf</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="ColumnHeader" />
@@ -5320,7 +5320,7 @@
                                                                                 <UIObject ControlType="Text" Id="Textbox" FriendlyName="→" SpecialControlType="None">
                                                                                   <TechnologyName>UIA</TechnologyName>
                                                                                   <WindowTitles>
-                                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                                    <WindowTitle>Warewolf</WindowTitle>
                                                                                   </WindowTitles>
                                                                                   <AndCondition>
                                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -5370,7 +5370,7 @@
                                                                 <UIObject ControlType="Custom" Id="SmallView" FriendlyName="SmallViewContent" SpecialControlType="None">
                                                                   <TechnologyName>UIA</TechnologyName>
                                                                   <WindowTitles>
-                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                    <WindowTitle>Warewolf</WindowTitle>
                                                                   </WindowTitles>
                                                                   <AndCondition>
                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -5383,7 +5383,7 @@
                                                                     <UIObject ControlType="Table" Id="Table" FriendlyName="SmallDataGrid" SpecialControlType="None">
                                                                       <TechnologyName>UIA</TechnologyName>
                                                                       <WindowTitles>
-                                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                        <WindowTitle>Warewolf</WindowTitle>
                                                                       </WindowTitles>
                                                                       <AndCondition>
                                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -5395,7 +5395,7 @@
                                                                         <UIObject ControlType="Row" Id="Row1" FriendlyName="UI_ActivityGridRow_0_AutoID" SpecialControlType="None">
                                                                           <TechnologyName>UIA</TechnologyName>
                                                                           <WindowTitles>
-                                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                            <WindowTitle>Warewolf</WindowTitle>
                                                                           </WindowTitles>
                                                                           <SearchConfigurations>
                                                                             <SearchConfiguration>AlwaysSearch</SearchConfiguration>
@@ -5410,7 +5410,7 @@
                                                                             <UIObject ControlType="Cell" Id="Cell3" FriendlyName="Item: Unlimited.Applications.BusinessDesignStudio...." SpecialControlType="None">
                                                                               <TechnologyName>UIA</TechnologyName>
                                                                               <WindowTitles>
-                                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                                <WindowTitle>Warewolf</WindowTitle>
                                                                               </WindowTitles>
                                                                               <AndCondition>
                                                                                 <PropertyCondition Name="ColumnHeader" />
@@ -5424,7 +5424,7 @@
                                                                                 <UIObject ControlType="Text" Id="Textbox" FriendlyName="→" SpecialControlType="None">
                                                                                   <TechnologyName>UIA</TechnologyName>
                                                                                   <WindowTitles>
-                                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                                    <WindowTitle>Warewolf</WindowTitle>
                                                                                   </WindowTitles>
                                                                                   <AndCondition>
                                                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -6148,7 +6148,7 @@
                                                 <UIObject ControlType="Expander" Id="StepTitleBar" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
                                                   <TechnologyName>UIA</TechnologyName>
                                                   <WindowTitles>
-                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                    <WindowTitle>Warewolf</WindowTitle>
                                                   </WindowTitles>
                                                   <AndCondition>
                                                     <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -6160,7 +6160,7 @@
                                                     <UIObject ControlType="Button" Id="Step" FriendlyName="Warewolf.Studio.ViewModels.ServiceTestStep" SpecialControlType="None">
                                                       <TechnologyName>UIA</TechnologyName>
                                                       <WindowTitles>
-                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                        <WindowTitle>Warewolf</WindowTitle>
                                                       </WindowTitles>
                                                       <AndCondition>
                                                         <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
@@ -6172,7 +6172,7 @@
                                                         <UIObject ControlType="Text" Id="Textbox3" FriendlyName="" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                            <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
                                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
@@ -6184,7 +6184,7 @@
                                                             <UIObject ControlType="Image" Id="Icon" FriendlyName="" SpecialControlType="None">
                                                               <TechnologyName>UIA</TechnologyName>
                                                               <WindowTitles>
-                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                <WindowTitle>Warewolf</WindowTitle>
                                                               </WindowTitles>
                                                               <SearchConfigurations>
                                                                 <SearchConfiguration>NextTo</SearchConfiguration>

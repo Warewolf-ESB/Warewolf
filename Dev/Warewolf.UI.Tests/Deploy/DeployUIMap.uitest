@@ -711,7 +711,7 @@
                                                         <UIObject ControlType="Custom" Id="Spinner" FriendlyName="" SpecialControlType="None">
                                                           <TechnologyName>UIA</TechnologyName>
                                                           <WindowTitles>
-                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                            <WindowTitle>Warewolf</WindowTitle>
                                                           </WindowTitles>
                                                           <AndCondition>
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
