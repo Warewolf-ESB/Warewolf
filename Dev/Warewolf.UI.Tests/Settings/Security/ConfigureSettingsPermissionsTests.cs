@@ -116,7 +116,7 @@ namespace Warewolf.UI.Tests
             }
             using (var client = new WebClient
             {
-                Credentials = CredentialCache.DefaultNetworkCredentials
+                Credentials = CredentialCache.DefaultCredentials
             })
             {
                 try
