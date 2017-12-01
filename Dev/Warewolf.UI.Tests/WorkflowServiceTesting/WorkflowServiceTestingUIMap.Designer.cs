@@ -392,7 +392,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCl
                 {
                     this.mDuplicateButton = new WpfButton(this);
                     #region Search Criteria
-                    this.mDuplicateButton.SearchProperties[WpfButton.PropertyNames.HelpText] = "Duplicate this test";
+                    this.mDuplicateButton.SearchProperties.Add(new PropertyExpression(WpfButton.PropertyNames.HelpText, "duplicat", PropertyExpressionOperator.Contains));
                     this.mDuplicateButton.WindowTitles.Add("Warewolf");
                     #endregion
                 }
