@@ -110,16 +110,6 @@ namespace Warewolf.UI.Tests
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test1.Passing.Exists, "Failed status icon does not exist after running a test with the new duplicated workflow.");
         }
 
-        [TestMethod]
-        [TestCategory("Workflow Testing")]
-        public void Click_Duplicate_Test_Button_AssertIcon()
-        {
-            UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
-            WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test5.Exists, "No 5th test after starting with 4 tests and duplicating one of them.");
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Height > 0 && WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Width > 0, "Step icon is not visible after duplicate.");
-        }
-
         #region Additional test attributes
 
         [TestInitialize()]
