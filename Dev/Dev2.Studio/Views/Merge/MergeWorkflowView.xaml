@@ -688,6 +688,7 @@
                                                 <StackPanel x:Name="CurrentNodeArmRBSP" 
                                                             DockPanel.Dock="Right" 
                                                             Orientation="Horizontal"
+                                                            IsEnabled="{Binding IsArmSelectionAllowed}"
                                                             AutomationProperties.AutomationId="UI_CurrentNodeArmRBSP_AutoID">
                                                     <RadioButton x:Name="CurrentNodeArmRB" 
                                                                  IsChecked="{Binding IsChecked}" 
@@ -745,6 +746,7 @@
                                                 <StackPanel Name="DifferenceNodeArmSP" 
                                                             DockPanel.Dock="Left" 
                                                             Orientation="Horizontal" 
+                                                            IsEnabled="{Binding IsArmSelectionAllowed}"
                                                             AutomationProperties.AutomationId="UI_DifferenceNodeArmSP_AutoID">
                                                     <RadioButton x:Name="DifferenceNodeArmRB" 
                                                                  IsChecked="{Binding IsChecked}" 
