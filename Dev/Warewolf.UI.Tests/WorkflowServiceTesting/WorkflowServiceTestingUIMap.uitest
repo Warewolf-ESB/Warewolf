@@ -1119,7 +1119,7 @@
                                           <AndCondition>
                                             <PropertyCondition Name="ControlType">Button</PropertyCondition>
                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
-                                            <PropertyCondition Name="HelpText">Duplicate this test</PropertyCondition>
+                                            <PropertyCondition Name="HelpText" Operator="Contains">duplicat</PropertyCondition>
                                           </AndCondition>
                                           <SupportLevel>0</SupportLevel>
                                           <Descendants />
