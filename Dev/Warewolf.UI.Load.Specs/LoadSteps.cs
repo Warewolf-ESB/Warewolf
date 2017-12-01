@@ -19,7 +19,7 @@ namespace Warewolf.UI.Load.Specs
         public void CallDuplicateService_GivenValidComsController_ShouldDuplicate()
         {
             UIMap.AssertStudioIsRunning();
-            if (!File.Exists(Environment.ExpandEnvironmentVariables("%programdata%\\Warewolf\\Resources\\All Tools 29")))
+            if (!File.Exists(Environment.ExpandEnvironmentVariables("%programdata%\\Warewolf\\Resources\\All Tools 29.xml")))
             {
                 UIMap.Click_Settings_RibbonButton();
                 SettingsUIMap.Check_Public_Contribute();
@@ -65,12 +65,12 @@ namespace Warewolf.UI.Load.Specs
             }
         }
 
-        [Then(@"the timer duration is less than ""(.*)"" seconds")]
-        public void StopTimer(string duration)
+        [Then(@"the timer duration is between ""(.*)"" and ""(.*)""")]
+        public void StopTimer(string durationGreaterThan, string durationLessThan)
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
-            double totalSeconds = (System.DateTime.Now - startTime).TotalSeconds;
-            Assert.IsTrue(totalSeconds < int.Parse(duration), "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is greater than " + duration + " seconds");
+            var totalSeconds = (System.DateTime.Now - startTime).TotalSeconds;
+            Assert.IsTrue(totalSeconds < int.Parse(durationLessThan) && totalSeconds > int.Parse(durationGreaterThan), "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is greater than " + durationLessThan + " seconds or less than " + durationGreaterThan + ".");
             Console.WriteLine("timer stopped after " + totalSeconds + " seconds.");
         }
 

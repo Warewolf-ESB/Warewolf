@@ -1382,9 +1382,17 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         [Given(@"I Click DecisionStep In Debug Output")]
         [When(@"I Click DecisionStep In Debug Output")]
         [Then(@"I Click DecisionStep In Debug Output")]
-        public void Click_DesicionStep_InDebugOutput()
+        public void Click_DecisionStep_InDebugOutput()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.DecisionOnDebugOutput);
+        }
+
+        [Given(@"I Filter the Debug with ""(.*)""")]
+        [When(@"I Filter the Debug with ""(.*)""")]
+        [Then(@"I Filter the Debug with ""(.*)""")]
+        public void Click_DecisionStep_InDebugOutput(string filterText)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.SearchTextBox.Text = filterText;
         }
 
         #region UIMaps
