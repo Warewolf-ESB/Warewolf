@@ -195,8 +195,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
-                { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
-                { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
             };
         private static Hashtable _hashTable;
 
