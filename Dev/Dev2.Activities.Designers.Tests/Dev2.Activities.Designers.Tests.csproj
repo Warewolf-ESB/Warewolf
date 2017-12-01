@@ -146,7 +146,6 @@
     <Compile Include="DeleteRecords\DeleteRecordsDesignerViewModelTests.cs" />
     <Compile Include="DeleteRecords\TestDeleteRecordsDesignerViewModel.cs" />
     <Compile Include="DotNetDll\DotNetDllEnhancedViewModelTests.cs" />
-    <Compile Include="DotNetDll\DotNetDllViewModelTests.cs" />
     <Compile Include="DropBox2016\Delete\DropBoxDeleteViewModelTest.cs" />
     <Compile Include="DropBox2016\Download\DropBoxDownloadViewModelTest.cs" />
     <Compile Include="DropBox2016\DropboxFiles\DropboxFileListViewModelTest.cs" />

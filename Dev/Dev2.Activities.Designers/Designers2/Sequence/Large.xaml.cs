@@ -52,14 +52,7 @@ namespace Dev2.Activities.Designers2.Sequence
         {
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return ActivitiesPresenter;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => ActivitiesPresenter;
 
         void CopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
