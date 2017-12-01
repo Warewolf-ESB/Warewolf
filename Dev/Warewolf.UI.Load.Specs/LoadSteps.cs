@@ -15,11 +15,11 @@ namespace Warewolf.UI.Load.Specs
     [Binding]
     class LoadSteps
     {
-        [Given(@"there are 30 duplicates of All Tools workflow in the explorer")]
-        public void CallDuplicateService_GivenValidComsController_ShouldDuplicate()
+        [Given(@"there are ""(.*)"" duplicates of All Tools workflow in the explorer")]
+        public void CallDuplicateService_GivenValidComsController_ShouldDuplicate(string numberOf)
         {
             UIMap.AssertStudioIsRunning();
-            if (!File.Exists(Environment.ExpandEnvironmentVariables("%programdata%\\Warewolf\\Resources\\All Tools 29.xml")))
+            if (!File.Exists(Environment.ExpandEnvironmentVariables("%programdata%\\Warewolf\\Resources\\All Tools " + numberOf + ".xml")))
             {
                 UIMap.Click_Settings_RibbonButton();
                 SettingsUIMap.Check_Public_Contribute();
@@ -27,11 +27,11 @@ namespace Warewolf.UI.Load.Specs
                 {
                     UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
                 }
-                for (var i = 0; i < 30; i++)
+                for (var i = 0; i <= int.Parse(numberOf)+1; i++)
                 {
                     using (var webClient = new WebClient())
                     {
-                        webClient.Credentials = CredentialCache.DefaultNetworkCredentials;
+                        webClient.Credentials = CredentialCache.DefaultCredentials;
                         webClient.DownloadData("http://localhost:3142/services/DuplicateResourceService?NewResourceName=All%20Tools%20" + i.ToString() + "&ResourceID=8c1f16c0-b753-41a1-bd5b-6c65326d188d&sourcePath=All%20Tools&destinationPath=");
                     }
                 }
@@ -70,7 +70,16 @@ namespace Warewolf.UI.Load.Specs
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
             var totalSeconds = (System.DateTime.Now - startTime).TotalSeconds;
-            Assert.IsTrue(totalSeconds < int.Parse(durationLessThan) && totalSeconds > int.Parse(durationGreaterThan), "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is greater than " + durationLessThan + " seconds or less than " + durationGreaterThan + ".");
+            var ErrorMessage = "Load test failed. Duration of " + totalSeconds.ToString() + " seconds is greater than " + durationLessThan + " seconds or less than " + durationGreaterThan + ".";
+            var LoadTestOutcome = totalSeconds < int.Parse(durationLessThan) && totalSeconds > int.Parse(durationGreaterThan);
+#if !DEBUG
+            Assert.IsTrue(LoadTestOutcome, ErrorMessage);
+#else
+            if (!LoadTestOutcome)
+            {
+                Console.WriteLine(ErrorMessage);
+            }
+#endif
             Console.WriteLine("timer stopped after " + totalSeconds + " seconds.");
         }
 
@@ -140,7 +149,7 @@ namespace Warewolf.UI.Load.Specs
             Process.Start(startInfo);
         }
 
-        #region Additional test attributes
+#region Additional test attributes
 
         UIMap UIMap
         {
@@ -187,6 +196,6 @@ namespace Warewolf.UI.Load.Specs
 
         private ExplorerUIMap _ExplorerUIMap;
 
-        #endregion
+#endregion
     }
 }
