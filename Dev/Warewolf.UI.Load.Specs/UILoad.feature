@@ -4,17 +4,11 @@ Feature: UILoad
 	I can only tolerate so much lag
 
 Scenario: Studio UI Load Test
-	Given there are 30 duplicates of All Tools workflow in the explorer
+	Given there are "100" duplicates of All Tools workflow in the explorer
 	And I start the timer
 	When I Select Local Server Source From Explorer
+	And I Refresh Explorer
 	Then the timer duration is between "30" and "60" seconds
-	Given I start the timer
-	When I Refresh Explorer
-	Then the timer duration is between "30" and "60" seconds
-	And I Click Deploy Ribbon Button
-	Given I start the timer
-	When I Click Deploy Tab Source Refresh Button
-	Then the timer duration is between "20" and "40" seconds
 	And I Click Deploy Ribbon Button
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost from the source tab

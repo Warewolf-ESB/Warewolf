@@ -19881,7 +19881,7 @@ namespace Warewolf.UI.Tests
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ComboEditorItemControl";
-            this.SearchProperties[WpfControl.PropertyNames.Name] = "Local Server Source";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.Name, "Local Server Source", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion
         }
