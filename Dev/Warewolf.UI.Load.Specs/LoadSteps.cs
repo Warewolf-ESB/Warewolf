@@ -64,8 +64,8 @@ namespace Warewolf.UI.Load.Specs
                 ScenarioContext.Current.Set(System.DateTime.Now, "StartTime");
             }
         }
-
-        [Then(@"the timer duration is between ""(.*)"" and ""(.*)""")]
+        
+        [Then(@"the timer duration is between ""(.*)"" and ""(.*)"" seconds")]
         public void StopTimer(string durationGreaterThan, string durationLessThan)
         {
             var startTime = ScenarioContext.Current.Get<System.DateTime>("StartTime");
