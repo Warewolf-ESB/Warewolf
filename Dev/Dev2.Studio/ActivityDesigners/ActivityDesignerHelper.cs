@@ -95,6 +95,12 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Designers2.MultiAssignObject;
 using Dev2.Activities.Scripting;
 using Dev2.Activities.DateAndTime;
+using Dev2.Activities.Designers2.CountRecords;
+using Dev2.Activities.Designers2.RecordsLength;
+using Dev2.Activities.Designers2.DeleteRecords;
+using Dev2.Activities.Designers2.DateTime;
+using Dev2.Activities.Designers2.DateTimeDifference;
+using Dev2.Activities.Designers2.Net_DLL;
 
 namespace Dev2.Studio.ActivityDesigners
 {
@@ -103,29 +109,28 @@ namespace Dev2.Studio.ActivityDesigners
         public static readonly Dictionary<Type, Type> DesignerAttributes = new Dictionary<Type, Type>
             {
                 { typeof(DsfDotNetMultiAssignActivity), typeof(MultiAssignDesigner) },
-                { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
-                  { typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
+                { typeof(DsfDotNetMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },{ typeof(DsfMultiAssignActivity), typeof(MultiAssignDesigner) },
                 { typeof(DsfMultiAssignObjectActivity), typeof(MultiAssignObjectDesigner) },
                 { typeof(DsfWebGetRequestWithTimeoutActivity), typeof(GetWebRequestWithTimeOutDesigner) },
                 { typeof(DsfWebGetRequestActivity), typeof(GetWebRequestDesigner) },
                 { typeof(DsfFindRecordsMultipleCriteriaActivity), typeof(FindRecordsMultipleCriteriaDesigner) },
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
-                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(Activities.Designers2.CountRecordsNullHandler.CountRecordsDesigner) },
-                { typeof(DsfCountRecordsetActivity), typeof(Activities.Designers2.CountRecords.CountRecordsDesigner) },
-                { typeof(DsfRecordsetLengthActivity), typeof(Activities.Designers2.RecordsLength.RecordsLengthDesigner) },
-                { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(Activities.Designers2.RecordsLengthNullHandler.RecordsLengthDesigner) },
-                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
-                { typeof(DsfDeleteRecordActivity), typeof(Activities.Designers2.DeleteRecords.DeleteRecordsDesigner) },
+                { typeof(DsfCountRecordsetNullHandlerActivity), typeof(CountRecordsDesigner) },
+                { typeof(DsfCountRecordsetActivity), typeof(CountRecordsDesigner) },
+                { typeof(DsfRecordsetLengthActivity), typeof(RecordsLengthDesigner) },
+                { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(RecordsLengthDesigner) },
+                { typeof(DsfDeleteRecordNullHandlerActivity), typeof(DeleteRecordsDesigner) },
+                { typeof(DsfDeleteRecordActivity), typeof(DeleteRecordsDesigner) },
                 { typeof(DsfDotNetDateTimeActivity),typeof(Activities.Designers2.DateTimStandard.DateTimeDesigner) },
                 { typeof(DsfDotNetDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifferenceStandard.DateTimeDifferenceDesigner) },
-                { typeof(DsfDateTimeActivity),typeof(Activities.Designers2.DateTime.DateTimeDesigner) },
-                { typeof(DsfDateTimeDifferenceActivity),typeof(Activities.Designers2.DateTimeDifference.DateTimeDifferenceDesigner) },
+                { typeof(DsfDateTimeActivity),typeof(DateTimeDesigner) },
+                { typeof(DsfDateTimeDifferenceActivity),typeof(DateTimeDifferenceDesigner) },
                 { typeof(DsfDotNetGatherSystemInformationActivity),typeof(GatherSystemInformationDesigner) },
                 { typeof(DsfUniqueActivity), typeof(UniqueRecordsDesigner) },
                 { typeof(DsfCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
-                   { typeof(DsfDotNetCalculateActivity), typeof(CalculateDesigner) },
+                { typeof(DsfDotNetCalculateActivity), typeof(CalculateDesigner) },
                 { typeof(DsfDotNetAggregateCalculateActivity), typeof(AggregateCalculateDesigner) },
                 { typeof(DsfBaseConvertActivity), typeof(BaseConvertDesigner) },
                 { typeof(DsfNumberFormatActivity), typeof(FormatNumberDesigner) },
@@ -159,11 +164,11 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlServerDatabaseActivity), typeof(SqlServerDatabaseDesigner) },
                 { typeof(DsfMySqlDatabaseActivity), typeof(MySqlDatabaseDesigner) },
                 { typeof(DsfOracleDatabaseActivity), typeof(OracleDatabaseDesigner) },
-                  { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
-                  { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
-                {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
+                { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
+                { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
+                { typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
                 { typeof(DsfDotNetDllActivity), typeof(Activities.Designers2.Net_DLL.DotNetDllDesigner) },
-                { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
+                { typeof(DsfEnhancedDotNetDllActivity), typeof(DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
                 { typeof(DsfWebPostActivity), typeof(WebServicePostDesigner) },
@@ -171,8 +176,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfWebPutActivity), typeof(WebServicePutDesigner) },
                 { typeof(DsfDropBoxUploadActivity), typeof(DropBoxUploadDesigner) },
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
-                 { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
-                 { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
+                { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
+                { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
                 { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
@@ -188,6 +193,8 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(SharepointMoveFileActivity), typeof(SharePointMoveFileDesigner) },
                 { typeof(DsfWcfEndPointActivity),typeof(WcfEndPointDesigner)},
                 { typeof(DsfPublishRabbitMQActivity), typeof(RabbitMQPublishDesigner) },
+                { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
+                { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
             };
