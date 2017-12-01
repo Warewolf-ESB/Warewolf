@@ -35,10 +35,11 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	Then the timer duration is between "180" and "360" seconds
-	Given I have "20" new workflow tabs open
+	Given I have "20" All Tools workflows tabs open
 	And I start the timer
-	When I Click New Workflow Ribbon Button
-	Then the timer duration is between "20" and "20" seconds
+	When I Filter the Explorer with "All Tools"
+	And I Open Explorer First Item With Double Click
+	Then the timer duration is between "30" and "60" seconds
 	Given I start the timer
 	When I open "Large Workflow UI Load Testing" workflow
 	Then the timer duration is between "45" and "90" seconds
