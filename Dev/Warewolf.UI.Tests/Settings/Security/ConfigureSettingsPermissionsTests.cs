@@ -138,7 +138,7 @@ namespace Warewolf.UI.Tests
                 Credentials = CredentialCache.DefaultNetworkCredentials
             })
             {
-                StringAssert.Contains(client.DownloadString(new Uri("http://localhost:3142/public/Hello%20World/apis.json")), "\"Url\": \"localhost:3142/Hello World/apis.json\"");
+                StringAssert.Contains(client.DownloadString(new Uri("http://localhost:3142/public/Hello%20World/apis.json")), "/Hello World/apis.json");
             }
         }
 
