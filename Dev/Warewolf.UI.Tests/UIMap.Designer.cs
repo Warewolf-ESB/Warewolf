@@ -19895,7 +19895,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mText = new WpfText(this);
                     #region Search Criteria
-                    this.mText.SearchProperties[WpfText.PropertyNames.Name] = "Local Server Source";
+                    this.mText.SearchProperties.Add(new PropertyExpression(WpfText.PropertyNames.Name, "Local Server Source", PropertyExpressionOperator.Contains));
                     this.mText.WindowTitles.Add("Warewolf");
                     #endregion
                 }
