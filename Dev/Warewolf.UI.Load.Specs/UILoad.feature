@@ -4,7 +4,7 @@ Feature: UILoad
 	I can only tolerate so much lag
 
 Scenario: Studio UI Load Test
-	Given there are "100" duplicates of All Tools workflow in the explorer
+	Given there are "30" duplicates of All Tools workflow in the explorer
 	And I start the timer
 	When I Select Local Server Source From Explorer
 	And I Refresh Explorer
