@@ -373,7 +373,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 102
  testRunner.And("the date format as \"yyyy-mm-dd\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 103
- testRunner.And("I selected output in \"Split Secs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected output in \"Milliseconds\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 104
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 105
@@ -390,7 +390,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2013-11-29",
                         "2014-11-01",
                         "yyyy-mm-dd",
-                        "Split Secs"});
+                        "Milliseconds"});
 #line 107
  testRunner.And("the debug inputs as", ((string)(null)), table13, "And ");
 #line hidden
@@ -1055,7 +1055,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 317
  testRunner.And("the date format as \"dd/mm/yyyy 12h:min:ss.sp\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 318
- testRunner.And("I selected output in \"Split Secs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected output in \"Milliseconds\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 319
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 320
@@ -1072,7 +1072,7 @@ this.ScenarioSetup(scenarioInfo);
                         "06/01/2014 08:00:01.00",
                         "06/01/2014 08:00:01.68",
                         "dd/mm/yyyy 12h:min:ss.sp",
-                        "Split Secs"});
+                        "Milliseconds"});
 #line 322
  testRunner.And("the debug inputs as", ((string)(null)), table42, "And ");
 #line hidden
@@ -1102,7 +1102,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 333
  testRunner.And("the date format as \"\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 334
- testRunner.And("I selected output in \"Split Secs\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I selected output in \"Milliseconds\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 335
  testRunner.When("the datetime difference tool is executed", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 336
@@ -1119,7 +1119,7 @@ this.ScenarioSetup(scenarioInfo);
                         "2014/01/06 08:00:01.00",
                         "2014/01/06 08:00:01.68",
                         "\"\"",
-                        "Split Secs"});
+                        "Milliseconds"});
 #line 338
  testRunner.And("the debug inputs as", ((string)(null)), table44, "And ");
 #line hidden
