@@ -8,7 +8,7 @@ Scenario: Studio UI Load Test
 	And I start the timer
 	When I Select Local Server Source From Explorer
 	And I Refresh Explorer
-	Then the timer duration is between "30" and "60" seconds
+	Then the timer duration is between "5" and "60" seconds
 	And I Click Deploy Ribbon Button
 	And I Select LocalServerSource From Deploy Tab Destination Server Combobox
 	And I Select localhost from the source tab
