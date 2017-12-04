@@ -267,7 +267,6 @@
     <Compile Include="Designers2\Core\ConstructorRegion\DotNetConstructorRegion.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
-    <Compile Include="Designers2\Core\DotNetActionsWidthConverter.cs" />
     <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
