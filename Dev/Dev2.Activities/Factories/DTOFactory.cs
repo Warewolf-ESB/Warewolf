@@ -9,6 +9,7 @@
 */
 
 using Dev2;
+using Dev2.Activities.Factories.Case;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Helpers;

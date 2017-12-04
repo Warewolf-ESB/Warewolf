@@ -9,8 +9,9 @@
 */
 
 using Dev2.Common.Interfaces.Core.Convertors.Case;
+using Dev2.TO;
 
-namespace Dev2
+namespace Dev2.Activities.Factories.Case
 {
     public static class CaseConverterFactory
     {

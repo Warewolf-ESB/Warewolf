@@ -343,6 +343,8 @@
     <Compile Include="BussinessLogic\RsOpNotHex.cs" />
     <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
     <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
+    <Compile Include="Factories\Case\CaseConverter.cs" />
+    <Compile Include="Factories\Case\CaseConverterFactory.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
@@ -388,6 +390,7 @@
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />
     <Compile Include="Activities\DsfForEachActivity.cs" />
+    <Compile Include="TO\CaseConvertTO.cs" />
     <Compile Include="TO\DataMergeDTO.cs" />
     <Compile Include="TO\DataSplitDTO.cs" />
     <Compile Include="ImageConverter.cs" />
