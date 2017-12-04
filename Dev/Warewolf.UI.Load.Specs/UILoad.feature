@@ -21,7 +21,7 @@ Scenario: Studio UI Load Test
 	Then the timer duration is between "60" and "120" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
-	Then the timer duration is between "60" and "120" seconds
+	Then the timer duration is between "10" and "30" seconds
 	When I open "Variable List UI Load Testing" workflow
 	#Given I start the timer
 	#When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
