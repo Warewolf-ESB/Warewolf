@@ -8,6 +8,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -23,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
         private readonly IEnvironmentViewModel _selectedEnv;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
-            :this(shellViewModel, aggregator, statsArea, null)
+            : this(shellViewModel, aggregator, statsArea, null)
         {
         }
 
@@ -37,7 +39,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = SelectAction;
             _selectedEnv = selectedEnvironment;
-            
+
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
 
 #pragma warning disable S1699 // Constructors should only call non-overridable methods
@@ -63,37 +65,48 @@ namespace Warewolf.Studio.ViewModels
             IsRefreshing = false;
             ShowConnectControl = false;
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
-            ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
-            {
-                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true);
-            };
+            ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlSelectedExplorerEnvironmentChanged;
             IsDeploy = true;
+        }
+
+
+        private void ConnectControlSelectedExplorerEnvironmentChanged(object sender,Guid id)
+        {
+            var application = Application.Current;
+            if (application != null)
+            {
+                var dispatcher = application.Dispatcher;
+                if (dispatcher != null && dispatcher.CheckAccess())
+                {
+                    dispatcher.BeginInvoke(new System.Action(async () => await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true)),DispatcherPriority.Background);
+                }
+            }
+            else
+            {
+               var t = DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id);
+               t.Wait();
+            }
+
         }
 
         async Task DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            ValidateDeploySourceSelectedConnection(sender);
-            if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
-            {
+            var loaded = await ValidateDeploySourceSelectedConnection(sender).ConfigureAwait(true);
+            if(loaded)
+            {                
                 UpdateItemForDeploy(environmentId);
-            }
-            else
-            {
-                var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
-                    model => model.ResourceId == environmentId) ?? _environments.FirstOrDefault(p => p.ResourceId == environmentId);
-
-                await CreateNewEnvironment(environmentViewModel?.Server).ConfigureAwait(true);
-            }
+            }           
         }
 
-        private void ValidateDeploySourceSelectedConnection(object sender)
+        private async Task<bool> ValidateDeploySourceSelectedConnection(object sender)
         {
             var connectControlViewModel = sender as ConnectControlViewModel;
             if (connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
             {
-                var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel.SelectedConnection).ConfigureAwait(true); });
-                task.Wait();
+                var res = await CreateNewEnvironment(connectControlViewModel.SelectedConnection).ConfigureAwait(true);
+                return res;
             }
+            return false;
         }
 
         protected void AfterLoad(Guid environmentID)
@@ -300,7 +313,7 @@ namespace Warewolf.Studio.ViewModels
 
         async Task<bool> ServerConnected(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(false);
+            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(true);
             return isCreated;
         }
 
@@ -316,7 +329,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load(IsDeploy).ConfigureAwait(false);
+                isLoaded = await environmentModel.Load(IsDeploy).ConfigureAwait(true);
                 OnPropertyChanged(() => Environments);
                 _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             }
@@ -340,7 +353,7 @@ namespace Warewolf.Studio.ViewModels
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Connect();
-            await localhostEnvironment.Load(true, true).ConfigureAwait(true);
+            await localhostEnvironment.Load(true, false).ConfigureAwait(true);
             var selectedEnvironment = SelectedEnvironment ?? _selectedEnv;
             if (selectedEnvironment?.DisplayName == localhostEnvironment.DisplayName)
             {
@@ -351,6 +364,12 @@ namespace Warewolf.Studio.ViewModels
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
             return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            ConnectControlViewModel.SelectedEnvironmentChanged -= ConnectControlSelectedExplorerEnvironmentChanged;
         }
     }
 }
