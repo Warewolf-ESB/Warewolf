@@ -4,7 +4,7 @@ Feature: UILoad
 	I can only tolerate so much lag
 
 Scenario: Studio UI Load Test
-	Given there are "30" duplicates of All Tools workflow in the explorer
+	Given there are "20" duplicates of All Tools workflow in the explorer
 	And I start the timer
 	When I Select Local Server Source From Explorer
 	And I Refresh Explorer
@@ -28,6 +28,7 @@ Scenario: Studio UI Load Test
 	#Then the timer duration is between "180" and "360" seconds
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
+	And I Click VariableList Scalar Row1 Delete Button
 	Then the timer duration is between "180" and "360" seconds
 	Given I have "20" All Tools workflows tabs open
 	And I start the timer

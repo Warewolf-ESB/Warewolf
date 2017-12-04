@@ -400,11 +400,10 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
 
         bool TryWaitForADeployMessageDialog(ref bool seenConflict, ref bool seenVersionConflict)
         {
-            bool OKButtonReady = DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
+            DialogsUIMap.MessageBoxWindow.OKButton.WaitForControlCondition((control) => { return control.TryGetClickablePoint(out Point point); }, 60000);
             if (!seenVersionConflict && !seenConflict)
             {
-                seenVersionConflict = DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists;
-                if (seenVersionConflict && OKButtonReady)
+                if (DialogsUIMap.MessageBoxWindow.DeployVersionConflicText.Exists)
                 {
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                     return false;
@@ -412,15 +411,14 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             }
             if (!seenConflict)
             {
-                seenConflict = DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists;
-                if (seenConflict && OKButtonReady)
+                if (DialogsUIMap.MessageBoxWindow.DeployConflictsText.Exists)
                 {
                     Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
                     return false;
                 }
             }
             var successful = DialogsUIMap.MessageBoxWindow.ResourcesDeployedSucText.Exists;
-            if (successful && OKButtonReady)
+            if (successful)
             {
                 Mouse.Click(DialogsUIMap.MessageBoxWindow.OKButton);
             }
