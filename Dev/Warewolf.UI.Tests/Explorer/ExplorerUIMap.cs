@@ -1163,6 +1163,8 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Filter_Explorer(serviceName);
             RightClick_Explorer_Localhost_First_Item_First_SubItem();
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
+            Assert.IsTrue(MergeDialogUIMap.MergeDialogWindow.Exists, "Merge Popup window did not Open after clicking merge.");
         }
 
         #region UIMaps
