@@ -17,7 +17,7 @@ Scenario: Studio UI Load Test
 	Then the timer duration is between "160" and "320" seconds
 	When I open "Debug Output UI Load Testing" workflow
 	Given I start the timer
-	When I Debug with input of "1000"
+	When I Debug with input of "200"
 	Then the timer duration is between "60" and "120" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
