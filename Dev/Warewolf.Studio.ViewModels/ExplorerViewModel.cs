@@ -289,7 +289,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             foreach (var environmentViewModel in Environments)
             {
