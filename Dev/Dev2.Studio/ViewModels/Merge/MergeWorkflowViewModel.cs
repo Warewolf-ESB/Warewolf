@@ -112,23 +112,9 @@ namespace Dev2.ViewModels.Merge
                     ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, orderedDiffTree[i]);
                 }
             }
-            //ProcessCurrent(currentResourceModel, conflicts, currentTree, armConnectorConflicts);
-            //ProcessDiff(differenceResourceModel, conflicts, diffTree, armConnectorConflicts);
             return conflicts;
         }
 
-        void ProcessDiff(IContextualResourceModel differenceResourceModel, List<IConflict> conflicts, List<ConflictTreeNode> diffTree, List<IArmConnectorConflict> armConnectorConflicts)
-        {
-            if (diffTree == null || diffTree.Count == 0)
-            {
-                ShowArmConnectors(conflicts, armConnectorConflicts);
-                return;
-            }
-            foreach (var treeItem in diffTree)
-            {
-                ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, treeItem);
-            }
-        }
 
         private void ProcessDiffItem(IContextualResourceModel differenceResourceModel, List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem)
         {
@@ -155,18 +141,6 @@ namespace Dev2.ViewModels.Merge
             conflict.HasConflict = conflict.HasConflict || node.IsInConflict;
             AddDiffArmConnectors(armConnectorConflicts, treeItem, id);
             ShowArmConnectors(conflicts, armConnectorConflicts);
-        }
-
-        void ProcessCurrent(IContextualResourceModel currentResourceModel, List<IConflict> conflicts, List<ConflictTreeNode> currentTree, List<IArmConnectorConflict> armConnectorConflicts)
-        {
-            if (currentTree == null || currentTree.Count == 0)
-            {
-                return;
-            }
-            foreach (var treeItem in currentTree)
-            {
-                ProcessCurrentItem(currentResourceModel, conflicts, armConnectorConflicts, treeItem);
-            }
         }
 
         private void ProcessCurrentItem(IContextualResourceModel currentResourceModel, List<IConflict> conflicts, List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem)
