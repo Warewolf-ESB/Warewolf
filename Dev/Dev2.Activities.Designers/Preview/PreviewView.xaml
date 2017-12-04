@@ -110,10 +110,6 @@
                                          Text="{Binding Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                          HorizontalAlignment="Stretch"
                                          attachedProperties:FocusSetter.IsFocused="{Binding IsPreviewFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                    <i:Interaction.Behaviors>
-                                        <help2:HelpSetter Text="{x:Static languages:HelpText.PreviewInputHelpText}"
-                                                          DataContext="{Binding DataContext, ElementName=UserControl}" />
-                                    </i:Interaction.Behaviors>
                                 </TextBox>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
