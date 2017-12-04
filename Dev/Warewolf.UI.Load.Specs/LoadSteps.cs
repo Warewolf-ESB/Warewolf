@@ -9,6 +9,7 @@ using System.IO;
 using System.Net;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 
 namespace Warewolf.UI.Load.Specs
 {
@@ -149,7 +150,17 @@ namespace Warewolf.UI.Load.Specs
             Process.Start(startInfo);
         }
 
-#region Additional test attributes
+        [BeforeStep]
+        public void DismissServerIsBusyDialog()
+        {
+            if (UIMap.ControlExistsNow(DialogsUIMap.ErrorWindow.CloseButton))
+            {
+                Mouse.Click(DialogsUIMap.ErrorWindow.CloseButton);
+            }
+        }
+
+
+        #region Additional test attributes
 
         UIMap UIMap
         {
@@ -196,6 +207,21 @@ namespace Warewolf.UI.Load.Specs
 
         private ExplorerUIMap _ExplorerUIMap;
 
-#endregion
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
+
+        #endregion
     }
 }
