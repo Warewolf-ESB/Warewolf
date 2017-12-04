@@ -2529,10 +2529,38 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mRow1;
             }
         }
+        
+        public Row2 Row2
+        {
+            get
+            {
+                if ((this.mRow2 == null))
+                {
+                    this.mRow2 = new Row2(this);
+                }
+                return this.mRow2;
+            }
+        }
+        
+        public Row3 Row3
+        {
+            get
+            {
+                if ((this.mRow3 == null))
+                {
+                    this.mRow3 = new Row3(this);
+                }
+                return this.mRow3;
+            }
+        }
         #endregion
         
         #region Fields
         private Row1 mRow1;
+        
+        private Row2 mRow2;
+        
+        private Row3 mRow3;
         #endregion
     }
     
@@ -2747,6 +2775,456 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                     this.mMatchTypeCombobox = new WpfComboBox(this);
                     #region Search Criteria
                     this.mMatchTypeCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SearchType_AutoID";
+                    this.mMatchTypeCombobox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mMatchTypeCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mMatchTypeCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Row2 : WpfRow
+    {
+        
+        public Row2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "2";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public MatchValueCell1 MatchValueCell
+        {
+            get
+            {
+                if ((this.mMatchValueCell == null))
+                {
+                    this.mMatchValueCell = new MatchValueCell1(this);
+                }
+                return this.mMatchValueCell;
+            }
+        }
+        
+        public DeleteRowCell1 DeleteRowCell
+        {
+            get
+            {
+                if ((this.mDeleteRowCell == null))
+                {
+                    this.mDeleteRowCell = new DeleteRowCell1(this);
+                }
+                return this.mDeleteRowCell;
+            }
+        }
+        
+        public MatchTypeCell1 MatchTypeCell
+        {
+            get
+            {
+                if ((this.mMatchTypeCell == null))
+                {
+                    this.mMatchTypeCell = new MatchTypeCell1(this);
+                }
+                return this.mMatchTypeCell;
+            }
+        }
+        
+        public WpfCell MatchCell
+        {
+            get
+            {
+                if ((this.mMatchCell == null))
+                {
+                    this.mMatchCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
+                    this.mMatchCell.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mMatchCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MatchValueCell1 mMatchValueCell;
+        
+        private DeleteRowCell1 mDeleteRowCell;
+        
+        private MatchTypeCell1 mMatchTypeCell;
+        
+        private WpfCell mMatchCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MatchValueCell1 : WpfCell
+    {
+        
+        public MatchValueCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public MatchValueIntellisenseCombobox1 MatchValueIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mMatchValueIntellisenseCombobox == null))
+                {
+                    this.mMatchValueIntellisenseCombobox = new MatchValueIntellisenseCombobox1(this);
+                }
+                return this.mMatchValueIntellisenseCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MatchValueIntellisenseCombobox1 mMatchValueIntellisenseCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MatchValueIntellisenseCombobox1 : WpfComboBox
+    {
+        
+        public MatchValueIntellisenseCombobox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row2_SearchCriteria_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class DeleteRowCell1 : WpfCell
+    {
+        
+        public DeleteRowCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "#";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteRowButton
+        {
+            get
+            {
+                if ((this.mDeleteRowButton == null))
+                {
+                    this.mDeleteRowButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteRowButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
+                    this.mDeleteRowButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDeleteRowButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteRowButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MatchTypeCell1 : WpfCell
+    {
+        
+        public MatchTypeCell1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "MatchType";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox MatchTypeCombobox
+        {
+            get
+            {
+                if ((this.mMatchTypeCombobox == null))
+                {
+                    this.mMatchTypeCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mMatchTypeCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row2_SearchType_AutoID";
+                    this.mMatchTypeCombobox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mMatchTypeCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfComboBox mMatchTypeCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Row3 : WpfRow
+    {
+        
+        public Row3(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfRow.PropertyNames.Instance] = "3";
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public MatchValueCell2 MatchValueCell
+        {
+            get
+            {
+                if ((this.mMatchValueCell == null))
+                {
+                    this.mMatchValueCell = new MatchValueCell2(this);
+                }
+                return this.mMatchValueCell;
+            }
+        }
+        
+        public DeleteRowCell2 DeleteRowCell
+        {
+            get
+            {
+                if ((this.mDeleteRowCell == null))
+                {
+                    this.mDeleteRowCell = new DeleteRowCell2(this);
+                }
+                return this.mDeleteRowCell;
+            }
+        }
+        
+        public MatchTypeCell2 MatchTypeCell
+        {
+            get
+            {
+                if ((this.mMatchTypeCell == null))
+                {
+                    this.mMatchTypeCell = new MatchTypeCell2(this);
+                }
+                return this.mMatchTypeCell;
+            }
+        }
+        
+        public WpfCell MatchCell
+        {
+            get
+            {
+                if ((this.mMatchCell == null))
+                {
+                    this.mMatchCell = new WpfCell(this);
+                    #region Search Criteria
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "3";
+                    this.mMatchCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn3";
+                    this.mMatchCell.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mMatchCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MatchValueCell2 mMatchValueCell;
+        
+        private DeleteRowCell2 mDeleteRowCell;
+        
+        private MatchTypeCell2 mMatchTypeCell;
+        
+        private WpfCell mMatchCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MatchValueCell2 : WpfCell
+    {
+        
+        public MatchValueCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "Match";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public MatchValueIntellisenseCombobox2 MatchValueIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mMatchValueIntellisenseCombobox == null))
+                {
+                    this.mMatchValueIntellisenseCombobox = new MatchValueIntellisenseCombobox2(this);
+                }
+                return this.mMatchValueIntellisenseCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private MatchValueIntellisenseCombobox2 mMatchValueIntellisenseCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MatchValueIntellisenseCombobox2 : WpfComboBox
+    {
+        
+        public MatchValueIntellisenseCombobox2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row3_SearchCriteria_AutoID";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class DeleteRowCell2 : WpfCell
+    {
+        
+        public DeleteRowCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "#";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn0";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfButton DeleteRowButton
+        {
+            get
+            {
+                if ((this.mDeleteRowButton == null))
+                {
+                    this.mDeleteRowButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDeleteRowButton.SearchProperties[WpfButton.PropertyNames.Name] = "?";
+                    this.mDeleteRowButton.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mDeleteRowButton;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfButton mDeleteRowButton;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class MatchTypeCell2 : WpfCell
+    {
+        
+        public MatchTypeCell2(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "MatchType";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfComboBox MatchTypeCombobox
+        {
+            get
+            {
+                if ((this.mMatchTypeCombobox == null))
+                {
+                    this.mMatchTypeCombobox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mMatchTypeCombobox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row3_SearchType_AutoID";
                     this.mMatchTypeCombobox.WindowTitles.Add("ActivityDefaultWindow");
                     #endregion
                 }
@@ -4080,25 +4558,25 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             }
         }
         
-        public Row2 Row2
+        public Row21 Row2
         {
             get
             {
                 if ((this.mRow2 == null))
                 {
-                    this.mRow2 = new Row2(this);
+                    this.mRow2 = new Row21(this);
                 }
                 return this.mRow2;
             }
         }
         
-        public Row3 Row3
+        public Row31 Row3
         {
             get
             {
                 if ((this.mRow3 == null))
                 {
-                    this.mRow3 = new Row3(this);
+                    this.mRow3 = new Row31(this);
                 }
                 return this.mRow3;
             }
@@ -4108,9 +4586,9 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         #region Fields
         private Row11 mRow1;
         
-        private Row2 mRow2;
+        private Row21 mRow2;
         
-        private Row3 mRow3;
+        private Row31 mRow3;
         #endregion
     }
     
@@ -4402,10 +4880,10 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Row2 : WpfRow
+    public class Row21 : WpfRow
     {
         
-        public Row2(UITestControl searchLimitContainer) : 
+        public Row21(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -4688,10 +5166,10 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Row3 : WpfRow
+    public class Row31 : WpfRow
     {
         
-        public Row3(UITestControl searchLimitContainer) : 
+        public Row31(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -5032,25 +5510,25 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             }
         }
         
-        public Row21 Row2
+        public Row22 Row2
         {
             get
             {
                 if ((this.mRow2 == null))
                 {
-                    this.mRow2 = new Row21(this);
+                    this.mRow2 = new Row22(this);
                 }
                 return this.mRow2;
             }
         }
         
-        public Row31 Row3
+        public Row32 Row3
         {
             get
             {
                 if ((this.mRow3 == null))
                 {
-                    this.mRow3 = new Row31(this);
+                    this.mRow3 = new Row32(this);
                 }
                 return this.mRow3;
             }
@@ -5072,9 +5550,9 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         #region Fields
         private Row12 mRow1;
         
-        private Row21 mRow2;
+        private Row22 mRow2;
         
-        private Row31 mRow3;
+        private Row32 mRow3;
         
         private Row4 mRow4;
         #endregion
@@ -5266,10 +5744,10 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Row21 : WpfRow
+    public class Row22 : WpfRow
     {
         
-        public Row21(UITestControl searchLimitContainer) : 
+        public Row22(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -5451,10 +5929,10 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Row31 : WpfRow
+    public class Row32 : WpfRow
     {
         
-        public Row31(UITestControl searchLimitContainer) : 
+        public Row32(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
