@@ -12,6 +12,7 @@
         Style="{StaticResource WindowBorderlessStyle}"
         FocusManager.IsFocusScope="True"
         WindowStartupLocation="CenterScreen"
+        KeyUp="MergeDialogView_KeyUp"
         ShowInTaskbar="True" 
         Title="MergeDialogView"
         mc:Ignorable="d"
@@ -24,6 +25,10 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Window.Resources>
+
+    <Window.InputBindings>
+        <KeyBinding  Command="{Binding MergeCommand}" Key="Enter" />
+    </Window.InputBindings>
 
     <Grid>
         <Grid.RowDefinitions>

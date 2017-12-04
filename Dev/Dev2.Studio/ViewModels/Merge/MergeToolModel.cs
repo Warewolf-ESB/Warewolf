@@ -168,6 +168,7 @@ namespace Dev2.ViewModels.Merge
 
         public void DisableEvents()
         {
+            IsMergeEnabled = false;
             IsMergeChecked = false;
             _processEvents = false;
         }

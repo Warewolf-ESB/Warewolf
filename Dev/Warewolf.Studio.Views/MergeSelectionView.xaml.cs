@@ -1,6 +1,9 @@
 ﻿using System.Windows.Controls;
 using Dev2.Common.Interfaces;
 using Warewolf.Studio.Core;
+using System.Windows.Input;
+using Dev2;
+using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.Views
 {
@@ -48,6 +51,19 @@ namespace Warewolf.Studio.Views
             if (MergeButton.IsEnabled)
             {
                 MergeButton.Command.Execute(null);
+            }
+        }
+
+        private void MergeDialogView_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Escape)
+            {
+                Close();
+            }
+            if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
+            {
+                var mainViewModel = CustomContainer.Get<IShellViewModel>();
+                mainViewModel?.ResetMainView();
             }
         }
     }
