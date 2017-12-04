@@ -729,7 +729,16 @@ namespace Dev2.ViewModels.Merge
         }
         public bool CanSave
         {
-            get => All(conflict => conflict.IsChecked) && Conflicts.Any(a => a.HasConflict);
+            get
+            {
+                var canSave = CurrentConflictModel.IsWorkflowNameChecked || DifferenceConflictModel.IsWorkflowNameChecked;
+                canSave &= CurrentConflictModel.IsVariablesChecked || DifferenceConflictModel.IsVariablesChecked;
+                if (Conflicts.Any(a => a.HasConflict))
+                {
+                    canSave &= All(conflict => conflict.IsChecked);
+                }
+                return canSave;
+            }
             set
             {
                 _canSave = value;
