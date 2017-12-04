@@ -1,5 +1,5 @@
 
-<Service ID="b0696fda-218d-4482-bc5d-b89fec1a7d59" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Merge3ToolsWorkflow" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6542.14234">
+<Service ID="b0696fda-218d-4482-bc5d-b89fec1a7d59" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="Merge3ToolsWorkflow" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6544.29521">
   <DisplayName>Merge3ToolsWorkflow</DisplayName>
   <Category>
   </Category>

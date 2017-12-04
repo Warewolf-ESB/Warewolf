@@ -1,5 +1,5 @@
 
-<Service ID="1663815f-089d-4230-aa62-5158b1eceacc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeWithCopiedTool" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6542.14234">
+<Service ID="1663815f-089d-4230-aa62-5158b1eceacc" Version="1.0" ServerID="51a58300-7e9d-4927-a57b-e5d700b11b55" Name="MergeWithCopiedTool" ResourceType="WorkflowService" IsValid="false" ServerVersion="0.0.6544.29521">
   <DisplayName>MergeWithCopiedTool</DisplayName>
   <Category>MergeWithCopiedTool</Category>
   <IsNewWorkflow>false</IsNewWorkflow>
