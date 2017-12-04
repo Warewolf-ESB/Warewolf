@@ -297,9 +297,7 @@ namespace Dev2.Activities.Designers2.Decision
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            
-            foreach (var error in GetRuleSet("DisplayText").ValidateRules("'DisplayText'", () => IsDisplayTextFocused = true))
-            
+            foreach (var error in GetRuleSet("DisplayText").ValidateRules("'DisplayText'", () => IsDisplayTextFocused = true))            
             {
                 yield return error;
             }
@@ -330,19 +328,18 @@ namespace Dev2.Activities.Designers2.Decision
             {
                 case "DisplayText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => DisplayText));
-                    break;
+                    return ruleSet;
 
                 case "TrueArmText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => TrueArmText));
-                    break;
+                    return ruleSet;
 
                 case "FalseArmText":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FalseArmText));
-                    break;
+                    return ruleSet;
                 default:
-                    break;
+                    return ruleSet;
             }
-            return ruleSet;
         }
 
         #region Implementation of IHandle<ConfigureDecisionExpressionMessage>
