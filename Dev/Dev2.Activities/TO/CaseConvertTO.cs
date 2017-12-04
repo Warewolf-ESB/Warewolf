@@ -16,10 +16,11 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using Dev2.Validation;
 
-namespace Dev2
+namespace Dev2.TO
 {
-    public class CaseConvertTO : ICaseConvertTO, IPerformsValidation
+    public class CaseConvertTO : ValidatedObject, ICaseConvertTO
     {
         #region Fields
 
@@ -175,64 +176,35 @@ namespace Dev2
 
         #endregion
 
-        #region Implementation of IPerformsValidation
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors
+       
+                     
+        public bool IsEmpty()
         {
-            get { return _errors; }
-            set
-            {
-                _errors = value;
-                OnPropertyChanged("Errors");
-            }
+            return string.IsNullOrEmpty(StringToConvert);
         }
 
-        public bool Validate(string propertyName, IRuleSet ruleSet)
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            if (ruleSet == null)
+            RuleSet ruleSet = new RuleSet();
+            if (IsEmpty())
             {
-                Errors[propertyName] = new List<IActionableErrorInfo>();
+                return ruleSet;
             }
-            else
+            if (propertyName == "StringToConvert")
             {
-                List<IActionableErrorInfo> errorsTos = ruleSet.ValidateRules();
-                List<IActionableErrorInfo> actionableErrorInfos =
-                    errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
-                    {
-                        //
-                    }));
-                Errors[propertyName] = actionableErrorInfos;
-            }
-            OnPropertyChanged("Errors");
-            if (Errors.TryGetValue(propertyName, out List<IActionableErrorInfo> errorList))
-            {
-                return errorList.Count == 0;
-            }
-            return false;
-        }
 
-        public bool Validate(string propertyName, string datalist)
-        {
-            RuleSet ruleSet = null;
-            switch (propertyName)
-            {
-                case "FieldName":
-                    ruleSet = GetFieldNameRuleSet();
-                    break;
-                case "FieldValue":
-                    break;
-                default:
-                    break;
-            }
-            return Validate(propertyName, ruleSet);
-        }
+                if (!string.IsNullOrEmpty(StringToConvert))
+                {
+                    var inputExprRule = new IsValidExpressionRule(() => StringToConvert, datalist, "0");
+                    ruleSet.Add(inputExprRule);
+                }
+                else
+                {
+                    ruleSet.Add(new IsStringEmptyRule(() => StringToConvert));
+                }
 
-        private RuleSet GetFieldNameRuleSet()
-        {
-            var ruleSet = new RuleSet();
+            }
             return ruleSet;
-        }
-
-        #endregion
+        }          
     }
 }
