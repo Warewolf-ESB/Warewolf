@@ -116,7 +116,7 @@ namespace Warewolf.UI.Tests
             }
             using (var client = new WebClient
             {
-                Credentials = CredentialCache.DefaultCredentials
+                UseDefaultCredentials = true
             })
             {
                 try
@@ -132,6 +132,7 @@ namespace Warewolf.UI.Tests
             if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
             {
                 Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+                Playback.Wait(3000);
             }
             using (var client = new WebClient
             {
