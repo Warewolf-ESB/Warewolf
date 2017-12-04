@@ -538,7 +538,6 @@
     <Compile Include="Designers2\Core\ActivityDesignerButton.cs" />
     <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
-    <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
