@@ -49,7 +49,7 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
             ShowConnectControl = true;
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server).ConfigureAwait(false); };
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             _statsArea = statsArea;
             foreach (var environmentViewModel in _environments)
@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
 
-        private void ConnectControlSelectedExplorerEnvironmentChanged(object sender,Guid id)
+        void ConnectControlSelectedExplorerEnvironmentChanged(object sender,Guid id)
         {
             var application = Application.Current;
             if (application != null)
@@ -78,32 +78,32 @@ namespace Warewolf.Studio.ViewModels
                 var dispatcher = application.Dispatcher;
                 if (dispatcher != null && dispatcher.CheckAccess())
                 {
-                    dispatcher.BeginInvoke(new System.Action(async () => await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true)),DispatcherPriority.Background);
+                    dispatcher.BeginInvoke(new System.Action(async () => await DeploySourceExplorerViewModelSelectedEnvironmentChangedAsync(sender, id).ConfigureAwait(true)),DispatcherPriority.Background);
                 }
             }
             else
             {
-               var t = DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id);
+               var t = DeploySourceExplorerViewModelSelectedEnvironmentChangedAsync(sender, id);
                t.Wait();
             }
 
         }
 
-        async Task DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async Task DeploySourceExplorerViewModelSelectedEnvironmentChangedAsync(object sender, Guid environmentId)
         {
-            var loaded = await ValidateDeploySourceSelectedConnection(sender).ConfigureAwait(true);
+            var loaded = await ValidateDeploySourceSelectedConnectionAsync(sender).ConfigureAwait(true);
             if(loaded)
-            {                
+            {
                 UpdateItemForDeploy(environmentId);
-            }           
+            }
         }
 
-        private async Task<bool> ValidateDeploySourceSelectedConnection(object sender)
+        async Task<bool> ValidateDeploySourceSelectedConnectionAsync(object sender)
         {
             var connectControlViewModel = sender as ConnectControlViewModel;
             if (connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
             {
-                var res = await CreateNewEnvironment(connectControlViewModel.SelectedConnection).ConfigureAwait(true);
+                var res = await CreateNewEnvironmentAsync(connectControlViewModel.SelectedConnection).ConfigureAwait(true);
                 return res;
             }
             return false;
@@ -237,7 +237,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
+        static IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
         {
             var itemViewModels = itemViewModelsModel?.AsList()?.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
             var explorerItemViewModels = itemViewModelsModel?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
@@ -311,13 +311,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        async Task<bool> ServerConnected(IServer server)
+        async Task<bool> ServerConnectedAsync(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(true);
+            var isCreated = await CreateNewEnvironmentAsync(server).ConfigureAwait(true);
             return isCreated;
         }
 
-        private async Task<bool> CreateNewEnvironment(IServer server)
+        async Task<bool> CreateNewEnvironmentAsync(IServer server)
         {
             var isLoaded = false;
             if (server == null)
