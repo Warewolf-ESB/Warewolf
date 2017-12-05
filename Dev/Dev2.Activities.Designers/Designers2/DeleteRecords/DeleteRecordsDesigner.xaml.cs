@@ -9,7 +9,7 @@
 */
 
 
-namespace Dev2.Activities.Designers2.DeleteRecordsNullHandler
+namespace Dev2.Activities.Designers2.DeleteRecords
 {
     public partial class DeleteRecordsDesigner
     {

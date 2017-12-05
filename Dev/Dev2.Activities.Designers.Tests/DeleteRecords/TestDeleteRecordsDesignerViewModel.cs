@@ -9,18 +9,18 @@
 */
 
 using System.Activities.Presentation.Model;
-using Dev2.Activities.Designers2.DeleteRecordsNullHandler;
+using Dev2.Activities.Designers2.DeleteRecords;
 
-namespace Dev2.Activities.Designers.Tests.DeleteRecordsNullHandler
+namespace Dev2.Activities.Designers.Tests.DeleteRecords
 {
-    public class TestDeleteRecordsNullHandlerDesignerViewModel : DeleteRecordsDesignerViewModel
+    public class TestDeleteRecordsDesignerViewModel : DeleteRecordsDesignerViewModel
     {
-        public TestDeleteRecordsNullHandlerDesignerViewModel(ModelItem modelItem)
+        public TestDeleteRecordsDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
         }
 
-        public TestDeleteRecordsNullHandlerDesignerViewModel(ModelItem modelItem, string recordSetName)
+        public TestDeleteRecordsDesignerViewModel(ModelItem modelItem, string recordSetName)
             : base(modelItem)
         {
             RecordsetName = recordSetName;

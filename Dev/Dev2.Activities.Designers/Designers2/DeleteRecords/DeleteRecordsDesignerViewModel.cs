@@ -14,7 +14,7 @@ using Dev2.Studio.Interfaces;
 
 
 
-namespace Dev2.Activities.Designers2.DeleteRecordsNullHandler
+namespace Dev2.Activities.Designers2.DeleteRecords
 {
     public class DeleteRecordsDesignerViewModel : ActivityDesignerViewModel
     {
