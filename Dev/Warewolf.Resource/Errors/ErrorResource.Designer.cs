@@ -1483,6 +1483,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string GatherSystemInfoInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("GatherSystemInfoInputInvalidExpressionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gridsplitter only works in grid.
         /// </summary>
         public static string GridsplitterOnlyWorksInGrids {
