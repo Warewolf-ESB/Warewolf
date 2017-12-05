@@ -32,7 +32,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual("UPPER", caseConvertDTO.ConvertType);            
             Assert.AreEqual(string.Empty, caseConvertDTO.Result);
             Assert.AreEqual(1, caseConvertDTO.IndexNumber);
-            Assert.IsNull(caseConvertDTO.Errors);
+            Assert.IsNotNull(caseConvertDTO.Errors);
         }
 
         #region CanAdd Tests
@@ -59,6 +59,43 @@ namespace Dev2.Tests.Activities.TOTests
             var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
             //------------Assert Results-------------------------
             Assert.IsTrue(caseConvertTO.CanAdd());
+        }
+
+        [TestMethod]
+        public void CaseConvertTO_GetRuleSet_StringToConvert_ReturnsStringToConvertRule()
+        {
+            //------------Setup for test--------------------------
+            var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
+            //------------Execute Test---------------------------
+            var ruleSet = caseConvertTO.GetRuleSet("StringToConvert", "");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(ruleSet);
+            Assert.AreEqual(1, ruleSet.Rules.Count);
+        }
+
+        [TestMethod]
+        public void CaseConvertTO_ClearRow_StringToConvert_ReturnsStringToConvertRule()
+        {
+            //------------Setup for test--------------------------
+            var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
+            //------------Execute Test---------------------------
+            caseConvertTO.ClearRow();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("UPPER", caseConvertTO.ConvertType);
+            Assert.AreEqual(string.Empty, caseConvertTO.StringToConvert);
+            Assert.AreEqual(string.Empty, caseConvertTO.Result);
+        }
+
+        [TestMethod]
+        public void CaseConvertTO_GetRuleSet_ConvertType_ReturnsNoRule()
+        {
+            //------------Setup for test--------------------------
+            var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
+            //------------Execute Test---------------------------
+            var ruleSet = caseConvertTO.GetRuleSet("ConvertType", "");
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(ruleSet);
+            Assert.AreEqual(0, ruleSet.Rules.Count);
         }
 
         #endregion

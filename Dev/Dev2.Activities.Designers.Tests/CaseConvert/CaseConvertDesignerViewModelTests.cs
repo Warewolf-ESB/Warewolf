@@ -70,7 +70,6 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
                 new CaseConvertTO("", "None", "", 0)
             };
             var viewModel = new CaseConvertDesignerViewModel(CreateModelItem(items));
-            viewModel.Validate();
             dynamic mi = viewModel.ModelItem;
             Assert.AreEqual(4, mi.ConvertCollection.Count);
         }
@@ -140,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(1, viewModel.Errors.Count);
+            Assert.AreEqual(2, viewModel.Errors.Count);
 
             StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.CaseConvertInputInvalidExpressionErrorTest);
             Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsStringToConvertFocused");
