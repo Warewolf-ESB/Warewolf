@@ -316,30 +316,24 @@
     <Compile Include="Designers2\CreateJSON\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesigner.xaml.cs">
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
       <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesignerViewModel.cs" />
-    <Compile Include="Designers2\DateTimeDifferenceStandard\Large.xaml.cs">
-      <DependentUpon>Large.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DateTimeDifferenceStandard\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs" />
     <Compile Include="Designers2\DateTimeDifference\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs" />
     <Compile Include="Designers2\DateTime\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTimStandard\DateTimeDesigner.xaml.cs">
-      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DateTimStandard\DateTimeDesignerViewModel.cs" />
-    <Compile Include="Designers2\DateTimStandard\Large.xaml.cs">
-      <DependentUpon>Large.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DateTimStandard\Small.xaml.cs">
+    <Compile Include="Designers2\DateTime\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Decision\DecisionDesignerViewModel.cs" />
@@ -572,28 +566,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Designers2\DataSplit\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
-      <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
-      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Designers2\DateTime\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -1357,15 +1329,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DateTimeDifferenceStandard\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DateTimeDifferenceStandard\Small.xaml">
+    <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1373,19 +1337,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\DateTimeDifference\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DateTime\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DateTimStandard\DateTimeDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DateTimStandard\Large.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DateTimStandard\Small.xaml">
+    <Page Include="Designers2\DateTime\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1638,22 +1602,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\DataSplit\Small.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\DateTimeDifference\Small.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\DateTime\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

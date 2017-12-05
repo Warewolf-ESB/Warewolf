@@ -10,7 +10,7 @@
 
 using System.Windows;
 
-namespace Dev2.Activities.Designers2.DateTime
+namespace Dev2.Activities.Designers2.DateTimStandard
 {
     public partial class Small
     {
