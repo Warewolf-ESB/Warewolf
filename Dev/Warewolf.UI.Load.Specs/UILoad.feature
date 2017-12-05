@@ -29,7 +29,7 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	And I Click VariableList Scalar Row1 Delete Button
-	Then the timer duration is between "180" and "360" seconds
+	Then the timer duration is between "30" and "60" seconds
 	Given I have "20" All Tools workflows tabs open
 	And I start the timer
 	When I Filter the Explorer with "All Tools"
