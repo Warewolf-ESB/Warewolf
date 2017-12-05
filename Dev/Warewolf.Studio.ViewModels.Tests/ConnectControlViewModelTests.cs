@@ -521,7 +521,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator(), popupController.Object);
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
-            privateObject.Invoke("CheckVersionConflict");
+            privateObject.Invoke("CheckVersionConflictAsync");
             //------------Assert Results-------------------------
             popupController.Verify(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()), Times.Never);
         }
@@ -536,7 +536,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator(), popupController.Object);
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
-            privateObject.Invoke("CheckVersionConflict");
+            privateObject.Invoke("CheckVersionConflictAsync");
             //------------Assert Results-------------------------
         }
         [TestMethod]
@@ -551,7 +551,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var connectControlViewModel = new ConnectControlViewModel(_serverMock.Object, new EventAggregator(), popupController.Object);
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(connectControlViewModel);
-            privateObject.Invoke("CheckVersionConflict");
+            privateObject.Invoke("CheckVersionConflictAsync");
             //------------Assert Results-------------------------
             popupController.Verify(controller => controller.ShowConnectServerVersionConflict(It.IsAny<string>(), It.IsAny<string>()), Times.AtLeastOnce);
         }
@@ -566,7 +566,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(_target);
             privateObject.SetField("_selectedConnection", value:null);
-            privateObject.Invoke("ConnectOrDisconnect");
+            privateObject.Invoke("ConnectOrDisconnectAsync");
             //------------Assert Results-------------------------
             Assert.IsFalse(_target.IsConnecting);
         }
@@ -578,7 +578,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _serverMock.Setup(server1 => server1.IsConnected).Returns(true);
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(_target);
-            privateObject.Invoke("ConnectOrDisconnect");
+            privateObject.Invoke("ConnectOrDisconnectAsync");
             //------------Assert Results-------------------------
             Assert.IsFalse(_target.IsConnecting);
         }
@@ -593,7 +593,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.ServerDisconnected = (obj, arg) => { };
             //------------Execute Test---------------------------
             PrivateObject privateObject = new PrivateObject(_target);
-            privateObject.Invoke("ConnectOrDisconnect");
+            privateObject.Invoke("ConnectOrDisconnectAsync");
             //------------Assert Results-------------------------
             Assert.IsNotNull(_target.ServerDisconnected);
             Assert.IsFalse(_target.IsConnecting);
