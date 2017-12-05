@@ -113,12 +113,12 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
-        [TestCategory("DataMergeDesignerViewModel_ValidateCollectionItem")]
-        public void DataMergeDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
+        [TestCategory("CaseConvertDesignerViewModel_ValidateCollectionItem")]
+        public void CaseConvertDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
         {
             //------------Setup for test--------------------------
             var mi = ModelItemUtils.CreateModelItem(new DsfCaseConvertActivity());
-            mi.SetProperty("DisplayName", "Merge");
+            mi.SetProperty("DisplayName", "Case Convert");
 
             var dto = new CaseConvertTO("a&]]", "Upper", "", 0, true);
 
@@ -140,13 +140,10 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
             viewModel.Validate();
 
             //------------Assert Results-------------------------
-            Assert.AreEqual(4, viewModel.Errors.Count);
+            Assert.AreEqual(1, viewModel.Errors.Count);
 
-            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.DataMergeInvalidExpressionErrorTest);
-            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsFieldNameFocused");
-
-            StringAssert.Contains(viewModel.Errors[1].Message, Warewolf.Resource.Errors.ErrorResource.DataMergeUsingNullErrorTest);
-            Verify_IsFocused(dtoModelItem, viewModel.Errors[1].Do, "IsAtFocused");
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.CaseConvertInputInvalidExpressionErrorTest);
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsStringToConvertFocused");
         }
 
         void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)

@@ -1316,4 +1316,7 @@ Please contact your Windows System Administrator.</value>
   <data name="ServerBusyHeader" xml:space="preserve">
     <value>Server is currently busy</value>
   </data>
+  <data name="CaseConvertInputInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'StringToConvert' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
 </root>
