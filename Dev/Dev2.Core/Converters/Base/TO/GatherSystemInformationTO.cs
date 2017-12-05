@@ -9,28 +9,21 @@
 */
 
 using System.Collections.Generic;
-using System.ComponentModel;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
+using Dev2.Common;
+using Dev2.Validation;
 
 namespace Dev2
 {
-    public class GatherSystemInformationTO : IDev2TOFn, IPerformsValidation
+    public class GatherSystemInformationTO : ValidatableObject, IDev2TOFn
     {
-        #region Fields
-
         private enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
-        private Dictionary<string, List<IActionableErrorInfo>> _errors;
         private string _result;
-
-        #endregion
-
-        #region Ctor
+        private bool _isResultFocused;
 
         public GatherSystemInformationTO()
         {
@@ -50,10 +43,6 @@ namespace Dev2
             Result = result;
             IndexNumber = indexNumber;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Type of system information to gather
@@ -93,10 +82,6 @@ namespace Dev2
 
         public int IndexNumber { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         public bool CanRemove()
         {
             return string.IsNullOrWhiteSpace(Result);
@@ -112,112 +97,36 @@ namespace Dev2
             Result = "";
         }
 
-        #endregion
-
-        #region Private Methods
-
         private void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
 
-        #endregion
 
-        #region PropertyChanged
+        public bool IsResultFocused { get => _isResultFocused; set => OnPropertyChanged(ref _isResultFocused, value); }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Implementation of IPerformsValidation
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors
-        {
-            get { return _errors; }
-            set
+            RuleSet ruleSet = new RuleSet();
+            if (propertyName == "Result")
             {
-                _errors = value;
-                OnPropertyChanged("Errors");
-            }
-        }
 
-        public bool Validate(string propertyName, IRuleSet ruleSet)
-        {
-            if (ruleSet == null)
-            {
-                Errors[propertyName] = new List<IActionableErrorInfo>();
-            }
-            else
-            {
-                List<IActionableErrorInfo> errorsTos = ruleSet.ValidateRules();
-                List<IActionableErrorInfo> actionableErrorInfos =
-                    errorsTos.ConvertAll<IActionableErrorInfo>(input => new ActionableErrorInfo(input, () =>
-                    {
-                        //
-                    }));
-                Errors[propertyName] = actionableErrorInfos;
-            }
-            OnPropertyChanged("Errors");
-            if (Errors.TryGetValue(propertyName, out List<IActionableErrorInfo> errorList))
-            {
-                return errorList.Count == 0;
-            }
-            return false;
-        }
+                if (!string.IsNullOrEmpty(Result))
+                {
+                    var inputExprRule = new IsValidExpressionRule(() => Result, datalist, "0", new VariableUtils());
+                    ruleSet.Add(inputExprRule);
+                }
+                else
+                {
+                    ruleSet.Add(new IsStringEmptyRule(() => Result));
+                }
 
-        public bool Validate(string propertyName, string datalist)
-        {
-            RuleSet ruleSet = null;
-            switch (propertyName)
-            {
-                case "FieldName":
-                    ruleSet = GetFieldNameRuleSet();
-                    break;
-                case "FieldValue":
-                    break;
-                default:
-                    break;
             }
-            return Validate(propertyName, ruleSet);
-        }
-
-        private RuleSet GetFieldNameRuleSet()
-        {
-            var ruleSet = new RuleSet();
             return ruleSet;
         }
 
-        #endregion
-
-        #region Implementation of IDataErrorInfo
-
-        /// <summary>
-        ///     Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        ///     The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] => null;
-
-        /// <summary>
-        ///     Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
-        
-        
-        public string Error { get; private set; }
 
 
-
-        #endregion
     }
 }
