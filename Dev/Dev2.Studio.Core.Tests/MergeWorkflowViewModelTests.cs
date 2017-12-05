@@ -24,7 +24,6 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class MergeWorkflowViewModelTests
     {
-
         [TestInitialize]
         public void InitializeTest()
         {
@@ -202,7 +201,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false);
-            var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("ProcessCurrent", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("ProcessCurrentItem", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodToRun);
             //ConflictTreeNode(IDev2Activity act, Point location)
@@ -211,7 +210,7 @@ namespace Dev2.Core.Tests
             var currentTree = new List<ConflictTreeNode>();
             currentTree.Add(new ConflictTreeNode(new DsfCalculateActivity(), new Point()));
             var armConnectorConflicts = new List<IArmConnectorConflict>();
-            methodToRun.Invoke(mergeWorkflowViewModel, new object[] { currentResourceModel.Object, conflicts, currentTree, armConnectorConflicts });
+            methodToRun.Invoke(mergeWorkflowViewModel, new object[] { currentResourceModel.Object, conflicts, armConnectorConflicts, currentTree[0] });
             //---------------Test Result -----------------------
             Assert.AreEqual(1, conflicts.Count);
             Assert.AreEqual(1, currentTree.Count);
@@ -250,7 +249,7 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
             var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false);
-            var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("ProcessDiff", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("ProcessDiffItem", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(methodToRun);
             //---------------Execute Test ----------------------
@@ -258,7 +257,7 @@ namespace Dev2.Core.Tests
             var currentTree = new List<ConflictTreeNode>();
             currentTree.Add(new ConflictTreeNode(new DsfCalculateActivity(), new Point()));
             var armConnectorConflicts = new List<IArmConnectorConflict>();
-            methodToRun.Invoke(mergeWorkflowViewModel, new object[] { currentResourceModel.Object, conflicts, currentTree, armConnectorConflicts });
+            methodToRun.Invoke(mergeWorkflowViewModel, new object[] { currentResourceModel.Object, conflicts, armConnectorConflicts, currentTree[0] });
             //---------------Test Result -----------------------
             Assert.AreEqual(1, conflicts.Count);
             Assert.AreEqual(1, currentTree.Count);
@@ -306,19 +305,11 @@ namespace Dev2.Core.Tests
                                 {
                                     new ArmConnectorConflict()
                                 };
-                Func<IConflict, List<IArmConnectorConflict>, IEnumerable<IArmConnectorConflict>> findFunction = (q, y) =>
-                {
-                    return new List<IArmConnectorConflict>
-                                        {
-                                            new ArmConnectorConflict()
-                                        };
-                };
                 var armConnectorConflicts = new List<IArmConnectorConflict>();
-                methodToRun.Invoke(null, new object[] { conflicts, armConnectorConflicts, findFunction });
+                methodToRun.Invoke(null, new object[] { conflicts, armConnectorConflicts });
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, conflicts.Count);
             }
-
         }
 
 
@@ -352,124 +343,20 @@ namespace Dev2.Core.Tests
             differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
             differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
 
+            var toolUniqueId = new Guid();
+            var conflicts = new List<IConflict> { new ToolConflict { UniqueId = toolUniqueId } };
+
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("FindMatchingConnector", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
                 //---------------Execute Test ----------------------
-                var id1 = new Guid().ToString();
-                var id2 = new Guid().ToString();
-                var aaaa = methodToRun.Invoke(null, new object[] { id1, id2 });
+                var aaaa = methodToRun.Invoke(null, new object[] { toolUniqueId.ToString(), conflicts.Where(s => s is IToolConflict).Select(a => a.UniqueId.ToString()) });
                 //---------------Test Result -----------------------
                 Assert.IsTrue(Convert.ToBoolean(aaaa));
             }
-
         }
-
-
-        [TestMethod]
-        public void FindForDiff_GivenSameIds_Returnstrue()
-        {
-            //---------------Set up test pack-------------------
-            var applicationAdapter = new Mock<IApplicationAdaptor>();
-            CustomContainer.Register(applicationAdapter.Object);
-
-            var mockServer = new Mock<IServer>();
-            var mockshell = new Mock<IShellViewModel>();
-            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
-            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
-            CustomContainer.Register(mockServer.Object);
-            CustomContainer.Register(mockshell.Object);
-            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
-            var resourceDefinationCleaner = new ResourceDefinationCleaner();
-            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
-            var dev2JsonSerializer = new Dev2JsonSerializer();
-            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
-
-            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
-            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
-              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
-            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-
-            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
-            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            //FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts)
-            var conflicts = new ArmConnectorConflict();
-            var armConnectorConflicts = new List<IArmConnectorConflict>();
-            armConnectorConflicts.Add(new ArmConnectorConflict()
-            {
-                CurrentArmConnector = new MergeArmConnectorConflict("", "", "", "", new ArmConnectorConflict()),
-                DifferentArmConnector = new MergeArmConnectorConflict("", "", "", "", new ArmConnectorConflict())
-            });
-            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
-            {
-                var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("FindForDiff", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-                //---------------Assert Precondition----------------
-                Assert.IsNotNull(methodToRun);
-                //---------------Execute Test ----------------------
-                var id1 = new Guid().ToString();
-                var id2 = new Guid().ToString();
-                var aaaa = methodToRun.Invoke(null, new object[] { conflicts, armConnectorConflicts }) as IEnumerable<IArmConnectorConflict>;
-                //---------------Test Result -----------------------
-                Assert.AreEqual(0, aaaa.Count());
-            }
-        }
-
-        [TestMethod]
-        public void FindForCurrent_GivenSameIds_Returnstrue()
-        {
-            //---------------Set up test pack-------------------
-            var applicationAdapter = new Mock<IApplicationAdaptor>();
-            CustomContainer.Register(applicationAdapter.Object);
-
-            var mockServer = new Mock<IServer>();
-            var mockshell = new Mock<IShellViewModel>();
-            mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);
-            mockServer.Setup(a => a.GetServerVersion()).Returns("1.0.0.0");
-            CustomContainer.Register(mockServer.Object);
-            CustomContainer.Register(mockshell.Object);
-            var assignExample = XML.XmlResource.Fetch("Loop Constructs - For Each");
-            var resourceDefinationCleaner = new ResourceDefinationCleaner();
-            var resource = resourceDefinationCleaner.GetResourceDefinition(true, Guid.Empty, new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting)));
-            var dev2JsonSerializer = new Dev2JsonSerializer();
-            var msg = dev2JsonSerializer.Deserialize<ExecuteMessage>(resource);
-
-            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
-            currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            currentResourceModel.Setup(resModel => resModel.Environment.ResourceRepository.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>()))
-              .Returns(new ExecuteMessage { Message = msg.Message, HasError = false });
-            currentResourceModel.Setup(p => p.Environment.Connection.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
-
-            var differenceResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            differenceResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(msg.Message);
-            differenceResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
-            //FindForDiff(IConflict addConflict, List<IArmConnectorConflict> armConnectorConflicts)
-            var conflicts = new ArmConnectorConflict();
-            var armConnectorConflicts = new List<IArmConnectorConflict>();
-            armConnectorConflicts.Add(new ArmConnectorConflict()
-            {
-                CurrentArmConnector = new MergeArmConnectorConflict("", "", "", "", new ArmConnectorConflict()),
-                DifferentArmConnector = new MergeArmConnectorConflict("", "", "", "", new ArmConnectorConflict())
-            });
-            using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
-            {
-                var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("FindForCurrent", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-                //---------------Assert Precondition----------------
-                Assert.IsNotNull(methodToRun);
-                //---------------Execute Test ----------------------
-                var id1 = new Guid().ToString();
-                var id2 = new Guid().ToString();
-                var aaaa = methodToRun.Invoke(null, new object[] { conflicts, armConnectorConflicts }) as IEnumerable<IArmConnectorConflict>;
-                //---------------Test Result -----------------------
-                Assert.AreEqual(0, aaaa.Count());
-            }
-        }
-
 
         [TestMethod]
         public void AddToTempConflictList_Givenconflicts_AddsItems()
@@ -2019,9 +1906,9 @@ namespace Dev2.Core.Tests
             {
                 mergeWorkflowViewModel.UpdateHelpDescriptor("aaa");
                 mockshell.Verify(p => p.HelpViewModel.UpdateHelpText("aaa"));
-                bool wasCalled = false;
+                var wasCalled = false;
 
-                Assert.IsFalse(mergeWorkflowViewModel.CanSave);
+                Assert.IsTrue(mergeWorkflowViewModel.CanSave);
                 mergeWorkflowViewModel.PropertyChanged += (a, p) =>
                 {
                     if (p.PropertyName == "CanSave")
