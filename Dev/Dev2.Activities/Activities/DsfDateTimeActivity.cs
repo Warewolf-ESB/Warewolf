@@ -111,10 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Ctor
-
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -129,8 +126,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             ErrorResultTO allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             // Process if no errors
