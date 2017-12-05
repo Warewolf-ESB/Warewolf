@@ -32,6 +32,10 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        public bool IsCurrentSelected { get; set; }
+        public bool IsDiffSelected { get; set; }
+        public bool IsEmptyItemSelected { get; set; }
+
         public bool Equals(IArmConnectorConflict other)
         {
             if (other == null)
