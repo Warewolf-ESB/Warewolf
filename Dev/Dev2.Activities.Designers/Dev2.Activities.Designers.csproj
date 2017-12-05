@@ -303,9 +303,13 @@
     <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
-    <Compile Include="Designers2\CountRecords\Large.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecords\Large.xaml.cs" />
+    <Compile Include="Designers2\CountRecords\Small.xaml.cs" />
     <Compile Include="Designers2\CreateJSON\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
@@ -316,32 +320,48 @@
     <Compile Include="Designers2\CreateJSON\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
+    <Compile Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesigner.xaml.cs">
       <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesignerViewModel.cs" />
+    <Compile Include="Designers2\DateTimeDifferenceStandard\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifferenceStandard\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Designers2\DateTimeDifference\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
-      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs" />
     <Compile Include="Designers2\DateTime\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Designers2\DateTime\Small.xaml.cs">
+    <Compile Include="Designers2\DateTimStandard\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\DateTimeDesignerViewModel.cs" />
+    <Compile Include="Designers2\DateTimStandard\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DateTimStandard\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\Decision\DecisionDesignerViewModel.cs" />
     <Compile Include="Designers2\Decision\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+      <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
     <Compile Include="Designers2\DeleteRecords\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\DropBox2016\Delete\DropBoxDeleteDesigner.xaml.cs">
       <DependentUpon>DropBoxDeleteDesigner.xaml</DependentUpon>
@@ -424,6 +444,16 @@
     </Compile>
     <Compile Include="Designers2\GatherSystemInformation\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml.cs">
+      <DependentUpon>GetWebRequestDesigner.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesignerViewModel.cs" />
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml.cs">
+      <DependentUpon>Large.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\MultiAssignObject\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
@@ -512,12 +542,12 @@
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
     <Compile Include="Designers2\Core\ZIndexPosition.cs" />
-    <Compile Include="Designers2\CountRecords\CountRecordsDesigner.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml.cs">
       <DependentUpon>CountRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\CountRecords\CountRecordsDesignerViewModel.cs" />
-    <Compile Include="Designers2\CountRecords\Small.xaml.cs">
+    <Compile Include="Designers2\CountRecordsNullHandler\CountRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\CountRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -559,12 +589,34 @@
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml.cs">
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml.cs">
+      <DependentUpon>DateTimeDifferenceDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\DateTimeDifferenceDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTimeDifference\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesigner.xaml.cs">
+      <DependentUpon>DateTimeDesigner.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\DateTimeDesignerViewModel.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DateTime\Small.xaml.cs">
+      <DependentUpon>Small.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml.cs">
       <DependentUpon>DeleteRecordsDesigner.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Designers2\DeleteRecords\DeleteRecordsDesignerViewModel.cs" />
-    <Compile Include="Designers2\DeleteRecords\Small.xaml.cs">
+    <Compile Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesignerViewModel.cs" />
+    <Compile Include="Designers2\DeleteRecordsNullHandler\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -1303,7 +1355,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Designers2\CountRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\CountRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\CountRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1319,7 +1383,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
+    <Page Include="Designers2\DateTimeDifferenceStandard\DateTimeDifferenceDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimeDifferenceStandard\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimeDifferenceStandard\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1327,19 +1399,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DateTimeDifference\Small.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Designers2\DateTime\Large.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Designers2\DateTime\Small.xaml">
+    <Page Include="Designers2\DateTimStandard\DateTimeDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimStandard\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DateTimStandard\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1347,7 +1419,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Designers2\DeleteRecords\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\DeleteRecords\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -1426,6 +1510,18 @@
     <Page Include="Designers2\GatherSystemInformation\Large.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\GetWebRequestDesigner.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Large.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Designers2\GetWebRequest\GetWebRequest\Small.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Designers2\RabbitMQ\Consume\Large.xaml">
       <SubType>Designer</SubType>
@@ -1539,11 +1635,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\CountRecords\CountRecordsDesigner.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\CountRecordsDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\CountRecords\Small.xaml">
+    <Page Include="Designers2\CountRecordsNullHandler\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1583,11 +1679,27 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DeleteRecords\DeleteRecordsDesigner.xaml">
+    <Page Include="Designers2\DateTimeDifference\DateTimeDifferenceDesigner.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Designers2\DeleteRecords\Small.xaml">
+    <Page Include="Designers2\DateTimeDifference\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTime\DateTimeDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DateTime\Small.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\DeleteRecordsDesigner.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Designers2\DeleteRecordsNullHandler\Small.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

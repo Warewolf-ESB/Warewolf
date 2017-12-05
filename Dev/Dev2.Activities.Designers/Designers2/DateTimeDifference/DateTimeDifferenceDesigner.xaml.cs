@@ -11,7 +11,7 @@
 
 
 
-namespace Dev2.Activities.Designers2.DateTimeDifferenceStandard
+namespace Dev2.Activities.Designers2.DateTimeDifference
 {
     public partial class DateTimeDifferenceDesigner
     {
