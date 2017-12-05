@@ -10,6 +10,7 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
+using System;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
 {
@@ -77,6 +78,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         public void Open_RabbitMqConsume_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume, new Point(145, 7));
+        }
+
+        internal void Enter_Values_Into_SysInfo_Large_Tool(string value)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox.TextEdit.Text = value;
         }
 
         [When(@"I Open RabbitMqPublish LargeView")]
