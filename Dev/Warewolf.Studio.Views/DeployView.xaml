@@ -64,6 +64,7 @@
                                                         Width="50"
                                                         VerticalAlignment="Center" HorizontalAlignment="Center"
                                                         AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+                    <TextBlock Text="Loading..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
             </Grid>
             <views:ExplorerView Grid.Row="2" 
