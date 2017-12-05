@@ -9,7 +9,7 @@
 */
 
 
-namespace Dev2.Activities.Designers2.CountRecords
+namespace Dev2.Activities.Designers2.CountRecordsNullHandler
 {
     public partial class CountRecordsDesigner
     {
