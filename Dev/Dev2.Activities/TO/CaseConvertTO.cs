@@ -9,11 +9,9 @@
 */
 
 using System.Collections.Generic;
-using System.ComponentModel;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Validation;
@@ -22,16 +20,10 @@ namespace Dev2.TO
 {
     public class CaseConvertTO : ValidatedObject, ICaseConvertTO
     {
-        #region Fields
-
         private string _convertType;
         private string _result;
         private string _stringToConvert;
         private bool _isStringToConvertFocused;
-
-        #endregion Fields
-
-        #region Ctor
 
         public CaseConvertTO()
         {
@@ -53,10 +45,6 @@ namespace Dev2.TO
             IndexNumber = indexNumber;
         }
 
-        #endregion Ctor
-
-        #region Properties
-
         public bool Inserted { get; set; }
 
         [FindMissing]
@@ -67,7 +55,6 @@ namespace Dev2.TO
             {
                 _stringToConvert = value;
                 _result = value;
-                    // This is set as the result for now as it is the same value till we do the advanced view.
                 OnPropertyChanged("StringToConvert");
                 OnPropertyChanged("Result");
                 RaiseCanAddRemoveChanged();
@@ -94,7 +81,6 @@ namespace Dev2.TO
         {
             get
             {
-                //Add the below code when the wizard comes in
                 if (string.IsNullOrWhiteSpace(_result))
                 {
                     _result = StringToConvert;
@@ -121,8 +107,6 @@ namespace Dev2.TO
             OnPropertyChanged("CanAdd");
         }
 
-        #endregion Properties
-
         public bool CanRemove()
         {
             return string.IsNullOrWhiteSpace(StringToConvert);
@@ -139,42 +123,6 @@ namespace Dev2.TO
             ConvertType = "UPPER";
             Result = string.Empty;
         }
-
-        #region PropertyChanged
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        #endregion
-
-        #region Implementation of IDataErrorInfo
-
-        /// <summary>
-        ///     Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        ///     The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] => null;
-
-        /// <summary>
-        ///     Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
-        
-        
-        public string Error { get; private set; }
-
-
-
-        #endregion
 
         public bool IsStringToConvertFocused { get => _isStringToConvertFocused; set => OnPropertyChanged(ref _isStringToConvertFocused, value); }         
 
