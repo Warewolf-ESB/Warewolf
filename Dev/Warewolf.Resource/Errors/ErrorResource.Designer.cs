@@ -358,6 +358,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;StringToConvert&apos; - Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string CaseConvertInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("CaseConvertInputInvalidExpressionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to CC address is not in the valid format: {0}.
         /// </summary>
         public static string CCAddressInvalidFormat {
