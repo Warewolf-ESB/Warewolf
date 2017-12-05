@@ -118,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
             {
-                DisplayAndWriteError("DsfCaseConvertActivity", allErrors);
+                DisplayAndWriteError(nameof(DsfCaseConvertActivity), allErrors);
                 var errorString = allErrors.MakeDisplayReady();
                 dataObject.Environment.AddError(errorString);
             }
