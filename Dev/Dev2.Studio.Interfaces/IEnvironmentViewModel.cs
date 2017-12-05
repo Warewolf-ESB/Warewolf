@@ -53,17 +53,17 @@ namespace Dev2.Studio.Interfaces
 
         Action SelectAll { get; set; }
 
-        Task<bool> Load();
+        Task<bool> LoadAsync();
 
-        Task<bool> Load(bool isDeploy);
+        Task<bool> LoadAsync(bool isDeploy);
 
-        Task<bool> Load(bool isDeploy, bool reloadCatalogue);
+        Task<bool> LoadAsync(bool isDeploy, bool reloadCatalogue);
 
-        Task<bool> LoadDialog(string selectedId);
+        Task<bool> LoadDialogAsync(string selectedId);
 
-        Task<bool> LoadDialog(string selectedId, bool b, bool reloadCatalogue);
+        Task<bool> LoadDialogAsync(string selectedId, bool b, bool reloadCatalogue);
 
-        Task<bool> LoadDialog(Guid selectedPath);
+        Task<bool> LoadDialogAsync(Guid selectedPath);
         IExplorerTreeItem FindByPath(string path);
 
         ObservableCollection<IExplorerItemViewModel> CreateExplorerItemModels(IEnumerable<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy);
