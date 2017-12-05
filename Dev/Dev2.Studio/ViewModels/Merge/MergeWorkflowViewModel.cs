@@ -412,6 +412,7 @@ namespace Dev2.ViewModels.Merge
                     UpdateNextToolArmEnabledState(args, nextArmConflict);
                 }
                 container.IsChecked = args.IsMergeChecked;
+                container.IsEmptyItemSelected = args.ModelItem == null;
                 GetMatchingConflictParent(container);
             }
             catch (Exception ex)
@@ -664,7 +665,7 @@ namespace Dev2.ViewModels.Merge
         private void GetMatchingConflictParent(IConflict conflict)
         {
             var items = _conflicts.Where(s => s is IArmConnectorConflict).Cast<IArmConnectorConflict>().ToList();
-            var toolIds = _conflicts.Where(s => s is IToolConflict && s.IsChecked && s.UniqueId == conflict.UniqueId).Select(a => a.UniqueId.ToString());
+            var toolIds = _conflicts.Where(s => s is IToolConflict && s.IsChecked && !s.IsEmptyItemSelected).Select(a => a.UniqueId.ToString());
             foreach (var s in items) {
                 var foundCurrentDestination = FindMatchingConnector(s.CurrentArmConnector.DestinationUniqueId, toolIds);
                 var foundDiffDestination = FindMatchingConnector(s.DifferentArmConnector.DestinationUniqueId, toolIds);
