@@ -15,11 +15,15 @@ using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Converters;
 using Dev2.Studio.Interfaces;
+using Dev2.Studio.Core.Activities.Utils;
+using System;
+using Dev2.Studio.Core;
 
 namespace Dev2.Activities.Designers2.BaseConvert
 {
     public class BaseConvertDesignerViewModel : ActivityCollectionDesignerViewModel<BaseConvertTO>
     {
+        internal Func<string> _getDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public BaseConvertDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -43,7 +47,16 @@ namespace Dev2.Activities.Designers2.BaseConvert
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            yield break;
+            var dto = mi.GetCurrentValue() as BaseConvertTO;
+            if (dto == null)
+            {
+                yield break;
+            }
+
+            foreach (var error in dto.GetRuleSet("FromExpression", _getDatalistString()).ValidateRules("'FromExpression'", () => mi.SetProperty("IsFromExpressionFocused", true)))
+            {
+                yield return error;
+            }
         }
 
         public override void UpdateHelpDescriptor(string helpText)
