@@ -10,6 +10,7 @@ using System.Net;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using System.Runtime.InteropServices;
 
 namespace Warewolf.UI.Load.Specs
 {
@@ -47,7 +48,14 @@ namespace Warewolf.UI.Load.Specs
             var numberOfTasks = ScenarioContext.Current.Get<String>("numberOfTasks");
             for (var i = int.Parse(numberOfTasks); i > 0; i--)
             {
-                localTaskService.GetFolder("Warewolf").DeleteTask("UILoadTest" + i.ToString());
+                try
+                {
+                    localTaskService.GetFolder("Warewolf").DeleteTask("UILoadTest" + i.ToString());
+                }
+                catch (InvalidComObjectException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
             localTaskService.Dispose();
         }
