@@ -16,12 +16,15 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Warewolf.Resource.Errors;
+using Dev2.Data.Parsers;
+using Dev2.Data.Interfaces;
+using Dev2.Data.Util;
 
 namespace Dev2.Validation
 {
-    public static class VariableUtils
+    public class VariableUtils: IVariableUtils
     {
-        public static void AddError(this List<IActionableErrorInfo> errors, IActionableErrorInfo error)
+        public void AddError(List<IActionableErrorInfo> errors, IActionableErrorInfo error)
         {
             if(errors != null && error != null)
             {
@@ -29,13 +32,24 @@ namespace Dev2.Validation
             }
         }
 
-        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError)=>inputValue.TryParseVariables(out outputValue, onError, null, "a", null);
+        public bool IsEvaluated(string value) => DataListUtil.IsEvaluated(value);
+        public bool IsValueRecordset(string value) => DataListUtil.IsValueRecordset(value);
 
-        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue) => inputValue.TryParseVariables(out outputValue, onError, null, variableValue, null);
+        public IList<IIntellisenseResult> ParseDataLanguageForIntellisense(string value, string datalist)
+        {
+            var parser = new Dev2DataLanguageParser();
+            return parser.ParseDataLanguageForIntellisense(value, datalist);
+        }
 
-        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string variableValue, string labelText) => inputValue.TryParseVariables(out outputValue, onError, labelText, variableValue, null);
+        public string RemoveLanguageBrackets(string region) => DataListUtil.RemoveLanguageBrackets(region);
+        public List<string> SplitIntoRegions(string value) => DataListCleaningUtils.SplitIntoRegions(value);
+        public IActionableErrorInfo TryParseVariables(string inputValue, out string outputValue, Action onError)=>TryParseVariables(inputValue,out outputValue, onError, null, "a", null);
 
-        public static IActionableErrorInfo TryParseVariables(this string inputValue, out string outputValue, Action onError, string labelText, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs)
+        public IActionableErrorInfo TryParseVariables(string inputValue, out string outputValue, Action onError, string variableValue) => TryParseVariables(inputValue,out outputValue, onError, null, variableValue, null);
+
+        public IActionableErrorInfo TryParseVariables(string inputValue, out string outputValue, Action onError, string variableValue, string labelText) => TryParseVariables(inputValue,out outputValue, onError, labelText, variableValue, null);
+
+        public IActionableErrorInfo TryParseVariables(string inputValue, out string outputValue, Action onError, string labelText, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs)
         {
             outputValue = inputValue;
 
@@ -76,6 +90,12 @@ namespace Dev2.Validation
                 }
             }
             return null;
+        }
+
+        public IIntellisenseResult ValidateName(string name, string displayName)
+        {
+            var parser = new Dev2DataLanguageParser();
+            return parser.ValidateName(name, displayName);
         }
     }
 }

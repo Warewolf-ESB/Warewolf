@@ -222,26 +222,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchType));
-                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "From":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => From));
-                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "To":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => To));
-                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "SearchCriteria":
      
-                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1", new VariableUtils()));
                     break;
                 default:
                     throw new ArgumentException("Unrecognized Property Name: " + propertyName);
