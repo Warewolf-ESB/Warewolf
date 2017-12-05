@@ -111,7 +111,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSqlBulkInsertActivity), typeof(SqlBulkInsertDesigner) },
                 { typeof(DsfSortRecordsActivity), typeof(SortRecordsDesigner) },
                 { typeof(DsfCountRecordsetNullHandlerActivity), typeof(Activities.Designers2.CountRecordsNullHandler.CountRecordsDesigner) },
-                { typeof(DsfCountRecordsetActivity), typeof(Activities.Designers2.CountRecords.CountRecordsDesigner) },
                 { typeof(DsfRecordsetLengthActivity), typeof(Activities.Designers2.RecordsLength.RecordsLengthDesigner) },
                 { typeof(DsfRecordsetNullhandlerLengthActivity), typeof(Activities.Designers2.RecordsLengthNullHandler.RecordsLengthDesigner) },
                 { typeof(DsfDeleteRecordNullHandlerActivity), typeof(Activities.Designers2.DeleteRecordsNullHandler.DeleteRecordsDesigner) },
