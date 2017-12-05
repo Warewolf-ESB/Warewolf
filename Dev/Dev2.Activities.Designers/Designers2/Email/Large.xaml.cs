@@ -28,11 +28,7 @@ namespace Dev2.Activities.Designers2.Email
 
         void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
         {
-            var viewModel = ViewModel;
-            if (viewModel != null)
-            {
-                ThePassword = viewModel.Password;
-            }
+            OnPasswordChanged(sender, routedEventArgs);
         }
 
         void OnPasswordChanged(object sender, RoutedEventArgs e)
