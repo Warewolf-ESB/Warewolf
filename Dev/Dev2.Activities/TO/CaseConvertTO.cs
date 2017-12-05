@@ -25,9 +25,9 @@ namespace Dev2.TO
         #region Fields
 
         private string _convertType;
-        private Dictionary<string, List<IActionableErrorInfo>> _errors;
         private string _result;
         private string _stringToConvert;
+        private bool _isStringToConvertFocused;
 
         #endregion Fields
 
@@ -172,12 +172,12 @@ namespace Dev2.TO
         
         public string Error { get; private set; }
 
-        
+
 
         #endregion
 
-       
-                     
+        public bool IsStringToConvertFocused { get => _isStringToConvertFocused; set => OnPropertyChanged(ref _isStringToConvertFocused, value); }
+
         public bool IsEmpty()
         {
             return string.IsNullOrEmpty(StringToConvert);
