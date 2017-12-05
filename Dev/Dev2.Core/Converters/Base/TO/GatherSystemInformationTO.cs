@@ -9,12 +9,9 @@
 */
 
 using System.Collections.Generic;
-using System.ComponentModel;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Common;
