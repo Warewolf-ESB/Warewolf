@@ -713,6 +713,10 @@ namespace Warewolf.Studio.ViewModels
             get => _isResource;
             set
             {
+                if (value == _isResource)
+                {
+                    return;
+                }
                 if (ChildrenCount == 0)
                 {
                     return;
@@ -728,16 +732,23 @@ namespace Warewolf.Studio.ViewModels
                 }
                 _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
 
-                OnPropertyChanged(() => IsResourceChecked);
                 Task.Run(() => 
                 {
-                    var isChecked = _isResource;
-                    AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).
-                    Apply(a => a.IsResourceChecked = isChecked);
+                    if (Children.Any())
+                    {
+                        var isChecked = _isResource;
+                        Children.Apply(a => a.SetIsResourceChecked(isChecked));
+                    }
+                }).ContinueWith((t) => 
+                {
+                    SelectAll?.Invoke();
+                    OnPropertyChanged(() => IsResourceChecked);
+                    OnPropertyChanged(() => Children);
                 });
 
-                SelectAll?.Invoke();
-                OnPropertyChanged(() => IsResourceChecked);
+                
+                
+
             }
         }
 

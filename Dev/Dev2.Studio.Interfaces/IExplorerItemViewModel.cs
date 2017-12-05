@@ -58,5 +58,7 @@ namespace Dev2.Studio.Interfaces
         void SetPermissions(Permissions explorerItemPermissions);
 
         void SetPermissions(Permissions explorerItemPermissions, bool isDeploy);
+        void SetIsResourceChecked(bool? isResource);
+        void AfterResourceChecked();
     }
 }
