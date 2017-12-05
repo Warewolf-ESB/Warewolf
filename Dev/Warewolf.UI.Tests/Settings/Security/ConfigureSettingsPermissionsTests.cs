@@ -129,6 +129,7 @@ namespace Warewolf.UI.Tests
                 }
             }
             SettingsUIMap.Check_Public_Administrator();
+            Playback.Wait(3000);
             if (UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled)
             {
                 Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
