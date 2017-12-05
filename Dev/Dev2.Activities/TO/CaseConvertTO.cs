@@ -176,20 +176,11 @@ namespace Dev2.TO
 
         #endregion
 
-        public bool IsStringToConvertFocused { get => _isStringToConvertFocused; set => OnPropertyChanged(ref _isStringToConvertFocused, value); }
-
-        public bool IsEmpty()
-        {
-            return string.IsNullOrEmpty(StringToConvert);
-        }
+        public bool IsStringToConvertFocused { get => _isStringToConvertFocused; set => OnPropertyChanged(ref _isStringToConvertFocused, value); }         
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             RuleSet ruleSet = new RuleSet();
-            if (IsEmpty())
-            {
-                return ruleSet;
-            }
             if (propertyName == "StringToConvert")
             {
 

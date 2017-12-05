@@ -74,6 +74,19 @@ namespace Dev2.Tests.Activities.TOTests
         }
 
         [TestMethod]
+        public void CaseConvertTO_ClearRow_StringToConvert_ReturnsStringToConvertRule()
+        {
+            //------------Setup for test--------------------------
+            var caseConvertTO = new CaseConvertTO { StringToConvert = "Value" };
+            //------------Execute Test---------------------------
+            caseConvertTO.ClearRow();
+            //------------Assert Results-------------------------
+            Assert.AreEqual("UPPER", caseConvertTO.ConvertType);
+            Assert.AreEqual(string.Empty, caseConvertTO.StringToConvert);
+            Assert.AreEqual(string.Empty, caseConvertTO.Result);
+        }
+
+        [TestMethod]
         public void CaseConvertTO_GetRuleSet_ConvertType_ReturnsNoRule()
         {
             //------------Setup for test--------------------------
