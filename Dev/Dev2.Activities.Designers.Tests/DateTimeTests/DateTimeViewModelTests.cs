@@ -25,34 +25,6 @@ namespace Dev2.Activities.Designers.Tests.DateTimeTests
     {
         [TestMethod]
         [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
-        [Description("DateTime ViewModel clears the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to a blank string")]
-        [Owner("Ashley Lewis")]
-        public void DateTimeActivityViewModel_SelectedTimeModifierTypeChange_SelectedTimeModifierTypeSetToABlankString_TimeModifierAmountDisplayCleared()
-        {
-            //init
-            var expected = string.Empty;
-            const string TimeModifierAmountDisplay = "TimeModifierAmountDisplay";
-
-            var prop = new Mock<ModelProperty>();
-            var properties = new Dictionary<string, Mock<ModelProperty>>();
-            var propertyCollection = new Mock<ModelPropertyCollection>();
-            var mockModel = new Mock<ModelItem>();
-
-            prop.Setup(p => p.SetValue(expected)).Verifiable();
-            properties.Add(TimeModifierAmountDisplay, prop);
-            propertyCollection.Protected().Setup<ModelProperty>("Find", TimeModifierAmountDisplay, true).Returns(prop.Object);
-            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
-
-            //exe
-            var viewModel = new DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
-            viewModel.Validate();
-            //assert
-            prop.Verify(c => c.SetValue(expected), Times.Once(), "Find Records ViewModel does not clear the match data property of the model item when it's no longer needed");
-            Assert.IsTrue(viewModel.HasLargeView);
-        }
-
-        [TestMethod]
-        [TestCategory("DateTimeActivityViewModel_SelectedTimeModifierTypeSelectedItem")]
         [Description("DateTime ViewModel does not clear the TimeModifierAmountDisplay property of the model item if the SelectedTimeModifierType property of the view model is set to some string")]
         [Owner("Ashley Lewis")]
         public void DateTimeActivityViewModel_SelectedTimeModifierTypeChange_SelectedTimeModifierTypeSetToABlankString_TimeModifierAmountDisplayNotCleared()
