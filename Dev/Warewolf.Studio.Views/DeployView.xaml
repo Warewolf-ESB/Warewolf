@@ -30,8 +30,11 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+       
+        
         <!-- SOURCE SERVER -->
-        <Grid Grid.Column="0" HorizontalAlignment="Stretch">
+        <Grid Grid.Column="0" HorizontalAlignment="Stretch"
+              Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -43,7 +46,7 @@
                         Orientation="Horizontal">
                 <TextBlock Margin="{StaticResource ElementBorder}" Text="Source Server" Style="{StaticResource SourceHeader}"></TextBlock>
             </StackPanel>
-
+            
             <views:ConnectControl Grid.Row="1"
                                   DataContext="{Binding SourceConnectControlViewModel}"
                                   Margin="{StaticResource ControlBorderTop}"
@@ -52,17 +55,34 @@
                                   ServerComboBoxAutomationID="UI_SourceServercbx_AutoID" 
                                   x:Name="SourceConnectControl" />
 
+            <Grid Grid.Column="0" 
+                  Grid.Row="2" 
+                  DataContext="{Binding Source}"
+                  HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Stretch"
+                  Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <customControls:CircularProgressBar Grid.Column="2" 
+                                            Height="50" 
+                                            Width="50"
+                                            VerticalAlignment="Center" HorizontalAlignment="Center"
+                                            AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+                </StackPanel>
+            </Grid>
             <views:ExplorerView Grid.Row="2" 
+                                Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 DataContext="{Binding Source}"
                                 x:Name="SourceNavigationView"
                                 Margin="-5"
                                 AllowDrop="False"/>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Width="2" Margin="3,0,3,0" HorizontalAlignment="Stretch" />
+        <GridSplitter Grid.Column="1" Width="2" Margin="3,0,3,0" HorizontalAlignment="Stretch" 
+                      Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}"/>
 
         <!-- DESTINATION SERVER -->
-        <Grid Grid.Column="2" HorizontalAlignment="Stretch">
+        <Grid Grid.Column="2" HorizontalAlignment="Stretch"
+              Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -181,7 +201,7 @@
 
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" >
                                 <Hyperlink x:Name="NewResourcesView" Command="{Binding NewResourcesViewCommand}" ToolTip="{x:Static languages:HelpText.DeployNewResourcesViewHelp}" >
-                                    <TextBlock Text="{Binding NewResourcesCount}" FontSize="28"/>
+                                    <TextBlock Text="{Binding NewResourcesCount}" FontSize="28" />
                                 </Hyperlink>
                             </TextBlock>
 

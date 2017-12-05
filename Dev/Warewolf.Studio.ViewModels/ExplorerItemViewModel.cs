@@ -614,6 +614,17 @@ namespace Warewolf.Studio.ViewModels
 
         public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 
+        public void SetIsResourceChecked(bool? resourceChecked)
+        {
+            _isResource = resourceChecked;
+            UpdateFolderItems(resourceChecked);
+        }
+
+        public void AfterResourceChecked()
+        {
+            OnPropertyChanged(() => IsResourceChecked);
+        }
+
         public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
             SetPermission(explorerItemPermissions, isDeploy);
@@ -1042,7 +1053,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (IsFolder && ChildrenCount >= 1)
                 {
-                    UpdateFolderItems(value, isResourceChecked);
+                    UpdateFolderItems(value);
                 }
                 else
                 {
@@ -1055,12 +1066,20 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateFolderItems(bool? value, bool? isResourceChecked)
+        private void UpdateFolderItems(bool? isResourceChecked)
         {
             _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
             Task.Run(() =>
             {
-                AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = value);
+                if (Children.Any())
+                {
+                    var isChecked = _isResource;
+                    Children.Apply(a => a.SetIsResourceChecked(isChecked));
+                }
+            }).ContinueWith((t) =>
+            {
+                OnPropertyChanged(() => IsResourceChecked);
+                OnPropertyChanged(() => Children);
             });
         }
 

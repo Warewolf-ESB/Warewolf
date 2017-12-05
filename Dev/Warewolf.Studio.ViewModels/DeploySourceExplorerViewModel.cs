@@ -23,6 +23,7 @@ namespace Warewolf.Studio.ViewModels
         private Version _serverVersion;
         private object _serverInformation;
         private readonly IEnvironmentViewModel _selectedEnv;
+        private bool _isDeployLoading;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
             : this(shellViewModel, aggregator, statsArea, null)
@@ -55,7 +56,6 @@ namespace Warewolf.Studio.ViewModels
             foreach (var environmentViewModel in _environments)
             {
                 environmentViewModel.SelectAction = SelectAction;
-                environmentViewModel.IsResourceChecked = false;
             }
 
             if (ConnectControlViewModel.SelectedConnection != null)
@@ -69,45 +69,26 @@ namespace Warewolf.Studio.ViewModels
             IsDeploy = true;
         }
 
+        public bool IsDeployLoading
+        {
+            get
+            {
+                return _isDeployLoading;
+            }
+            set
+            {
+                _isDeployLoading = value;
+                OnPropertyChanged(()=>IsDeployLoading);
+            }
+        }
 
         void ConnectControlSelectedExplorerEnvironmentChanged(object sender,Guid id)
         {
-            var application = Application.Current;
-            if (application != null)
-            {
-                var dispatcher = application.Dispatcher;
-                if (dispatcher != null && dispatcher.CheckAccess())
-                {
-                    dispatcher.BeginInvoke(new System.Action(async () => await DeploySourceExplorerViewModelSelectedEnvironmentChangedAsync(sender, id).ConfigureAwait(true)),DispatcherPriority.Background);
-                }
-            }
-            else
-            {
-               var t = DeploySourceExplorerViewModelSelectedEnvironmentChangedAsync(sender, id);
-               t.Wait();
-            }
-
+            IsDeployLoading = true;
+            UpdateItemForDeploy(id);
+            IsDeployLoading = false;
         }
-
-        async Task DeploySourceExplorerViewModelSelectedEnvironmentChangedAsync(object sender, Guid environmentId)
-        {
-            var loaded = await ValidateDeploySourceSelectedConnectionAsync(sender).ConfigureAwait(true);
-            if(loaded)
-            {
-                UpdateItemForDeploy(environmentId);
-            }
-        }
-
-        async Task<bool> ValidateDeploySourceSelectedConnectionAsync(object sender)
-        {
-            var connectControlViewModel = sender as ConnectControlViewModel;
-            if (connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
-            {
-                var res = await CreateNewEnvironmentAsync(connectControlViewModel.SelectedConnection).ConfigureAwait(true);
-                return res;
-            }
-            return false;
-        }
+        
 
         protected void AfterLoad(Guid environmentID)
         {
@@ -370,6 +351,10 @@ namespace Warewolf.Studio.ViewModels
         {
             base.Dispose();
             ConnectControlViewModel.SelectedEnvironmentChanged -= ConnectControlSelectedExplorerEnvironmentChanged;
+            foreach (var environmentViewModel in _environments)
+            {
+                environmentViewModel.IsResourceChecked = false;
+            }
         }
     }
 }
