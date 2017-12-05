@@ -26,10 +26,7 @@ namespace Dev2.Activities.Designers2.Email
 
         public string ThePassword { get => ThePasswordBox.Password; set => ThePasswordBox.Password = value; }
 
-        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            OnPasswordChanged(sender, routedEventArgs);
-        }
+        void OnLoaded(object sender, RoutedEventArgs routedEventArgs) => OnPasswordChanged(sender, routedEventArgs);
 
         void OnPasswordChanged(object sender, RoutedEventArgs e)
         {
