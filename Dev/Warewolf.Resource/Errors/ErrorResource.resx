@@ -1322,4 +1322,7 @@ Please contact your Windows System Administrator.</value>
   <data name="BaseConvertInputInvalidExpressionErrorTest" xml:space="preserve">
     <value>'FromExpression' - Result - Invalid expression: opening and closing brackets don't match</value>
   </data>
+  <data name="GatherSystemInfoInputInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
 </root>
