@@ -19,16 +19,10 @@ namespace Dev2
 {
     public class BaseConvertTO : IDev2TOFn, IPerformsValidation
     {
-        #region Fields
-
         private string _fromExpression;
         private string _fromType;
         private string _toExpression;
         private string _toType;
-
-        #endregion
-
-        #region Ctor
 
         public BaseConvertTO()
         {
@@ -49,10 +43,6 @@ namespace Dev2
             FromExpression = fromExpression;
             IndexNumber = indexNumber;
         }
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         ///     Current base type
@@ -124,10 +114,6 @@ namespace Dev2
 
         public int IndexNumber { get; set; }
 
-        #endregion
-
-        #region Public Methods
-
         public bool CanRemove()
         {
             return string.IsNullOrWhiteSpace(FromExpression);
@@ -146,20 +132,12 @@ namespace Dev2
             ToExpression = string.Empty;
         }
 
-        #endregion
-
-        #region PropertyChanged
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        #endregion
-
-        #region Implementation of IDataErrorInfo
 
         /// <summary>
         ///     Gets the error message for the property with the given name.
@@ -180,17 +158,12 @@ namespace Dev2
         
         public string Error { get; private set; }
 
-        
-
-        #endregion
-
         private void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
-
-        #region Implementation of IPerformsValidation
+                                                           
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
 
@@ -203,7 +176,6 @@ namespace Dev2
         {
             return false;
         }
-
-        #endregion
+                    
     }
 }
