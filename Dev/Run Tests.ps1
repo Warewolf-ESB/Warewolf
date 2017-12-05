@@ -29,7 +29,8 @@ Param(
   [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests,
   [string]$MergeDotCoverSnapshotsInDirectory="",
-  [switch]${Startmy.warewolf.io}
+  [switch]${Startmy.warewolf.io},
+  [string]$sendRecordedMediaForPassedTestCase="false"
 )
 $JobSpecs = @{}
 #Unit Tests
@@ -532,7 +533,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    $Release = New-Object System.Management.Automation.Host.ChoiceDescription "&Release", `
 		    "Uses these resources for Warewolf releases."
 
-	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&UILoad", `
+	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&Load", `
 		    "Uses these resources for Studio UI Load Testing."
 
 	    $options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest, $Release, $UILoad)
@@ -566,6 +567,19 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
 	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
 
@@ -697,6 +711,19 @@ function Start-Studio {
     	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
     	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
@@ -950,7 +977,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
       <DataCollectors>
         <DataCollector uri="datacollector://microsoft/VideoRecorder/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder.VideoRecorderDataCollector, Microsoft.VisualStudio.TestTools.DataCollection.VideoRecorder, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Screen and Voice Recorder">
           <Configuration>
-            <MediaRecorder sendRecordedMediaForPassedTestCase="false" xmlns="" />
+            <MediaRecorder sendRecordedMediaForPassedTestCase="$sendRecordedMediaForPassedTestCase" xmlns="" />
           </Configuration>
         </DataCollector>
       </DataCollectors>
@@ -1064,6 +1091,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs += @"
 
     </Scope>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
@@ -1094,7 +1134,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
         }
     }
-    if ($ApplyDotCover) {
+    if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
         Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
     }
 }
