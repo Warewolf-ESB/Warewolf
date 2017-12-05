@@ -14,15 +14,19 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Util;
+using Dev2.Common;
+using Dev2.Providers.Validation.Rules;
+using Dev2.Validation;
 
 namespace Dev2
 {
-    public class BaseConvertTO : IDev2TOFn, IPerformsValidation
+    public class BaseConvertTO : ValidatableObject,IDev2TOFn
     {
         private string _fromExpression;
         private string _fromType;
         private string _toExpression;
         private string _toType;
+        private bool _isFromExpressionFocused;
 
         public BaseConvertTO()
         {
@@ -131,51 +135,24 @@ namespace Dev2
             FromExpression = string.Empty;
             ToExpression = string.Empty;
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        /// <summary>
-        ///     Gets the error message for the property with the given name.
-        /// </summary>
-        /// <returns>
-        ///     The error message for the property. The default is an empty string ("").
-        /// </returns>
-        /// <param name="columnName">The name of the property whose error message to get. </param>
-        public string this[string columnName] => "";
-
-        /// <summary>
-        ///     Gets an error message indicating what is wrong with this object.
-        /// </summary>
-        /// <returns>
-        ///     An error message indicating what is wrong with this object. The default is an empty string ("").
-        /// </returns>
-        
-        
-        public string Error { get; private set; }
-
+             
         private void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
-                                                           
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors { get; set; }
-
-        public bool Validate(string propertyName, IRuleSet ruleSet)
+        public bool IsFromExpressionFocused { get => _isFromExpressionFocused; set => OnPropertyChanged(ref _isFromExpressionFocused, value); }
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            return false;
-        }
+            var ruleSet = new RuleSet();
 
-        public bool Validate(string propertyName, string datalist)
-        {
-            return false;
+            if (propertyName == "FromExpression" && !string.IsNullOrEmpty(FromExpression))
+            {
+                var outputExprRule = new IsValidExpressionRule(() => FromExpression, datalist, "0", new VariableUtils());
+                ruleSet.Add(outputExprRule);
+                ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
+            }
+            return ruleSet;
         }
-                    
     }
 }

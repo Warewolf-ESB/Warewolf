@@ -115,6 +115,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;FromExpression&apos; - Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string BaseConvertInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("BaseConvertInputInvalidExpressionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BCC address is not in the valid format: {0}.
         /// </summary>
         public static string BCCAddressInvalidFormat {

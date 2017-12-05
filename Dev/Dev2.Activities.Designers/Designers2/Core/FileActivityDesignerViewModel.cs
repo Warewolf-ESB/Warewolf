@@ -147,11 +147,12 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
 
             RuleSet fileActivityRuleSet = new RuleSet();
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList);
+            var variableUtils = new VariableUtils();
+            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList, variableUtils);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
-            path.TryParseVariables(out string pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
+            variableUtils.TryParseVariables(path,out string pathValue, onError, variableValue: ValidUriSchemes[0] + "://temp");
 
             if (errors.Count == 0)
             {
@@ -196,7 +197,7 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
             RuleSet fileActivityRuleSet = new RuleSet();
 
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => content, DataListSingleton.ActiveDataList.Resource.DataList);
+            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => content, DataListSingleton.ActiveDataList.Resource.DataList,new VariableUtils());
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
@@ -223,7 +224,7 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
             RuleSet fileActivityRuleSet = new RuleSet();
 
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => password, DataListSingleton.ActiveDataList.Resource.DataList);
+            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => password, DataListSingleton.ActiveDataList.Resource.DataList, new VariableUtils());
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 

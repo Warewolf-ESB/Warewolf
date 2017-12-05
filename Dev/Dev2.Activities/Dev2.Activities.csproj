@@ -420,11 +420,9 @@
     <Compile Include="Validation\IsSingleRecordSetRule.cs" />
     <Compile Include="Validation\IsSingleValueRuleSet.cs" />
     <Compile Include="Validation\IsValidCalculateRule.cs" />
-    <Compile Include="Validation\IsValidExpressionRule.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingSourceExpression.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
     <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
-    <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>
