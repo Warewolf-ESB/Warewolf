@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         ConnectControlViewModel.SelectedConnection.Permissions = new List<IWindowsGroupPermission>();
                     }
-                    ConnectControlViewModel.Connect(ConnectControlViewModel.SelectedConnection);
+                    ConnectControlViewModel.ConnectAsync(ConnectControlViewModel.SelectedConnection);
                 }
                 else
                 {
@@ -316,7 +316,7 @@ namespace Warewolf.Studio.ViewModels
             return isLoaded;
         }
 
-        private bool IsDeploy { get; set; }
+        bool IsDeploy { get; set; }
 
         void ServerDisconnected(object _, IServer server)
         {

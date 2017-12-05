@@ -438,7 +438,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
             //act
-            await _target.ConnectControlViewModel.Connect(connectionMock.Object);
+            await _target.ConnectControlViewModel.ConnectAsync(connectionMock.Object);
 
             //assert   
             Assert.IsTrue(isEnvironments);
@@ -480,7 +480,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
             //act
-            await _target.ConnectControlViewModel.Connect(serverConnectionMock.Object);
+            await _target.ConnectControlViewModel.ConnectAsync(serverConnectionMock.Object);
 
             //assert   
             Assert.IsTrue(isEnvironments);
