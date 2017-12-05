@@ -572,6 +572,18 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 return this.mCaseConvertError;
             }
         }
+        
+        public BaseConvertError BaseConvertError
+        {
+            get
+            {
+                if ((this.mBaseConvertError == null))
+                {
+                    this.mBaseConvertError = new BaseConvertError(this);
+                }
+                return this.mBaseConvertError;
+            }
+        }
         #endregion
         
         #region Fields
@@ -592,6 +604,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         private Replace mReplace;
         
         private CaseConvertError mCaseConvertError;
+        
+        private BaseConvertError mBaseConvertError;
         #endregion
     }
     
@@ -10238,6 +10252,42 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         
         #region Fields
         private WpfHyperlink mUIStringToConvertVariaHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class BaseConvertError : WpfText
+    {
+        
+        public BaseConvertError(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink UIFromExpressionVariabHyperlink
+        {
+            get
+            {
+                if ((this.mUIFromExpressionVariabHyperlink == null))
+                {
+                    this.mUIFromExpressionVariabHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mUIFromExpressionVariabHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "\'FromExpression\' - Variable name [[1]] begins with a number";
+                    this.mUIFromExpressionVariabHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIFromExpressionVariabHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mUIFromExpressionVariabHyperlink;
         #endregion
     }
 }

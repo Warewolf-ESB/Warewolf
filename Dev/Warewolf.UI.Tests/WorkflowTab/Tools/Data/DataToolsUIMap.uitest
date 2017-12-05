@@ -5431,6 +5431,33 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
+                                                        <UIObject ControlType="Text" Id="BaseConvertError" FriendlyName="'FromExpression' - Variable name [[1]] begins with..." SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">UI_Error0_AutoID</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="Hyperlink" Id="UIFromExpressionVariabHyperlink" FriendlyName="'FromExpression' - Variable name [[1]] begins with..." SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Hyperlink</PropertyCondition>
+                                                                <PropertyCondition Name="Name">'FromExpression' - Variable name [[1]] begins with a number</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
                                                       </Descendants>
                                                     </UIObject>
                                                   </Descendants>
