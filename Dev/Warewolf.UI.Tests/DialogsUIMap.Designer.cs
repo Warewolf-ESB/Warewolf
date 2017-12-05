@@ -2169,6 +2169,18 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
                 return this.mDisplayText;
             }
         }
+        
+        public ConfigureSwitchArm ConfigureSwitchArm
+        {
+            get
+            {
+                if ((this.mConfigureSwitchArm == null))
+                {
+                    this.mConfigureSwitchArm = new ConfigureSwitchArm(this);
+                }
+                return this.mConfigureSwitchArm;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2259,6 +2271,8 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         private VariableComboBox mVariableComboBox;
         
         private WpfEdit mDisplayText;
+        
+        private ConfigureSwitchArm mConfigureSwitchArm;
         #endregion
     }
     
@@ -3271,6 +3285,74 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ConfigureSwitchArm : WpfCustom
+    {
+        
+        public ConfigureSwitchArm(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.ConfigureSwitchArm";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public SwitchArmCaseIntellisenseCombobox SwitchArmCaseIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mSwitchArmCaseIntellisenseCombobox == null))
+                {
+                    this.mSwitchArmCaseIntellisenseCombobox = new SwitchArmCaseIntellisenseCombobox(this);
+                }
+                return this.mSwitchArmCaseIntellisenseCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private SwitchArmCaseIntellisenseCombobox mSwitchArmCaseIntellisenseCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class SwitchArmCaseIntellisenseCombobox : WpfComboBox
+    {
+        
+        public SwitchArmCaseIntellisenseCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "SwitchArmCaseTextbox";
+            this.WindowTitles.Add("ActivityDefaultWindow");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("ActivityDefaultWindow");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
         #endregion
     }
     

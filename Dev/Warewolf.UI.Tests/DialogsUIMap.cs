@@ -154,14 +154,17 @@ namespace Warewolf.UI.Tests.DialogsUIMapClasses
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(10, 14));
             Assert.IsFalse(UIMap.ControlExistsNow(DecisionOrSwitchDialog), "Decision large view dialog still exists after the done button is clicked.");
         }
-
-        [Given(@"I Click Switch Dialog Done Button")]
+        
         [When(@"I Click Switch Dialog Done Button")]
-        [Then(@"I Click Switch Dialog Done Button")]
         public void Click_Switch_Dialog_Done_Button()
         {
             Mouse.Click(DecisionOrSwitchDialog.DoneButton, new Point(24, 7));
-            Assert.IsTrue(ControlFlowToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Switch.Exists, "Switch on the design surface does not exist");
+        }
+
+        [When(@"I Enter Text Into Switch Dialog")]
+        public void Enter_Text_Into_Switch_Dialog()
+        {
+            DecisionOrSwitchDialog.ConfigureSwitchArm.SwitchArmCaseIntellisenseCombobox.Textbox.Text = "some value";
         }
 
         [When(@"I Click Switch Dialog Cancel Button")]
