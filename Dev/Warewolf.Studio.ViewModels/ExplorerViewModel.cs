@@ -194,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 isDeploy = environmentViewModel.Children.Any(a => a.AllowResourceCheck);
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(isDeploy, refresh).ConfigureAwait(true);
+                await environmentViewModel.LoadAsync(isDeploy, refresh).ConfigureAwait(true);
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
@@ -367,7 +367,7 @@ namespace Warewolf.Studio.ViewModels
                         _environments.Add(environmentModel);
                         if (shouldLoad)
                         {
-                            await environmentModel.Load(false, true).ConfigureAwait(true);
+                            await environmentModel.LoadAsync(false, true).ConfigureAwait(true);
                         }
                         environmentViewModel = environmentModel;
                     }
@@ -496,7 +496,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IsLoading = true;
             localhostEnvironment.Connect();
-            var result = await localhostEnvironment.Load(isDeploy,reloadCatalogue).ConfigureAwait(true);
+            var result = await localhostEnvironment.LoadAsync(isDeploy,reloadCatalogue).ConfigureAwait(true);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
             IsLoading = false;
             return result;

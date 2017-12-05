@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.RefreshCommand.Execute(null);
 
             //assert
-            _environmentViewModelMock.Verify(it => it.LoadDialog(_selectedId));
+            _environmentViewModelMock.Verify(it => it.LoadDialogAsync(_selectedId));
             _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
         }
 
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.RefreshCommand.Execute(null);
 
             //assert
-            _environmentViewModelMock.Verify(it => it.LoadDialog(_selectedId));
+            _environmentViewModelMock.Verify(it => it.LoadDialogAsync(_selectedId));
             _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
         }
 
@@ -125,7 +125,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.RefreshCommand.Execute(null);
 
             //assert
-            _environmentViewModelMock.Verify(it => it.LoadDialog(_selectedId));
+            _environmentViewModelMock.Verify(it => it.LoadDialogAsync(_selectedId));
             _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
         }
 

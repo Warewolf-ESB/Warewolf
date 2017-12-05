@@ -84,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify( it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify( it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -542,7 +542,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -570,7 +570,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
             environmentViewModelMock.Verify(it => it.SetPropertiesForDialogFromPermissions(It.IsAny<IWindowsGroupPermission>()));
         }
@@ -599,7 +599,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         [TestMethod]
