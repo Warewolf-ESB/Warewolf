@@ -42,19 +42,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
             Assert.AreEqual(this.Open_Tools_UI_Map_Designer_To_FlowchartParams.FlowchartExists, flowchart.Exists, "Flowchart does not exist.");
         }
         
-        /// <summary>
-        /// RecordedMethod1 - Use 'RecordedMethod1Params' to pass parameters into this method.
-        /// </summary>
-        public void RecordedMethod1()
-        {
-            #region Variable Declarations
-            WpfCell uIItemDev2TOJsonMappinCell = this.UIWarewolfDEV2SANELEMTWindow.UISmallViewContentCustom.UISmallDataGridTable.UIUI_ActivityGridRow_0Row.UIItemDev2TOJsonMappinCell;
-            #endregion
-
-            // Type '[[1]]' in 'Item: Dev2.TO.JsonMappingTo, Column Display Index:...' cell
-            uIItemDev2TOJsonMappinCell.Value = this.RecordedMethod1Params.UIItemDev2TOJsonMappinCellValue;
-        }
-        
         #region Properties
         public virtual Open_Tools_UI_Map_Designer_To_FlowchartParams Open_Tools_UI_Map_Designer_To_FlowchartParams
         {
@@ -65,18 +52,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
                     this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams = new Open_Tools_UI_Map_Designer_To_FlowchartParams();
                 }
                 return this.mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
-            }
-        }
-        
-        public virtual RecordedMethod1Params RecordedMethod1Params
-        {
-            get
-            {
-                if ((this.mRecordedMethod1Params == null))
-                {
-                    this.mRecordedMethod1Params = new RecordedMethod1Params();
-                }
-                return this.mRecordedMethod1Params;
             }
         }
         
@@ -91,28 +66,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
                 return this.mMainStudioWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private Open_Tools_UI_Map_Designer_To_FlowchartParams mOpen_Tools_UI_Map_Designer_To_FlowchartParams;
         
-        private RecordedMethod1Params mRecordedMethod1Params;
-        
         private MainStudioWindow mMainStudioWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -128,21 +87,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         /// Verify that the 'Exists' property of 'Flowchart' custom control equals 'True'
         /// </summary>
         public bool FlowchartExists = true;
-        #endregion
-    }
-    
-    /// <summary>
-    /// Parameters to be passed into 'RecordedMethod1'
-    /// </summary>
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class RecordedMethod1Params
-    {
-        
-        #region Fields
-        /// <summary>
-        /// Type '[[1]]' in 'Item: Dev2.TO.JsonMappingTo, Column Display Index:...' cell
-        /// </summary>
-        public string UIItemDev2TOJsonMappinCellValue = "[[1]]";
         #endregion
     }
     
@@ -712,6 +656,30 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
                 return this.mXPath;
             }
         }
+        
+        public GatherSystemInfoError GatherSystemInfoError
+        {
+            get
+            {
+                if ((this.mGatherSystemInfoError == null))
+                {
+                    this.mGatherSystemInfoError = new GatherSystemInfoError(this);
+                }
+                return this.mGatherSystemInfoError;
+            }
+        }
+        
+        public CreateJsonError CreateJsonError
+        {
+            get
+            {
+                if ((this.mCreateJsonError == null))
+                {
+                    this.mCreateJsonError = new CreateJsonError(this);
+                }
+                return this.mCreateJsonError;
+            }
+        }
         #endregion
         
         #region Fields
@@ -740,6 +708,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         private WebRequest mWebRequest;
         
         private XPath mXPath;
+        
+        private GatherSystemInfoError mGatherSystemInfoError;
+        
+        private CreateJsonError mCreateJsonError;
         #endregion
     }
     
@@ -1354,13 +1326,17 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         }
         
         #region Properties
-        public VariableComboBox VariableComboBox
+        public WpfComboBox VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox(this);
+                    this.mVariableComboBox = new WpfComboBox(this);
+                    #region Search Criteria
+                    this.mVariableComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_FromExpressiontxt_AutoID";
+                    this.mVariableComboBox.WindowTitles.Add("Warewolf");
+                    #endregion
                 }
                 return this.mVariableComboBox;
             }
@@ -1368,19 +1344,53 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         #endregion
         
         #region Fields
-        private VariableComboBox mVariableComboBox;
+        private WpfComboBox mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class VariableComboBox : WpfComboBox
+    public class TypeCell1 : WpfCell
     {
         
-        public VariableComboBox(UITestControl searchLimitContainer) : 
+        public TypeCell1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_FromExpressiontxt_AutoID";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
+            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
+            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public TypeComboBox1 TypeComboBox
+        {
+            get
+            {
+                if ((this.mTypeComboBox == null))
+                {
+                    this.mTypeComboBox = new TypeComboBox1(this);
+                }
+                return this.mTypeComboBox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TypeComboBox1 mTypeComboBox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TypeComboBox1 : WpfComboBox
+    {
+        
+        public TypeComboBox1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SourceName_AutoID";
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1405,44 +1415,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         
         #region Fields
         private WpfEdit mTextEdit;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class TypeCell1 : WpfCell
-    {
-        
-        public TypeCell1(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-            this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
-            this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
-            this.WindowTitles.Add("Warewolf");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfComboBox TypeComboBox
-        {
-            get
-            {
-                if ((this.mTypeComboBox == null))
-                {
-                    this.mTypeComboBox = new WpfComboBox(this);
-                    #region Search Criteria
-                    this.mTypeComboBox.SearchProperties[WpfComboBox.PropertyNames.AutomationId] = "UI__Row1_SourceName_AutoID";
-                    this.mTypeComboBox.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mTypeComboBox;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfComboBox mTypeComboBox;
         #endregion
     }
     
@@ -7485,13 +7457,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         }
         
         #region Properties
-        public VariableComboBox1 VariableComboBox
+        public VariableComboBox VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox1(this);
+                    this.mVariableComboBox = new VariableComboBox(this);
                 }
                 return this.mVariableComboBox;
             }
@@ -7499,15 +7471,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         #endregion
         
         #region Fields
-        private VariableComboBox1 mVariableComboBox;
+        private VariableComboBox mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class VariableComboBox1 : WpfComboBox
+    public class VariableComboBox : WpfComboBox
     {
         
-        public VariableComboBox1(UITestControl searchLimitContainer) : 
+        public VariableComboBox(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -7704,13 +7676,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         }
         
         #region Properties
-        public VariableComboBox2 VariableComboBox
+        public VariableComboBox1 VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox2(this);
+                    this.mVariableComboBox = new VariableComboBox1(this);
                 }
                 return this.mVariableComboBox;
             }
@@ -7718,15 +7690,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         #endregion
         
         #region Fields
-        private VariableComboBox2 mVariableComboBox;
+        private VariableComboBox1 mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class VariableComboBox2 : WpfComboBox
+    public class VariableComboBox1 : WpfComboBox
     {
         
-        public VariableComboBox2(UITestControl searchLimitContainer) : 
+        public VariableComboBox1(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -8790,13 +8762,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         }
         
         #region Properties
-        public VariableComboBox3 VariableComboBox
+        public VariableComboBox2 VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox3(this);
+                    this.mVariableComboBox = new VariableComboBox2(this);
                 }
                 return this.mVariableComboBox;
             }
@@ -8804,15 +8776,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         #endregion
         
         #region Fields
-        private VariableComboBox3 mVariableComboBox;
+        private VariableComboBox2 mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class VariableComboBox3 : WpfComboBox
+    public class VariableComboBox2 : WpfComboBox
     {
         
-        public VariableComboBox3(UITestControl searchLimitContainer) : 
+        public VariableComboBox2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -9259,13 +9231,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         }
         
         #region Properties
-        public VariableComboBox4 VariableComboBox
+        public VariableComboBox3 VariableComboBox
         {
             get
             {
                 if ((this.mVariableComboBox == null))
                 {
-                    this.mVariableComboBox = new VariableComboBox4(this);
+                    this.mVariableComboBox = new VariableComboBox3(this);
                 }
                 return this.mVariableComboBox;
             }
@@ -9273,15 +9245,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         #endregion
         
         #region Fields
-        private VariableComboBox4 mVariableComboBox;
+        private VariableComboBox3 mVariableComboBox;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class VariableComboBox4 : WpfComboBox
+    public class VariableComboBox3 : WpfComboBox
     {
         
-        public VariableComboBox4(UITestControl searchLimitContainer) : 
+        public VariableComboBox3(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -9384,138 +9356,74 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
+    public class GatherSystemInfoError : WpfText
     {
         
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UISmallViewContentCustom UISmallViewContentCustom
-        {
-            get
-            {
-                if ((this.mUISmallViewContentCustom == null))
-                {
-                    this.mUISmallViewContentCustom = new UISmallViewContentCustom(this);
-                }
-                return this.mUISmallViewContentCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallViewContentCustom mUISmallViewContentCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UISmallViewContentCustom : WpfCustom
-    {
-        
-        public UISmallViewContentCustom(UITestControl searchLimitContainer) : 
+        public GatherSystemInfoError(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.Small";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "SmallViewContent";
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
             this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
             #endregion
         }
         
         #region Properties
-        public UISmallDataGridTable UISmallDataGridTable
+        public WpfHyperlink UIVariablename1beginswHyperlink
         {
             get
             {
-                if ((this.mUISmallDataGridTable == null))
+                if ((this.mUIVariablename1beginswHyperlink == null))
                 {
-                    this.mUISmallDataGridTable = new UISmallDataGridTable(this);
-                }
-                return this.mUISmallDataGridTable;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UISmallDataGridTable mUISmallDataGridTable;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UISmallDataGridTable : WpfTable
-    {
-        
-        public UISmallDataGridTable(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "SmallDataGrid";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIUI_ActivityGridRow_0Row UIUI_ActivityGridRow_0Row
-        {
-            get
-            {
-                if ((this.mUIUI_ActivityGridRow_0Row == null))
-                {
-                    this.mUIUI_ActivityGridRow_0Row = new UIUI_ActivityGridRow_0Row(this);
-                }
-                return this.mUIUI_ActivityGridRow_0Row;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIUI_ActivityGridRow_0Row mUIUI_ActivityGridRow_0Row;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIUI_ActivityGridRow_0Row : WpfRow
-    {
-        
-        public UIUI_ActivityGridRow_0Row(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfRow.PropertyNames.AutomationId] = "UI_ActivityGridRow_0_AutoID";
-            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCell UIItemDev2TOJsonMappinCell
-        {
-            get
-            {
-                if ((this.mUIItemDev2TOJsonMappinCell == null))
-                {
-                    this.mUIItemDev2TOJsonMappinCell = new WpfCell(this);
+                    this.mUIVariablename1beginswHyperlink = new WpfHyperlink(this);
                     #region Search Criteria
-                    this.mUIItemDev2TOJsonMappinCell.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
-                    this.mUIItemDev2TOJsonMappinCell.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "2";
-                    this.mUIItemDev2TOJsonMappinCell.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn2";
-                    this.mUIItemDev2TOJsonMappinCell.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    this.mUIVariablename1beginswHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Variable name [[1]] begins with a number";
+                    this.mUIVariablename1beginswHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
                     #endregion
                 }
-                return this.mUIItemDev2TOJsonMappinCell;
+                return this.mUIVariablename1beginswHyperlink;
             }
         }
         #endregion
         
         #region Fields
-        private WpfCell mUIItemDev2TOJsonMappinCell;
+        private WpfHyperlink mUIVariablename1beginswHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class CreateJsonError : WpfText
+    {
+        
+        public CreateJsonError(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink UIProblemwithinputexprHyperlink
+        {
+            get
+            {
+                if ((this.mUIProblemwithinputexprHyperlink == null))
+                {
+                    this.mUIProblemwithinputexprHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mUIProblemwithinputexprHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "Problem with input: expressions must be comma separated";
+                    this.mUIProblemwithinputexprHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIProblemwithinputexprHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mUIProblemwithinputexprHyperlink;
         #endregion
     }
 }

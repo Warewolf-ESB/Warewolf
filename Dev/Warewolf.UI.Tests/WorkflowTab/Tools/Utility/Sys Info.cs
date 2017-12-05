@@ -42,7 +42,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             //Done
             Mouse.Click(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.DoneButton);
             Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.Exists, "Sys Info large view is closed after clicking Done on an incorrect variable entered");
-            //Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfoError.Exists, "Validation box did not show after puting Invalid Variable.");
+            Assert.IsTrue(UtilityToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfoError.Exists, "Validation box did not show after puting Invalid Variable.");
         }
 
         #region Additional test attributes
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            WorkflowTabUIMap.Drag_Toolbox_Create_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_System_Information_Onto_DesignSurface();
         }
 
         UIMap UIMap
