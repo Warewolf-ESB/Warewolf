@@ -26,6 +26,7 @@ namespace Dev2
         private string _fromType;
         private string _toExpression;
         private string _toType;
+        private bool _isFromExpressionFocused;
 
         public BaseConvertTO()
         {
@@ -140,7 +141,7 @@ namespace Dev2
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
-
+        public bool IsFromExpressionFocused { get => _isFromExpressionFocused; set => OnPropertyChanged(ref _isFromExpressionFocused, value); }
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
