@@ -9,7 +9,6 @@
 */
 
 using System.Activities.Presentation.Model;
-using Dev2.Activities.Designers.Tests.DeleteRecords;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
@@ -29,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.DeleteRecordsNullHandler
         public void DeleteRecordsDesignerViewModel_SetRecordsetNameValue_ModelItemIsValid_RecordSetOnModelItemIsSet()
         {
             var modelItem = CreateModelItem();
-            var viewModel = new TestDeleteRecordsDesignerViewModel(modelItem);
+            var viewModel = new TestDeleteRecordsNullHandlerDesignerViewModel(modelItem);
             const string ExcpectedVal = "[[Table_Records()]]";
             viewModel.RecordsetName = ExcpectedVal;
             viewModel.Validate();
@@ -48,7 +47,7 @@ namespace Dev2.Activities.Designers.Tests.DeleteRecordsNullHandler
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
-            var viewModel = new TestDeleteRecordsDesignerViewModel(CreateModelItem());
+            var viewModel = new TestDeleteRecordsNullHandlerDesignerViewModel(CreateModelItem());
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
             //------------Assert Results-------------------------
