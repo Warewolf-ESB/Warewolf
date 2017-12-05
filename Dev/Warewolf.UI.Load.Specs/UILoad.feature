@@ -34,7 +34,7 @@ Scenario: Studio UI Load Test
 	And I start the timer
 	When I Filter the Explorer with "All Tools"
 	And I Open Explorer First Item With Double Click
-	Then the timer duration is between "30" and "60" seconds
+	Then the timer duration is between "45" and "90" seconds
 	Given I start the timer
 	When I open "Large Workflow UI Load Testing" workflow
 	Then the timer duration is between "45" and "90" seconds
