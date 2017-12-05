@@ -12,12 +12,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
-using Dev2.Data.Interfaces.Enums;
-using Dev2.Data.Parsers;
-using Dev2.Data.Util;
-using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Validation
 {
@@ -26,25 +23,26 @@ namespace Dev2.Validation
         readonly string _variableValue;
         
         readonly ObservableCollection<ObservablePair<string, string>> _inputs;
-        
+        private readonly IVariableUtils _variableUtils;
         readonly string _datalist;
         string _outputValue;
         
-        public IsValidExpressionRule(Func<string> getValue, string datalist)
-            : this(getValue, datalist, "a", null)
+        public IsValidExpressionRule(Func<string> getValue, string datalist, IVariableUtils variableUtils)
+            : this(getValue, datalist, "a", null, variableUtils)
         {
         }
 
-        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue)
-            : this(getValue, datalist, variableValue, null)
+        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue, IVariableUtils variableUtils)
+            : this(getValue, datalist, variableValue, null, variableUtils)
         {
         }
 
-        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs)
+        public IsValidExpressionRule(Func<string> getValue, string datalist, string variableValue, ObservableCollection<ObservablePair<string, string>> inputs,IVariableUtils variableUtils)
             : base(getValue)
         {
             _variableValue = variableValue;
             _inputs = inputs;
+            _variableUtils = variableUtils;
             _datalist = datalist;
         }
 
@@ -59,7 +57,7 @@ namespace Dev2.Validation
                 return null;
             }
 
-            var result = value.TryParseVariables(out _outputValue, DoError, LabelText, _variableValue, _inputs);
+            var result = _variableUtils.TryParseVariables(value,out _outputValue, DoError, LabelText, _variableValue, _inputs);
 
             if (result != null)
             {
@@ -70,16 +68,16 @@ namespace Dev2.Validation
                 return result;
             }
 
-            var parser = new Dev2DataLanguageParser();
+            
 
-            var results = parser.ParseDataLanguageForIntellisense(value, _datalist);
+            var results = _variableUtils.ParseDataLanguageForIntellisense(value, _datalist);
 
-            if (DataListUtil.IsEvaluated(value) && !DataListUtil.IsValueRecordset(value))
+            if (_variableUtils.IsEvaluated(value) && !_variableUtils.IsValueRecordset(value))
             {
-                var validRegions = DataListCleaningUtils.SplitIntoRegions(value);
+                var validRegions = _variableUtils.SplitIntoRegions(value);
                 foreach (var region in validRegions)
                 {
-                    var intellisenseResult = parser.ValidateName(DataListUtil.RemoveLanguageBrackets(region), "");
+                    var intellisenseResult = _variableUtils.ValidateName(_variableUtils.RemoveLanguageBrackets(region), "");
                     if (intellisenseResult != null && intellisenseResult.Type == enIntellisenseResultType.Error)
                     {
                         results.Add(intellisenseResult);

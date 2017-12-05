@@ -134,7 +134,7 @@ namespace Dev2.TO
 
                 if (!string.IsNullOrEmpty(StringToConvert))
                 {
-                    var inputExprRule = new IsValidExpressionRule(() => StringToConvert, datalist, "0");
+                    var inputExprRule = new IsValidExpressionRule(() => StringToConvert, datalist, "0", new VariableUtils());
                     ruleSet.Add(inputExprRule);
                 }
                 else
