@@ -15,15 +15,14 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Common;
-using Dev2.Validation;
 
 namespace Dev2
 {
     public class GatherSystemInformationTO : ValidatableObject, IDev2TOFn
     {
-        private enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
-        private string _result;
-        private bool _isResultFocused;
+        enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
+        string _result;
+        bool _isResultFocused;
 
         public GatherSystemInformationTO()
         {
@@ -108,7 +107,7 @@ namespace Dev2
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (propertyName == "Result")
             {
 

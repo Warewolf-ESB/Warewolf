@@ -14,17 +14,16 @@ using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Util;
 using Dev2.Common;
 using Dev2.Providers.Validation.Rules;
-using Dev2.Validation;
 
 namespace Dev2
 {
     public class BaseConvertTO : ValidatableObject,IDev2TOFn
     {
-        private string _fromExpression;
-        private string _fromType;
-        private string _toExpression;
-        private string _toType;
-        private bool _isFromExpressionFocused;
+        string _fromExpression;
+        string _fromType;
+        string _toExpression;
+        string _toType;
+        bool _isFromExpressionFocused;
 
         public BaseConvertTO()
         {
@@ -133,8 +132,8 @@ namespace Dev2
             FromExpression = string.Empty;
             ToExpression = string.Empty;
         }
-             
-        private void RaiseCanAddRemoveChanged()
+
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");

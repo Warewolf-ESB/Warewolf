@@ -172,7 +172,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 return DataStorage.WarewolfAtom.NewDataString(CommonFunctions.evalResultToString(evalled));
             };
         }
-        
+
         void CleanArgs()
         {
             var count = 0;
@@ -188,8 +188,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
-        
-        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
+
+        public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugInput in _debugInputs)
             {
@@ -198,7 +198,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
-        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
+        public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
             {
@@ -253,7 +253,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
@@ -267,7 +267,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        string CreateDisplayName(ModelItem modelItem, int count)
+        static string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
@@ -304,8 +304,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             foreach (Tuple<string, string> t in updates)
             {
-                // locate all updates for this tuple
-                //TODO : This need to be changed when the expanded version comes in because the user can set the ToExpression
                 var t1 = t;
                 var items = ConvertCollection.Where(c => !string.IsNullOrEmpty(c.FromExpression) && c.FromExpression.Contains(t1.Item1));
 
@@ -335,7 +333,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             var result = new List<DsfForEachItem>();
-            
+
             foreach (var item in ConvertCollection)
             {
                 if (!string.IsNullOrEmpty(item.FromExpression) && item.FromExpression.Contains("[["))
