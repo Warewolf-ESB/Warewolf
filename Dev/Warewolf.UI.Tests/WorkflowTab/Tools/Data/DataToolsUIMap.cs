@@ -432,6 +432,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.SmallViewContentCustom.SmallDataGridTable.Row1.ValueCell.ValueComboBox.TextEdit.Text = "res";
         }
 
+        public void Enter_Values_Into_Case_Conversion_Large_Tool(string value)
+        {
+            MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CaseConvert.LargeViewContentCustom.SmallDataGridTable.Row1.OutputVariableCell.OutputVariableComboBox.TextEdit.Text = value;
+        }
+
         [Given(@"I Assign Value To Variable With Assign Tool Small View Row 2")]
         [When(@"I Assign Value To Variable With Assign Tool Small View Row 2")]
         [Then(@"I Assign Value To Variable With Assign Tool Small View Row 2")]
