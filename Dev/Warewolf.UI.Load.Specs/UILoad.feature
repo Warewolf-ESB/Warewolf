@@ -40,39 +40,39 @@ Scenario: Studio UI Load Test
 	Then the timer duration is between "45" and "90" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
-	Then the timer duration is between "30" and "60" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
-	Then the timer duration is between "60" and "120" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I have "100" scheduled tasks
 	And I start the timer
 	When I Click Scheduler Ribbon Button
-	Then the timer duration is between "5" and "10" seconds
+	Then the timer duration is between "5" and "30" seconds
 	When I create a new scheduled task using shortcut
 	And I Click Scheduler ResourcePicker Button
 	And I Select Service "Tests UI Load Testing" In Service Picker
 	And I Enter LocalSchedulerAdmin Credentials Into Scheduler Tab
 	Given I start the timer
 	When I Click Save Ribbon Button And Wait For Save
-	Then the timer duration is between "15" and "30" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I delete the UI Load Test scheduled task
-	Then the timer duration is between "5" and "10" seconds
+	Then the timer duration is between "5" and "30" seconds
 	When I Filter the Explorer with "Tests UI Load Testing"
 	And I start the timer
 	And I Click Show Explorer First Item Tests From Explorer Context Menu
-	Then the timer duration is between "60" and "120" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I Click The Create a New Test Button
 	And I Click Save Ribbon Button And Wait For Save
-	Then the timer duration is between "15" and "30" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I Delete The First Test
-	Then the timer duration is between "30" and "60" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I close the Studio
-	Then the timer duration is between "10" and "20" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I start the Studio
-	Then the timer duration is between "15" and "30" seconds
+	Then the timer duration is between "10" and "60" seconds
 	
