@@ -32,6 +32,7 @@ namespace Dev2.Common.Interfaces
         bool IsChecked { get; set; }
         string Key { get; set; }
         event Action<IArmConnectorConflict, bool, string, string, string> OnChecked;
+        void DisableEvents();
     }
 
     public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>

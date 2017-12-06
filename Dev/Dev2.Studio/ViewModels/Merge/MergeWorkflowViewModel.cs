@@ -381,39 +381,27 @@ namespace Dev2.ViewModels.Merge
                 {
                     HasMergeStarted = true;
                 }
-                RemovePreviousTool(sender, args);
-                var container = args.Container;
-                RemovePreviousToolArm(container);
+
                 if (!args.IsMergeChecked)
                 {
+                    RemovePreviousTool(sender, args);
+                    GetMatchingConflictParent();
                     return;
                 }
+                ResetToolEvents(args);
+                var container = args.Container;
+                RemovePreviousToolArm(container);
 
                 container.IsMergeExpanderEnabled = container.HasConflict;
                 AddActivity(args);
-                if (container.IsChecked)
-                {
-                    var updateNextConflict = GetNextConlictToUpdate(container);
-                    if (updateNextConflict != null && updateNextConflict is IArmConnectorConflict updateNextArmConflict)
-                    {
-                        var newMergeTool = sender as IMergeToolModel;
-                        GetMatchingConflictParent(container);
-                    }
-                    return;
-                }
                 var conflict = UpdateNextEnabledState(container);
                 if (conflict is IToolConflict nextConflict)
                 {
                     UpdateNextToolState(nextConflict);
                 }
-                if (conflict is IArmConnectorConflict nextArmConflict)
-                {
-                    UpdateNextArmState(nextArmConflict);
-                    UpdateNextToolArmEnabledState(args, nextArmConflict);
-                }
                 container.IsChecked = args.IsMergeChecked;
                 container.IsEmptyItemSelected = args.ModelItem == null;
-                GetMatchingConflictParent(container);
+                GetMatchingConflictParent();
             }
             catch (Exception ex)
             {
@@ -421,16 +409,16 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        private void RemovePreviousToolArm(IToolConflict container)
+        void RemovePreviousToolArm(IConflict container)
         {
             var updateNextConflict = GetNextConlictToUpdate(container);
             if (updateNextConflict != null && updateNextConflict is IArmConnectorConflict updateNextArmConflict)
             {
-                ResetFromToolArm(updateNextArmConflict);
+                ResetToolArmEvents(updateNextArmConflict);
             }
         }
 
-        private IConflict GetNextConlictToUpdate(IConflict container)
+        IConflict GetNextConlictToUpdate(IConflict container)
         {
             var index = _conflicts.IndexOf(container) + 1;
             if (index < _conflicts.Count)
@@ -439,24 +427,6 @@ namespace Dev2.ViewModels.Merge
                 return nextConflict;
             }
             return null;
-        }
-
-        private void ResetFromTool(IToolConflict container)
-        {
-            var nextConflict = GetNextConlictToUpdate(container);
-            if (nextConflict != null && nextConflict is IArmConnectorConflict nextArmConflict)
-            {
-                SetNextArmEnabledState(nextArmConflict, true, true);
-            }
-        }
-        private void ResetFromToolArm(IArmConnectorConflict container)
-        {
-            var nextConflict = GetNextConlictToUpdate(container);
-            if (nextConflict != null && nextConflict is IArmConnectorConflict nextArmConflict)
-            {
-                //SetNextArmEnabledState(nextArmConflict, false, false);
-                ResetToolArmEvents(nextArmConflict);
-            }
         }
 
         void ResetToolArmEvents(IArmConnectorConflict args)
@@ -469,34 +439,11 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (conf is IArmConnectorConflict tool && tool.HasConflict)
                     {
-                        SetNextArmEnabledState(tool, false, false);
+                        tool.CurrentArmConnector.DisableEvents();
+                        tool.DifferentArmConnector.DisableEvents();
+                        tool.IsChecked = false;
+                        CanSave = false;
                     }
-                }
-            }
-        }
-
-        private void SetNextArmEnabledState(IArmConnectorConflict nextArmConf, bool currValue, bool diffValue)
-        {
-            nextArmConf.CurrentArmConnector.IsArmSelectionAllowed = currValue;
-            nextArmConf.CurrentArmConnector.IsChecked = false;
-            nextArmConf.DifferentArmConnector.IsArmSelectionAllowed = diffValue;
-            nextArmConf.DifferentArmConnector.IsChecked = false;
-            nextArmConf.IsChecked = false;
-            CanSave = false;
-        }
-
-        private void UpdateNextToolArmEnabledState(IMergeToolModel args, IArmConnectorConflict nextArmConflict)
-        {
-            if (args.ModelItem == null)
-            {
-                var container = args.Container;
-                if (container.CurrentViewModel == args)
-                {
-                    SetNextArmEnabledState(nextArmConflict, true, false);
-                }
-                if (container.DiffViewModel == args)
-                {
-                    SetNextArmEnabledState(nextArmConflict, false, true);
                 }
             }
         }
@@ -510,12 +457,10 @@ namespace Dev2.ViewModels.Merge
                 {
                     if (args.Container.CurrentViewModel == args)
                     {
-                        ResetToolEvents(args);
                         WorkflowDesignerViewModel.RemoveItem(args.Container.CurrentViewModel);
                     }
                     if (args.Container.DiffViewModel == args)
                     {
-                        ResetToolEvents(args);
                         WorkflowDesignerViewModel.RemoveItem(args.Container.DiffViewModel);
                     }
                 }
@@ -525,21 +470,15 @@ namespace Dev2.ViewModels.Merge
         void ResetToolEvents(IMergeToolModel args)
         {
             var index = _conflicts.IndexOf(args.Container);
-            if (index != -1 && index + 1 < _conflicts.Count - 1)
+            if (index != -1 && index + 1 < _conflicts.Count)
             {
                 var restOfItems = _conflicts.Skip(index + 1).ToList();
-                var firstTool = restOfItems[0];
                 foreach (var conf in restOfItems)
                 {
                     if (conf is IToolConflict tool && tool.HasConflict)
                     {
                         ResetToolConflict(tool.DiffViewModel);
                         ResetToolConflict(tool.CurrentViewModel);
-                        if (Equals(tool, firstTool))
-                        {
-                            tool.CurrentViewModel.IsMergeEnabled = true;
-                            tool.DiffViewModel.IsMergeEnabled = true;
-                        }
                     }
                 }
             }
@@ -551,6 +490,7 @@ namespace Dev2.ViewModels.Merge
             {
                 mergeTool.DisableEvents();
                 mergeTool.EnableEvents();
+                _seenConflicts.Remove(mergeTool.Container);
                 WorkflowDesignerViewModel.RemoveItem(mergeTool);
             }
         }
@@ -573,7 +513,7 @@ namespace Dev2.ViewModels.Merge
             {
                 WorkflowDesignerViewModel.LinkTools(sourceUniqueId, destionationUniqueId, key);
 
-                ResetFromToolArm(container);
+                RemovePreviousToolArm(container);
                 var conflict = UpdateNextEnabledState(container);
                 if (conflict is IToolConflict nextConflict)
                 {
@@ -584,7 +524,7 @@ namespace Dev2.ViewModels.Merge
                     UpdateNextArmState(nextArmConflict);
                 }
                 container.IsChecked = isChecked;
-                GetMatchingConflictParent(container);
+                GetMatchingConflictParent();
             }
         }
 
@@ -655,14 +595,14 @@ namespace Dev2.ViewModels.Merge
                 var nextArmConflict = conflict as IArmConnectorConflict;
                 if (nextArmConflict != null)
                 {
-                    GetMatchingConflictParent(conflict);
+                    GetMatchingConflictParent();
                 }
                 return nextArmConflict;
             }
             return nextConflict;
         }
 
-        private void GetMatchingConflictParent(IConflict conflict)
+        void GetMatchingConflictParent()
         {
             var items = _conflicts.Where(s => s is IArmConnectorConflict).Cast<IArmConnectorConflict>().ToList();
             var toolIds = _conflicts.Where(s => s is IToolConflict && s.IsChecked && !s.IsEmptyItemSelected).Select(a => a.UniqueId.ToString());
@@ -675,10 +615,12 @@ namespace Dev2.ViewModels.Merge
                 if(foundCurrentDestination && foundCurrentSource)
                 {
                     s.CurrentArmConnector.IsArmSelectionAllowed = true;
+                    s.IsMergeExpanderEnabled = true;
                 }
                 if(foundDiffDestination && foundDiffSource)
                 {
                     s.DifferentArmConnector.IsArmSelectionAllowed = true;
+                    s.IsMergeExpanderEnabled = true;
                 }
             }
         }

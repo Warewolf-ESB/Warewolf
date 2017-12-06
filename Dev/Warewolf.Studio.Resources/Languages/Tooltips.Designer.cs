@@ -2734,6 +2734,60 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Select the current Variable conflict.
+        /// </summary>
+        public static string MergeCurrentConflictRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentConflictRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Variable conflict.
+        /// </summary>
+        public static string MergeCurrentVariablesRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentVariablesRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Workflow name conflict.
+        /// </summary>
+        public static string MergeCurrentWorkflowNameRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentWorkflowNameRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Variable conflict.
+        /// </summary>
+        public static string MergeDifferenceConflictRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceConflictRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Variable conflict.
+        /// </summary>
+        public static string MergeDifferenceVariablesRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceVariablesRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Workflow name conflict.
+        /// </summary>
+        public static string MergeDifferenceWorkflowNameRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceWorkflowNameRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No conflicts found.
         /// </summary>
         public static string MergeNoConflictTooltip {
