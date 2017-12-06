@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -15,6 +15,7 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Common;
+using Dev2.Validation;
 
 namespace Dev2
 {
@@ -48,7 +49,7 @@ namespace Dev2
         /// </summary>
         public enTypeOfSystemInformationToGather EnTypeOfSystemInformation
         {
-            get { return _enTypeOfSystemInformation; }
+            get => _enTypeOfSystemInformation;
             set
             {
                 _enTypeOfSystemInformation = value;
@@ -63,7 +64,7 @@ namespace Dev2
         [FindMissing]
         public string Result
         {
-            get { return _result; }
+            get => _result;
             set
             {
                 _result = value;
@@ -96,12 +97,11 @@ namespace Dev2
             Result = "";
         }
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
         }
-
 
         public bool IsResultFocused { get => _isResultFocused; set => OnPropertyChanged(ref _isResultFocused, value); }
 
@@ -110,7 +110,6 @@ namespace Dev2
             var ruleSet = new RuleSet();
             if (propertyName == "Result")
             {
-
                 if (!string.IsNullOrEmpty(Result))
                 {
                     var inputExprRule = new IsValidExpressionRule(() => Result, datalist, "0", new VariableUtils());
@@ -120,12 +119,8 @@ namespace Dev2
                 {
                     ruleSet.Add(new IsStringEmptyRule(() => Result));
                 }
-
             }
             return ruleSet;
         }
-
-
-
     }
 }

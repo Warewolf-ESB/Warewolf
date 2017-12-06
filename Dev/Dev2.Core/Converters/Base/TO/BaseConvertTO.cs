@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -14,6 +14,7 @@ using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Util;
 using Dev2.Common;
 using Dev2.Providers.Validation.Rules;
+using Dev2.Validation;
 
 namespace Dev2
 {
@@ -50,7 +51,7 @@ namespace Dev2
         /// </summary>
         public string FromType
         {
-            get { return _fromType; }
+            get => _fromType;
             set
             {
                 if (value != null)
@@ -66,7 +67,7 @@ namespace Dev2
         /// </summary>
         public string ToType
         {
-            get { return _toType; }
+            get => _toType;
             set
             {
                 if (value != null)
@@ -83,7 +84,7 @@ namespace Dev2
         [FindMissing]
         public string FromExpression
         {
-            get { return _fromExpression; }
+            get => _fromExpression;
             set
             {
                 _fromExpression = value;
@@ -98,7 +99,7 @@ namespace Dev2
         [FindMissing]
         public string ToExpression
         {
-            get { return _toExpression; }
+            get => _toExpression;
             set
             {
                 _toExpression = value;
