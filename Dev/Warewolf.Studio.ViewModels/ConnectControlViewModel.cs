@@ -37,6 +37,8 @@ namespace Warewolf.Studio.ViewModels
         readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         readonly IServerRepository _serverRepository;
+        bool _canEditServer;
+        bool _canCreateServer;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
             : this(server, aggregator, null, null)
@@ -72,9 +74,31 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
+            CanEditServer = true;
+            CanCreateServer = true;
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
+
+        public bool CanEditServer
+        {
+            get => _canEditServer;
+            set
+            {
+                _canEditServer = value;
+                OnPropertyChanged(() => CanEditServer);
+            }
+        }
+
+        public bool CanCreateServer
+        {
+            get => _canCreateServer;
+            set
+            {
+                _canCreateServer = value;
+                OnPropertyChanged(() => CanEditServer);
+            }
+        }
 
         bool CanExecuteMethod()
         {

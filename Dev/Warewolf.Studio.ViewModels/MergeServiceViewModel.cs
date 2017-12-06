@@ -193,7 +193,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load();
+                isLoaded = await environmentModel.LoadAsync();
                 OnPropertyChanged(() => Environments);
             }
             return isLoaded;
