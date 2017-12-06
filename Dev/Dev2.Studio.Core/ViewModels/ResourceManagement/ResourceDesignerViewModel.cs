@@ -114,7 +114,7 @@ namespace Dev2.Studio.Core.ViewModels
                 case ResourceType.Server:
                     break;
                 default:
-                    throw new ArgumentException(ErrorResource.UnexpectedResourceType);
+                    break;
 
             }
 

@@ -466,7 +466,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddCharacterTokenOp(ref stringToSplit, compiler, update, dtb, t, parsedAt, ref entry);
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized split type: " + t.SplitType);
+                    break;
             }
 
             return stringToSplit;
@@ -582,7 +582,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugItem(new DebugItemStaticDataParams(t.EscapeChar, "Escape"), debugItem);
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized split type: " + t.SplitType);
+                    break;
             }
         }
 

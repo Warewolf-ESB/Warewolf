@@ -85,9 +85,8 @@ namespace Dev2.Studio.Core.Models
                     case "EndValue":
                         error = ValidateStringCannotBeNull(columnName, EndValue?.ToString() ?? string.Empty);
                         break;
-
                     default:
-                        throw new ArgumentException(ErrorResource.UnexpectedPropertyName, columnName);
+                        break;
                 }
 
                 return error;

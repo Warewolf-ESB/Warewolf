@@ -147,7 +147,7 @@ namespace Dev2.Activities.Sharepoint
                     returnValue = value.ToString();
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized type: " + type);
+                    break;
             }
             return returnValue;
         }

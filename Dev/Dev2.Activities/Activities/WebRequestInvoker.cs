@@ -112,7 +112,7 @@ namespace Dev2.Activities
                         webClient.UploadStringAsync(uri, data);
                         break;
                     default:
-                        throw new ArgumentException("Unrecognized request method: " + method);
+                        break;
                 }
             }
             return string.Empty;

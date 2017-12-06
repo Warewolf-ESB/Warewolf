@@ -427,7 +427,7 @@ namespace Dev2.TO
                         to.IsSinglematchCriteriaVisible = false;
                         break;
                     default:
-                        throw new ArgumentException("Unrecognized Argument Count: " + opt.ArgumentCount);
+                        break;
                 }
             }
         }
