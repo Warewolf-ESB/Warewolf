@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.ODBC.Connector.Wrapper</RootNamespace>
     <AssemblyName>Warewolf.ODBC.Connector.Wrapper</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SonarQubeExclude>True</SonarQubeExclude>
   </PropertyGroup>
