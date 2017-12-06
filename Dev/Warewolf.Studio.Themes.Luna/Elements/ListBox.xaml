@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:system="clr-namespace:System;assembly=mscorlib"
-                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna">
+                    xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna"
+                    xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources">
 
     <ResourceDictionary.MergedDictionaries>
         <luna:SharedResourceDictionary Source="../Common/Color.xaml" />
@@ -1024,6 +1025,7 @@
                                     <RadioButton Focusable="False"
                                                  Style="{StaticResource RadioButtonStyle}"
                                                  IsHitTestVisible="False"
+                                                 ToolTip="{x:Static languages:Tooltips.MergeSelectionViewLabelTooltip}"
                                                  IsChecked="{TemplateBinding IsSelected}">
                                         <ContentPresenter />
                                     </RadioButton>

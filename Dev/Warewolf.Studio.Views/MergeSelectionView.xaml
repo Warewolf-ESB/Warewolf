@@ -41,9 +41,7 @@
                     Background="{StaticResource WareWolfMenuBrush}" 
                     HorizontalAlignment="Stretch" 
                     Orientation="Horizontal">
-            <TextBlock Margin="5" 
-                       Text="Merge Versions" 
-                       Style="{StaticResource SourceHeader}"></TextBlock>
+            <TextBlock Margin="5" Text="Merge Versions" Style="{StaticResource SourceHeader}" />
         </StackPanel>
 
         <Grid Grid.Row="1" >
@@ -66,51 +64,59 @@
                                   x:Name="SourceConnectControl" />
 
             <Grid Grid.Row="1" Margin="{StaticResource ControlBorderTop}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" >
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-                    
-                <TextBlock Grid.Column="0"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            x:Name="SelectedResourceTextBox"
-                            FontSize="14"
-                            FontWeight="Bold"
-                            Margin="{StaticResource ControlBorderLeft}" 
-                            Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
-                <TextBlock Grid.Column="1"
-                            Margin="{StaticResource ControlBorderLeft}" 
-                            HorizontalAlignment="Left" 
-                            VerticalAlignment="Center"
-                            Text="merge with" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock TextWrapping="Wrap" Text="{x:Static languages:Core.MergeSelectionViewInformationLabel}" MaxWidth="695"/>
+                </StackPanel>
+
+                <StackPanel Grid.Row="1" Orientation="Horizontal">
+                    <TextBlock 
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           x:Name="SelectedResourceTextBox"
+                           FontSize="14"
+                           FontWeight="Bold"
+                           Margin="{StaticResource ControlBorderLeft}" 
+                           Text="{Binding ResourceToMerge, UpdateSourceTrigger=PropertyChanged}" />
+                    <TextBlock Grid.Column="1"
+                           Grid.Row="1"
+                           Margin="{StaticResource ControlBorderLeft}" 
+                           HorizontalAlignment="Left" 
+                           VerticalAlignment="Center"
+                           Text="merge with" />
+                </StackPanel>
+                
+                
+
+                
             </Grid>
+            <Border x:Name="CurrentWorkflowHeaderBorder" 
+                    Grid.Row="2" 
+                    BorderBrush="#CFD6E1" 
+                    BorderThickness="0,1,0,1" 
+                    AutomationProperties.AutomationId="UI_CurrentWorkflowHeaderBorder_AutoID">
+                <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Top" Background="Transparent">
+                    <ListBox x:Name="MergeResourceVersionList" 
+                             Style="{StaticResource RadioButtonList}" 
+                             ItemsSource="{Binding MergeResourceVersions}" 
+                             SelectedItem="{Binding SelectedMergeItem}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Current" Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
+                                    <Label Content="{Binding ResourceName}" Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </DockPanel>
+            </Border>
 
-            <DockPanel Grid.Row="2"
-                       HorizontalAlignment="Stretch"
-                       VerticalAlignment="Top"
-                       Background="Transparent">
-
-                <ListBox x:Name="MergeResourceVersionList" 
-                         Style="{StaticResource RadioButtonList}" 
-                         ItemsSource="{Binding MergeResourceVersions}" 
-                         SelectedItem="{Binding SelectedMergeItem}">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-                                <Label Content="Current" Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisibilityConverterNegative}}" />
-                                <Label Content="{Binding ResourceName}" Visibility="{Binding IsVersion, Converter={StaticResource BoolToVisibilityConverterPositive}}" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-
-            </DockPanel>
-            
-            <DockPanel Grid.Row="3"
-                       HorizontalAlignment="Right" VerticalAlignment="Center"
-                       Margin="0,0,1,0" >
+            <DockPanel Grid.Row="3" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="{StaticResource ControlBorderTop}" >
 
                 <Button x:Name="MergeButton"
                         Width="60"

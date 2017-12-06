@@ -2734,7 +2734,16 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the current Variable conflict.
+        ///   Looks up a localized string similar to Select the current Tool connection conflict.
+        /// </summary>
+        public static string MergeCurrentArmRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Tool conflict.
         /// </summary>
         public static string MergeCurrentConflictRBTooltip {
             get {
@@ -2761,7 +2770,16 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Select the difference Variable conflict.
+        ///   Looks up a localized string similar to Select the difference Tool connection conflict.
+        /// </summary>
+        public static string MergeDifferenceArmRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Tool conflict.
         /// </summary>
         public static string MergeDifferenceConflictRBTooltip {
             get {
@@ -2793,6 +2811,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string MergeNoConflictTooltip {
             get {
                 return ResourceManager.GetString("MergeNoConflictTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the version you want to merge with.
+        /// </summary>
+        public static string MergeSelectionViewLabelTooltip {
+            get {
+                return ResourceManager.GetString("MergeSelectionViewLabelTooltip", resourceCulture);
             }
         }
         

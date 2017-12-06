@@ -2198,25 +2198,31 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="MappingsRecordsetNameTooltip" xml:space="preserve">
     <value>The name of the Recordset or Scalar  you want to put the result into</value>
   </data>
-
   <data name="MergeCurrentWorkflowNameRBTooltip" xml:space="preserve">
     <value>Select the current Workflow name conflict</value>
   </data>
   <data name="MergeDifferenceWorkflowNameRBTooltip" xml:space="preserve">
     <value>Select the difference Workflow name conflict</value>
   </data>
-  
   <data name="MergeCurrentVariablesRBTooltip" xml:space="preserve">
     <value>Select the current Variable conflict</value>
   </data>
   <data name="MergeDifferenceVariablesRBTooltip" xml:space="preserve">
     <value>Select the difference Variable conflict</value>
   </data>
-
   <data name="MergeCurrentConflictRBTooltip" xml:space="preserve">
-    <value>Select the current Variable conflict</value>
+    <value>Select the current Tool conflict</value>
   </data>
   <data name="MergeDifferenceConflictRBTooltip" xml:space="preserve">
-    <value>Select the difference Variable conflict</value>
+    <value>Select the difference Tool conflict</value>
+  </data>
+  <data name="MergeCurrentArmRBTooltip" xml:space="preserve">
+    <value>Select the current Tool connection conflict</value>
+  </data>
+  <data name="MergeDifferenceArmRBTooltip" xml:space="preserve">
+    <value>Select the difference Tool connection conflict</value>
+  </data>
+  <data name="MergeSelectionViewLabelTooltip" xml:space="preserve">
+    <value>Select the version you want to merge with</value>
   </data>
 </root>
