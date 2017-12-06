@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Exchange;
-using Dev2.Common.Interfaces.Core;
+using Warewolf.Exchange.Email.Connector.Wrapper;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;

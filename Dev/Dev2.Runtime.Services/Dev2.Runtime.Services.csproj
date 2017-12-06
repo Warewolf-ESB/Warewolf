@@ -501,6 +501,10 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Exchange.Email.Connector.Wrapper\Warewolf.Exchange.Email.Connector.Wrapper.csproj">
+      <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
+      <Name>Warewolf.Exchange.Email.Connector.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.ODBC.Connector.Wrapper\Warewolf.ODBC.Connector.Wrapper.csproj">
       <Project>{74a96a9a-ae86-4a48-9acc-a21a318b191f}</Project>
       <Name>Warewolf.ODBC.Connector.Wrapper</Name>

@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core;
+using Warewolf.Exchange.Email.Connector.Wrapper;
 using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;

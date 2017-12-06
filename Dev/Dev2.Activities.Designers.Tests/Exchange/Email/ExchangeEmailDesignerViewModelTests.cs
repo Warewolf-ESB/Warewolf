@@ -8,7 +8,6 @@ using Caliburn.Micro;
 using Dev2.Activities.Designers2.ExchangeEmail;
 using Dev2.Activities.Exchange;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
@@ -23,6 +22,7 @@ using Dev2.Threading;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Warewolf.Exchange.Email.Connector.Wrapper;
 
 
 namespace Dev2.Activities.Designers.Tests.Exchange.Email

@@ -45,7 +45,7 @@ using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.Wcf.Connector.Wrapper;
-
+using Warewolf.Exchange.Email.Connector.Wrapper;
 
 
 namespace Dev2.Studio.ViewModels

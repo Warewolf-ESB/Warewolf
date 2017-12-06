@@ -272,6 +272,10 @@
       <Project>{1990550D-EA6F-4DAC-9B5E-8571E86923ED}</Project>
       <Name>Dev2.Util</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Exchange.Email.Connector.Wrapper\Warewolf.Exchange.Email.Connector.Wrapper.csproj">
+      <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
+      <Name>Warewolf.Exchange.Email.Connector.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>
