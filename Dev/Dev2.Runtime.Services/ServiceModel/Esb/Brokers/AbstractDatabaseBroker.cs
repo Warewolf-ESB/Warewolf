@@ -19,7 +19,6 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
-using Warewolf.ODBC.Connector.Wrapper;
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
