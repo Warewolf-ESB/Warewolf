@@ -15,7 +15,6 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Helpers;
 using Dev2.TO;
 
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public static class DTOFactory
@@ -26,42 +25,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IDev2TOFn toReturn = null;
 
             TypeSwitch.Do(dto,
-                
+
                 TypeSwitch.Case<ActivityDTO>(x => toReturn = new ActivityDTO(initializeWith, "", index, inserted)),
-                
+
                 TypeSwitch.Case<DataSplitDTO>(x =>
                 {
-                    var dataSplitDto = dto as DataSplitDTO;
-                    if (dataSplitDto != null)
+                    if (dto is DataSplitDTO dataSplitDto)
                     {
                         toReturn = new DataSplitDTO(initializeWith, dataSplitDto.SplitType, dataSplitDto.At, index, false, inserted);
                     }
                 }),
                 TypeSwitch.Case<DataMergeDTO>(x =>
                 {
-                    var dataMergeDto = dto as DataMergeDTO;
-                    if (dataMergeDto != null)
+                    if (dto is DataMergeDTO dataMergeDto)
                     {
                         toReturn = new DataMergeDTO(initializeWith, dataMergeDto.MergeType, dataMergeDto.At, index, dataMergeDto.Padding, dataMergeDto.Alignment, inserted);
                     }
                 }),
                 TypeSwitch.Case<CaseConvertTO>(x =>
                 {
-                    var caseConvertTO = dto as CaseConvertTO;
-                    if (caseConvertTO != null)
+                    if (dto is CaseConvertTO caseConvertTO)
                     {
                         toReturn = CaseConverterFactory.CreateCaseConverterTO(initializeWith, caseConvertTO.ConvertType, caseConvertTO.Result, index);
                     }
                 }),
                 TypeSwitch.Case<BaseConvertTO>(x =>
                 {
-                    var baseConvertTO = dto as BaseConvertTO;
-                    if (baseConvertTO != null)
+                    if (dto is BaseConvertTO baseConvertTO)
                     {
                         toReturn = new BaseConvertTO(initializeWith, baseConvertTO.FromType, baseConvertTO.ToType, baseConvertTO.ToExpression, index, inserted);
                     }
                 }),
-                
+
                 TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn =
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                         initializeWith, index, inserted)),
