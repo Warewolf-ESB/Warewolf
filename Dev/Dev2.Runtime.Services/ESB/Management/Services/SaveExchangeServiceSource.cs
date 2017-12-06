@@ -1,5 +1,5 @@
 ﻿using Dev2.Common;
-using Warewolf.Exchange.Email.Connector.Wrapper;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
