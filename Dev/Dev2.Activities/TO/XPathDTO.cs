@@ -167,7 +167,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized property name: " + propertyName);
+                    break;
             }
             return ruleSet;
         }

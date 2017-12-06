@@ -210,7 +210,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;
                         default:
-                            throw new ArgumentException("Unrecognized split type: " + SplitType);
+                            break;
                     }
                     break;
                 default:
