@@ -1,9 +1,10 @@
-﻿using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿using Dev2.Common.Interfaces;
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using System;
 
 
-namespace Dev2.Common.Interfaces.Core
+namespace Warewolf.Exchange.Email.Connector.Wrapper
 {
     public class ExchangeSourceDefinition : IExchangeSource, IEquatable<ExchangeSourceDefinition>
     {

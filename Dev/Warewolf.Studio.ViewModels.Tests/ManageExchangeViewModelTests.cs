@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
+using Warewolf.Exchange.Email.Connector.Wrapper;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;

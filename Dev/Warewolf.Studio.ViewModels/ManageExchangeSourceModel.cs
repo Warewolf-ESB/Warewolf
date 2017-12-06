@@ -1,6 +1,6 @@
 ﻿using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core;
+using Warewolf.Exchange.Email.Connector.Wrapper;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Runtime.ServiceModel.Data;
 using System;

@@ -876,6 +876,10 @@
       <Project>{8FD23CE0-02BB-48E1-A914-BA467938CE78}</Project>
       <Name>Warewolf.Core</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Exchange.Email.Connector.Wrapper\Warewolf.Exchange.Email.Connector.Wrapper.csproj">
+      <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
+      <Name>Warewolf.Exchange.Email.Connector.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{DFF93ECB-FDD1-405E-AE02-9F4BC7571C1B}</Project>
       <Name>Warewolf.Resource</Name>
