@@ -127,32 +127,34 @@ namespace Dev2.Activities.Designers2.Switch
             ValidExpression = true;
             if (ModelItem?.Parent?.Source?.Collection != null)
             {
-                ValidateProperties();
+                ValidateParentProperties();
             }
             else
             {
-                if (ModelItem != null)
+                ValidateProperties();
+            }
+        }
+
+        void ValidateProperties()
+        {
+            if (ModelItem != null && ModelItem.Properties.Any())
+            {
+                foreach (var property in ModelItem.Properties)
                 {
-                    if (ModelItem.Properties.Any())
+                    if (property?.Name == "Case")
                     {
-                        foreach (var property in ModelItem.Properties)
+                        var modelItem = property.ComputedValue;
+                        if (modelItem?.ToString() == SwitchExpression)
                         {
-                            if (property?.Name == "Case")
-                            {
-                                var modelItem = property.ComputedValue;
-                                if (modelItem?.ToString() == SwitchExpression)
-                                {
-                                    ValidExpression = false;
-                                    break;
-                                }
-                            }
+                            ValidExpression = false;
+                            break;
                         }
                     }
                 }
             }
         }
 
-        void ValidateProperties()
+        void ValidateParentProperties()
         {
             if (ModelItem?.Parent?.Source?.Collection != null)
             {
