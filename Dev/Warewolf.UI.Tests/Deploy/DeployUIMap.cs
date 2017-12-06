@@ -58,6 +58,14 @@ namespace Warewolf.UI.Tests.Deploy.DeployUIMapClasses
             Assert.IsTrue(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.DeployButton.Enabled, "Deploy button is not enabled");
         }
 
+        [Given(@"I Click Close Deploy Tab")]
+        [When(@"I Click Close Deploy Tab")]
+        [Then(@"I Click Close Deploy Tab")]
+        public void Click_Close_Deploy_Tab()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.CloseButton, new Point(16, 11));
+        }
+
         [Then(@"Filtered Resourse Is Checked For Deploy")]
         public void ThenFilteredResourseIsCheckedForDeploy()
         {

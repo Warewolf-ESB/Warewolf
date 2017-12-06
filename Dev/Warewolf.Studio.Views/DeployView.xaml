@@ -43,7 +43,7 @@
                         Orientation="Horizontal">
                 <TextBlock Margin="{StaticResource ElementBorder}" Text="Source Server" Style="{StaticResource SourceHeader}"></TextBlock>
             </StackPanel>
-
+            
             <views:ConnectControl Grid.Row="1"
                                   DataContext="{Binding SourceConnectControlViewModel}"
                                   Margin="{StaticResource ControlBorderTop}"
@@ -52,9 +52,27 @@
                                   ServerComboBoxAutomationID="UI_SourceServercbx_AutoID" 
                                   x:Name="SourceConnectControl" />
 
+            <Grid Grid.Column="0" 
+                  Grid.Row="2" 
+                  DataContext="{Binding Source}"
+                  HorizontalAlignment="Stretch" 
+                  VerticalAlignment="Stretch"
+                  Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <customControls:CircularProgressBar Grid.Column="2" 
+                                                        Height="50" 
+                                                        Width="50"
+                                                        VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                        AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+                    <TextBlock Text="Loading..." HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Grid>
             <views:ExplorerView Grid.Row="2" 
+                                Visibility="{Binding IsDeployLoading, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                 DataContext="{Binding Source}"
                                 x:Name="SourceNavigationView"
+                                VirtualizingStackPanel.IsVirtualizing="True"
+                                VirtualizingStackPanel.VirtualizationMode="Recycling"
                                 Margin="-5"
                                 AllowDrop="False"/>
         </Grid>
@@ -181,7 +199,7 @@
 
                             <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Center" >
                                 <Hyperlink x:Name="NewResourcesView" Command="{Binding NewResourcesViewCommand}" ToolTip="{x:Static languages:HelpText.DeployNewResourcesViewHelp}" >
-                                    <TextBlock Text="{Binding NewResourcesCount}" FontSize="28"/>
+                                    <TextBlock Text="{Binding NewResourcesCount}" FontSize="28" />
                                 </Hyperlink>
                             </TextBlock>
 
