@@ -2089,4 +2089,22 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Python" xml:space="preserve">
     <value>Use the Script tool to execute Python code.</value>
   </data>
+  <data name="MergeCurrentWorkflowNameRBHelp" xml:space="preserve">
+    <value>Select the current Workflow name radio button to keep the current Workflow name changes.</value>
+  </data>
+  <data name="MergeDifferenceWorkflowNameRBHelp" xml:space="preserve">
+    <value>Select the difference Workflow name radio button to keep the difference Workflow name changes.</value>
+  </data>
+  <data name="MergeCurrentVariablesRBHelp" xml:space="preserve">
+    <value>Select the current Variable radio button to keep the current Variable changes.</value>
+  </data>
+  <data name="MergeDifferenceVariablesRBHelp" xml:space="preserve">
+    <value>Select the difference Variable radio button to keep the difference Variable changes.</value>
+  </data>
+  <data name="MergeCurrentConflictRBHelp" xml:space="preserve">
+    <value>Select the current Variable radio button to keep the current Variable changes.</value>
+  </data>
+  <data name="MergeDifferenceConflictRBHelp" xml:space="preserve">
+    <value>Select the difference Variable radio button to keep the difference Variable changes.</value>
+  </data>
 </root>
