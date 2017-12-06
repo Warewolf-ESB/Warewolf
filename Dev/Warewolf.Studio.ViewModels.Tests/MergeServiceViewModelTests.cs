@@ -182,7 +182,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
 
             //act
-            await _target.MergeConnectControlViewModel.Connect(serverMock.Object);
+            await _target.MergeConnectControlViewModel.ConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(isEnvironmentChanged);
