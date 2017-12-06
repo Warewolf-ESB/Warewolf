@@ -144,6 +144,7 @@
     <Compile Include="Common\Dev2EmailSender.cs" />
     <Compile Include="Common\ValidatableObject.cs" />
     <Compile Include="Common\VariableUtils.cs" />
+    <Compile Include="Converters\Base\TO\CaseConvertTO.cs" />
     <Compile Include="DeletedFileMetadata.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />

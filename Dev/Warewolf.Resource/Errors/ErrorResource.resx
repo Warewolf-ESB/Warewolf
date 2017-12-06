@@ -765,6 +765,9 @@
   <data name="MultipleResourcesFound" xml:space="preserve">
     <value>Multiple Resources found for Resource ID: {0}</value>
   </data>
+  <data name="NoResourcesFound" xml:space="preserve">
+    <value>No Resources found for Resource ID: {0}</value>
+  </data>
   <data name="MustBeRealNumber" xml:space="preserve">
     <value>must be a real number</value>
   </data>

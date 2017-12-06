@@ -13,7 +13,6 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-using Dev2.TO;
 
 namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 {

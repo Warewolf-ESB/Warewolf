@@ -390,7 +390,6 @@
     <Compile Include="TO\ActivityDTO.cs" />
     <Compile Include="Activities\DsfActivity.cs" />
     <Compile Include="Activities\DsfForEachActivity.cs" />
-    <Compile Include="TO\CaseConvertTO.cs" />
     <Compile Include="TO\DataMergeDTO.cs" />
     <Compile Include="TO\DataSplitDTO.cs" />
     <Compile Include="ImageConverter.cs" />
