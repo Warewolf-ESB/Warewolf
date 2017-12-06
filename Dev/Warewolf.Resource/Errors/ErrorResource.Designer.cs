@@ -2275,6 +2275,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to No Resources found for Resource ID: {0}.
+        /// </summary>
+        public static string NoResourcesFound {
+            get {
+                return ResourceManager.GetString("NoResourcesFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No SharePoint list name set.
         /// </summary>
         public static string NoSharepointListNameSet {

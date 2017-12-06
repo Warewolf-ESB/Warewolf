@@ -17,7 +17,6 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Dev2.Activities.Factories.Case;
-using Dev2.TO;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {

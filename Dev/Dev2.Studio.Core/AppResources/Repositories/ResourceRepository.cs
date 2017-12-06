@@ -208,6 +208,11 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         private IContextualResourceModel GetContextualResourceModel(Guid resourceId, List<SerializableResource> toReloadResources)
         {
+            if (toReloadResources != null && toReloadResources.Count == 0)
+            {
+                Dev2Logger.Error(string.Format(ErrorResource.NoResourcesFound, resourceId), "Warewolf Error");
+                return null;
+            }
             if (toReloadResources != null && toReloadResources.Count == 1)
             {
                 var serializableResource = toReloadResources[0];

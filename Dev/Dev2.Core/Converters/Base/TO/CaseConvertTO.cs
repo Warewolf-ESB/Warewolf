@@ -15,15 +15,17 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using Dev2.Validation;
+using Dev2.Common;
 
-namespace Dev2.TO
+namespace Dev2
 {
-    public class CaseConvertTO : ValidatedObject, ICaseConvertTO
+    public class CaseConvertTO : ValidatableObject, ICaseConvertTO
     {
         private string _convertType;
         private string _result;
         private string _stringToConvert;
         private bool _isStringToConvertFocused;
+        private Dictionary<string, List<IActionableErrorInfo>> _errors;
 
         public CaseConvertTO()
         {
@@ -71,6 +73,16 @@ namespace Dev2.TO
                     _convertType = value;
                     OnPropertyChanged("ConvertType");
                 }
+            }
+        }
+
+        public Dictionary<string, List<IActionableErrorInfo>> Errors
+        {
+            get { return _errors; }
+            set
+            {
+                _errors = value;
+                OnPropertyChanged("Errors");
             }
         }
 
