@@ -91,6 +91,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random, new Point(145, 7));
         }
 
+        [When(@"I Open Create JSON Tool Large View")]
+        public void Open_CreateJSON_LargeView()
+        {
+            Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson, new Point(145, 7));
+        }
+
         [Given(@"I Open System Information Tool Large View")]
         [When(@"I Open System Information Tool Large View")]
         [Then(@"I Open System Information Tool Large View")]

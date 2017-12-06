@@ -118,14 +118,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
 
         protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            if (e.PropertyName == "Url" || e.PropertyName == "Headers")
             {
-                case "Url":
-                case "Headers":
-                    ExtractVariables();
-                    break;
-                default:
-                    break;
+                ExtractVariables();
             }
         }
 

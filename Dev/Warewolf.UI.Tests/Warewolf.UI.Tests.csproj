@@ -375,6 +375,7 @@
     <Compile Include="WorkflowTab\Tools\Utility\Format Number.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\RabbitMQConsume.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\RabbitMQPublish.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\CreateJSON.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Random.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Sys Info.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.cs">
