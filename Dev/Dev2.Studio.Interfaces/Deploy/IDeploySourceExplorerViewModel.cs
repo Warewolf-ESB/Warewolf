@@ -22,7 +22,7 @@ namespace Dev2.Studio.Interfaces.Deploy
         ICollection<IExplorerTreeItem> SourceLoadedItems { get; }
 
         IEnumerable<IExplorerTreeItem> Preselected { get; set; }
-
+        bool IsDeployLoading { get; set; }
         Version ServerVersion { get; }
     }
 }

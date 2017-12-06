@@ -68,6 +68,7 @@ namespace Warewolf.Studio.ViewModels
             _shell = shell;
             _stats.CalculateAction = () =>
             {
+                IsDeployLoading = true;
                 ServicesCount = _stats.Services.ToString();
                 SourcesCount = _stats.Sources.ToString();
                 NewResourcesCount = _stats.NewResources.ToString();
@@ -76,6 +77,7 @@ namespace Warewolf.Studio.ViewModels
                 NewItems = _stats.New;
                 ShowConflicts = false;
                 ViewModelUtils.RaiseCanExecuteChanged(DeployCommand);
+                IsDeployLoading = false;
             };
             SourceConnectControlViewModel = _source.ConnectControlViewModel;
             DestinationConnectControlViewModel = _destination.ConnectControlViewModel;
@@ -128,6 +130,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
         private bool _canDeployTests;
+        private bool _isDeployLoading;
+
         public bool CanDeployTests => _canDeployTests;
 
         public IList<IExplorerTreeItem> NewItems
@@ -542,6 +546,16 @@ namespace Warewolf.Studio.ViewModels
                 return false;
             }
             return true;
+        }
+
+        public bool IsDeployLoading
+        {
+            get { return _isDeployLoading; }
+            set
+            {
+                _isDeployLoading = value;
+                OnPropertyChanged(() => IsDeployLoading);
+            }
         }
 
         public string OverridesCount

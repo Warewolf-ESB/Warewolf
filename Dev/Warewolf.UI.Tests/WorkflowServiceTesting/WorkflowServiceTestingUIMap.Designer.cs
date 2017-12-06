@@ -11205,7 +11205,7 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCl
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfExpander.PropertyNames.AutomationId] = "UI_ServiceTestTestStepExpander_Assign a value to Name if blank (1)_AutoID";
+            this.SearchProperties.Add(new PropertyExpression(WpfExpander.PropertyNames.AutomationId, "UI_ServiceTestTestStepExpander", PropertyExpressionOperator.Contains));
             this.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
             this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
             #endregion

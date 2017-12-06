@@ -252,7 +252,7 @@ namespace Warewolf.Studio.ViewModels
         private async Task RefreshAsync()
         {
             var isDeploy = Children.Any(a => AllowResourceCheck);
-            await Load(isDeploy, true);
+            await LoadAsync(isDeploy, true);
             if (isDeploy)
             {
                 ShowContextMenu = false;
@@ -270,7 +270,7 @@ namespace Warewolf.Studio.ViewModels
 
         private int GetChildrenCount()
         {
-            int total = 0;
+            var total = 0;
             if (Children != null)
             {
                 foreach (var explorerItemModel in Children)
@@ -338,16 +338,15 @@ namespace Warewolf.Studio.ViewModels
                 IsFolder = true,
                 ResourcePath = name,
                 IsSelected = true,
-                IsRenaming = true,
                 IsVisible = true,
                 IsNewFolder = true,
                 CanCreateWorkflowService = true,
                 CanView = true,
                 CanDeploy = true,
-                CanViewApisJson = true
+                CanViewApisJson = true,
+                ResourceName = name,
+                IsRenaming = true
             };
-            child.ResourceName = name;
-            child.IsRenaming = true;
 
             if (_isDialog)
             {
@@ -439,7 +438,7 @@ namespace Warewolf.Studio.ViewModels
                         explorerItemViewModel.IsExpanded = true;
                     }
                     explorerItemViewModel.IsSelected = true;
-                    foundAction(explorerItemViewModel);
+                    foundAction?.Invoke(explorerItemViewModel);
                 }
                 else
                 {
@@ -484,7 +483,7 @@ namespace Warewolf.Studio.ViewModels
                     if (a.ResourcePath.Replace("\\", "\\\\") == path)
                     {
                         a.IsExpanded = true;
-                        foundAction(a);
+                        foundAction?.Invoke(a);
                     }
                 });
             }
@@ -715,6 +714,10 @@ namespace Warewolf.Studio.ViewModels
             get => _isResource;
             set
             {
+                if (value == _isResource)
+                {
+                    return;
+                }
                 if (ChildrenCount == 0)
                 {
                     return;
@@ -730,16 +733,14 @@ namespace Warewolf.Studio.ViewModels
                 }
                 _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
 
-                OnPropertyChanged(() => IsResourceChecked);
-                Task.Run(() => 
+                if (Children.Any())
                 {
                     var isChecked = _isResource;
-                    AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).
-                    Apply(a => a.IsResourceChecked = isChecked);
-                });
-
+                    Children.Apply(a => a.SetIsResourceChecked(isChecked));
+                }
                 SelectAll?.Invoke();
                 OnPropertyChanged(() => IsResourceChecked);
+                OnPropertyChanged(() => Children);
             }
         }
 
@@ -766,8 +767,8 @@ namespace Warewolf.Studio.ViewModels
 
         private string GetChildNameFromChildren()
         {
-            int count = 0;
-            string folderName = Resources.Languages.Core.NewFolderLabel;
+            var count = 0;
+            var folderName = Resources.Languages.Core.NewFolderLabel;
             while (UnfilteredChildren != null && UnfilteredChildren.Any(a => a.ResourceName == folderName))
             {
                 count++;
@@ -861,18 +862,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> Load() => await Load(false, false);
+        public async Task<bool> LoadAsync() => await LoadAsync(false, false);
 
-        public async Task<bool> Load(bool isDeploy) => await Load(isDeploy, false);
+        public async Task<bool> LoadAsync(bool isDeploy) => await LoadAsync(isDeploy, false);
 
-        public async Task<bool> Load(bool isDeploy, bool reloadCatalogue)
+        public async Task<bool> LoadAsync(bool isDeploy, bool reloadCatalogue)
         {
             if (!IsLoading || isDeploy)
             {
                 try
                 {
                     IsLoading = true;
-                    var result = await LoadDialog(null, isDeploy, reloadCatalogue);
+                    var result = await LoadDialogAsync(null, isDeploy, reloadCatalogue);
                     ReloadConnectControl(isDeploy);
                     return result;
                 }
@@ -888,19 +889,19 @@ namespace Warewolf.Studio.ViewModels
         {
             if (!isDeploy)
             {
-                IExplorerViewModel explorerViewModel = ShellViewModel?.ExplorerViewModel;
+                var explorerViewModel = ShellViewModel?.ExplorerViewModel;
                 if (explorerViewModel?.Environments != null)
                 {
-                    IEnvironmentViewModel environmentViewModel = explorerViewModel?.Environments[0];
+                    var environmentViewModel = explorerViewModel?.Environments[0];
 
                     var explorerServers = environmentViewModel?.Children?
                                                                 .Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>())
                                                                 .Where(y => y != null && y.ResourceType == "Dev2Server")
                                                                 .ToList();
-                    IConnectControlViewModel connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
+                    var connectControlViewModel = explorerViewModel?.ConnectControlViewModel;
                     if (explorerServers != null && (connectControlViewModel != null && explorerServers.Any()))
                     {
-                        ObservableCollection<IServer> connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
+                        var connectControlServers = connectControlViewModel.Servers?.Where(o => !o.IsLocalHost).ToObservableCollection();
 
                         if (connectControlServers?.Count > explorerServers?.Count())
                         {
@@ -935,9 +936,9 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsLoading { get; set; }
 
-        public async Task<bool> LoadDialog(string selectedPath) => await LoadDialog(selectedPath, false, false).ConfigureAwait(false);
+        public async Task<bool> LoadDialogAsync(string selectedPath) => await LoadDialogAsync(selectedPath, false, false).ConfigureAwait(false);
 
-        public async Task<bool> LoadDialog(string selectedPath, bool isDeploy, bool reloadCatalogue)
+        public async Task<bool> LoadDialogAsync(string selectedPath, bool isDeploy, bool reloadCatalogue)
         {
             if (IsConnected && Server.IsConnected)
             {
@@ -957,7 +958,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        public async Task<bool> LoadDialog(Guid selectedPath)
+        public async Task<bool> LoadDialogAsync(Guid selectedPath)
         {
             if (IsConnected)
             {
