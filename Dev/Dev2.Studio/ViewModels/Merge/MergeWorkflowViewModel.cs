@@ -288,6 +288,10 @@ namespace Dev2.ViewModels.Merge
 
         bool All(Func<IConflict, bool> check)
         {
+            if (check == null)
+            {
+                return false;
+            }
             var conflictsMatch = Conflicts.All(check);
             var childrenMatch = true;
             foreach (var completeConflict in Conflicts)
@@ -298,7 +302,7 @@ namespace Dev2.ViewModels.Merge
                 }
                 if (completeConflict is IArmConnectorConflict armConflict)
                 {
-                    childrenMatch &= armConflict.IsChecked;
+                    childrenMatch &= check(armConflict);
                 }
             }
             return conflictsMatch && childrenMatch;
