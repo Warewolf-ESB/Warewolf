@@ -560,6 +560,30 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 return this.mReplace;
             }
         }
+        
+        public CaseConvertError CaseConvertError
+        {
+            get
+            {
+                if ((this.mCaseConvertError == null))
+                {
+                    this.mCaseConvertError = new CaseConvertError(this);
+                }
+                return this.mCaseConvertError;
+            }
+        }
+        
+        public BaseConvertError BaseConvertError
+        {
+            get
+            {
+                if ((this.mBaseConvertError == null))
+                {
+                    this.mBaseConvertError = new BaseConvertError(this);
+                }
+                return this.mBaseConvertError;
+            }
+        }
         #endregion
         
         #region Fields
@@ -578,6 +602,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         private FindIndex mFindIndex;
         
         private Replace mReplace;
+        
+        private CaseConvertError mCaseConvertError;
+        
+        private BaseConvertError mBaseConvertError;
         #endregion
     }
     
@@ -5175,7 +5203,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
                 base(searchLimitContainer)
         {
             #region Search Criteria
-            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = "";
+            this.SearchProperties[WpfCell.PropertyNames.ColumnHeader] = null;
             this.SearchProperties[WpfCell.PropertyNames.ColumnIndex] = "1";
             this.SearchProperties[WpfCell.PropertyNames.AutomationId] = "UI_CellColumn1";
             this.WindowTitles.Add("Warewolf");
@@ -10188,6 +10216,78 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class CaseConvertError : WpfText
+    {
+        
+        public CaseConvertError(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink UIStringToConvertVariaHyperlink
+        {
+            get
+            {
+                if ((this.mUIStringToConvertVariaHyperlink == null))
+                {
+                    this.mUIStringToConvertVariaHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mUIStringToConvertVariaHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "\'StringToConvert\' - Variable name [[1]] begins with a number";
+                    this.mUIStringToConvertVariaHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIStringToConvertVariaHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mUIStringToConvertVariaHyperlink;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class BaseConvertError : WpfText
+    {
+        
+        public BaseConvertError(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfText.PropertyNames.AutomationId] = "UI_Error0_AutoID";
+            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfHyperlink UIFromExpressionVariabHyperlink
+        {
+            get
+            {
+                if ((this.mUIFromExpressionVariabHyperlink == null))
+                {
+                    this.mUIFromExpressionVariabHyperlink = new WpfHyperlink(this);
+                    #region Search Criteria
+                    this.mUIFromExpressionVariabHyperlink.SearchProperties[WpfHyperlink.PropertyNames.Name] = "\'FromExpression\' - Variable name [[1]] begins with a number";
+                    this.mUIFromExpressionVariabHyperlink.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mUIFromExpressionVariabHyperlink;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfHyperlink mUIFromExpressionVariabHyperlink;
         #endregion
     }
 }
