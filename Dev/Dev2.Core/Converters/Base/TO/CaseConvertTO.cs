@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -21,11 +21,11 @@ namespace Dev2
 {
     public class CaseConvertTO : ValidatableObject, ICaseConvertTO
     {
-        private string _convertType;
-        private string _result;
-        private string _stringToConvert;
-        private bool _isStringToConvertFocused;
-        private Dictionary<string, List<IActionableErrorInfo>> _errors;
+        string _convertType;
+        string _result;
+        string _stringToConvert;
+        bool _isStringToConvertFocused;
+        Dictionary<string, List<IActionableErrorInfo>> _errors;
 
         public CaseConvertTO()
         {
@@ -52,7 +52,7 @@ namespace Dev2
         [FindMissing]
         public string StringToConvert
         {
-            get { return _stringToConvert; }
+            get => _stringToConvert;
             set
             {
                 _stringToConvert = value;
@@ -65,7 +65,7 @@ namespace Dev2
 
         public string ConvertType
         {
-            get { return _convertType; }
+            get => _convertType;
             set
             {
                 if (value != null)
@@ -78,7 +78,7 @@ namespace Dev2
 
         public Dictionary<string, List<IActionableErrorInfo>> Errors
         {
-            get { return _errors; }
+            get => _errors;
             set
             {
                 _errors = value;
@@ -113,7 +113,7 @@ namespace Dev2
 
         public string WatermarkTextVariable { get; set; }
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
@@ -136,14 +136,13 @@ namespace Dev2
             Result = string.Empty;
         }
 
-        public bool IsStringToConvertFocused { get => _isStringToConvertFocused; set => OnPropertyChanged(ref _isStringToConvertFocused, value); }         
+        public bool IsStringToConvertFocused { get => _isStringToConvertFocused; set => OnPropertyChanged(ref _isStringToConvertFocused, value); }
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (propertyName == "StringToConvert")
             {
-
                 if (!string.IsNullOrEmpty(StringToConvert))
                 {
                     var inputExprRule = new IsValidExpressionRule(() => StringToConvert, datalist, "0", new VariableUtils());
@@ -153,9 +152,8 @@ namespace Dev2
                 {
                     ruleSet.Add(new IsStringEmptyRule(() => StringToConvert));
                 }
-
             }
             return ruleSet;
-        }          
+        }
     }
 }
