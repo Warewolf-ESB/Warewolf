@@ -544,9 +544,14 @@
                                                                                  HorizontalAlignment="Left"
                                                                                  Margin="5,0,5,0"
                                                                                  GroupName="{Binding StringFormat=Merge{0}, Path=UniqueId}"
+                                                                                 ToolTip="{x:Static languages:Tooltips.MergeDifferenceConflictRBTooltip}"
                                                                                  Style="{StaticResource MergeRadioButtonStyle}"
                                                                                  Visibility="{Binding IsContained, Converter={StaticResource BoolToVisibilityConverterNegative}}"
-                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID"/>
+                                                                                 AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID">
+                                                                        <i:Interaction.Behaviors>
+                                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceConflictRBHelp}" DataContext="{Binding}" />
+                                                                        </i:Interaction.Behaviors>
+                                                                    </RadioButton>
 
                                                                     <Image Name="TreeViewExpanderDifferenceHeaderIcon" 
                                                                            Source="{Binding MergeIcon}" 
@@ -707,6 +712,7 @@
                                                     <TextBlock x:Name="CurrentNodeArmText" 
                                                                Margin="20,0,0,0" 
                                                                Text="{Binding ArmDescription}" 
+                                                               ToolTip="{Binding ArmDescription}"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
@@ -721,6 +727,7 @@
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
+                                                                 ToolTip="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}"
                                                                  AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
                                                         <RadioButton.Style>
                                                             <Style BasedOn="{StaticResource MergeRadioButtonStyle}" TargetType="{x:Type RadioButton}">
@@ -734,6 +741,9 @@
                                                                 </Style.Triggers>
                                                             </Style>
                                                         </RadioButton.Style>
+                                                        <i:Interaction.Behaviors>
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentArmRBHelp}" DataContext="{Binding}" />
+                                                        </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                 </StackPanel>
                                             </DockPanel>
@@ -778,12 +788,18 @@
                                                                  IsChecked="{Binding IsChecked}" 
                                                                  HorizontalAlignment="Left"
                                                                  GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
+                                                                 ToolTip="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}"
                                                                  Margin="5,0,5,0"
                                                                  Style="{StaticResource MergeRadioButtonStyle}"
-                                                                 AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID"/>
+                                                                 AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID">
+                                                        <i:Interaction.Behaviors>
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceArmRBHelp}" DataContext="{Binding}" />
+                                                        </i:Interaction.Behaviors>
+                                                    </RadioButton>
                                                     <TextBlock x:Name="DifferenceNodeArmText" 
                                                                Margin="30,0,0,0" 
                                                                Text="{Binding ArmDescription}" 
+                                                               ToolTip="{Binding ArmDescription}"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>

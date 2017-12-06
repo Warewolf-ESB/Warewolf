@@ -1889,17 +1889,6 @@ namespace Warewolf.Studio.Resources.Languages
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to ooo.
-        /// </summary>
-        public static string j
-        {
-            get
-            {
-                return ResourceManager.GetString("j", resourceCulture);
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to To get the length or max index in a recordset, put the recordset name in here. E.g. [[Customer()]]	&lt;br /&gt;&lt;br /&gt;	Allowed:&lt;br /&gt;	&lt;ol&gt;	&lt;li&gt;[[Recordset()]]&lt;/li&gt;	&lt;/ol&gt;.
         /// </summary>
         public static string LengthHelpRecordset
@@ -2451,7 +2440,18 @@ namespace Warewolf.Studio.Resources.Languages
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Select the current Variable radio button to keep the current Variable changes..
+        ///   Looks up a localized string similar to Select the current Tool connection radio button to keep the current Tool connection changes..
+        /// </summary>
+        public static string MergeCurrentArmRBHelp
+        {
+            get
+            {
+                return ResourceManager.GetString("MergeCurrentArmRBHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Tool radio button to keep the current Tool changes..
         /// </summary>
         public static string MergeCurrentConflictRBHelp
         {
@@ -2462,7 +2462,7 @@ namespace Warewolf.Studio.Resources.Languages
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Select the current Variable radio button to keep the current Variable changes..
+        ///   Looks up a localized string similar to Select the difference Tool radio button to keep the difference Tool changes..
         /// </summary>
         public static string MergeCurrentVariablesRBHelp
         {
@@ -2480,6 +2480,17 @@ namespace Warewolf.Studio.Resources.Languages
             get
             {
                 return ResourceManager.GetString("MergeCurrentWorkflowNameRBHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Tool connection radio button to keep the difference Tool connection changes..
+        /// </summary>
+        public static string MergeDifferenceArmRBHelp
+        {
+            get
+            {
+                return ResourceManager.GetString("MergeDifferenceArmRBHelp", resourceCulture);
             }
         }
 
@@ -2513,6 +2524,21 @@ namespace Warewolf.Studio.Resources.Languages
             get
             {
                 return ResourceManager.GetString("MergeDifferenceWorkflowNameRBHelp", resourceCulture);
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The Merge feature provides you with the options to select between conflicts related to the current state of your workflow and the version of your workflow selected to merge against. 
+        ///
+        ///A list of conflicts will be shown starting with the Workflow name, then the Variables, and then the Tools and Tool connected states. 
+        ///
+        ///If there are no conflicts, a green tick will be displayed. As each selection is made, the selected Tool will appear on the design surface to the right. Once a Tool connection conflict is se [rest of string was truncated]&quot;;.
+        /// </summary>
+        public static string MergeWorkflowStartupHelp
+        {
+            get
+            {
+                return ResourceManager.GetString("MergeWorkflowStartupHelp", resourceCulture);
             }
         }
 
