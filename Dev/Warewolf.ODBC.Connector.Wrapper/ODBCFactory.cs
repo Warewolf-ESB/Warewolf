@@ -5,11 +5,11 @@ using Dev2.Common.Interfaces.Services.Sql;
 using System.Data.Odbc;
 using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
+using Dev2;
 
-namespace Dev2.Services.Sql
+namespace Warewolf.ODBC.Connector.Wrapper
 {
-    
-    class ODBCFactory : IDbFactory
+    internal class ODBCFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 

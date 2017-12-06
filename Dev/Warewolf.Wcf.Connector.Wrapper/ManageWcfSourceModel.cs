@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Runtime.ServiceModel.Data;
 using System;
 
-namespace Warewolf.Studio.ViewModels
+namespace Warewolf.Wcf.Connector.Wrapper
 {
     public class ManageWcfSourceModel : IWcfSourceModel
     {
@@ -43,9 +43,7 @@ namespace Warewolf.Studio.ViewModels
         {
             var xaml = _queryProxy.FetchResourceXaml(resourceID);
             var wcfsource = new WcfSource(xaml.ToXElement());
-
             var def = new WcfServiceSourceDefinition(wcfsource);
-
             return def;
         }
     }

@@ -123,6 +123,10 @@
       <Project>{ff3115b2-370e-4e40-99c5-7d239bc28679}</Project>
       <Name>Dev2.Services.Sql</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.ODBC.Connector.Wrapper\Warewolf.ODBC.Connector.Wrapper.csproj">
+      <Project>{74a96a9a-ae86-4a48-9acc-a21a318b191f}</Project>
+      <Name>Warewolf.ODBC.Connector.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Resource\Warewolf.Resource.csproj">
       <Project>{dff93ecb-fdd1-405e-ae02-9f4bc7571c1b}</Project>
       <Name>Warewolf.Resource</Name>

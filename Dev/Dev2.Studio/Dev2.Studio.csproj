@@ -834,6 +834,10 @@
       <Project>{F0D6A8C9-FF25-40C9-99DB-CCBC21ABDC36}</Project>
       <Name>Warewolf.Studio.Views</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Wcf.Connector.Wrapper\Warewolf.Wcf.Connector.Wrapper.csproj">
+      <Project>{fcc532b7-3e5c-4973-a71c-850422362d9f}</Project>
+      <Name>Warewolf.Wcf.Connector.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WarewolfParserInterop\WarewolfParserInterop.csproj">
       <Project>{6eb59eee-4e16-4f29-b1b0-715e56e9139d}</Project>
       <Name>WarewolfParserInterop</Name>
