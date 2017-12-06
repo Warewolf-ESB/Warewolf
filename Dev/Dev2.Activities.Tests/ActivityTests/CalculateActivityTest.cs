@@ -49,8 +49,6 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromEnvironment(result.Environment, "result", out string entry, out string error);
 
-            // remove test datalist ;)
-
             DateTime res = DateTime.Parse(entry);
 
             if (res.Second == 0)
@@ -59,9 +57,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 result = ExecuteProcess();
                 GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
-                Assert.IsTrue(res.Second != 0);
+                Assert.IsTrue(res.Millisecond != 0);
             }
-            Assert.IsTrue(res.Second != 0);
+            Assert.IsTrue(res.Millisecond != 0);
         }
 
         [TestMethod]
