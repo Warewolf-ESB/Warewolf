@@ -245,8 +245,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private void SetViewPermissions()
         {
-            CanViewSwagger = true;
-            CanCopyUrl = true;
+            CanViewSwagger = !ResourceModel.IsVersionResource;
+            CanCopyUrl = !ResourceModel.IsVersionResource;
         }
 
         private void SetNonePermissions()

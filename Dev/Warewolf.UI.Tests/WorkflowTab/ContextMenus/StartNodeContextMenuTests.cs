@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
+using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
+using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.ContextMenu
@@ -17,6 +19,35 @@ namespace Warewolf.UI.Tests.ContextMenu
             Assert.IsTrue(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem.Enabled, "Debug Inputs must be enabled on a new workflow");
             Assert.IsTrue(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem.Enabled, "Debug Studio must be enabled on a new workflow");
             Assert.IsTrue(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugBrowserMenuItem.Enabled, "Debug Browser must be enabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ScheduleMenuItem.Enabled, "Schedule must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.RunAllTestsMenuItem.Enabled, "Run All Tests must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DuplicateMenuItem.Enabled, "Duplicate must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DeployMenuItem.Enabled, "Deploy must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ShowDependenciesMenuItem.Enabled, "Show Dependencies must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ViewSwaggerMenuItem.Enabled, "View Swagger must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.CopyURLtoClipboardMenuItem.Enabled, "Copy Url to Clipboard must be disabled on a new workflow");
+        }
+
+        [TestMethod]
+        public void CodedUIShowStartNodeContextMenuItems_For_Version()
+        {
+            UIMap.Click_NewWorkflow_RibbonButton();
+            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("FirstVersion");
+            DialogsUIMap.Click_SaveDialog_Save_Button();
+            const string Variable1Name = "SomeVariable";
+            const string Variable1Value = "50";
+            DataToolsUIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
+            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
+            ExplorerUIMap.Filter_Explorer("FirstVersion");
+            ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
+            Mouse.DoubleClick(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
+            WorkflowTabUIMap.DisplayStartNodeContextMenu();
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.TestEditorMenuItem.Enabled, "Test Editor must be disabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugInputsMenuItem.Enabled, "Debug Inputs must be enabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugStudioMenuItem.Enabled, "Debug Studio must be enabled on a new workflow");
+            Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DebugBrowserMenuItem.Enabled, "Debug Browser must be enabled on a new workflow");
             Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.ScheduleMenuItem.Enabled, "Schedule must be disabled on a new workflow");
             Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.RunAllTestsMenuItem.Enabled, "Run All Tests must be disabled on a new workflow");
             Assert.IsFalse(DialogsUIMap.StartNodePopupWindow.CustomWindow.StartNodeItemMenu.DuplicateMenuItem.Enabled, "Duplicate must be disabled on a new workflow");
@@ -49,7 +80,34 @@ namespace Warewolf.UI.Tests.ContextMenu
         }
 
         private UIMap _UIMap;
+        ExplorerUIMap ExplorerUIMap
+        {
+            get
+            {
+                if (_ExplorerUIMap == null)
+                {
+                    _ExplorerUIMap = new ExplorerUIMap();
+                }
 
+                return _ExplorerUIMap;
+            }
+        }
+
+        ExplorerUIMap _ExplorerUIMap;
+        DataToolsUIMap DataToolsUIMap
+        {
+            get
+            {
+                if (_DataToolsUIMap == null)
+                {
+                    _DataToolsUIMap = new DataToolsUIMap();
+                }
+
+                return _DataToolsUIMap;
+            }
+        }
+
+        DataToolsUIMap _DataToolsUIMap;
         WorkflowTabUIMap WorkflowTabUIMap
         {
             get

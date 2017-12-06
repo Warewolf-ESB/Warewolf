@@ -187,7 +187,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         [When(@"I DisplayStartNodeContextMenu")]
         public void DisplayStartNodeContextMenu()
         {
-            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, MouseButtons.Right, ModifierKeys.None, new Point(179, 31));
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.StartNode, MouseButtons.Right, ModifierKeys.None, new Point(50, 50));
         }
 
         [When(@"I Drag Dice Onto Dice On The DesignSurface")]
