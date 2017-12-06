@@ -562,18 +562,22 @@ namespace Dev2.Core.Tests
             using (var mergeWorkflowViewModel = new MergeWorkflowViewModel(currentResourceModel.Object, differenceResourceModel.Object, false))
             {
                 var methodToRun = typeof(MergeWorkflowViewModel).GetMethod("AddDiffArmConnectors", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                var nextMethodToRun = typeof(MergeWorkflowViewModel).GetMethod("GetMatchingConflictParent", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
                 //---------------Assert Precondition----------------
                 Assert.IsNotNull(methodToRun);
+                Assert.IsNotNull(nextMethodToRun);
                 //---------------Execute Test ----------------------
                 var aaaa = methodToRun.Invoke(mergeWorkflowViewModel, new object[] { armConnectorConflicts, conflictTreeNode, iniqueId.ToGuid() });
+                var bbbb = nextMethodToRun.Invoke(mergeWorkflowViewModel, new object[] {  });
                 //---------------Test Result -----------------------
                 Assert.AreEqual(1, armConnectorConflicts.Count());
+
                 var hasConflict = armConnectorConflicts.Single().HasConflict;
                 var isArmSelectionAllowed = armConnectorConflicts.Single().CurrentArmConnector.IsArmSelectionAllowed;
                 var isArmSelectionAllowed1 = armConnectorConflicts.Single().DifferentArmConnector.IsArmSelectionAllowed;
                 Assert.IsTrue(hasConflict);
-                Assert.IsTrue(isArmSelectionAllowed);
-                Assert.IsTrue(isArmSelectionAllowed1);
+                Assert.IsFalse(isArmSelectionAllowed);
+                Assert.IsFalse(isArmSelectionAllowed1);
             }
         }
 
