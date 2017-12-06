@@ -141,7 +141,6 @@
       <Visible>False</Visible>
     </None>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
-    <Compile Include="Common\Dev2EmailSender.cs" />
     <Compile Include="DeletedFileMetadata.cs" />
     <Compile Include="Common\Dev2Random.cs" />
     <Compile Include="Common\JTokenExtensionmethods.cs" />
