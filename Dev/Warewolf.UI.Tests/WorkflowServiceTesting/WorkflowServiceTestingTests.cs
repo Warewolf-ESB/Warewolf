@@ -122,10 +122,9 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting
         public void Click_Duplicate_Test_Button_AssertIcon()
         {
             UIMap.Click_View_Tests_In_Explorer_Context_Menu(HelloWorldNew);
-            Assert.IsFalse(UIMap.ControlExistsNow(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4), "This test expects 'Hello World' to have just 3 existing tests.");
             WorkflowServiceTestingUIMap.Select_First_Test();
             WorkflowServiceTestingUIMap.Click_Duplicate_Test_Button();
-            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test4.Exists, "No 4th test after starting with 3 tests and duplicating the first.");
+            Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestsListboxList.Test2.Exists, "No 2nd test after starting with 1 tests and duplicating one of them.");
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Height > 0 && WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.UIUI_VariableTreeView_Tree.UIWarewolfStudioViewMoTreeItem.StepTitleBar.Step.Textbox3.Icon.Width > 0, "Step icon is not visible after duplicate.");
         }
 
