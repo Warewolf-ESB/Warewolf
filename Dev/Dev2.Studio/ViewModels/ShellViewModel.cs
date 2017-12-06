@@ -64,7 +64,8 @@ using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Wcf.Connector.Wrapper;
-using Warewolf.Exchange.Email.Connector.Wrapper;
+
+
 
 namespace Dev2.Studio.ViewModels
 {

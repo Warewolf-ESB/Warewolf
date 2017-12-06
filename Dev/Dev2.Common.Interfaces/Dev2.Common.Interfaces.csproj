@@ -162,6 +162,7 @@
     <Compile Include="Core\DynamicServices\IDynamicServiceObject.cs" />
     <Compile Include="Core\RabbitMQServiceSourceDefinition.cs" />
     <Compile Include="Core\EmailServiceSourceDefinition.cs" />
+    <Compile Include="Core\ExchangeSourceDefinition.cs" />
     <Compile Include="Core\Globals.cs" />
     <Compile Include="Core\Graph\IDataBrowser.cs" />
     <Compile Include="Core\Graph\IDataSourceShape.cs" />

@@ -6,7 +6,7 @@ using System.Windows.Input;
 using Dev2;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
-using Warewolf.Exchange.Email.Connector.Wrapper;
+using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -24,6 +24,7 @@ namespace Warewolf.Studio.ViewModels
         string _testMessage;
         string _emailTo;
         string _resourceName;
+
         IExchangeSource _emailServiceSource;
         readonly IManageExchangeSourceModel _updateManager;
         CancellationTokenSource _token;
@@ -32,6 +33,7 @@ namespace Warewolf.Studio.ViewModels
         bool _testing;
         string _headerText;
         bool _enableSend;
+
         bool _isDisposed;
 
         public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator) : this(updateManager, aggregator)
