@@ -15,10 +15,9 @@ using System.Data.Odbc;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Services.Sql;
 using Microsoft.Win32;
-using Dev2;
 
 
-namespace Warewolf.ODBC.Connector.Wrapper
+namespace Dev2.Services.Sql
 {
     public class ODBCServer : IDbServer
     {

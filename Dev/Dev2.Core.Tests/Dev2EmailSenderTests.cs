@@ -7,7 +7,7 @@ using Microsoft.Exchange.WebServices.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Storage;
-using Warewolf.Exchange.Email.Connector.Wrapper;
+
 
 
 namespace Dev2.Tests

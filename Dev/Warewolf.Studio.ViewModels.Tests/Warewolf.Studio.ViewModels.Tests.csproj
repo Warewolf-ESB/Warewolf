@@ -304,10 +304,6 @@
       <Project>{1AD4F06F-BC1C-4C9E-8184-67EAE81C2279}</Project>
       <Name>Warewolf.Testing</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Warewolf.Wcf.Connector.Wrapper\Warewolf.Wcf.Connector.Wrapper.csproj">
-      <Project>{fcc532b7-3e5c-4973-a71c-850422362d9f}</Project>
-      <Name>Warewolf.Wcf.Connector.Wrapper</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

@@ -4,11 +4,15 @@ using System.Text;
 using System.Xml;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
-using Warewolf.ODBC.Connector.Wrapper;
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
+    /// <summary>
+    /// A ODBC SQL specific database broker implementation
+    /// </summary>
     public class ODBCDatabaseBroker : AbstractDatabaseBroker<ODBCServer>
     {
         protected override string NormalizeXmlPayload(string payload)
