@@ -81,6 +81,8 @@
     <Compile Include="ISqlConnection.cs" />
     <Compile Include="MySqlDbFactory.cs" />
     <Compile Include="MySqlServer.cs" />
+    <Compile Include="ODBCFactory.cs" />
+    <Compile Include="ODBCServer.cs" />
     <Compile Include="OracleServer.cs" />
     <Compile Include="OracleSqlFactory.cs" />
     <Compile Include="PostgreFactory.cs" />

@@ -44,7 +44,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-using Warewolf.Wcf.Connector.Wrapper;
+
 
 
 

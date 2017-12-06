@@ -185,6 +185,7 @@
     <Compile Include="ManagePluginSourceModel.cs" />
     <Compile Include="ManagePluginSourceViewModel.cs" />
     <Compile Include="ManageWcfServiceModel.cs" />
+    <Compile Include="ManageWcfSourceModel.cs" />
     <Compile Include="ManageWcfSourceViewModel.cs" />
     <Compile Include="ManageWebServiceModel.cs" />
     <Compile Include="ManageWebServiceSourceModel.cs" />

@@ -8,7 +8,6 @@ using Moq;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Studio.Interfaces;
-using Warewolf.Wcf.Connector.Wrapper;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

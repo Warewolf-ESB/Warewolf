@@ -31,7 +31,6 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using System.Diagnostics;
 using System.Transactions;
-using Warewolf.ODBC.Connector.Wrapper;
 
 namespace Dev2.Services.Execution
 {
