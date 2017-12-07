@@ -248,6 +248,10 @@
       <Project>{9623C7DD-85EE-41AB-89B1-1A9784A97DA7}</Project>
       <Name>Dev2.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj">
+      <Project>{b02e76f0-9b4b-41f6-8d3a-00e4564142b3}</Project>
+      <Name>Warewolf.Exchange.Email.Wrapper</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Warewolf.Storage.Interfaces\Warewolf.Storage.Interfaces.csproj">
       <Project>{61a15557-1d18-4c69-88eb-31bf49b7fb50}</Project>
       <Name>Warewolf.Storage.Interfaces</Name>
