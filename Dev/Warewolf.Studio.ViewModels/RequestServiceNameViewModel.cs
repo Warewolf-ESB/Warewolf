@@ -23,6 +23,7 @@ using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Resource.Errors;
 using Dev2.ConnectionHelpers;
 using System.Text;
+using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -249,7 +250,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         private void SetServiceName()
-        {
+        {          
             if (ExplorerItemViewModelRename() != null)
             {
                 return;
@@ -261,6 +262,14 @@ namespace Warewolf.Studio.ViewModels
             }
             _resourceName = new ResourceName(path, Name);
             ViewResult = MessageBoxResult.OK;
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            if (applicationTracker != null)
+            {
+                applicationTracker.TrackCustomEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                               Resources.Languages.TrackEventWorkflowTabs.TabsOpened, "Path:" + path + " Name: " + Name);
+
+            }
+
             _view.RequestClose();
         }
 

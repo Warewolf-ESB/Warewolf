@@ -5,6 +5,8 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Interfaces;
+using Dev2;
+using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -35,6 +37,22 @@ namespace Warewolf.Studio.ViewModels
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
             Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
+
+            var applicationTracker = CustomContainer.Get<IApplicationTracker>();
+            if (applicationTracker != null)
+            {
+                if (item.ResourceName == "Shared Resources Server")
+                {
+                    applicationTracker.TrackEvent(Resources.Languages.TrackEventExplorer.EventCategory,
+                                                  Resources.Languages.TrackEventExplorer.SharedResourcesServer);
+                }
+                if (item.ResourceName == "Hello World")
+                {
+                    applicationTracker.TrackEvent(Resources.Languages.TrackEventWorkflowTabs.EventCategory,
+                                                       Resources.Languages.TrackEventWorkflowTabs.HelloWorld);
+                }
+            }
+
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;
