@@ -160,9 +160,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.DataGridActivity;
         }
 
-        #endregion
+        void BuildStringToConvert(int i, List<string> targetList, List<string> resultList)
+        {
+            ConvertCollection[i].StringToConvert = targetList[0];
+            ConvertCollection[i].Result = resultList[0];
+            var canidateResult = resultList[0];
+            for (var q = 1; q < targetList.Count; q++)
+            {
+                var pos = ConvertCollection.Count + 1;
 
-        #region Private Methods
+                // now process all new results ;)
+                // we always keep the last value in-case we run out of indexes
+                // as they do not have to balance ;)
+                if (q < resultList.Count)
+                {
+                    canidateResult = resultList[q];
+                }
+
+                ConvertCollection.Add(new CaseConvertTO(targetList[q], ConvertCollection[i].ConvertType, canidateResult, pos));
+            }
+        }
 
         List<string> BreakIntoTokens(string value)
         {
@@ -228,8 +245,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         AddToCollection(listToAdd, modelItem);
                     }
                 }
-
-                ConvertCollection.Add(new CaseConvertTO(targetList[q], ConvertCollection[i].ConvertType, canidateResult, pos));
             }
         }
 
@@ -258,24 +273,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+          
 
         void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
-        {
-            if (startIndex < mic.Count)
-            {
-                var startIndex = 0;
-                var firstRowConvertType = ConvertCollection[0].ConvertType;
-                mic.Clear();
-                foreach (string s in listToAdd)
-                {
-                    mic.Add(new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
-                    startIndex++;
-                }
-                CleanUpCollection(mic, modelItem, startIndex);
-            }
-        }
-
-        static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {

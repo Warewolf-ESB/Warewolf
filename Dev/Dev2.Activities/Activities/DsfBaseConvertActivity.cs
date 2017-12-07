@@ -37,12 +37,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
 
-        #region Fields
-        readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
-
-        #endregion
-
-        #region Properties
 
         /// <summary>
         /// The property that holds all the convertions
@@ -74,11 +68,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            var allErrors = new ErrorResultTO();
-
-
-            var allErrors = new ErrorResultTO();
-
+            var allErrors = new ErrorResultTO();        
             InitializeDebug(dataObject);
             var env = dataObject.Environment;
             try
@@ -188,8 +178,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        #region Private Methods
-
         void CleanArgs()
         {
             var count = 0;
@@ -222,11 +210,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
-        }
-
-        #endregion
-
-        #region Private Methods
+        }     
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
@@ -367,7 +351,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         public int GetCollectionCount() => throw new NotImplementedException();
-        public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem) => throw new NotImplementedException();
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {

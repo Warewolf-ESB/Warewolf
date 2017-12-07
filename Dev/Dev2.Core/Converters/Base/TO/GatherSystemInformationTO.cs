@@ -25,13 +25,6 @@ namespace Dev2
         string _result;
         bool _isResultFocused;
 
-        enTypeOfSystemInformationToGather _enTypeOfSystemInformation;
-        Dictionary<string, List<IActionableErrorInfo>> _errors;
-        string _result;
-
-        #endregion
-
-        #region Ctor
 
         public GatherSystemInformationTO()
         {
@@ -52,10 +45,6 @@ namespace Dev2
             IndexNumber = indexNumber;
         }
 
-        #endregion
-
-        #region Properties
-        
         public enTypeOfSystemInformationToGather EnTypeOfSystemInformation
         {
             get => _enTypeOfSystemInformation;
@@ -102,10 +91,6 @@ namespace Dev2
         {
             Result = "";
         }
-
-        #endregion
-
-        #region Private Methods
 
         void RaiseCanAddRemoveChanged()
         {
