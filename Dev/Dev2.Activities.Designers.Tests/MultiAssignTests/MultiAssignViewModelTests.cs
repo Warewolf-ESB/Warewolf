@@ -59,7 +59,7 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
             //------------Setup for test--------------------------
             var dsfMultiAssignActivityViewModel = CreateDsfMultiAssignActivityViewModel();
             var displayName = dsfMultiAssignActivityViewModel.ModelItem.GetProperty<string>("DisplayName");
-            var activityDto = new ActivityDTO("[[a]]", "Value", 2);
+            var activityDto = new ActivityDto("[[a]]", "Value", 2);
             dsfMultiAssignActivityViewModel.ModelItemCollection.Add(ModelItemUtils.CreateModelItem(activityDto));
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(dsfMultiAssignActivityViewModel, typeof(ActivityDesignerViewModel));
@@ -81,7 +81,7 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
             //------------Execute Test---------------------------
             var dsfMultiAssignActivityViewModel = CreateDsfMultiAssignActivityViewModel();
             //------------Assert Results-------------------------
-            Assert.IsInstanceOfType(dsfMultiAssignActivityViewModel, typeof(ActivityCollectionDesignerViewModel<ActivityDTO>));
+            Assert.IsInstanceOfType(dsfMultiAssignActivityViewModel, typeof(ActivityCollectionDesignerViewModel<ActivityDto>));
         }
 
         [TestMethod]

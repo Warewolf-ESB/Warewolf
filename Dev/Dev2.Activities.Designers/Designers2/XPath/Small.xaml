@@ -88,7 +88,7 @@
 
             <DataGrid.Columns>
                 <DataGridTemplateColumn Width="25"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}"
+                                    d:DataContext="{d:DesignInstance Type=activities:XPathDto}"
                                     IsReadOnly="True">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
@@ -100,7 +100,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
+                                    d:DataContext="{d:DesignInstance Type=activities:XPathDto}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"
@@ -132,7 +132,7 @@
                 </DataGridTemplateColumn>
 
                 <DataGridTemplateColumn Width="*"
-                                    d:DataContext="{d:DesignInstance Type=activities:XPathDTO}">
+                                    d:DataContext="{d:DesignInstance Type=activities:XPathDto}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox MaxHeight="52"

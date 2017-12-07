@@ -398,7 +398,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 mic.RemoveAt(startIndex);
             }
-            mic.Add(new XPathDTO(string.Empty, "", startIndex + 1));
+            mic.Add(new XPathDto(string.Empty, "", startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
             {

@@ -46,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
 
             scenarioContext.TryGetValue("stringToSplit", out string stringToSplit);
 
-            scenarioContext.TryGetValue("splitCollection", out List<DataSplitDTO> splitCollection);
+            scenarioContext.TryGetValue("splitCollection", out List<DataSplitDto> splitCollection);
 
             var dataSplit = new DsfDataSplitActivity { SourceString = stringToSplit };
 
@@ -133,14 +133,14 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             }
             // variableList.Add(new Tuple<string, string>(variable, ""));
 
-            scenarioContext.TryGetValue("splitCollection", out List<DataSplitDTO> splitCollection);
+            scenarioContext.TryGetValue("splitCollection", out List<DataSplitDto> splitCollection);
 
             if (splitCollection == null)
             {
-                splitCollection = new List<DataSplitDTO>();
+                splitCollection = new List<DataSplitDto>();
                 scenarioContext.Add("splitCollection", splitCollection);
             }
-            DataSplitDTO dto = new DataSplitDTO { OutputVariable = variable, SplitType = splitType, At = splitAt, EscapeChar = escape, Include = include };
+            DataSplitDto dto = new DataSplitDto { OutputVariable = variable, SplitType = splitType, At = splitAt, EscapeChar = escape, Include = include };
             splitCollection.Add(dto);
         }
 

@@ -15,28 +15,27 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class XPathDTO : ValidatedObject, IDev2TOFn
+    public class XPathDto : ValidatedObject, IDev2TOFn
     {
-        private string _outputVariable;
-        private string _xPath;
-        private int _indexNum;
+        string _outputVariable;
+        string _xPath;
+        int _indexNum;
         bool _isOutputVariableFocused;
         bool _isXpathVariableFocused;
 
-        public XPathDTO()
+        public XPathDto()
         {
         }
 
-        public XPathDTO(string outputVariable, string xPath, int indexNum)
+        public XPathDto(string outputVariable, string xPath, int indexNum)
             : this(outputVariable, xPath, indexNum, false)
         {
         }
 
-        public XPathDTO(string outputVariable, string xPath, int indexNum, bool inserted)
+        public XPathDto(string outputVariable, string xPath, int indexNum, bool inserted)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
@@ -48,10 +47,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            
+
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
+
         }
 
         public int IndexNumber

@@ -35,7 +35,7 @@ namespace Dev2.Activities
     {
         #region Fields
 
-        IList<XPathDTO> _resultsCollection;
+        IList<XPathDto> _resultsCollection;
         string _sourceString;
         bool _isDebugMode;
 
@@ -43,7 +43,7 @@ namespace Dev2.Activities
 
         #region Properties
 
-        public IList<XPathDTO> ResultsCollection
+        public IList<XPathDto> ResultsCollection
         {
             get
             {
@@ -78,7 +78,7 @@ namespace Dev2.Activities
         public DsfXPathActivity()
             : base("XPath")
         {
-            ResultsCollection = new List<XPathDTO>();
+            ResultsCollection = new List<XPathDto>();
         }
 
         #endregion
@@ -256,7 +256,7 @@ namespace Dev2.Activities
             }
         }
 
-        void AddResultDebugInputs(IEnumerable<XPathDTO> resultsCollection, out ErrorResultTO errors)
+        void AddResultDebugInputs(IEnumerable<XPathDto> resultsCollection, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var i = 1;
@@ -305,11 +305,11 @@ namespace Dev2.Activities
             var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
             if(listOfValidRows.Count > 0)
             {
-                XPathDTO xPathDto = ResultsCollection.Last(c => !c.CanRemove());
+                XPathDto xPathDto = ResultsCollection.Last(c => !c.CanRemove());
                 var startIndex = ResultsCollection.IndexOf(xPathDto) + 1;
                 foreach(var s in listToAdd)
                 {
-                    mic.Insert(startIndex, new XPathDTO(s, ResultsCollection[startIndex - 1].XPath, startIndex + 1));
+                    mic.Insert(startIndex, new XPathDto(s, ResultsCollection[startIndex - 1].XPath, startIndex + 1));
                     startIndex++;
                 }
                 CleanUpCollection(mic, modelItem, startIndex);
@@ -338,7 +338,7 @@ namespace Dev2.Activities
             mic.Clear();
             foreach(var s in listToAdd)
             {
-                mic.Add(new XPathDTO(s, firstRowXPath, startIndex + 1));
+                mic.Add(new XPathDto(s, firstRowXPath, startIndex + 1));
                 startIndex++;
             }
             CleanUpCollection(mic, modelItem, startIndex);
@@ -350,7 +350,7 @@ namespace Dev2.Activities
             {
                 mic.RemoveAt(startIndex);
             }
-            mic.Add(new XPathDTO(string.Empty, "", startIndex + 1));
+            mic.Add(new XPathDto(string.Empty, "", startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
             if(modelProperty != null)
             {

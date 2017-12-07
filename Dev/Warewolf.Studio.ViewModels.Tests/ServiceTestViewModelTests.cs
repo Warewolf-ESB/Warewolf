@@ -812,7 +812,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var dsfSequenceActivity = new DsfSequenceActivity { Activities = new Collection<Activity> { assignActivity } };
 			var dsfSeqId = Guid.NewGuid();
@@ -2020,7 +2020,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 			var modelItem = ModelItemUtils.CreateModelItem(assignActivity);
 			mockResourceModel.Setup(model => model.Environment.ResourceRepository.DeleteResourceTest(It.IsAny<Guid>(), It.IsAny<string>())).Verifiable();
 			var mock = new Mock<IEnvironmentConnection>();
@@ -2103,7 +2103,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var forEach = new DsfForEachActivity();
 			var forEachDataFunc = new ActivityFunc<string, bool>();
@@ -2164,7 +2164,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var sequenceActivity = new DsfSequenceActivity();
 			sequenceActivity.Activities = new Collection<Activity> { assignActivity };
@@ -2237,7 +2237,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var forEach = new DsfForEachActivity();
 			var forEachDataFunc = new ActivityFunc<string, bool> { Handler = assignActivity };
@@ -2309,7 +2309,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var forEach = new DsfForEachActivity();
 			var forEachDataFunc = new ActivityFunc<string, bool> { Handler = assignActivity };
@@ -2363,7 +2363,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var sequenceActivity = new DsfSequenceActivity();
 			sequenceActivity.Activities = new Collection<Activity> { assignActivity };
@@ -2422,7 +2422,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 			var assignActivity = new DsfMultiAssignActivity();
 			var uniqueId = Guid.NewGuid();
 			assignActivity.UniqueID = uniqueId.ToString();
-			assignActivity.FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[Var1]]", "bob", 1), new ActivityDTO("[[Var2]]", "mary", 2), new ActivityDTO("[[name]]", "dora", 3) };
+			assignActivity.FieldsCollection = new List<ActivityDto> { new ActivityDto("[[Var1]]", "bob", 1), new ActivityDto("[[Var2]]", "mary", 2), new ActivityDto("[[name]]", "dora", 3) };
 
 			var dsfSequenceActivity = new DsfSequenceActivity { Activities = new Collection<Activity> { assignActivity } };
 			var dsfSeqId = Guid.NewGuid();

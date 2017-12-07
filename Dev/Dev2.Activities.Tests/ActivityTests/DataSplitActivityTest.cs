@@ -27,7 +27,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     
     public class DataSplitActivityTest : BaseActivityUnitTest
     {
-        IList<DataSplitDTO> _resultsCollection = new List<DataSplitDTO>();
+        IList<DataSplitDto> _resultsCollection = new List<DataSplitDto>();
         readonly string _source = ActivityStrings.DataSplit_SourceString;
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             if(_resultsCollection == null)
             {
-                _resultsCollection = new List<DataSplitDTO>();
+                _resultsCollection = new List<DataSplitDto>();
             }
             _resultsCollection.Clear();
         }
@@ -62,11 +62,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Setup for test--------------------------
 
-            _resultsCollection.Add(new DataSplitDTO("[[rs().col1]]", "Chars", "|", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[rs().col2]]", "Chars", "|", 2));
-            _resultsCollection.Add(new DataSplitDTO("[[rs().col3]]", "New Line", "", 3));
-            _resultsCollection.Add(new DataSplitDTO("[[rs().data]]", "New Line", "", 4));
-            _resultsCollection.Add(new DataSplitDTO("[[rs().data]]", "New Line", "", 5));
+            _resultsCollection.Add(new DataSplitDto("[[rs().col1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDto("[[rs().col2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDto("[[rs().col3]]", "New Line", "", 3));
+            _resultsCollection.Add(new DataSplitDto("[[rs().data]]", "New Line", "", 4));
+            _resultsCollection.Add(new DataSplitDto("[[rs().data]]", "New Line", "", 5));
 
             SetupArguments("<root><ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
                            "13456456789|Samantha Some|Jones" + Environment.NewLine +
@@ -108,11 +108,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             //------------Setup for test--------------------------
 
-            _resultsCollection.Add(new DataSplitDTO("[[rs().col1]]", "Chars", "|", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[rs().col2]]", "Chars", "|", 2));
-            _resultsCollection.Add(new DataSplitDTO("[[rs().col3]]", "New Line", "", 3));
-            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 4));
-            _resultsCollection.Add(new DataSplitDTO("[[rs(*).data]]", "New Line", "", 5));
+            _resultsCollection.Add(new DataSplitDto("[[rs().col1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDto("[[rs().col2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDto("[[rs().col3]]", "New Line", "", 3));
+            _resultsCollection.Add(new DataSplitDto("[[rs(*).data]]", "New Line", "", 4));
+            _resultsCollection.Add(new DataSplitDto("[[rs(*).data]]", "New Line", "", 5));
 
             SetupArguments("<root><ADL><testData>RSA ID|FirstName|LastName" + Environment.NewLine +
                            "13456456789|Samantha Some|Jones" + Environment.NewLine +
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod] // - OK
         public void EmptySourceString_Expected_No_Splits()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, "", _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void Scalar_Expected_Split_And_Insert_To_Scalar()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 1));
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
@@ -179,10 +179,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void MultipleScalars_Expected_Split_And_Insert_Mutiple_Scalars()
         {
 
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar2]]", "Index", "10", 2));
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar3]]", "Index", "5", 3));
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar4]]", "Index", "15", 4));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar2]]", "Index", "10", 2));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar3]]", "Index", "5", 3));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar4]]", "Index", "15", 4));
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source.Replace("\r", ""), _resultsCollection);
 
@@ -207,8 +207,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MixedScalarsAndRecordsetWithIndex_Expected_Split_Insert_Mutiple_Scalar_And_Recordsets()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(2).field1]]", "Index", "15", 2));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset1(2).field1]]", "Index", "15", 2));
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
@@ -233,8 +233,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MixedScalarsAndRecordsetWithoutIndex_Expected_Split_To_End_Inserting_Mutiple_Scalar_And_Recordsets()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 2));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset1().field1]]", "Index", "15", 2));
 
             SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
@@ -269,8 +269,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void NoResultVariableInFirst_Expected_Still_Spilt_But_Dont_Insert_For_First()
         {
 
-            _resultsCollection.Add(new DataSplitDTO("", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 2));
+            _resultsCollection.Add(new DataSplitDto("", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 2));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
             IDSFDataObject result = ExecuteProcess();
@@ -284,7 +284,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void IndexTypeSplit_Expected_Split_At_An_Index()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Index", "15", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
@@ -300,7 +300,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CharsTypeSplitSingle_Expected_Split_Once_At_Chars()
         {
 
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Chars", "|", 1));
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void BlankSpaceTypeSplitSingle_Expected_Split_At_BlankSpace()
         {
             _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Space", "", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Space", "", 1));
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
@@ -342,8 +342,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void BlankSpaceTypeSplitMultiple_Expected_Split_Mutiple_At_BlankSpace()
         {
 
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Space", "", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar2]]", "Space", "", 2));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "Space", "", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar2]]", "Space", "", 2));
             const string source = "Test source string with spaces";
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, source, _resultsCollection);
 
@@ -364,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void NewLineTypeSplitWindows_Expected_Split_On_Windows_NewLine()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "New Line", "", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "New Line", "", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
@@ -381,7 +381,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void TabTypeSplit_Expected_Split_On_Tab()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[recset2().field2]]", "Tab", "", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset2().field2]]", "Tab", "", 1));
             const string sourceString = "Test	Data	To	Split";
             SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, sourceString, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
@@ -397,7 +397,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void EndTypeSplit_Expected_Split_On_End_Of_String()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "End", "", 1));
+            _resultsCollection.Add(new DataSplitDto("[[OutVar1]]", "End", "", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
 
@@ -422,8 +422,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Chars", "|", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDto("[[recset1(5).field1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset2(2).field2]]", "Chars", "|", 2));
             var act = new DsfDataSplitActivity { SourceString = _source, ResultsCollection = _resultsCollection };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
@@ -438,8 +438,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
 
             _resultsCollection.Clear();
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(5).field1]]", "Chars", "|", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset2(2).field2]]", "Chars", "|", 2));
+            _resultsCollection.Add(new DataSplitDto("[[recset1(5).field1]]", "Chars", "|", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset2(2).field2]]", "Chars", "|", 2));
 
             TestStartNode = new FlowStep
             {
@@ -463,8 +463,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiRecsetsWithNoIndex_Expected_Split_Append_To_The_Recordsets()
         {
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Index", "15", 1));
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().rec1]]", "Index", "15", 2));
+            _resultsCollection.Add(new DataSplitDto("[[recset1().field1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset1().rec1]]", "Index", "15", 2));
 
             SetupArguments("<root></root>", ActivityStrings.DataList_NewPreEx, _source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
@@ -505,7 +505,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecsetWithStar_Expected_Split_Overwrite_Records_From_Index_1()
         {
 
-            _resultsCollection.Add(new DataSplitDTO("[[recset1(*).field1]]", "Index", "15", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset1(*).field1]]", "Index", "15", 1));
 
             SetupArguments(@"<root></root>", ActivityStrings.DataSplit_DataListShape, _source, _resultsCollection);
 
@@ -552,7 +552,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecorsetWithStarAsIndexInSourceString_Expected_Split_For_Last_Value_In_Recordset()
         {
 
-            _resultsCollection.Add(new DataSplitDTO("[[recset1().field1]]", "Space", "", 1));
+            _resultsCollection.Add(new DataSplitDto("[[recset1().field1]]", "Space", "", 1));
 
             #region Ugle String of Current DataList
 
@@ -609,7 +609,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            IList<DataSplitDto> resultsCollection = new List<DataSplitDto> { new DataSplitDto("[[CompanyName]]", "Index", "2", 1) };
             DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -624,7 +624,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachInputs_MoreThan1Updates_UpdatesMergeCollection()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1), new DataSplitDTO("[[CompanyName]]", "Index", "1", 2) };
+            IList<DataSplitDto> resultsCollection = new List<DataSplitDto> { new DataSplitDto("[[CompanyName]]", "Index", "2", 1), new DataSplitDto("[[CompanyName]]", "Index", "1", 2) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             var tuple1 = new Tuple<string, string>("2", "Test");
@@ -645,7 +645,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            IList<DataSplitDto> resultsCollection = new List<DataSplitDto> { new DataSplitDto("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -660,7 +660,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_UpdateForEachOutputs_1Updates_UpdateCountNumber()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            IList<DataSplitDto> resultsCollection = new List<DataSplitDto> { new DataSplitDto("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             var tuple1 = new Tuple<string, string>("[[CompanyName]]", "Test");
@@ -676,7 +676,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            IList<DataSplitDto> resultsCollection = new List<DataSplitDto> { new DataSplitDto("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -695,7 +695,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDataSplitActivity_GetForEachOutputs_WhenHasResult_ReturnsInputList()
         {
             //------------Setup for test--------------------------
-            IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
+            IList<DataSplitDto> resultsCollection = new List<DataSplitDto> { new DataSplitDto("[[CompanyName]]", "Index", "2", 1) };
             var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
@@ -709,7 +709,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection)
+        private void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDto> resultCollection)
         {
             TestStartNode = new FlowStep
             {
