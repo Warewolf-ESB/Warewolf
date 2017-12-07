@@ -212,7 +212,10 @@ namespace Warewolf.UI.Tests.ServerSource
         {
             ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("invalid address!");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            while (!ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ContentManager.ErrorTextBlock.TryGetClickablePoint(out Point point))
+            {
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            }
             Mouse.DoubleClick(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ContentManager.ErrorTextBlock);
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ContentManager.ErrorTextBlock.SelectionText.Length > 10);
         }
