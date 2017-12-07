@@ -47,8 +47,8 @@ namespace Dev2.Activities.Designers2.CommandLine
             var errors = new List<IActionableErrorInfo>();
 
             Action onError = () => IsCommandFileNameFocused = true;
-
-            errors.AddError(CommandFileName.TryParseVariables(out string commandValue, onError));
+            var util = new VariableUtils();
+            util.AddError(errors, util.TryParseVariables(CommandFileName,out string commandValue, onError));
 
             if (string.IsNullOrWhiteSpace(commandValue))
             {
