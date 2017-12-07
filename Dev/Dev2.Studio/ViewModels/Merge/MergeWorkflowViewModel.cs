@@ -536,7 +536,6 @@ namespace Dev2.ViewModels.Merge
 
         static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
         {
-            nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
             if (!nextArmConflict.HasConflict)
             {
                 nextArmConflict.CurrentArmConnector.IsChecked = true;
@@ -618,7 +617,8 @@ namespace Dev2.ViewModels.Merge
                 var foundCurrentSource = FindMatchingConnector(s.CurrentArmConnector.SourceUniqueId, toolIds);
                 var foundDiffSource = FindMatchingConnector(s.DifferentArmConnector.SourceUniqueId, toolIds);
 
-                if(foundCurrentDestination && foundCurrentSource)
+                s.IsMergeExpanderEnabled = false;
+                if (foundCurrentDestination && foundCurrentSource)
                 {
                     s.CurrentArmConnector.IsArmSelectionAllowed = true;
                     s.IsMergeExpanderEnabled = true;
@@ -695,7 +695,19 @@ namespace Dev2.ViewModels.Merge
                 canSave &= CurrentConflictModel.IsVariablesChecked || DifferenceConflictModel.IsVariablesChecked;
                 if (Conflicts.Any(a => a.HasConflict))
                 {
-                    canSave &= All(conflict => conflict.IsChecked);
+                    canSave &= All(conflict =>
+                    {
+                        var isValid = false;
+                        if (conflict.HasConflict)
+                        {
+                            isValid = conflict.IsChecked;
+                        }
+                        if (!conflict.IsMergeExpanderEnabled)
+                        {
+                            isValid = true;
+                        }
+                        return isValid;
+                        });
                 }
                 return canSave;
             }

@@ -19,7 +19,6 @@ namespace Dev2.Common.Interfaces
         IMergeToolModel DiffViewModel { get; set; }
         LinkedList<IToolConflict> Children { get; set; }
         IToolConflict Parent { get; set; }
-        bool IsMergeExpanderEnabled { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsContainerTool { get; set; }
         IToolConflict GetNextConflict();

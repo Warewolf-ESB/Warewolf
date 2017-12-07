@@ -14,11 +14,10 @@ namespace Dev2.Common.Interfaces
 {
     public interface IConflict
     {
-        bool IsCurrentSelected { get; set; }
-        bool IsDiffSelected { get; set; }
         bool IsEmptyItemSelected { get; set; }
         bool HasConflict { get; set; }
         bool IsChecked { get; set; }
+        bool IsMergeExpanderEnabled { get; set; }
         Guid UniqueId { get; set; }
     }
 
@@ -40,6 +39,5 @@ namespace Dev2.Common.Interfaces
         IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         IMergeArmConnectorConflict DifferentArmConnector { get; set; }
         string Key { get; set; }
-        bool IsMergeExpanderEnabled { get; set; }
     }
 }
