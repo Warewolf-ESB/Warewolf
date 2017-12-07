@@ -32,7 +32,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual("Base 64", baseConvertDTO.ToType);
             Assert.AreEqual(string.Empty, baseConvertDTO.ToExpression);
             Assert.AreEqual(1, baseConvertDTO.IndexNumber);
-            Assert.IsNull(baseConvertDTO.Errors);
+            Assert.IsNotNull(baseConvertDTO.Errors);
         }
 
         #region CanAdd Tests

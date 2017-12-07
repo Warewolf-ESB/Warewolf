@@ -144,7 +144,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
     }
 
-    internal sealed class MySimpleActivity : DsfBaseActivity
+    sealed class MySimpleActivity : DsfBaseActivity
     {
         public MySimpleActivity()
         {

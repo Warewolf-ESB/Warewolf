@@ -15,7 +15,7 @@ using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
-    public class TextboxSelectAllOnFocusBehavior : Behavior<TextBox>, IDisposable
+    public class TextboxSelectAllOnFocusBehavior : Behavior<TextBox>
     {
         protected override void OnAttached()
         {
@@ -34,19 +34,6 @@ namespace Dev2.Studio.AppResources.Behaviors
         void AssociatedObject_GotFocus(object sender, EventArgs e)
         {
             AssociatedObject.SelectAll();
-        }       
-
-        protected override void OnDetaching()
-        {         
-            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
-            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
-            base.OnDetaching();
-        }
-
-        public void Dispose()
-        {
-            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
-            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
     }
 }

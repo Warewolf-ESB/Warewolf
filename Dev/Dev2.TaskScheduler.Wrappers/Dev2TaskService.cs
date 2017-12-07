@@ -16,8 +16,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskService : IDev2TaskService
     {
-        private readonly TaskService _nativeService;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TaskService _nativeService;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskService(ITaskServiceConvertorFactory taskServiceConvertorFactory, TaskService service)
         {

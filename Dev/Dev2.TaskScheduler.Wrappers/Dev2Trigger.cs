@@ -16,8 +16,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2Trigger : ITrigger
     {
-        private readonly Trigger _instance;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly Trigger _instance;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2Trigger(ITaskServiceConvertorFactory taskServiceConvertorFactory, Trigger instance)
         {

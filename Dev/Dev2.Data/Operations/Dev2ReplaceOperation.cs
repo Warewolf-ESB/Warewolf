@@ -17,8 +17,8 @@ namespace Dev2.Data.Operations
 {
     public class Dev2ReplaceOperation : IDev2ReplaceOperation
     {
-        private const RegexOptions NoneCompiled = RegexOptions.None | RegexOptions.Compiled;
-        private const RegexOptions IgnoreCaseCompiled = RegexOptions.IgnoreCase | RegexOptions.Compiled;
+        const RegexOptions NoneCompiled = RegexOptions.None | RegexOptions.Compiled;
+        const RegexOptions IgnoreCaseCompiled = RegexOptions.IgnoreCase | RegexOptions.Compiled;
 
         #region Ctor
 
@@ -46,14 +46,14 @@ namespace Dev2.Data.Operations
         {
 
             var oldString = stringToSearch;
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
 
             var regexOptions = caseMatch ? NoneCompiled : IgnoreCaseCompiled;
 
-            Regex regex = new Regex(Regex.Escape(findString), regexOptions);
-            string tmpVal = oldString;
+            var regex = new Regex(Regex.Escape(findString), regexOptions);
+            var tmpVal = oldString;
             replaceCount += regex.Matches(tmpVal).Count;
             var replaceValue = regex.Replace(tmpVal, replacementString);
             errors = allErrors;

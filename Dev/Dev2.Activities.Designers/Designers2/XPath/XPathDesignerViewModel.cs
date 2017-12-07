@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers2.XPath
                         ruleSet.Add(new IsValidXmlRule(() => SourceString));
                     }
 
-                    var outputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1");
+                    var outputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1", new VariableUtils());
                     ruleSet.Add(outputExprRule);
 
                     break;

@@ -37,7 +37,7 @@ namespace Dev2.Scheduler.Test
             mockTriggers.Setup(a => a.Add(t.Object)).Verifiable();
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
 
-            ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
+            var trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
         }
@@ -60,7 +60,7 @@ namespace Dev2.Scheduler.Test
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
 
 
-            ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
+            var trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
             mockTask.VerifyGet(a => a.XmlText);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);

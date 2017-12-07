@@ -28,7 +28,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
     
     public class FileSystemIntellisenseProviderTest
     {
-        private IResourceModel _resourceModel;
+        IResourceModel _resourceModel;
 
         #region Test Initialization
 

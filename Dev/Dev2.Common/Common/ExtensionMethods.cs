@@ -27,7 +27,7 @@ namespace Dev2.Common.Common
 
         public static string GetAllMessages(this Exception exception)
         {
-            IEnumerable<string> messages = exception.FromHierarchy(ex => ex.InnerException).Select(ex => ex.Message);
+            var messages = exception.FromHierarchy(ex => ex.InnerException).Select(ex => ex.Message);
             return String.Join(Environment.NewLine, messages);
         }
         
@@ -57,7 +57,7 @@ namespace Dev2.Common.Common
             {
                 int removeEndIdx = sb.IndexOf("?>", 0, false);
                 int len = removeEndIdx - removeStartIdx + 2;
-                StringBuilder result = sb.Remove(removeStartIdx, len);
+                var result = sb.Remove(removeStartIdx, len);
 
                 return result;
             }
@@ -70,7 +70,7 @@ namespace Dev2.Common.Common
             int length = sb.Length;
             int startIdx = 0;
             var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
-            StringBuilder cleanStringBuilder = sb.CleanEncodingHeaderForXmlSave();
+            var cleanStringBuilder = sb.CleanEncodingHeaderForXmlSave();
 
             if (!File.Exists(fileName))
             {
@@ -88,7 +88,7 @@ namespace Dev2.Common.Common
                         len = cleanStringBuilder.Length - startIdx;
                     }
 
-                    byte[] bytes = encoding.GetBytes(cleanStringBuilder.Substring(startIdx, len));
+                    var bytes = encoding.GetBytes(cleanStringBuilder.Substring(startIdx, len));
                     fs.Write(bytes, 0, bytes.Length);
                     startIdx += len;
                 }
@@ -127,21 +127,21 @@ namespace Dev2.Common.Common
         {
             try
             {
-                Stream result = sb.EncodeStream(Encoding.UTF8);
+                var result = sb.EncodeStream(Encoding.UTF8);
                 XElement.Load(result);
                 result.Position = 0;
                 return result;
             }
             catch
             {
-                Stream result = sb.EncodeStream(Encoding.Unicode);
+                var result = sb.EncodeStream(Encoding.Unicode);
                 XElement.Load(result);
                 result.Position = 0;
                 return result;
             }
         }
 
-        private static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
+        static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
             int length = sb.Length;
             int startIdx = 0;
@@ -155,7 +155,7 @@ namespace Dev2.Common.Common
                     len = sb.Length - startIdx;
                 }
 
-                byte[] bytes = encoding.GetBytes(sb.Substring(startIdx, len));
+                var bytes = encoding.GetBytes(sb.Substring(startIdx, len));
                 ms.Write(bytes, 0, bytes.Length);
 
                 startIdx += len;
@@ -354,7 +354,7 @@ namespace Dev2.Common.Common
 
         public static string AttributeSafe(this XElement elem, string name, bool returnsNull)
         {
-            XAttribute attr = elem.Attribute(name);
+            var attr = elem.Attribute(name);
             if (string.IsNullOrEmpty(attr?.Value))
             {
                 return returnsNull ? null : string.Empty;
@@ -364,19 +364,19 @@ namespace Dev2.Common.Common
 
         public static StringBuilder ElementSafeStringBuilder(this XElement elem, string name)
         {
-            XElement child = elem.Element(name);
+            var child = elem.Element(name);
             return child == null ? new StringBuilder() : child.ToStringBuilder();
         }
 
         public static string ElementSafe(this XElement elem, string name)
         {
-            XElement child = elem.Element(name);
+            var child = elem.Element(name);
             return child?.Value ?? string.Empty;
         }
 
         public static string ElementStringSafe(this XElement elem, string name)
         {
-            XElement child = elem.Element(name);
+            var child = elem.Element(name);
             return child?.ToString() ?? string.Empty;
         }
         /// <summary>
@@ -417,7 +417,7 @@ namespace Dev2.Common.Common
 
         public static bool IsValidJson(this string strInput)
         {
-            string trimmedInput = strInput.Trim();
+            var trimmedInput = strInput.Trim();
             if (trimmedInput.StartsWith("{") && trimmedInput.EndsWith("}") || trimmedInput.StartsWith("[") && trimmedInput.EndsWith("]"))
             {
                 try

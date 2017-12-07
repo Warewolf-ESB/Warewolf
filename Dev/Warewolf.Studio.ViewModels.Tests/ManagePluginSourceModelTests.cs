@@ -12,12 +12,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IStudioUpdateManager> _updateRepositoryMock;
-        private Mock<IQueryManager> _queryProxyMock;
+        Mock<IStudioUpdateManager> _updateRepositoryMock;
+        Mock<IQueryManager> _queryProxyMock;
 
-        private string _serverName;
+        string _serverName;
 
-        private ManagePluginSourceModel _target;
+        ManagePluginSourceModel _target;
 
         #endregion Fields
 

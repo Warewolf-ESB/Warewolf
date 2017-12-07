@@ -21,7 +21,7 @@ namespace Dev2.Session
     {
         #region Fields
 
-        private string _xmlData;
+        string _xmlData;
 
         #endregion Fields
 

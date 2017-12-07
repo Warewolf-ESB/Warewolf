@@ -16,13 +16,13 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private DeployDestinationViewModel _target;
+        DeployDestinationViewModel _target;
 
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IServer> _serverMock;
-        private Mock<IEventAggregator> _eventAggregatorMock;
-        private Mock<IStudioUpdateManager> _studioUpdateManagerMock;
-        private Mock<IExplorerItem> _explorerItemMock;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IServer> _serverMock;
+        Mock<IEventAggregator> _eventAggregatorMock;
+        Mock<IStudioUpdateManager> _studioUpdateManagerMock;
+        Mock<IExplorerItem> _explorerItemMock;
 
         #endregion Fields
 

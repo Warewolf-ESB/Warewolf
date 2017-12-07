@@ -202,7 +202,7 @@ namespace Dev2.Tests.Runtime.WF
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
-            PrivateObject privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -241,7 +241,7 @@ namespace Dev2.Tests.Runtime.WF
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
-            PrivateObject privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -283,7 +283,7 @@ namespace Dev2.Tests.Runtime.WF
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
-            PrivateObject privateObject = new PrivateObject(wfApplicationUtils);
+            var privateObject = new PrivateObject(wfApplicationUtils);
             privateObject.SetField("_getDebugDispatcher", mock.Object);
             privateObject.SetField("_lazyCat", catLog.Object);
             //---------------Assert Precondition----------------

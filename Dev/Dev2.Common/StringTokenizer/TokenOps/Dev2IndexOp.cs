@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Dev2.Common
 {
-    internal class Dev2IndexOp : IDev2SplitOp
+    class Dev2IndexOp : IDev2SplitOp
     {
         internal Dev2IndexOp(int index)
         {

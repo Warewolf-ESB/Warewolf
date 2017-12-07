@@ -27,7 +27,7 @@ namespace Dev2.DataList
             {
                 return a => values.All(x =>
                 {
-                    Regex exp = new Regex(x.ToString());
+                    var exp = new Regex(x.ToString());
                     return exp.IsMatch(a.ToString());
 
                 });
@@ -35,7 +35,7 @@ namespace Dev2.DataList
 
             return a => values.Any(x =>
             {
-                Regex exp = new Regex(x.ToString());
+                var exp = new Regex(x.ToString());
                 return exp.IsMatch(a.ToString());
 
             });

@@ -82,7 +82,7 @@ namespace Dev2.Core.Tests
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
 
-            Task<IExplorerItem> ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
+            var ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
             CustomContainer.Register(svr.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
@@ -194,7 +194,7 @@ namespace Dev2.Core.Tests
 
 
 
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
 
 
             // FetchResourceDefinitionService
@@ -245,7 +245,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.ActiveServer).Returns(env.Object);
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.Never());
@@ -264,7 +264,7 @@ namespace Dev2.Core.Tests
             var resourceName = "TestResource_" + Guid.NewGuid();
             var resourceID = Guid.NewGuid();
 
-            Guid environmentID = Guid.NewGuid();
+            var environmentID = Guid.NewGuid();
             var wsi = new WorkspaceItem(workspaceID, serverID, environmentID, resourceID) { ServiceName = resourceName, ServiceType = WorkspaceItem.ServiceServiceType };
             var wsiRepo = new Mock<IWorkspaceItemRepository>();
             wsiRepo.Setup(r => r.WorkspaceItems).Returns(new List<IWorkspaceItem>(new[] { wsi }));
@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new List<IServer>(new[] { env.Object }));
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
 
             wsiRepo.Verify(r => r.AddWorkspaceItem(It.IsAny<IContextualResourceModel>()), Times.AtLeastOnce());
@@ -639,7 +639,7 @@ namespace Dev2.Core.Tests
             var res = new Mock<IResourceRepository>();
             mockEnv.Setup(a => a.ResourceRepository).Returns(res.Object);
             res.Setup(a => a.LoadContextualResourceModel(resourceId)).Returns(FirstResource.Object);
-            ShellViewModel.RunAllTests(resourceId);
+            ShellViewModel.RunAllTests(String.Empty, resourceId);
         }
 
         [TestMethod]
@@ -687,7 +687,7 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
             ShellViewModel.WorksurfaceContextManager.CloseWorkSurfaceContext(activetx, null);
-            PrivateObject pvt = new PrivateObject(ShellViewModel);
+            var pvt = new PrivateObject(ShellViewModel);
             //------------Assert Results-------------------------
             EventAggregator.Verify(e => e.Publish(It.IsAny<SaveResourceMessage>()), Times.Never());
             FirstResource.Verify(r => r.Commit(), Times.Never(), "ResourceModel was committed when saved.");
@@ -893,13 +893,13 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(new Mock<Common.Interfaces.Studio.Controller.IPopupController>().Object);
             CreateFullExportsAndVmWithEmptyRepo();
             
-            Mock<IServer> environmentRepo = CreateMockEnvironment();
-            
-            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            var environmentRepo = CreateMockEnvironment();
+
+            var mockAuthService = new Mock<IAuthorizationService>();
             mockAuthService.Setup(c => c.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
             environmentRepo.Setup(c => c.AuthorizationService).Returns(mockAuthService.Object);
             
-            Mock<IResourceRepository> resourceRepo = new Mock<IResourceRepository>();
+            var resourceRepo = new Mock<IResourceRepository>();
             resourceRepo.Setup(c => c.FetchResourceDefinition(It.IsAny<IServer>(), It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             resourceRepo.Setup(r => r.Save(It.IsAny<IResourceModel>())).Verifiable();
 
@@ -1055,7 +1055,7 @@ namespace Dev2.Core.Tests
                 RootItems = new List<IDebugTreeViewItemViewModel>()
             };
 
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
 
             var workSurfaceKey = ShellViewModel.WorksurfaceContextManager.TryGetOrCreateWorkSurfaceKey(null, WorkSurfaceContext.ServiceTestsViewer, msg.ResourceID);
@@ -1157,7 +1157,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
@@ -1168,7 +1168,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.Environment).Returns(env.Object);
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), false);
             var contextViewModel1 = new WorkSurfaceContextViewModel(
@@ -1216,7 +1216,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
             envRepo.Setup(e => e.Get(It.IsAny<Guid>())).Returns(env.Object);
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
@@ -1230,7 +1230,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ID).Returns(resourceID);
             resourceModel.Setup(r => r.IsAuthorized(AuthorizationContext.Contribute)).Returns(true);
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 3");
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             mockPopUp.Setup(m => m.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), false);
@@ -1279,7 +1279,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
 
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
             var serverID = Guid.NewGuid();
@@ -1302,7 +1302,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1343,7 +1343,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
             CustomContainer.DeRegister<IServerRepository>();
             CustomContainer.Register(envRepo.Object);
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             var resourceID = Guid.NewGuid();
 
@@ -1365,7 +1365,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1404,7 +1404,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(r => r.Source).Returns(env.Object);
             envRepo.Setup(r => r.Get(It.IsAny<Guid>())).Returns(env.Object);
 
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var mockMainViewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object);
             var resourceID = Guid.NewGuid();
 
@@ -1426,7 +1426,7 @@ namespace Dev2.Core.Tests
 
             mockMainViewModel.Items.Add(contextViewModel1);
 
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
             mockPopUp.Setup(m => m.Show()).Verifiable();
 
             mockMainViewModel.PopupProvider = mockPopUp.Object;
@@ -1526,7 +1526,7 @@ namespace Dev2.Core.Tests
             envRepo.Setup(mock => mock.All()).Returns(envColletion);
             envRepo.Setup(mock => mock.Source).Returns(env.Object);
 
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
 
             viewModel.TestClose();
@@ -1564,7 +1564,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 4");
             #endregion
 
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.OK);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), false);
             var contextViewModel = new WorkSurfaceContextViewModel(
@@ -1574,7 +1574,7 @@ namespace Dev2.Core.Tests
             var envRepo = new Mock<IServerRepository>();
             envRepo.Setup(r => r.All()).Returns(new[] { env.Object });
             envRepo.Setup(e => e.Source).Returns(env.Object);
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
             var viewModel = new ShellViewModelPersistenceMock(envRepo.Object, asyncWorker.Object, false);
             viewModel.Items.Add(contextViewModel);
 
@@ -1611,7 +1611,7 @@ namespace Dev2.Core.Tests
             resourceModel.Setup(m => m.ResourceName).Returns("Some resource name 5");
             #endregion
 
-            Mock<Common.Interfaces.Studio.Controller.IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.No);
             var workflowHelper = new Mock<IWorkflowHelper>();
             var designerViewModel = new WorkflowDesignerViewModel(new Mock<IEventAggregator>().Object, resourceModel.Object, workflowHelper.Object, mockPopUp.Object, new SynchronousAsyncWorker(), false);
             var contextViewModel = new WorkSurfaceContextViewModel(
@@ -2761,7 +2761,7 @@ namespace Dev2.Core.Tests
             mockWM.Verify(manager => manager.NewWebSource(It.IsAny<string>()));
         }
 
-        private static Mock<IServer> SetupEnvironment()
+        static Mock<IServer> SetupEnvironment()
         {
             var newSelectedConnection = new Mock<IServer>();
             var newSelectedConnectionEnvironmentId = Guid.NewGuid();
@@ -2797,7 +2797,7 @@ namespace Dev2.Core.Tests
             environmentRepository.Setup(repo => repo.Source).Returns(environmentModel);
 
             var viewModel = new Mock<IShellViewModel>();
-            IServer server = (IServer)CustomContainer.Get(typeof(IServer));
+            var server = (IServer)CustomContainer.Get(typeof(IServer));
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
 
             CustomContainer.Register(viewModel.Object);
@@ -2841,7 +2841,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_OnStudioClosing_ClosesRemoteEnvironmants()
         {
             var viewModel = new Mock<IShellViewModel>();
-            IServer server = (IServer)CustomContainer.Get(typeof(IServer));
+            var server = (IServer)CustomContainer.Get(typeof(IServer));
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
 
             CustomContainer.Register(viewModel.Object);
@@ -2904,7 +2904,7 @@ namespace Dev2.Core.Tests
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
             environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
-            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            var mockAuthService = new Mock<IAuthorizationService>();
             var mockSecurityService = new Mock<ISecurityService>();
             mockSecurityService.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission>(new[] { WindowsGroupPermission.CreateEveryone(), }));
             mockAuthService.SetupGet(service => service.SecurityService).Returns(mockSecurityService.Object);
@@ -2952,7 +2952,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_OnStudioClosing_CallsSettingsOnClosingDirty()
         {
             var viewModel = new Mock<IShellViewModel>();
-            IServer server = (IServer)CustomContainer.Get(typeof(IServer));
+            var server = (IServer)CustomContainer.Get(typeof(IServer));
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
             CustomContainer.Register(viewModel.Object);
 
@@ -2998,7 +2998,7 @@ namespace Dev2.Core.Tests
         public void MainViewModel_OnStudioClosing_CallsSchedulerOnClosingClosesSuccessfully()
         {
             var viewModel = new Mock<IShellViewModel>();
-            IServer server = (IServer)CustomContainer.Get(typeof(IServer));
+            var server = (IServer)CustomContainer.Get(typeof(IServer));
             viewModel.SetupGet(model => model.ActiveServer).Returns(server);
 
             CustomContainer.Register(viewModel.Object);
@@ -3059,7 +3059,7 @@ namespace Dev2.Core.Tests
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
             environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
-            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            var mockAuthService = new Mock<IAuthorizationService>();
             var mockSecurityService = new Mock<ISecurityService>();
             mockSecurityService.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission>(new[] { WindowsGroupPermission.CreateEveryone(), }));
             mockAuthService.SetupGet(service => service.SecurityService).Returns(mockSecurityService.Object);
@@ -3106,7 +3106,7 @@ namespace Dev2.Core.Tests
             Assert.IsFalse(mvm.OnStudioClosing());
         }
 
-        private void InitSourceViewModel(out Mock<IServer> environmentModel, out ShellViewModel mvm)
+        void InitSourceViewModel(out Mock<IServer> environmentModel, out ShellViewModel mvm)
         {
             var viewModel = new Mock<IShellViewModel>();
             var server = new Mock<IServer>();
@@ -3125,7 +3125,7 @@ namespace Dev2.Core.Tests
             var environmentConnection = new Mock<IEnvironmentConnection>().Object;
             environmentModel.SetupGet(a => a.Connection).Returns(environmentConnection);
             environmentModel.SetupGet(a => a.IsLocalHost).Returns(true);
-            Mock<IAuthorizationService> mockAuthService = new Mock<IAuthorizationService>();
+            var mockAuthService = new Mock<IAuthorizationService>();
             var mockSecurityService = new Mock<ISecurityService>();
             mockSecurityService.Setup(a => a.Permissions).Returns(new List<WindowsGroupPermission>(new[] { WindowsGroupPermission.CreateEveryone(), }));
             mockAuthService.SetupGet(service => service.SecurityService).Returns(mockSecurityService.Object);
@@ -3744,7 +3744,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var pv = new PrivateObject(ShellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
@@ -3776,7 +3776,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var pv = new PrivateObject(ShellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
@@ -3799,7 +3799,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var pv = new PrivateObject(ShellViewModel);
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             IEnumerable<IExplorerTreeItem> enumerable = new List<IExplorerTreeItem>();
@@ -3822,7 +3822,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var pv = new PrivateObject(ShellViewModel);
 
             var wcm = new Mock<IWorksurfaceContextManager>();
             IVersionInfo version = new VersionInfo();
@@ -3845,7 +3845,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var pv = new PrivateObject(ShellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
@@ -3877,7 +3877,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
 
             CreateFullExportsAndVm();
-            PrivateObject pv = new PrivateObject(ShellViewModel);
+            var pv = new PrivateObject(ShellViewModel);
             var resourceModel = new Mock<IContextualResourceModel>();
 
             var wcm = new Mock<IWorksurfaceContextManager>();
@@ -3938,7 +3938,7 @@ namespace Dev2.Core.Tests
             mock1.Setup(se => se.Name).Returns("a");
             mock1.Setup(se => se.DisplayName).Returns("a");
             ShellViewModel.ActiveServer = mock1.Object;
-            PrivateObject po = new PrivateObject(ShellViewModel);
+            var po = new PrivateObject(ShellViewModel);
             po.Invoke("ShowServerDisconnectedPopup");
             //---------------Test Result -----------------------
             mock.VerifyAll();

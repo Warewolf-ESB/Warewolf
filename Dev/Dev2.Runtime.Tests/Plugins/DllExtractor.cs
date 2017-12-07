@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.Plugins
                 }
 
                 int len = (int)stream.Length;
-                byte[] data = new byte[len];
+                var data = new byte[len];
                 stream.Read(data, 0, len);
 
                 var location = name + ".dll";

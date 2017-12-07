@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         {
             var src = new Mock<IWebServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             Assert.AreEqual(1,region.Errors.Count);
             Assert.IsTrue(region.IsEnabled);
         }
@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWebServiceModel>();
             var websrc = new WebServiceSourceDefinition() { Id = id };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc});
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             Assert.AreEqual(websrc, region.SelectedSource);
             Assert.IsTrue(region.CanEditSource());
         }
@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var Evt = false;
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc ,s2});
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             region.SomethingChanged += (a, b) => { Evt = true; };
             region.SelectedSource = s2;
             Assert.IsTrue(Evt);
@@ -70,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid(), HostName = "bob" };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -96,7 +96,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid()};
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -121,7 +121,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             var cloned = region.CloneRegion();
             Assert.AreEqual(((WebSourceRegion) cloned).SelectedSource,region.SelectedSource);
         }
@@ -135,9 +135,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             var websrc = new WebServiceSourceDefinition() { Id = id };
             var s2 = new WebServiceSourceDefinition() { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource> { websrc, s2 });
-            WebSourceRegion region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            
-            WebSourceRegion regionToRestore = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+
+            var regionToRestore = new WebSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.SelectedSource = s2;
 
             region.RestoreRegion(regionToRestore);

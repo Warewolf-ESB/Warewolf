@@ -19,11 +19,11 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
     
     public class WebDeleteInputRegion : IWebDeleteInputArea
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IWebServiceSource> _source;
-        private string _queryString;
-        private string _requestUrl;
-        private ObservableCollection<INameValue> _headers;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IWebServiceSource> _source;
+        string _queryString;
+        string _requestUrl;
+        ObservableCollection<INameValue> _headers;
         bool _isEnabled;
 
         public WebDeleteInputRegion()
@@ -45,9 +45,9 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 IsEnabled = true;
             }
         }
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            
+
             if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
@@ -60,10 +60,10 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 }));
                 IsEnabled = true;
             }
-            
+
             OnPropertyChanged(@"IsEnabled");
         }
-        private void SetupHeaders(ModelItem modelItem)
+        void SetupHeaders(ModelItem modelItem)
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
             var nameValues = existing ?? new List<INameValue>();
@@ -94,14 +94,14 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             }
         }
 
-        private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            
+
         }
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null)
             {
@@ -117,12 +117,12 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems == null)
             {

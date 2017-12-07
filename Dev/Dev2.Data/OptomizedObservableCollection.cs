@@ -17,7 +17,7 @@ namespace Dev2.Data
 {
     public class OptomizedObservableCollection<T> : ObservableCollection<T>
     {
-        private bool SuppressOnCollectionChanged;
+        bool SuppressOnCollectionChanged;
 
         public OptomizedObservableCollection()
         {

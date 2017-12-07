@@ -21,8 +21,8 @@ namespace Dev2.Studio.Core.Utils
     {
         #region Fields
 
-        private static NewWorkflowNames _instance;
-        private readonly HashSet<string> _workflowNamesHashSet = new HashSet<string>();
+        static NewWorkflowNames _instance;
+        readonly HashSet<string> _workflowNamesHashSet = new HashSet<string>();
 
         #endregion
 
@@ -64,12 +64,12 @@ namespace Dev2.Studio.Core.Utils
         /// <returns>The next available workflow name</returns>
         public string GetNext()
         {
-            string newWorkflowBaseName = StringResources.NewWorkflowBaseName;
+            var newWorkflowBaseName = StringResources.NewWorkflowBaseName;
 
             int counter = 1;
-            string fullName = StringResources.NewWorkflowBaseName + " " + counter;
+            var fullName = StringResources.NewWorkflowBaseName + " " + counter;
 
-            while(Contains(fullName))
+            while (Contains(fullName))
             {
                 counter++;
                 fullName = newWorkflowBaseName + " " + counter;

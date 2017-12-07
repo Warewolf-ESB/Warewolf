@@ -304,26 +304,19 @@
     </None>
     <Compile Include="ActivityDesigners\ActivityDesignerHelper.cs" />
     <Compile Include="AppResources\AttachedProperties\FocusAttachedProperty.cs" />
-    <Compile Include="AppResources\Behaviors\ButtonPopupWorkaroundBehavior.cs" />
     <Compile Include="AppResources\Behaviors\PopupBuildVisualTreeOnLoad.cs" />
     <Compile Include="AppResources\Behaviors\TabGroupPaneBindingBehavior.cs" />
     <Compile Include="AppResources\Behaviors\TextboxSelectAllOnFocusBehavior.cs" />
-    <Compile Include="AppResources\Behaviors\TreeviewScrollToEndOnNewContent.cs" />
     <Compile Include="AppResources\Behaviors\WindowCloseBehviour.cs" />
     <Compile Include="AppResources\Behaviors\WorkflowDesignerLinkBehaviours.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparerWithContextKey.cs" />
-    <Compile Include="AppResources\Converters\ExplorerItemModelToIconConverter.cs" />
     <Compile Include="AppResources\Converters\InverseScheduleStatusConverter.cs" />
-    <Compile Include="AppResources\Converters\NavigationViewModelPermissionToBooleanConverter.cs" />
     <Compile Include="AppResources\Converters\CustomIcons.cs" />
-    <Compile Include="AppResources\Converters\EmailSourceToDisplayTextConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxButtonToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\MessageBoxImageToSystemIconConverter.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKey.cs" />
     <Compile Include="AppResources\Comparers\WorkSurfaceKeyEqualityComparer.cs" />
     <Compile Include="AppResources\Converters\NavigationViewModelPersmissionVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\NullToDebugImageConverter.cs" />
-    <Compile Include="AppResources\Converters\NullToDebugRibbonButtonTextConverter.cs" />
     <Compile Include="AppResources\Converters\SchedulerStatusToCheckedConverter.cs" />
     <Compile Include="AppResources\ExtensionMethods\StringExtensions.cs" />
     <Compile Include="ClassRoutedEventHandlers.cs" />
@@ -427,9 +420,6 @@
     <Compile Include="Views\Help\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\ImageWindow.xaml.cs">
-      <DependentUpon>ImageWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ResourceManagement\RenameResourceDialog.xaml.cs">
       <DependentUpon>RenameResourceDialog.xaml</DependentUpon>
     </Compile>
@@ -452,7 +442,6 @@
       <DependentUpon>WorkflowInputDataView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Webs\Callbacks\IShowDependencyProvider.cs" />
-    <Compile Include="Webs\Callbacks\NetworkHelper.cs" />
     <Compile Include="Webs\Callbacks\SaveNewWorkflowCallbackHandler.cs" />
     <Compile Include="Webs\Callbacks\WebsiteCallbackHandler.cs" />
     <Compile Include="Webs\SaveDialogHelper.cs" />
@@ -475,42 +464,15 @@
     <Compile Include="Views\Diagnostics\ExceptionView.xaml.cs">
       <DependentUpon>ExceptionView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Help\FeedbackView.xaml.cs">
-      <DependentUpon>FeedbackView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Administration\DialogueView.xaml.cs">
-      <DependentUpon>DialogueView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Administration\DsfAdminWindow.xaml.cs">
-      <DependentUpon>DsfAdminWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Administration\StartPageWindow.xaml.cs">
-      <DependentUpon>StartPageWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataMapping\DataMapping.xaml.cs">
-      <DependentUpon>DataMapping.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Diagnostics\DebugOutputView.xaml.cs">
       <DependentUpon>DebugOutputView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\Diagnostics\DebugOutputViewModel.cs" />
-    <Compile Include="Views\Global\GetStringValueWindow.xaml.cs">
-      <DependentUpon>GetStringValueWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Global\SearchWindow.xaml.cs">
-      <DependentUpon>SearchWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\ShellView.xaml.cs">
       <DependentUpon>ShellView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ResourceManagement\DeleteResourceDialog.xaml.cs">
       <DependentUpon>DeleteResourceDialog.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Wizards\DataListChangeNotificationView.xaml.cs">
-      <DependentUpon>DataListChangeNotificationView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\Workflow\ConfigureDecisionWindow.xaml.cs">
-      <DependentUpon>ConfigureDecisionWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\Workflow\WorkflowDesignerView.xaml.cs">
       <DependentUpon>WorkflowDesignerView.xaml</DependentUpon>
@@ -607,10 +569,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\ImageWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\ResourceManagement\RenameResourceDialog.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -635,39 +593,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Help\FeedbackView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Administration\DialogueView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Administration\DsfAdminWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Administration\StartPageWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DataMapping\DataMapping.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Diagnostics\DebugOutputView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Global\GetStringValueWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\Help\HelpView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\Global\SearchWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -682,14 +612,6 @@
     <Page Include="Views\ResourceManagement\DeleteResourceDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Wizards\DataListChangeNotificationView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\Workflow\ConfigureDecisionWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\Workflow\DsfActivityDropWindow.xaml">
       <SubType>Designer</SubType>
@@ -781,7 +703,7 @@
       <Name>Dev2.Activities</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Common.Interfaces\Dev2.Common.Interfaces.csproj">
-      <Project>{13C0C6E9-7DC3-4DC3-8535-031C263CEE0B}</Project>
+      <Project>{13c0c6e9-7dc3-4dc3-8535-031c263cee0b}</Project>
       <Name>Dev2.Common.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Core\Dev2.Core.csproj">
@@ -929,6 +851,9 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Wizards\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <PropertyGroup Condition="'$(BuildingInsideVisualStudio)'=='true'">

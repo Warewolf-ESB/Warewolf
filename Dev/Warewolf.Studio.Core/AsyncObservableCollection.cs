@@ -1,3 +1,13 @@
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +19,7 @@ namespace Warewolf.Studio.Core
 {
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
-        private readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
+        readonly SynchronizationContext _synchronizationContext = SynchronizationContext.Current;
 
         public AsyncObservableCollection()
         {
@@ -24,37 +34,8 @@ namespace Warewolf.Studio.Core
             SuppressOnCollectionChanged = true;
         }
 
-        public void AddRange(IList<T> items)
-        {
-            if (null == items)
-            {
-                throw new ArgumentNullException(nameof(items));
-            }
-
-
-            if (items.Count > 0)
-            {
-                try
-                {
-                    SuppressOnCollectionChanged = true;
-                    foreach (var item in items)
-                    {
-                        Add(item);
-                    }
-
-                }
-                finally
-                {
-                    SuppressOnCollectionChanged = false;
-                    OnCollectionChanged(new NotifyCollectionChangedEventArgs(NotifyCollectionChangedAction.Add, this));
-                }
-            }
-        }
-
         protected override void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
         {
-
-
             if (SynchronizationContext.Current == _synchronizationContext)
             {
                 // Execute the CollectionChanged event on the current thread
@@ -68,14 +49,13 @@ namespace Warewolf.Studio.Core
 
         }
 
-        private void RaiseCollectionChanged(object param)
+        void RaiseCollectionChanged(object param)
         {
             if (!SuppressOnCollectionChanged)
             {
                 // We are in the creator thread, call the base implementation directly
                 base.OnCollectionChanged((NotifyCollectionChangedEventArgs)param);
             }
-
         }
 
         protected override void OnPropertyChanged(PropertyChangedEventArgs e)
@@ -92,7 +72,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private void RaisePropertyChanged(object param)
+        void RaisePropertyChanged(object param)
         {
             if (!SuppressOnCollectionChanged)
             {

@@ -75,7 +75,7 @@ namespace Dev2.Activities
                         int pos = 0;
                         foreach (var itr in itrs)
                         {
-                            string injectVal = itrCollection.FetchNextValue(itr);
+                            var injectVal = itrCollection.FetchNextValue(itr);
                             var param = methodParameters.ToList()[pos];
 
 
@@ -97,13 +97,13 @@ namespace Dev2.Activities
                 errors.AddError(e.Message);
             }
         }
-                
-        private void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
+
+        void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
         {
-            if(!IsObject)
-             {
+            if (!IsObject)
+            {
                 int i = 0;
-                foreach(var serviceOutputMapping in Outputs)
+                foreach (var serviceOutputMapping in Outputs)
                 {
                     OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
                     i++;
@@ -112,11 +112,11 @@ namespace Dev2.Activities
                 args.OutputFormatter = outputFormatter;
             }
             Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.ServerUser, () => { _result = ComPluginServiceExecutionFactory.InvokeComPlugin(args).ToString(); });
-            
+
             ResponseManager = new ResponseManager { OutputDescription = OutputDescription, Outputs = Outputs, IsObject = IsObject, ObjectName = ObjectName };
             ResponseManager.PushResponseIntoEnvironment(_result, update, dataObject, false);
         }
-       
+
         public IResponseManager ResponseManager { get; set; }
         public override enFindMissingType GetFindMissingType()
         {

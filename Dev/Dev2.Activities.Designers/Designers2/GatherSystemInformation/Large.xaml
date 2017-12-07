@@ -11,7 +11,7 @@
                                xmlns:system="clr-namespace:System;assembly=mscorlib"
                                xmlns:converters="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
-                               
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:core1="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
@@ -85,7 +85,8 @@
                                                     Margin="0,0,1,1"
                                                     Text="{Binding Result, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.SystemInformationToolTipResult}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsResultFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:HelpText.SystemInformationHelpResult}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"

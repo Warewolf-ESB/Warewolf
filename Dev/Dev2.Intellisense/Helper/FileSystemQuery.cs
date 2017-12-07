@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Helper
 {
     public class FileSystemQuery:IFileSystemQuery
     {
-        private const char SlashC = '\\';
+        const char SlashC = '\\';
 
         [NonSerialized]
         List<string> _queryCollection;
@@ -27,25 +27,25 @@ namespace Dev2.Intellisense.Helper
         List<string> _computerNameCache = new List<string>();
         DateTime _gotComputerNamesLast;
         readonly TimeSpan _networkQueryTime  = new TimeSpan(0,0,15,0);
-        private readonly IDirectory _directory;
-        private readonly IDirectoryEntryFactory _directoryEntryFactory;
-        private readonly IShareCollectionFactory _shareCollectionFactory;
+        readonly IDirectory _directory;
+        readonly IDirectoryEntryFactory _directoryEntryFactory;
+        readonly IShareCollectionFactory _shareCollectionFactory;
 
-        public FileSystemQuery(IDirectory directory,IDirectoryEntryFactory directoryEntryFactory,IShareCollectionFactory shareCollectionFactory)
+        public FileSystemQuery(IDirectory directory, IDirectoryEntryFactory directoryEntryFactory, IShareCollectionFactory shareCollectionFactory)
         {
             VerifyArgument.IsNotNull("Directory",directory);
-            VerifyArgument.IsNotNull("DirectoryEntryFactory", directoryEntryFactory);
             VerifyArgument.IsNotNull("ShareCollectionFactory", shareCollectionFactory);
             _directory = directory;
             _directoryEntryFactory = directoryEntryFactory;
             _shareCollectionFactory = shareCollectionFactory;
         }
+
         public FileSystemQuery()
         {
             _directory = new DirectoryWrapper();
             _shareCollectionFactory = new ShareCollectionFactory();
-            _directoryEntryFactory = new DirectoryEntryFactory();
         }
+
         public List<string> QueryCollection
         {
             get
@@ -108,8 +108,8 @@ namespace Dev2.Intellisense.Helper
         public List<string> GetAllFilesAndFolders(string searchPath, List<string> queryCollection, char directorySeparatorChar)
         {
             bool bQueryUncShares = false;
-            string sFileServer = string.Empty;
-            if(String.IsNullOrEmpty(searchPath))
+            var sFileServer = string.Empty;
+            if (String.IsNullOrEmpty(searchPath))
             {
                 return new List<string>();
             }
@@ -219,9 +219,8 @@ namespace Dev2.Intellisense.Helper
             return queryCollection;
         }
 
-       public List<string> FindNetworkComputers()
+        public List<string> FindNetworkComputers()
         {
-
             var root =  _directoryEntryFactory.Create( "WinNT:");
             return (from IDirectoryEntry dom in root.Children
                     from IDirectoryEntry entry in dom.Children
@@ -229,7 +228,7 @@ namespace Dev2.Intellisense.Helper
                     select @"\\"+entry.Name).ToList();
         }
 
-      public bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
+        public bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
         {
             sServerFolderShare = string.Empty;
             const char cPathDel = SlashC;

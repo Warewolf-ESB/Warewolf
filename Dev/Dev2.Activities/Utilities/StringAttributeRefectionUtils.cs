@@ -19,8 +19,8 @@ namespace Dev2.Utilities
     {
         public static IEnumerable<PropertyInfo> ExtractAdornedProperties<T>(object objectToReflect)
         {
-            Type sourceType = objectToReflect.GetType();
-            IEnumerable<PropertyInfo> properties = sourceType.GetProperties().Where(c => c.GetCustomAttributes(typeof(T), true).Any());
+            var sourceType = objectToReflect.GetType();
+            var properties = sourceType.GetProperties().Where(c => c.GetCustomAttributes(typeof(T), true).Any());
             return properties;
         }    
     }

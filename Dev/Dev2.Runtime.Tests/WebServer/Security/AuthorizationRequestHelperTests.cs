@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.WebServer.Security
 
             foreach(var hub in hubs)
             {
-                Tuple<Type, string> hub1 = hub;
+                var hub1 = hub;
                 Func<string, AuthorizationRequest> getAuthorizationRequest = methodName =>
                 {
                     var context = AuthorizeHubAttributeTests.CreateHubIncomingInvokerContext(true, methodName, hub1.Item2);

@@ -20,9 +20,6 @@ namespace Dev2.Converters.Graph.DataTable
             return new DataTableMapper();
         }
 
-        public INavigator CreateNavigator(object data, Type pathType)
-        {
-            return new DataTableNavigator();
-        }
+        public INavigator CreateNavigator(object data, Type pathType) => throw new NotImplementedException();
     }
 }

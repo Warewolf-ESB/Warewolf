@@ -37,7 +37,7 @@ namespace Dev2.Core.Tests.Settings
             var resources = new ObservableCollection<IScheduledResource>();
             var scheduledResourceForTest = new ScheduledResourceForTest();
             resources.Add(scheduledResourceForTest);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(resources);
             var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -59,7 +59,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var scheduledResourceForTest = new ScheduledResourceForTest();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
             var esbPayLoad = new EsbExecuteRequest { ServiceName = "DeleteScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
@@ -83,7 +83,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var scheduledResourceForTest = new ScheduledResourceForTest();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
             var esbPayLoad = new EsbExecuteRequest { ServiceName = "AddScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
@@ -108,7 +108,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var scheduledResourceForTest = new ScheduledResourceForTest();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(scheduledResourceForTest);
             var esbPayLoad = new EsbExecuteRequest { ServiceName = "AddScheduledResourceService" };
             esbPayLoad.AddArgument("Resource", serializeObject);
@@ -139,7 +139,7 @@ namespace Dev2.Core.Tests.Settings
             var scheduledResourceForTest = new ScheduledResourceForTest();
             var resourceHistory = new ResourceHistoryForTest();
             var listOfHistoryResources = new List<IResourceHistory> { resourceHistory };
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serializeObject = serializer.SerializeToBuilder(listOfHistoryResources);
             var mockEnvironmentModel = new Mock<IServer>();
             var mockConnection = new Mock<IEnvironmentConnection>();
@@ -186,10 +186,10 @@ namespace Dev2.Core.Tests.Settings
         #endregion
     }
 
-    internal class ScheduledResourceForTest : IScheduledResource
+    class ScheduledResourceForTest : IScheduledResource
     {
         bool _isNewItem;
-        private bool _isDirty;
+        bool _isDirty;
 
         #region Implementation of IScheduledResource
 

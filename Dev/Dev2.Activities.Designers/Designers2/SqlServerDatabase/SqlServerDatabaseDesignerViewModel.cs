@@ -41,12 +41,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 {
     public class SqlServerDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDatabaseInputRegion _inputArea;
-        private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IDbActionToolRegion<IDbAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDatabaseInputRegion _inputArea;
+        ISourceToolRegion<IDbSource> _sourceRegion;
+        IDbActionToolRegion<IDbAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageDatabaseServiceInputViewModel(this, Model));
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -221,7 +221,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             SetWorstDesignError(worstError[0]);
         }
 
-        private void SetWorstDesignError(IErrorInfo value)
+        void SetWorstDesignError(IErrorInfo value)
         {
             if (_worstDesignError != value)
             {
@@ -254,7 +254,7 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -277,12 +277,12 @@ namespace Dev2.Activities.Designers2.SqlServerDatabase
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(SqlServerDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private readonly IAsyncWorker _worker;
-        private readonly IViewPropertyBuilder _propertyBuilder;
+        readonly IAsyncWorker _worker;
+        readonly IViewPropertyBuilder _propertyBuilder;
 
         public ICommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
+        string Type => GetProperty<string>();
 
 
         void AddTitleBarMappingToggle()

@@ -29,9 +29,9 @@ namespace Warewolf.Studio.ViewModels
     {
         protected ObservableCollection<IEnvironmentViewModel> _environments;
         protected string _searchText;
-        private bool _isRefreshing;
-        private IExplorerTreeItem _selectedItem;
-        private object[] _selectedDataItems;
+        bool _isRefreshing;
+        IExplorerTreeItem _selectedItem;
+        object[] _selectedDataItems;
         bool _fromActivityDrop;
         bool _allowDrag;
 
@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
 
-        private void CreateFolder()
+        void CreateFolder()
         {
             if (SelectedItem != null && SelectedItem.CreateFolderCommand.CanExecute(null))
             {
@@ -185,7 +185,7 @@ namespace Warewolf.Studio.ViewModels
 
         }
 
-        private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
+        async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
             environmentViewModel.IsConnecting = true;
@@ -340,7 +340,7 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
         }
 
-        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
             var environmentViewModel = CreateEnvironmentViewModel(sender, environmentId, true);
             SelectedEnvironment = await environmentViewModel.ConfigureAwait(true);
@@ -444,7 +444,7 @@ namespace Warewolf.Studio.ViewModels
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                IPopupController controller = CustomContainer.Get<IPopupController>();
+                var controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
                 if (!ShowServerDownError)
                 {
@@ -472,7 +472,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void RemoveEnvironmentFromCollection(IServer server)
+        void RemoveEnvironmentFromCollection(IServer server)
         {
             var environmentModel = _environments?.FirstOrDefault(model => model?.Server?.EnvironmentID == server?.EnvironmentID);
             if (environmentModel != null)

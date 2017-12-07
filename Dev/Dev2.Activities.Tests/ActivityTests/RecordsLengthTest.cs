@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = @"5";
             GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out string actual, out string error);
 
@@ -58,11 +58,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecordsetLengthOutputToRecset()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "5";
             GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> actual, out string error);
-            string actualSet = actual.First(c => !string.IsNullOrEmpty(c));
+            var actualSet = actual.First(c => !string.IsNullOrEmpty(c));
 
             // remove test datalist ;)
 
@@ -217,7 +217,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string recordSetName, string RecordsLength)
+        void SetupArguments(string currentDL, string testData, string recordSetName, string RecordsLength)
         {
             TestStartNode = new FlowStep
             {

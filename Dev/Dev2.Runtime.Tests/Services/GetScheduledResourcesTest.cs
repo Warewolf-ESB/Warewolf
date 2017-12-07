@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.Services
     {
 
 
-        private Mock<IServerSchedulerFactory> _factory;
+        Mock<IServerSchedulerFactory> _factory;
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.Services
             }
         }
 
-        private StringBuilder RunOutput()
+        StringBuilder RunOutput()
         {
             var esbMethod = new GetScheduledResources();
             _factory = new Mock<IServerSchedulerFactory>();

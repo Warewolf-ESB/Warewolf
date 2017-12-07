@@ -24,7 +24,7 @@ namespace Dev2.Data.TO
     public class ErrorResultTO : IErrorResultTO
     {
 
-        private readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
+        readonly IList<StringBuilder> _errorList = new List<StringBuilder>();
 
         /// <summary>
         /// Adds the error.
@@ -105,7 +105,7 @@ namespace Dev2.Data.TO
         /// <returns></returns>
         public string MakeDisplayReady()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
             foreach(StringBuilder e in _errorList)
             {
@@ -126,9 +126,9 @@ namespace Dev2.Data.TO
         public string MakeDataListReady() => MakeDataListReady(true);
         public string MakeDataListReady(bool asXml)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            if(!asXml)
+            if (!asXml)
             {
                 result.Append("\"errors\": [ ");
             }
@@ -166,9 +166,9 @@ namespace Dev2.Data.TO
             return result.ToString();
         }
 
-        private string FormatErrorMessage(string s)
+        string FormatErrorMessage(string s)
         {
-            if(s.Contains("Cannot set unknown member"))
+            if (s.Contains("Cannot set unknown member"))
             {
                 return ErrorResource.ResourceHasUnrecognizedFormatting;
             }
@@ -182,14 +182,14 @@ namespace Dev2.Data.TO
         /// <returns>ErrorResultsTO</returns>
         public static ErrorResultTO MakeErrorResultFromDataListString(string errorsString)
         {
-            ErrorResultTO result = new ErrorResultTO();
+            var result = new ErrorResultTO();
             try
             {
                 if(!string.IsNullOrEmpty(errorsString))
                 {
                     errorsString = string.Concat("<Error>", errorsString, "</Error>");
-                    XElement errorNode = XElement.Parse(errorsString);
-                    foreach(XElement element in errorNode.Elements("InnerError"))
+                    var errorNode = XElement.Parse(errorsString);
+                    foreach (XElement element in errorNode.Elements("InnerError"))
                     {
                         result.AddError(element.Value);
                     }

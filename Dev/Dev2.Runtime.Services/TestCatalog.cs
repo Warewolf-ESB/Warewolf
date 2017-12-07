@@ -21,11 +21,11 @@ namespace Dev2.Runtime
 {
     public class TestCatalog : ITestCatalog
     {
-        private readonly DirectoryWrapper _directoryWrapper;
-        private readonly Dev2JsonSerializer _serializer;
-        private readonly FileWrapper _fileWrapper;
+        readonly DirectoryWrapper _directoryWrapper;
+        readonly Dev2JsonSerializer _serializer;
+        readonly FileWrapper _fileWrapper;
 
-        private static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
+        static readonly Lazy<TestCatalog> LazyCat = new Lazy<TestCatalog>(() =>
         {
             var c = new TestCatalog();
             return c;
@@ -73,10 +73,10 @@ namespace Dev2.Runtime
                 return serviceTestModelTos;
             });
         }
-               
-        private void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
+
+        void UpdateTestToInvalid(List<IServiceTestModelTO> testsToUpdate)
         {
-            foreach(var serviceTestModelTO in testsToUpdate)
+            foreach (var serviceTestModelTO in testsToUpdate)
             {
                 serviceTestModelTO.TestFailing = false;
                 serviceTestModelTO.TestPassed = false;
@@ -85,7 +85,7 @@ namespace Dev2.Runtime
                 UpdateStepOutputsForTest(serviceTestModelTO);
                 if (serviceTestModelTO.Outputs != null)
                 {
-                    foreach(var serviceTestOutput in serviceTestModelTO.Outputs)
+                    foreach (var serviceTestOutput in serviceTestModelTO.Outputs)
                     {
                         if (serviceTestOutput.Result != null)
                         {
@@ -93,7 +93,7 @@ namespace Dev2.Runtime
                         }
                     }
                 }
-                
+
             }
         }
 
@@ -118,13 +118,13 @@ namespace Dev2.Runtime
             }
         }
 
-        private void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
+        void UpdateStepOutputsForTest(IServiceTestModelTO serviceTestModelTo)
         {
-            if(serviceTestModelTo.TestSteps != null)
+            if (serviceTestModelTo.TestSteps != null)
             {
                 foreach (var serviceTestStep in serviceTestModelTo.TestSteps)
                 {
-                    if(serviceTestStep.Children != null)
+                    if (serviceTestStep.Children != null)
                     {
                         var childs = serviceTestStep.Children.Flatten(step => step.Children);
                         foreach (var child in childs)
@@ -152,7 +152,7 @@ namespace Dev2.Runtime
             Load();
         }
 
-        private void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
+        void UpdateOutputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> outputDefs)
         {
             if (outputDefs.Count == 0)
             {
@@ -210,7 +210,7 @@ namespace Dev2.Runtime
 
         }
 
-        private static void ProcessRecordsetOutputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
+        static void ProcessRecordsetOutputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
         {
             var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
             var indexes = serviceTestModelTO.Outputs.Where(output => DataListUtil.ExtractRecordsetNameFromValue(output.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
@@ -241,7 +241,7 @@ namespace Dev2.Runtime
             }
         }
 
-        private void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
+        void UpdateInputsForTest(IServiceTestModelTO serviceTestModelTO, IList<IDev2Definition> inputDefs)
         {
             if (inputDefs.Count == 0)
             {
@@ -294,7 +294,7 @@ namespace Dev2.Runtime
             }
         }
 
-        private static void ProcessRecordsetInputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
+        static void ProcessRecordsetInputs(IServiceTestModelTO serviceTestModelTO, IDev2Definition dev2Definition)
         {
             var rec = DataListUtil.CreateRecordsetDisplayValue(dev2Definition.RecordSetName, dev2Definition.Name, "");
             var indexes = serviceTestModelTO.Inputs.Where(input => DataListUtil.ExtractRecordsetNameFromValue(input.Variable) == dev2Definition.RecordSetName).Select(input => DataListUtil.ExtractIndexRegionFromRecordset(input.Variable)).Distinct(StringComparer.OrdinalIgnoreCase).ToList();
@@ -325,7 +325,7 @@ namespace Dev2.Runtime
             }
         }
 
-        private void SaveTestToDisk(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
+        void SaveTestToDisk(Guid resourceId, IServiceTestModelTO serviceTestModelTo)
         {
             var dirPath = GetTestPathForResourceId(resourceId);
             _directoryWrapper.CreateIfNotExists(dirPath);
@@ -355,7 +355,7 @@ namespace Dev2.Runtime
             }
         }
 
-        private List<IServiceTestModelTO> GetTestList(string resourceTestDirectory)
+        List<IServiceTestModelTO> GetTestList(string resourceTestDirectory)
         {
             var serviceTestModelTos = new List<IServiceTestModelTO>();
             var files = _directoryWrapper.GetFiles(resourceTestDirectory);
@@ -421,7 +421,7 @@ namespace Dev2.Runtime
             }
             Load();
         }
-        private static string GetTestPathForResourceId(Guid resourceId)
+        static string GetTestPathForResourceId(Guid resourceId)
         {
             var testPath = EnvironmentVariables.TestPath;
             var dirPath = Path.Combine(testPath, resourceId.ToString());

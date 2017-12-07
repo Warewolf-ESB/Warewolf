@@ -20,9 +20,6 @@ namespace Dev2.Activities.Designers2.XPath
             DataGrid = LargeDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement(0);
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement(0);
     }
 }
