@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ViewModels
                     a.CanDrop = false;
                     a.CanDrag = false;
                 });
-            }            
+            }
             if (SelectedEnvironment != null)
             {
                 SelectedEnvironment.AllowResourceCheck = true;

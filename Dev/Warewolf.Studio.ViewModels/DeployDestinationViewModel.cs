@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
 
         private async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
         {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true).ConfigureAwait(true);
+            var environmentViewModel = await CreateEnvironmentViewModelAsync(sender, server.EnvironmentID, true).ConfigureAwait(true);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
