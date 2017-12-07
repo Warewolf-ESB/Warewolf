@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ViewModels
 
         private bool FilterByType { get; set; }
 
-        protected override async Task Refresh(bool refresh)
+        protected override async Task RefreshAsync(bool refresh)
         {
             IsRefreshing = true;
             foreach (var environmentViewModel in Environments)
