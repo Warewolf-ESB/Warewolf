@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,9 +24,6 @@ using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
 
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ConnectControlViewModel : BindableBase, IConnectControlViewModel, IUpdatesHelp
@@ -41,7 +38,7 @@ namespace Warewolf.Studio.ViewModels
         public IPopupController PopupController { get; set; }
         readonly IServerRepository _serverRepository;
 
-        public ConnectControlViewModel(IServer server, IEventAggregator aggregator) 
+        public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
             : this(server, aggregator, null, null)
         {
         }
@@ -74,7 +71,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
-            ShouldUpdateActiveEnvironment = false;          
+            ShouldUpdateActiveEnvironment = false;
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
@@ -203,7 +200,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        async Task<bool> ConnectOrDisconnect()
+        async Task<bool> ConnectOrDisconnectAsync()
         {
             var isConnected = false;
             if (_selectedConnection == null)
@@ -227,7 +224,7 @@ namespace Warewolf.Studio.ViewModels
                 IsConnecting = true;
                 IsConnected = false;
                 IsLoading = true;
-                isConnected = await Connect(_selectedConnection).ConfigureAwait(true);
+                isConnected = await ConnectAsync(_selectedConnection).ConfigureAwait(true);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
                 IsLoading = false;
@@ -236,13 +233,13 @@ namespace Warewolf.Studio.ViewModels
             return isConnected;
         }
 
-        async Task CheckVersionConflict()
+        async Task CheckVersionConflictAsync()
         {
             try
             {
                 IsLoading = true;
                 IsConnecting = true;
-                var isConnected = await ConnectOrDisconnect().ConfigureAwait(true);
+                var isConnected = await ConnectOrDisconnectAsync().ConfigureAwait(true);
                 if (_selectedConnection.IsConnected && isConnected)
                 {
                     Version.TryParse(_selectedConnection.GetServerVersion(), out Version sourceVersionNumber);
@@ -266,10 +263,7 @@ namespace Warewolf.Studio.ViewModels
         IServer Server { get; set; }
         public ObservableCollection<IServer> Servers
         {
-            get
-            {
-                return _servers;
-            }
+            get => _servers;
             private set
             {
                 _servers = value;
@@ -278,10 +272,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public IServer SelectedConnection
         {
-            get
-            {
-                return _selectedConnection;
-            }
+            get => _selectedConnection;
             set
             {
                 if (value != null && !Equals(_selectedConnection, value))
@@ -289,8 +280,7 @@ namespace Warewolf.Studio.ViewModels
                     _selectedConnection = value;
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-
-                        var isConnected = CheckVersionConflict();
+                        var isConnected = CheckVersionConflictAsync();
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
@@ -330,10 +320,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand NewConnectionCommand { get; private set; }
         public bool IsConnected
         {
-            get
-            {
-                return _isConnected;
-            }
+            get => _isConnected;
             private set
             {
                 _isConnected = value;
@@ -342,10 +329,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsConnecting
         {
-            get
-            {
-                return _isConnecting;
-            }
+            get => _isConnecting;
             private set
             {
                 _isConnecting = value;
@@ -354,10 +338,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -365,7 +346,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> Connect(IServer connection)
+        public async Task<bool> ConnectAsync(IServer connection)
         {
             if (connection != null)
             {
@@ -384,8 +365,8 @@ namespace Warewolf.Studio.ViewModels
                         var result = PopupController?.ShowConnectionTimeoutConfirmation(connection.DisplayName);
                         if (result == MessageBoxResult.Yes)
                         {
-                            await Connect(connection);
-                        }                                                 
+                            await ConnectAsync(connection);
+                        }
                         else
                         {
                             ServerDisconnected?.Invoke(this, connection);

@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("4", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
             DeployUIMap.Enter_DeployViewOnly_Into_Deploy_Source_Filter("Check Result");
             DeployUIMap.DeSelect_Deploy_First_Source_Item();
-            Assert.AreEqual("0", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
+            Assert.AreEqual("3", DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.OverrideHyperlink.UIItem1Text.DisplayText);
         }
 
 
