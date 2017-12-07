@@ -8,14 +8,13 @@ using Dev2.Data;
 using Dev2.TO;
 using Microsoft.SharePoint.Client;
 using Warewolf.Storage.Interfaces;
-using Dev2.Common;
 
 namespace Dev2.Activities.Sharepoint
 {
-    public class SharepointUtils
+    public static class SharepointUtils
     {
 
-        public IEnumerable<SharepointReadListTo> GetValidReadListItems(IList<SharepointReadListTo> sharepointReadListTos)
+        public static IEnumerable<SharepointReadListTo> GetValidReadListItems(IList<SharepointReadListTo> sharepointReadListTos)
         {
             if (sharepointReadListTos == null)
             {
@@ -24,9 +23,9 @@ namespace Dev2.Activities.Sharepoint
             return sharepointReadListTos.Where(to => !string.IsNullOrEmpty(to.VariableName));
         }
 
-        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update) => BuildCamlQuery(env, sharepointSearchTos, fields, update, true);
+        public static CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update) => BuildCamlQuery(env, sharepointSearchTos, fields, update, true);
 
-        public CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update, bool requireAllCriteriaToMatch)
+        public static CamlQuery BuildCamlQuery(IExecutionEnvironment env, List<SharepointSearchTo> sharepointSearchTos, List<ISharepointFieldTo> fields, int update, bool requireAllCriteriaToMatch)
         {
             var camlQuery = CamlQuery.CreateAllItemsQuery();
             var validFilters = new List<SharepointSearchTo>();
@@ -37,76 +36,58 @@ namespace Dev2.Activities.Sharepoint
             var filterCount = validFilters.Count;
             if (filterCount > 0)
             {
-                var queryString = new StringBuilder("<View><Query><Where>");
-                if (filterCount > 1)
-                {
-                    queryString.Append(requireAllCriteriaToMatch ? "<And>" : "<Or>");
-                }
-                foreach (var sharepointSearchTo in validFilters)
-                {
-                    var searchTo = sharepointSearchTo;
-                    var sharepointFieldTo = fields.FirstOrDefault(to => to.InternalName == searchTo.InternalName);
-                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo,update);
-                    if (buildQueryFromTo != null)
-                    {
-                        queryString.AppendLine(string.Join(Environment.NewLine, buildQueryFromTo));
-                    }
-                }
-                if (filterCount > 1)
-                {
-                    queryString.Append(requireAllCriteriaToMatch ? "</And>" : "</Or>");
-                }
-                queryString.Append("</Where></Query></View>");
-                camlQuery.ViewXml = queryString.ToString();
+                BuildQueryString(env, fields, update, requireAllCriteriaToMatch, camlQuery, validFilters, filterCount);
 
             }
             return camlQuery;
         }
 
-        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo,int update)
+        static void BuildQueryString(IExecutionEnvironment env, List<ISharepointFieldTo> fields, int update, bool requireAllCriteriaToMatch, CamlQuery camlQuery, List<SharepointSearchTo> validFilters, int filterCount)
+        {
+            var queryString = new StringBuilder("<View><Query><Where>");
+            if (filterCount > 1)
+            {
+                queryString.Append(requireAllCriteriaToMatch ? "<And>" : "<Or>");
+            }
+            foreach (var sharepointSearchTo in validFilters)
+            {
+                var searchTo = sharepointSearchTo;
+                var sharepointFieldTo = fields.FirstOrDefault(to => to.InternalName == searchTo.InternalName);
+                var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo, update);
+                if (buildQueryFromTo != null)
+                {
+                    queryString.AppendLine(string.Join(Environment.NewLine, buildQueryFromTo));
+                }
+            }
+            if (filterCount > 1)
+            {
+                queryString.Append(requireAllCriteriaToMatch ? "</And>" : "</Or>");
+            }
+            queryString.Append("</Where></Query></View>");
+            camlQuery.ViewXml = queryString.ToString();
+        }
+
+        static IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo,int update)
         {
             var warewolfEvalResult = env.Eval(sharepointSearchTo.ValueToMatch, update);
             var fieldType = sharepointFieldTo.GetFieldType();
             if (sharepointSearchTo.SearchType == "In")
             {
-                var startSearchTerm = string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef>", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName);
-               
+                var startSearchTerm = $"{SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType)}<FieldRef Name=\"{sharepointSearchTo.InternalName}\"></FieldRef>";
+
                 startSearchTerm+="<Values>";
                 if(warewolfEvalResult.IsWarewolfAtomListresult)
                 {
                     if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
                     {
-                        foreach (var warewolfAtom in listResult.Item)
-                        {
-                            var valueString = warewolfAtom.ToString();
-                            if (valueString.Contains(","))
-                            {
-                                var listOfValues = valueString.Split(',');
-                                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
-                            }
-                            else
-                            {
-                                var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
-                                startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
-                            }
-                        }
+                        startSearchTerm = GetSearchTermFromListResult(sharepointFieldTo, fieldType, startSearchTerm, listResult);
                     }
                 }
                 else
                 {
                     if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                     {
-                        var valueString = scalarResult.Item.ToString();
-                        if (valueString.Contains(","))
-                        {
-                            var listOfValues = valueString.Split(',');
-                            startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
-                        }
-                        else
-                        {
-                            var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
-                            startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
-                        }
+                        startSearchTerm = GetStartSearchTermFromScalarResult(sharepointFieldTo, fieldType, startSearchTerm, scalarResult);
                     }
                 }
                 startSearchTerm += "</Values>";
@@ -115,16 +96,59 @@ namespace Dev2.Activities.Sharepoint
             }
             else
             {
-                
-                WarewolfIterator iterator = new WarewolfIterator(warewolfEvalResult);
+
+                var iterator = new WarewolfIterator(warewolfEvalResult);
                 while (iterator.HasMoreData())
                 {
-                    yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"{2}\">{3}</Value>{4}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName, fieldType, CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));
+                    yield return $"{SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType)}<FieldRef Name=\"{sharepointSearchTo.InternalName}\"></FieldRef><Value Type=\"{fieldType}\">{CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type)}</Value>{SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType)}";
                 }
             }
         }
 
-        public object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)
+        static string GetStartSearchTermFromScalarResult(ISharepointFieldTo sharepointFieldTo, string fieldType, string searchTerm, CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
+        {
+            var startSearchTerm = searchTerm;
+            var valueString = scalarResult.Item.ToString();
+            if (valueString.Contains(","))
+            {
+                var listOfValues = valueString.Split(',');
+                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
+            }
+            else
+            {
+                var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                startSearchTerm += $"<Value Type=\"{fieldType}\">{value}</Value>";
+            }
+
+            return startSearchTerm;
+        }
+
+        static string GetSearchTermFromListResult(ISharepointFieldTo sharepointFieldTo, string fieldType, string searchTerm, CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
+        {
+            var startSearchTerm = searchTerm;
+            var builder = new StringBuilder();
+            builder.Append(startSearchTerm);
+            foreach (var warewolfAtom in listResult.Item)
+            {
+                var valueString = warewolfAtom.ToString();
+                if (valueString.Contains(","))
+                {
+                    var listOfValues = valueString.Split(',');
+                    startSearchTerm = listOfValues
+                                      .Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type))
+                                      .Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
+                }
+                else
+                {
+                    var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
+                    builder.Append($"<Value Type=\"{fieldType}\">{value}</Value>");
+                }
+            }
+            startSearchTerm = builder.ToString();
+            return startSearchTerm;
+        }
+
+        public static object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)
         {
             object returnValue = null;
             switch (type)
@@ -139,7 +163,7 @@ namespace Dev2.Activities.Sharepoint
                 case SharepointFieldType.DateTime:
                     returnValue = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
                     break;
-                case SharepointFieldType.Integer:                
+                case SharepointFieldType.Integer:
                     returnValue = Convert.ToInt32(value);
                     break;
                 case SharepointFieldType.Text:

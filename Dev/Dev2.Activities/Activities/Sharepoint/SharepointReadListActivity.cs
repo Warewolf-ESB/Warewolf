@@ -34,7 +34,6 @@ namespace Dev2.Activities.Sharepoint
             ReadListItems = new List<SharepointReadListTo>();
             FilterCriteria = new List<SharepointSearchTo>();
             RequireAllCriteriaToMatch = true;
-            SharepointUtils = new SharepointUtils();
         }
 
         public IList<SharepointReadListTo> ReadListItems { get; set; }
@@ -42,7 +41,6 @@ namespace Dev2.Activities.Sharepoint
         public string SharepointList { get; set; }
         public List<SharepointSearchTo> FilterCriteria { get; set; }
         public bool RequireAllCriteriaToMatch { get; set; }
-        public SharepointUtils SharepointUtils { get; set; }
 
         /// <summary>
         /// When overridden runs the activity's execution logic 
