@@ -21,8 +21,8 @@ namespace Dev2.Activities
 {
     public abstract class DsfBaseActivity : DsfActivityAbstract<string>
     {
-        private List<string> _executionResult;
-       public IResponseManager ResponseManager { get; set; }
+        List<string> _executionResult;
+        public IResponseManager ResponseManager { get; set; }
         #region Get Debug Inputs/Outputs
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
@@ -49,7 +49,7 @@ namespace Dev2.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -62,8 +62,8 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             _executionResult = new List<string>();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);

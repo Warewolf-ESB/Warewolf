@@ -12,7 +12,7 @@ using CommandLine;
 
 namespace Dev2
 {
-    internal class CommandLineParameters : CommandLineOptionsBase
+    class CommandLineParameters : CommandLineOptionsBase
     {
         [Option("s", "startservice", HelpText = "Starts the windows service.", DefaultValue = false)]
         public bool StartService { get; set; }

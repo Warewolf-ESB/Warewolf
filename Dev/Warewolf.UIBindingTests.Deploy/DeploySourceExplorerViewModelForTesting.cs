@@ -58,7 +58,7 @@ namespace Warewolf.UIBindingTests.Deploy
         protected override void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>(Children ?? new List<IExplorerItemViewModel> { CreateExplorerVMS() });
-            PrivateObject p = new PrivateObject(localhostEnvironment);
+            var p = new PrivateObject(localhostEnvironment);
             p.SetField("_isConnected", true);
             localhostEnvironment.ResourceId = Guid.Empty;
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
@@ -68,7 +68,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             ExplorerItemViewModel ax = null;
             var perm = new Mock<IServer>();
-            List<IWindowsGroupPermission> perms = new List<IWindowsGroupPermission>();
+            var perms = new List<IWindowsGroupPermission>();
             perms.Add(new WindowsGroupPermission
             {
                 Permissions = Permissions.View

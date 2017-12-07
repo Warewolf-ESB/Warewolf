@@ -20,9 +20,6 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             DataGrid = LargeDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

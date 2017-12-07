@@ -16,7 +16,7 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskEvent : ITaskEvent
     {
-        private readonly TaskEvent _nativeObject;
+        readonly TaskEvent _nativeObject;
 
         public Dev2TaskEvent(TaskEvent nativeObject)
         {

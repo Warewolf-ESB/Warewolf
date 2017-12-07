@@ -19,9 +19,6 @@ namespace Dev2.Activities.Designers2.SharePointDeleteFile
             InitializeComponent();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

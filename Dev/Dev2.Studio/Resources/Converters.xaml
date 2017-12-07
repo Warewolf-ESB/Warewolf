@@ -21,14 +21,11 @@
     <!-- ========== Converter for XamDock ========== -->
 
     <converters:StringToResourceConverter x:Key="StringToResourceConverter" />
-    <converters4:TypeToIconConverter x:Key="TypeToIconConverter" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisConverter" />    
     <converters2:EmptyStringToVisibilityConverter x:Key="EmptyStringToVisibilityConverter"/>
     <converters:NegateVisibilityConverter x:Key="NegateVisibilityConverter" />
-    <converters2:DoubleToMarginLeftConverter x:Key="DoubleToMarginLeftConverter" />
     <converters:ModelItemToActivityConverter x:Key="ModelItemToActivityConverter" />
     <converters3:MessageBoxButtonToVisibilityConverter x:Key="MessageBoxButtonToVisibilityConverter" />
-    <converters3:EmailSourceToDisplayTextConverter x:Key="EmailSourceToDisplayTextConverter" />
     <converters3:MessageBoxImageToSystemIconConverter x:Key="MessageBoxImageToSystemIconConverter" />
     <converters5:SchedulerStatusToCheckedConverter x:Key="SchedulerStatusToCheckedConverter" />
     <converters7:InverseScheduleStatusConverter x:Key="InverseScheduleStatusConverter" />
@@ -37,32 +34,25 @@
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsVisible" NotNullVisibilityValue="Collapsed" NullVisibilityValue="Visible" />
     <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverterNullIsCollapsed" NotNullVisibilityValue="Visible" NullVisibilityValue="Collapsed" />
     <converters3:NavigationViewModelPermissionVisibilityConverter x:Key="NavigationViewModelPermissionVisibilityConverter" />
-    <converters3:NavigationViewModelPermissionToBooleanConverter x:Key="NavigationViewModelPermissionToBooleanConverter" />
     <converters:EnumToStringConverter x:Key="EnumToStringConverter" />
     <converters:EnumDiscriptionToStringConverter x:Key="EnumDiscriptionToStringConverter" />
     <converters:TimeSpanToStringConverter x:Key="TimeSpanToStringConverter" Format="hh\:mm\:ss\.fffffff" />
     <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter" />
+    <converters1:DateTimeFormatConverter x:Key="DateTimeFormatConverter" />
     <converters:CountToVisibilityConverter x:Key="CountToVisibilityConverter" />
     <converters:IntToVisibilityConverter x:Key="IntToVisibilityConverter" />
-    <converters3:NullToDebugImageConverter x:Key="NullToDebugImageConverter" />
-    <converters3:NullToDebugRibbonButtonTextConverter x:Key="NullToDebugRibbonButtonTextConverter" />
-    <converters:StringToAutomationIdConverter x:Key="StringToAutomationIdConverter" />
-    <converters:DataListItemModelToAutomationIdConverter x:Key="DataListItemModelToAutomationIdConverter" />
     <converters:StringToVisibilityConverter x:Key="StringToVisibilityConverter" />
     <converters1:PaddingThicknessConverter x:Key="PaddingThicknessConverter" />
     <converters:MultipleStringToVisilityValueConverter x:Key="MultipleStringToVisilityValueConverter" />
     <converters:MultipleBoolToVisibilityValueConverter x:Key="MultipleBoolToVisibilityValueConverter" />
     <converters1:SchedulerMultiBoolToVisibilityConverter x:Key="SchedulerMultiBoolToVisibilityConverter" />
-    <converters:StringToVisibilityConverterMulti x:Key="StringToVisibilityConverterMulti" />
     <converters:BoolToValueConverter x:Key="BoolToPlusMinusConverter" TrueValue="+" FalseValue="-" />
     <converters:BoolToValueConverter x:Key="BoolToEnabledConverterNegative" TrueValue="False" FalseValue="True" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
-    <converters5:ExplorerItemModelToIconConverter x:Key="ExplorerItemModelToIconConverter" />
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
-    <converters:NullToBoolConvert x:Key="NullToBoolConvert"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
     <converters:IntEnsureMinConverter x:Key="IntEnsureMinConverter" />

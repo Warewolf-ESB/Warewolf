@@ -18,9 +18,6 @@ namespace Dev2.Intellisense.Helper
 
     public class ShareCollectionFactory : IShareCollectionFactory
     {
-        public ShareCollection CreateShareCollection(string server)
-        {
-            return  new ShareCollection(server);
-        }
+        public ShareCollection CreateShareCollection(string server) => new ShareCollection(server);
     }
 }

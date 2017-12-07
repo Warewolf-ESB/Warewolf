@@ -199,8 +199,8 @@ namespace Dev2.Workspaces
             }
             ServiceName = GetAttributeValue(xml, "ServiceName");
             bool isWorkflowSaved;
-            string attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
-            if(String.IsNullOrEmpty(attributeValue))
+            var attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
+            if (String.IsNullOrEmpty(attributeValue))
             {
                 isWorkflowSaved = true;
             }

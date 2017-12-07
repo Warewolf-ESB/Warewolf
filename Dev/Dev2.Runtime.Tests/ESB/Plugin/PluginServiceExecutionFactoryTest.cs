@@ -170,7 +170,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                PluginInvokeArgs args = new PluginInvokeArgs
+                var args = new PluginInvokeArgs
                 {
                     AssemblyLocation = source.AssemblyLocation
                     ,
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 loc = assembly.Location;
             }
 
-            Guid resourceID = Guid.Empty;
+            var resourceID = Guid.Empty;
             if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();

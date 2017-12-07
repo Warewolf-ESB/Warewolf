@@ -31,13 +31,13 @@ namespace Warewolf.Studio.ViewModels
     {
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
-        private AuthenticationType _authenticationType;
-        private string _hostName;
-        private string _userName;
-        private string _password;
-        private string _defaultQuery;
-        private string _testMessage;
-        private string _testDefault;
+        AuthenticationType _authenticationType;
+        string _hostName;
+        string _userName;
+        string _password;
+        string _defaultQuery;
+        string _testMessage;
+        string _testDefault;
         readonly IManageWebServiceSourceModel _updateManager;
         IWebServiceSource _webServiceSource;
         bool _testPassed;
@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
         CancellationTokenSource _token;
         readonly string _warewolfserverName;
         string _headerText;
-        private bool _isDisposed;
+        bool _isDisposed;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker,IExternalProcessExecutor executor)
             : base("WebSource")

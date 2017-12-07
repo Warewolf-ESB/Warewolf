@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 
@@ -35,9 +34,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             set;
         }
 
-        [NotifyPropertyChangedInvocator]
-        
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

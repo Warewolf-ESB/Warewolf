@@ -24,10 +24,10 @@ namespace Warewolf.Studio.ViewModels
     public class FileChooser : BindableBase, IFileChooser
     {
         readonly Action _closeAction;
-        private bool _allowMultipleSelection;
-        private string _selectedDriveName;
-        private string _filesTooltip;
-        private string _selectTooltip;
+        bool _allowMultipleSelection;
+        string _selectedDriveName;
+        string _filesTooltip;
+        string _selectTooltip;
 
         public MessageBoxResult Result { get; private set; }
 
@@ -69,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (name.Contains("\\"))
             {
-                string node = name.Contains(":") ? name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal) + 1) : name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal));
+                var node = name.Contains(":") ? name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal) + 1) : name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal));
                 var toExpand = model.FirstOrDefault(a => a.Name == node);
                 if (toExpand != null)
                 {

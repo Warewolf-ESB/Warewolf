@@ -11,21 +11,20 @@ namespace Dev2.Settings.Scheduler
     public static class CredentialUI
     {
         [DllImport("ole32.dll")]
-        private static extern void CoTaskMemFree(IntPtr ptr);
+        static extern void CoTaskMemFree(IntPtr ptr);
 
         [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Auto)]
-
-        private struct CREDUI_INFO
+        struct CREDUI_INFO
         {
             public int cbSize;
-            private readonly IntPtr hwndParent;
+            readonly IntPtr hwndParent;
             public string pszMessageText;
             public string pszCaptionText;
-            private readonly IntPtr hbmBanner;
+            readonly IntPtr hbmBanner;
         }
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]
-        private static extern bool CredUnPackAuthenticationBuffer(int dwFlags,
+        static extern bool CredUnPackAuthenticationBuffer(int dwFlags,
             IntPtr pAuthBuffer,
             uint cbAuthBuffer,
             StringBuilder pszUserName,
@@ -36,7 +35,7 @@ namespace Dev2.Settings.Scheduler
             ref int pcchMaxPassword);
 
         [DllImport("credui.dll", CharSet = CharSet.Auto)]
-        private static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO notUsedHere,
+        static extern int CredUIPromptForWindowsCredentials(ref CREDUI_INFO notUsedHere,
             int authError,
             ref uint authPackage,
             IntPtr inAuthBuffer,
@@ -49,7 +48,7 @@ namespace Dev2.Settings.Scheduler
         [ExcludeFromCodeCoverage]
         public static void GetCredentialsVistaAndUp(string taskName, out NetworkCredential networkCredential)
         {
-            CREDUI_INFO credui = new CREDUI_INFO
+            var credui = new CREDUI_INFO
             {
                 pszCaptionText = @"Please enter the credentials to use to schedule",
                 pszMessageText = taskName

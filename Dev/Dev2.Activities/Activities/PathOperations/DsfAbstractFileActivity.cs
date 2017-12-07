@@ -41,8 +41,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
     {
 
-        private string _username;
-        private string _password;
+        string _username;
+        string _password;
 
         protected DsfAbstractFileActivity(string displayName)
             : base(displayName)
@@ -55,14 +55,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
 
             // Process if no errors
 
@@ -76,7 +76,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 try
                 {
                     //Execute the concrete action for the specified activity
-                    IList<OutputTO> outputs = ExecuteConcreteAction(dataObject, out errors, update);
+                    var outputs = ExecuteConcreteAction(dataObject, out errors, update);
 
                     allErrors.MergeErrors(errors);
 

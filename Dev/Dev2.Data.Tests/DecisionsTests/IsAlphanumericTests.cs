@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isAlphanumeric = new IsAlphanumeric();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "'";
             //------------Execute Test---------------------------
             bool result = isAlphanumeric.Invoke(cols);
@@ -28,7 +28,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isAlphanumeric = new IsAlphanumeric();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             //------------Execute Test---------------------------
             bool result = isAlphanumeric.Invoke(cols);

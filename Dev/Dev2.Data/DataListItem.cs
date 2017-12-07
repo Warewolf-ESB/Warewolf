@@ -20,14 +20,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Fields
 
-        private string _field;
-        private string _recordset;
-        private string _displayValue;
-        private bool _canHaveMutipleRows;
-        private string _index;
-        private string _value;
-        private enRecordsetIndexType _recordsetIndexType;
-        private bool _isObject;
+        string _field;
+        string _recordset;
+        string _displayValue;
+        bool _canHaveMutipleRows;
+        string _index;
+        string _value;
+        enRecordsetIndexType _recordsetIndexType;
+        bool _isObject;
 
         #endregion Fields
 

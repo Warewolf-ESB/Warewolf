@@ -19,7 +19,7 @@ namespace Dev2.Webs
         internal static string CleanModelData(string callBackHandler)
         {
             // Remove naughty chars...
-            string tmp = callBackHandler;
+            var tmp = callBackHandler;
             // remove the silly Choose... from the string
             tmp = Dev2DecisionStack.RemoveDummyOptionsFromModel(tmp.ToStringBuilder());
             // remove [[]], &, !

@@ -202,14 +202,12 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityService = new TestSecurityServiceBase { ReadPermissionsResults = permissions };
             securityService.Read();
 
-            var comparer = new WindowsGroupPermissionEqualityComparer();
-
             //------------Execute Test---------------------------
             securityService.Remove(toBeRemovedID);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, securityService.Permissions.Count);
-            Assert.IsTrue(comparer.Equals(permissions[0], securityService.Permissions[0]));
+            Assert.IsTrue(WindowsGroupPermissionEquals(permissions[0], securityService.Permissions[0]));
         }
 
         [TestMethod]
@@ -230,14 +228,14 @@ namespace Dev2.Infrastructure.Tests.Services.Security
             var securityService = new TestSecurityServiceBase { ReadPermissionsResults = permissions };
             securityService.Read();
 
-            var comparer = new WindowsGroupPermissionEqualityComparer();
-
             //------------Execute Test---------------------------
             securityService.Remove(toBeRemovedID);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, securityService.Permissions.Count);
-            Assert.IsTrue(comparer.Equals(permissions[0], securityService.Permissions[0]));
+            Assert.IsTrue(WindowsGroupPermissionEquals(permissions[0], securityService.Permissions[0]));
         }
+
+        public static bool WindowsGroupPermissionEquals(WindowsGroupPermission x, WindowsGroupPermission y) => x.Permissions.Equals(y.Permissions) && x.ResourceID.Equals(y.ResourceID) && ((x.WindowsGroup == null) || x.WindowsGroup.Equals(y.WindowsGroup));
     }
 }

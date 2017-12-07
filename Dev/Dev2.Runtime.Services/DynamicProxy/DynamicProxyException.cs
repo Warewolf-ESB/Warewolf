@@ -9,9 +9,9 @@ namespace Dev2.Runtime.DynamicProxy
 {
     public class DynamicProxyException : ApplicationException
     {
-        private IEnumerable<MetadataConversionError> _importErrors;
-        private IEnumerable<MetadataConversionError> _codegenErrors;
-        private IEnumerable<CompilerError> _compilerErrors;
+        IEnumerable<MetadataConversionError> _importErrors;
+        IEnumerable<MetadataConversionError> _codegenErrors;
+        IEnumerable<CompilerError> _compilerErrors;
 
         public DynamicProxyException(string message)
             : base(message)
@@ -64,7 +64,7 @@ namespace Dev2.Runtime.DynamicProxy
 
         public override string ToString()
         {
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             builder.AppendLine(base.ToString());
 
             if (MetadataImportErrors != null)

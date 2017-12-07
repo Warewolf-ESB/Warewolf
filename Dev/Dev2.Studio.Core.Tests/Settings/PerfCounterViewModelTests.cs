@@ -32,8 +32,8 @@ namespace Dev2.Core.Tests.Settings
     [TestClass]
     public class PerfCounterViewModelTests
     {
-        private Mock<IServer> _mockEnvironment;
-        private Mock<IEnvironmentConnection> _mockConnection;
+        Mock<IServer> _mockEnvironment;
+        Mock<IEnvironmentConnection> _mockConnection;
 
         [TestInitialize]
         public void Setup()
@@ -524,7 +524,7 @@ namespace Dev2.Core.Tests.Settings
             var mockResourcePicker = new Mock<IResourcePickerDialog>();
             mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IServer>())).Returns(true);
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            Guid newGuid = Guid.NewGuid();
+            var newGuid = Guid.NewGuid();
             mockExplorerTreeItem.Setup(item => item.ResourceId).Returns(newGuid);
             mockExplorerTreeItem.Setup(item => item.ResourcePath).Returns("Hello World");
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("Hello World");
@@ -554,7 +554,7 @@ namespace Dev2.Core.Tests.Settings
             var mockResourcePicker = new Mock<IResourcePickerDialog>();
             mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IServer>())).Returns(false);
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            Guid newGuid = Guid.NewGuid();
+            var newGuid = Guid.NewGuid();
             mockExplorerTreeItem.Setup(item => item.ResourceId).Returns(newGuid);
             mockExplorerTreeItem.Setup(item => item.ResourcePath).Returns("Hello World");
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("Hello World");

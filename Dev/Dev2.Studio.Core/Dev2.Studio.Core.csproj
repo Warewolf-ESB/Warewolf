@@ -201,7 +201,7 @@
     <Compile Include="AppResources\Converters\BoolToValueConverter.cs" />
     <Compile Include="AppResources\Converters\BoolToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\CollectionToVisibilityConverterPositive.cs" />
-    <Compile Include="AppResources\Converters\DataListItemModelToAutomationIdConverter.cs" />
+    <Compile Include="AppResources\Converters\DateTimeFormatConverter.cs" />
     <Compile Include="AppResources\Converters\GridRowNumberConverter.cs" />
     <Compile Include="AppResources\Converters\PaddingThicknessConverter.cs" />
     <Compile Include="AppResources\Converters\DataGridRowNumberConverter.cs" />
@@ -225,16 +225,11 @@
     <Compile Include="AppResources\Converters\EnumToVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NegateVisibilityConverter.cs" />
     <Compile Include="AppResources\Converters\NullableBoolToBoolConverter.cs" />
-    <Compile Include="AppResources\Converters\NullToBoolConvert.cs" />
     <Compile Include="AppResources\Converters\NullToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\SplitTypeToEnabledConverter.cs" />
-    <Compile Include="AppResources\Converters\StringToAutomationIdConverter.cs" />
     <Compile Include="AppResources\Converters\StringToVisibilityConverter.cs" />
-    <Compile Include="AppResources\Converters\StringToVisibilityConverterMulti.cs" />
     <Compile Include="AppResources\Converters\TimeSpanToStringConverter.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\ContextualResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\DependencyInjection\EqualityComparers\EnvironmentModelEqualityComparer.cs" />
-    <Compile Include="AppResources\DependencyInjection\EqualityComparers\ResourceModelEqualityComparer.cs" />
     <Compile Include="AppResources\ExtensionMethods\DependencyObjectExtensions.cs" />
     <Compile Include="AppResources\Globals.cs" />
     <Compile Include="AppResources\TriggerActions\SetCaretIndexAction.cs">
@@ -268,7 +263,6 @@
     <Compile Include="Diagnostics\IDebugLineItem.cs" />
     <Compile Include="ExplorerDeleteProvider.cs" />
     <Compile Include="ExplorerUpdateManagerProxy.cs" />
-    <Compile Include="Messages\DeleteFolderMessage.cs" />
     <Compile Include="Messages\NewTestFromDebugMessage.cs" />
     <Compile Include="Models\DataList\ComplexObjectItemModel.cs" />
     <Compile Include="Models\DataList\DataListHeaderItemModel.cs" />
@@ -310,7 +304,6 @@
     <Compile Include="Messages\FileChooserMessage.cs" />
     <Compile Include="Messages\SaveUnsavedWorkflowMessage.cs" />
     <Compile Include="Messages\UpdateWorksurfaceDisplayName.cs" />
-    <Compile Include="Messages\DebugResourceMessage.cs" />
     <Compile Include="Messages\DebugWriterWriteMessage.cs" />
     <Compile Include="Messages\DeleteResourcesMessage.cs" />
     <Compile Include="Messages\EditActivityMessage.cs" />
@@ -323,12 +316,10 @@
     <Compile Include="Messages\IResourceMessage.cs" />
     <Compile Include="Messages\SaveAllOpenTabsMessage.cs" />
     <Compile Include="Messages\SaveResourceMessage.cs" />
-    <Compile Include="Messages\ShowDependenciesMessage.cs" />
     <Compile Include="Messages\ShowReverseDependencyVisualizer.cs" />
     <Compile Include="Messages\UpdateResourceMessage.cs" />
     <Compile Include="Models\ServerExplorerClientProxy.cs" />
     <Compile Include="Models\Server.cs" />
-    <Compile Include="Models\OperatorType.cs" />
     <Compile Include="Models\QuickVariableInput\QuickVariableInputModel.cs" />
     <Compile Include="Models\ResourceModel.cs" />
     <Compile Include="Models\ServiceDebugInfoModel.cs" />
@@ -341,7 +332,6 @@
     <Compile Include="Security\AuthorizeCommand.cs" />
     <Compile Include="Services\Communication\ICommMessage.cs" />
     <Compile Include="Services\Communication\ICommService.cs" />
-    <Compile Include="Services\Configuration\HelpConfiguration.cs" />
     <Compile Include="Services\Events\EventPublishers.cs" />
     <Compile Include="Services\Events\DebugSelectionChangedEventArgs.cs" />
     <Compile Include="Services\Events\StudioSubscriptionService.cs" />
@@ -371,7 +361,6 @@
     <Compile Include="ViewModels\Base\BaseViewModel.cs" />
     <Compile Include="ViewModels\Base\SimpleBaseViewModel.cs" />
     <Compile Include="Models\DataList\DataListItemModel.cs" />
-    <Compile Include="Diagnostics\DebugWriter.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModel.cs" />
     <Compile Include="ViewModels\DataList\InputOutputViewModelFactory.cs" />
     <Compile Include="ViewModels\Global\ResourceHelper.cs" />

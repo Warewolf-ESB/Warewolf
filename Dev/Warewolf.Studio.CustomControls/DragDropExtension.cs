@@ -10,12 +10,12 @@ namespace Warewolf.Studio.CustomControls
     {
         #region ScrollOnDragDropProperty
 
-        private static readonly DependencyProperty ScrollOnDragDropProperty =
+        static readonly DependencyProperty ScrollOnDragDropProperty =
             DependencyProperty.RegisterAttached("ScrollOnDragDrop",
                 typeof(bool),
                 typeof(DragDropExtension),
                 new PropertyMetadata(false, HandleScrollOnDragDropChanged));
- 
+
         public static bool GetScrollOnDragDrop(DependencyObject element)
         {
             if (element == null)
@@ -36,9 +36,9 @@ namespace Warewolf.Studio.CustomControls
             element.SetValue(ScrollOnDragDropProperty, value);
         }
 
-        private static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void HandleScrollOnDragDropChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            FrameworkElement container = d as FrameworkElement;
+            var container = d as FrameworkElement;
 
             if (d == null)
             {
@@ -53,21 +53,21 @@ namespace Warewolf.Studio.CustomControls
             }
         }
 
-        private static void Subscribe(FrameworkElement container)
+        static void Subscribe(FrameworkElement container)
         {
             container.PreviewDragOver += OnContainerPreviewDragOver;
         }
 
-        private static void OnContainerPreviewDragOver(object sender, DragEventArgs e)
+        static void OnContainerPreviewDragOver(object sender, DragEventArgs e)
         {
-            FrameworkElement container = sender as FrameworkElement;
+            var container = sender as FrameworkElement;
 
             if (container == null)
             {
                 return;
             }
 
-            ScrollViewer scrollViewer = GetFirstVisualChild<ScrollViewer>(container);
+            var scrollViewer = GetFirstVisualChild<ScrollViewer>(container);
 
             if (scrollViewer == null)
             {
@@ -91,24 +91,24 @@ namespace Warewolf.Studio.CustomControls
             }
         }
 
-        private static void Unsubscribe(FrameworkElement container)
+        static void Unsubscribe(FrameworkElement container)
         {
             container.PreviewDragOver -= OnContainerPreviewDragOver;
         }
 
-        private static T GetFirstVisualChild<T>(DependencyObject depObj) where T : DependencyObject
+        static T GetFirstVisualChild<T>(DependencyObject depObj) where T : DependencyObject
         {
             if (depObj != null)
             {
                 for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
                 {
-                    DependencyObject child = VisualTreeHelper.GetChild(depObj, i);
+                    var child = VisualTreeHelper.GetChild(depObj, i);
                     if (child is T visualChild)
                     {
                         return visualChild;
                     }
 
-                    T childItem = GetFirstVisualChild<T>(child);
+                    var childItem = GetFirstVisualChild<T>(child);
                     if (childItem != null)
                     {
                         return childItem;

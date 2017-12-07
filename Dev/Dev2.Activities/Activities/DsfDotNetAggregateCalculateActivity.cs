@@ -107,7 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
@@ -127,13 +127,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddDebugInputItem(IExecutionEnvironment environment, int update)
+        void AddDebugInputItem(IExecutionEnvironment environment, int update)
         {
             var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, Expression);
             AddDebugInputItem(new DebugEvalResult(calc, "fx =", environment, update));
         }
 
-        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
+        void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
         {
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }

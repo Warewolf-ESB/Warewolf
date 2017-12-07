@@ -100,9 +100,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public virtual void Resumed(NativeActivityContext context, Bookmark bookmark, object value)
         {
 
-            IDSFDataObject myDO = context.GetExtension<IDSFDataObject>();
-            ErrorResultTO errorResultTO = new ErrorResultTO();
-            Guid executionID = myDO.DataListID;
+            var myDO = context.GetExtension<IDSFDataObject>();
+            var errorResultTO = new ErrorResultTO();
+            var executionID = myDO.DataListID;
 
             if (value != null)
             {

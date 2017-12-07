@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Unzip
         public override void Validate()
         {
             Errors = null;
-            string password = ArchivePassword;
+            var password = ArchivePassword;
             ValidateUserNameAndPassword();
             ValidateDestinationUsernameAndPassword();
             ValidateInputAndOutputPaths();

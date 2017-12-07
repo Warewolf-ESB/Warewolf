@@ -22,8 +22,8 @@ namespace Dev2.Studio.Core.ViewModels
     {
         #region Class Members
 
-        private readonly IServer _server;
-        private IContextualResourceModel _contexttualResourceModel;
+        readonly IServer _server;
+        IContextualResourceModel _contexttualResourceModel;
 
         #endregion Class Members
 
@@ -75,47 +75,33 @@ namespace Dev2.Studio.Core.ViewModels
 
         #region Methods
 
-        private StringBuilder DefaultDefinition()
+        StringBuilder DefaultDefinition()
         {
-
             var sb = new StringBuilder();
 
-            switch (_contexttualResourceModel.ResourceType)
+            if (_contexttualResourceModel.ResourceType == ResourceType.Service)
             {
-                case ResourceType.Service:
-                    sb.Append(string.Format("<Service Name=\"{0}\">",
-                    _contexttualResourceModel.ResourceName));
-                    sb.Append("\r\n\t\t");
-                    sb.Append("<Actions>");
-                    sb.Append("\r\n\t\t\t");
-                    sb.Append("<Action Name=\"\" Type=\"\" SourceName=\"\" SourceMethod=\"\">");
-                    sb.Append("\r\n\t\t\t\t");
-                    sb.Append("<Input Name=\"\" Source=\"\">");
-                    sb.Append("\r\n\t\t\t\t\t");
-                    sb.Append("<Validator Type=\"Required\" />");
-                    sb.Append("\r\n\t\t\t\t");
-                    sb.Append("</Input>");
-                    sb.Append("\r\n\t\t\t");
-                    sb.Append("</Action>");
-                    sb.Append("\r\n\t\t");
-                    sb.Append("</Actions>");
-                    sb.Append("\r\n\t");
-                    sb.Append("</Service>");
-
-                    break;
-
-                case ResourceType.Source:
-                    sb.Append(string.Format("<Source Name=\"{0}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ", _contexttualResourceModel.ResourceName));
-                    break;
-                case ResourceType.WorkflowService:
-                    break;
-                case ResourceType.Unknown:
-                    break;
-                case ResourceType.Server:
-                    break;
-                default:
-                    throw new ArgumentException(ErrorResource.UnexpectedResourceType);
-
+                sb.Append($"<Service Name=\"{_contexttualResourceModel.ResourceName}\">");
+                sb.Append("\r\n\t\t");
+                sb.Append("<Actions>");
+                sb.Append("\r\n\t\t\t");
+                sb.Append("<Action Name=\"\" Type=\"\" SourceName=\"\" SourceMethod=\"\">");
+                sb.Append("\r\n\t\t\t\t");
+                sb.Append("<Input Name=\"\" Source=\"\">");
+                sb.Append("\r\n\t\t\t\t\t");
+                sb.Append("<Validator Type=\"Required\" />");
+                sb.Append("\r\n\t\t\t\t");
+                sb.Append("</Input>");
+                sb.Append("\r\n\t\t\t");
+                sb.Append("</Action>");
+                sb.Append("\r\n\t\t");
+                sb.Append("</Actions>");
+                sb.Append("\r\n\t");
+                sb.Append("</Service>");
+            }
+            if (_contexttualResourceModel.ResourceType == ResourceType.Source)
+            { 
+                sb.Append($"<Source Name=\"{_contexttualResourceModel.ResourceName}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ");
             }
 
             return sb;
@@ -123,7 +109,7 @@ namespace Dev2.Studio.Core.ViewModels
 
         void IDisposable.Dispose()
         {
-
+            GC.SuppressFinalize(this);
         }
 
         #endregion Methods

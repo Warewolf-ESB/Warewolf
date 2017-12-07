@@ -70,22 +70,22 @@ namespace Dev2.CustomControls.Behavior
             DetachEvents();
         }
 
-        private void DetachEvents()
+        void DetachEvents()
         {
             AssociatedObject.SizeChanged -= SizeChanged;
         }
 
-        private void AttachEvents()
+        void AttachEvents()
         {
             AssociatedObject.SizeChanged += SizeChanged;
         }
 
-        private void SizeChanged(object sender, SizeChangedEventArgs e)
+        void SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SetSize();
         }
 
-        private void SetSize()
+        void SetSize()
         {
             ActualHeight = AssociatedObject.ActualHeight - VerticalOffset;
             ActualWidth = AssociatedObject.ActualWidth - HorizontalOffset;

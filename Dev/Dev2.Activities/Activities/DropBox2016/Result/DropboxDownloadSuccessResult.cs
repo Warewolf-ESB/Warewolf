@@ -8,7 +8,7 @@ namespace Dev2.Activities.DropBox2016.Result
 {
     public class DropboxDownloadSuccessResult : IDropboxResult
     {
-        private readonly IDownloadResponse<FileMetadata> _uploadAsync;
+        readonly IDownloadResponse<FileMetadata> _uploadAsync;
 
         public DropboxDownloadSuccessResult(IDownloadResponse<FileMetadata> uploadAsync)
         {

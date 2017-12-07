@@ -32,18 +32,18 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {
         readonly DependencyVisualiserView _view;
-        private IContextualResourceModel _resourceModel;
+        IContextualResourceModel _resourceModel;
         public string ResourceType { get; set; }
-        private double _availableWidth;
-        private double _availableHeight;
+        double _availableWidth;
+        double _availableHeight;
         ObservableCollection<IExplorerItemNodeViewModel> _allNodes;
         bool _getDependsOnMe;
         bool _getDependsOnOther;
         string _nestingLevel;
         public Guid EnvironmentId { get; set; }
-        private readonly IServer _server;
-        private readonly IPopupController _popupController;
-        private readonly IDependencyGraphGenerator _graphGenerator;
+        readonly IServer _server;
+        readonly IPopupController _popupController;
+        readonly IDependencyGraphGenerator _graphGenerator;
 
         public DependencyVisualiserViewModel(IDependencyGraphGenerator generator, IEventAggregator aggregator, IServer server)
             : this(aggregator)
@@ -183,7 +183,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
         public override string DisplayName => string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
-        private async void BuildGraphs()
+        async void BuildGraphs()
         {
             var repo = ResourceModel.Environment.ResourceRepository;
             var graphData = await repo.GetDependenciesXmlAsync(ResourceModel, GetDependsOnMe);
@@ -227,7 +227,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
         public ICollection<ExplorerItemNodeViewModel> GetItems(List<IDependencyVisualizationNode> nodes, IExplorerItemNodeViewModel parent, List<ExplorerItemNodeViewModel> acc, List<Guid> seenResource)
         {
-            List<ExplorerItemNodeViewModel> items = new List<ExplorerItemNodeViewModel>(nodes.Count);
+            var items = new List<ExplorerItemNodeViewModel>(nodes.Count);
             foreach (var node in nodes)
             {
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
@@ -238,7 +238,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                     var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {
-                        ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
+                        var item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
                         {
                             ResourceName = exploreritem.ResourceName,
                             TextVisibility = true,

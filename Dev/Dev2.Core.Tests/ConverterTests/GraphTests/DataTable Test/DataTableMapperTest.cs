@@ -41,7 +41,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
         {
             //------------Setup for test--------------------------
             var dataTableMapper = new DataTableMapper();
-            DataTable obj = new DataTable("Foo");
+            var obj = new DataTable("Foo");
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 
@@ -78,7 +78,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.DataTable_Test
 </head>
 </html>";
             var dataTableMapper = new DataTableMapper();
-            DataTable obj = new DataTable("Foo");
+            var obj = new DataTable("Foo");
             obj.Columns.Add("Col1");
             obj.Columns.Add("Col2");
 

@@ -16,7 +16,7 @@ namespace Dev2.Data.Binary_Objects
     [Serializable]
     public class IndexList
     {
-        private int _maxValue;
+        int _maxValue;
 
         public int MaxValue
         {
@@ -31,7 +31,7 @@ namespace Dev2.Data.Binary_Objects
 
         public HashSet<int> Gaps { get; private set; }
 
-        private IndexList() { }
+        IndexList() { }
 
         public IndexList(HashSet<int> gaps, int maxValue)
             : this(gaps, maxValue, 1)

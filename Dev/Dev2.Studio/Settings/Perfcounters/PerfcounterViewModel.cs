@@ -30,8 +30,8 @@ namespace Dev2.Settings.Perfcounters
     {
         protected IResourcePickerDialog _resourcePicker;
         readonly IServer _environment;
-        private ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
-        private ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
+        ObservableCollection<IPerformanceCountersByMachine> _serverCounters;
+        ObservableCollection<IPerformanceCountersByResource> _resourceCounters;
 
         internal PerfcounterViewModel(IPerformanceCounterTo counters, IServer environment)
             : this(counters, environment, null)
@@ -84,7 +84,7 @@ namespace Dev2.Settings.Perfcounters
         [JsonIgnore]
         public ICommand ResetCountersCommand { get; set; }
 
-        private void ResetCounters(object obj)
+        void ResetCounters(object obj)
         {
             var controller = CommunicationController;
             controller.ServiceName = "ResetPerformanceCounters";
@@ -99,12 +99,12 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        private void InitializeTos(IPerformanceCounterTo nativeCounters)
+        void InitializeTos(IPerformanceCounterTo nativeCounters)
         {
             ServerCounters.Clear();
             ResourceCounters.Clear();
             var performanceCountersByMachines = nativeCounters.GetServerCountersTo();
-            foreach(var performanceCountersByMachine in performanceCountersByMachines)
+            foreach (var performanceCountersByMachine in performanceCountersByMachines)
             {
                 RegisterPropertyChanged(performanceCountersByMachine);
                 ServerCounters.Add(performanceCountersByMachine);
@@ -128,48 +128,48 @@ namespace Dev2.Settings.Perfcounters
             
         }
 
-        private void UpdateResourceCounter(IPerformanceCounterTo perfCounterTo)
+        void UpdateResourceCounter(IPerformanceCounterTo perfCounterTo)
         {
             perfCounterTo.ResourceCounters = ResourceCounters.ToList().GetResourceCounters();
         }
 
-        private void UpdateServerCounter(IPerformanceCounterTo perfCounterTo)
+        void UpdateServerCounter(IPerformanceCounterTo perfCounterTo)
         {
             var serverCounter = ServerCounters[0];
-            if(serverCounter != null)
+            if (serverCounter != null)
             {
                 var serverAvgExecTimePerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.AverageExecutionTime);
-                if(serverAvgExecTimePerfCounter != null)
+                if (serverAvgExecTimePerfCounter != null)
                 {
                     serverAvgExecTimePerfCounter.IsActive = serverCounter.AverageExecutionTime;
                 }
 
                 var serverConcurrentRequestsPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.ConcurrentRequests);
-                if(serverConcurrentRequestsPerfCounter != null)
+                if (serverConcurrentRequestsPerfCounter != null)
                 {
                     serverConcurrentRequestsPerfCounter.IsActive = serverCounter.ConcurrentRequests;
                 }
 
                 var serverExecutionErrorsPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.ExecutionErrors);
-                if(serverExecutionErrorsPerfCounter != null)
+                if (serverExecutionErrorsPerfCounter != null)
                 {
                     serverExecutionErrorsPerfCounter.IsActive = serverCounter.TotalErrors;
                 }
 
                 var serverNotAuthorisedErrorsPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.NotAuthorisedErrors);
-                if(serverNotAuthorisedErrorsPerfCounter != null)
+                if (serverNotAuthorisedErrorsPerfCounter != null)
                 {
                     serverNotAuthorisedErrorsPerfCounter.IsActive = serverCounter.NotAuthorisedErrors;
                 }
 
                 var serverRequestsPerSecondPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.RequestsPerSecond);
-                if(serverRequestsPerSecondPerfCounter != null)
+                if (serverRequestsPerSecondPerfCounter != null)
                 {
                     serverRequestsPerSecondPerfCounter.IsActive = serverCounter.RequestPerSecond;
                 }
 
                 var serverServicesNotFoundPerfCounter = perfCounterTo.NativeCounters.FirstOrDefault(counter => counter.PerfCounterType == WarewolfPerfCounterType.ServicesNotFound);
-                if(serverServicesNotFoundPerfCounter != null)
+                if (serverServicesNotFoundPerfCounter != null)
                 {
                     serverServicesNotFoundPerfCounter.IsActive = serverCounter.WorkFlowsNotFound;
                 }
@@ -249,7 +249,7 @@ namespace Dev2.Settings.Perfcounters
             }
         }
 
-        private ICommunicationController _communicationController;
+        ICommunicationController _communicationController;
 
 
         void PickResource(object obj)
@@ -327,7 +327,7 @@ namespace Dev2.Settings.Perfcounters
 
         public List<IPerformanceCountersByMachine> ItemServerCounters { get; set; }
 
-        private bool Equals(List<IPerformanceCountersByMachine> serverCounters, List<IPerformanceCountersByResource> resourceCounters)
+        bool Equals(List<IPerformanceCountersByMachine> serverCounters, List<IPerformanceCountersByResource> resourceCounters)
         {
             if (ReferenceEquals(null, serverCounters))
             {
@@ -341,7 +341,7 @@ namespace Dev2.Settings.Perfcounters
             return EqualsSeq(serverCounters, resourceCounters);
         }
 
-        private bool EqualsSeq(List<IPerformanceCountersByMachine> serverCounters, List<IPerformanceCountersByResource> resourceCounters)
+        bool EqualsSeq(List<IPerformanceCountersByMachine> serverCounters, List<IPerformanceCountersByResource> resourceCounters)
         {
             var serverCountersCompare = ServerCountersCompare(serverCounters, true);
             var resourceCountersCompare = ResourceCountersCompare(resourceCounters, true);
@@ -350,7 +350,7 @@ namespace Dev2.Settings.Perfcounters
             return equals;
         }
 
-        private bool ServerCountersCompare(List<IPerformanceCountersByMachine> serverCounters, bool serverPermissionCompare)
+        bool ServerCountersCompare(List<IPerformanceCountersByMachine> serverCounters, bool serverPermissionCompare)
         {
             if (_serverCounters == null)
             {
@@ -410,12 +410,12 @@ namespace Dev2.Settings.Perfcounters
                 if (ServerCounters[i].NotAuthorisedErrors != serverCounters[i].NotAuthorisedErrors)
                 {
                     serverPermissionCompare = false;
-                }                
+                }
             }
             return serverPermissionCompare;
         }
 
-        private bool ResourceCountersCompare(List<IPerformanceCountersByResource> resourceCounters, bool resourcePermissionCompare)
+        bool ResourceCountersCompare(List<IPerformanceCountersByResource> resourceCounters, bool resourcePermissionCompare)
         {
             if (_resourceCounters == null)
             {

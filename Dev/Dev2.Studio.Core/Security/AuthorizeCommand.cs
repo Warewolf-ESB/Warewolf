@@ -56,7 +56,7 @@ namespace Dev2.Security
 
         public static readonly DependencyProperty UnauthorizedVisibilityProperty =
             DependencyProperty.Register("UnauthorizedVisibility", typeof(Visibility), typeof(AuthorizeCommand<T>), new PropertyMetadata(Visibility.Collapsed));
-        private IContextualResourceModel _resourceModel;
+        IContextualResourceModel _resourceModel;
 
         public AuthorizationContext AuthorizationContext { get;  set; }
 

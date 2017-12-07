@@ -23,7 +23,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isNumeric = new IsNumeric();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
             bool result = isNumeric.Invoke(cols);
@@ -38,7 +38,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new IsNumeric();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "324";
             //------------Execute Test---------------------------
             bool result = notStartsWith.Invoke(cols);

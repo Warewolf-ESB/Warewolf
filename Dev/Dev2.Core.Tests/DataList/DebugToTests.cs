@@ -21,8 +21,8 @@ namespace Dev2.Tests.DataList
             var dl = new Mock<IDataListModel>();
   
             dto.CallBase = true;
-            DebugTO to = dto.Object;
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var to = dto.Object;
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             to.RememberInputs = true;
             Assert.IsTrue(to.RememberInputs);
             to.BaseSaveDirectory = rootFolder;
@@ -44,8 +44,8 @@ namespace Dev2.Tests.DataList
         [TestCategory("DebugTO_Cleanup")]
         public void DebugTO_Copy_ValuesCorrect()
         {
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";
@@ -65,8 +65,8 @@ namespace Dev2.Tests.DataList
         [TestCategory("DebugTO_Cleanup")]
         public void DebugTO_CopyFrom_ValuesCorrect()
         {
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1 ColumnIODirection=\"Input\"/><persistantscalar ColumnIODirection=\"Input\"/><rs><f1 ColumnIODirection=\"Input\"/><f2 ColumnIODirection=\"Input\"/></rs><recset><field1/><field2/></recset></DataList>";

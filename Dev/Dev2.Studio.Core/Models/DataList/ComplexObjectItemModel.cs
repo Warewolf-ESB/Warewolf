@@ -13,11 +13,11 @@ namespace Dev2.Studio.Core.Models.DataList
 {
     public class ComplexObjectItemModel : DataListItemModel, IComplexObjectItemModel
     {
-        private ObservableCollection<IComplexObjectItemModel> _children;
-        private IComplexObjectItemModel _parent;
-        private bool _isParentObject;
-        private bool _isArray;
-        private string _searchText;
+        ObservableCollection<IComplexObjectItemModel> _children;
+        IComplexObjectItemModel _parent;
+        bool _isParentObject;
+        bool _isArray;
+        string _searchText;
 
         public ComplexObjectItemModel(string displayname)
             : this(displayname, null, enDev2ColumnArgumentDirection.None, "", null, false, "", true, true, false, true)
@@ -187,43 +187,43 @@ namespace Dev2.Studio.Core.Models.DataList
             NotifyOfPropertyChange(() => Children);
         }
 
-        private void AppendCloseArrayChar(StringBuilder jsonString)
+        void AppendCloseArrayChar(StringBuilder jsonString)
         {
-            if(IsArray)
+            if (IsArray)
             {
                 jsonString.Append("]");
             }
         }
 
-        private static void AppendObjectCloseChar(StringBuilder jsonString)
+        static void AppendObjectCloseChar(StringBuilder jsonString)
         {
             jsonString.Append("}");
         }
 
-        private void AppendOpenArrayChar(StringBuilder jsonString)
+        void AppendOpenArrayChar(StringBuilder jsonString)
         {
-            if(IsArray)
+            if (IsArray)
             {
                 jsonString.Append("[");
             }
         }
 
-        private static void AppendObjectOpenChar(StringBuilder jsonString)
+        static void AppendObjectOpenChar(StringBuilder jsonString)
         {
             jsonString.Append("{");
         }
 
-        private void BuildJsonForChildren(StringBuilder jsonString)
+        void BuildJsonForChildren(StringBuilder jsonString)
         {
-            for(int index = 0; index < Children.Count; index++)
+            for (int index = 0; index < Children.Count; index++)
             {
                 var complexObjectItemModel = Children[index];
                 jsonString.Append(complexObjectItemModel.GetJson());
-                if(complexObjectItemModel.Children.Count == 0)
+                if (complexObjectItemModel.Children.Count == 0)
                 {
                     jsonString.Append("\"\"");
                 }
-                if(index != Children.Count - 1)
+                if (index != Children.Count - 1)
                 {
                     jsonString.Append(",");
                 }
@@ -236,7 +236,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             var nameToCheck  = name.Replace("@", "");
             var isArray = name.EndsWith("()");
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+            var parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(nameToCheck))
             {
                 nameToCheck = DataListUtil.RemoveRecordsetBracketsFromValue(nameToCheck);

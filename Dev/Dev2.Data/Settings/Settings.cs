@@ -16,7 +16,7 @@ namespace Dev2.Data.Settings
 {
     public class Settings
     {
-        private SecuritySettingsTO _security;
+        SecuritySettingsTO _security;
         public SecuritySettingsTO Security
         {
             get

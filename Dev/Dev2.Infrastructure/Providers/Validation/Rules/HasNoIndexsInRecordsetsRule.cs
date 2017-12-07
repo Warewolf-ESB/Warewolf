@@ -27,8 +27,8 @@ namespace Dev2.Providers.Validation.Rules
         {
             var value = GetValue();
 
-            string[] fields = value.Split(',');
-            for(int i = 0; i < fields.Length; i++)
+            var fields = value.Split(',');
+            for (int i = 0; i < fields.Length; i++)
             {
                 if(!string.IsNullOrEmpty(ExtractIndexRegionFromRecordset(fields[i])))
                 {
@@ -46,7 +46,7 @@ namespace Dev2.Providers.Validation.Rules
         /// <returns></returns>
         public static string ExtractIndexRegionFromRecordset(string rs)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             int start = rs.IndexOf("(", StringComparison.Ordinal);
             if(start > 0)

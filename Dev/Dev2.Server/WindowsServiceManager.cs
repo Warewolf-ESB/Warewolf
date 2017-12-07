@@ -26,7 +26,7 @@ namespace Dev2
     {
         #region Fields
 
-        private static bool _pendingCommit;
+        static bool _pendingCommit;
 
         #endregion
 
@@ -185,17 +185,17 @@ namespace Dev2
             return result;
         }
 
-        private static void SetRecoveryOptions()
+        static void SetRecoveryOptions()
         {
             int exitCode;
             using (var process = new Process())
             {
-                ProcessStartInfo startInfo = process.StartInfo;
+                var startInfo = process.StartInfo;
                 startInfo.FileName = "sc";
                 startInfo.WindowStyle = ProcessWindowStyle.Hidden;
 
                 // tell Windows that the service should restart if it fails
-                string arguments = string.Format("failure \"{0}\" reset= 0 actions= restart/60000", "Warewolf Server");
+                var arguments = string.Format("failure \"{0}\" reset= 0 actions= restart/60000", "Warewolf Server");
                 startInfo.Arguments = arguments;
 
                 process.Start();
@@ -239,7 +239,7 @@ namespace Dev2
             return result;
         }
 
-        private static void LogMessage(string message, InstallContext context)
+        static void LogMessage(string message, InstallContext context)
         {
             if (context == null)
             {
@@ -251,7 +251,7 @@ namespace Dev2
             }
         }
 
-        private static void WriteExceptions(Exception e, InstallContext context)
+        static void WriteExceptions(Exception e, InstallContext context)
         {
             if (context == null)
             {

@@ -152,7 +152,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// <param name="workflowHelper">Serialization helper</param>
         /// <param name="createDesigner">create a new designer flag</param>
 
-        private WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
+        WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
 
             : this(eventPublisher, resource, workflowHelper,
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
@@ -222,7 +222,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void SetExecutePermissions()
+        void SetExecutePermissions()
         {
             CanDebugInputs = true;
             CanDebugStudio = true;
@@ -232,13 +232,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
         }
 
-        private void SetViewPermissions()
+        void SetViewPermissions()
         {
             CanViewSwagger = !ResourceModel.IsVersionResource;
             CanCopyUrl = !ResourceModel.IsVersionResource;
         }
 
-        private void SetNonePermissions()
+        void SetNonePermissions()
         {
             CanDebugInputs = false;
             CanDebugStudio = false;
@@ -253,7 +253,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanCopyUrl = false;
         }
 
-        private void SetAdministratorPermissions()
+        void SetAdministratorPermissions()
         {
             CanDebugInputs = true;
             CanDebugStudio = true;
@@ -268,7 +268,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             CanCopyUrl = !ResourceModel.IsNewWorkflow;
         }
 
-        private void SetContributePermissions()
+        void SetContributePermissions()
         {
             CanDebugInputs = true;
             CanDebugStudio = true;
@@ -866,7 +866,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static void OpenLinkInBrowser()
+        static void OpenLinkInBrowser()
         {
             if (Application.Current != null && Application.Current.Dispatcher != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
             {
@@ -925,7 +925,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         var mvm = Application.Current.MainWindow.DataContext as ShellViewModel;
                         if (mvm?.ActiveItem != null)
                         {
-                            mvm.RunAllTests(mvm.ActiveItem.ContextualResourceModel.ID);
+                            mvm.RunAllTests(string.Empty, mvm.ActiveItem.ContextualResourceModel.ID);
                         }
                     }
                 }));
@@ -982,7 +982,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
+        static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
             IExplorerItemViewModel explorerItem = null;
             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
@@ -1129,7 +1129,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return switchExpressionValue;
         }
-        private void InitializeFlowStep(ModelItem mi)
+        void InitializeFlowStep(ModelItem mi)
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
             var modelProperty1 = mi.Properties["Action"];
@@ -1197,7 +1197,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             modelProperty1.SetValue(droppedActivity);
         }
 
-        private void InitializeFlowSwitch(ModelItem mi)
+        void InitializeFlowSwitch(ModelItem mi)
         {
             // Travis.Frisinger : 28.01.2013 - Switch Amendments
             Dev2Logger.Info("Publish message of type - " + typeof(ConfigureSwitchExpressionMessage), "Warewolf Info");

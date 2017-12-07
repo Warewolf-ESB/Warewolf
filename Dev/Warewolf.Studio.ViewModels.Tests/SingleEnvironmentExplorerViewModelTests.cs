@@ -10,12 +10,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private SingleEnvironmentExplorerViewModel _target;
+        SingleEnvironmentExplorerViewModel _target;
 
-        private Mock<IEnvironmentViewModel> _environmentViewModelMock;
-        private Mock<IExplorerItemViewModel> _explorerItemViewModelMock;
-        private Guid _selectedId;
-        private bool _filterByType;
+        Mock<IEnvironmentViewModel> _environmentViewModelMock;
+        Mock<IExplorerItemViewModel> _explorerItemViewModelMock;
+        Guid _selectedId;
+        bool _filterByType;
 
         #endregion Fields
 

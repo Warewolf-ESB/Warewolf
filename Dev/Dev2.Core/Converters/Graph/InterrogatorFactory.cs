@@ -41,9 +41,9 @@ namespace Unlimited.Framework.Converters.Graph
 
         #region Properties
 
-        private static Dictionary<Type, IInterrogator> Interrogators { get; set; }
+        static Dictionary<Type, IInterrogator> Interrogators { get; set; }
 
-        private static IInterrogator DefaultInterrogator { get; set; }
+        static IInterrogator DefaultInterrogator { get; set; }
 
         #endregion Properties
 

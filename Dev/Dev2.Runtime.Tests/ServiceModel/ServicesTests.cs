@@ -117,8 +117,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -219,8 +219,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -321,8 +321,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -423,8 +423,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -525,8 +525,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -626,8 +626,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -728,8 +728,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -830,8 +830,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 
@@ -932,8 +932,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
             //------------Execute Test---------------------------
 
-            XElement xe = XElement.Parse(input);
-            ServiceMethod sm = service.CreateInputsMethod(xe);
+            var xe = XElement.Parse(input);
+            var sm = service.CreateInputsMethod(xe);
 
             //------------Assert Results-------------------------
 

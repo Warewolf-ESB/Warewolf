@@ -22,7 +22,7 @@ namespace Dev2.Diagnostics.Debug
         readonly IDictionary<Guid, IList<IDebugState>> _data = new Dictionary<Guid, IList<IDebugState>>();
         static readonly object Lock = new object();
 
-        private static RemoteDebugMessageRepo _instance;
+        static RemoteDebugMessageRepo _instance;
 
         /// <summary>
         /// Gets the instance.

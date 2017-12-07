@@ -25,7 +25,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfPluginActivity()));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, region.Errors.Count);
@@ -45,7 +45,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc });
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(pluginSrc, region.SelectedSource);
@@ -67,7 +67,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             region.SomethingChanged += (a, b) => { evt = true; };
             region.SelectedSource = s2;
 
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -123,7 +123,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -155,7 +155,7 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             var cloned = region.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -177,9 +177,9 @@ namespace Dev2.Activities.Designers.Tests.Core.DotNet
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            DotNetSourceRegion region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            
-            DotNetSourceRegion regionToRestore = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+
+            var regionToRestore = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.IsEnabled = false;
             regionToRestore.SelectedSource = s2;
 

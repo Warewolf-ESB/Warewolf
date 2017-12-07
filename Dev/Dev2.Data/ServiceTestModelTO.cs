@@ -7,7 +7,7 @@ namespace Dev2.Data
 {
     public class ServiceTestModelTO : IServiceTestModelTO
     {
-        private bool _testPassed;
+        bool _testPassed;
         public string OldTestName { get; set; }
         public string TestName { get; set; }
         public string UserName { get; set; }

@@ -27,7 +27,7 @@ namespace WarewolfCOMIPC.Test
                     stream.CopyTo(fileStream);
                 }
             }
-            Process regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
+            var regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
             regeditProcess.WaitForExit();
         }
 
@@ -76,10 +76,10 @@ namespace WarewolfCOMIPC.Test
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-             KeyValuePair<bool, string> execute = (KeyValuePair<bool, string>)IpcClient.GetIPCExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
+             var execute = (KeyValuePair<bool, string>)IpcClient.GetIPCExecutor().Invoke(classId, "Open", Execute.ExecuteSpecifiedMethod, new ParameterInfoTO[] { });
 
             //---------------Test Result -----------------------
-            
+
             Assert.IsNotNull(execute.Value);
         }
     }

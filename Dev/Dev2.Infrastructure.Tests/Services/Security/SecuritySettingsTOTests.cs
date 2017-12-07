@@ -38,7 +38,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void SecuritySettingsTO_Contructor_CallOverloadedCtor_WindowsGroupPermissionsEmpty()
         {
             //------------Setup for test--------------------------
-            List<WindowsGroupPermission> permissions = new List<WindowsGroupPermission>();
+            var permissions = new List<WindowsGroupPermission>();
             permissions.Add(new WindowsGroupPermission());
             permissions.Add(new WindowsGroupPermission());
             //------------Execute Test---------------------------
