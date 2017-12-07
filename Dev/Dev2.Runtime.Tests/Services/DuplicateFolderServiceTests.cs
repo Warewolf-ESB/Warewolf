@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.Services
         public void HandlesType_GivenServiceIsCreated_ShouldHandleCorrectly()
         {
             //---------------Set up test pack-------------------
-            DuplicateFolderService resourceService = new DuplicateFolderService();
+            var resourceService = new DuplicateFolderService();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.Services
         public void CreateServiceEntry_GivenServiceIsCreated_ShouldCreateCorrectDynamicService()
         {
             //---------------Set up test pack-------------------
-            DuplicateFolderService resourceService = new DuplicateFolderService();
+            var resourceService = new DuplicateFolderService();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
                 .Returns(new ResourceCatalogDuplicateResult { Message = "Hi",DuplicatedItems = duplicatedItems });
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
+            var resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Runtime.Services
                 .Returns(new ResourceCatalogDuplicateResult { Message = "Hi",DuplicatedItems = duplicatedItems });
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
+            var resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -146,7 +146,7 @@ namespace Dev2.Tests.Runtime.Services
                 .Returns(new ResourceCatalogDuplicateResult { Message = "Hi", DuplicatedItems = duplicatedItems });
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
+            var resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -176,11 +176,11 @@ namespace Dev2.Tests.Runtime.Services
             resourceCatalog.Setup(catalog => catalog.DuplicateFolder(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<bool>()))
                 .Returns(new ResourceCatalogDuplicateResult() { Message = "Hi" });
             var workScpace = new Mock<IWorkspace>();
-            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
+            var resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             try
             {
                 stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
@@ -210,11 +210,11 @@ namespace Dev2.Tests.Runtime.Services
                 .Throws(new Exception("Catalog Error"));
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateFolderService resourceService = new DuplicateFolderService(resourceCatalog.Object);
+            var resourceService = new DuplicateFolderService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             try
             {
                 stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>

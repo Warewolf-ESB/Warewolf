@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Settings.SettingsUIMapClasses;
 
@@ -16,6 +17,7 @@ namespace Warewolf.UI.Tests.Settings.Performance_Counters
             SettingsUIMap.Click_Select_ResourceButton();
             var serviceName = "Hello World";
             DialogsUIMap.Select_First_Service_From_Service_Picker_Dialog(serviceName);
+            Mouse.Click(SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable, new Point(10,10));
             Assert.AreEqual(serviceName, SettingsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SettingsTab.WorksurfaceContext.SettingsView.TabList.PerfomanceCounterTab.PerfmonViewContent.ResourceTable.Row1.ResourceCell.ResourceTextBox.DisplayText, "Resource Name is not set to Dice after selecting Dice from Service picker");
             Keyboard.SendKeys(UIMap.MainStudioWindow, "^%{F4}");
         }

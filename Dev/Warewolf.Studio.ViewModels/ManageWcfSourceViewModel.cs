@@ -19,15 +19,15 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageWcfSourceViewModel : SourceBaseImpl<IWcfServerSource>, IManageWcfSourceViewModel
     {
-        private readonly IWcfSourceModel _updateManager;
-        private readonly IServer _environment;
-        private CancellationTokenSource _token;
+        readonly IWcfSourceModel _updateManager;
+        readonly IServer _environment;
+        CancellationTokenSource _token;
         public ICommand TestCommand { get; set; }
         public ICommand CancelTestCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public string HeaderText { get; set; }
 
-        private string _endPointUrl;
+        string _endPointUrl;
 
         public ManageWcfSourceViewModel(IWcfSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
@@ -67,7 +67,7 @@ namespace Warewolf.Studio.ViewModels
             CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
         }
 
-        private bool _testPassed;
+        bool _testPassed;
         public bool TestPassed
         {
             get { return _testPassed; }
@@ -79,7 +79,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool _testFailed;
+        bool _testFailed;
         public bool TestFailed
         {
             get
@@ -120,7 +120,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand RefreshCommand { get; set; }
 
-        private string _testMessage;
+        string _testMessage;
         public string TestMessage
         {
             get { return _testMessage; }
@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool _testing;
+        bool _testing;
         public bool Testing
         {
             get
@@ -227,7 +227,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string _resourceName;
+        string _resourceName;
         public string ResourceName
         {
             get
@@ -361,7 +361,7 @@ namespace Warewolf.Studio.ViewModels
             HeaderText = (_wcfServerSource == null ? ResourceName : _wcfServerSource.Name).Trim();
             Header = (_wcfServerSource == null ? ResourceName : _wcfServerSource.Name).Trim();
         }
-        private IWcfServerSource _wcfServerSource;
+        IWcfServerSource _wcfServerSource;
         public IWcfServerSource ToSource()
         {
             if (_wcfServerSource == null)

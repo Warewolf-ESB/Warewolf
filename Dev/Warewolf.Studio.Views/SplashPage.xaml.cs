@@ -9,14 +9,11 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for SplashPage.xaml
-    /// </summary>
     public partial class SplashPage : ISplashView
     {
         readonly Grid _blackoutGrid = new Grid();
         bool _isDialog;
-        private bool _studioShutdown;
+        bool _studioShutdown;
 
         public SplashPage()
         {
@@ -91,7 +88,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
             CloseSplash(false);
         }

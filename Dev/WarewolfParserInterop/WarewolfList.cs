@@ -9,10 +9,10 @@ namespace WarewolfParserInterop
 {
     public class WarewolfAtomList<T>:IEnumerable<T>
     {
-        private T[] _values;
-        private int _count;
-        private readonly T _defaultValue;
-      IEnumerator<T> _currentEnumerator;
+        T[] _values;
+        int _count;
+        readonly T _defaultValue;
+        IEnumerator<T> _currentEnumerator;
       T _currentValue;
 
       public WarewolfAtomList(T defaultValue)
@@ -100,19 +100,19 @@ namespace WarewolfParserInterop
             return _values[position];
         }
 
-      private void ResizeToCount()
+        void ResizeToCount()
         {
             if (_count >= _values.Length - 1)
             {
                 Array.Resize(ref _values, _values.Length * 2);
-                for (int a = _count+1; a < _values.Length; a++)
+                for (int a = _count + 1; a < _values.Length; a++)
                 {
                     _values[a] = _defaultValue;
                 }
             }
         }
 
-      public T GetNextValue()
+        public T GetNextValue()
       {
           var x = GetCurrentEnumerator();
           if (x.Current != null)

@@ -18,8 +18,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskCollection : ITaskCollection
     {
-        private readonly TaskCollection _instance;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TaskCollection _instance;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskCollection(ITaskServiceConvertorFactory taskServiceConvertorFactory, TaskCollection instance)
         {
@@ -42,7 +42,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public IEnumerator<IDev2Task> GetEnumerator()
         {
-            IEnumerator<Task> e = _instance.GetEnumerator();
+            var e = _instance.GetEnumerator();
             while (e.MoveNext())
             {
                 yield return _taskServiceConvertorFactory.CreateTask(e.Current);

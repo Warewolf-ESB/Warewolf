@@ -71,7 +71,7 @@ namespace Dev2.Web2.Controllers
             return PartialView("ExecutionList", emptyModel);
         }
 
-        private ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
+        ExecutionLoggingRequestViewModel CheckRequest(ExecutionLoggingRequestViewModel Request)
         {
             ExecutionLoggingRequestViewModel toReturn;
             if (Request != null)

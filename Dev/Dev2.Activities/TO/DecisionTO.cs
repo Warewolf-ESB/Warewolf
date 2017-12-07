@@ -44,7 +44,7 @@ namespace Dev2.TO
         bool _isBetweenCriteriaVisible;
         public static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAllDecision();
         bool _isLast;
-        private readonly bool _isInitializing;
+        readonly bool _isInitializing;
         public RelayCommand DeleteCommand { get;  set; }
 
         public DecisionTO()
@@ -334,7 +334,7 @@ namespace Dev2.TO
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -345,21 +345,21 @@ namespace Dev2.TO
                     if (SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchType));
-                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "From":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => From));
-                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "To":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => To));
-                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "SearchCriteria":
@@ -368,7 +368,7 @@ namespace Dev2.TO
                         ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
                     }
 
-                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1", new VariableUtils()));
                     break;
                 default:
                     Dev2Logger.Info("No Rule Set for the Property Name: " + propertyName, GlobalConstants.WarewolfInfo);

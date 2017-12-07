@@ -14,7 +14,7 @@ using System;
 
 namespace Dev2.Common.DateAndTime.TO
 {
-    internal class DateTimeFormatPartOptionTO : IDateTimeFormatPartOptionTO
+    class DateTimeFormatPartOptionTO : IDateTimeFormatPartOptionTO
     {
         #region Constructor
 

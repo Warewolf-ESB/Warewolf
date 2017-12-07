@@ -20,13 +20,13 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private ExplorerViewModel _target;
+        ExplorerViewModel _target;
 
-        private Guid _localhostServerEnvironmentId;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IServer> _localhostServerMock;
-        private Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
-        private Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator> _eventAggregatorMock;
+        Guid _localhostServerEnvironmentId;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IServer> _localhostServerMock;
+        Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
+        Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator> _eventAggregatorMock;
 
         #endregion Fields
 

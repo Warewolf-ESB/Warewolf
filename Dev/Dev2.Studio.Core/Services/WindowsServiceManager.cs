@@ -11,10 +11,11 @@
 using System;
 using System.ServiceProcess;
 using Dev2.Util;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.Core.Services
 {
+    [ExcludeFromCodeCoverage]//In-use by studio auto update
     public class WindowsServiceManager : IWindowsServiceManager
     {
         #region Methods
@@ -25,7 +26,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppSettings.ServiceName);
             }
             catch(InvalidOperationException)
             {
@@ -41,7 +42,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppSettings.ServiceName);
                 result = controller.Status == ServiceControllerStatus.Running;
             }
             catch(InvalidOperationException)
@@ -58,8 +59,8 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
-                if(controller.Status != ServiceControllerStatus.Running)
+                var controller = new ServiceController(AppSettings.ServiceName);
+                if (controller.Status != ServiceControllerStatus.Running)
                 {
                     controller.Start();
                     controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(120));

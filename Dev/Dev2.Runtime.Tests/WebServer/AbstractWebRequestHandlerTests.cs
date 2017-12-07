@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class AbstractWebRequestHandlerTests
     {
-        private NameValueCollection LocalBoundVariables => new NameValueCollection
+        NameValueCollection LocalBoundVariables => new NameValueCollection
         {
             { "Bookmark", "the_bookmark" },
             { "Instanceid", "the_instanceid" },
@@ -309,7 +309,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.XML", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
-            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+            dataObject.VerifyGet(o => o.ReturnType);
         }
 
         [TestMethod]
@@ -350,7 +350,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var responseWriter = handlerMock.CreateFromMock(webRequestTO, "Hello World.JSON", string.Empty, new NameValueCollection(), principal.Object);
             //---------------Test Result -----------------------
             Assert.IsNotNull(responseWriter);
-            dataObject.VerifyGet(o => o.ReturnType, Times.Exactly(4));
+            dataObject.VerifyGet(o => o.ReturnType);
         }
 
         [TestMethod]
@@ -388,7 +388,44 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Once);
             dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
             dataObject.VerifySet(o => o.TestName = "*", Times.Once);
+        }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void CreateForm_GivenWebRequestHasStartServiceNameRequestEndsWithTestsTRX_ShouldSetDataobjectsTRXOptions()
+        {
+            //---------------Set up test pack-------------------
+            var principal = new Mock<IPrincipal>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupAllProperties();
+            var env = new Mock<IExecutionEnvironment>();
+            env.SetupAllProperties();
+            dataObject.SetupGet(o => o.Environment).Returns(env.Object);
+            dataObject.SetupGet(o => o.RawPayload).Returns(new StringBuilder("<raw>SomeData</raw>"));
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var testCatalog = new Mock<ITestCatalog>();
+            testCatalog.Setup(catalog => catalog.Fetch(It.IsAny<Guid>())).Returns(new List<IServiceTestModelTO>());
+            var wRepo = new Mock<IWorkspaceRepository>();
+            wRepo.SetupGet(repository => repository.ServerWorkspace).Returns(new Workspace(Guid.Empty));
+            var handlerMock = new AbstractWebRequestHandlerMock(dataObject.Object, authorizationService.Object, resourceCatalog.Object, testCatalog.Object, wRepo.Object);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var webRequestTO = new WebRequestTO()
+            {
+                Variables = new NameValueCollection()
+                {
+                },
+                WebServerUrl = "http://rsaklfnkosinath:3142/secure/Home/HelloWorld/.tests.trx"
+            };
+            Common.Utilities.ServerUser = principal.Object;
+            var responseWriter = handlerMock.CreateFromMock(webRequestTO, "*", string.Empty, new NameValueCollection(), principal.Object);
+            //---------------Test Result -----------------------
+            Assert.IsNotNull(responseWriter);
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TRX, Times.Once);
+            dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Once);
+            dataObject.VerifySet(o => o.TestName = "*", Times.Once);
         }
 
         [TestMethod]
@@ -681,8 +718,8 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
-            string payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
+            var payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
             communicationContext.SetupGet(context => context.Request.Uri)
                 .Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
@@ -722,8 +759,8 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
-            string payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
+            var payLoad = this.SerializeToJsonString(new DefaultSerializationBinder());
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?{payLoad}";
             communicationContext.SetupGet(context => context.Request.Uri)
                 .Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("POST");
@@ -902,7 +939,7 @@ namespace Dev2.Tests.Runtime.WebServer
             Assert.AreEqual(xmlData, postDataMock);
         }
 
-        private static string ConvertJsonToXml(string data)
+        static string ConvertJsonToXml(string data)
         {
             var xml =
                 XDocument.Load(JsonReaderWriterFactory.CreateJsonReader(Encoding.ASCII.GetBytes(data),
@@ -918,7 +955,7 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{data}";
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{data}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
@@ -950,7 +987,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
             var xmlData = ConvertJsonToXml(data);
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
@@ -981,9 +1018,9 @@ namespace Dev2.Tests.Runtime.WebServer
             //---------------Set up test pack-------------------
             var communicationContext = new Mock<ICommunicationContext>();
             var data = this.SerializeToJsonString(new DefaultSerializationBinder());
-            XmlDocument myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
+            var myXmlNode = JsonConvert.DeserializeXmlNode(data, "DataList");
             var xmlData = myXmlNode.InnerXml;
-            string uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
+            var uriString = $"https://warewolf.atlassian.net/secure/RapidBoard.jspa?&{xmlData}";
             communicationContext.SetupGet(context => context.Request.Uri).Returns(new Uri(uriString));
             communicationContext.Setup(context => context.Request.Method).Returns("GET");
             communicationContext.Setup(context => context.Request.ContentEncoding).Returns(Encoding.Default);
@@ -1355,7 +1392,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultPassed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1375,7 +1412,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultFailed_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1396,7 +1433,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultInvalid_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1417,7 +1454,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourceDeleted_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1438,7 +1475,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestResourcePathUpdated_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1459,7 +1496,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void BuildTestResultTRXForWebRequest_GivenTestResultTestPending_ShouldSetMessage()
         {
             //------------Setup for test-------------------------
-            List<IServiceTestModelTO> toList = new List<IServiceTestModelTO>();
+            var toList = new List<IServiceTestModelTO>();
             IServiceTestModelTO to = new ServiceTestModelTO();
             to.TestName = "Test 1";
             to.Result = new TestRunResult
@@ -1517,7 +1554,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var mock = new Mock<ICommunicationContext>();
             mock.Setup(communicationContext => communicationContext.Request.QueryString)
                 .Returns(new NameValueCollection());
-            ICommunicationContext context = mock.Object;
+            var context = mock.Object;
             //------------Execute Test---------------------------            
             privateObject.InvokeStatic("ExtractKeyValuePairForGetMethod", context,"");
             //------------Assert Results-------------------------
@@ -1585,7 +1622,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
-            NameValueCollection collection = new NameValueCollection
+            var collection = new NameValueCollection
             {
                 {"Content-Type", "Json"}
             };
@@ -1593,7 +1630,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var invoke = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var invoke = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
             Assert.AreEqual(ServiceName, invoke);
@@ -1605,7 +1642,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World";
-            NameValueCollection collection = new NameValueCollection
+            var collection = new NameValueCollection
             {
                 {"Content-Type", "xml"}
             };
@@ -1613,7 +1650,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual(ServiceName, emitionType);
@@ -1629,7 +1666,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ReturnType);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, null);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, null);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual(ServiceName, emitionType);
@@ -1641,14 +1678,14 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.api";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.SWAGGER, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1662,26 +1699,27 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
             Assert.AreEqual("hello World", emitionType);
             Assert.AreEqual("hello World", dataObject.Object.ServiceName);
         }
+
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
+        [Owner("Ashley Lewis")]
+        public void SetEmitionType_GivenServiceNameEndsWithteststrx_ShouldSetDataObjectContentTypeTRX()
         {
             //---------------Set up test pack-------------------
-            const string ServiceName = "hello World.JSON";
+            const string ServiceName = "hello World.tests";
             NameValueCollection collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
@@ -1689,7 +1727,27 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
+            //---------------Test Result -----------------------
+            dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
+            Assert.AreEqual("hello World", emitionType);
+            Assert.AreEqual("hello World", dataObject.Object.ServiceName);
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void SetEmitionType_GivenServiceNameEndsWithJson_ShouldSetDataObjectContentTypeJson()
+        {
+            //---------------Set up test pack-------------------
+            const string ServiceName = "hello World.JSON";
+            var collection = new NameValueCollection();
+
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.SetupProperty(o => o.ReturnType);
+            dataObject.SetupProperty(o => o.ServiceName);
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.JSON, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1703,7 +1761,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests/";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
@@ -1711,7 +1769,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.TestName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.XML, Times.Exactly(1));
@@ -1726,7 +1784,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);
@@ -1734,7 +1792,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ServiceName);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            var emitionType = dataObject.Object.SetEmitionType(ServiceName, collection);
+            var emitionType = dataObject.Object.SetEmitionType(new WebRequestTO(), ServiceName, collection);
             //---------------Test Result -----------------------
             dataObject.VerifySet(o => o.ReturnType = EmitionTypes.TEST, Times.Exactly(1));
             dataObject.VerifySet(o => o.IsServiceTestExecution = true, Times.Exactly(1));
@@ -1769,6 +1827,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.Setup(o => o.TestName).Returns("*");
             dataObject.SetupProperty(o => o.TestsResourceIds);
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
@@ -1787,7 +1846,7 @@ namespace Dev2.Tests.Runtime.WebServer
             var webRequestTO = new WebRequestTO()
             {
                 Variables = new NameValueCollection() { { "isPublic", "true" } },
-                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"
+                WebServerUrl = "http://rsaklfnkosinath:3142/public/.tests"                
             };
             var resourceCatalog = new Mock<IResourceCatalog>();
             resourceCatalog.Setup(catalog => catalog.GetResources(It.IsAny<Guid>()))
@@ -1796,6 +1855,7 @@ namespace Dev2.Tests.Runtime.WebServer
             dataObject.SetupProperty(o => o.ResourceID);
             dataObject.Setup(o => o.TestName).Returns("*");
             dataObject.SetupProperty(o => o.TestsResourceIds);
+            dataObject.Setup(o => o.ReturnType).Returns(EmitionTypes.TEST);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             dataObject.Object.SetTestResourceIds(resourceCatalog.Object, webRequestTO, "*");
@@ -1807,7 +1867,7 @@ namespace Dev2.Tests.Runtime.WebServer
 
     #region AbstractWebRequestHandlerMock
 
-    internal class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
+    class AbstractWebRequestHandlerMock : AbstractWebRequestHandler
     {
         public AbstractWebRequestHandlerMock(IDSFDataObject dataObject, IAuthorizationService service, IResourceCatalog catalog, ITestCatalog testCatalog, IWorkspaceRepository repository)
             : base(catalog, testCatalog, dataObject, service, repository)

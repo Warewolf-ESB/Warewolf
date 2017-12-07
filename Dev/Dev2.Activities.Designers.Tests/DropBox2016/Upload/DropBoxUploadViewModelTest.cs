@@ -21,7 +21,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
 
     public class DropBoxUploadViewModelTest
     {
-        private DropBoxUploadViewModel CreateMockViewModel()
+        DropBoxUploadViewModel CreateMockViewModel()
         {
             var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var agg = new Mock<IEventAggregator>();
@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             return dropBoxUploadViewModel;
         }
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDropBoxUploadActivity());
             return modelItem;
@@ -244,7 +244,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //------------Execute Test---------------------------
             boxUploadViewModel.AddMode = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["AddMode"];
+            var property = model.Properties["AddMode"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -266,7 +266,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //------------Execute Test---------------------------
             boxUploadViewModel.OverWriteMode = true;
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["OverWriteMode"];
+            var property = model.Properties["OverWriteMode"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -288,7 +288,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //------------Execute Test---------------------------
             boxUploadViewModel.FromPath = "A";
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["FromPath"];
+            var property = model.Properties["FromPath"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -310,7 +310,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //------------Execute Test---------------------------
             boxUploadViewModel.ToPath = "A";
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["ToPath"];
+            var property = model.Properties["ToPath"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -332,7 +332,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Upload
             //------------Execute Test---------------------------
             boxUploadViewModel.Result = "A";
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["Result"];
+            var property = model.Properties["Result"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");

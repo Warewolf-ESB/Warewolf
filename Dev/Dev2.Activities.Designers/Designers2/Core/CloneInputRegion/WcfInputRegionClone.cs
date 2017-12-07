@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 
@@ -30,14 +28,6 @@ namespace Dev2.Activities.Designers2.Core.CloneInputRegion
         {
             get;
             set;
-        }
-
-        [NotifyPropertyChangedInvocator]
-        
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Dev2.Development.Languages.Scripting
     public class JavaScriptContext : IScriptingContext
     {
         readonly IStringScriptSources _scriptSources;
-        private readonly ScriptEngine _jsContext;
+        readonly ScriptEngine _jsContext;
 
         public JavaScriptContext(IStringScriptSources sources)
         {

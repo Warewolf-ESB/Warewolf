@@ -5,8 +5,8 @@ namespace Gma.DataStructures.StringSearch
 {
     public struct SplitResult
     {
-        private readonly StringPartition m_Head;
-        private readonly StringPartition m_Rest;
+        readonly StringPartition m_Head;
+        readonly StringPartition m_Rest;
 
         public SplitResult(StringPartition head, StringPartition rest)
         {

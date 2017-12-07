@@ -22,9 +22,9 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
     {
         public static IEnumerable<DependencyObject> GetDescendents(this DependencyObject dependencyObject)
         {
-            List<DependencyObject> descendents = new List<DependencyObject>();
+            var descendents = new List<DependencyObject>();
 
-            if(dependencyObject == null)
+            if (dependencyObject == null)
             {
                 return descendents;
             }
@@ -45,9 +45,9 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
         {
             for(int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(source, i);
+                var child = VisualTreeHelper.GetChild(source, i);
 
-                if(child.GetType() == type)
+                if (child.GetType() == type)
                 {
                     return child;
                 }
@@ -55,9 +55,9 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 
             for(int i = 0; i < VisualTreeHelper.GetChildrenCount(source); i++)
             {
-                DependencyObject child = VisualTreeHelper.GetChild(source, i);
-                DependencyObject nestedchild = GetChildByType(child, type);
-                if(nestedchild != null)
+                var child = VisualTreeHelper.GetChild(source, i);
+                var nestedchild = GetChildByType(child, type);
+                if (nestedchild != null)
                 {
                     return nestedchild;
                 }
@@ -68,9 +68,9 @@ namespace Dev2.Studio.Core.AppResources.ExtensionMethods
 
         public static DependencyObject GetParentByType(this DependencyObject source, Type type)
         {
-            DependencyObject parent = VisualTreeHelper.GetParent(source);
+            var parent = VisualTreeHelper.GetParent(source);
 
-            if(parent == null)
+            if (parent == null)
             {
                 return null;
             }

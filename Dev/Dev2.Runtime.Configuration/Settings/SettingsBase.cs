@@ -20,9 +20,9 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Fields
 
-        private string _error = string.Empty;
-        private bool _hasChanges;
-        private bool _isInitializing;
+        string _error = string.Empty;
+        bool _hasChanges;
+        bool _isInitializing;
 
         #endregion
 

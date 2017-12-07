@@ -17,10 +17,10 @@ namespace Dev2.DataList.Contract
 {
     public abstract class LanguageParser
     {
-        private readonly string _elementTag;
+        readonly string _elementTag;
         const string _nameAttribute = "Name";
-        private readonly string _mapsToAttribute;
-        private readonly bool _defaultValueToMapsTo;
+        readonly string _mapsToAttribute;
+        readonly bool _defaultValueToMapsTo;
         const string _recordSetAttribute = "Recordset";
         const string _defaultValueAttribute = "DefaultValue";
         const string _emptyToNullAttribute = "EmptyToNull";
@@ -46,17 +46,17 @@ namespace Dev2.DataList.Contract
 
             if(!string.IsNullOrEmpty(mappingDefinition))
             {
-                XmlDocument xDoc = new XmlDocument();
+                var xDoc = new XmlDocument();
 
                 xDoc.LoadXml(mappingDefinition);
 
-                XmlNodeList tmpList = xDoc.GetElementsByTagName(_elementTag);
+                var tmpList = xDoc.GetElementsByTagName(_elementTag);
 
-                for(int i = 0; i < tmpList.Count; i++)
+                for (int i = 0; i < tmpList.Count; i++)
                 {
-                    XmlNode tmp = tmpList[i];
-                    string value = string.Empty;
-                    string origValue = string.Empty;
+                    var tmp = tmpList[i];
+                    var value = string.Empty;
+                    var origValue = string.Empty;
 
                     XmlNode valueNode = tmp.Attributes[_valueTag];
                     if(valueNode != null)
@@ -67,7 +67,7 @@ namespace Dev2.DataList.Contract
 
                     // is it evaluated?
                     bool isEvaluated = false;
-                    string mapsTo = tmp.Attributes[_mapsToAttribute].Value;
+                    var mapsTo = tmp.Attributes[_mapsToAttribute].Value;
 
                     if (tmp.Attributes["IsObject"] == null || !bool.TryParse(tmp.Attributes["IsObject"].Value, out bool isObject))
                     {
@@ -112,7 +112,7 @@ namespace Dev2.DataList.Contract
                     }
 
                     // extract default value if present
-                    string defaultValue = string.Empty;
+                    var defaultValue = string.Empty;
 
                     XmlNode defaultValNode = tmp.Attributes[_defaultValueAttribute];
                     if(defaultValNode != null)
@@ -123,8 +123,8 @@ namespace Dev2.DataList.Contract
                     // extract isRequired
                     bool isRequired = false;
 
-                    XmlNodeList nl = tmp.ChildNodes;
-                    if(nl.Count > 0)
+                    var nl = tmp.ChildNodes;
+                    if (nl.Count > 0)
                     {
                         int pos = 0;
                         while(pos < nl.Count && !isRequired)
@@ -168,14 +168,14 @@ namespace Dev2.DataList.Contract
                             var theName = tmp.Attributes[_nameAttribute].Value;
                             if(_defaultValueToMapsTo)
                             {
-                                string recordSet = recordSetNode.Value;
+                                var recordSet = recordSetNode.Value;
                                 // we have a recordset set it as such
                                 result.Add(DataListFactory.CreateDefinition(theName, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
                             }
                             else
                             {
                                 // if record set add as such
-                                string recordSet = recordSetNode.Value;
+                                var recordSet = recordSetNode.Value;
                                 result.Add(DataListFactory.CreateDefinition(tmp.Attributes[_nameAttribute].Value, mapsTo, value, recordSet, isEvaluated, defaultValue, isRequired, origValue, emptyToNull));
                             }
                         }

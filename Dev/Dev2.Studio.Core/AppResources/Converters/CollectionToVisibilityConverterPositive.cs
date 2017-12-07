@@ -28,9 +28,9 @@ namespace Dev2.AppResources.Converters
         
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            int? countValue = value as int?;
+            var countValue = value as int?;
 
-            if(countValue == null)
+            if (countValue == null)
             {
                 return Binding.DoNothing;
             }

@@ -4,7 +4,7 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IWcfService : IEquatable<IWcfService>
+    public interface IWcfService
     {
         string Name { get; set; }
         Guid Id { get; set; }

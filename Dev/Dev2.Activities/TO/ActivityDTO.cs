@@ -38,8 +38,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         int _indexNumber;
 
         bool _isFieldNameFocused;
-        private bool _isFieldValueFocused;
-        private string _errorMessage;
+        bool _isFieldValueFocused;
+        string _errorMessage;
 
         public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)
@@ -247,13 +247,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 case "FieldName":
                     ruleSet.Add(new IsStringEmptyRule(() => FieldName));
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldName, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldName, datalist, "1", new VariableUtils()));
                     break;
                 case "FieldValue":
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils()));
                     break;
                 case "FieldValueAndCalculate":
-                    ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1")).Or(new IsValidCalculateRule(() => FieldValue)));
+                    ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils())).Or(new IsValidCalculateRule(() => FieldValue)));
                     break;
                 default:
                     throw new ArgumentException("Unrecognized Property Name: " + propertyName);

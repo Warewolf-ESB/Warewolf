@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         public IOutputDescription TestPlugin(PluginService pluginService)
         {
-            PluginInvokeArgs args = new PluginInvokeArgs
+            var args = new PluginInvokeArgs
             {
                 AssemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation,
                 AssemblyName = ((PluginSource)pluginService.Source).AssemblyName,

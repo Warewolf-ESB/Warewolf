@@ -167,11 +167,11 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        private bool IsDebug
+        bool IsDebug
         {
             get
             {
-                if(_dataObject == null)
+                if (_dataObject == null)
                 {
                     return false;
                 }
@@ -182,11 +182,11 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-        
+
         protected override void OnExecute(NativeActivityContext context)
             
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -196,7 +196,7 @@ namespace Dev2.Activities
 
             _dataObject = dataObject;
 
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             int indexToUpsertTo = 0;
 
             InitializeDebug(dataObject);
@@ -322,7 +322,7 @@ namespace Dev2.Activities
             AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
-        private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
+        int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
         {
             string expression;
             expression = DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star ? Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture)) : Result;
@@ -334,7 +334,7 @@ namespace Dev2.Activities
             return indexToUpsertTo;
         }
 
-        
+
         string SendEmail(EmailSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator fromAccountItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
             
         {
@@ -347,7 +347,7 @@ namespace Dev2.Activities
             var subjectValue = colItr.FetchNextValue(subjectItr);
             var bodyValue = colItr.FetchNextValue(bodyItr);
             var attachmentsValue = colItr.FetchNextValue(attachmentsItr);
-            MailMessage mailMessage = new MailMessage { IsBodyHtml = IsHtml };
+            var mailMessage = new MailMessage { IsBodyHtml = IsHtml };
             if (Enum.TryParse(Priority.ToString(), true, out MailPriority priority))
             {
                 mailMessage.Priority = priority;
@@ -397,7 +397,7 @@ namespace Dev2.Activities
             return result;
         }
 
-        private List<string> GetSplitValues(string stringToSplit, char[] splitOn)
+        List<string> GetSplitValues(string stringToSplit, char[] splitOn)
         {
             return stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
         }

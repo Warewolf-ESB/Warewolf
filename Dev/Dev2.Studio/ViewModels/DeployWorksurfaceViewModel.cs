@@ -7,14 +7,13 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using System;
 
 namespace Dev2.ViewModels
 {
     public class DeployWorksurfaceViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
-        readonly IPopupController _popupController;
-
-        public DeployWorksurfaceViewModel() : base(new EventAggregator())
+        public DeployWorksurfaceViewModel():base(new EventAggregator())
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
@@ -30,23 +29,6 @@ namespace Dev2.ViewModels
                 {
                     OnPropertyChanged("DisplayName");
                 }
-                ViewModelUtils.RaiseCanExecuteChanged(mainViewModel?.SaveCommand);
-            };
-        }
-
-        public DeployWorksurfaceViewModel(IEventAggregator eventPublisher, SingleExplorerDeployViewModel vm, IPopupController popupController,IView view)
-            : base(eventPublisher)
-        {
-            ViewModel = vm;
-            View = view;
-            _popupController = popupController;
-            ViewModel.PropertyChanged += (sender, args) =>
-            {
-                if(args.PropertyName == "Header")
-                {
-                    OnPropertyChanged("DisplayName");
-                }
-                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 ViewModelUtils.RaiseCanExecuteChanged(mainViewModel?.SaveCommand);
             };
         }
@@ -86,15 +68,9 @@ namespace Dev2.ViewModels
 
         public bool IsDirty => false;
 
-        public void CloseView()
-        {
-        }
+        public void CloseView() => throw new NotImplementedException();
 
-        public bool DoDeactivate(bool showMessage)
-        {
-
-            return true;
-        }
+        public bool DoDeactivate(bool showMessage) => throw new NotImplementedException();
 
         #endregion
 

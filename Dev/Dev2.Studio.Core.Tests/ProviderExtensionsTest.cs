@@ -193,14 +193,14 @@ namespace Dev2.Core.Tests
             FindTextTestHelper(2, "", "");
         }
 
-        private static void FindTextTestHelper(int caretPosition, string inputText, string expectedResult)
+        static void FindTextTestHelper(int caretPosition, string inputText, string expectedResult)
         {
             var context = new IntellisenseProviderContext
-                {
-                    CaretPosition = caretPosition,
-                    InputText = inputText,
-                    DesiredResultSet = IntellisenseDesiredResultSet.Default
-                };
+            {
+                CaretPosition = caretPosition,
+                InputText = inputText,
+                DesiredResultSet = IntellisenseDesiredResultSet.Default
+            };
 
             var search = context.FindTextToSearch();
             Assert.AreEqual(expectedResult, search);

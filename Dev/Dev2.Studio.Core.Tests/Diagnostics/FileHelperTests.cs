@@ -15,8 +15,8 @@ namespace Dev2.Core.Tests.Diagnostics
     [TestClass]
     public class FileHelperTests
     {
-        private static string NewPath;
-        private static string OldPath;
+        static string NewPath;
+        static string OldPath;
         static TestContext Context;
 
         [ClassInitialize]

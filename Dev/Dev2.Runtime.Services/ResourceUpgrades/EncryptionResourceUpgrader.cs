@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ResourceUpgrades
 
         XElement Upgrade(XElement arg)
         {
-            string xml = arg.ToString();
+            var xml = arg.ToString();
             xml = EncryptPasswordsAndConnectionStrings(xml);
             return XElement.Parse(xml);
         }

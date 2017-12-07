@@ -6,12 +6,12 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class DateTimeFormatPartsForDotNet: IDateTimeFormatPartsForDotNet
+    class DateTimeFormatPartsForDotNet: IDateTimeFormatPartsForDotNet
     {
-        private Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatPartsForDotNetLu { get; }
+        Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatPartsForDotNetLu { get; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptionsForDotNet { get; }
-        private const char DateLiteralCharacter = '\'';
-        private const char TimeLiteralCharacter = ':';
+        const char DateLiteralCharacter = '\'';
+        const char TimeLiteralCharacter = ':';
         public DateTimeFormatPartsForDotNet()
         {
             DateTimeFormatPartsForDotNetLu = new Dictionary<string, IDateTimeFormatPartTO>();

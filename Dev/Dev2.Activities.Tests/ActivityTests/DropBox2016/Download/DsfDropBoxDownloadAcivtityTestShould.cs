@@ -28,12 +28,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
     [TestClass]
     public class DsfDropBoxDownloadAcivtityTestShould
     {
-        private static DsfDropBoxDownloadActivity CreateDropboxActivity()
+        static DsfDropBoxDownloadActivity CreateDropboxActivity()
         {
             return new DsfDropBoxDownloadActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
@@ -240,7 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             dropBoxDownloadActivityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file location has been entered"));
@@ -263,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             dropBoxDownloadActivityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file destination has been entered"));
@@ -286,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             var dev2Activity = dropBoxDownloadActivityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
         }
@@ -539,7 +539,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
             //---------------Execute Test ----------------------
             var mockExecutionEnv = new Mock<IExecutionEnvironment>();
-            List<DebugItem> debugInputs = dropBoxDownloadActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
+            var debugInputs = dropBoxDownloadActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, debugInputs.Count());
         }
@@ -547,7 +547,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 
     public class DsfDropBoxDownloadActivityMockForFiles : DsfDropBoxDownloadActivity
     {
-        private readonly IDropboxClientWrapper _clientWrapper;
+        readonly IDropboxClientWrapper _clientWrapper;
 
         public DsfDropBoxDownloadActivityMockForFiles(IDropboxClientWrapper clientWrapper)
             :base(clientWrapper)

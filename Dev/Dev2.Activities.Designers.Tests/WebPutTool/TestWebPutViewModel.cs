@@ -28,12 +28,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
     {
         #region Test Setup
 
-        private static MyWebModel GetMockModel()
+        static MyWebModel GetMockModel()
         {
             return new MyWebModel();
         }
 
-        private static DsfWebPutActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        static DsfWebPutActivity GetPostActivityWithOutPuts(MyWebModel mod)
         {
             return new DsfWebPutActivity()
             {
@@ -50,12 +50,12 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             };
         }
 
-        private static DsfWebPutActivity GetEmptyPostActivity()
+        static DsfWebPutActivity GetEmptyPostActivity()
         {
             return new DsfWebPutActivity();
         }
 
-        private WebServicePostViewModel GetWebServicePostViewModel()
+        WebServicePostViewModel GetWebServicePostViewModel()
         {
             return new WebServicePostViewModel(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
         }
@@ -82,7 +82,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             Assert.IsTrue(postViewModel.OutputsRegion.IsEnabled);
         }
 
-        private static WebServicePutViewModel CreateViewModel(DsfWebPutActivity act, MyWebModel mod)
+        static WebServicePutViewModel CreateViewModel(DsfWebPutActivity act, MyWebModel mod)
         {
             return new WebServicePutViewModel(ModelItemUtils.CreateModelItem(act), mod);
         }
@@ -347,7 +347,7 @@ namespace Dev2.Activities.Designers.Tests.WebPutTool
             Assert.AreEqual(1, oldCount);
             //---------------Execute Test ----------------------
             var human = new Human();
-            Dev2JsonSerializer h = new Dev2JsonSerializer();
+            var h = new Dev2JsonSerializer();
             var humanString = h.Serialize(human);
             postViewModel.InputArea.PutData = humanString;
             var newCount = postViewModel.InputArea.Headers.Count;

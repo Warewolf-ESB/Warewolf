@@ -29,18 +29,18 @@ namespace Dev2.Activities.Designers2.Core
         readonly IDatabaseServiceViewModel _viewmodel;
         readonly IDbServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
-        private bool _okSelected;
-        private DataTable _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private IDatabaseService _model;
-        private bool _inputCountExpandAllowed;
-        private bool _outputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
-        private string _testMessage;
-        private bool _showTestMessage;
+        bool _okSelected;
+        DataTable _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        IDatabaseService _model;
+        bool _inputCountExpandAllowed;
+        bool _outputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
+        string _testMessage;
+        bool _showTestMessage;
 
         public ManageDatabaseServiceInputViewModel(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
         {
@@ -135,8 +135,8 @@ namespace Dev2.Activities.Designers2.Core
 
         List<IServiceOutputMapping> GetDbOutputMappingsFromTable(DataTable testResults)
         {
-            List<IServiceOutputMapping> mappings = new List<IServiceOutputMapping>();
-            
+            var mappings = new List<IServiceOutputMapping>();
+
             if (testResults != null)
             {
                 if (testResults.Columns.Count >= 1)
@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void ResetTestForExecute()
+        void ResetTestForExecute()
         {
             TestResults = null;
             TestPassed = false;

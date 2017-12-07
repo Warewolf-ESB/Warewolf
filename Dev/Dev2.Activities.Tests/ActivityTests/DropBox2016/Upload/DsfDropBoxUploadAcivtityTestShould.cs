@@ -25,12 +25,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
     [TestClass]
     public class DsfDropBoxUploadAcivtityTestShould
     {
-        private static DsfDropBoxUploadActivity CreateDropboxActivity()
+        static DsfDropBoxUploadActivity CreateDropboxActivity()
         {
             return new DsfDropBoxUploadActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
@@ -253,7 +253,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file location has been entered"));
@@ -277,7 +277,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
             
-            IDSFDataObject dataObject = datObj.Object;
+            var dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file destination has been entered"));
@@ -364,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
     public class DsfDropBoxUploadActivityMock : DsfDropBoxUploadActivity
     {
-        private readonly IDropboxClientWrapper _dropboxClientWrapper;
+        readonly IDropboxClientWrapper _dropboxClientWrapper;
 
         public DsfDropBoxUploadActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor, IDropboxClientWrapper dropboxClientWrapper)
             : base(dropboxClientWrapper)
