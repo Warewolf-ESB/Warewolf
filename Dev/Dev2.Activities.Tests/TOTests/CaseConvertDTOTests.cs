@@ -28,7 +28,7 @@ namespace Dev2.Tests.Activities.TOTests
             Assert.AreEqual("UPPER", caseConvertDTO.ConvertType);            
             Assert.AreEqual(string.Empty, caseConvertDTO.Result);
             Assert.AreEqual(1, caseConvertDTO.IndexNumber);
-            Assert.IsNull(caseConvertDTO.Errors);
+            Assert.IsNotNull(caseConvertDTO.Errors);
         }
 
         #region CanAdd Tests

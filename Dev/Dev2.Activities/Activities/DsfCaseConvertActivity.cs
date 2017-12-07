@@ -262,7 +262,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     mic.Clear();
                     foreach (string s in listToAdd)
                     {
-                        mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
+                        mic.Insert(startIndex, new CaseConvertTO(s, firstRowConvertType, s, startIndex + 1));
                         startIndex++;
                     }
                     CleanUpCollection(mic, modelItem, startIndex);
