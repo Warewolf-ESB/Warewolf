@@ -16,7 +16,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 {
     public class WorkflowDescriptor : PropertyChangedBase, IWorkflowDescriptor
     {
-        private bool _isSelected;
+        bool _isSelected;
 
         public string ResourceID { get; set; }
         public string ResourceName { get; set; }

@@ -167,7 +167,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             SetWorstDesignError(worstError[0]);
         }
 
-        private void SetWorstDesignError(IErrorInfo value)
+        void SetWorstDesignError(IErrorInfo value)
         {
             if (_worstDesignError != value)
             {
@@ -439,8 +439,8 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
         IList<IServiceInput> InputsFromModel()
         {
             var dt = new List<IServiceInput>();
-            string s = InputArea.QueryString;
-            string postValue = InputArea.PutData;
+            var s = InputArea.QueryString;
+            var postValue = InputArea.PutData;
             _builder.GetValue(s, dt);
             _builder.GetValue(postValue, dt);
             foreach (var nameValue in InputArea.Headers)

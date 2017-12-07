@@ -46,14 +46,12 @@ namespace Dev2.Activities.AttachedProperties
             var isFocused = e.NewValue is Boolean && (bool)e.NewValue;
             if (fe is AutoCompleteBox autoCompleteBox)
             {
-                if (isFocused)
+                if (isFocused && autoCompleteBox.TextBox != null)
                 {
-                    if (autoCompleteBox.TextBox != null)
-                    {
-                        autoCompleteBox.TextBox.Focus();
-                        Keyboard.Focus(autoCompleteBox.TextBox);
-                    }
+                    autoCompleteBox.TextBox.Focus();
+                    Keyboard.Focus(autoCompleteBox.TextBox);
                 }
+
                 return;
             }
 

@@ -17,7 +17,7 @@ namespace Dev2.Data.Decision
 {
     public class Dev2DataListDecisionHandler
     {
-        private static Dev2DataListDecisionHandler _inst;
+        static Dev2DataListDecisionHandler _inst;
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
         public static Dev2DataListDecisionHandler Instance => _inst ?? (_inst = new Dev2DataListDecisionHandler());
 

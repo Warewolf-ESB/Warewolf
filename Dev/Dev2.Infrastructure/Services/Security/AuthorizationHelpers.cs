@@ -54,7 +54,7 @@ namespace Dev2.Services.Security
             {
                 return Permissions.None;
             }
-            Permissions permission = Permissions.Administrator;
+            var permission = Permissions.Administrator;
 
             if (context.HasFlag(AuthorizationContext.DeployTo))
             {

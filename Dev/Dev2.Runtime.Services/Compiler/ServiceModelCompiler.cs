@@ -21,7 +21,7 @@ namespace Dev2.Runtime.Compiler
     /// </summary>
     public class ServiceModelCompiler
     {
-        private readonly CompileRulesRepo _ruleRepo = new CompileRulesRepo();
+        readonly CompileRulesRepo _ruleRepo = new CompileRulesRepo();
 
         /// <summary>
         /// Compiles the specified service

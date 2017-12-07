@@ -31,10 +31,10 @@ namespace Dev2.Tests.DataList
         public TestContext TestContext { get; set; }
 
         #region Additional test attribute
-        
-        private void DeleteDir(string rootFolder)
+
+        void DeleteDir(string rootFolder)
         {
-            if(Directory.Exists(rootFolder + @"\Dev2\"))
+            if (Directory.Exists(rootFolder + @"\Dev2\"))
             {
                 DirectoryHelper.CleanUp(rootFolder + @"\Dev2\");
             }
@@ -47,9 +47,9 @@ namespace Dev2.Tests.DataList
         [TestMethod]
         public void InitSessionWithNoDataBaseDirectoryIsNull()
         {
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = null;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
@@ -66,9 +66,9 @@ namespace Dev2.Tests.DataList
         [TestMethod]
         public void InitSessionWithNoDataBaseDirectoryIsNullStillInitialises()
         {
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = null;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
@@ -78,7 +78,7 @@ namespace Dev2.Tests.DataList
             broker.InitDebugSession(to);
             to = broker.PersistDebugSession(to);
             to.BaseSaveDirectory = null;
-            PrivateObject p = new PrivateObject(broker);
+            var p = new PrivateObject(broker);
             var field = p.GetField("_debugPersistSettings") as IDictionary<string, DebugTO>;
             Assert.IsNotNull(field);
             field.Add("bob", new DebugTO());
@@ -93,9 +93,9 @@ namespace Dev2.Tests.DataList
         [TestMethod]
         public void InitSessionWithSingleScalar()
         {
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
@@ -121,9 +121,9 @@ namespace Dev2.Tests.DataList
         {
             //DeleteDir();
             // bootstrap
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
@@ -145,9 +145,9 @@ namespace Dev2.Tests.DataList
         public void PersistSessionWithSavedData_ChangedDataList_ExpectPreviousXmlData()
         {
             // bootstrap
-            DebugTO to = new DebugTO();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
+            var to = new DebugTO();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
             to.RememberInputs = true;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";
@@ -166,9 +166,9 @@ namespace Dev2.Tests.DataList
         public void NotPersistSessionWithSavedData_ExpectEmptyDataList()
         {
             // bootstrap
-            DebugTO to = new DebugTO();
-            IDev2StudioSessionBroker broker = Dev2StudioSessionFactory.CreateBroker();
-            string rootFolder = Path.GetTempPath() + Guid.NewGuid();
+            var to = new DebugTO();
+            var broker = Dev2StudioSessionFactory.CreateBroker();
+            var rootFolder = Path.GetTempPath() + Guid.NewGuid();
             to.RememberInputs = false;
             to.BaseSaveDirectory = rootFolder;
             to.DataList = "<DataList><scalar1/><rs><f1/><f2/></rs></DataList>";

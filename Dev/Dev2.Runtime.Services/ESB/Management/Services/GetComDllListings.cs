@@ -4,37 +4,17 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Microsoft.Win32;
-//http://procbits.com/2010/11/08/get-all-progid-on-system-for-com-automation
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class GetComDllListings : DefaultEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<out string>
-
-        public override string HandlesType()
-        {
-            return "GetComDllListingsService";
-        }
-
-        #endregion
-
         #region Implementation of DefaultEsbManagementEndpoint
 
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var msg = new ExecuteMessage();
@@ -68,40 +48,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public override DynamicService CreateServiceEntry()
-        {
-            var findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
-        }
-
         #endregion
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "GetComDllListingsService";
     }
 }

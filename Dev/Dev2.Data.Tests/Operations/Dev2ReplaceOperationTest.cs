@@ -8,7 +8,7 @@ namespace Dev2.Data.Tests.Operations
     [TestClass]
     public class Dev2ReplaceOperationTests
     {
-        private IDev2ReplaceOperation _dev2ReplaceOperation;
+        IDev2ReplaceOperation _dev2ReplaceOperation;
 
         [TestInitialize]
         public void Initialization()

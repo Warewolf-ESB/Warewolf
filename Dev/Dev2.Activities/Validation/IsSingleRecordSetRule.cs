@@ -31,7 +31,7 @@ namespace Dev2.Validation
 
         public override IActionableErrorInfo Check()
         {
-            string exp = GetValue();
+            var exp = GetValue();
             if (!string.IsNullOrEmpty(exp))
             {
                 var regions = DataListCleaningUtils.SplitIntoRegions(exp);

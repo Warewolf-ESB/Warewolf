@@ -144,11 +144,11 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.Setup(o => o.Clone()).Returns(dataObjClon.Object);
             var mapManager = new Mock<IEnvironmentOutputMappingManager>();
             var esbServicesEndpoint = new EsbServicesEndpoint();
-            PrivateObject privateObject = new PrivateObject(esbServicesEndpoint);
+            var privateObject = new PrivateObject(esbServicesEndpoint);
             var invokerMock = new Mock<IEsbServiceInvoker>();
             var remoteWorkflowExecutionContainer = new RemoteWorkflowExecutionContainer(new ServiceAction(), dataObj.Object, new Mock<IWorkspace>().Object, new Mock<IEsbChannel>().Object);
             invokerMock.Setup(invoker => invoker.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Returns(remoteWorkflowExecutionContainer);
-            ErrorResultTO err = new ErrorResultTO();
+            var err = new ErrorResultTO();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             object[] args = { dataObj.Object, "inputs", invokerMock.Object, false, Guid.Empty, err, 0 };

@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.AggregateCalculate
 {
-    // Interaction logic for Small.xaml
     public partial class Small
     {
         public Small()
@@ -20,9 +19,6 @@ namespace Dev2.Activities.Designers2.AggregateCalculate
             InitializeComponent();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

@@ -49,7 +49,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var apiBuilder = new ApisJsonBuilder(_authorizationService, _resourceCatalog);
             var apis = apiBuilder.BuildForPath(basePath, isPublic);
             var converter = new JsonSerializer();
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Formatting.Indented };
             converter.Serialize(jsonTextWriter, apis);
             jsonTextWriter.Flush();

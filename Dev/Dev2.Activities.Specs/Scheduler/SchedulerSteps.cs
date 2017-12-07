@@ -41,8 +41,8 @@ namespace Dev2.Activities.Specs.Scheduler
     [Binding]
     public class SchedulerSteps
     {
-        private static ScenarioContext _scenarioContext;
-        private readonly CommonSteps _commonSteps;
+        static ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
 
         public SchedulerSteps(ScenarioContext scenarioContext)
         {
@@ -96,10 +96,10 @@ namespace Dev2.Activities.Specs.Scheduler
             var mockPopupController = new Mock<IPopupController>();
             mockPopupController.Setup(controller => controller.ShowDeleteConfirmation(It.IsAny<string>())).Returns(MessageBoxResult.Yes);
             var serverRepository = ServerRepository.Instance;
-            IServer server = serverRepository.Source;
+            var server = serverRepository.Source;
             CustomContainer.Register(serverRepository);
-            SchedulerViewModel scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
-         
+            var scheduler = new SchedulerViewModel(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), mockPopupController.Object, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object, new Mock<IServer>().Object, a => new Mock<IServer>().Object);
+
             var resourceId = table.Rows[0]["ResourceId"];
 
             server.Connect();
@@ -118,7 +118,7 @@ namespace Dev2.Activities.Specs.Scheduler
             var task = scheduler.SelectedTask;
             UpdateTrigger(task, table);
 
-            PrivateObject po = new PrivateObject(scheduler.CurrentEnvironment);
+            var po = new PrivateObject(scheduler.CurrentEnvironment);
             var mockAuth = new Mock<IAuthorizationService>();
             mockAuth.Setup(a => a.IsAuthorized(It.IsAny<AuthorizationContext>(), null)).Returns(true);
             po.SetFieldOrProperty("AuthorizationService", mockAuth.Object);
@@ -236,8 +236,8 @@ namespace Dev2.Activities.Specs.Scheduler
         [Then(@"the history debug output for ""(.*)"" for row ""(.*)"" is")]
         public void ThenTheHistoryDebugOutputForForRowIs(string p0, int p1, Table table)
         {
-            IList<IResourceHistory> resources = _scenarioContext["History"] as IList<IResourceHistory>;
-            
+            var resources = _scenarioContext["History"] as IList<IResourceHistory>;
+
             var debug = resources.First().DebugOutput;
             
             var debugTocompare = debug.Last();
@@ -326,8 +326,8 @@ namespace Dev2.Activities.Specs.Scheduler
 
         public static SecurityIdentifier GetUserSecurityIdentifier(string name)
         {
-            NTAccount acct = new NTAccount(Environment.MachineName, name);
-            SecurityIdentifier id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
+            var acct = new NTAccount(Environment.MachineName, name);
+            var id = (SecurityIdentifier)acct.Translate(typeof(SecurityIdentifier));
             return id;
         }
 
@@ -335,8 +335,8 @@ namespace Dev2.Activities.Specs.Scheduler
         {
             try
             {
-                PrincipalContext context = new PrincipalContext(ContextType.Machine);
-                UserPrincipal user = new UserPrincipal(context);
+                var context = new PrincipalContext(ContextType.Machine);
+                var user = new UserPrincipal(context);
                 user.SetPassword(password);
                 user.DisplayName = username;
                 user.Name = username;
@@ -356,7 +356,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
         public static void AddUserToGroup(string groupName, PrincipalContext context, UserPrincipal user)
         {
-            GroupPrincipal usersGroup = GroupPrincipal.FindByIdentity(context, groupName);
+            var usersGroup = GroupPrincipal.FindByIdentity(context, groupName);
             if (usersGroup != null)
             {
                 usersGroup.Members.Add(user);

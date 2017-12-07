@@ -19,7 +19,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
     [Binding]
     public class LoopConstructsCommon
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public LoopConstructsCommon(ScenarioContext scenarioContext)
         {
@@ -34,7 +34,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
         [Given(@"There is a recordset in the datalist with this shape")]
         public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
-            List<TableRow> rows = table.Rows.ToList();
+            var rows = table.Rows.ToList();
 
             if (rows.Count == 0)
             {

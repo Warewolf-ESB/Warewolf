@@ -24,12 +24,12 @@ namespace Dev2.Core.Tests.Utils {
 
         #region Locals
 
-        private string _name;
-        private string _value;
-        private string _mapsTo;
-        private string _defaultValue;
-        private bool _required;
-        private string _recordSetName;
+        string _name;
+        string _value;
+        string _mapsTo;
+        string _defaultValue;
+        bool _required;
+        string _recordSetName;
 
         #endregion Locals
 

@@ -22,7 +22,7 @@ namespace Dev2.Webs.Callbacks
     {
         #region Fields
 
-        private readonly IContextualResourceModel _resourceModel;
+        readonly IContextualResourceModel _resourceModel;
         public bool AddToTabManager { private set; get; }
 
         #endregion
@@ -41,8 +41,8 @@ namespace Dev2.Webs.Callbacks
             try
             {
                 string resName = jsonObj.resourceName;
-                string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
-                if(_resourceModel != null)
+                var resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
+                if (_resourceModel != null)
                 {
                     EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager));
                 }
@@ -51,7 +51,7 @@ namespace Dev2.Webs.Callbacks
             }
             catch(Exception e)
             {
-                Exception e1 = new Exception("There was a problem saving. Please try again.", e);
+                var e1 = new Exception("There was a problem saving. Please try again.", e);
 
                 Dev2Logger.Info(e.Message + Environment.NewLine + " Stacktrace : " + e.StackTrace + Environment.NewLine + " jsonObj: " + jsonObj.ToString(), "Warewolf Info");
 

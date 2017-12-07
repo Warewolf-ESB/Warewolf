@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsValidExpressionAndNoInputs_UsesVariableValueAndHasNoErrors()
         {
             //------------Setup for test--------------------------
-            string variableValue = "xxx";
+            var variableValue = "xxx";
             var util = new VariableUtils();
             //------------Execute Test---------------------------
             var error = util.TryParseVariables("[[a]]",out string outputValue, () => { }, variableValue: variableValue);
@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsValidExpressionAndHasInputs_UsesInputsValueAndHasNoErrors()
         {
             //------------Setup for test--------------------------
-            string variableValue = "xxx";
+            var variableValue = "xxx";
 
             var inputs = new ObservableCollection<ObservablePair<string, string>>();
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));

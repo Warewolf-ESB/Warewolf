@@ -3,8 +3,8 @@ namespace Dev2.Common.Interfaces.SaveDialog
 {
     public class ResourceName
     {
-        private readonly string _name;
-        private readonly string _path;
+        readonly string _name;
+        readonly string _path;
 
         public ResourceName(string path, string name)
         {

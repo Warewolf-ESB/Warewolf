@@ -13,16 +13,14 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.Oracle
 {
-   
-    public partial class Small 
+
+    public partial class Small
     {
         public Small()
         {
             InitializeComponent();
         }
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return null;
-        }
+
+        protected override IInputElement GetInitialFocusElement() => null;
     }
 }

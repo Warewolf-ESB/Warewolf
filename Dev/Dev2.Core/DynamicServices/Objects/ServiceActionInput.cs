@@ -34,39 +34,19 @@ namespace Dev2.DynamicServices
     #endregion
 
     #region Service Action Input Class - Represents an for a service action
-
-    /// <summary>
-    ///     Provides a representation of the input of a dynamic service
-    ///     Validates the input
-    /// </summary>
+    
     public class ServiceActionInput : DynamicServiceObjectBase
     {
         #region Public Properties
-
-        /// <summary>
-        ///     Used to invoke the correct Plugin Method with parm type and order
-        /// </summary>
+        
         public string NativeType { get; set; }
-
-        /// <summary>
-        ///     Do we convert Empty strings to null?
-        /// </summary>
+        
         public bool EmptyToNull { get; set; }
-
-        /// <summary>
-        ///     The validators that must execute to validate this input
-        /// </summary>
+        
         public List<Validator> Validators { get; set; }
-
-        /// <summary>
-        ///     The name of the field from the source system - this provides a mapping between
-        ///     the client request field and the data source field - they may have different names
-        /// </summary>
+        
         public string Source { get; set; }
-
-        /// <summary>
-        ///     The value of the field to validate from the client request
-        /// </summary>
+        
         public object Value { get; set; }
 
         public string DefaultValue { get; set; }
@@ -74,10 +54,7 @@ namespace Dev2.DynamicServices
         #endregion
 
         #region Constructors
-
-        /// <summary>
-        ///     Initializes the service action input
-        /// </summary>
+        
         public ServiceActionInput()
             : base(enDynamicServiceObjectType.ServiceActionInput)
         {
@@ -85,29 +62,6 @@ namespace Dev2.DynamicServices
         }
 
         #endregion
-
-        #region Public Methods
-
-        public override bool Compile()
-        {
-            base.Compile();
-
-            if (string.IsNullOrEmpty(Source))
-            {
-                WriteCompileError(Resources.CompilerError_SourceNotFound);
-            }
-
-            Validators.ForEach(c =>
-            {
-                c.Compile();
-                c.CompilerErrors.ToList().ForEach(d => CompilerErrors.Add(d));
-            });
-
-            return IsCompiled;
-        }
-
-        #endregion
-
     }
 
     #endregion

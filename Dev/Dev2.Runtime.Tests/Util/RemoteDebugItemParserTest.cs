@@ -30,12 +30,12 @@ namespace Dev2.Tests.Runtime.Util
 
         {
             //------------Setup for test--------------------------
-            List<IDebugState> items = new List<IDebugState>
+            var items = new List<IDebugState>
             {
                 new DebugState {ActivityType = ActivityType.Workflow, ClientID = Guid.Empty, DisplayName = "DebugState"}
             };
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var data = serializer.Serialize(items);
 
             //------------Execute Test---------------------------

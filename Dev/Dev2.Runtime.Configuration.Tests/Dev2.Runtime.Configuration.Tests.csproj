@@ -86,7 +86,6 @@
     <Compile Include="Settings\SettingsBaseTests.cs" />
     <Compile Include="AutoCompleteBoxTests.cs" />
     <Compile Include="ViewModels\MainViewModelTests.cs" />
-    <Compile Include="ViewModels\LoggingViewModelTests.cs" />
     <Compile Include="ViewModels\DelegateCommandTests.cs" />
     <Compile Include="ViewModels\RelayCommandTests.cs" />
     <Compile Include="XML\XmlResource.cs" />

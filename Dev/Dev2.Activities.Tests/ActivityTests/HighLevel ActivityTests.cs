@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     {
         #region Fields
 
-        private static List<Type> _activityList;
+        static List<Type> _activityList;
 
         #endregion Fields
 
@@ -62,12 +62,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfZip_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfZip");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfZip");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfZip.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             var count = properties.Length;
             Assert.IsTrue(count == 3);
         }
@@ -75,12 +75,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfUnZip_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfUnZip");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfUnZip");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfUnZip.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             var count = properties.Length;
             Assert.IsTrue(count == 1);
         }
@@ -88,12 +88,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfPathDelete_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfPathDelete");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfPathDelete");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfPathDelete.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
 
             Assert.IsTrue(properties.Length == 1);
         }
@@ -101,180 +101,180 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfPathCreate_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfPathCreate");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfPathCreate");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfPathCreate.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
         public void DsfFolderRead_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfFolderRead");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfFolderRead");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfFolderRead.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 4);
         }
 
         [TestMethod]
         public void DsfFileRead_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfFileRead");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfFileRead");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfFileRead.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 1);
         }
 
         [TestMethod]
         public void DsfSortRecordsActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfSortRecordsActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfSortRecordsActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfSortRecordsActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
         public void DsfMultiAssignActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfMultiAssignActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 4);
         }
 
         [TestMethod]
         public void DsfMultiAssignObjectActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignObjectActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignObjectActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfMultiAssignObjectActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 4);
         }
 
         [TestMethod]
         public void DsfForEachActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfForEachActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfForEachActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfForEachActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.AreEqual(14, properties.Length);
         }
 
         [TestMethod]
         public void DsfDateTimeActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDateTimeActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfDateTimeActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfDateTimeActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 7);
         }
 
         [TestMethod]
         public void DsfDataSplitActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDataSplitActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfDataSplitActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfDataSplitActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.AreEqual(4, properties.Length);
         }
 
         [TestMethod]
         public void DsfCountRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfCountRecordsetNullHandlerActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 3);
         }
 
         [TestMethod]
         public void DsfDeleteRecordsetActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordNullHandlerActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfDeleteRecordNullHandlerActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfDeleteRecordNullHandlerActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 3);
         }
 
         [TestMethod]
         public void DsfRecordsetLengthActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetNullhandlerLengthActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfRecordsetNullhandlerLengthActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfRecordsetNullhandlerLengthActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 3);
         }
 
         [TestMethod]
         public void DsfCalculateActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCalculateActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfCalculateActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfCalculateActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 2);
         }
 
         [TestMethod]
         public void DsfCaseConvertActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCaseConvertActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfCaseConvertActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfCaseConvertActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 1);
         }
 
         [TestMethod]
         public void DsfBaseConvertActivity_Property_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfBaseConvertActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfBaseConvertActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfBaseConvertActivity.");
             }
-            PropertyInfo[] properties = GetPropertyInfo(type);
+            var properties = GetPropertyInfo(type);
             Assert.IsTrue(properties.Length == 1);
         }
 
@@ -285,14 +285,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfMultiAssignActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignActivity");
 
             if (type == null)
             {
                 Assert.Fail("Could not find DsfMultiAssignActivity.");
             }
 
-            MemberInfo[] allMembers = GetMembers(type, "FieldsCollection");
+            var allMembers = GetMembers(type, "FieldsCollection");
 
             Assert.AreEqual(true, allMembers != null && allMembers.Length == 1);
         }
@@ -300,14 +300,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfMultiAssignObjectActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignObjectActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfMultiAssignObjectActivity");
 
             if (type == null)
             {
                 Assert.Fail("Could not find DsfMultiAssignObjectActivity.");
             }
 
-            MemberInfo[] allMembers = GetMembers(type, "FieldsCollection");
+            var allMembers = GetMembers(type, "FieldsCollection");
 
             Assert.AreEqual(true, allMembers != null && allMembers.Length == 1);
         }
@@ -315,13 +315,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfCaseConvertActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCaseConvertActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfCaseConvertActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfCaseConvertActivity.");
             }
 
-            MemberInfo[] allMembers = GetMembers(type, "ConvertCollection");
+            var allMembers = GetMembers(type, "ConvertCollection");
 
             Assert.AreEqual(true, allMembers != null && allMembers.Length == 1);
         }
@@ -329,13 +329,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfBaseConvertActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfBaseConvertActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfBaseConvertActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfBaseConvertActivity.");
             }
 
-            MemberInfo[] allMembers = GetMembers(type, "ConvertCollection");
+            var allMembers = GetMembers(type, "ConvertCollection");
 
             Assert.AreEqual(true, allMembers != null && allMembers.Length == 1);
         }
@@ -343,14 +343,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfCalculateActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCalculateActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfCalculateActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfCalculateActivity.");
             }
 
-            MemberInfo[] Expression = GetMembers(type, "Expression");
-            MemberInfo[] Result = GetMembers(type, "Result");
+            var Expression = GetMembers(type, "Expression");
+            var Result = GetMembers(type, "Result");
             Result = Result.Where(c => c.GetType().UnderlyingSystemType == typeof(string)).ToArray();
             Assert.IsTrue(Expression != null && Result != null && Expression.Length == 1, "This will fail on designer binding, please update this before proceeding");
         }
@@ -358,48 +358,48 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfCountRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfCountRecordsetNullHandlerActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfCountRecordsetNullHandlerActivity.");
             }
 
-            MemberInfo[] RecordsetName = GetMembers(type, "RecordsetName");
-            MemberInfo[] CountNumber = GetMembers(type, "CountNumber");
+            var RecordsetName = GetMembers(type, "RecordsetName");
+            var CountNumber = GetMembers(type, "CountNumber");
             Assert.IsTrue(RecordsetName != null && CountNumber != null && RecordsetName.Length == 1 && CountNumber.Length == 1, "This will fail on designer binding, please update this before proceeding");
         }
 
         [TestMethod]
         public void DsfDataSplitActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDataSplitActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfDataSplitActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfDataSplitActivity.");
             }
 
-            MemberInfo[] ResultsCollection = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "ResultsCollection");
-            MemberInfo[] ReverseOrder = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "ReverseOrder");
-            MemberInfo[] SourceString = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SourceString");
+            var ResultsCollection = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "ResultsCollection");
+            var ReverseOrder = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "ReverseOrder");
+            var SourceString = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SourceString");
             Assert.IsTrue(ResultsCollection != null && ReverseOrder != null && SourceString != null && ResultsCollection.Length == 1 && ResultsCollection.Length == 1 && SourceString.Length == 1, "This will fail on designer binding, please update this before proceeding");
         }
 
         [TestMethod]
         public void DsfDateTimeActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfDateTimeActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfDateTimeActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfDateTimeActivity.");
             }
 
-            MemberInfo[] DateTime = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "DateTime");
-            MemberInfo[] InputFormat = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "InputFormat");
-            MemberInfo[] OutputFormat = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "OutputFormat");
-            MemberInfo[] TimeModifierType = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierType");
-            MemberInfo[] TimeModifierAmountDisplay = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierAmountDisplay");
+            var DateTime = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "DateTime");
+            var InputFormat = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "InputFormat");
+            var OutputFormat = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "OutputFormat");
+            var TimeModifierType = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierType");
+            var TimeModifierAmountDisplay = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierAmountDisplay");
             type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "TimeModifierAmount");
-            MemberInfo[] Result = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "Result");
+            var Result = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "Result");
 
             Assert.IsTrue(DateTime != null && DateTime.Length == 1
                           && InputFormat != null && InputFormat.Length == 1
@@ -412,14 +412,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void DsfSortRecordSetActivity_Property_Name_Check_Expected_No_Change_To_Properties()
         {
-            Type type = _activityList.FirstOrDefault(c => c.Name == "DsfSortRecordsActivity");
+            var type = _activityList.FirstOrDefault(c => c.Name == "DsfSortRecordsActivity");
             if (type == null)
             {
                 Assert.Fail("Could not find DsfSortRecordsActivity.");
             }
 
-            MemberInfo[] SortField = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SortField");
-            MemberInfo[] SelectedSort = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SelectedSort");
+            var SortField = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SortField");
+            var SelectedSort = type.FindMembers(MemberTypes.Property, BindingFlags.Public | BindingFlags.Instance, Type.FilterName, "SelectedSort");
 
             Assert.IsTrue(SortField != null && SortField.Length == 1
                           && SelectedSort != null & SortField.Length == 1, "This will fail on designer binding, please update this before proceeding");
@@ -429,11 +429,11 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Methods
 
-        private static List<Type> GetAllActivities()
+        static List<Type> GetAllActivities()
         {
             var type = typeof(DsfActivityAbstract<bool>);
 
-            List<Type> types = type.Assembly.GetTypes()
+            var types = type.Assembly.GetTypes()
                                 .Where(t => type.IsAssignableFrom(t))
                                 .ToList();
 
@@ -445,9 +445,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             return types;
         }
 
-        private PropertyInfo[] GetPropertyInfo(Type type)
+        PropertyInfo[] GetPropertyInfo(Type type)
         {
-            PropertyInfo[] properties = type.GetProperties(BindingFlags.Public
+            var properties = type.GetProperties(BindingFlags.Public
                                                            | BindingFlags.DeclaredOnly
                                                            | BindingFlags.Instance
                                                            | BindingFlags.CreateInstance);
@@ -455,9 +455,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             return properties;
         }
 
-        private MemberInfo[] GetMembers(Type type, string methodName)
+        MemberInfo[] GetMembers(Type type, string methodName)
         {
-            MemberInfo[] memberInfo = type.FindMembers(MemberTypes.Property,
+            var memberInfo = type.FindMembers(MemberTypes.Property,
                                                        BindingFlags.Public | BindingFlags.Instance,
                                                        Type.FilterName, methodName);
 

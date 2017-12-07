@@ -2,7 +2,7 @@ using Dev2.Data.Interfaces;
 
 namespace Dev2.Data.Util
 {
-    internal class CommonScalarUtil : ICommonScalarUtil
+    class CommonScalarUtil : ICommonScalarUtil
     {
         #region Implementation of ICommonScalarUtil
 

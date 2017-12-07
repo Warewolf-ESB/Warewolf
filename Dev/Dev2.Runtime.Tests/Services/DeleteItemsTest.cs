@@ -82,8 +82,8 @@ namespace Dev2.Tests.Runtime.Services
             var deleteItem = new DeleteItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteItem.Execute(null, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = deleteItem.Execute(null, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -98,8 +98,8 @@ namespace Dev2.Tests.Runtime.Services
             var deleteItem = new DeleteItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteItem.Execute(values, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = deleteItem.Execute(values, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -114,8 +114,8 @@ namespace Dev2.Tests.Runtime.Services
             var deleteItem = new DeleteItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteItem.Execute(values, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = deleteItem.Execute(values, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var deleteItem = new DeleteItemService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.DeleteItem(It.IsAny<IExplorerItem>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();

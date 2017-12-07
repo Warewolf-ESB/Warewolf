@@ -22,8 +22,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     [TestClass]
     public class Dev2TaskTest
     {
-        private TaskService _taskService;
-        private Mock<ITaskServiceConvertorFactory> _factory;
+        TaskService _taskService;
+        Mock<ITaskServiceConvertorFactory> _factory;
 
 
         [TestInitialize]

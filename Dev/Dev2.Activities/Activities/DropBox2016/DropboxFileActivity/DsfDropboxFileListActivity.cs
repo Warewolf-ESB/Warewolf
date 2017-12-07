@@ -31,8 +31,8 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         public OauthSource SelectedSource { get; set; }
 
         public List<string> Files { get; set; }
-        private DropboxClient _dropboxClient;
-        private IDropboxClientWrapper _dropboxClientWrapper;
+        DropboxClient _dropboxClient;
+        IDropboxClientWrapper _dropboxClientWrapper;
         public Exception Exception { get; set; }
 
         [FindMissing]
@@ -57,12 +57,12 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
-        
 
-        private DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
+
+        DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
         {
             DropboxFactory = dropboxFactory;
-            
+
             DisplayName = "List Dropbox Contents";
             Files = new List<string>();
             IsFilesSelected = true;
@@ -170,9 +170,9 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
             base.GetDebugInputs(env, update);
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Folders"), debugItem);
-            string value = IsFoldersSelected ? "True" : "False";
+            var value = IsFoldersSelected ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 

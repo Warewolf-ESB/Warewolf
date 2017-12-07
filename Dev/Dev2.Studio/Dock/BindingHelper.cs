@@ -23,7 +23,7 @@ namespace Dev2.Studio.Dock
     {
         #region Member Variables
 
-        private static bool _xmlLoaded;
+        static bool _xmlLoaded;
 
         #endregion //Member Variables
 
@@ -44,9 +44,9 @@ namespace Dev2.Studio.Dock
                 return;
             }
 
-            Binding b = new Binding();
+            var b = new Binding();
 
-            if(IsXmlNode(item))
+            if (IsXmlNode(item))
             {
                 b.XPath = path;
             }
@@ -76,7 +76,7 @@ namespace Dev2.Studio.Dock
         }
 
         [MethodImpl(MethodImplOptions.NoInlining)]
-        private static bool IsXmlNodeHelper(object item)
+        static bool IsXmlNodeHelper(object item)
         {
             _xmlLoaded = true;
             return item is XmlNode;

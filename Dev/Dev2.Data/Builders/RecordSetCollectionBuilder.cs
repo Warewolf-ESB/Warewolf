@@ -92,7 +92,7 @@ namespace Dev2.Data.Builders
             foreach(string setName in tmpNames)
             {
                 
-                IList<IDev2Definition> tmpOutput = tmpCollections[setName];
+                var tmpOutput = tmpCollections[setName];
                 tmpDefs.Add(new RecordSetDefinition(setName, tmpOutput));
             }
 

@@ -19,7 +19,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     public class Dev2TaskFolderTests
     {
         TaskFolder _folder;
-        private TaskService _service;
+        TaskService _service;
         [TestInitialize]
         public void Init()
         {
@@ -54,7 +54,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void TaskShedulerWrapper_TaskFolder_Construct()
         {
             var service = new TaskService();
-            TaskFolder folder = service.RootFolder;
+            var folder = service.RootFolder;
             var df = new Dev2TaskFolder(new TaskServiceConvertorFactory(),folder);
             Assert.AreEqual(df.Instance,folder);
             Assert.AreEqual(df.Name,folder.Name);

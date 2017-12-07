@@ -14,10 +14,10 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 {
     public sealed class PostWorker : IWorker
     {
-        private string _postData { get; set; }
-        private string _url { get; set; }
+        string _postData { get; set; }
+        string _url { get; set; }
 
-        private string _responseData { get; set; }
+        string _responseData { get; set; }
 
         public PostWorker()
         {
@@ -27,7 +27,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         public PostWorker(string postdata)
         {
-            string[] postwithurl = SplitPostFromUrl(postdata);
+            var postwithurl = SplitPostFromUrl(postdata);
 
             _url = postwithurl[0];
             _postData = postwithurl[1];
@@ -42,14 +42,14 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         public void DoWork()
         {
-            AsynchronousRequest async = new AsynchronousRequest();
+            var async = new AsynchronousRequest();
             async.ScanSite(_url, _postData);
             _responseData = async.GetResponseData();
         }
 
-        private string[] SplitPostFromUrl(string PostWithUrl)
+        string[] SplitPostFromUrl(string PostWithUrl)
         {
-            string[] alldata = PostWithUrl.Split('?');
+            var alldata = PostWithUrl.Split('?');
             return alldata;
         }
 

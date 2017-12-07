@@ -81,7 +81,7 @@ namespace Dev2.Studio.Core
 
         public IContextualResourceModel ResourceModel { get; set; }
 
-        private string GetPropertyValue(object modelItemObject, string propertyName)
+        string GetPropertyValue(object modelItemObject, string propertyName)
         {
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {
@@ -92,7 +92,7 @@ namespace Dev2.Studio.Core
             return string.Empty;
         }
 
-        private void SetPropertyValue(object modelItemObject, string propertyName, object value)
+        void SetPropertyValue(object modelItemObject, string propertyName, object value)
         {
             if (modelItemObject is ModelItem modelItem && modelItem.Properties[propertyName] != null)
             {

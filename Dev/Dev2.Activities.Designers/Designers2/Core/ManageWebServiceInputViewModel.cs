@@ -25,12 +25,12 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWebServiceInputViewModel : IManageWebServiceInputViewModel
     {
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private bool _okSelected;
-        private IWebService _model;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        bool _okSelected;
+        IWebService _model;
         bool _pasteResponseVisible;
         bool _pasteResponseAvailable;
         readonly IGenerateOutputArea _generateOutputArea;
@@ -39,12 +39,12 @@ namespace Dev2.Activities.Designers2.Core
         readonly IWebServiceBaseViewModel _viewmodel;
         readonly IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
-        private readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
+        readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
 
         public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
         {

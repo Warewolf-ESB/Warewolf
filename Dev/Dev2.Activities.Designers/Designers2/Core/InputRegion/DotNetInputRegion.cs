@@ -23,14 +23,14 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetInputRegion : IDotNetInputRegion
     {
-         private readonly ModelItem _modelItem;
-        private readonly IActionToolRegion<IPluginAction> _action;
+        readonly ModelItem _modelItem;
+        readonly IActionToolRegion<IPluginAction> _action;
         bool _isEnabled;
-        private ICollection<IServiceInput> _inputs;
-        private bool _isInputsEmptyRows;
-        private readonly IActionInputDatatalistMapper _datatalistMapper;
+        ICollection<IServiceInput> _inputs;
+        bool _isInputsEmptyRows;
+        readonly IActionInputDatatalistMapper _datatalistMapper;
 
-        
+
         public DotNetInputRegion()
         {
             ToolRegionName = "DotNetInputRegion";
@@ -64,13 +64,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _datatalistMapper = datatalistMapper;
         }
 
-        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null)
             {
@@ -86,12 +86,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Inputs", Inputs.ToList());
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems == null)
             {
@@ -107,15 +107,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
 
-                
+
                 UpdateOnActionSelection();
-                
+
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -129,12 +129,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateOnActionSelection()
+        void UpdateOnActionSelection()
         {
             Inputs = new List<IServiceInput>();
             IsEnabled = false;

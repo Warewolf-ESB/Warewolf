@@ -23,7 +23,7 @@ using Dev2.Tests.Runtime.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
-
+using Dev2.Infrastructure.Tests.Services.Security;
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -241,12 +241,12 @@ namespace Dev2.Tests.Runtime.Services
             var expected = SecurityRead.DefaultPermissions[0];
             var actual = securitySettings.WindowsGroupPermissions[0];
 
-            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
 
             expected = SecurityRead.DefaultPermissions[1];
             actual = securitySettings.WindowsGroupPermissions[1];
-            result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
         }
 
@@ -273,12 +273,12 @@ namespace Dev2.Tests.Runtime.Services
             var expected = SecurityRead.DefaultPermissions[0];
             var actual = securitySettings.WindowsGroupPermissions[0];
 
-            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
 
             expected = SecurityRead.DefaultPermissions[1];
             actual = securitySettings.WindowsGroupPermissions[1];
-            result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
         }
 

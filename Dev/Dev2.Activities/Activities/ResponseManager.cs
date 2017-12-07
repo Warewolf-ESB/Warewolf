@@ -78,7 +78,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void AssignObject(string input, int update, IDSFDataObject dataObj)
+        void AssignObject(string input, int update, IDSFDataObject dataObj)
         {
 
             try
@@ -92,7 +92,7 @@ namespace Dev2.Activities
 
         }
 
-        private void FormatForOutput(string input, int update, IDSFDataObject dataObj, bool formatResult, IOutputFormatter formater)
+        void FormatForOutput(string input, int update, IDSFDataObject dataObj, bool formatResult, IOutputFormatter formater)
         {
             var formattedInput = input;
             if (formater != null && formatResult)
@@ -100,13 +100,13 @@ namespace Dev2.Activities
                 formattedInput = formater.Format(input).ToString();
             }
 
-            XmlDocument xDoc = new XmlDocument();
+            var xDoc = new XmlDocument();
             formattedInput = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), formattedInput);
             xDoc.LoadXml(formattedInput);
 
             if (xDoc.DocumentElement != null)
             {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                var children = xDoc.DocumentElement.ChildNodes;
                 IDictionary<string, int> indexCache = new Dictionary<string, int>();
                 var outputDefs =
                     Outputs.Select(
@@ -173,7 +173,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void MapScalarValue(IList<IDev2Definition> outputDefs, int update, IDSFDataObject dataObj, XmlNode c1)
+        void MapScalarValue(IList<IDev2Definition> outputDefs, int update, IDSFDataObject dataObj, XmlNode c1)
         {
             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
             if (scalarName != null)

@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class GetApisJsonServiceHandlerTest
     {
-        private NameValueCollection LocalQueryString => new NameValueCollection
+        NameValueCollection LocalQueryString => new NameValueCollection
         {
             { "Name", "the_name" },
             { "isPublic", "" },

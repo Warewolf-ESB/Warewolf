@@ -21,7 +21,7 @@ namespace Dev2.Studio.Core.Factories
     {
         public static DataListHeaderItemModel CreateDataListHeaderItem(string displayname)
         {
-            DataListHeaderItemModel dataListHeaderModel = new DataListHeaderItemModel(displayname);
+            var dataListHeaderModel = new DataListHeaderItemModel(displayname);
             return dataListHeaderModel;
         }
 
