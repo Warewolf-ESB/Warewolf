@@ -13,31 +13,18 @@ using System.Text;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Warewolf.Resource.Errors;
-
 
 namespace Dev2.Studio.Core.ViewModels
 {
     public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IDesignerViewModel
     {
-        #region Class Members
-
-        private readonly IServer _server;
-        private IContextualResourceModel _contexttualResourceModel;
-
-        #endregion Class Members
-
-        #region Ctor
+        readonly IServer _server;
 
         public ResourceDesignerViewModel(IContextualResourceModel model, IServer server)
         {
-            _contexttualResourceModel = model;
+            ResourceModel = model;
             _server = server;
         }
-
-        #endregion
-
-        #region Properties
 
         public IServer Server => _server;
 
@@ -45,18 +32,18 @@ namespace Dev2.Studio.Core.ViewModels
         {
             get
             {
-                if(_contexttualResourceModel.WorkflowXaml == null || _contexttualResourceModel.WorkflowXaml.Length == 0)
+                if (ResourceModel.WorkflowXaml == null || ResourceModel.WorkflowXaml.Length == 0)
                 {
-                    _contexttualResourceModel.WorkflowXaml = DefaultDefinition();
+                    ResourceModel.WorkflowXaml = DefaultDefinition();
                 }
 
-                return _contexttualResourceModel.WorkflowXaml;
+                return ResourceModel.WorkflowXaml;
             }
             set
             {
-                _contexttualResourceModel.WorkflowXaml = value;
+                ResourceModel.WorkflowXaml = value;
                 NotifyOfPropertyChange(() => ServiceDefinition);
-                if(ResourceModel != null)
+                if (ResourceModel != null)
                 {
                     ResourceModel.WorkflowXaml = ServiceDefinition;
                 }
@@ -64,27 +51,15 @@ namespace Dev2.Studio.Core.ViewModels
 
         }
 
-        public IContextualResourceModel ResourceModel
+        public IContextualResourceModel ResourceModel { get; set; }
+
+        StringBuilder DefaultDefinition()
         {
-
-            get { return _contexttualResourceModel; }
-            set { _contexttualResourceModel = value; }
-        }
-
-        #endregion
-
-        #region Methods
-
-        private StringBuilder DefaultDefinition()
-        {
-
             var sb = new StringBuilder();
-
-            switch (_contexttualResourceModel.ResourceType)
+            switch (ResourceModel.ResourceType)
             {
                 case ResourceType.Service:
-                    sb.Append(string.Format("<Service Name=\"{0}\">",
-                    _contexttualResourceModel.ResourceName));
+                    sb.Append($"<Service Name=\"{ResourceModel.ResourceName}\">");
                     sb.Append("\r\n\t\t");
                     sb.Append("<Actions>");
                     sb.Append("\r\n\t\t\t");
@@ -105,17 +80,10 @@ namespace Dev2.Studio.Core.ViewModels
                     break;
 
                 case ResourceType.Source:
-                    sb.Append(string.Format("<Source Name=\"{0}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ", _contexttualResourceModel.ResourceName));
-                    break;
-                case ResourceType.WorkflowService:
-                    break;
-                case ResourceType.Unknown:
-                    break;
-                case ResourceType.Server:
+                    sb.Append($"<Source Name=\"{ResourceModel.ResourceName}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ");
                     break;
                 default:
                     break;
-
             }
 
             return sb;
@@ -125,7 +93,5 @@ namespace Dev2.Studio.Core.ViewModels
         {
 
         }
-
-        #endregion Methods
     }
 }
