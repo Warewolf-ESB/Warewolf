@@ -87,7 +87,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             int row = 1;
             foreach(var variable in variableList)
             {
-                multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
+                multiAssign.FieldsCollection.Add(new ActivityDto(variable.Item1, variable.Item2, row, true));
                 row++;
             }
             FlowDecision x = new FlowDecision();

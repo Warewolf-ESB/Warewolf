@@ -44,7 +44,7 @@ namespace Dev2.TO
         bool _isBetweenCriteriaVisible;
         public static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAllDecision();
         bool _isLast;
-        private readonly bool _isInitializing;
+        readonly bool _isInitializing;
         public RelayCommand DeleteCommand { get;  set; }
 
         public DecisionTO()
@@ -74,7 +74,7 @@ namespace Dev2.TO
             SearchType = searchType;
             IndexNumber = indexNum;
             IsSearchCriteriaEnabled = true;
-     
+
             From = @from;
             To = to;
             IsSearchTypeFocused = false;
@@ -176,9 +176,9 @@ namespace Dev2.TO
                 UpdateDisplay();
             }
         }
-        
+
         public bool IsToFocused { get => _isToFocused; set => OnPropertyChanged(ref _isToFocused, value); }
-        
+
         [FindMissing]
         public string SearchCriteria
         {
@@ -221,7 +221,7 @@ namespace Dev2.TO
                     return;
                 }
                 _matchValue = value;
-               
+
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
                 UpdateDisplay();
@@ -239,17 +239,14 @@ namespace Dev2.TO
                 if (value != null)
                 {
                     _searchType = FindRecordsDisplayUtil.ConvertForDisplay(value);
-                    if (!string.IsNullOrEmpty(_searchType))
-                    {
-                        IsSearchCriteriaEnabled = true;
-                    }
+                    IsSearchCriteriaEnabled |= !string.IsNullOrEmpty(_searchType);
                     UpdateMatchVisibility(this, _searchType, Whereoptions);
                     if (_searchType == value)
                     {
                         return;
                     }
                     OnPropertyChanged();
-                    RaiseCanAddRemoveChanged();                   
+                    RaiseCanAddRemoveChanged();
                     UpdateDisplay();
                 }
             }
@@ -259,10 +256,10 @@ namespace Dev2.TO
 
         void RaiseCanAddRemoveChanged()
         {
-            
+
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
+
         }
 
         public bool IsSearchCriteriaEnabled
@@ -334,7 +331,7 @@ namespace Dev2.TO
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -406,7 +403,7 @@ namespace Dev2.TO
 
         public static void UpdateMatchVisibility(DecisionTO to, string value, IList<IFindRecsetOptions> whereOptions)
         {
-            var opt = whereOptions.FirstOrDefault(a => value.ToLower().StartsWith(a.HandlesType().ToLower()));
+            var opt = whereOptions.FirstOrDefault(a => value.StartsWith(a.HandlesType(), StringComparison.InvariantCultureIgnoreCase));
             if (opt != null)
             {
                 switch (opt.ArgumentCount)
@@ -432,6 +429,4 @@ namespace Dev2.TO
             }
         }
     }
-
-
 }

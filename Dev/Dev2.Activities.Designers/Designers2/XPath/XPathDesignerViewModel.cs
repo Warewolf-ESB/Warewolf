@@ -25,7 +25,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.XPath
 {
-    public class XPathDesignerViewModel : ActivityCollectionDesignerViewModel<XPathDTO>
+    public class XPathDesignerViewModel : ActivityCollectionDesignerViewModel<XPathDto>
     {
         internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public XPathDesignerViewModel(ModelItem modelItem)
@@ -81,7 +81,7 @@ namespace Dev2.Activities.Designers2.XPath
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            var dto = mi.GetCurrentValue() as XPathDTO;
+            var dto = mi.GetCurrentValue() as XPathDto;
             if(dto == null)
             {
                 yield break;

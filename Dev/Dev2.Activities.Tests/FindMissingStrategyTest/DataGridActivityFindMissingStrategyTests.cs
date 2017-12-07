@@ -82,7 +82,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffMultiAssignActivityExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDto> { new ActivityDto("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDto("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DataGridActivity);
             List<string> actual = strategy.GetActivityFields(multiAssignActivity);

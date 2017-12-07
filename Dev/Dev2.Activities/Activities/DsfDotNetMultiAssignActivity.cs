@@ -42,9 +42,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public static readonly string CalculateTextConvertSuffix = GlobalConstants.CalculateTextConvertSuffix;
         public static readonly string CalculateTextConvertFormat = GlobalConstants.CalculateTextConvertFormat;
 
-        private IList<ActivityDTO> _fieldsCollection;
+        private IList<ActivityDto> _fieldsCollection;
 
-        public IList<ActivityDTO> FieldsCollection
+        public IList<ActivityDto> FieldsCollection
         {
             get
             {
@@ -65,7 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfDotNetMultiAssignActivity()
             : base("Assign")
         {
-            _fieldsCollection = new List<ActivityDTO>();
+            _fieldsCollection = new List<ActivityDto>();
         }
 
         public override List<string> GetOutputs()
@@ -93,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!errors.HasErrors())
                 {
                     int innerCount = 1;
-                    foreach (ActivityDTO t in FieldsCollection)
+                    foreach (ActivityDto t in FieldsCollection)
                     {
                         try
                         {

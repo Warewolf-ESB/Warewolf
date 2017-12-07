@@ -16,7 +16,6 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
-using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -39,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : this("Match On", "Equal", 0)
         {
         }
-        
+
         public IList<string> WhereOptionList { get; set; }
 
         public FindRecordsTO(string searchCriteria, string searchType, int indexNum)
@@ -137,10 +136,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            
+
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
+
         }
 
         public bool IsSearchCriteriaEnabled
@@ -211,7 +210,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
