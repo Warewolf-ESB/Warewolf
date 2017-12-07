@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Dev2
+namespace Dev2.Activities.Factories.Case
 {
     public static class CaseConverter
     {

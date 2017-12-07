@@ -16,7 +16,7 @@ using Dev2.Studio.Core.Models.QuickVariableInput;
 using Dev2.ViewModels.QuickVariableInput;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-
+using Dev2.TO;
 
 namespace Dev2.Core.Tests
 {
