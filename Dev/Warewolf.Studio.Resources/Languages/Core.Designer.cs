@@ -874,6 +874,15 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Revulytics sdk error.
+        /// </summary>
+        public static string RevulyticsSdkError {
+            get {
+                return ResourceManager.GetString("RevulyticsSdkError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Make current version.
         /// </summary>
         public static string RollbackHeader {

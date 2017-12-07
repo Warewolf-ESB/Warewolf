@@ -63,11 +63,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-
-
-
-
-
+using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -94,7 +90,7 @@ namespace Dev2.Studio.ViewModels
         private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
         private AuthorizeCommand<string> _newOracleSourceCommand;
         private AuthorizeCommand<string> _newOdbcSourceCommand;
-        private AuthorizeCommand<string> _newWebSourceCommand;
+        private AuthorizeCommand<string> _newWebSourceCommand; 
         private AuthorizeCommand<string> _newServerSourceCommand;
         private AuthorizeCommand<string> _newEmailSourceCommand;
         private AuthorizeCommand<string> _newExchangeSourceCommand;
@@ -112,7 +108,7 @@ namespace Dev2.Studio.ViewModels
         private ICommand _showStartPageCommand;
         bool _canDebug = true;
         bool _menuExpanded;
-
+        IApplicationTracker _applicationTracker;
         public IPopupController PopupProvider { get; set; }
 
         private IServerRepository ServerRepository { get; }
@@ -493,7 +489,7 @@ namespace Dev2.Studio.ViewModels
             AddWorkspaceItems();
             ShowStartPage();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
-
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
         }
 
@@ -1323,8 +1319,13 @@ namespace Dev2.Studio.ViewModels
         }
 
         public void NewService(string resourcePath)
-        {
+        {           
             _worksurfaceContextManager.NewService(resourcePath);
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.NewService);
+            }
         }
 
         public void NewServerSource(string resourcePath)
@@ -1422,6 +1423,11 @@ namespace Dev2.Studio.ViewModels
 
         public void AddDeploySurface(IEnumerable<IExplorerTreeItem> items)
         {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                          Warewolf.Studio.Resources.Languages.TrackEventMenu.Deploy);
+            }
             _worksurfaceContextManager.AddDeploySurface(items);
         }
 

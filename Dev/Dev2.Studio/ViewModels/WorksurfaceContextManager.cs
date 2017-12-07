@@ -156,11 +156,12 @@ namespace Dev2.Studio.ViewModels
         private readonly ShellViewModel _shellViewModel;
         private readonly bool _createDesigners;
         private readonly Func<IContextualResourceModel, bool, IWorkSurfaceContextViewModel> _getWorkSurfaceContextViewModel = (resourceModel, createDesigner) => WorkSurfaceContextFactory.CreateResourceViewModel(resourceModel, createDesigner);
-
+        private IApplicationTracker _applicationTracker;
         public WorksurfaceContextManager(bool createDesigners, ShellViewModel shellViewModel)
         {
             _createDesigners = createDesigners;
             _shellViewModel = shellViewModel;
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
             SetUpEditHandlers();
         }
 
@@ -1186,11 +1187,21 @@ namespace Dev2.Studio.ViewModels
 
         public void AddSettingsWorkSurface()
         {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Settings);
+            }
             ActivateOrCreateUniqueWorkSurface<SettingsViewModel>(WorkSurfaceContext.Settings);
         }
 
         public void AddSchedulerWorkSurface()
         {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
+                                                Warewolf.Studio.Resources.Languages.TrackEventMenu.Task);
+            }
             ActivateOrCreateUniqueWorkSurface<SchedulerViewModel>(WorkSurfaceContext.Scheduler);
         }
 
@@ -1268,12 +1279,7 @@ namespace Dev2.Studio.ViewModels
             var exists = ActivateAndReturnWorkSurfaceIfPresent(key);
 
             if (exists == null)
-            {
-                if (typeof(T) == typeof(SettingsViewModel))
-                {
-                    Tracker.TrackEvent(TrackerEventGroup.Settings, TrackerEventName.Opened);
-                }
-
+            {   
                 return CreateAndActivateUniqueWorkSurface<T>(context);
             }
             try

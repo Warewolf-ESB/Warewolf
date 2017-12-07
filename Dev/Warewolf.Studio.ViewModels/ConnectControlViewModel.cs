@@ -23,6 +23,7 @@ using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Warewolf.Resource.Errors;
+using Dev2.Instrumentation;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -37,6 +38,7 @@ namespace Warewolf.Studio.ViewModels
         readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         readonly IServerRepository _serverRepository;
+        private IApplicationTracker _applicationTracker;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
             : this(server, aggregator, null, null)
@@ -72,6 +74,7 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
+            _applicationTracker = CustomContainer.Get<IApplicationTracker>();
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
@@ -282,6 +285,14 @@ namespace Warewolf.Studio.ViewModels
                     {
                         var isConnected = CheckVersionConflictAsync();
                     }
+                    // revulytics log if ware wolf store selected
+                    if (!value.IsLocalHost)
+                    {
+                        if (_applicationTracker != null)
+                        {
+                            _applicationTracker.TrackEvent(Resources.Languages.TrackEventMenu.EventCategory, Resources.Languages.TrackEventMenu.WarewolfStore);
+                        }
+                        }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
                     SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
@@ -306,6 +317,10 @@ namespace Warewolf.Studio.ViewModels
 
         void NewServer()
         {
+            if (_applicationTracker != null)
+            {
+                _applicationTracker.TrackEvent(Resources.Languages.TrackEventMenu.EventCategory, Resources.Languages.TrackEventMenu.NewRemoteServer);
+            }
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             if (mainViewModel != null && ShouldUpdateActiveEnvironment)
             {
