@@ -15,17 +15,14 @@ namespace Warewolf.UI.Tests.DropboxSource.DropboxSourceUIMapClasses
     {
         public void Enter_TextIntoOAuthKey_On_OAuthSourceTab()
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "test";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.OAuthKeyTextBox.Text = "Invalid";
         }
 
         public void Click_OAuthSource_AuthoriseButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.WorkSurfaceContext.AuthoriseButton);
         }
-
-        [Given(@"I Click Close OAuthSource Source Tab Button")]
-        [When(@"I Click Close OAuthSource Source Tab Button")]
-        [Then(@"I Click Close OAuthSource Source Tab Button")]
+        
         public void Click_OAuthSource_CloseTabButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.OAuthSourceWizardTab.CloseTabButton);

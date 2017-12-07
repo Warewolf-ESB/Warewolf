@@ -77,10 +77,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.EnvironmentID).Verifiable();
             obj.SetupGet(o => o.ClientID).Verifiable();
 
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             errors.AddError("Error");
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             privateObject.Invoke("DispatchDebugErrors", errors, obj.Object, StateType.Start);
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -172,7 +172,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -217,7 +217,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -259,7 +259,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -271,58 +271,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.VerifyGet(o => o.ResourceID);
             var condition = executionContainer is InternalServiceContainer;
             Assert.IsTrue(condition);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsWebServiceService_ShouldCorrectServiceInContainer()
-        {
-            //---------------Set up test pack-------------------
-            var newGuid = Guid.NewGuid();
-            var _cache = new ConcurrentDictionary<Guid, ServiceAction>();
-            _cache.TryAdd(newGuid, new ServiceAction
-            {
-                Name = "Name"
-                ,
-                ActionType = enActionType.InvokeWebService
-                ,
-                DataListSpecification = new StringBuilder("<DataList></DataList>")
-            });
-            //GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
-            var channel = new Mock<IEsbChannel>();
-            var workSpace = new Mock<IWorkspace>();
-            var obj = new Mock<IDSFDataObject>();
-            var locater = new Mock<IServiceLocator>();
-            obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
-            {
-                Args = new Dictionary<string, StringBuilder>(),
-                ServiceName = "SomeService"
-            };
-            locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            
-
-            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
-            privateObject.SetField("_serviceLocator", locater.Object);
-            privateObject.SetField("_cache", _cache);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(invoker);
-            //---------------Execute Test ----------------------
-            try
-            {
-                var executionContainer = invoker.GenerateInvokeContainer(obj.Object, newGuid, true);
-                //---------------Test Result -----------------------
-                Assert.IsNotNull(executionContainer);
-                obj.VerifyGet(o => o.ResourceID);
-                var condition = executionContainer is WebServiceContainer;
-                Assert.IsTrue(condition);
-            }
-            catch (Exception e)
-            {
-                //Expected break for Web services, 
-                Assert.AreEqual("Root element is missing.", e.Message);
-            }
         }
 
         [TestMethod]
@@ -346,7 +294,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -355,7 +303,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -390,7 +338,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -413,7 +361,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -447,7 +395,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var workSpace = new Mock<IWorkspace>();
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -457,7 +405,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -481,7 +429,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             obj.Setup(o => o.Environment.HasErrors()).Returns(false);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -491,7 +439,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -515,7 +463,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.Environment.HasErrors()).Returns(false);
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -525,7 +473,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -552,7 +500,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsServiceTestExecution).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -562,7 +510,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -605,7 +553,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsServiceTestExecution).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -626,7 +574,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -650,7 +598,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsFromWebServer).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -671,7 +619,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -698,7 +646,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsFromWebServer).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -719,7 +667,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -777,7 +725,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -786,7 +734,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -830,7 +778,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -839,7 +787,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -878,7 +826,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -887,7 +835,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -929,7 +877,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -938,7 +886,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -994,7 +942,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
             });
 
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------

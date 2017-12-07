@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers2.Switch
         void Initialize(string display)
         {
             var expressionText = ModelItem.Properties[GlobalConstants.SwitchExpressionTextPropertyText];
-            ModelProperty switchCaseValue = ModelItem.Properties["Case"];
+            var switchCaseValue = ModelItem.Properties["Case"];
             Dev2Switch ds;
             if (expressionText?.Value != null)
             {
@@ -52,7 +52,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
             if (switchCaseValue != null)
             {
-                string val = switchCaseValue.ComputedValue.ToString();
+                var val = switchCaseValue.ComputedValue.ToString();
                 ds.SwitchExpression = val;
             }
           
@@ -127,32 +127,34 @@ namespace Dev2.Activities.Designers2.Switch
             ValidExpression = true;
             if (ModelItem?.Parent?.Source?.Collection != null)
             {
-                ValidateProperties();
+                ValidateParentProperties();
             }
             else
             {
-                if (ModelItem != null)
+                ValidateProperties();
+            }
+        }
+
+        void ValidateProperties()
+        {
+            if (ModelItem != null && ModelItem.Properties.Any())
+            {
+                foreach (var property in ModelItem.Properties)
                 {
-                    if (ModelItem.Properties.Any())
+                    if (property?.Name == "Case")
                     {
-                        foreach (var property in ModelItem.Properties)
+                        var modelItem = property.ComputedValue;
+                        if (modelItem?.ToString() == SwitchExpression)
                         {
-                            if (property?.Name == "Case")
-                            {
-                                var modelItem = property.ComputedValue;
-                                if (modelItem?.ToString() == SwitchExpression)
-                                {
-                                    ValidExpression = false;
-                                    break;
-                                }
-                            }
+                            ValidExpression = false;
+                            break;
                         }
                     }
                 }
             }
         }
 
-        private void ValidateProperties()
+        void ValidateParentProperties()
         {
             if (ModelItem?.Parent?.Source?.Collection != null)
             {
@@ -171,7 +173,7 @@ namespace Dev2.Activities.Designers2.Switch
             }
         }
 
-        private bool validExpression;
+        bool validExpression;
 
         public override void UpdateHelpDescriptor(string helpText)
         {

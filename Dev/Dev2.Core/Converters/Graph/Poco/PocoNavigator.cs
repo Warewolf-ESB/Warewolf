@@ -49,7 +49,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                     typeof (PocoPath), path.GetType()));
             }
 
-            object currentData = Data;
+            var currentData = Data;
 
             if (path.ActualPath == PocoPath.SeperatorSymbol)
             {
@@ -65,7 +65,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 }
                 else
                 {
-                    IEnumerator enumerator = enumerableData.GetEnumerator();
+                    var enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
                     while (enumerator.MoveNext())
                     {
@@ -75,14 +75,14 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             }
             else
             {
-                List<IPathSegment> pathSegments = pocoPath.GetSegements().ToList();
+                var pathSegments = pocoPath.GetSegements().ToList();
                 int segmentIndex = 0;
 
                 while (currentData != null && segmentIndex < pathSegments.Count)
                 {
                     if (pathSegments[segmentIndex].IsEnumarable)
                     {
-                        IEnumerable enumerableData = GetEnumerableValueForPathSegment(pathSegments[segmentIndex],
+                        var enumerableData = GetEnumerableValueForPathSegment(pathSegments[segmentIndex],
                             currentData);
 
                         if (enumerableData == null)
@@ -91,7 +91,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                         }
                         else
                         {
-                            IEnumerator enumerator = enumerableData.GetEnumerator();
+                            var enumerator = enumerableData.GetEnumerator();
                             enumerator.Reset();
                             while (enumerator.MoveNext())
                             {
@@ -139,7 +139,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                 if (enumerableData != null)
                 {
-                    IEnumerator enumerator = enumerableData.GetEnumerator();
+                    var enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
                     while (enumerator.MoveNext())
                     {
@@ -178,7 +178,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
                 if (Data is IEnumerable enumerableData)
                 {
-                    IEnumerator enumerator = enumerableData.GetEnumerator();
+                    var enumerator = enumerableData.GetEnumerator();
                     enumerator.Reset();
                     while (enumerator.MoveNext())
                     {
@@ -218,23 +218,23 @@ namespace Unlimited.Framework.Converters.Graph.Poco
 
         #region Private Methods
 
-        private IEnumerable<object> SelectEnumberable(IList<IPathSegment> pathSegments, object data)
+        IEnumerable<object> SelectEnumberable(IList<IPathSegment> pathSegments, object data)
         {
             var returnData = new List<object>();
-            object currentData = data;
+            var currentData = data;
 
             for (int i = 0; i < pathSegments.Count; i++)
             {
-                IPathSegment pathSegment = pathSegments[i];
+                var pathSegment = pathSegments[i];
                 bool lastSegment = i == pathSegments.Count - 1;
 
                 if (pathSegment.IsEnumarable)
                 {
-                    IEnumerable enumerableData = GetEnumerableValueForPathSegment(pathSegment, currentData);
+                    var enumerableData = GetEnumerableValueForPathSegment(pathSegment, currentData);
 
                     if (enumerableData != null)
                     {
-                        IEnumerator enumerator = enumerableData.GetEnumerator();
+                        var enumerator = enumerableData.GetEnumerator();
                         enumerator.Reset();
 
                         while (enumerator.MoveNext())
@@ -312,9 +312,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return newIndexedValueTreeNode;
         }
 
-        private object GetScalarValueForPathSegement(IPathSegment pathSegment, object data)
+        object GetScalarValueForPathSegement(IPathSegment pathSegment, object data)
         {
-            PropertyInfo propertyInfo = data.GetType().GetProperty(pathSegment.ActualSegment);
+            var propertyInfo = data.GetType().GetProperty(pathSegment.ActualSegment);
 
             object returnVal = null;
             if (propertyInfo != null)
@@ -325,9 +325,9 @@ namespace Unlimited.Framework.Converters.Graph.Poco
             return returnVal;
         }
 
-        private IEnumerable GetEnumerableValueForPathSegment(IPathSegment pathSegment, object data)
+        IEnumerable GetEnumerableValueForPathSegment(IPathSegment pathSegment, object data)
         {
-            PropertyInfo propertyInfo = data.GetType().GetProperty(pathSegment.ActualSegment);
+            var propertyInfo = data.GetType().GetProperty(pathSegment.ActualSegment);
             IEnumerable returnVal = null;
 
             if (propertyInfo == null)

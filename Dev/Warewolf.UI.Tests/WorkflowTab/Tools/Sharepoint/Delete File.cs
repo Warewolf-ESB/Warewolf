@@ -36,6 +36,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
             Assert.IsFalse(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
         }
 
+        [TestMethod]
+        [TestCategory("Sharepoint Tools")]
+        public void SharepointDeleteFileTool_LargeView_DoneButton_UITest()
+        {
+            SharepointToolsUIMap.Open_SharepointDeleteFileTool_LargeView();
+            Mouse.Click(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.DoneButton);
+            Assert.IsTrue(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.Exists, "Clicking done button on sharepoint delete tool does not collapse to small view.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]

@@ -108,7 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
@@ -128,12 +128,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddDebugInputItem(IExecutionEnvironment environment,int update)
+        void AddDebugInputItem(IExecutionEnvironment environment, int update)
         {
             AddDebugInputItem(new DebugEvalResult(Expression, "fx =", environment, update, false, true));
         }
 
-        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
+        void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
         {
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }

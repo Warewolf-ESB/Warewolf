@@ -64,7 +64,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -72,8 +72,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
 
             InitializeDebug(dataObject);
             try

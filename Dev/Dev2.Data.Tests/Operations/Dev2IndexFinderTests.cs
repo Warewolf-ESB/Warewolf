@@ -19,9 +19,9 @@ namespace Dev2.Data.Tests.Operations
     [TestClass]
     public class Dev2IndexFinderTests
     {
-        private IDev2IndexFinder _indexFinder;
+        IDev2IndexFinder _indexFinder;
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides

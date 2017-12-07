@@ -55,7 +55,7 @@ namespace Warewolf.Security.Encryption
 
             //encrypt data
             var data = Encoding.Unicode.GetBytes(plainText);
-            byte[] encrypted = ProtectedData.Protect(data, null, DataProtectionScope);
+            var encrypted = ProtectedData.Protect(data, null, DataProtectionScope);
 
             //return as base64 string
             return Convert.ToBase64String(encrypted);
@@ -86,10 +86,10 @@ namespace Warewolf.Security.Encryption
             }
 
             //parse base64 string
-            byte[] data = Convert.FromBase64String(cipher);
+            var data = Convert.FromBase64String(cipher);
 
             //decrypt data
-            byte[] decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope);
+            var decrypted = ProtectedData.Unprotect(data, null, DataProtectionScope);
             return Encoding.Unicode.GetString(decrypted);
         }
 
@@ -118,7 +118,7 @@ namespace Warewolf.Security.Encryption
             }
 
             //parse base64 string
-            byte[] data = Convert.FromBase64String(cipher);
+            var data = Convert.FromBase64String(cipher);
 
             //decrypt data
             try

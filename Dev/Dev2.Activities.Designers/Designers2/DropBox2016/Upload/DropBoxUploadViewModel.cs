@@ -19,13 +19,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
 {
     public class DropBoxUploadViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private ObservableCollection<DropBoxSource> _sources;
-        private string _fromPath;
-        private string _toPath;
-        private string _result;
-        private bool _overWriteMode;
-        private bool _addMode;
-        private readonly IDropboxSourceManager _sourceManager;
+        ObservableCollection<DropBoxSource> _sources;
+        string _fromPath;
+        string _toPath;
+        string _result;
+        bool _overWriteMode;
+        bool _addMode;
+        readonly IDropboxSourceManager _sourceManager;
 
         public DropBoxUploadViewModel(ModelItem modelItem)
             : this(modelItem, new DropboxSourceManager())
@@ -162,13 +162,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.Upload
             }
         }
 
-        private void EditDropBoxSource()
+        void EditDropBoxSource()
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;
             if (activeServer != null)
             {
-                shellViewModel.OpenResource(SelectedSource.ResourceID,activeServer.EnvironmentID, activeServer);
+                shellViewModel.OpenResource(SelectedSource.ResourceID, activeServer.EnvironmentID, activeServer);
             }
         }
 

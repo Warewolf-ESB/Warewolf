@@ -311,7 +311,7 @@ namespace Dev2.Activities.Designers2.Core
             var idx = indexNumber - 1;
             if (ModelItemCollection != null && idx >= ModelItemCollection.Count)
             {
-                ModelItem modelItem = ModelItemUtils.CreateModelItem(dto);
+                var modelItem = ModelItemUtils.CreateModelItem(dto);
                 ModelItemCollection.Add(modelItem);
 
             }
@@ -356,7 +356,7 @@ namespace Dev2.Activities.Designers2.Core
             var parent = ModelItemCollection.Parent;
             if (parent != null)
             {
-                DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
+                var parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
                 var dataContext = parentContentPane?.DataContext;
                 if (dataContext != null)
                 {

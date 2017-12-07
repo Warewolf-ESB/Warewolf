@@ -34,9 +34,9 @@ namespace Dev2.Common
             EmailSender = emailSender;
         }
 
-        private IExchangeServiceFactory _exchangeServiceFactory;
+        IExchangeServiceFactory _exchangeServiceFactory;
 
-        private void InitializeService()
+        void InitializeService()
         {
             _exchangeServiceFactory = new ExchangeServiceFactory();
             ExchangeService = _exchangeServiceFactory.Create();
@@ -92,7 +92,7 @@ namespace Dev2.Common
             return result;
         }
 
-        private void AddToAddresses(string toValue, EmailMessage mailMessage)
+        void AddToAddresses(string toValue, EmailMessage mailMessage)
         {
             try
             {
@@ -105,7 +105,7 @@ namespace Dev2.Common
             }
         }
 
-        private void AddCcAddresses(string toValue, EmailMessage mailMessage)
+        void AddCcAddresses(string toValue, EmailMessage mailMessage)
         {
             try
             {
@@ -118,7 +118,7 @@ namespace Dev2.Common
             }
         }
 
-        private void AddBccAddresses(string toValue, EmailMessage mailMessage)
+        void AddBccAddresses(string toValue, EmailMessage mailMessage)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace Dev2.Common
             }
         }
 
-        private void AddAttachmentsValue(string attachmentsValue, EmailMessage mailMessage)
+        void AddAttachmentsValue(string attachmentsValue, EmailMessage mailMessage)
         {
             try
             {
@@ -144,7 +144,7 @@ namespace Dev2.Common
             }
         }
 
-        private List<string> GetSplitValues(string stringToSplit, char[] splitOn)
+        List<string> GetSplitValues(string stringToSplit, char[] splitOn)
         {
             return stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
         }

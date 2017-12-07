@@ -122,7 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
   </Recset>
 </ADL>";
             TestData = "<root>" + data + "</root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> actual, out string error);
 
             Assert.AreEqual(1, actual.Count);
@@ -194,7 +194,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<DL><Recset><Field1/><Field2/><Field3/></Recset><Result><res/></Result></DL>";
             TestData = "<root>" + data + "</root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> actual, out string error);
 
             Assert.AreEqual(1, actual.Count);
@@ -352,7 +352,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void AddResultDebugInputs_Sets_Operand_To_EmptyString()
         {
             //------------Setup for test-------------------------
-            DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity();
+            var activity = new DsfFindRecordsMultipleCriteriaActivity();
             var privateObject = new PrivateObject(activity);
             IEnumerable<FindRecordsTO> resultsCollection = new List<FindRecordsTO>
             {

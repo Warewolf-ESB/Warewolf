@@ -21,13 +21,6 @@ namespace Dev2.Activities.Designers2.Decision
             DataGrid = LargeDataGrid;
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => DataGrid;
     }
 }

@@ -5,7 +5,7 @@ namespace Dev2.Activities.DropBox2016.Result
 {
     public class DropboxDeleteSuccessResult : IDropboxResult
     {
-        private readonly FileMetadata _metaData;
+        readonly FileMetadata _metaData;
 
         public DropboxDeleteSuccessResult(FileMetadata metadata)
         {

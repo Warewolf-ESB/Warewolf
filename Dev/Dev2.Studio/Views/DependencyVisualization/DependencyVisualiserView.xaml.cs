@@ -24,9 +24,9 @@ namespace Dev2.Studio.Views.DependencyVisualization
     {
         readonly IEventAggregator _eventPublisher;
 
-        private bool _isMoveInEffect;
-        private NetworkNodeNodeControl _currentElement;
-        private Point _currentPosition;
+        bool _isMoveInEffect;
+        NetworkNodeNodeControl _currentElement;
+        Point _currentPosition;
 
         public DependencyVisualiserView()
             : this(EventPublishers.Aggregator)
@@ -54,7 +54,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
             };
         }
 
-        private void ElementMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void ElementMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             var element = (NetworkNodeNodeControl)sender;
             _currentElement = element;
@@ -63,7 +63,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
             _currentPosition = e.GetPosition(element.Parent as UIElement);
         }
 
-        private void ElementMouseMove(object sender, MouseEventArgs e)
+        void ElementMouseMove(object sender, MouseEventArgs e)
         {
             var element = (NetworkNodeNodeControl)sender;
             if (_currentElement == null || !Equals(element, _currentElement))
@@ -93,7 +93,7 @@ namespace Dev2.Studio.Views.DependencyVisualization
             }
         }
 
-        private void ElementMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        void ElementMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var element = (NetworkNodeNodeControl)sender;
             element.ReleaseMouseCapture();

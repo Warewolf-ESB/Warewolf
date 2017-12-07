@@ -389,7 +389,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
-        private static void CleanupResources()
+        static void CleanupResources()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel =

@@ -19,8 +19,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskDefinition : IDev2TaskDefinition
     {
-        private readonly TaskDefinition _taskDefinition;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TaskDefinition _taskDefinition;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskDefinition(ITaskServiceConvertorFactory taskServiceConvertorFactory,
             TaskDefinition taskDefinition)
@@ -58,10 +58,10 @@ namespace Dev2.TaskScheduler.Wrappers
                 return false;
             }
 
-            IExecAction action = _taskServiceConvertorFactory.CreateExecAction(Actions.First());
+            var action = _taskServiceConvertorFactory.CreateExecAction(Actions.First());
             if (action.Arguments != null)
             {
-                List<string> output =
+                var output =
                     action.Arguments.Split('"').Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
                 if (output.Count >3 || output.Count < 2 || !output.All(a => a.Contains(":")))
                 {

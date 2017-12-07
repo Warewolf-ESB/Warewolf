@@ -124,11 +124,11 @@ namespace Dev2
         Timer _timer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
-        private int _daysToKeepTempFiles;
-        private readonly PulseTracker _pulseTracker;
-        private IpcClient _ipcIpcClient;
-        
-        
+        int _daysToKeepTempFiles;
+        readonly PulseTracker _pulseTracker;
+        IpcClient _ipcIpcClient;
+
+
         ServerLifecycleManager(string[] arguments)
         {
             _pulseLogger = new PulseLogger(60000);
@@ -156,7 +156,7 @@ namespace Dev2
             SetupTempCleanupSetting();
         }
 
-        private static void MoveSettingsFiles()
+        static void MoveSettingsFiles()
         {
             if (File.Exists("Settings.config"))
             {
@@ -182,7 +182,7 @@ namespace Dev2
             }
         }
 
-        private void SetupTempCleanupSetting()
+        void SetupTempCleanupSetting()
         {
             var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
             if (!string.IsNullOrEmpty(daysToKeepTempFilesValue) && int.TryParse(daysToKeepTempFilesValue, out int daysToKeepTempFiles))
@@ -281,7 +281,7 @@ namespace Dev2
         }
 
 
-        private void DeleteTempFiles()
+        void DeleteTempFiles()
         {
             var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             DeleteTempFiles(tempPath);
@@ -289,7 +289,7 @@ namespace Dev2
             DeleteTempFiles(schedulerTempPath);
         }
 
-        private void DeleteTempFiles(string tempPath)
+        void DeleteTempFiles(string tempPath)
         {
             if (Directory.Exists(tempPath))
             {
@@ -554,7 +554,7 @@ namespace Dev2
             WriteLine("done.");
         }
 
-        private static void LoadActivityCache(ResourceCatalog catalog)
+        static void LoadActivityCache(ResourceCatalog catalog)
         {
             PreloadReferences();
             CustomContainer.Register<IActivityParser>(new ActivityParser());

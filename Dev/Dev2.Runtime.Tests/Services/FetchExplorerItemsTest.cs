@@ -83,8 +83,8 @@ namespace Dev2.Tests.Runtime.Services
             var fetchExplorerItems = new FetchExplorerItems();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchExplorerItems.Execute(null, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = fetchExplorerItems.Execute(null, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }

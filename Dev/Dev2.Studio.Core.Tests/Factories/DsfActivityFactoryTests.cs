@@ -202,18 +202,18 @@ namespace Dev2.Core.Tests.Factories
         static IServerRepository SetupEnvironmentRepo(Guid environmentId)
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IServer> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            var mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }
 
-        private static IServerRepository GetEnvironmentRepository(Mock<IServer> mockEnvironment)
+        static IServerRepository GetEnvironmentRepository(Mock<IServer> mockEnvironment)
         {
 
             var repo = new TestLoadServerRespository(mockEnvironment.Object) { IsLoaded = true };
-            
+
             new ServerRepository(repo);
-            
+
             repo.ActiveServer = mockEnvironment.Object;
 
             return repo;

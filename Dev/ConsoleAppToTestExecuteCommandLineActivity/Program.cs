@@ -12,15 +12,15 @@ using System;
 
 namespace ConsoleAppToTestExecuteCommandLineActivity
 {
-    internal class Program
+    class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             if (args.Length == 0)
             {
                 return;
             }
-            string switchArg = args[0];
+            var switchArg = args[0];
             switch (switchArg)
             {
                 case "user":

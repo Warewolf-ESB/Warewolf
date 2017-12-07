@@ -19,10 +19,10 @@ namespace Dev2.Studio.Core.AppResources.DependencyInjection.EqualityComparers
     {
         #region Class Members
 
-        private static readonly Lazy<EnvironmentModelEqualityComparer> Instance
+        static readonly Lazy<EnvironmentModelEqualityComparer> Instance
             = new Lazy<EnvironmentModelEqualityComparer>(() => new EnvironmentModelEqualityComparer());
 
-        private EnvironmentModelEqualityComparer()
+        EnvironmentModelEqualityComparer()
         {
         }
 

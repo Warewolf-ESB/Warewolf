@@ -15,7 +15,7 @@ namespace Dev2.Data.Decisions.Operations
 {
     public class Dev2DecisionFactory : SpookyAction<IDecisionOperation, Enum>
     {
-        private static Dev2DecisionFactory _inst;
+        static Dev2DecisionFactory _inst;
 
         public static Dev2DecisionFactory Instance()
         {

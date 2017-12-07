@@ -29,23 +29,23 @@ namespace Dev2.ViewModels.QuickVariableInput
     {
         #region Fields
 
-        private string _variableListString;
-        private string _prefix;
-        private string _suffix;
-        private string _splitType;
-        private string _splitToken;
-        private bool _overwrite;
-        private string _previewText;
-        private bool _showPreview;
-        private bool _canAdd;
+        string _variableListString;
+        string _prefix;
+        string _suffix;
+        string _splitType;
+        string _splitToken;
+        bool _overwrite;
+        string _previewText;
+        bool _showPreview;
+        bool _canAdd;
 
-        private DelegateCommand _cancelCommand;
-        private DelegateCommand _previewCommand;
-        private DelegateCommand _addCommand;
-        private List<string> _splitTypeList;
-        private readonly List<KeyValuePair<ErrorType, string>> _errorColletion;
+        DelegateCommand _cancelCommand;
+        DelegateCommand _previewCommand;
+        DelegateCommand _addCommand;
+        List<string> _splitTypeList;
+        readonly List<KeyValuePair<ErrorType, string>> _errorColletion;
 
-        private readonly QuickVariableInputModel _model;
+        readonly QuickVariableInputModel _model;
 
         #endregion
 
@@ -105,7 +105,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private string Suffix
+        string Suffix
         {
             get
             {
@@ -144,7 +144,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private bool Overwrite
+        bool Overwrite
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private string PreviewText
+        string PreviewText
         {
             get
             {
@@ -170,7 +170,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private bool ShowPreview
+        bool ShowPreview
         {
             get
             {
@@ -238,7 +238,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         /// </summary>
         public event EventHandler CloseAdornersRequested;
 
-        private void OnClose()
+        void OnClose()
         {
             CloseAdornersRequested?.Invoke(this, new EventArgs());
         }
@@ -247,7 +247,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Clear
 
-        private void ClearData()
+        void ClearData()
         {
             SplitType = "Chars";
             SplitToken = string.Empty;
@@ -264,7 +264,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Methods
 
-        private void AddToActivity()
+        void AddToActivity()
         {
             if (!ValidateFields())
             {
@@ -273,7 +273,7 @@ namespace Dev2.ViewModels.QuickVariableInput
                 ShowPreview = true;
                 return;
             }
-            List<string> listToAdd = MakeDataListReady(Split());
+            var listToAdd = MakeDataListReady(Split());
             if (_errorColletion.Count > 0)
             {
                 PreviewText = _errorColletion[0].Value;
@@ -287,7 +287,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             ClearData();
         }
 
-        private void Preview()
+        void Preview()
         {
             if (!ValidateFields())
             {
@@ -339,17 +339,17 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private List<string> Split()
+        List<string> Split()
         {
-            List<string> results = new List<string>();
+            var results = new List<string>();
             try
             {
-                IDev2Tokenizer tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
+                var tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
 
                 while (tokenizer.HasMoreOps())
                 {
 
-                    string tmp = tokenizer.NextToken();
+                    var tmp = tokenizer.NextToken();
                     if (!string.IsNullOrEmpty(tmp))
                     {
                         results.Add(tmp);
@@ -376,9 +376,9 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Private Methods
 
-        private IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
+        IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
 
             switch (splitType)
             {
@@ -432,7 +432,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             return dtb.Generate();
         }
 
-        private bool ValidateFields()
+        bool ValidateFields()
         {
             _errorColletion.Clear();
 
@@ -490,7 +490,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             return true;
         }
 
-        private bool ValidateRecordsetPrefix(string value)
+        bool ValidateRecordsetPrefix(string value)
         {
 
             if (value.Contains("(") && value.Contains(")."))
@@ -498,7 +498,7 @@ namespace Dev2.ViewModels.QuickVariableInput
                 int startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
                 int endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
 
-                string tmp = value.Substring(startIndex, endIndex - startIndex);
+                var tmp = value.Substring(startIndex, endIndex - startIndex);
                 int idxNum = 1;
                 if (tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
                 {
@@ -513,7 +513,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             return ValidateName(value);
         }
 
-        private bool ValidateName(string value)
+        bool ValidateName(string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
             {

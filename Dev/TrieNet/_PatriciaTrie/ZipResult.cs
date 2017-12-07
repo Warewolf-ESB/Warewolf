@@ -8,9 +8,9 @@ namespace Gma.DataStructures.StringSearch
     [DebuggerDisplay("Head: '{CommonHead}', This: '{ThisRest}', Other: '{OtherRest}', Kind: {MatchKind}")]
     public struct ZipResult
     {
-        private readonly StringPartition m_CommonHead;
-        private readonly StringPartition m_OtherRest;
-        private readonly StringPartition m_ThisRest;
+        readonly StringPartition m_CommonHead;
+        readonly StringPartition m_OtherRest;
+        readonly StringPartition m_ThisRest;
 
         public ZipResult(StringPartition commonHead, StringPartition thisRest, StringPartition otherRest)
         {

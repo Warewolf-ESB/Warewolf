@@ -61,7 +61,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         public string Message { get; set; }
 
         [NonSerialized]
-        private ConnectionFactory _connectionFactory;
+        ConnectionFactory _connectionFactory;
 
         internal ConnectionFactory ConnectionFactory
         {
@@ -113,7 +113,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
                         Channel.QueueDeclare(queueName, IsDurable, IsExclusive, IsAutoDelete, null);
                         Channel.QueueBind(queueName, queueName, "", new Dictionary<string, object>());
 
-                        IBasicProperties basicProperties = Channel.CreateBasicProperties();
+                        var basicProperties = Channel.CreateBasicProperties();
                         Channel.BasicPublish(queueName, "", basicProperties, Encoding.UTF8.GetBytes(message));
                     }
                 }

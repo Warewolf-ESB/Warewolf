@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests.Diagnostics
     public class ExceptionFactoryTests
     {
         Mock<IServer> _contextModel;
-        private Mock<IEnvironmentConnection> _con;
+        Mock<IEnvironmentConnection> _con;
 
         [TestInitialize]
         public void MyTestInitialize()
@@ -80,14 +80,14 @@ namespace Dev2.Core.Tests.Diagnostics
         [TestMethod]
         public void GetExceptionExpectedAdditionalTraceInfo()
         {
-            string exceptionResult = ExceptionFactory.CreateStringValue(GetException()).ToString();
+            var exceptionResult = ExceptionFactory.CreateStringValue(GetException()).ToString();
             StringAssert.Contains(exceptionResult, "Additional Trace Info", "Error - Additional Trace Info is missing from the exception!");
         }
 
         [TestMethod]
         public void GetExceptionWithCricalExceptionExpectedCriticalInfoIncluded()
         {
-            string exceptionResult = ExceptionFactory.CreateStringValue(GetException(), null, true).ToString();
+            var exceptionResult = ExceptionFactory.CreateStringValue(GetException(), null, true).ToString();
             StringAssert.Contains(exceptionResult, StringResources.CriticalExceptionMessage, "Error - Additional Trace Info is missing from the exception!");
         }
 
@@ -95,7 +95,7 @@ namespace Dev2.Core.Tests.Diagnostics
 
         #region Private Test Methods
 
-        private static Exception GetException()
+        static Exception GetException()
         {
             return new Exception("Test Exception", new Exception("Test inner Exception"));
         }

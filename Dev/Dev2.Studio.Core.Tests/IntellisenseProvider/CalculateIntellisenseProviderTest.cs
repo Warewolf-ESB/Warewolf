@@ -29,7 +29,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         [TestCategory("CalculateIntellisenseProvider_Construct")]
         public void CalculateIntellisenseProvider_Construct_DefaultPropertiesAreSet()
         {
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
 
             Assert.IsFalse(calculateIntellisenseProvider.HandlesResultInsertion);
             Assert.AreEqual(IntellisenseProviderType.NonDefault, calculateIntellisenseProvider.IntellisenseProviderType);
@@ -51,8 +51,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
 
             Assert.AreEqual(4, results.Count);
             Assert.AreEqual("search", results[0].Name);
@@ -74,8 +74,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.EntireSet
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
 
             Assert.AreEqual(4, results.Count);
         }
@@ -93,8 +93,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(0, results.Count);
         }
 
@@ -104,7 +104,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void CalculateIntellisenseProvider_GetIntellisenseResults_ProviderContextIsNull_ResultsCountIsZero()
         {
             var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(null);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(null);
             Assert.AreEqual(0, results.Count);
         }
 
@@ -121,8 +121,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(175, results.Count);
         }
 
@@ -139,8 +139,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(175, results.Count);
         }
 
@@ -157,8 +157,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(false);
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var calculateIntellisenseProvider = GetCalculateProvider(false);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(4, results.Count);
         }
 
@@ -175,9 +175,9 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.EntireSet
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
+            var calculateIntellisenseProvider = GetCalculateProvider(true);
 
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(0, results.Count);
            
         }
@@ -195,9 +195,9 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
+            var calculateIntellisenseProvider = GetCalculateProvider(true);
 
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(0, results.Count);
         }
 
@@ -214,9 +214,9 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     DesiredResultSet = IntellisenseDesiredResultSet.ClosestMatch
                 };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
+            var calculateIntellisenseProvider = GetCalculateProvider(true);
 
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("sum", results[0].Name);
             Assert.AreEqual("Sums all the numbers given as arguments and returns the sum.", results[0].Description);
@@ -235,9 +235,9 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                 DesiredResultSet = IntellisenseDesiredResultSet.Default
             };
 
-            CalculateIntellisenseProvider calculateIntellisenseProvider = GetCalculateProvider(true);
+            var calculateIntellisenseProvider = GetCalculateProvider(true);
 
-            IList<IntellisenseProviderResult> results = calculateIntellisenseProvider.GetIntellisenseResults(context);
+            var results = calculateIntellisenseProvider.GetIntellisenseResults(context);
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("sum", results[0].Name);
         }

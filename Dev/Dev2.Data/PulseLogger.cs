@@ -19,7 +19,7 @@ namespace Dev2.Data
 {
     public class PulseLogger : IPulseLogger, IDisposable
     {
-        readonly Timer _timer;
+        internal readonly Timer _timer;
 
         public PulseLogger(double intervalMs)
         {
@@ -83,8 +83,7 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)

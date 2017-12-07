@@ -129,7 +129,7 @@ namespace Dev2.Data.Tests.Parsers
             const string noneString = "None";
             var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
 
-            object obj = new object();
+            var obj = new object();
             lock (obj)
             {
                 var expressionIntoParts = parser.ParseDataLanguageForIntellisense("[[a]]", datalist, false, new IntellisenseFilterOpsTO() { FilterType = enIntellisensePartType.RecordsetsOnly });
@@ -284,7 +284,7 @@ namespace Dev2.Data.Tests.Parsers
         {
             //---------------Set up test pack-------------------
             var parser = new Dev2DataLanguageParser();
-            PrivateObject privateObject = new PrivateObject(parser);
+            var privateObject = new PrivateObject(parser);
             var parseTO = new ParseTO() { Payload = "rec(-1)", EndIndex = "rec(-1)".Length, StartIndex = 3 };
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -326,8 +326,8 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             //AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
             var parser = new Dev2DataLanguageParser();
-            PrivateObject privateObject = new PrivateObject(parser);
-            Dev2DataLanguageParseError error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
+            var privateObject = new PrivateObject(parser);
+            var error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             if (privateObject.Invoke("AddErrorToResults", true, "rec().Name", error, false) is IntellisenseResult invoke)
@@ -351,8 +351,8 @@ namespace Dev2.Data.Tests.Parsers
             //---------------Set up test pack-------------------
             //AddErrorToResults(bool isRs, string part, Dev2DataLanguageParseError e, bool isOpen)
             var parser = new Dev2DataLanguageParser();
-            PrivateObject privateObject = new PrivateObject(parser);
-            Dev2DataLanguageParseError error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
+            var privateObject = new PrivateObject(parser);
+            var error = new Dev2DataLanguageParseError("Error", 1, 5, enIntellisenseErrorCode.SyntaxError);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             if (privateObject.Invoke("AddErrorToResults", false, "rec().Name", error, false) is IntellisenseResult invoke)

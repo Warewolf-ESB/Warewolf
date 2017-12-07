@@ -17,8 +17,8 @@ namespace Warewolf.Storage.Tests
         IWarewolfIterator _expr1;
         IWarewolfIterator _expr2;
         IWarewolfIterator _expr3;
-        private IExecutionEnvironment _environment;
-        private IWarewolfListIterator _warewolfListIterator;
+        IExecutionEnvironment _environment;
+        IWarewolfListIterator _warewolfListIterator;
 
         const string Result = "[[Result]]";
 
@@ -315,7 +315,7 @@ namespace Warewolf.Storage.Tests
             Assert.IsFalse(isDbNull);
         }
 
-        private bool AssignExpression(out WarewolfListIterator listIterator)
+        bool AssignExpression(out WarewolfListIterator listIterator)
         {
             _expr3 = new WarewolfIterator(_environment.Eval("[[RecSet().a]]", 0));
             _warewolfListIterator.AddVariableToIterateOn(_expr3);
@@ -325,11 +325,11 @@ namespace Warewolf.Storage.Tests
                 return true;
             }
 
-            Assert.AreEqual(0, listIterator.RecordsAffected);            
+            Assert.AreEqual(0, listIterator.RecordsAffected);
             return false;
         }
 
-        private void ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn)
+        void ValidateInstance(out PrivateObject privateObj, out List<IWarewolfIterator> variablesToIterateOn)
         {
             Assert.IsNotNull(_warewolfListIterator);
             privateObj = new PrivateObject(_warewolfListIterator);

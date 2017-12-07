@@ -257,7 +257,7 @@ namespace Dev2.Core.Tests.Network
 
     }
 
-    internal class TestServerProxy : ServerProxyWithoutChunking
+    class TestServerProxy : ServerProxyWithoutChunking
     {
         // TODO: Move this constructor to a test class!!
         public TestServerProxy(string uri, string userName, string password)

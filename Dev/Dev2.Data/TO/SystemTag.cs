@@ -15,8 +15,8 @@ namespace Dev2.DataList.Contract
     public class SystemTag : ISystemTag {
 
         #region Attributes
-        private readonly string _startTag;
-        private readonly string _endTag;
+        readonly string _startTag;
+        readonly string _endTag;
         #endregion
 
         #region Ctor

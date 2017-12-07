@@ -35,13 +35,13 @@ namespace Dev2.Activities.Designers2.ComDLL
 {
     public class ComDllViewModel : CustomToolWithRegionBase, IComViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDotNetInputRegion _inputArea;
-        private ISourceToolRegion<IComPluginSource> _sourceRegion;
-        private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
-        private IActionToolRegion<IPluginAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDotNetInputRegion _inputArea;
+        ISourceToolRegion<IComPluginSource> _sourceRegion;
+        INamespaceToolRegion<INamespaceItem> _namespaceRegion;
+        IActionToolRegion<IPluginAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Designers2.ComDLL
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageComPluginServiceInputViewModel(this, Model));
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageComPluginServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageComPluginServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -266,7 +266,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -289,14 +289,14 @@ namespace Dev2.Activities.Designers2.ComDLL
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(ComDllViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private ServiceInputBuilder _builder;
+        ServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
-        
+        string Type => GetProperty<string>();
 
-        private void FixErrors()
+
+        void FixErrors()
         {
         }
 
@@ -380,7 +380,7 @@ namespace Dev2.Activities.Designers2.ComDLL
                 };
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
@@ -537,7 +537,7 @@ namespace Dev2.Activities.Designers2.ComDLL
             }
         }
 
-        private IComPluginServiceModel Model { get; set; }
+        IComPluginServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
         {

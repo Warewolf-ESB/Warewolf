@@ -125,8 +125,8 @@ namespace Dev2.Runtime.ServiceModel
                 }
                 var errors = new StringBuilder();
                 errors.AppendFormat("{0} ", message);
-                Exception ex = sex.InnerException;
-                while(ex != null)
+                var ex = sex.InnerException;
+                while (ex != null)
                 {
                     errors.AppendFormat("{0} ", ex.Message);
                     ex = ex.InnerException;

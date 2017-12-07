@@ -7,15 +7,15 @@ namespace Gma.DataStructures.StringSearch
 {
     public class SuffixTrie<T> : ITrie<T>
     {
-        private readonly Trie<T> m_InnerTrie;
-        private readonly int m_MinSuffixLength;
+        readonly Trie<T> m_InnerTrie;
+        readonly int m_MinSuffixLength;
 
         public SuffixTrie(int minSuffixLength)
             : this(new Trie<T>(), minSuffixLength)
         {
         }
 
-        private SuffixTrie(Trie<T> innerTrie, int minSuffixLength)
+        SuffixTrie(Trie<T> innerTrie, int minSuffixLength)
         {
             m_InnerTrie = innerTrie;
             m_MinSuffixLength = minSuffixLength;
@@ -37,7 +37,7 @@ namespace Gma.DataStructures.StringSearch
             }
         }
 
-        private static IEnumerable<string> GetAllSuffixes(int minSuffixLength, string word)
+        static IEnumerable<string> GetAllSuffixes(int minSuffixLength, string word)
         {
             for (int i = word.Length - minSuffixLength; i >= 0; i--)
             {

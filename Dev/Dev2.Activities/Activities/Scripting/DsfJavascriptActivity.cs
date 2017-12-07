@@ -68,7 +68,7 @@ namespace Dev2.Activities.Scripting
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -76,8 +76,8 @@ namespace Dev2.Activities.Scripting
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             AddScriptSourcePathsToList();
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Scripting
                 }
             }
         }
-        private void AddScriptSourcePathsToList()
+        void AddScriptSourcePathsToList()
         {
             if (!string.IsNullOrEmpty(IncludeFile))
             {

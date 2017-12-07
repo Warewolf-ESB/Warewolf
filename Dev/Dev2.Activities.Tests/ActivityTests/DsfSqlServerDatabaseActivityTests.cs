@@ -11,12 +11,12 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DsfSqlServerDatabaseActivityTests
     {
-        private static DsfSqlServerDatabaseActivity CreateDsfSqlServerDatabaseActivity()
+        static DsfSqlServerDatabaseActivity CreateDsfSqlServerDatabaseActivity()
         {
             return new DsfSqlServerDatabaseActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }

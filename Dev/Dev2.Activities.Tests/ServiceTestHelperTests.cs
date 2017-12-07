@@ -862,14 +862,14 @@ namespace Dev2.Tests.Activities
             Assert.AreEqual(RunResult.None, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
         }
 
-        private static IDSFDataObject GetDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
+        static IDSFDataObject GetDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
         {
             var mockDataObject = GetMockDataObject(isServiceTestExecution, resourceId, testName);
             var dsfDataObject = mockDataObject.Object;
             return dsfDataObject;
         }
 
-        private static Mock<IDSFDataObject> GetMockDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
+        static Mock<IDSFDataObject> GetMockDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
         {
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.IsServiceTestExecution).Returns(isServiceTestExecution);

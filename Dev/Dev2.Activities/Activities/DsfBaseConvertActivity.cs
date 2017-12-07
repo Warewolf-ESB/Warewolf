@@ -37,6 +37,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
 
+
+        /// <summary>
+        /// The property that holds all the convertions
+        /// </summary>
         public IList<BaseConvertTO> ConvertCollection { get; set; }
 
         public DsfBaseConvertActivity()
@@ -58,13 +62,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
+
             ExecuteTool(dataObject, 0);
         }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            var allErrors = new ErrorResultTO();
-
+            var allErrors = new ErrorResultTO();        
             InitializeDebug(dataObject);
             var env = dataObject.Environment;
             try
@@ -173,6 +177,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             };
         }
 
+
         void CleanArgs()
         {
             var count = 0;
@@ -205,7 +210,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
-        }
+        }     
 
         void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
@@ -253,7 +258,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
@@ -267,7 +272,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static string CreateDisplayName(ModelItem modelItem, int count)
+        string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
@@ -345,10 +350,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
         }
 
-        public int GetCollectionCount()
-        {
-            return ConvertCollection.Count(caseConvertTo => !caseConvertTo.CanRemove());
-        }
+        public int GetCollectionCount() => throw new NotImplementedException();
 
         public void AddListToCollection(IList<string> listToAdd, bool overwrite, ModelItem modelItem)
         {

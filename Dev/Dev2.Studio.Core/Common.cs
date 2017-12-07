@@ -4,7 +4,7 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Studio.Core
 {
-    internal static class Common
+    static class Common
     {
         public const string RootTag = "DataList";
         public const string Description = "Description";
@@ -36,7 +36,7 @@ namespace Dev2.Studio.Core
         public static enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
     
         {
-            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+            var result = enDev2ColumnArgumentDirection.None;
 
             if (attr == null)
             {

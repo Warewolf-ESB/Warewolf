@@ -19,7 +19,7 @@ namespace Dev2.Data.Tests.Operations
     [TestClass]
     public class Dev2MergeOperationsTests
     {
-        private IDev2MergeOperations _mergeOperations;
+        IDev2MergeOperations _mergeOperations;
 
         /// <summary>
         ///Gets or sets the test context which provides

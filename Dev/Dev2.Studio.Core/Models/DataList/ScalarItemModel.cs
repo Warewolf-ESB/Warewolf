@@ -42,7 +42,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public override string ValidateName(string name)
         {
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+            var parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
             {
                 var intellisenseResult = parser.ValidateName(name, "Scalar");

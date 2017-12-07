@@ -41,7 +41,7 @@ namespace Dev2.Common
             }
         }
 
-        private string GenerateNumbers(double from, double to, ref int seed)
+        string GenerateNumbers(double from, double to, ref int seed)
         {
             //Added for BUG 9506 to account for when the from is larger thean the to.
             if (from > to)
@@ -51,7 +51,7 @@ namespace Dev2.Common
                 from = tmpTo;
             }
             int powerOfTen = (int)Math.Pow(10, GetDecimalPlaces(@from, to));
-            Random rand = GetRandom(ref seed);
+            var rand = GetRandom(ref seed);
             string result;
             result = powerOfTen != 1 ? (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture) : IsInIntRange(from) && IsInIntRange(to) ? rand.Next((int)from, (int)(to > 0 ? to + 1 : to)).ToString(CultureInfo.InvariantCulture) : Math.Round(rand.NextDouble() * (to - @from) + @from).ToString(CultureInfo.InvariantCulture);
             if (result == double.PositiveInfinity.ToString(CultureInfo.InvariantCulture))
@@ -65,12 +65,12 @@ namespace Dev2.Common
             return result;
         }
 
-        private bool IsInIntRange(double x)
+        bool IsInIntRange(double x)
         {
             return x >= int.MinValue && x <= int.MaxValue;
         }
 
-        private uint GetDecimalPlaces(double from, double to)
+        uint GetDecimalPlaces(double from, double to)
         {
             double smallest = Math.Min(
                 Math.Abs(from),
@@ -83,7 +83,7 @@ namespace Dev2.Common
             return Math.Max(DecimalPlaces(smallest), DecimalPlaces(largest));
         }
 
-        private uint DecimalPlaces(double x)
+        uint DecimalPlaces(double x)
         {
             uint places = 0;
             while (!((x * Math.Pow(10, places) % 1).Equals(0)))
@@ -92,7 +92,7 @@ namespace Dev2.Common
             }
             return places;
         }
-        private string GenerateLetters(int length, ref int seed)
+        string GenerateLetters(int length, ref int seed)
         {
             int charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
             int charEnd = charStart + EnvironmentVariables.CharacterMap.LettersLength;
@@ -101,20 +101,20 @@ namespace Dev2.Common
 
             for (int i = 0; i < length; i++)
             {
-                Random rand = GetRandom(ref seed);
+                var rand = GetRandom(ref seed);
                 result.Append((char)rand.Next(charStart, charEnd));
             }
 
             return result.ToString();
         }
 
-        private string GenerateMixed(int length, ref int seed)
+        string GenerateMixed(int length, ref int seed)
         {
             var result = new StringBuilder();
 
             for (int i = 0; i < length; i++)
             {
-                Random rand = GetRandom(ref seed);
+                var rand = GetRandom(ref seed);
 
                 int coinFlip = rand.Next(1, 10);
 
@@ -134,7 +134,7 @@ namespace Dev2.Common
             return result.ToString();
         }
 
-        private Random GetRandom(ref int seed)
+        Random GetRandom(ref int seed)
         {
             var r = new Random(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
             return new Random(seed += r.Next(1, 100000));

@@ -24,7 +24,7 @@ namespace Dev2.Tests
             //------------Setup for test--------------------------
             
             //------------Execute Test---------------------------
-            GatherSystemInformationTO informationTO = new GatherSystemInformationTO();
+            var informationTO = new GatherSystemInformationTO();
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(informationTO,typeof(IDev2TOFn));
         }

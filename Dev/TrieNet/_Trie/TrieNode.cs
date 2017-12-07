@@ -8,8 +8,8 @@ namespace Gma.DataStructures.StringSearch
 {
     public class TrieNode<TValue> : TrieNodeBase<TValue>
     {
-        private readonly Dictionary<char, TrieNode<TValue>> m_Children;
-        private readonly Queue<TValue> m_Values;
+        readonly Dictionary<char, TrieNode<TValue>> m_Children;
+        readonly Queue<TValue> m_Values;
 
         protected TrieNode()
         {

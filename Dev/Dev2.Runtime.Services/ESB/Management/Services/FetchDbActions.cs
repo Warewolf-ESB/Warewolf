@@ -14,7 +14,6 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -30,11 +29,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchDbActions : DefaultEsbManagementEndpoint
     {
-        public override string HandlesType()
-        {
-            return "FetchDbActions";
-        }
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -42,13 +36,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 var dbSource = serializer.Deserialize<IDbSource>(values["source"]);
                 
-                ServiceModel.Services services = new ServiceModel.Services();
+                var services = new ServiceModel.Services();
 
                 var src = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, dbSource.Id);
                 src.ReloadActions = dbSource.ReloadActions;
                 if (dbSource.Type == enSourceType.ODBC)
                 {
-                    DbSource db = new DbSource
+                    var db = new DbSource
                     {
                         DatabaseName = dbSource.DbName,
                         ResourceID = dbSource.Id,
@@ -87,11 +81,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private DbAction CreateDbAction(ServiceMethod a, DbSource src)
+        DbAction CreateDbAction(ServiceMethod a, DbSource src)
         {
-            
+
             var inputs = a.Parameters.Select(b => new ServiceInput(b.Name, b.DefaultValue ?? "") { ActionName = a.Name } as IServiceInput).ToList();
-            
+
             return new DbAction
             {
                 Name = a.Name,
@@ -101,17 +95,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             };
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
-
         public ResourceCatalog Resources => ResourceCatalog.Instance;
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchDbActions";
     }
 }

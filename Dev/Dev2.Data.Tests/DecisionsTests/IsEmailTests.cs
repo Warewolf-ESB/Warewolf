@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isEmail = new IsEmail();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "something";
             //------------Execute Test---------------------------
             bool result = isEmail.Invoke(cols);
@@ -28,7 +28,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isEmail = new IsEmail();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "soumething@something.com";
             //------------Execute Test---------------------------
             bool result = isEmail.Invoke(cols);

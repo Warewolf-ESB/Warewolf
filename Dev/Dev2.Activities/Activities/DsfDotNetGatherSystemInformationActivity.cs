@@ -356,7 +356,7 @@ namespace Dev2.Activities
             }
         }
 
-        static void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
             var mic = modelProperty?.Collection;
@@ -375,7 +375,7 @@ namespace Dev2.Activities
             CleanUpCollection(mic, modelItem, startIndex);
         }
 
-        static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
@@ -389,7 +389,7 @@ namespace Dev2.Activities
             }
         }
 
-        static string CreateDisplayName(ModelItem modelItem, int count)
+        string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)

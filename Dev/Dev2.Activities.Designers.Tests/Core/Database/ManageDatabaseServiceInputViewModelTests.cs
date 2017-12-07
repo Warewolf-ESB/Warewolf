@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             //------------Assert Results-------------------------
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             Assert.IsNotNull(vm.CloseCommand);
             Assert.IsNotNull(vm.CloseCommand);
 
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             vm.TestAction = () => { called = true; };
             vm.OkAction = () =>
             {
@@ -285,7 +285,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             var lst = new List<IServiceInput>();
             vm.InputArea.Inputs = lst;
             Assert.AreEqual(lst.Count, vm.InputArea.Inputs.Count);

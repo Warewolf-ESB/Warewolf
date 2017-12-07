@@ -32,23 +32,23 @@ namespace Dev2.Runtime.DynamicProxy
 
     public class DynamicProxyFactory
     {
-        private readonly string wsdlUri;
-        private readonly DynamicProxyFactoryOptions options;
+        readonly string wsdlUri;
+        readonly DynamicProxyFactoryOptions options;
 
-        private CodeCompileUnit codeCompileUnit;
-        private CodeDomProvider codeDomProvider;
-        private ServiceContractGenerator contractGenerator;
+        CodeCompileUnit codeCompileUnit;
+        CodeDomProvider codeDomProvider;
+        ServiceContractGenerator contractGenerator;
 
-        private Collection<MetadataSection> metadataCollection;
-        private IEnumerable<Binding> bindings;
-        private IEnumerable<ContractDescription> contracts;
-        private ServiceEndpointCollection endpoints;
-        private IEnumerable<MetadataConversionError> importWarnings;
-        private IEnumerable<MetadataConversionError> codegenWarnings;
-        private IEnumerable<CompilerError> compilerWarnings;
+        Collection<MetadataSection> metadataCollection;
+        IEnumerable<Binding> bindings;
+        IEnumerable<ContractDescription> contracts;
+        ServiceEndpointCollection endpoints;
+        IEnumerable<MetadataConversionError> importWarnings;
+        IEnumerable<MetadataConversionError> codegenWarnings;
+        IEnumerable<CompilerError> compilerWarnings;
 
-        private Assembly proxyAssembly;
-        private string proxyCode;
+        Assembly proxyAssembly;
+        string proxyCode;
 
         public DynamicProxyFactory(string wsdlUri, DynamicProxyFactoryOptions options)
         {
@@ -77,7 +77,7 @@ namespace Dev2.Runtime.DynamicProxy
         {
         }
 
-        private void DownloadMetadata()
+        void DownloadMetadata()
         {
             var epr = new EndpointAddress(wsdlUri);
 
@@ -128,7 +128,7 @@ namespace Dev2.Runtime.DynamicProxy
         }
 
 
-        private void ImportMetadata()
+        void ImportMetadata()
         {
             codeCompileUnit = new CodeCompileUnit();
             CreateCodeDomProvider();
@@ -208,7 +208,7 @@ namespace Dev2.Runtime.DynamicProxy
             }
         }
 
-        private void CreateProxy()
+        void CreateProxy()
         {
             CreateServiceContractGenerator();
 
@@ -240,7 +240,7 @@ namespace Dev2.Runtime.DynamicProxy
             }
         }
 
-        private void CompileProxy()
+        void CompileProxy()
         {
             // reference the required assemblies with the correct path.
             var compilerParams = new CompilerParameters();
@@ -284,7 +284,7 @@ namespace Dev2.Runtime.DynamicProxy
             proxyAssembly = Assembly.LoadFile(results.PathToAssembly);
         }
 
-        private void WriteCode()
+        void WriteCode()
         {
             using (var writer = new StringWriter())
             {
@@ -341,12 +341,12 @@ namespace Dev2.Runtime.DynamicProxy
             return matchingEndpoint;
         }
 
-        private bool ContractNameMatch(ContractDescription cDesc, string name)
+        bool ContractNameMatch(ContractDescription cDesc, string name)
         {
             return (string.Compare(cDesc.Name, name, true) == 0);
         }
 
-        private bool ContractNsMatch(ContractDescription cDesc, string ns)
+        bool ContractNsMatch(ContractDescription cDesc, string ns)
         {
             return ((ns == null) ||
                     (string.Compare(cDesc.Namespace, ns, true) == 0));
@@ -377,7 +377,7 @@ namespace Dev2.Runtime.DynamicProxy
                     endpoint.Address);
         }
 
-        private Type GetContractType(string contractName,
+        Type GetContractType(string contractName,
                 string contractNamespace)
         {
             var allTypes = proxyAssembly.GetTypes();
@@ -440,7 +440,7 @@ namespace Dev2.Runtime.DynamicProxy
             return new XmlQualifiedName(name, ns);
         }
 
-        private Type GetProxyType(Type contractType)
+        Type GetProxyType(Type contractType)
         {
             var clientBaseType = typeof(ClientBase<>).MakeGenericType(
                     contractType);
@@ -471,12 +471,12 @@ namespace Dev2.Runtime.DynamicProxy
         }
 
 
-        private void CreateCodeDomProvider()
+        void CreateCodeDomProvider()
         {
             codeDomProvider = CodeDomProvider.CreateProvider(options.Language.ToString());
         }
 
-        private void CreateServiceContractGenerator()
+        void CreateServiceContractGenerator()
         {
             contractGenerator = new ServiceContractGenerator(
                 codeCompileUnit);
@@ -533,7 +533,7 @@ namespace Dev2.Runtime.DynamicProxy
             return null;
         }
 
-        private static IEnumerable<CompilerError> ToEnumerable(
+        static IEnumerable<CompilerError> ToEnumerable(
                 CompilerErrorCollection collection)
         {
             if (collection == null)

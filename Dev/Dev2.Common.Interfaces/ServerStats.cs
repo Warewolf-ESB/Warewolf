@@ -14,9 +14,9 @@ namespace Dev2.Common.Interfaces
 {
     public static class ServerStats
     {
-        private static int _totalRequests;
+        static int _totalRequests;
 
-        private static long _totalTime;
+        static long _totalTime;
 
         public static int TotalRequests => _totalRequests;
 

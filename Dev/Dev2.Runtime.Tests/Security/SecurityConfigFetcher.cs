@@ -32,7 +32,7 @@ namespace Dev2.Tests.Runtime.Security
                 }
 
                 var len = stream.Length;
-                byte[] bytes = new byte[len];
+                var bytes = new byte[len];
                 stream.Read(bytes, 0, (int)len);
 
                 return Encoding.UTF8.GetString(bytes);

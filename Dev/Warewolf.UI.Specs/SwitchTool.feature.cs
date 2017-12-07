@@ -17,7 +17,7 @@ namespace Warewolf.UI.Specs
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("TechTalk.SpecFlow", "2.2.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITest()]
+    [Microsoft.VisualStudio.TestTools.UITesting.CodedUITestAttribute()]
     public partial class SwitchToolFeature
     {
         
@@ -94,8 +94,10 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.And("I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
- testRunner.And("I Click Switch Dialog Cancel Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.And("I Enter Text Into Switch Dialog", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 16
+ testRunner.And("I Click Switch Dialog Done Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 17
  testRunner.Then("two autoconnectors exist on the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
@@ -107,27 +109,27 @@ this.ScenarioSetup(scenarioInfo);
         public virtual void SwitchCaseArmAutoconnectorsPressEscape()
         {
             TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Switch Case Arm Autoconnectors Press Escape", ((string[])(null)));
-#line 18
-this.ScenarioSetup(scenarioInfo);
 #line 19
- testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+this.ScenarioSetup(scenarioInfo);
 #line 20
- testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.Given("The Warewolf Studio is running", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 21
- testRunner.When("I Drag Toolbox Switch Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+ testRunner.When("I Click New Workflow Ribbon Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 22
- testRunner.And("I Hit Escape Key On The Keyboard on Activity Default Window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+ testRunner.When("I Drag Toolbox Switch Onto DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 23
- testRunner.And("I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 24
- testRunner.And("I Open Switch Tool Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 25
- testRunner.And("I Click Switch Dialog Cancel Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 26
- testRunner.And("I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 27
  testRunner.And("I Hit Escape Key On The Keyboard on Activity Default Window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 24
+ testRunner.And("I First Drag Toolbox Comment Onto Switch Left Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 25
+ testRunner.And("I Open Switch Tool Large View", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 26
+ testRunner.And("I Click Switch Dialog Cancel Button", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 27
+ testRunner.And("I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 28
+ testRunner.And("I Hit Escape Key On The Keyboard on Activity Default Window", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 29
  testRunner.Then("two autoconnectors exist on the design surface", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();

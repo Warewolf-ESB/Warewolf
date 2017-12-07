@@ -16,7 +16,7 @@ using Dev2.DynamicServices;
 
 namespace Dev2.Converters
 {
-    internal class Dev2BinaryConverter : IBaseConverter
+    class Dev2BinaryConverter : IBaseConverter
     {
         public string ConvertToBase(byte[] payload)
         {
@@ -26,7 +26,7 @@ namespace Dev2.Converters
             for (int i = 0; i < payload.Length; i++)
                 
             {
-                string tmp = Convert.ToString(payload[i], 2);
+                var tmp = Convert.ToString(payload[i], 2);
                 // zero pad the value
                 for (int q = tmp.Length; q < 8; q++)
                 {

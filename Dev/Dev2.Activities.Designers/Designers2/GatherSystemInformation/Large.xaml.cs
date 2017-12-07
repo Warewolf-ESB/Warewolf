@@ -2,7 +2,6 @@
 
 namespace Dev2.Activities.Designers2.GatherSystemInformation
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -11,9 +10,6 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
             DataGrid = SmallDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement(0);
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement(0);
     }
 }

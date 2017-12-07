@@ -25,6 +25,7 @@ namespace Dev2
         string _result;
         bool _isResultFocused;
 
+
         public GatherSystemInformationTO()
         {
         }
@@ -44,9 +45,6 @@ namespace Dev2
             IndexNumber = indexNumber;
         }
 
-        /// <summary>
-        ///     Type of system information to gather
-        /// </summary>
         public enTypeOfSystemInformationToGather EnTypeOfSystemInformation
         {
             get => _enTypeOfSystemInformation;
@@ -56,11 +54,7 @@ namespace Dev2
                 OnPropertyChanged("EnTypeOfSystemInformation");
             }
         }
-
-
-        /// <summary>
-        ///     Where to place the result, will be the same as From until wizards are created
-        /// </summary>
+        
         [FindMissing]
         public string Result
         {
@@ -78,6 +72,7 @@ namespace Dev2
         public string WatermarkTextVariable { get; set; }
 
         public string WatermarkText { get; set; }
+
         public bool Inserted { get; set; }
 
         public int IndexNumber { get; set; }

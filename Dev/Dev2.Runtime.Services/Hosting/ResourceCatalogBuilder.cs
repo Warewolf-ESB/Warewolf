@@ -33,7 +33,7 @@ namespace Dev2.Runtime.Hosting
     /// Transfer FileStream and ResourcePath together
     /// </summary>
     
-    internal class ResourceBuilderTO
+    class ResourceBuilderTO
     
     {
         internal string FilePath;
@@ -45,13 +45,13 @@ namespace Dev2.Runtime.Hosting
     /// Used to build up the resource catalog ;)
     /// </summary>
     public class ResourceCatalogBuilder
-    {        
-        private readonly List<IResource> _resources = new List<IResource>();
-        private readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
-        private readonly IResourceUpgrader _resourceUpgrader;
-        private readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
-        private readonly object _addLock = new object();
-        
+    {
+        readonly List<IResource> _resources = new List<IResource>();
+        readonly HashSet<Guid> _addedResources = new HashSet<Guid>();
+        readonly IResourceUpgrader _resourceUpgrader;
+        readonly List<DuplicateResource> _duplicateResources = new List<DuplicateResource>();
+        readonly object _addLock = new object();
+
 
         public ResourceCatalogBuilder(IResourceUpgrader resourceUpgrader)
         {
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.Hosting
                     foreach (var file in files)
                     {
 
-                        FileAttributes fa = File.GetAttributes(file);
+                        var fa = File.GetAttributes(file);
 
                         if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.Hosting
                         Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                     }
                                       
-                    StringBuilder result = xml?.ToStringBuilder();
+                    var result = xml?.ToStringBuilder();
 
                     var isValid = result!=null && HostSecurityProvider.Instance.VerifyXml(result);
                     if (isValid)
@@ -200,7 +200,7 @@ namespace Dev2.Runtime.Hosting
                                 try
                                 {
 
-                                    StringBuilder updateXml = a.ToStringBuilder();
+                                    var updateXml = a.ToStringBuilder();
                                     var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
@@ -228,7 +228,7 @@ namespace Dev2.Runtime.Hosting
 
                             xml = resource.UpgradeXml(xml, resource);
 
-                            StringBuilder updateXml = xml.ToStringBuilder();
+                            var updateXml = xml.ToStringBuilder();
                             var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                             var fileManager = new TxFileManager();
                             using (TransactionScope tx = new TransactionScope())
@@ -267,15 +267,15 @@ namespace Dev2.Runtime.Hosting
                     stream.FileStream.Close();
                 }
             }
-        }        
+        }
 
         /// <summary>
         /// Adds the resource.
         /// </summary>
         /// <param name="res">The res.</param>
         /// <param name="filePath">The file path.</param>
-        private void AddResource(IResource res, string filePath)
-        {            
+        void AddResource(IResource res, string filePath)
+        {
             if (!_addedResources.Contains(res.ResourceID))
             {
                 _resources.Add(res);
@@ -286,7 +286,7 @@ namespace Dev2.Runtime.Hosting
                 var dupRes = _resources.Find(c => c.ResourceID == res.ResourceID);
                 if (dupRes != null)
                 {
-                    CreateDupResource(dupRes,filePath);
+                    CreateDupResource(dupRes, filePath);
                     Dev2Logger.Debug(
                         string.Format(ErrorResource.ResourceAlreadyLoaded,
                             res.ResourceName, filePath, dupRes.FilePath), GlobalConstants.WarewolfDebug);
@@ -300,7 +300,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private void CreateDupResource(IResource resource, string filePath)
+        void CreateDupResource(IResource resource, string filePath)
         {
 
             {

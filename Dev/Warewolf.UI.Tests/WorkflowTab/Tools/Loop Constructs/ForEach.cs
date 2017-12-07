@@ -44,9 +44,17 @@ namespace Warewolf.UI.Tests.Tools
 
         [TestMethod]
 		[TestCategory("Tools")]
-        public void Drag_Assigntool_Into_ForEachActivityDrop_ExpectSuccess_UITest()
+        public void Drag_Assigntool_Into_ForEach_ActivityDrop_ExpectSuccess_UITest()
         {
             LoopConstructToolsUIMap.Drag_Toolbox_AssignObject_Onto_Foreach();
+        }
+
+        [TestMethod]
+        [TestCategory("Tools")]
+        public void Drag_Assigntool_Into_ForEach_LargeView_ActivityDrop_ExpectSuccess_UITest()
+        {
+            LoopConstructToolsUIMap.Open_ForEach_LargeView();
+            LoopConstructToolsUIMap.Drag_Toolbox_AssignObject_Onto_Foreach_LargeView();
         }
 
         #region Additional test attributes

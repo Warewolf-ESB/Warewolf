@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLString();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLString();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             var resource = new Resource(element);
             resource.Errors.Clear();
             resource.IsValid = false;
@@ -131,7 +131,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLString();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -149,7 +149,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLString();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependencies();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -189,7 +189,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_Plugin();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -208,7 +208,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_PublishRabbitMQ();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -227,7 +227,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_SqlServerDatabase();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -246,7 +246,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_MySqlServerDatabase();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetValidXMLStringWithMultipleDependenciesWithServiceDependencies_WebGetActivity();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -285,7 +285,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             //------------Setup for test--------------------------
             var validXML = GetStringFromResource();
             var textReader = new StringReader(validXML);
-            XElement element = XElement.Load(textReader, LoadOptions.None);
+            var element = XElement.Load(textReader, LoadOptions.None);
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -301,14 +301,14 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void Construct_UnitTest_LoadDependenciesWhereHasRemoteWorkflowDependency_ExpectedRemoteServerDependencyAdded()
         {
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("say hello remote");
+            var element = XmlResource.Fetch("say hello remote");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
             Assert.IsNotNull(resource);
             Assert.IsNotNull(resource.Dependencies);
             Assert.AreEqual(4, resource.Dependencies.Count);
-            IResourceForTree serverDependency = resource.Dependencies.First(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
+            var serverDependency = resource.Dependencies.First(tree => tree.ResourceID == Guid.Parse("889d3f22-40c5-4466-84bc-d49a5874ae53"));
             Assert.IsNotNull(serverDependency);
             Assert.AreEqual("server - tfs bld", serverDependency.ResourceName);
             Assert.AreEqual("Server", serverDependency.ResourceType);
@@ -320,7 +320,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void Resource_LoadDependencies_HasEmailSource_ShouldHaveEmailSourceInDepencyList()
         {
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("EmailTest");
+            var element = XmlResource.Fetch("EmailTest");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -337,7 +337,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void Resource_LoadDependencies_HasDatabaseSourceFromSqlBulkInsertTool_ShouldHaveDatabaseSourceInDepencyList()
         {
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("Big Bulk Testing");
+            var element = XmlResource.Fetch("Big Bulk Testing");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -545,7 +545,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                                     "</Row></DataList>";
             #endregion
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("Big Bulk Testing");
+            var element = XmlResource.Fetch("Big Bulk Testing");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -576,7 +576,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
                "<Output OriginalName=\"Status\" Name=\"Status\" MapsTo=\"Status\" Value=\"[[Status]]\" RecordsetName=\"\" RecordsetAlias=\"\" Recordset=\"\" />" +
             "</Outputs>";
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("WebService");
+            var element = XmlResource.Fetch("WebService");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------
@@ -596,7 +596,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void Resource_XmlConstructor_Invoked_ServiceNoInputsShouldHaveInputsAndOutputs()
         {
             //------------Setup for test--------------------------
-            XElement element = XmlResource.Fetch("WebServiceWithoutInputs");
+            var element = XmlResource.Fetch("WebServiceWithoutInputs");
             //------------Execute Test---------------------------
             var resource = new Resource(element);
             //------------Assert Results-------------------------

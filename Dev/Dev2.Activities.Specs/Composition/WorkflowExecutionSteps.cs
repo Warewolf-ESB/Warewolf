@@ -90,7 +90,7 @@ namespace Dev2.Activities.Specs.Composition
     [Binding]
     public class WorkflowExecutionSteps : RecordSetBases
     {
-        private readonly ScenarioContext _scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public WorkflowExecutionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -102,10 +102,10 @@ namespace Dev2.Activities.Specs.Composition
 
         const int EnvironmentConnectionTimeout = 3000;
 
-        private SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
-        private SpecExternalProcessExecutor _externalProcessExecutor;
-        private readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
-        private readonly CommonSteps _commonSteps;
+        SubscriptionService<DebugWriterWriteMessage> _debugWriterSubscriptionService;
+        SpecExternalProcessExecutor _externalProcessExecutor;
+        readonly AutoResetEvent _resetEvt = new AutoResetEvent(false);
+        readonly CommonSteps _commonSteps;
 
         protected override void BuildDataList()
         {
@@ -238,14 +238,14 @@ namespace Dev2.Activities.Specs.Composition
         }
 
         [BeforeFeature()]
-        private static void SetUpLocalHost()
+        static void SetUpLocalHost()
         {
             LocalEnvModel = ServerRepository.Instance.Source;
             LocalEnvModel.Connect();
             LocalEnvModel.ForceLoadResources();
         }
 
-        private static IServer LocalEnvModel { get; set; }
+        static IServer LocalEnvModel { get; set; }
         [Given(@"I have a workflow ""(.*)""")]
         public void GivenIHaveAWorkflow(string workflowName)
         {
@@ -456,7 +456,7 @@ namespace Dev2.Activities.Specs.Composition
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsNotNull(toolSpecificDebug);
-            IDebugState debugState = toolSpecificDebug.FirstOrDefault();
+            var debugState = toolSpecificDebug.FirstOrDefault();
             if (debugState != null)
             {
                 for (int index = 0; index < debugState.Inputs.Count; index++)
@@ -503,7 +503,7 @@ namespace Dev2.Activities.Specs.Composition
             var toolSpecificDebug =
                 debugStates.Where(ds => ds.ParentID.GetValueOrDefault() == sequenceId && ds.DisplayName.Equals(toolName)).ToList();
             Assert.IsNotNull(toolSpecificDebug);
-            IDebugState debugState = toolSpecificDebug.FirstOrDefault();
+            var debugState = toolSpecificDebug.FirstOrDefault();
             if (debugState != null)
             {
                 for (int index = 0; index < debugState.Outputs.Count; index++)
@@ -844,9 +844,6 @@ namespace Dev2.Activities.Specs.Composition
                     break;
                 case "plugin":
                     activity = new DsfPluginActivity();
-                    break;
-                case "webservice":
-                    activity = new DsfWebserviceActivity();
                     break;
                 case "workflow":
                     activity = new DsfWorkflowActivity();
@@ -1284,7 +1281,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates");
-            Guid workflowId = Guid.Empty;
+            var workflowId = Guid.Empty;
 
             if (parentWorkflowName != workflowName)
             {
@@ -1337,7 +1334,7 @@ namespace Dev2.Activities.Specs.Composition
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
 
             var debugStates = Get<List<IDebugState>>("debugStates");
-            Guid workflowId = Guid.Empty;
+            var workflowId = Guid.Empty;
 
             if (parentWorkflowName != workflowName)
             {
@@ -1383,7 +1380,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            IDbSource dbSource = dbSources.Single(source => source.Name == dbSrcName);
+            var dbSource = dbSources.Single(source => source.Name == dbSrcName);
 
             // extract keepIdentity value ;)
             bool.TryParse(keepIdentity, out bool keepIdentityBool);
@@ -1534,7 +1531,7 @@ namespace Dev2.Activities.Specs.Composition
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
 
-            SharepointMoveFileActivity readFolderItemActivity = new SharepointMoveFileActivity
+            var readFolderItemActivity = new SharepointMoveFileActivity
             {
                 DisplayName = activityName,
                 SharepointServerResourceId = sharepointSource.ResourceID,
@@ -1566,7 +1563,7 @@ namespace Dev2.Activities.Specs.Composition
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
 
-            SharepointCopyFileActivity readFolderItemActivity = new SharepointCopyFileActivity
+            var readFolderItemActivity = new SharepointCopyFileActivity
             {
                 DisplayName = activityName,
                 SharepointServerResourceId = sharepointSource.ResourceID,
@@ -1589,7 +1586,7 @@ namespace Dev2.Activities.Specs.Composition
             environmentModel.Connect();
 
             var sharepointList = table.Rows[0]["List"];
-            SharepointReadListActivity readListActivity = new SharepointReadListActivity
+            var readListActivity = new SharepointReadListActivity
             {
                 DisplayName = activityName
                 ,
@@ -1615,12 +1612,12 @@ namespace Dev2.Activities.Specs.Composition
                 new SharepointFieldTo {InternalName = "RequiredField"},
                 new SharepointFieldTo {InternalName = "Loc"}
             };
-            SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
+            var asyncWorker = new SynchronousAsyncWorker();
             asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
             {
                 if (columnList != null)
                 {
-                    List<SharepointReadListTo> fieldMappings = columnList
+                    var fieldMappings = columnList
                     .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
                     .Select(mapping =>
                     {
@@ -1667,7 +1664,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             var server = table.Rows[0]["Server"];
             var result = table.Rows[0]["Result"];
-            SharepointReadFolderItemActivity readFolderItemActivity = new SharepointReadFolderItemActivity
+            var readFolderItemActivity = new SharepointReadFolderItemActivity
             {
                 DisplayName = activityName
                 ,
@@ -1718,7 +1715,7 @@ namespace Dev2.Activities.Specs.Composition
             var sharepointList = table.Rows[0]["List"];
             sharepointList += "_" + ScenarioContext.Current.Get<int>("recordsetNameRandomizer").ToString();
             var result = table.Rows[0]["Result"];
-            SharepointUpdateListItemActivity createListItemActivity = new SharepointUpdateListItemActivity
+            var createListItemActivity = new SharepointUpdateListItemActivity
             {
                 DisplayName = activityName
                 ,
@@ -1746,12 +1743,12 @@ namespace Dev2.Activities.Specs.Composition
                 new SharepointFieldTo() {InternalName = "RequiredField"},
                 new SharepointFieldTo() {InternalName = "Loc",},
             };
-            SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
+            var asyncWorker = new SynchronousAsyncWorker();
             asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
             {
                 if (columnList != null)
                 {
-                    List<SharepointReadListTo> fieldMappings = columnList
+                    var fieldMappings = columnList
                     .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
                     .Select(mapping =>
                     {
@@ -1791,7 +1788,7 @@ namespace Dev2.Activities.Specs.Composition
 
             var sharepointList = table.Rows[0]["List"];
             var result = table.Rows[0]["Result"];
-            SharepointCreateListItemActivity createListItemActivity = new SharepointCreateListItemActivity
+            var createListItemActivity = new SharepointCreateListItemActivity
             {
                 DisplayName = activityName
             ,
@@ -1817,12 +1814,12 @@ namespace Dev2.Activities.Specs.Composition
                 new SharepointFieldTo() {InternalName = "RequiredField"},
                 new SharepointFieldTo() {InternalName = "Loc",},
             };
-            SynchronousAsyncWorker asyncWorker = new SynchronousAsyncWorker();
+            var asyncWorker = new SynchronousAsyncWorker();
             asyncWorker.Start(() => GetListFields(environmentModel, sharepointSource, sharepointListTo), columnList =>
             {
                 if (columnList != null)
                 {
-                    List<SharepointReadListTo> fieldMappings = columnList
+                    var fieldMappings = columnList
                     .Where(to => sharepointFieldsToKeep.Any(fieldTo => fieldTo.InternalName == to.InternalName))
                     .Select(mapping =>
                     {
@@ -1938,7 +1935,7 @@ namespace Dev2.Activities.Specs.Composition
             ScenarioContext.Current.Add("serverPathToUniqueNameGuid", serverPathToUniqueNameGuid);
             var sharepointServerResourceId = ConfigurationManager.AppSettings[name].ToGuid();
             var sharepointSource = sources.Single(source => source.ResourceID == sharepointServerResourceId);
-            SharepointFileUploadActivity fileUploadActivity = new SharepointFileUploadActivity
+            var fileUploadActivity = new SharepointFileUploadActivity
             {
                 DisplayName = activityName
                 ,
@@ -1989,10 +1986,16 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "3032b7fd-f12a-4ab8-be7d-2f4705c31317".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Delete", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
-                ,
+                Name = "Delete",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
                 Method = WebRequestMethod.Delete
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2047,10 +2050,16 @@ namespace Dev2.Activities.Specs.Composition
 
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "ab4d5ab5-ad44-421d-8125-adfcc3aa655b".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Post", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
-                ,
+                Name = "Post",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
                 Method = WebRequestMethod.Post
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
@@ -2109,9 +2118,17 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "e541d860-cd10-4aec-b2fe-79eca3c62c25".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Get", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
+                Name = "Get",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
+                Method = WebRequestMethod.Get
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
@@ -2168,12 +2185,17 @@ namespace Dev2.Activities.Specs.Composition
                                                                                     , environmentModel);
             var pluginSources = _proxyLayer.QueryManagerProxy.FetchWebServiceSources().ToList();
             var a = pluginSources.Single(source => source.Id == "0fb49fec-e454-4357-a06f-08f329558b18".ToGuid());
-            var webServiceDefinition = new WebServiceDefinition("Put", "", a, new List<IServiceInput>(), new List<IServiceOutputMapping>(), "", a.Id)
+            var webServiceDefinition = new WebServiceDefinition()
             {
-                Headers = new List<NameValue>()
-                ,
+                Name = "Put",
+                Path = "",
+                Source = a,
+                Inputs = new List<IServiceInput>(),
+                OutputMappings = new List<IServiceOutputMapping>(),
+                QueryString = "",
+                Id = a.Id,
+                Headers = new List<NameValue>(),
                 Method = WebRequestMethod.Put
-
             };
             var testResult = manageWebServiceModel.TestService(webServiceDefinition);
 
@@ -2532,7 +2554,7 @@ namespace Dev2.Activities.Specs.Composition
             DeleteSharepointFile(fileName);
         }
 
-        private static void DeleteSharepointFile(string serverPathTo)
+        static void DeleteSharepointFile(string serverPathTo)
         {
             var serverPathUniqueNameGuid = ScenarioContext.Current.Get<string>("serverPathToUniqueNameGuid");
             var serverPath = CommonSteps.AddGuidToPath(serverPathTo, serverPathUniqueNameGuid);
@@ -2603,7 +2625,7 @@ namespace Dev2.Activities.Specs.Composition
                 }
                 if (value.Equals("TestingDotnetDllCascading.Food.ToJson"))
                 {
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializer = new Dev2JsonSerializer();
                     var serialize = serializer.Serialize(new Food());
                     value = serialize;
                 }
@@ -2703,14 +2725,14 @@ namespace Dev2.Activities.Specs.Composition
             var Action = table.Rows[0]["Action"];
             var ActionOutputVaribale = table.Rows[0]["ActionOutputVaribale"];
             dsfEnhancedDotNetDllActivity.ObjectName = ObjectName;
-            StudioServerProxy proxy = new StudioServerProxy(new CommunicationControllerFactory(), LocalEnvModel.Connection);
+            var proxy = new StudioServerProxy(new CommunicationControllerFactory(), LocalEnvModel.Connection);
             var pluginSource = proxy.QueryManagerProxy.FetchPluginSources().Single(source => source.Name.Equals(Source, StringComparison.InvariantCultureIgnoreCase));
             var namespaceItems = proxy.QueryManagerProxy.FetchNamespacesWithJsonRetunrs(pluginSource);
             var namespaceItem = namespaceItems.Single(item => item.FullName.Equals(ClassName, StringComparison.CurrentCultureIgnoreCase));
             var pluginActions = proxy.QueryManagerProxy.PluginActionsWithReturns(pluginSource, namespaceItem);
             allPluginActions = pluginActions.ToList();
             var pluginAction = pluginActions.Single(action => action.Method.Equals(Action, StringComparison.InvariantCultureIgnoreCase));
-            IList<IPluginConstructor> pluginConstructors = proxy.QueryManagerProxy.PluginConstructors(pluginSource, namespaceItem);
+            var pluginConstructors = proxy.QueryManagerProxy.PluginConstructors(pluginSource, namespaceItem);
             const string recNumber = "[[rec(*).number]]";
             foreach (var serviceInput in pluginAction.Inputs)
             {
@@ -2793,7 +2815,7 @@ namespace Dev2.Activities.Specs.Composition
         }
 
 
-        private static DropBoxSource GetDropBoxSource()
+        static DropBoxSource GetDropBoxSource()
         {
             var guid = "dc163197-7a76-4f4c-a783-69d6d53b2f3a".ToGuid();
             var resourceList = LocalEnvModel.ResourceRepository.LoadContextualResourceModel(guid);
@@ -2858,10 +2880,10 @@ namespace Dev2.Activities.Specs.Composition
             var sourceId = "ed7c3655-4922-4f24-9881-83462661832d".ToGuid();
             var environmentConnection = LocalEnvModel.Connection;
             var mock = new Mock<IShellViewModel>();
-            StudioServerProxy proxy = new StudioServerProxy(controllerFactory, environmentConnection);
+            var proxy = new StudioServerProxy(controllerFactory, environmentConnection);
             var fetchComPluginSources = proxy.QueryManagerProxy.FetchComPluginSources();
             var pluginSource = fetchComPluginSources.Single(source => source.Id == sourceId);
-            ManageComPluginServiceModel dbServiceModel = new ManageComPluginServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageComPluginServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                    , proxy.QueryManagerProxy
                                                                                    , mock.Object
                                                                                    , new Server(Guid.NewGuid(), environmentConnection));
@@ -2911,7 +2933,7 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, dotNetServiceName, dsfEnhancedDotNetDllActivity);
         }
 
-        private List<IPluginAction> allPluginActions { get; set; }
+        List<IPluginAction> allPluginActions { get; set; }
         [Given(@"""(.*)"" constructorinputs (.*) with inputs as")]
         public void GivenConstructorWithInputsAs(string serviceName, int p1, Table table)
         {
@@ -3090,7 +3112,7 @@ namespace Dev2.Activities.Specs.Composition
             var url = table.Rows[0]["Url"];
 
             _commonSteps.AddVariableToVariableList(resultVariable);
-            DsfWebGetRequestActivity dsfWebGetRequestActivity = new DsfWebGetRequestActivity
+            var dsfWebGetRequestActivity = new DsfWebGetRequestActivity
             {
                 DisplayName = toolName
                 ,
@@ -3116,7 +3138,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenContainsXPathWithResultAs(string parentName, string xpathName, string source)
         {
             const string a = "<XPATH-EXAMPLE>  <CUSTOMER id=\"1\" type=\"B\">Mr.  Jones</CUSTOMER><CUSTOMER id=\"2\" type=\"C\">Mr.  Johnson</CUSTOMER></XPATH-EXAMPLE> ";
-            DsfXPathActivity dsfXPathActivity = new DsfXPathActivity
+            var dsfXPathActivity = new DsfXPathActivity
             {
 
                 SourceString = a
@@ -3136,7 +3158,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             _commonSteps.AddVariableToVariableList(resultVariable);
 
-            DsfAggregateCalculateActivity calculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+            var calculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
@@ -3797,12 +3819,12 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
-            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);
             var dbSources = _proxyLayer.QueryManagerProxy.FetchDbSources().ToList();
-            IDbSource dbSource = dbSources.Single(source => source.Id == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid());
+            var dbSource = dbSources.Single(source => source.Id == "f8b1a579-2394-489e-835e-21b42e304e09".ToGuid());
 
             var databaseService = new DatabaseService
             {
@@ -3899,7 +3921,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
-            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);
@@ -3998,7 +4020,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
-            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);
@@ -4077,7 +4099,7 @@ namespace Dev2.Activities.Specs.Composition
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
-            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);
@@ -4131,7 +4153,7 @@ namespace Dev2.Activities.Specs.Composition
             _commonSteps.AddActivityToActivityList(parentName, serviceName, mySqlDatabaseActivity);
         }
 
-        private static List<IServiceInput> GetServiceInputs(Table table)
+        static List<IServiceInput> GetServiceInputs(Table table)
         {
             return table.Rows.Select(a => new ServiceInput(a["ParameterName"], a["ParameterValue"]))
                 .Cast<IServiceInput>()
@@ -4179,7 +4201,7 @@ namespace Dev2.Activities.Specs.Composition
         public void GivenICreateANewUnsavedWorkflowWithName(string serviceName)
         {
             var environmentModel = ServerRepository.Instance.Source;
-            IContextualResourceModel tempResource = ResourceModelFactory.CreateResourceModel(environmentModel, @"WorkflowService",
+            var tempResource = ResourceModelFactory.CreateResourceModel(environmentModel, @"WorkflowService",
                 serviceName);
             tempResource.Category = @"Unassigned\" + serviceName;
             tempResource.ResourceName = serviceName;

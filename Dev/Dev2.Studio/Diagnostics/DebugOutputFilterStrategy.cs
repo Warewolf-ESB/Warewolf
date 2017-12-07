@@ -20,9 +20,9 @@ namespace Dev2.Diagnostics
     {
         #region Class Members
 
-        private readonly DateTimeToStringConverter _dateTimeToStringConverter;
-        private readonly TimeSpanToStringConverter _timeSpanToStringConverter;
-        private readonly EnumToStringConverter _enumToStringConverter;
+        readonly DateTimeToStringConverter _dateTimeToStringConverter;
+        readonly TimeSpanToStringConverter _timeSpanToStringConverter;
+        readonly EnumToStringConverter _enumToStringConverter;
 
         #endregion Class Members
 
@@ -73,7 +73,7 @@ namespace Dev2.Diagnostics
 
             if (content is IDebugState debugState)
             {
-                string convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
+                var convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
                 if (convertedActivityType.ToLower().Contains(filterText))
                 {
                     return true;
@@ -106,7 +106,7 @@ namespace Dev2.Diagnostics
 
                 if (debugState.ActivityType == ActivityType.Step)
                 {
-                    string convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
+                    var convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
                     if (convertedDuration.ToLower().Contains(filterText))
                     {
                         return true;
@@ -115,13 +115,13 @@ namespace Dev2.Diagnostics
 
                 if (debugState.ActivityType == ActivityType.Workflow)
                 {
-                    string convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
+                    var convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
                     if (debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText))
                     {
                         return true;
                     }
 
-                    string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
+                    var convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
                     if (debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText))
                     {
                         return true;

@@ -32,7 +32,7 @@ namespace Dev2.Studio.Dock
                 throw new ArgumentNullException("element");
             }
 
-            IInputElement inputElement = element as IInputElement;
+            var inputElement = element as IInputElement;
 
             inputElement?.RaiseEvent(e);
         }

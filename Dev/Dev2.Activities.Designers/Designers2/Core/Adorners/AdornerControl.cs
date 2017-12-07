@@ -25,8 +25,8 @@ namespace Dev2.Activities.Designers2.Core.Adorners
         const double OffsetX = 0.0;
         const double OffsetY = 0.0;
 
-        private const double PositionX = Double.NaN;
-        private const double PositionY = Double.NaN;
+        const double PositionX = Double.NaN;
+        const double PositionY = Double.NaN;
 
         AdornerLayer _adornerLayer;
 
