@@ -44,7 +44,14 @@ namespace Warewolf.Studio.ViewModels
             var xaml = _queryProxy.FetchResourceXaml(resourceID);
             var wcfsource = new WcfSource(xaml.ToXElement());
 
-            var def = new WcfServiceSourceDefinition(wcfsource);
+            var def = new WcfServiceSourceDefinition
+            {
+                Id = wcfsource.Id,
+                Name = wcfsource.ResourceName,
+                Path = wcfsource.GetSavePath(),
+                ResourceName = wcfsource.Name,
+                EndpointUrl = wcfsource.EndpointUrl
+            };
 
             return def;
         }
