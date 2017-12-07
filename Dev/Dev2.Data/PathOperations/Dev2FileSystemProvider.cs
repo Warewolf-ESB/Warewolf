@@ -35,7 +35,7 @@ namespace Dev2.PathOperations
 
     public sealed class SafeTokenHandle : SafeHandleZeroOrMinusOneIsInvalid
     {
-        private SafeTokenHandle()
+        SafeTokenHandle()
             : base(true)
         {
         }
@@ -44,7 +44,7 @@ namespace Dev2.PathOperations
         [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
         [SuppressUnmanagedCodeSecurity]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool CloseHandle(IntPtr handle);
+        static extern bool CloseHandle(IntPtr handle);
 
         protected override bool ReleaseHandle()
         {
@@ -61,7 +61,7 @@ namespace Dev2.PathOperations
 
     public class Dev2FileSystemProvider : IActivityIOOperationsEndPoint
     {
-        private static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+        static readonly ReaderWriterLockSlim _fileLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
         const int LOGON32_PROVIDER_DEFAULT = 0;
         //This parameter causes LogonUser to create a primary token. 
 
@@ -96,8 +96,8 @@ namespace Dev2.PathOperations
                 {
                     // handle UNC path
 
-                    string user = ExtractUserName(path);
-                    string domain = ExtractDomain(path);
+                    var user = ExtractUserName(path);
+                    var domain = ExtractDomain(path);
                     bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
@@ -106,7 +106,7 @@ namespace Dev2.PathOperations
                         using (safeTokenHandle)
                         {
 
-                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
@@ -173,7 +173,7 @@ namespace Dev2.PathOperations
                                 using (safeTokenHandle)
                                 {
 
-                                    WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                                    var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                                     using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                                     {
                                         // Do the operation here
@@ -226,7 +226,7 @@ namespace Dev2.PathOperations
                         using (safeTokenHandle)
                         {
 
-                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
@@ -284,7 +284,7 @@ namespace Dev2.PathOperations
                         using (safeTokenHandle)
                         {
 
-                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
@@ -356,7 +356,7 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private bool CreateDirectoryWithAuthAndNoOverwrite(IActivityIOPath dst)
+        bool CreateDirectoryWithAuthAndNoOverwrite(IActivityIOPath dst)
         {
             bool result;
             try
@@ -369,7 +369,7 @@ namespace Dev2.PathOperations
                     using (safeTokenHandle)
                     {
 
-                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
                             // Do the operation here
@@ -398,20 +398,20 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private bool CreateDirectoryWithAuthAndOverwrite(IActivityIOPath dst)
+        bool CreateDirectoryWithAuthAndOverwrite(IActivityIOPath dst)
         {
             bool result;
             try
             {
                 // handle UNC path
                 bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
-                
+
                 if (loginOk)
                 {
                     using (safeTokenHandle)
                     {
 
-                        WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                        var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                         using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                         {
                             // Do the operation here
@@ -457,7 +457,7 @@ namespace Dev2.PathOperations
 
         public enPathType PathIs(IActivityIOPath path)
         {
-            enPathType result = enPathType.File;
+            var result = enPathType.File;
 
             if (path.Path.StartsWith("\\\\"))
             {
@@ -473,7 +473,7 @@ namespace Dev2.PathOperations
                 {
                     if (!Dev2ActivityIOPathUtils.IsStarWildCard(path.Path))
                     {
-                        FileAttributes fa = File.GetAttributes(path.Path);
+                        var fa = File.GetAttributes(path.Path);
 
                         if ((fa & FileAttributes.Directory) == FileAttributes.Directory)
                         {
@@ -522,9 +522,9 @@ namespace Dev2.PathOperations
         public static extern bool LogonUser(String lpszUsername, String lpszDomain, String lpszPassword,
             int dwLogonType, int dwLogonProvider, out SafeTokenHandle phToken);
 
-        private string ExtractUserName(IPathAuth path)
+        string ExtractUserName(IPathAuth path)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
@@ -536,13 +536,13 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private string ExtractDomain(IActivityIOPath path)
+        string ExtractDomain(IActivityIOPath path)
         {
             if (path == null)
             {
                 throw new ArgumentNullException("path");
             }
-            string result = string.Empty;
+            var result = string.Empty;
 
             int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
@@ -554,31 +554,31 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private bool FileExist(IActivityIOPath path)
+        bool FileExist(IActivityIOPath path)
         {
             bool result = File.Exists(path.Path);
 
             return result;
         }
 
-        private bool DirectoryExist(IActivityIOPath dir)
+        bool DirectoryExist(IActivityIOPath dir)
         {
             bool result = Directory.Exists(dir.Path);
             return result;
         }
 
-        private bool RequiresAuth(IActivityIOPath path)
+        bool RequiresAuth(IActivityIOPath path)
         {
             bool result = path.Username != string.Empty;
 
             return result;
         }
 
-        private IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src, ReadTypes type)
+        IList<IActivityIOPath> ListDirectoriesAccordingToType(IActivityIOPath src, ReadTypes type)
         {
             IList<IActivityIOPath> result = new List<IActivityIOPath>();
 
-            string path = src.Path;
+            var path = src.Path;
 
             if (!path.EndsWith("\\") && PathIs(src) == enPathType.Directory)
             {
@@ -606,8 +606,8 @@ namespace Dev2.PathOperations
                     else
                     {
                         // we have a wild-char path ;)
-                        string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
-                        string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
+                        var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
+                        var pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
 
                         dirs = GetDirectoriesForType(baseDir, pattern, type);
                     }
@@ -616,7 +616,7 @@ namespace Dev2.PathOperations
                     {
                         foreach (string d in dirs)
                         {
-                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, true,src.PrivateKeyFile));
+                            result.Add(ActivityIOFactory.CreatePathFromString(d, src.Username, src.Password, true, src.PrivateKeyFile));
                         }
                     }
                 }
@@ -638,7 +638,7 @@ namespace Dev2.PathOperations
                         using (safeTokenHandle)
                         {
 
-                            WindowsIdentity newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
+                            var newID = new WindowsIdentity(safeTokenHandle.DangerousGetHandle());
                             using (WindowsImpersonationContext impersonatedUser = newID.Impersonate())
                             {
                                 // Do the operation here
@@ -655,8 +655,8 @@ namespace Dev2.PathOperations
                                     else
                                     {
                                         // we have a wild-char path ;)
-                                        string baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
-                                        string pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
+                                        var baseDir = Dev2ActivityIOPathUtils.ExtractFullDirectoryPath(path);
+                                        var pattern = Dev2ActivityIOPathUtils.ExtractFileName(path);
 
                                         dirs = GetDirectoriesForType(baseDir, pattern, type);
                                     }
@@ -698,7 +698,7 @@ namespace Dev2.PathOperations
             return result;
         }
 
-        private static IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type)
+        static IEnumerable<string> GetDirectoriesForType(string path, string pattern, ReadTypes type)
         {
             if (type == ReadTypes.Files)
             {

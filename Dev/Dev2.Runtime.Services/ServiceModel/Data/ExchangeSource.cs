@@ -15,9 +15,9 @@ namespace Dev2.Runtime.ServiceModel.Data
     [Serializable]
     public class ExchangeSource : Resource, IExchange, IResourceSource
     {
-        private ExchangeService _exchangeService;
-        
-        private IExchangeEmailSender _emailSender;
+        ExchangeService _exchangeService;
+
+        IExchangeEmailSender _emailSender;
 
         public static readonly int DefaultTimeout = 100000;
         public static readonly int DefaultPort = 25;
@@ -157,7 +157,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion CTOR
 
-        private void InitializeService()
+        void InitializeService()
         {
             _exchangeService = new ExchangeServiceFactory().Create();
         }

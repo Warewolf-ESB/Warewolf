@@ -59,7 +59,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                     stream.CopyTo(fileStream);
                 }
             }
-            Process regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
+            var regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
             regeditProcess.WaitForExit();
         }
 
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //---------------Set up test pack-------------------
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
-            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            var args = new ComPluginInvokeArgs
             {
                 ClsId = adodbConnectionClassId,
                 Is32Bit = false,
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //---------------Set up test pack-------------------
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
-            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            var args = new ComPluginInvokeArgs
             {
                 ClsId = adodbConnectionClassId,
                 Is32Bit = false,
@@ -382,7 +382,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             };
         }
 
-        private static ComPluginService CreatePluginService()
+        static ComPluginService CreatePluginService()
         {
             return CreatePluginService(new ServiceMethod
             {
@@ -390,7 +390,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             });
         }
 
-        private static ComPluginService CreatePluginService(ServiceMethod method)
+        static ComPluginService CreatePluginService(ServiceMethod method)
         {
             var type = typeof(DummyClassForPluginTest);
 

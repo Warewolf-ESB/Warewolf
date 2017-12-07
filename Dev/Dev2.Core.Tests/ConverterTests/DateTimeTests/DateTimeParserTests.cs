@@ -73,7 +73,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -95,7 +95,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'My birthday is : 'ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -117,7 +117,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "Please Give Cake On : ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -139,7 +139,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "Please Give \\' Cake On : ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -162,7 +162,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "Please Give \'Cake On :\' ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -184,7 +184,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -206,7 +206,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'Please Give '' Cake On : 'ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -228,7 +228,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'Brendon\\'s birthday is : 'ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -250,7 +250,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'Brendon\\\\\\'s birthday is : 'ddmmyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -272,7 +272,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'I was born on the 'dd'th day of 'MM' in the year of 'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -294,7 +294,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "DW','dd' 'MM' 'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 27 && returnDate.Month == 02 && returnDate.Year == 2009 && returnDate.DayOfWeek == DayOfWeek.Friday)
             {
@@ -316,7 +316,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd'/'mm'/'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -338,7 +338,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd'.'mm'.'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -360,7 +360,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd'-'mm'-'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -382,7 +382,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd'-'MM'-'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -404,7 +404,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd'-'M'-'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -426,7 +426,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd'-'M'-'yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 14 && returnDate.Month == 10 && returnDate.Year == 1988)
             {
@@ -441,7 +441,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [TestMethod]
         public void TryParseDateTimeWithInputFormatNULLExpectedDefaultFormatUsed()
         {
-            string inputString = DateTime.Now.ToString(CultureInfo.InvariantCulture);
+            var inputString = DateTime.Now.ToString(CultureInfo.InvariantCulture);
 
             string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
             string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
@@ -458,8 +458,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         [Owner("Ashley Lewis")]
         public void DateTimeParser_DateTimeParserUnitTest_ParseWithBlankInput_DateTimeNowIsUsed()
         {
-            string inputString = string.Empty;
-            string formatString = string.Empty;
+            var inputString = string.Empty;
+            var formatString = string.Empty;
 
             string defaultFormat = GlobalConstants.PreviousDev2DotNetDefaultDateTimeFormat;
             string translatedFormat = _parser.TranslateDotNetToDev2Format(defaultFormat, out string tmpError);
@@ -550,7 +550,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "yy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Year == 2012)
             {
@@ -610,7 +610,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "yyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Year == 1988)
             {
@@ -634,7 +634,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "mm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Month == 01)
             {
@@ -657,7 +657,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "m";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Month == 01)
             {
@@ -680,7 +680,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "M";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Month == 2)
             {
@@ -703,7 +703,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "MM";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Month == 01)
             {
@@ -726,7 +726,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "d";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 01)
             {
@@ -749,7 +749,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dd";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.Day == 01)
             {
@@ -772,7 +772,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "DW";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.DayOfWeek == DayOfWeek.Tuesday)
             {
@@ -795,7 +795,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dW";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.DayOfWeek == DayOfWeek.Tuesday)
             {
@@ -818,7 +818,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dw";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.DayOfWeek == DayOfWeek.Friday)
             {
@@ -841,7 +841,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "dyyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.DayOfYear == 50)
             {
@@ -864,9 +864,9 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "wyyyy";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
-            Calendar myCal = CultureInfo.InvariantCulture.Calendar;
+            var myCal = CultureInfo.InvariantCulture.Calendar;
             int weekOfYear = myCal.GetWeekOfYear(returnDate, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
             if (weekOfYear == 20)
             {
@@ -889,7 +889,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 '24h':42'";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 15)
             {
@@ -912,7 +912,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 '12h':42'";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 3)
             {
@@ -935,7 +935,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 15:'min";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Minutes == 42)
             {
@@ -959,7 +959,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 15:42:'ss':673'";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Seconds == 32)
             {
@@ -982,7 +982,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 15:42:32:'sp";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Milliseconds == 673)
             {
@@ -1005,7 +1005,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 1:42:32:673 'am/pm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 0)
             {
@@ -1024,7 +1024,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "'14101988 1:42:32:673 'am/pm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 12)
             {
@@ -1043,7 +1043,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 12)
             {
@@ -1062,7 +1062,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 0)
             {
@@ -1082,7 +1082,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 13)
             {
@@ -1101,7 +1101,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "ddmmyyyy 12h:min:ss am/pm";
 
             _parser.TryParseDateTime(inputString, formatString, out IDateTimeResultTO dateTimeResult, out string result);
-            DateTime returnDate = dateTimeResult.ToDateTime();
+            var returnDate = dateTimeResult.ToDateTime();
 
             if (returnDate.TimeOfDay.Hours == 1)
             {
@@ -1829,7 +1829,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberWeekOfYear");
@@ -1844,7 +1844,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberSeconds");
@@ -1859,7 +1859,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberMinutes");
@@ -1874,7 +1874,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberDayOfWeek");
@@ -1888,7 +1888,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumber24H");
@@ -1903,7 +1903,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             //---------------Set up test pack-------------------
             //IsNumberWeekOfYear(string data, bool treatAsTime)
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("IsNumberMilliseconds");
@@ -1917,7 +1917,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void GetDayOfWeekInt_GivenSunday_ShouldReturn7()
         {
             //---------------Set up test pack-------------------
-            DateTimeParserHelper dateTimeParser = new DateTimeParserHelper();
+            var dateTimeParser = new DateTimeParserHelper();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             var methodInfo = typeof(DateTimeParserHelper).GetMethod("GetDayOfWeekInt", BindingFlags.Static | BindingFlags.NonPublic);

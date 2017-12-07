@@ -826,7 +826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mock.Verify(model => model.Environment.ResourceRepository.StopExecution(It.IsAny<IContextualResourceModel>()), Times.Once);
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarInput()
+        IResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
@@ -838,7 +838,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarInputAndRecordSetInput()
+        IResourceModel CreateResourceModelWithSingleScalarInputAndRecordSetInput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
@@ -854,7 +854,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarOutput()
+        IResourceModel CreateResourceModelWithSingleScalarOutput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
@@ -866,7 +866,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithNoInput()
+        IResourceModel CreateResourceModelWithNoInput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();

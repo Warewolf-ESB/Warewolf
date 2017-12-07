@@ -233,29 +233,6 @@
         </VisualBrush.Visual>
     </VisualBrush>
 
-    <DataTemplate DataType="{x:Type bdsm:OperatorType}">
-        <StackPanel Orientation="Horizontal" Margin="10">
-            <RadioButton GroupName="Test" IsChecked="{Binding Selected}" Margin="10" />
-            <Label Content="Value Of" />
-            <TextBox Text="{Binding TagName, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100" />
-            <Label Content="{Binding FriendlyName}" />
-            <TextBox Text="{Binding Value, UpdateSourceTrigger=LostFocus, ValidatesOnDataErrors=True}" MinWidth="100">
-                <TextBox.Style>
-                    <Style TargetType="{x:Type TextBox}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding ShowEndValue}" Value="True">
-                                <Setter Property="Visibility" Value="Visible" />
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding ShowEndValue}" Value="False">
-                                <Setter Property="Visibility" Value="Hidden" />
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </TextBox.Style>
-            </TextBox>
-        </StackPanel>
-    </DataTemplate>
-
     <!-- Expander Style -->
     <Style x:Key="ExpanderHeaderFocusVisual">
         <Setter Property="Control.Template">
@@ -373,58 +350,6 @@
                             <Setter Property="Foreground" Value="{StaticResource {x:Static SystemColors.GrayTextBrushKey}}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="customControls:FilterTextBox">
-        <Setter Property="SearchText" Value="" />
-        <Setter Property="HorizontalAlignment" Value="Stretch" />
-        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-        <Setter Property="VerticalContentAlignment" Value="Center" />
-        <Setter Property="AutomationProperties.AutomationId" Value="UI_DatalistFilterTextBox_AutoID"/>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate>
-                    <Border Margin="2">
-                        <Grid ShowGridLines="False"
-                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <TextBox x:Name="TheTextBox"
-                                     Grid.Column="0"
-                                     Text="{Binding Path=SearchText,Mode=TwoWay, 
-                                     UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource TemplatedParent}}"
-                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
-                                     AutomationProperties.AutomationId="UI_TextBox_AutoID">
-                                <TextBox.Style>
-                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                                        <Style.Triggers>
-                                            <Trigger Property="Text" Value="">
-                                                <Setter Property="Background" Value="{StaticResource SearchHint}" />
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBox.Style>
-                            </TextBox>
-                            <Button x:Name="FilterButton"
-                                    Grid.Column="1"
-                                    HorizontalAlignment="Right"
-                                    Height="15"
-                                    Width="15"
-                                    VerticalAlignment="Center"
-                                    IsEnabled="{Binding ElementName=TheTextBox,Path=Text,Converter={StaticResource FilterStringToBoolConverter}}"
-                                    AutomationProperties.AutomationId="UI_FilterButton_AutoID">
-                                <Image Source="{StaticResource ClearFilter-32}" Height="15" Width="15" />
-                            </Button>
-                        </Grid>
-                    </Border>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

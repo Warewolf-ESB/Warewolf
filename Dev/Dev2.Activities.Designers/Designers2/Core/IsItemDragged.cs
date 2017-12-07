@@ -17,7 +17,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Fields
 
-        private static readonly Lazy<IsItemDragged> _instance = new Lazy<IsItemDragged>(() => new IsItemDragged());
+        static readonly Lazy<IsItemDragged> _instance = new Lazy<IsItemDragged>(() => new IsItemDragged());
 
 
         bool _isDragged;
@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers2.Core
 
         #region Ctor
 
-        private IsItemDragged()
+        IsItemDragged()
         {
             IsDragged = false;
         }

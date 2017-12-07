@@ -20,8 +20,8 @@ namespace Dev2.Common.Interfaces.Core
             ConfigFilePath = db.ConfigFilePath;
             SetAssemblyName(db);
         }
-        
-        private void SetAssemblyName(IPlugin db)
+
+        void SetAssemblyName(IPlugin db)
         {
             if (db.AssemblyLocation.StartsWith("GAC:"))
             {

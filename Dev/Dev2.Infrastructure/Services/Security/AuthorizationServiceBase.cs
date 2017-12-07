@@ -74,17 +74,17 @@ namespace Dev2.Services.Security
 
         }
 
-        private static string FindGroup(SecurityIdentifier searchSid)
+        static string FindGroup(SecurityIdentifier searchSid)
         {
-            using(var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
+            using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
                 ad.Children.SchemaFilter.Add("group");
-                foreach(DirectoryEntry dChildEntry in ad.Children)
+                foreach (DirectoryEntry dChildEntry in ad.Children)
                 {
                     var bytes = (byte[])dChildEntry.Properties["objectSid"].Value;
                     var sid = new SecurityIdentifier(bytes, 0).ToString();
 
-                    if(sid == searchSid.ToString())
+                    if (sid == searchSid.ToString())
                     {
                         return dChildEntry.Name;
                     }
@@ -93,7 +93,7 @@ namespace Dev2.Services.Security
             throw new Exception(ErrorResource.CannotFindGroup);
         }
         public event EventHandler PermissionsChanged;
-        private EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
+        EventHandler<PermissionsModifiedEventArgs> _permissionsModifedHandler;
         readonly object _getPermissionsLock = new object();
         public event EventHandler<PermissionsModifiedEventArgs> PermissionsModified
         {
@@ -210,53 +210,53 @@ namespace Dev2.Services.Security
             return groupPermissions;
         }
 
-        private bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
+        bool IsInRole(IPrincipal principal, WindowsGroupPermission p)
         {
             var isInRole = false;
-            if(principal == null)
+            if (principal == null)
             {
                 return p.IsBuiltInGuestsForExecution;
             }
             try
             {
                 var windowsGroup = p.WindowsGroup;
-                if(windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
+                if (windowsGroup == WindowsGroupPermission.BuiltInAdministratorsText)
                 {
                     var principleName = principal.Identity.Name;
-                    if(!string.IsNullOrEmpty(principleName))
-                    { 
+                    if (!string.IsNullOrEmpty(principleName))
+                    {
                         isInRole = principal.IsInRole(windowsGroup);
                         if (!isInRole)
                         {
                             isInRole = DoFallBackCheck(principal);
                         }
-                        if(!isInRole)
+                        if (!isInRole)
                         {
                             var sid = new SecurityIdentifier(WellKnownSidType.BuiltinAdministratorsSid, null);
                             var windowsPrincipal = principal as WindowsPrincipal;
                             var windowsIdentity = principal.Identity as WindowsIdentity;
-                            if(windowsPrincipal != null)
+                            if (windowsPrincipal != null)
                             {
                                 isInRole = windowsPrincipal.IsInRole(WindowsBuiltInRole.Administrator) || windowsPrincipal.IsInRole("BUILTIN\\Administrators") || windowsPrincipal.IsInRole(sid);
-                                if(windowsIdentity != null && !isInRole)
+                                if (windowsIdentity != null && !isInRole)
                                 {
-                                    if(windowsIdentity.Groups != null)
+                                    if (windowsIdentity.Groups != null)
                                     {
                                         isInRole = windowsIdentity.Groups.Any(reference =>
                                         {
-                                            if(reference.Value == sid.Value)
+                                            if (reference.Value == sid.Value)
                                             {
                                                 return true;
                                             }
                                             try
                                             {
                                                 var identityReference = reference.Translate(typeof(NTAccount));
-                                                if(identityReference != null)
+                                                if (identityReference != null)
                                                 {
                                                     return identityReference.Value == windowsGroup;
                                                 }
                                             }
-                                            catch(Exception)
+                                            catch (Exception)
                                             {
                                                 return false;
                                             }
@@ -268,7 +268,7 @@ namespace Dev2.Services.Security
                             else
                             {
 
-                                if(AreAdministratorsMembersOfWarewolfAdministrators1.Invoke())
+                                if (AreAdministratorsMembersOfWarewolfAdministrators1.Invoke())
                                 {
                                     isInRole = principal.IsInRole(sid.Value);
                                 }
@@ -286,13 +286,13 @@ namespace Dev2.Services.Security
                 {
                     isInRole = principal.IsInRole(windowsGroup);
                 }
-            }            
+            }
             catch (Exception e)
             {
                 Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }
-            
-            
+
+
             return isInRole || p.IsBuiltInGuestsForExecution;
         }
 
@@ -344,12 +344,12 @@ namespace Dev2.Services.Security
             return groupPermissions;
         }
 
-        private void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
+        void FilterAdminGroupForRemote(List<WindowsGroupPermission> groupPermissions)
         {
-            if(!_isLocalConnection)
+            if (!_isLocalConnection)
             {
                 var adminGroup = groupPermissions.FirstOrDefault(gr => gr.WindowsGroup.Equals(WindowsGroupPermission.BuiltInAdministratorsText));
-                if(adminGroup != null)
+                if (adminGroup != null)
                 {
                     groupPermissions.Remove(adminGroup);
                 }

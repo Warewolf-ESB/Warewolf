@@ -7,7 +7,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class ResourceHolder : IResourceHolder
     {
-        private readonly string _path;
+        readonly string _path;
 
         public ResourceHolder(string path)
         {

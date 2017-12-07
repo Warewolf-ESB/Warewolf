@@ -15,16 +15,16 @@ namespace Dev2.Activities.Designers2.Service
 {
     public class ValidationMemoManager : IDisposable
     {
-        private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
+        readonly ServiceDesignerViewModel _serviceDesignerViewModel;
         internal readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
             Message = @"Service Working Normally"
         };
-        private IDesignValidationService _validationService;
-        private IErrorInfo _worstDesignError;
-        private bool _versionsDifferent;
+        IDesignValidationService _validationService;
+        IErrorInfo _worstDesignError;
+        bool _versionsDifferent;
 
         internal ValidationMemoManager(ServiceDesignerViewModel serviceDesignerViewModel)
         {
@@ -222,7 +222,7 @@ namespace Dev2.Activities.Designers2.Service
                     var inputOutputViewModels = _serviceDesignerViewModel.MappingManager.DeserializeMappings(true, _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData());
                     foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
-                        IInputOutputViewModel model = inputOutputViewModel;
+                        var model = inputOutputViewModel;
                         var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
                         if (actualViewModel != null)
                         {

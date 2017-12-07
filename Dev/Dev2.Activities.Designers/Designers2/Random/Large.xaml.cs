@@ -2,7 +2,6 @@
 
 namespace Dev2.Activities.Designers2.Random
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -10,9 +9,6 @@ namespace Dev2.Activities.Designers2.Random
             InitializeComponent();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement(0);
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement(0);
     }
 }

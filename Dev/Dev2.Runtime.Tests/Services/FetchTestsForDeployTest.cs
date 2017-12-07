@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTestsForDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(null, null);
+            var jsonResult = fetchTests.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTestsForDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTestsForDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);

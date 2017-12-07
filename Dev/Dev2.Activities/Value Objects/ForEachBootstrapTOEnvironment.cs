@@ -101,7 +101,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     if (intFrom > intTo)
                     {
                         indexList = new IndexList(new HashSet<int>(), 0) { MinValue = intFrom, MaxValue = intTo };
-                        ReverseIndexIterator revIdxItr = new ReverseIndexIterator(new HashSet<int>(), 0) { IndexList = indexList };
+                        var revIdxItr = new ReverseIndexIterator(new HashSet<int>(), 0) { IndexList = indexList };
                         IndexIterator = revIdxItr;
                     }
                     else
@@ -121,14 +121,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
                     var csvIndexedsItr = ExecutionEnvironment.WarewolfEvalResultToString(compiler.Eval(csvNumbers, update));
 
                     ErrorResultTO allErrors;
-                    List<int> listOfIndexes = SplitOutCsvIndexes(csvIndexedsItr, out allErrors);
+                    var listOfIndexes = SplitOutCsvIndexes(csvIndexedsItr, out allErrors);
                     if (allErrors.HasErrors())
                     {
                         errors.MergeErrors(allErrors);
                         break;
                     }
-                    ListIndexIterator listLocalIndexIterator = new ListIndexIterator(listOfIndexes);
-                    ListOfIndex listOfIndex = new ListOfIndex(listOfIndexes);
+                    var listLocalIndexIterator = new ListIndexIterator(listOfIndexes);
+                    var listOfIndex = new ListOfIndex(listOfIndexes);
                     listLocalIndexIterator.IndexList = listOfIndex;
                     IndexIterator = listLocalIndexIterator;
                     break;
@@ -156,7 +156,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities.Value_Objects
         List<int> SplitOutCsvIndexes(string csvNumbers, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            List<int> result = new List<int>();
+            var result = new List<int>();
             var splitStrings = csvNumbers.Split(',');
             foreach(var splitString in splitStrings)
             {

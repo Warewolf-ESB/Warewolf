@@ -10,8 +10,8 @@ namespace Warewolf.Studio.ViewModels
     public class DeployDestinationViewModel : ExplorerViewModel, IDeployDestinationExplorerViewModel
     {
         bool _isLoading;
-        private bool _deployTests;
-        private Version _serverVersion;
+        bool _deployTests;
+        Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
         public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
@@ -25,7 +25,7 @@ namespace Warewolf.Studio.ViewModels
             ValidateEnvironments(shellViewModel);
         }
 
-        private void ValidateEnvironments(IShellViewModel shellViewModel)
+        void ValidateEnvironments(IShellViewModel shellViewModel)
         {
             foreach (var env in shellViewModel?.ExplorerViewModel?.Environments)
             {
@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ServerDisconnected(object sender, IServer server)
+        void ServerDisconnected(object sender, IServer server)
         {
             if (SelectedEnvironment != null)
             {
@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
+        async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
         {
             var environmentViewModel = await CreateEnvironmentViewModelAsync(sender, server.EnvironmentID, true).ConfigureAwait(true);
             environmentViewModel?.Server?.GetServerVersion();

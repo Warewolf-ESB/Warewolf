@@ -9,7 +9,7 @@
 */
 
 namespace Dev2.Core.Tests.Enums {
-    internal enum enTestObjectBehaviourChangeType {
+    enum enTestObjectBehaviourChangeType {
         Method = 1,
         Property = 2,
     }

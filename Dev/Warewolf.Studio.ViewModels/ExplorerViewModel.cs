@@ -472,7 +472,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void RemoveEnvironmentFromCollection(IServer server)
+        void RemoveEnvironmentFromCollection(IServer server)
         {
             var environmentModel = _environments?.FirstOrDefault(model => model?.Server?.EnvironmentID == server?.EnvironmentID);
             if (environmentModel != null)

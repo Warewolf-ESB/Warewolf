@@ -38,7 +38,7 @@ namespace Dev2.Studio.Core.Factories
 
         public static IWebActivity CreateWebActivity(object webActivityWrappingObject, IContextualResourceModel resourceModel, string serviceName)
         {
-            IWebActivity activity = CreateWebActivity();
+            var activity = CreateWebActivity();
             activity.WebActivityObject = webActivityWrappingObject;
             activity.ResourceModel = resourceModel;
             activity.ServiceName = serviceName;

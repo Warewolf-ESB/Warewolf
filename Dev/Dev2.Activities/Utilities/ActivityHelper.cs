@@ -26,11 +26,11 @@ namespace Dev2.Utilities
             }
 
             // FetchSwitchData
-            string expressionToInject = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
+            var expressionToInject = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
                                                     "(\"", ds.SwitchVariable, "\",",
                                                     GlobalConstants.InjectedDecisionDataListVariable,
                                                     ")");
-            if(activityExpression != null)
+            if (activityExpression != null)
             {
                 activityExpression.SetValue(expressionToInject);
             }
@@ -44,12 +44,12 @@ namespace Dev2.Utilities
                 return null;
             }
 
-            string modelData = ds.ToVBPersistableModel();
-            string expressionToInject = String.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
+            var modelData = ds.ToVBPersistableModel();
+            var expressionToInject = String.Join("", GlobalConstants.InjectedDecisionHandler, "(\"",
                                                     modelData, "\",",
                                                     GlobalConstants.InjectedDecisionDataListVariable, ")");
 
-            if(activityExpression != null)
+            if (activityExpression != null)
             {
                 activityExpression.SetValue(expressionToInject);
             }
@@ -83,9 +83,9 @@ namespace Dev2.Utilities
         {
             if(ds != null)
             {
-                ModelProperty keyProperty = switchCase.Properties["Key"];
+                var keyProperty = switchCase.Properties["Key"];
 
-                if(keyProperty != null)
+                if (keyProperty != null)
                 {
                     keyProperty.SetValue(ds.SwitchExpression);
 
@@ -114,9 +114,9 @@ namespace Dev2.Utilities
 
         public static void SetArmText(ModelItem decisionActivity, string armType, string val)
         {
-            ModelProperty tArm = decisionActivity.Properties[armType];
+            var tArm = decisionActivity.Properties[armType];
 
-            if(tArm != null)
+            if (tArm != null)
             {
                 tArm.SetValue(val);
             }

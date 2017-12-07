@@ -201,7 +201,6 @@
     <Compile Include="Diagnostics\Debug\IDebugItem.cs" />
     <Compile Include="Diagnostics\Debug\IDebugItemResult.cs" />
     <Compile Include="Diagnostics\Debug\IDebugOutputFilterStrategy.cs" />
-    <Compile Include="Diagnostics\Debug\IDebugProvider.cs" />
     <Compile Include="Diagnostics\Debug\IDebugState.cs" />
     <Compile Include="Diagnostics\Debug\IDebugWriter.cs" />
     <Compile Include="DllListing.cs" />
@@ -258,7 +257,6 @@
     <Compile Include="IFrameworkRepository.cs" />
     <Compile Include="IGraph.cs" />
     <Compile Include="IHelpView.cs" />
-    <Compile Include="IImpersonator.cs" />
     <Compile Include="IIntellisenseStringResult.cs" />
     <Compile Include="IIntellisenseStringResultBuilder.cs" />
     <Compile Include="IJsonObjectsView.cs" />
@@ -324,7 +322,6 @@
     <Compile Include="IRequestServiceNameView.cs" />
     <Compile Include="IResourceHolder.cs" />
     <Compile Include="IResourceSource.cs" />
-    <Compile Include="IServer.cs" />
     <Compile Include="IServerSource.cs" />
     <Compile Include="IServiceTestModelTO.cs" />
     <Compile Include="IServiceTestStep.cs" />
@@ -454,7 +451,6 @@
     <Compile Include="WindowsTaskScheduler\Wrappers\ITrigger.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\ITriggerCollection.cs" />
     <Compile Include="WindowsTaskScheduler\Wrappers\IWrappedObject.cs" />
-    <Compile Include="Utils\ICryptoProvider.cs" />
     <Compile Include="Versioning\IRollbackResult.cs" />
     <Compile Include="Versioning\IServerVersionRepository.cs" />
     <Compile Include="Versioning\IVersionInfo.cs" />

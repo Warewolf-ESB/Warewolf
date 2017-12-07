@@ -134,7 +134,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return payload.Replace("&lt;", "<").Replace("&gt;", ">");
         }
 
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction)
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
         }

@@ -1,9 +1,7 @@
-﻿using System;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 
 namespace Warewolf.UI.Tests.Workflow
 {

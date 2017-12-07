@@ -18,8 +18,8 @@ namespace Dev2.Studio.Core.Models.QuickVariableInput
     public class QuickVariableInputModel
     {
 
-        private readonly ICollectionActivity _activity;
-        private readonly ModelItem _modelItem;
+        readonly ICollectionActivity _activity;
+        readonly ModelItem _modelItem;
 
         public QuickVariableInputModel(ModelItem modelItem, ICollectionActivity activity)
         {

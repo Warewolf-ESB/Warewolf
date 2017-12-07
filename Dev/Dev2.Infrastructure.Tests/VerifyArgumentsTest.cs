@@ -50,7 +50,7 @@ namespace Dev2.Infrastructure.Tests
 
         }
 
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").ToString();

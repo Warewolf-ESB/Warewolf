@@ -43,9 +43,9 @@ namespace Dev2.Settings.Security
         readonly IWin32Window _parentWindow;
         readonly IServer _environment;
         bool _isUpdatingHelpText;
-        private static IDomain _domain = new DomainWrapper();
+        static IDomain _domain = new DomainWrapper();
 
-        
+
         public SecurityViewModel()
         {
             
@@ -158,10 +158,10 @@ namespace Dev2.Settings.Security
 
         [JsonIgnore]
         public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register(@"IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
-        private ObservableCollection<WindowsGroupPermission> _serverPermissions;
-        private ObservableCollection<WindowsGroupPermission> _resourcePermissions;
-        private ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
-        private ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
+        ObservableCollection<WindowsGroupPermission> _serverPermissions;
+        ObservableCollection<WindowsGroupPermission> _resourcePermissions;
+        ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
+        ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -521,11 +521,11 @@ namespace Dev2.Settings.Security
         [JsonIgnore]
         public Visibility Visibility => IsInDomain();
 
-        private static Visibility IsInDomain()
+        static Visibility IsInDomain()
         {
             try
             {
-                
+
                 var computerDomain = _domain.GetComputerDomain();
                 return Visibility.Visible;
             }
@@ -565,23 +565,23 @@ namespace Dev2.Settings.Security
             }
         }
 
-        private ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(resourcePermissions, new JsonSerializerSettings { ContractResolver = resolver });
-            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            var clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
             return clone;
         }
 
-        private ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
+        ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(serverPermissions, new JsonSerializerSettings { ContractResolver = resolver });
-            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            var clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
             return clone;
         }
 
-        private bool Equals(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        bool Equals(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             if (ReferenceEquals(null, serverPermissions))
             {
@@ -595,7 +595,7 @@ namespace Dev2.Settings.Security
             return EqualsSeq(serverPermissions, resourcePermissions);
         }
 
-        private bool EqualsSeq(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        bool EqualsSeq(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             var serverPermissionCompare = ServerPermissionsCompare(serverPermissions, true);
             var resourcePermissionCompare = ResourcePermissionsCompare(resourcePermissions, true);
@@ -604,7 +604,7 @@ namespace Dev2.Settings.Security
             return @equals;
         }
 
-        private bool ServerPermissionsCompare(ObservableCollection<WindowsGroupPermission> serverPermissions, bool serverPermissionCompare)
+        bool ServerPermissionsCompare(ObservableCollection<WindowsGroupPermission> serverPermissions, bool serverPermissionCompare)
         {
             if (_serverPermissions == null)
             {
@@ -696,7 +696,7 @@ namespace Dev2.Settings.Security
             return serverPermissionCompare;
         }
 
-        private bool ResourcePermissionsCompare(ObservableCollection<WindowsGroupPermission> resourcePermissions, bool resourcePermissionCompare)
+        bool ResourcePermissionsCompare(ObservableCollection<WindowsGroupPermission> resourcePermissions, bool resourcePermissionCompare)
         {
             if (_resourcePermissions == null)
             {

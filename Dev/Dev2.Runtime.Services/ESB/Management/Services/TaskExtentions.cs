@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    internal static class TaskExtentions
+    static class TaskExtentions
     {
         public static async Task<TResult> TimeoutAfter<TResult>(this Task<TResult> task, TimeSpan timeout)
         {

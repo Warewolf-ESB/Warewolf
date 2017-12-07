@@ -23,8 +23,8 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     public class Dev2TaskDefinitionTest
     {
 
-        private Mock<ITaskServiceConvertorFactory> _factory;
-        private TaskService _service;
+        Mock<ITaskServiceConvertorFactory> _factory;
+        TaskService _service;
         [TestInitialize]
         public void Init()
         {
@@ -189,15 +189,15 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
 
 
-        private Dev2TaskDefinition AssertPassThrough(Func<TaskDefinition,IDev2TaskDefinition,bool> func)
+        Dev2TaskDefinition AssertPassThrough(Func<TaskDefinition, IDev2TaskDefinition, bool> func)
         {
             var native = NativeTaskDefinition();
             var defn = Dev2TaskDefinition(native);
-            Assert.IsTrue(func(native,defn));
+            Assert.IsTrue(func(native, defn));
             return defn;
         }
 
-        private static Dev2TaskDefinition Dev2TaskDefinition(TaskDefinition native)
+        static Dev2TaskDefinition Dev2TaskDefinition(TaskDefinition native)
         {
             var factory = new TaskServiceConvertorFactory();
 
@@ -205,7 +205,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             return defn;
         }
 
-        private TaskDefinition NativeTaskDefinition()
+        TaskDefinition NativeTaskDefinition()
         {
             var native = _service.NewTask();
             native.Actions.Add(new ExecAction(GlobalConstants.SchedulerAgentPath, "\"a:1\" \"b:2\""));

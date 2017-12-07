@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
+        void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
         {
             CallWorkflowUpdateEvent();
         }
@@ -98,7 +98,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private static void CallWorkflowUpdateEvent()
+        static void CallWorkflowUpdateEvent()
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var workflowDesignerViewModel = shellViewModel?.GetWorkflowDesigner();

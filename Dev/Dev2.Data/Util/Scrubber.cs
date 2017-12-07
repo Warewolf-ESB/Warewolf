@@ -20,7 +20,7 @@ namespace Dev2.Data.Util
     public static class Scrubber
     {
         // Compiled regex are always faster ;)
-        private static readonly Regex XmlRegex = new Regex(string.Format("({0}).*?({1})", Regex.Escape("<?"), Regex.Escape("?>")));
+        static readonly Regex XmlRegex = new Regex(string.Format("({0}).*?({1})", Regex.Escape("<?"), Regex.Escape("?>")));
 
         #region Scrub
 

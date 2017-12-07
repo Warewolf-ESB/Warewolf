@@ -25,7 +25,7 @@ namespace Warewolf.UIBindingTests.ComDll
     [Binding]
     public class ComDllSteps
     {
-        private readonly ScenarioContext _scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public ComDllSteps(ScenarioContext scenarioContext)
         {
@@ -167,7 +167,7 @@ namespace Warewolf.UIBindingTests.ComDll
             vm.SourceRegion.SelectedSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == source);
         }
 
-        private IEnumerable<IComPluginSource> SourceDefinitions()
+        IEnumerable<IComPluginSource> SourceDefinitions()
         {
             return new List<IComPluginSource>(new[]
             {
@@ -201,7 +201,7 @@ namespace Warewolf.UIBindingTests.ComDll
             model.Verify(serviceModel => serviceModel.EditSource(It.IsAny<IComPluginSource>()));
         }
 
-        private static IResource ComPlusgInResource()
+        static IResource ComPlusgInResource()
         {
             IResource resource = new ComPluginSource();
             return resource;
@@ -235,7 +235,7 @@ namespace Warewolf.UIBindingTests.ComDll
             vm.ActionRegion.SelectedAction = ActionDefinitions().FirstOrDefault(definition => definition.FullName == "ToString");
         }
 
-        private IEnumerable<IPluginAction> ActionDefinitions()
+        IEnumerable<IPluginAction> ActionDefinitions()
         {
             return new List<IPluginAction>
             {
@@ -246,7 +246,7 @@ namespace Warewolf.UIBindingTests.ComDll
                     Method = "ToString"
                     ,
                     Inputs = ServiceInputs.ToList()
-                    
+
                 }
             };
         }
@@ -288,7 +288,7 @@ namespace Warewolf.UIBindingTests.ComDll
             var dataObject = _scenarioContext.Get<IDSFDataObject>("DataObject");
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             var act = _scenarioContext.Get<DsfComDllActivity>("Activity");
-            MyActivity activity = new MyActivity(dataObject, vm, act);
+            var activity = new MyActivity(dataObject, vm, act);
             activity.ExeTool();
             Assert.IsNotNull(activity);
             Assert.AreEqual(result, activity._result);
@@ -299,7 +299,7 @@ namespace Warewolf.UIBindingTests.ComDll
             var dataObject = _scenarioContext.Get<IDSFDataObject>("DataObject");
             var vm = _scenarioContext.Get<ComDllViewModel>("ViewModel");
             var act = _scenarioContext.Get<DsfComDllActivity>("Activity");
-            MyActivity activity = new MyActivity(dataObject, vm, act);
+            var activity = new MyActivity(dataObject, vm, act);
             activity.ExeTool();
         }
 
@@ -328,7 +328,7 @@ namespace Warewolf.UIBindingTests.ComDll
             }
         }
 
-        private static NamespaceItem CreateNameSpace()
+        static NamespaceItem CreateNameSpace()
         {
             return new NamespaceItem
             {
@@ -341,7 +341,7 @@ namespace Warewolf.UIBindingTests.ComDll
 
     public class MyActivity : DsfComDllActivity
     {
-        private IDSFDataObject _dsfDataObject;
+        IDSFDataObject _dsfDataObject;
         public new string _result = Empty;
         
         public MyActivity(IDSFDataObject dsfDataObject, ComDllViewModel vm, DsfComDllActivity act)

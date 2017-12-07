@@ -5,7 +5,7 @@ namespace Dev2.Services.Sql
 {
     public class SqlConnectionWrapper : ISqlConnection
     {
-        private readonly SqlConnection _connection;
+        readonly SqlConnection _connection;
         public SqlConnectionWrapper(string connString)
         {
             var conStrBuilder = new SqlConnectionStringBuilder(connString)

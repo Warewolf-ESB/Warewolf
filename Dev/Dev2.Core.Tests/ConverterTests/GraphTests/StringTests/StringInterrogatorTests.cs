@@ -64,12 +64,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         /// </summary>
         [TestMethod]
         public void CreateMapper_Expected_XmlMapper() {         
-            StringInterrogator stringInterrogator = new StringInterrogator();
+            var stringInterrogator = new StringInterrogator();
 
-            IMapper mapper = stringInterrogator.CreateMapper(XmlGiven());
+            var mapper = stringInterrogator.CreateMapper(XmlGiven());
 
-            Type expected = typeof(XmlMapper);
-            Type actual = mapper.GetType();
+            var expected = typeof(XmlMapper);
+            var actual = mapper.GetType();
 
             Assert.AreEqual(expected, actual);
         }
@@ -79,12 +79,12 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         /// </summary>
         [TestMethod]
         public void CreateNavigator_Expected_XmlNavigator() {            
-            StringInterrogator stringInterrogator = new StringInterrogator();
+            var stringInterrogator = new StringInterrogator();
 
-            INavigator navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(XmlPath));
+            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(XmlPath));
 
-            Type expected = typeof(XmlNavigator);
-            Type actual = navigator.GetType();
+            var expected = typeof(XmlNavigator);
+            var actual = navigator.GetType();
 
             Assert.AreEqual(expected, actual);
         }
@@ -107,15 +107,6 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         }
 
         [TestMethod]        
-        public void CreateNavigator_Given_TypeofStringPath_Expected_StringNavigator()
-        {
-            var stringInterrogator = new StringInterrogator();
-            var navigator = stringInterrogator.CreateNavigator(XmlGiven(), typeof(StringPath));
-            Assert.IsNotNull(navigator);
-            Assert.IsTrue(navigator.GetType() == typeof(StringNavigator));
-        }
-
-        [TestMethod]        
         public void CreateNavigator_Given_TypeofUnExistingType_Expected_PocoPath()
         {
             var stringInterrogator = new StringInterrogator();
@@ -124,7 +115,7 @@ namespace Unlimited.UnitTest.Framework.ConverterTests.GraphTests.StringTests {
         }
     }
 
-    internal class UnExistingType: BasePath
+    class UnExistingType: BasePath
     {
         #region Overrides of BasePath
 

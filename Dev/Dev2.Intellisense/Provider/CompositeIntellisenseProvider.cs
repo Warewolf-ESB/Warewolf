@@ -45,7 +45,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 {
                     if(results.All(r => r.IsError) || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                     {
-                        IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
+                        var subset = provider.GetIntellisenseResults(context);
                         results.AddRange(subset);
                     }
                 }
@@ -61,7 +61,7 @@ namespace Dev2.Studio.InterfaceImplementors
                        return results;
                     }
 
-                    IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
+                    var subset = provider.GetIntellisenseResults(context);
                     results.AddRange(subset);
                 }
             }

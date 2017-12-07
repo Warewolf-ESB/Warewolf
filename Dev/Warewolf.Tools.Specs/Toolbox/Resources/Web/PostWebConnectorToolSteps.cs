@@ -26,7 +26,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
     [Binding]
     public class PostWebConnectorToolSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public PostWebConnectorToolSteps(ScenarioContext scenarioContext)
         {
@@ -38,9 +38,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             this.scenarioContext = scenarioContext;
         }
 
-        private WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
-        private WebServiceSourceDefinition _webHelooWebSource;
-        private WebServiceSourceDefinition _googleWebSource;
+        WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
+        WebServiceSourceDefinition _webHelooWebSource;
+        WebServiceSourceDefinition _googleWebSource;
 
         [Given(@"I drag Web Post Request Connector Tool onto the design surface")]
         public void GivenIDragWebPostRequestConnectorToolOntoTheDesignSurface()

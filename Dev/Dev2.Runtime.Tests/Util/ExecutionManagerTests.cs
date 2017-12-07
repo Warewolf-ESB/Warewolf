@@ -63,7 +63,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
+            var p = new PrivateObject(executionManager);
             //------------Execute Test---------------------------
             executionManager.AddExecution();
             //------------Assert Results-------------------------
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
+            var p = new PrivateObject(executionManager);
             //------------PreExecution Asserts-------------------
             executionManager.AddExecution();
             var currentExecutionsValue = p.GetFieldOrProperty("_currentExecutions");
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
+            var p = new PrivateObject(executionManager);
             var _threadTracker = false;
             var t = new Thread(()=>
             {

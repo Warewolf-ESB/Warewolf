@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.WebServiceGet
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -21,13 +20,6 @@ namespace Dev2.Activities.Designers2.WebServiceGet
             SetInitialFocus();
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return MainGrid;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
     }
 }

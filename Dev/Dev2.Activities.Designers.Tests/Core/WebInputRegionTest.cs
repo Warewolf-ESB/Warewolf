@@ -31,7 +31,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion( ModelItemUtils.CreateModelItem(act),srcreg);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count,0);
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion();
             Assert.AreEqual(region.IsEnabled, false);
         }
@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
@@ -84,7 +84,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebGetInputRegionClone();
             regionToRestore.IsEnabled = true;
@@ -113,7 +113,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new Mock<IWebServiceModel>();
             var  lst = new List<IWebServiceSource> { new WebServiceSourceDefinition(){HostName = "bob",DefaultQuery = "Dave"} , new WebServiceSourceDefinition(){HostName = "f",DefaultQuery = "g"} };
             mod.Setup(a => a.RetrieveSources()).Returns(lst);
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebGetActivity()));
             var region = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebGetInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
 

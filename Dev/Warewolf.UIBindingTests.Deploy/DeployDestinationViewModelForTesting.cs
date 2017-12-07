@@ -24,7 +24,7 @@ namespace Warewolf.UIBindingTests.Deploy
         protected override Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false, bool reloadCatalogue = true)
         {
             localhostEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>(Children ?? new List<IExplorerItemViewModel> { CreateExplorerVMS() });
-            PrivateObject p = new PrivateObject(localhostEnvironment);
+            var p = new PrivateObject(localhostEnvironment);
             p.SetField("_isConnected", true);
             localhostEnvironment.ResourceId = Guid.Empty;
             AfterLoad(localhostEnvironment.Server.EnvironmentID);

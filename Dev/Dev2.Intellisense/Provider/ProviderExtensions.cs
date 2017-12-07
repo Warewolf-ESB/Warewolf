@@ -19,10 +19,10 @@ namespace Dev2.Intellisense.Provider
         public static string FindTextToSearch(this IntellisenseProviderContext context)
         {
             VerifyArgument.IsNotNull("context",context);
-            string searchString = string.Empty;
+            var searchString = string.Empty;
             int foundMinimum = -1;
             int foundLength = 0;
-            string inputText = context.InputText ?? string.Empty;
+            var inputText = context.InputText ?? string.Empty;
             int caretPosition = context.CaretPosition;
 
             int maxStringLength = Math.Min(caretPosition, inputText.Length);

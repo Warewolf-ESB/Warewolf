@@ -11,7 +11,6 @@
 using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using Dev2;
 using Dev2.Activities;
@@ -44,29 +43,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfForEachActivity : DsfActivityAbstract<bool>
     {
         string _previousParentId;
-        readonly Dev2ActivityIOIteration _inputItr = new Dev2ActivityIOIteration();
-        
+
         #region Variables
 
-        private string _forEachElementName;
-        private string _displayName;
-        
+        string _forEachElementName;
+        string _displayName;
+
         readonly int _previousInputsIndex = -1;
 
         readonly int _previousOutputsIndex = -1;
-        
-        private string _inputsToken = "*";
-        private string _outputsToken = "*";
 
-        
-        private ForEachBootstrapTO operationalData;
+        string _inputsToken = "*";
+        string _outputsToken = "*";
+
+
+        ForEachBootstrapTO operationalData;
 
 
         #endregion Variables
 
         #region Properties
 
-        
+
         public enForEachType ForEachType { get; set; }
 
 
@@ -144,13 +142,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         
         public string PreservedDataList { private set; get; }
-        
-        private readonly Variable<string> _origInput = new Variable<string>("origInput");
-        private readonly Variable<string> _origOutput = new Variable<string>("origOutput");
-        
+
+        readonly Variable<string> _origInput = new Variable<string>("origInput");
+        readonly Variable<string> _origOutput = new Variable<string>("origOutput");
+
         readonly object _forEachExecutionObject = new object();
-        private string _childUniqueID;
-        private Guid _originalUniqueID;
+        string _childUniqueID;
+        Guid _originalUniqueID;
 
         #endregion Properties
 
@@ -209,13 +207,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             throw new NotImplementedException();
         }
-        
-        private void IterateIOMapping(int idx)
+
+        void IterateIOMapping(int idx)
         {
             throw new NotImplementedException();
         }
-      
-        private ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors, int update)
+
+        ForEachBootstrapTO FetchExecutionType(IDSFDataObject dataObject, IExecutionEnvironment environment, out ErrorResultTO errors, int update)
         {
             if (dataObject.IsDebugMode())
             {
@@ -257,8 +255,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return result;
 
         }
-        
-        private void RestoreHandlerFn()
+
+        void RestoreHandlerFn()
         {
             if (DataFunc.Handler is IDev2ActivityIOMapping activity)
             {
@@ -273,7 +271,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _outputsToken = "*";
         }
 
-        private ForEachInnerActivityTO GetInnerActivity(out string error)
+        ForEachInnerActivityTO GetInnerActivity(out string error)
         {
             ForEachInnerActivityTO result = null;
             error = string.Empty;
@@ -353,13 +351,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
 
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             IIndexIterator itr = null;
             InitializeDebug(dataObject);
             dataObject.ForEachNestingLevel++;
             try
             {
-                ForEachBootstrapTO exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, update);
+                var exePayload = FetchExecutionType(dataObject, dataObject.Environment, out ErrorResultTO errors, update);
 
                 foreach (var err in errors.FetchErrors())
                 {
@@ -367,7 +365,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 itr = exePayload.IndexIterator;
 
-                ForEachInnerActivityTO innerA = GetInnerActivity(out string error);
+                var innerA = GetInnerActivity(out string error);
                 var exeAct = innerA?.InnerActivity;
                 allErrors.AddError(error);
                 if (dataObject.IsDebugMode())
@@ -447,7 +445,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var debugStates = debugItems.LastOrDefault();
 
                         var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
-                        DebugItem itemToAdd = new DebugItem();
+                        var itemToAdd = new DebugItem();
                         itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                         debugStates?.AssertResultList?.Add(itemToAdd);
                     }
@@ -474,7 +472,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult != RunResult.TestPassed).ToList();
             if (nonPassingSteps != null && nonPassingSteps.Count == 0)
@@ -496,7 +494,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         }
 
-        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
+        void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueID);
         }
