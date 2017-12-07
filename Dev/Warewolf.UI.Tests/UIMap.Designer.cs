@@ -1051,6 +1051,22 @@ namespace Warewolf.UI.Tests
                 return this.mIntellisenseOptionsList;
             }
         }
+        
+        public WpfListItem ComboboxListItemAsSharepointTestServer
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsSharepointTestServer == null))
+                {
+                    this.mComboboxListItemAsSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrdev/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mComboboxListItemAsSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mComboboxListItemAsSharepointTestServer;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1187,6 +1203,8 @@ namespace Warewolf.UI.Tests
         private ComboboxListItemAsLocalServerSource mComboboxListItemAsLocalServerSource;
         
         private IntellisenseOptionsList mIntellisenseOptionsList;
+        
+        private WpfListItem mComboboxListItemAsSharepointTestServer;
         #endregion
     }
     
