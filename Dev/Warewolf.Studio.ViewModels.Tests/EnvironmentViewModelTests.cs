@@ -898,7 +898,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target = new EnvironmentViewModel(_serverMock.Object, _shellViewModelMock.Object);
 
             //act
-            var result = await _target.LoadDialog(selPath);
+            var result = await _target.LoadDialogAsync(selPath);
 
             //assert
             Assert.IsFalse(_target.Children.Any());
@@ -955,7 +955,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target = new EnvironmentViewModel(_serverMock.Object, shellViewModel.Object);
 
             //act
-            var result = await _target.Load();
+            var result = await _target.LoadAsync();
 
             //assert
             Assert.IsFalse(_target.Children.Any());
@@ -1026,7 +1026,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target = new EnvironmentViewModel(_serverMock.Object, shellViewModel.Object);
 
             //act
-            var result = await _target.Load();
+            var result = await _target.LoadAsync();
 
             //assert
             Assert.IsFalse(_target.Children.Any());

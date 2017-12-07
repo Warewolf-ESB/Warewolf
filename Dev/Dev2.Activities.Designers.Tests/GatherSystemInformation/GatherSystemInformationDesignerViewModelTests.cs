@@ -17,6 +17,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using System;
 
 namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
 {
@@ -30,7 +31,6 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
         {
             var items = new List<GatherSystemInformationTO> { new GatherSystemInformationTO() };
             var viewModel = new GatherSystemInformationDesignerViewModel(CreateModelItem(items));
-            viewModel.Validate();
             Assert.AreEqual(29, viewModel.ItemsList.Count);
             Assert.IsTrue(viewModel.HasLargeView);
         }
@@ -91,6 +91,49 @@ namespace Dev2.Activities.Designers.Tests.GatherSystemInformation
             var viewModel = new GatherSystemInformationDesignerViewModel(CreateModelItem(items));
             dynamic mi = viewModel.ModelItem;
             Assert.AreEqual(5, mi.SystemInformationCollection.Count);
+        }
+
+
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("GatherSysInfoDesignerViewModel_ValidateCollectionItem")]
+        public void GatherSysInfoDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
+        {
+            //------------Setup for test--------------------------
+            var mi = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
+            mi.SetProperty("DisplayName", "Sys Info");
+
+            var dto = new GatherSystemInformationTO(enTypeOfSystemInformationToGather.DateTimeFormat,"a&]]", 0, true);
+
+
+            var miCollection = mi.Properties["SystemInformationCollection"].Collection;
+            var dtoModelItem = miCollection.Add(dto);
+
+
+            var viewModel = new GatherSystemInformationDesignerViewModel(mi);
+            viewModel._getDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, viewModel.Errors.Count);
+
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.GatherSystemInfoInputInvalidExpressionErrorTest);
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsResultFocused");
+        }
+
+        void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)
+        {
+            Assert.IsFalse(modelItem.GetProperty<bool>(isFocusedPropertyName));
+            doError.Invoke();
+            Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
         }
 
         static ModelItem CreateModelItem(IEnumerable<GatherSystemInformationTO> items, string displayName = "Split")

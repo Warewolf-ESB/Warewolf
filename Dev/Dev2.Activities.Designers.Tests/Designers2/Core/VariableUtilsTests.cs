@@ -24,9 +24,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsNullOrEmpty_NoErrors()
         {
             //------------Setup for test--------------------------
-
+            var util = new VariableUtils();
             //------------Execute Test---------------------------
-            var error = VariableUtils.TryParseVariables(null, out string outputValue, () => { });
+            var error = util.TryParseVariables(null, out string outputValue, () => { });
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);
@@ -38,9 +38,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void VariableUtils_TryParseVariables_InputValueIsInvalidExpression_HasErrors()
         {
             //------------Setup for test--------------------------
-
+            var util = new VariableUtils();
             //------------Execute Test---------------------------
-            var error = "a]]".TryParseVariables(out string outputValue, () => { });
+            var error = util.TryParseVariables("a]]",out string outputValue, () => { });
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(error);
@@ -54,9 +54,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
             var variableValue = "xxx";
-
+            var util = new VariableUtils();
             //------------Execute Test---------------------------
-            var error = "[[a]]".TryParseVariables(out string outputValue, () => { }, variableValue: variableValue);
+            var error = util.TryParseVariables("[[a]]",out string outputValue, () => { }, variableValue: variableValue);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);
@@ -73,9 +73,9 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             var inputs = new ObservableCollection<ObservablePair<string, string>>();
             inputs.Add(new ObservablePair<string, string>("[[a]]", variableValue));
-
+            var util = new VariableUtils();
             //------------Execute Test---------------------------
-            var error = "[[a]]".TryParseVariables(out string outputValue, () => { }, "a", null, inputs);
+            var error = util.TryParseVariables("[[a]]",out string outputValue, () => { }, "a", null, inputs);
 
             //------------Assert Results-------------------------
             Assert.IsNull(error);

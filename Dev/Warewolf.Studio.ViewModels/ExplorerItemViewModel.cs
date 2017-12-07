@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -66,7 +66,7 @@ namespace Warewolf.Studio.ViewModels
                 return ((obj.ResourcePath?.GetHashCode() ?? 0) * 397) ^ obj.ResourceId.GetHashCode();
             }
         }
-        
+
         public bool Equals(ExplorerItemViewModel other)
         {
             if (ReferenceEquals(null, other))
@@ -395,7 +395,7 @@ namespace Warewolf.Studio.ViewModels
 
         int GetChildrenCount()
         {
-            int total = 0;
+            var total = 0;
             foreach (var explorerItemModel in Children)
             {
                 if (!explorerItemModel.IsResourceVersion && explorerItemModel.ResourceType != "Message")
@@ -450,7 +450,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     a.IsExpanded = true;
                     a.IsSelected = true;
-                    foundAction(a);
+                    foundAction?.Invoke(a);
                     continue;
                 }
                 a.SelectItem(id, foundAction);
@@ -549,7 +549,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Apply(Action<IExplorerItemViewModel> action)
         {
-            action(this);
+            action?.Invoke(this);
             if (Children != null)
             {
                 foreach (var explorerItemViewModel in Children)
@@ -592,7 +592,7 @@ namespace Warewolf.Studio.ViewModels
 
         string GetChildNameFromChildren()
         {
-            int count = 0;
+            var count = 0;
             var folderName = Resources.Languages.Core.NewFolderLabel;
             while (UnfilteredChildren != null && UnfilteredChildren.Any(a => a.ResourceName == folderName))
             {
@@ -613,6 +613,17 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
+
+        public void SetIsResourceChecked(bool? resourceChecked)
+        {
+            _isResource = resourceChecked;
+            UpdateFolderItems(resourceChecked);
+        }
+
+        public void AfterResourceChecked()
+        {
+            OnPropertyChanged(() => IsResourceChecked);
+        }
 
         public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
@@ -865,7 +876,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception, "Warewolf Error");
+                Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
 
                 _popupController.Show(Resources.Languages.Core.FailedToRenameResource,
                     Resources.Languages.Core.FailedToRenameResourceHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true,
@@ -1042,7 +1053,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (IsFolder && ChildrenCount >= 1)
                 {
-                    UpdateFolderItems(value, isResourceChecked);
+                    UpdateFolderItems(value);
                 }
                 else
                 {
@@ -1055,13 +1066,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void UpdateFolderItems(bool? value, bool? isResourceChecked)
+        void UpdateFolderItems(bool? isResourceChecked)
         {
             _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
-            Task.Run(() =>
+
+            if (Children.Any())
             {
-                AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = value);
-            });
+                var isChecked = _isResource;
+                Children.Apply(a => a.SetIsResourceChecked(isChecked));
+            }
+            OnPropertyChanged(() => IsResourceChecked);
+            OnPropertyChanged(() => Children);
+
         }
 
         public bool IsResourceCheckedEnabled
@@ -1150,7 +1166,7 @@ namespace Warewolf.Studio.ViewModels
                 OnPropertyChanged(() => CanViewApisJson);
             }
         }
-        
+
         public bool CanCreateWorkflowService
         {
             get => _canCreateWorkflowService && !IsSaveDialog;
@@ -1385,7 +1401,6 @@ namespace Warewolf.Studio.ViewModels
             set
             {
                 _areVersionsVisible = value;
-                
                 VersionHeader = !value ? Resources.Languages.Core.ShowVersionHistoryLabel : Resources.Languages.Core.HideVersionHistoryLabel;
                 if (value)
                 {
@@ -1512,7 +1527,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public async Task<bool> Move(IExplorerTreeItem destination)
+        public async Task<bool> MoveAsync(IExplorerTreeItem destination)
         {
             try
             {
@@ -1678,10 +1693,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if (IsFolder)
-                {
-                    IsExpanded = false;
-                }
+                IsExpanded &= !IsFolder;
             }
         }
 

@@ -115,6 +115,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &apos;FromExpression&apos; - Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string BaseConvertInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("BaseConvertInputInvalidExpressionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to BCC address is not in the valid format: {0}.
         /// </summary>
         public static string BCCAddressInvalidFormat {
@@ -354,6 +363,15 @@ namespace Warewolf.Resource.Errors {
         public static string CanOnlyExecuteWorkflowsFromWebBrowser {
             get {
                 return ResourceManager.GetString("CanOnlyExecuteWorkflowsFromWebBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;StringToConvert&apos; - Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string CaseConvertInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("CaseConvertInputInvalidExpressionErrorTest", resourceCulture);
             }
         }
         
@@ -1465,6 +1483,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string GatherSystemInfoInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("GatherSystemInfoInputInvalidExpressionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gridsplitter only works in grid.
         /// </summary>
         public static string GridsplitterOnlyWorksInGrids {
@@ -2244,6 +2271,15 @@ namespace Warewolf.Resource.Errors {
         public static string NoResourceSelected {
             get {
                 return ResourceManager.GetString("NoResourceSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Resources found for Resource ID: {0}.
+        /// </summary>
+        public static string NoResourcesFound {
+            get {
+                return ResourceManager.GetString("NoResourcesFound", resourceCulture);
             }
         }
         

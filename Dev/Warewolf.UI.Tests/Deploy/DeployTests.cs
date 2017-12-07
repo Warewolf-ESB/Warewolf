@@ -124,6 +124,17 @@ namespace Warewolf.UI.Tests
             DeployUIMap.WhenISelectFromTheSourceTab("Hello World");
             DeployUIMap.ThenIClickDeployButton();
         }
+        [TestMethod]
+        [TestCategory("Deploy from Remote")]
+        public void Open_Deploy_Tab_And_Change_Source_Loads_Resources()
+        {
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.Exists );
+            DeployUIMap.Click_Close_Deploy_Tab();
+            UIMap.Click_Deploy_Ribbon_Button();
+            DeployUIMap.Select_RemoteConnectionIntegration_From_Deploy_Tab_Source_Server_Combobox();
+            Assert.IsTrue(DeployUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DeployTab.WorkSurfaceContext.DockManager.DeployView.SourceServerExplorer.ExplorerTree.RemoteServer.Exists);
+        }
 
         #region Additional test attributes
 
