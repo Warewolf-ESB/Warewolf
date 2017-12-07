@@ -110,6 +110,7 @@ namespace Warewolf.Studio.ViewModels
             get => _environments;
             set
             {
+                
                 if (value != null)
                 {
                     var items = new ObservableCollection<IEnvironmentViewModel>();
