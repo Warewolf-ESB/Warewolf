@@ -24,8 +24,6 @@ namespace Dev2.ViewModels.Merge
         bool _hasNodeArmConflict;
         IEnumerator<IToolConflict> _conflictEnumerator;
         bool _isContainerTool;
-        bool _isCurrentSelected;
-        bool _isDiffSelected;
         bool _isEmptyItemSelected;
 
         public ToolConflict()
@@ -91,24 +89,6 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
-        public bool IsCurrentSelected
-        {
-            get => _isCurrentSelected;
-            set
-            {
-                _isCurrentSelected = value;
-                OnPropertyChanged(() => IsCurrentSelected);
-            }
-        }
-        public bool IsDiffSelected
-        {
-            get => _isDiffSelected;
-            set
-            {
-                _isDiffSelected = value;
-                OnPropertyChanged(() => IsDiffSelected);
-            }
-        }
         public bool IsEmptyItemSelected
         {
             get => _isEmptyItemSelected;
