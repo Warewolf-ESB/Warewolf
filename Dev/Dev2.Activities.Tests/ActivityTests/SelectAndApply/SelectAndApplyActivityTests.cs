@@ -14,8 +14,6 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using WarewolfParserInterop;
 
-
-
 namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 {
     [TestClass]

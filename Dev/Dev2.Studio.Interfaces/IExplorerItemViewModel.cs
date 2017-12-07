@@ -44,7 +44,7 @@ namespace Dev2.Studio.Interfaces
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
-        Task<bool> Move(IExplorerTreeItem destination);
+        Task<bool> MoveAsync(IExplorerTreeItem destination);
     
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
@@ -58,5 +58,7 @@ namespace Dev2.Studio.Interfaces
         void SetPermissions(Permissions explorerItemPermissions);
 
         void SetPermissions(Permissions explorerItemPermissions, bool isDeploy);
+        void SetIsResourceChecked(bool? isResource);
+        void AfterResourceChecked();
     }
 }

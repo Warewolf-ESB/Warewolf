@@ -2097,7 +2097,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 childDestItem.Object
             });
             //act
-            var result = await _target.Move(movedItem.Object);
+            var result = await _target.MoveAsync(movedItem.Object);
             //assert
             Assert.IsFalse(result);
             _shellViewModelMock.Verify(it => it.ShowPopup(It.IsAny<IPopupMessage>()));
@@ -2128,7 +2128,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             //act
-            var result = await _target.Move(destinationMock.Object);
+            var result = await _target.MoveAsync(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
@@ -2246,7 +2246,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Setup(a => a.Move(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IExplorerTreeItem>())).Throws(new Exception());
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             //act
-            var result = await _target.Move(destinationMock.Object);
+            var result = await _target.MoveAsync(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
         }

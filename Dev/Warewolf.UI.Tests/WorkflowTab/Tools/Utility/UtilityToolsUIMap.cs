@@ -10,6 +10,7 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.DotNetPluginSource.DotNetPluginSourceUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
 using Warewolf.UI.Tests.ComPluginSource.ComPluginSourceUIMapClasses;
+using System;
 
 namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
 {
@@ -37,16 +38,31 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Random.SmallView.ResultComboBox.TextEdit.Text = "[[out]]";
         }
 
+        internal void Open_CreateJsonTool_Largeview()
+        {
+            Mouse.DoubleClick(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson, new Point(126, 13));
+        }
+
         [When(@"I Click WebRequest Tool Large View Done Button")]
         public void Click_WebRequest_Tool_Large_View_Done_Button()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.WebRequest.DoneButton, new Point(35, 6));
         }
 
+        internal void Enter_Values_Into_CreateJson_Large_Tool(string v)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.SmallDataGridTable.Row1.TypeCell.TypeComboBox.TextEdit.Text = v;
+        }
+
         [When(@"I Enter SomeVariable Into Calculate Large View Function Textbox")]
         public void Enter_SomeVariable_Into_CalculateTool_FXCombobox()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Calculate.LargeView.FxCombobox.TextEdit.Text = "[[SomeVariable]]";
+        }
+
+        internal void Enter_Values_Into_Case_Conversion_Large_Tool(string value)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson.LargeViewContentCustom.SmallDataGridTable.Row1.TypeCell.TypeComboBox.TextEdit.Text = value;
         }
 
         [When(@"I Open Calculate Tool Large View")]
@@ -77,6 +93,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         public void Open_RabbitMqConsume_LargeView()
         {
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.RabbitMQConsume, new Point(145, 7));
+        }
+
+        internal void Enter_Values_Into_SysInfo_Large_Tool(string value)
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.GatherSystemInfo.LargeViewContentCustom.SmallDataGridTable.Row1.VariableCell.VariableComboBox.TextEdit.Text = value;
         }
 
         [When(@"I Open RabbitMqPublish LargeView")]
@@ -136,6 +157,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Utility.UtilityToolsUIMapClasses
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.XPath.OpenQuickVariableInpToggleButton.Pressed = true;
         }
+
+        internal void Drag_Toolbox_CreateJson_Onto_DesignSurface()
+        {
+            Mouse.Click(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.CreateJson, MouseButtons.Right, ModifierKeys.None, new Point(144, 10));
+        }
+
 
         [Given(@"I RightClick Calculate OnDesignSurface")]
         [When(@"I RightClick Calculate OnDesignSurface")]

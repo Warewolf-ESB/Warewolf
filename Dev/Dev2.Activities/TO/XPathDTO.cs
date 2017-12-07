@@ -145,9 +145,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1");
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1",new VariableUtils());
                     ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
+                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
 
                     if(!string.IsNullOrEmpty(XPath))
                     {
