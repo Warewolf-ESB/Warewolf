@@ -30,17 +30,14 @@ namespace Dev2.Activities.Sharepoint
     [ToolDescriptorInfo("SharepointLogo", "Create List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Create_List_Item")]
     public class SharepointCreateListItemActivity : DsfActivityAbstract<string>
     {
-        readonly SharepointUtils _sharepointUtils;
-
         public SharepointCreateListItemActivity()
         {
             DisplayName = "Sharepoint Create List Item";
             ReadListItems = new List<SharepointReadListTo>();
-            _sharepointUtils = new SharepointUtils();
         }
 
         [FindMissing]
-        
+
         public new string Result { get; set; }
         /// <summary>
         /// When overridden runs the activity's execution logic 
@@ -49,7 +46,7 @@ namespace Dev2.Activities.Sharepoint
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject,0);
+            ExecuteTool(dataObject, 0);
         }
 
 
@@ -92,7 +89,7 @@ namespace Dev2.Activities.Sharepoint
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+                var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -105,7 +102,7 @@ namespace Dev2.Activities.Sharepoint
                     var env = dataObject.Environment;
                     if (dataObject.IsDebugMode())
                     {
-                        AddInputDebug(env,update);
+                        AddInputDebug(env, update);
                     }
                     var sharepointHelper = sharepointSource.CreateSharepointHelper();
                     var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
@@ -113,23 +110,23 @@ namespace Dev2.Activities.Sharepoint
                     {
                         var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, true);
                         var iteratorList = new WarewolfListIterator();
-                        foreach(var sharepointReadListTo in sharepointReadListTos)
+                        foreach (var sharepointReadListTo in sharepointReadListTos)
                         {
-                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName,update));
+                            var warewolfIterator = new WarewolfIterator(env.Eval(sharepointReadListTo.VariableName, update));
                             iteratorList.AddVariableToIterateOn(warewolfIterator);
-                            listOfIterators.Add(sharepointReadListTo.FieldName,warewolfIterator);
+                            listOfIterators.Add(sharepointReadListTo.FieldName, warewolfIterator);
                         }
-                        while(iteratorList.HasMoreData())
+                        while (iteratorList.HasMoreData())
                         {
                             var itemCreateInfo = new ListItemCreationInformation();
                             var listItem = list.AddItem(itemCreateInfo);
-                            foreach(var warewolfIterator in listOfIterators)
+                            foreach (var warewolfIterator in listOfIterators)
                             {
                                 var sharepointFieldTo = fields.FirstOrDefault(to => to.Name == warewolfIterator.Key);
-                                if(sharepointFieldTo != null)
+                                if (sharepointFieldTo != null)
                                 {
                                     object value = warewolfIterator.Value.GetNextValue();
-                                    value = _sharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
+                                    value = SharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
                                     listItem[sharepointFieldTo.InternalName] = value;
                                 }
                             }
@@ -154,32 +151,32 @@ namespace Dev2.Activities.Sharepoint
                 var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
-                    dataObject.Environment.Assign(Result, "Failed",update);
+                    dataObject.Environment.Assign(Result, "Failed", update);
                     DisplayAndWriteError("SharepointCreateListItemActivity", allErrors);
                     var errorString = allErrors.MakeDisplayReady();
                     dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())
                 {
-                    DispatchDebugState(dataObject, StateType.Before,update);
-                    DispatchDebugState(dataObject, StateType.After,update);
+                    DispatchDebugState(dataObject, StateType.Before, update);
+                    DispatchDebugState(dataObject, StateType.After, update);
                 }
             }
         }
 
-        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env,int update)
+        void AddOutputDebug(IDSFDataObject dataObject, IExecutionEnvironment env, int update)
         {
-            if(dataObject.IsDebugMode() && !string.IsNullOrEmpty(Result))
+            if (dataObject.IsDebugMode() && !string.IsNullOrEmpty(Result))
             {
                 var debugItem = new DebugItem();
-                AddDebugItem(new DebugEvalResult(Result, "", env,update), debugItem);
+                AddDebugItem(new DebugEvalResult(Result, "", env, update), debugItem);
                 _debugOutputs.Add(debugItem);
             }
         }
 
-        void AddInputDebug(IExecutionEnvironment env,int update)
+        void AddInputDebug(IExecutionEnvironment env, int update)
         {
-            var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+            var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
                 DebugItem debugItem = new DebugItem();
@@ -188,7 +185,7 @@ namespace Dev2.Activities.Sharepoint
                 if (!string.IsNullOrEmpty(variableName))
                 {
                     AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
-                    AddDebugItem(new DebugEvalResult(variableName, "Variable", env,update), debugItem);
+                    AddDebugItem(new DebugEvalResult(variableName, "Variable", env, update), debugItem);
                 }
                 _indexCounter++;
                 _debugInputs.Add(debugItem);
