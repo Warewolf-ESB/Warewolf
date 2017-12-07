@@ -26,14 +26,6 @@ namespace Dev2
         string _toType;
         bool _isFromExpressionFocused;
 
-        string _fromExpression;
-        string _fromType;
-        string _toExpression;
-        string _toType;
-
-        #endregion
-
-        #region Ctor
 
         public BaseConvertTO()
         {
