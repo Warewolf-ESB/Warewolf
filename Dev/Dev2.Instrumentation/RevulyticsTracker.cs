@@ -48,7 +48,7 @@ namespace Dev2.Instrumentation
         public RevulyticsTracker()
         {
             SdkFilePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(RUISDK)).Location);
-            ConfigFilePath = AppSettings.ConfigFilePath;
+            ConfigFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
             ProductId = AppSettings.ProductID;
             AppName = AppSettings.AppName;
             ProductUrl = AppSettings.ProductUrl;

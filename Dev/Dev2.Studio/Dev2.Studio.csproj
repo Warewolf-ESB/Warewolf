@@ -234,6 +234,10 @@
     <Reference Include="RibbonControlsLibrary, Version=4.0.0.11019, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\Binaries\RibbonControlsLibrary.dll</HintPath>
     </Reference>
+    <Reference Include="ruiSDKDotNet_5.1.0, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\ruiSDKDotNet_5.1.0.dll</HintPath>
+    </Reference>
     <Reference Include="ServiceStack.Common, Version=3.9.37.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Binaries\ServiceStack.Common.dll</HintPath>
@@ -927,6 +931,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Help\PageNotAvailable.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ruiSDK_5.1.0.x64.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="ruiSDK_5.1.0.x86.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
