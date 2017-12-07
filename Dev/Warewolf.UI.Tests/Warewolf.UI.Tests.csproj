@@ -368,6 +368,7 @@
     </Compile>
     <Compile Include="WorkflowTab\Tools\Storage Dropbox\List Contents.cs" />
     <Compile Include="WorkflowTab\Tools\Storage Dropbox\Upload.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\CreateJson.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\AggregateCalculate.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Calculate.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Comment.cs" />
@@ -375,8 +376,7 @@
     <Compile Include="WorkflowTab\Tools\Utility\Date Time.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Format Number.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\RabbitMQConsume.cs" />
-    <Compile Include="WorkflowTab\Tools\Utility\RabbitMQPublish.cs" />
-    <Compile Include="WorkflowTab\Tools\Utility\CreateJSON.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\RabbitMQPublish.cs" />    
     <Compile Include="WorkflowTab\Tools\Utility\Random.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Sys Info.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.cs">
@@ -429,8 +429,12 @@
     <None Include="WorkflowTab\Tools\Scripting\ScriptingToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Sharepoint\SharepointToolsUIMap.uitest" />
     <None Include="WorkflowTab\Tools\Storage Dropbox\DropboxToolsUIMap.uitest" />
-    <None Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.uitest" />
-    <None Include="WorkflowTab\WorkflowTabUIMap.uitest" />
+    <None Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="WorkflowTab\WorkflowTabUIMap.uitest">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

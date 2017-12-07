@@ -12,10 +12,10 @@ using System;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using ActivityUnitTests;
-using Dev2.Common.Interfaces.Core.Convertors.Case;
-using Dev2.Interfaces;
+using Dev2.Common.Interfaces.Core.Convertors.Case;             
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Activities.Factories.Case;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {

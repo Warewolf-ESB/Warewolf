@@ -155,9 +155,6 @@
     <Compile Include="Converters\Base\Dev2TextConverter.cs" />
     <Compile Include="Converters\Base\enDev2BaseConvertType.cs" />
     <Compile Include="Converters\Base\TO\BaseConvertTO.cs" />
-    <Compile Include="Converters\Case\CaseConverter.cs" />
-    <Compile Include="Converters\Case\CaseConverterFactory.cs" />
-    <Compile Include="Converters\Case\TO\CaseConvertTO.cs" />
     <Compile Include="Converters\Graph\BasePath.cs" />
     <Compile Include="Converters\Graph\DataBrowser.cs" />
     <Compile Include="Converters\Graph\DataBrowserFactory.cs" />

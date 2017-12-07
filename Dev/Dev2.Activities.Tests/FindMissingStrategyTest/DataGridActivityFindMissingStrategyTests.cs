@@ -20,7 +20,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 
-
 namespace Dev2.Tests.Activities.FindMissingStrategyTest
 {
     /// <summary>

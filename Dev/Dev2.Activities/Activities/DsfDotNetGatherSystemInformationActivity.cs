@@ -172,7 +172,7 @@ namespace Dev2.Activities
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
             {
-                DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
+                DisplayAndWriteError(nameof(DsfDotNetGatherSystemInformationActivity), allErrors);
                 foreach (var error in allErrors.FetchErrors())
                 {
                     dataObject.Environment.AddError(error);
