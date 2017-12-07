@@ -17,9 +17,6 @@ namespace Warewolf.Core
 {
     public class DatabaseService : IDatabaseService
     {
-
-        #region Implementation of IDatabaseService
-
         public string Path { get; set; }
         public IDbSource Source { get; set; }
         public IDbAction Action { get; set; }
@@ -27,16 +24,5 @@ namespace Warewolf.Core
         public IList<IServiceOutputMapping> OutputMappings { get; set; }
         public string Name { get; set; }
         public Guid Id { get; set; }
-
-        #endregion
-
-        public override bool Equals(object obj)
-        {
-            if (obj.GetType() != GetType())
-            {
-                return false;
-            }
-            return Equals((DatabaseService)obj);
-        }
     }
 }
