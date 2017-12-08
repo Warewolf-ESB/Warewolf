@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Warewolf.Exchange.Email.Connector.Wrapper")]
+[assembly: AssemblyTitle("Warewolf.Exchange.Email.Wrapper")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Warewolf.Exchange.Email.Connector.Wrapper")]
+[assembly: AssemblyProduct("Warewolf.Exchange.Email.Wrapper")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
