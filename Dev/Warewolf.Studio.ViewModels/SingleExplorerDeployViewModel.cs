@@ -276,7 +276,7 @@ namespace Warewolf.Studio.ViewModels
 
                 var notfolders = GetNotFoldersList();
                 ValidateDirectDeploy(notfolders);
-                await Destination.RefreshSelectedEnvironment().ConfigureAwait(true);
+                await Destination.RefreshSelectedEnvironmentAsync().ConfigureAwait(true);
                 UpdateDeploySuccess(notfolders);
             }
             catch (Exception e)

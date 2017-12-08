@@ -278,15 +278,18 @@ namespace Warewolf.Studio.ViewModels
                 if (value != null && !Equals(_selectedConnection, value))
                 {
                     _selectedConnection = value;
+
                     if (value.EnvironmentID != Guid.Empty && !value.IsConnected)
                     {
-                        var isConnected = CheckVersionConflictAsync();
+                        var t = Task.Run(async () => await CheckVersionConflictAsync().ConfigureAwait(false));
+                        t.Wait();
                     }
                     SetActiveEnvironment();
                     OnPropertyChanged(() => SelectedConnection);
                     SelectedEnvironmentChanged?.Invoke(this, value.EnvironmentID);
                     var delegateCommand = EditConnectionCommand as DelegateCommand;
                     delegateCommand?.RaiseCanExecuteChanged();
+
                 }
             }
         }

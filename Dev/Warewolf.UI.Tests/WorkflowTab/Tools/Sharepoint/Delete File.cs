@@ -41,6 +41,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
         public void SharepointDeleteFileTool_LargeView_DoneButton_UITest()
         {
             SharepointToolsUIMap.Open_SharepointDeleteFileTool_LargeView();
+            SharepointToolsUIMap.Select_Sharepoint_DeleteFile_TestServer();
+            SharepointToolsUIMap.Enter_SomeText_Into_Sharepoint_Server_Delete_Item_Tool();
             Mouse.Click(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.DoneButton);
             Assert.IsTrue(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.SmallView.Exists, "Clicking done button on sharepoint delete tool does not collapse to small view.");
         }
