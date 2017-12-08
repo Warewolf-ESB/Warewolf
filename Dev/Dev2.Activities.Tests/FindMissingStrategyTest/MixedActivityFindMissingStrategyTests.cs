@@ -39,7 +39,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         {
             DsfDataSplitActivity dataSplitActivity = new DsfDataSplitActivity();
             dataSplitActivity.OnErrorVariable = "[[onErr]]";
-            dataSplitActivity.ResultsCollection = new List<DataSplitDto> { new DataSplitDto("[[OutputVariable1]]", "Index", "[[At1]]", 1) { EscapeChar = "[[Escaped1]]" }, new DataSplitDto("[[OutputVariable2]]", "Index", "[[At2]]", 2) { EscapeChar = "[[Escaped2]]" } };
+            dataSplitActivity.ResultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[OutputVariable1]]", "Index", "[[At1]]", 1) { EscapeChar = "[[Escaped1]]" }, new DataSplitDTO("[[OutputVariable2]]", "Index", "[[At2]]", 2) { EscapeChar = "[[Escaped2]]" } };
             dataSplitActivity.SourceString = "[[SourceString]]";
             Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
             IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.MixedActivity);

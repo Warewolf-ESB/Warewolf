@@ -26,14 +26,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             TypeSwitch.Do(dto,
                 
-                TypeSwitch.Case<ActivityDto>(x => toReturn = new ActivityDto(initializeWith, "", index, inserted)),
+                TypeSwitch.Case<ActivityDTO>(x => toReturn = new ActivityDTO(initializeWith, "", index, inserted)),
                 
-                TypeSwitch.Case<DataSplitDto>(x =>
+                TypeSwitch.Case<DataSplitDTO>(x =>
                 {
-                    var dataSplitDto = dto as DataSplitDto;
+                    var dataSplitDto = dto as DataSplitDTO;
                     if (dataSplitDto != null)
                     {
-                        toReturn = new DataSplitDto(initializeWith, dataSplitDto.SplitType, dataSplitDto.At, index, false, inserted);
+                        toReturn = new DataSplitDTO(initializeWith, dataSplitDto.SplitType, dataSplitDto.At, index, false, inserted);
                     }
                 }),
                 TypeSwitch.Case<DataMergeDTO>(x =>
@@ -64,7 +64,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 TypeSwitch.Case<GatherSystemInformationTO>(x => toReturn =
                     new GatherSystemInformationTO(enTypeOfSystemInformationToGather.FullDateTime,
                         initializeWith, index, inserted)),
-                TypeSwitch.Case<XPathDto>(x => toReturn = new XPathDto(initializeWith, "", index, inserted)),
+                TypeSwitch.Case<XPathDTO>(x => toReturn = new XPathDTO(initializeWith, "", index, inserted)),
                 TypeSwitch.Case<FindRecordsTO>(() => toReturn = new FindRecordsTO("", "", index, inserted)),
                 TypeSwitch.Case<DecisionTO>(() => toReturn = new DecisionTO(initializeWith, "", "", index, inserted)),
                 TypeSwitch.Case<JsonMappingTo>(() => toReturn = new JsonMappingTo(initializeWith, index, inserted)),

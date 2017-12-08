@@ -41,13 +41,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Data-DataSplit", "Data Split", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Split")]
     public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
     {
+        #region Fields
+
         string _sourceString;
         int _indexCounter = 1;
-        IList<DataSplitDto> _resultsCollection;
+        private IList<DataSplitDTO> _resultsCollection;
         bool _reverseOrder;
         bool _skipBlankRows;
 
-        public IList<DataSplitDto> ResultsCollection
+        #endregion
+
+        #region Properties
+
+        public IList<DataSplitDTO> ResultsCollection
         {
             get
             {
@@ -98,12 +104,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override bool CanInduceIdle => true;
 
+        #endregion
+
+        #region Ctor
 
         public DsfDataSplitActivity()
             : base("Data Split")
         {
-            ResultsCollection = new List<DataSplitDto>();
+            ResultsCollection = new List<DataSplitDTO>();
         }
+
+        #endregion
+
+        #region Overridden NativeActivity Methods
 
 
         protected override void CacheMetadata(NativeActivityMetadata metadata)
@@ -114,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            var dataObject = context.GetExtension<IDSFDataObject>();
+            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -123,9 +136,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             _indexCounter = 1;
 
-            var allErrors = new ErrorResultTO();
+            ErrorResultTO allErrors = new ErrorResultTO();
             var env = dataObject.Environment;
-            var iter = new WarewolfListIterator();
+            WarewolfListIterator iter = new WarewolfListIterator();
 
             InitializeDebug(dataObject);
             try
@@ -150,7 +163,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     IsSingleValueRule.ApplyIsSingleValueRule(a.OutputVariable, allErrors);
                 });
-                var singleInnerIteration = ArePureScalarTargets(ResultsCollection);
+                bool singleInnerIteration = ArePureScalarTargets(ResultsCollection);
                 var resultsEnumerator = ResultsCollection.GetEnumerator();
                 var debugDictionary = new List<string>();
                 while (res.HasMoreData())
@@ -160,7 +173,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var item = res.GetNextValue(); // item is the thing we split on
                     if (!string.IsNullOrEmpty(item))
                     {
-                        var val = item;
+                        string val = item;
 
                         var blankRows = new List<int>();
                         if (SkipBlankRows)
@@ -181,15 +194,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             }
                         }
 
-                        var tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out ErrorResultTO errors, update);
+                        IDev2Tokenizer tokenizer = CreateSplitPattern(ref val, ResultsCollection, env, out ErrorResultTO errors, update);
                         allErrors.MergeErrors(errors);
 
                         if (!allErrors.HasErrors())
                         {
                             if (tokenizer != null)
                             {
-                                var pos = 0;
-                                var end = ResultsCollection.Count - 1;
+                                int pos = 0;
+                                int end = ResultsCollection.Count - 1;
 
                                 // track used tokens so we can adjust flushing ;)
                                 while (tokenizer.HasMoreOps())
@@ -204,7 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                         resultsEnumerator.Reset();
                                         resultsEnumerator.MoveNext();
                                     }
-                                    var tmp = tokenizer.NextToken();
+                                    string tmp = tokenizer.NextToken();
 
                                     if (tmp.StartsWith(Environment.NewLine) && !SkipBlankRows)
                                     {
@@ -317,21 +330,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return enFindMissingType.MixedActivity;
         }
 
-        static bool ArePureScalarTargets(IEnumerable<DataSplitDto> args)
+        #endregion
+
+        #region Private Methods
+
+        private bool ArePureScalarTargets(IEnumerable<DataSplitDTO> args)
         {
             return args.All(arg => !DataListUtil.IsValueRecordset(arg.OutputVariable));
         }
 
-        void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
             if (modelProperty != null)
             {
-                var mic = modelProperty.Collection;
+                ModelItemCollection mic = modelProperty.Collection;
 
                 if (mic != null)
                 {
-                    var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
+                    List<DataSplitDTO> listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
                     if (listOfValidRows.Count > 0)
                     {
                         ConcatenateCollections(listToAdd, modelItem, mic);
@@ -344,34 +361,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void ConcatenateCollections(IEnumerable<string> listToAdd, ModelItem modelItem, ModelItemCollection mic)
+        private void ConcatenateCollections(IEnumerable<string> listToAdd, ModelItem modelItem, ModelItemCollection mic)
         {
-            var dataSplitDto = ResultsCollection.Last(c => !c.CanRemove());
-            var startIndex = ResultsCollection.IndexOf(dataSplitDto) + 1;
+            DataSplitDTO dataSplitDto = ResultsCollection.Last(c => !c.CanRemove());
+            int startIndex = ResultsCollection.IndexOf(dataSplitDto) + 1;
             foreach (string s in listToAdd)
             {
-                mic.Insert(startIndex, new DataSplitDto(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
+                mic.Insert(startIndex, new DataSplitDTO(s, ResultsCollection[startIndex - 1].SplitType, ResultsCollection[startIndex - 1].At, startIndex + 1));
                 startIndex++;
             }
             CleanUpCollection(mic, modelItem, startIndex);
         }
 
-        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        private void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["ResultsCollection"];
             if (modelProperty != null)
             {
-                var mic = modelProperty.Collection;
+                ModelItemCollection mic = modelProperty.Collection;
 
                 if (mic != null)
                 {
-                    var startIndex = 0;
-                    var firstRowSplitType = ResultsCollection[0].SplitType;
-                    var firstRowAt = ResultsCollection[0].At;
+                    int startIndex = 0;
+                    string firstRowSplitType = ResultsCollection[0].SplitType;
+                    string firstRowAt = ResultsCollection[0].At;
                     mic.Clear();
                     foreach (string s in listToAdd)
                     {
-                        mic.Add(new DataSplitDto(s, firstRowSplitType, firstRowAt, startIndex + 1));
+                        mic.Add(new DataSplitDTO(s, firstRowSplitType, firstRowAt, startIndex + 1));
                         startIndex++;
                     }
                     CleanUpCollection(mic, modelItem, startIndex);
@@ -379,13 +396,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        private void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
                 mic.RemoveAt(startIndex);
             }
-            mic.Add(new DataSplitDto(string.Empty, "Chars", string.Empty, startIndex + 1));
+            mic.Add(new DataSplitDTO(string.Empty, "Chars", string.Empty, startIndex + 1));
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
             {
@@ -393,7 +410,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static string CreateDisplayName(ModelItem modelItem, int count)
+        private string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)
@@ -410,12 +427,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.Empty;
         }
 
-        IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDto> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
+        private IDev2Tokenizer CreateSplitPattern(ref string stringToSplit, IEnumerable<DataSplitDTO> args, IExecutionEnvironment compiler, out ErrorResultTO errors, int update)
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit, ReverseOrder = ReverseOrder };
+            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit, ReverseOrder = ReverseOrder };
             errors = new ErrorResultTO();
 
-            foreach (DataSplitDto t in args)
+            foreach (DataSplitDTO t in args)
             {
                 stringToSplit = AddTokenOp(stringToSplit, compiler, errors, update, dtb, t);
                 _indexCounter++;
@@ -423,10 +440,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return string.IsNullOrEmpty(dtb.ToTokenize) || errors.HasErrors() ? null : dtb.Generate();
         }
 
-        string AddTokenOp(string stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDto t)
+        private string AddTokenOp(string stringToSplit, IExecutionEnvironment compiler, ErrorResultTO errors, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t)
         {
             var parsedAt = t.At ?? string.Empty;
-            var entry = "";
+            string entry = "";
 
             switch (t.SplitType)
             {
@@ -455,7 +472,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return stringToSplit;
         }
 
-        void AddCharacterTokenOp(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, DataSplitDto t, string parsedAt, ref string entry)
+        private void AddCharacterTokenOp(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, DataSplitDTO t, string parsedAt, ref string entry)
         {
             if (!string.IsNullOrEmpty(parsedAt))
             {
@@ -465,7 +482,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static void AddLineBreakTokenOp(string stringToSplit, Dev2TokenizerBuilder dtb, DataSplitDto t)
+        private static void AddLineBreakTokenOp(string stringToSplit, Dev2TokenizerBuilder dtb, DataSplitDTO t)
         {
             if (stringToSplit.Contains("\r\n"))
             {
@@ -484,9 +501,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        string EvalLineBreakCharacter(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, string parsedAt)
+        private string EvalLineBreakCharacter(ref string stringToSplit, IExecutionEnvironment compiler, int update, Dev2TokenizerBuilder dtb, string parsedAt)
         {
-            var entry = compiler.EvalAsListOfStrings(parsedAt, update).FirstOrDefault();
+            string entry = compiler.EvalAsListOfStrings(parsedAt, update).FirstOrDefault();
             if (entry != null && (entry.Contains(@"\r\n") || entry.Contains(@"\n")))
             {
                 var match = Regex.Match(stringToSplit, @"[\r\n]+");
@@ -500,9 +517,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return entry;
         }
 
-        static string EvalEscapeCharacter(IExecutionEnvironment compiler, int update, DataSplitDto t)
+        private static string EvalEscapeCharacter(IExecutionEnvironment compiler, int update, DataSplitDTO t)
         {
-            var escape = t.EscapeChar;
+            string escape = t.EscapeChar;
             if (!String.IsNullOrEmpty(escape))
             {
                 escape = compiler.EvalAsListOfStrings(t.EscapeChar, update).FirstOrDefault();
@@ -511,7 +528,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return escape;
         }
 
-        static void AddIndexOperation(Dev2TokenizerBuilder dtb, IExecutionEnvironment compiler, ErrorResultTO errors, int update, string parsedAt)
+        private static void AddIndexOperation(Dev2TokenizerBuilder dtb, IExecutionEnvironment compiler, ErrorResultTO errors, int update, string parsedAt)
         {
             try
             {
@@ -521,8 +538,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     throw new Exception("null iterator expression");
                 }
 
-                var index = entry;
-                var indexNum = Convert.ToInt32(index);
+                string index = entry;
+                int indexNum = Convert.ToInt32(index);
                 if (indexNum > 0)
                 {
                     dtb.AddIndexOp(indexNum);
@@ -534,9 +551,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddDebug(IEnumerable<DataSplitDto> resultCollection, IExecutionEnvironment env, int update)
+        private void AddDebug(IEnumerable<DataSplitDTO> resultCollection, IExecutionEnvironment env, int update)
         {
-            foreach (DataSplitDto t in resultCollection)
+            foreach (DataSplitDTO t in resultCollection)
             {
                 DebugItem debugItem = AddParamsToDebug(env, update, t);
                 AddResultsToDebug(env, update, t, debugItem);
@@ -545,7 +562,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        void AddResultsToDebug(IExecutionEnvironment env, int update, DataSplitDto t, DebugItem debugItem)
+        private void AddResultsToDebug(IExecutionEnvironment env, int update, DataSplitDTO t, DebugItem debugItem)
         {
             switch (t.SplitType)
             {
@@ -569,9 +586,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        DebugItem AddParamsToDebug(IExecutionEnvironment env, int update, DataSplitDto t)
+        private DebugItem AddParamsToDebug(IExecutionEnvironment env, int update, DataSplitDTO t)
         {
-            var debugItem = new DebugItem();
+            DebugItem debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
             if (!string.IsNullOrEmpty(t.OutputVariable))
             {
@@ -581,9 +598,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return debugItem;
         }
 
-        static void CleanArguments(IList<DataSplitDto> args)
+        private void CleanArguments(IList<DataSplitDTO> args)
         {
-            var count = 0;
+            int count = 0;
             while (count < args.Count)
             {
                 if (string.IsNullOrEmpty(args[count].OutputVariable))
@@ -604,7 +621,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
             }
         }
+        #endregion Private Methods
 
+        #region Get Debug Inputs/Outputs
+
+        #region GetDebugInputs
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment dataList, int update)
         {
@@ -615,6 +636,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugInputs;
         }
 
+        #endregion
+
+        #region GetDebugOutputs
+
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
             foreach (IDebugItem debugOutput in _debugOutputs)
@@ -624,6 +649,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return _debugOutputs;
         }
 
+        #endregion
+
+        #endregion
+
+        #region Get ForEach Inputs/Ouputs
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -632,7 +662,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach (Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    var t1 = t;
+                    Tuple<string, string> t1 = t;
                     var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.At) && c.At.Equals(t1.Item1));
 
                     // issues updates
@@ -656,7 +686,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach (Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    var t1 = t;
+                    Tuple<string, string> t1 = t;
                     var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable) && c.OutputVariable.Equals(t1.Item1));
 
                     // issues updates
@@ -668,6 +698,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        #endregion
+
+        #region GetForEachInputs/Outputs
 
         public override IList<DsfForEachItem> GetForEachInputs()
         {
@@ -680,6 +713,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.OutputVariable)).Select(c => c.OutputVariable).ToArray();
             return GetForEachItems(items);
         }
+
+        #endregion
+
+        #region Implementation of ICollectionActivity
 
         public int GetCollectionCount()
         {
@@ -697,6 +734,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 AddToCollection(listToAdd, modelItem);
             }
         }
+
+        #endregion
 
         public override List<string> GetOutputs()
         {

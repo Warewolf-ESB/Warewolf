@@ -26,7 +26,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.DataSplit
 {
-    public class DataSplitDesignerViewModel : ActivityCollectionDesignerViewModel<DataSplitDto>
+    public class DataSplitDesignerViewModel : ActivityCollectionDesignerViewModel<DataSplitDTO>
     {
         internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
@@ -41,12 +41,12 @@ namespace Dev2.Activities.Designers2.DataSplit
 
             ItemsList = new List<string>
             {
-                DataSplitDto.SplitTypeIndex,
-                DataSplitDto.SplitTypeChars,
-                DataSplitDto.SplitTypeNewLine,
-                DataSplitDto.SplitTypeSpace,
-                DataSplitDto.SplitTypeTab,
-                DataSplitDto.SplitTypeEnd
+                DataSplitDTO.SplitTypeIndex,
+                DataSplitDTO.SplitTypeChars,
+                DataSplitDTO.SplitTypeNewLine,
+                DataSplitDTO.SplitTypeSpace,
+                DataSplitDTO.SplitTypeTab,
+                DataSplitDTO.SplitTypeEnd
             };
             SplitTypeUpdatedCommand = new DelegateCommand(OnSplitTypeChanged);
 
@@ -85,31 +85,31 @@ namespace Dev2.Activities.Designers2.DataSplit
             var splitType = mi.GetProperty("SplitType") as string;
             switch (splitType)
             {
-                case DataSplitDto.SplitTypeIndex:
+                case DataSplitDTO.SplitTypeIndex:
                     mi.SetProperty("IsEscapeCharEnabled", false);
                     mi.SetProperty("EscapeChar", string.Empty);
                     mi.SetProperty("EnableAt", true);
                     break;
-                case DataSplitDto.SplitTypeChars:
+                case DataSplitDTO.SplitTypeChars:
                     mi.SetProperty("IsEscapeCharEnabled", true);
                     mi.SetProperty("EnableAt", true);
                     break;
-                case DataSplitDto.SplitTypeNewLine:
+                case DataSplitDTO.SplitTypeNewLine:
                     mi.SetProperty("IsEscapeCharEnabled", true);
                     mi.SetProperty("EnableAt", false);
                     mi.SetProperty("At", string.Empty);
                     break;
-                case DataSplitDto.SplitTypeSpace:
+                case DataSplitDTO.SplitTypeSpace:
                     mi.SetProperty("IsEscapeCharEnabled", true);
                     mi.SetProperty("EnableAt", false);
                     mi.SetProperty("At", string.Empty);
                     break;
-                case DataSplitDto.SplitTypeTab:
+                case DataSplitDTO.SplitTypeTab:
                     mi.SetProperty("IsEscapeCharEnabled", true);
                     mi.SetProperty("EnableAt", false);
                     mi.SetProperty("At", string.Empty);
                     break;
-                case DataSplitDto.SplitTypeEnd:
+                case DataSplitDTO.SplitTypeEnd:
                     mi.SetProperty("IsEscapeCharEnabled", false);
                     mi.SetProperty("EscapeChar", string.Empty);
                     mi.SetProperty("EnableAt", false);
@@ -132,7 +132,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            var dto = mi.GetCurrentValue() as DataSplitDto;
+            var dto = mi.GetCurrentValue() as DataSplitDTO;
             if(dto == null)
             {
                 yield break;

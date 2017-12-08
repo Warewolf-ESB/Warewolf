@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.TOTests
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             //------------Assert Results-------------------------
             Assert.AreEqual("[[Variable]]", activityDTO.FieldName);
             Assert.AreEqual("Expression", activityDTO.FieldValue);
@@ -50,7 +50,7 @@ namespace Dev2.Tests.Activities.TOTests
             const int indexNumber = 2;
             const bool inserted = true;
             //------------Execute Test---------------------------
-            var activityDTO = new ActivityDto(fieldName, fieldValue, indexNumber, inserted);
+            var activityDTO = new ActivityDTO(fieldName, fieldValue, indexNumber, inserted);
             //------------Assert Results-------------------------
             Assert.AreEqual(fieldName, activityDTO.FieldName);
             Assert.AreEqual(fieldValue, activityDTO.FieldValue);
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Activities.TOTests
             const int indexNumber = 2;
             const bool inserted = true;
             //------------Execute Test---------------------------
-            var activityDTO = new ActivityDto(fieldName, fieldValue, indexNumber, inserted);
+            var activityDTO = new ActivityDTO(fieldName, fieldValue, indexNumber, inserted);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(activityDTO, typeof(IPerformsValidation));
         }
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_OnPropertyChanged_FieldNameChanged_FiresPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             const string value = "value";
             //------------Execute Test---------------------------
 
@@ -96,7 +96,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_OnPropertyChanged_FieldValueChanged_FiresPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             const string value = "value";
             //------------Execute Test---------------------------
             var propertyChangedFired = TestUtils.PropertyChangedTester(activityDTO, () => activityDTO.FieldValue, () => activityDTO.FieldValue = value);
@@ -110,7 +110,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_OnPropertyChanged_IndexNumberChanged_FiresPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             const int value = 2;
             //------------Execute Test---------------------------
             var propertyChangedFired = TestUtils.PropertyChangedTester(activityDTO, () => activityDTO.IndexNumber, () => activityDTO.IndexNumber = value);
@@ -125,7 +125,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanRemove_FieldNameAndFieldValueEmpty_True()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = "", FieldValue = "" };
+            var activityDTO = new ActivityDTO { FieldName = "", FieldValue = "" };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanRemove();
             //------------Assert Results-------------------------
@@ -138,7 +138,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanRemove_FieldNameAndFieldValueNull_True()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = null, FieldValue = null };
+            var activityDTO = new ActivityDTO { FieldName = null, FieldValue = null };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanRemove();
             //------------Assert Results-------------------------
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanRemove_FieldNameHasValueAndFieldValueNull_False()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = "FieldName", FieldValue = null };
+            var activityDTO = new ActivityDTO { FieldName = "FieldName", FieldValue = null };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanRemove();
             //------------Assert Results-------------------------
@@ -164,7 +164,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanRemove_FieldNameNullAndFieldValueHasValue_False()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = null, FieldValue = "FieldValue" };
+            var activityDTO = new ActivityDTO { FieldName = null, FieldValue = "FieldValue" };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanRemove();
             //------------Assert Results-------------------------
@@ -177,7 +177,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanAdd_FieldNameAndFieldValueEmpty_False()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = "", FieldValue = "" };
+            var activityDTO = new ActivityDTO { FieldName = "", FieldValue = "" };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanAdd();
             //------------Assert Results-------------------------
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanAdd_FieldNameAndFieldValueNull_False()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = null, FieldValue = null };
+            var activityDTO = new ActivityDTO { FieldName = null, FieldValue = null };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanAdd();
             //------------Assert Results-------------------------
@@ -203,7 +203,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanAdd_FieldNameHasValueAndFieldValueNull_True()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = "FieldName", FieldValue = null };
+            var activityDTO = new ActivityDTO { FieldName = "FieldName", FieldValue = null };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanAdd();
             //------------Assert Results-------------------------
@@ -216,7 +216,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_CanAdd_FieldNameNullAndFieldValueHasValue_True()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = null, FieldValue = "FieldValue" };
+            var activityDTO = new ActivityDTO { FieldName = null, FieldValue = "FieldValue" };
             //------------Execute Test---------------------------
             var canRemove = activityDTO.CanAdd();
             //------------Assert Results-------------------------
@@ -229,7 +229,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_ClearRow_Executed_SetsFieldNameFieldValueToEmptyString()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             //------------Precondition----------------------------
             Assert.IsFalse(string.IsNullOrEmpty(activityDTO.FieldName));
             Assert.IsFalse(string.IsNullOrEmpty(activityDTO.FieldValue));
@@ -246,7 +246,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_ConvertToOutputTO_Executed_ReturnsOutputTO()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
 
             //------------Execute Test---------------------------
             var convertToOutputTO = activityDTO.ConvertToOutputTo();
@@ -260,7 +260,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_OutList_Property_ListOfString()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             var expectedOutList = new List<string> { "TestValue" };
             activityDTO.OutList = expectedOutList;
             //------------Execute Test---------------------------
@@ -275,7 +275,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_ValidateRules_NullRuleSet_ReturnsTrue()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             //------------Execute Test---------------------------
             var validate = activityDTO.Validate("FieldName", (IRuleSet)null);
             //------------Assert Results-------------------------
@@ -288,7 +288,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_Validate_GivenNoRules_ReturnTrue()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             //------------Execute Test---------------------------
             bool isValid = activityDTO.Validate("FieldName", new RuleSet());
             //------------Assert Results-------------------------
@@ -301,7 +301,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_Validate_GivenRules_HasFailingRuleReturnFalse()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = null };
+            var activityDTO = new ActivityDTO { FieldName = null };
             var ruleSet = new RuleSet();
             ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
@@ -316,7 +316,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_Validate_GivenRules_HasPassingRuleReturnTrue()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = "FeildName" };
+            var activityDTO = new ActivityDTO { FieldName = "FeildName" };
             var ruleSet = new RuleSet();
             ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
@@ -331,7 +331,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_Validate_Executed_SetErrorsProperty()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto { FieldName = null };
+            var activityDTO = new ActivityDTO { FieldName = null };
             var ruleSet = new RuleSet();
             ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
@@ -346,7 +346,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_GetRuleSet_OnFieldName_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var activityDto = new ActivityDto { FieldName = "[[a]]" , FieldValue = "anything"};
+            var activityDto = new ActivityDTO { FieldName = "[[a]]" , FieldValue = "anything"};
             //------------Execute Test---------------------------
             var rulesSet = activityDto.GetRuleSet("FieldName", "");
             //------------Assert Results-------------------------
@@ -362,7 +362,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_GetRuleSet_OnFieldValue_ReturnTwoRules()
         {
             //------------Setup for test--------------------------
-            var activityDto = new ActivityDto { FieldName = "[[a]]", FieldValue = "[[b]]" };
+            var activityDto = new ActivityDTO { FieldName = "[[a]]", FieldValue = "[[b]]" };
             //------------Execute Test---------------------------
             var rulesSet = activityDto.GetRuleSet("FieldValue", "");
             //------------Assert Results-------------------------
@@ -379,7 +379,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_OnPropertyChanged_ErrorsChanged_FiresPropertyChanged()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             var value = new Dictionary<string, List<IActionableErrorInfo>>();
             //------------Execute Test---------------------------
             var propertyChangedFired = TestUtils.PropertyChangedTester(activityDTO, () => activityDTO.Errors, () => activityDTO.Errors = value);
@@ -393,7 +393,7 @@ namespace Dev2.Tests.Activities.TOTests
         public void ActivityDTO_FieldName_ValidatesForErrors_ReturnsError()
         {
             //------------Setup for test--------------------------
-            var activityDTO = new ActivityDto();
+            var activityDTO = new ActivityDTO();
             activityDTO.FieldName = "1";
             //------------Execute Test---------------------------
             activityDTO.Validate(() => activityDTO.FieldName, "");

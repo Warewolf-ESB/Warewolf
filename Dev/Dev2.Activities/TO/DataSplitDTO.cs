@@ -15,10 +15,14 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
+using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
+
 {
-    public class DataSplitDto : ValidatedObject, IDev2TOFn, IOutputTOConvert   
+    
+    public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
+    
     {
         public const string SplitTypeIndex = "Index";
         public const string SplitTypeChars = "Chars";
@@ -40,19 +44,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         bool _isAtFocused;
         bool _isEscapeCharEnabled;
 
-        public DataSplitDto()
+        public DataSplitDTO()
         {
             SplitType = SplitTypeIndex;
             _enableAt = true;
             _isEscapeCharEnabled = true;
         }
 
-        public DataSplitDto(string outputVariable, string splitType, string at, int indexNum)
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum)
             : this(outputVariable, splitType, at, indexNum, false, false)
         {
         }
 
-        public DataSplitDto(string outputVariable, string splitType, string at, int indexNum, bool include, bool inserted)
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include, bool inserted)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
@@ -69,10 +73,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-
+            
         }
 
         public bool EnableAt { get => _enableAt; set => OnPropertyChanged(ref _enableAt, value); }
@@ -145,7 +149,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanAdd()
         {
-            var result = true;
+            bool result = true;
             if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
                 if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))

@@ -81,11 +81,11 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                     value = string.Format("!~calculation~!{0}!~~calculation~!", value);
                 }
 
-                scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+                scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDto(variable, value, 1, true));
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
@@ -347,7 +347,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                     activity.SourceString = valueToSplit;
                 }
                 _commonSteps.AddVariableToVariableList(variable);
-                activity.ResultsCollection.Add(new DataSplitDto(variable, type, at, 1, include, true));
+                activity.ResultsCollection.Add(new DataSplitDTO(variable, type, at, 1, include, true));
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);

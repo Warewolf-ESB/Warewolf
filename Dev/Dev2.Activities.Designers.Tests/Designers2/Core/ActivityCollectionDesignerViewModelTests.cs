@@ -95,10 +95,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(var j = 0; j < 3; j++)
             {
-                var dto1 = (ActivityDto)mic[j].GetCurrentValue();
+                var dto1 = (ActivityDTO)mic[j].GetCurrentValue();
                 var expectedIndexNumber = j + 1;
                 Assert.AreEqual(j == 3 - 1, dto1.CanRemove());
-                if (expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out ActivityDto expectedDto))
+                if (expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out ActivityDTO expectedDto))
                 {
                     Assert.AreSame(expectedDto, dto1);
                 }
@@ -387,7 +387,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             System.Diagnostics.Debug.Assert(mic != null, "mic != null");
             for(var i = 0; i < mic.Count; i++)
             {
-                var dto = (ActivityDto)mic[i].GetCurrentValue();
+                var dto = (ActivityDTO)mic[i].GetCurrentValue();
                 if(i == ExpectedItemCount)
                 {
                     // last row is blank
@@ -421,7 +421,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             viewModel.TestAddToCollection(source, true);
             
             var mic = viewModel.ModelItem.Properties[viewModel.CollectionName].Collection;
-            var dto = (ActivityDto)mic[0].GetCurrentValue();
+            var dto = (ActivityDTO)mic[0].GetCurrentValue();
             
             //------------Execute Test---------------------------
             dto.FieldName = "Test";
@@ -554,7 +554,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(int i = 0, j = 0; j < expectedItemCount; j++)
             {
-                var dto = (ActivityDto)mic[j].GetCurrentValue();
+                var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 Assert.AreSame(items[i++], dto);
                 Assert.AreEqual(j + 1, dto.IndexNumber);
             }
@@ -613,10 +613,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         {
             //------------Setup for test--------------------------
 
-            var items = new List<ActivityDto>
+            var items = new List<ActivityDTO>
             {
-                new ActivityDto("field1", "value1", 1),
-                new ActivityDto("", "", 2)
+                new ActivityDTO("field1", "value1", 1),
+                new ActivityDTO("", "", 2)
             };
 
             Assert.IsFalse(items[0].CanRemove());
@@ -653,10 +653,10 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
         public void ActivityCollectionDesignerViewModel_UpdateItem_RowCountIsTwoBlanksAndMakesSecondRowNonBlank_NoRowsAddedOrRemoved()
         {
             //------------Setup for test--------------------------
-            var items = new List<ActivityDto>
+            var items = new List<ActivityDTO>
             {
-                new ActivityDto("", "", 1),
-                new ActivityDto("", "", 2)
+                new ActivityDTO("", "", 1),
+                new ActivityDTO("", "", 2)
             };
 
             Assert.IsTrue(items[0].CanRemove());
@@ -722,7 +722,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(int i = 0, j = 0; j < expectedItemCount; j++)
             {
-                var dto = (ActivityDto)mic[j].GetCurrentValue();
+                var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 if(j == expectedItemCount - 1 && isNewBlankRowAdded)
                 {
                     Assert.AreEqual("", dto.FieldName);
@@ -776,7 +776,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Verify_CanRemoveAt(items, 4, false);
         }
 
-        void Verify_CanRemoveAt(List<ActivityDto> items, int indexNumber, bool expected)
+        void Verify_CanRemoveAt(List<ActivityDTO> items, int indexNumber, bool expected)
         {
             //------------Setup for test--------------------------
             var modelItem = CreateModelItem(items);
@@ -817,7 +817,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             Verify_CanInsertAt(items, 2, false);
         }
 
-        void Verify_CanInsertAt(List<ActivityDto> items, int indexNumber, bool expected)
+        void Verify_CanInsertAt(List<ActivityDTO> items, int indexNumber, bool expected)
         {
             //------------Setup for test--------------------------
             var modelItem = CreateModelItem(items);
@@ -885,7 +885,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(int i = 0, j = 0; i < expectedItemCount; i++, j++)
             {
-                var dto = (ActivityDto)mic[i].GetCurrentValue();
+                var dto = (ActivityDTO)mic[i].GetCurrentValue();
 
                 if(i == indexNumber - 1)
                 {
@@ -972,7 +972,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             for(int i = 0, j = 0; i < expectedItemCount; i++)
             {
                 //var expectedIndexNumber = i + 1;
-                var dto = (ActivityDto)mic[i].GetCurrentValue();
+                var dto = (ActivityDTO)mic[i].GetCurrentValue();
                 //Assert.AreEqual(expectedIndexNumber, dto.IndexNumber);
 
                 if(i != indexNumber - 1)
@@ -1052,7 +1052,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
                 {
                     i++; // skip
                 }
-                var dto = (ActivityDto)mic[j].GetCurrentValue();
+                var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 Assert.AreSame(items[i++], dto);
             }
             
@@ -1102,7 +1102,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             
         }
 
-        void Verify_CollectionUnchanged(List<ActivityDto> items, TestActivityDesignerCollectionViewModelItemsInitialized viewModel)
+        void Verify_CollectionUnchanged(List<ActivityDTO> items, TestActivityDesignerCollectionViewModelItemsInitialized viewModel)
         {
             var expectedItemCount = items.Count;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
@@ -1113,7 +1113,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             for(int i = 0, j = 0; i < expectedItemCount; i++, j++)
             {
                 var expectedIndexNumber = i + 1;
-                var dto = (ActivityDto)mic[i].GetCurrentValue();
+                var dto = (ActivityDTO)mic[i].GetCurrentValue();
                 Assert.AreEqual(expectedIndexNumber, dto.IndexNumber);
                 Assert.AreSame(items[j], dto);
             }
@@ -1121,7 +1121,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             
         }
 
-        static void VerifyCollection(ActivityCollectionDesignerViewModel<ActivityDto> viewModel, int expectedItemCount, Dictionary<int, ActivityDto> expectedItemsByIndexNumber = null, bool allRowsBlank = false)
+        static void VerifyCollection(ActivityCollectionDesignerViewModel<ActivityDTO> viewModel, int expectedItemCount, Dictionary<int, ActivityDTO> expectedItemsByIndexNumber = null, bool allRowsBlank = false)
         {
             var expectedNonBlankItemCount = expectedItemCount - 2;
             Assert.AreEqual(expectedItemCount, viewModel.ItemCount);
@@ -1132,7 +1132,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
             for(var j = 0; j < expectedItemCount; j++)
             {
-                var dto = (ActivityDto)mic[j].GetCurrentValue();
+                var dto = (ActivityDTO)mic[j].GetCurrentValue();
                 var expectedIndexNumber = j + 1;
                 
                 if(allRowsBlank)
@@ -1147,7 +1147,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
 
                 if(expectedItemsByIndexNumber != null)
                 {
-                    if (expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out ActivityDto expectedDTO))
+                    if (expectedItemsByIndexNumber.TryGetValue(expectedIndexNumber, out ActivityDTO expectedDTO))
                     {
                         Assert.AreSame(expectedDTO, dto);
                     }
@@ -1162,11 +1162,11 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             var propertyCollection = new Mock<ModelPropertyCollection>();
 
             var fieldsCollection = new Mock<ModelProperty>();
-            var activityDtos = new List<ActivityDto>();
+            var activityDtos = new List<ActivityDTO>();
 
             for(var i = 0; i < noOfActivitiesInModelItem; i++)
             {
-                activityDtos.Add(new ActivityDto
+                activityDtos.Add(new ActivityDTO
                 {
                     FieldName = "field" + i,
                     FieldValue = "val " + i
@@ -1194,7 +1194,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             return CreateModelItem(items);
         }
 
-        static ModelItem CreateModelItem(IEnumerable<ActivityDto> items, string displayName = "Activity")
+        static ModelItem CreateModelItem(IEnumerable<ActivityDTO> items, string displayName = "Activity")
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity());
             modelItem.SetProperty("DisplayName", displayName);
@@ -1210,19 +1210,19 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core
             return modelItem;
         }
 
-        static List<ActivityDto> CreateItemsList(int itemCount)
+        static List<ActivityDTO> CreateItemsList(int itemCount)
         {
-            var result = new List<ActivityDto>();
+            var result = new List<ActivityDTO>();
             for(int i = 0, indexNumber = 1; i < itemCount; i++, indexNumber++)
             {
                 if(itemCount <= 2 || i == itemCount - 1)
                 {
                     // Always make last row blank
-                    result.Add(new ActivityDto("", "", indexNumber));
+                    result.Add(new ActivityDTO("", "", indexNumber));
                 }
                 else
                 {
-                    result.Add(new ActivityDto("field" + indexNumber, "value" + indexNumber, indexNumber, i == 0));
+                    result.Add(new ActivityDTO("field" + indexNumber, "value" + indexNumber, indexNumber, i == 0));
                 }
             }
             return result;

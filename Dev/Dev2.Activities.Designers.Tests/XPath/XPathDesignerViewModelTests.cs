@@ -29,7 +29,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         [TestCategory("XPathDesignerViewModel_Constructor")]
         public void XPathDesignerViewModel_Constructor_ModelItemIsValid_CollectionNameIsSetToResultsCollection()
         {
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var viewModel = new XPathDesignerViewModel(CreateModelItem(items));
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
         }
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
             CustomContainer.Register(mockMainViewModel.Object);
 
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var viewModel = new XPathDesignerViewModel(CreateModelItem(items));
             //------------Execute Test---------------------------
             viewModel.UpdateHelpDescriptor("help");
@@ -70,12 +70,12 @@ namespace Dev2.Activities.Designers.Tests.XPath
         [TestCategory("XPathDesignerViewModel_Constructor")]
         public void XPathDesignerViewModel_Constructor_ModelItemIsInitializedWith4Items_ResultsCollectionHasFourItems()
         {
-            var items = new List<XPathDto>
+            var items = new List<XPathDTO>
             {
-                new XPathDto("", "None", 0),
-                new XPathDto("", "None", 0),
-                new XPathDto("", "None", 0),
-                new XPathDto("", "None", 0)
+                new XPathDTO("", "None", 0),
+                new XPathDTO("", "None", 0),
+                new XPathDTO("", "None", 0),
+                new XPathDTO("", "None", 0)
             };
             var viewModel = new XPathDesignerViewModel(CreateModelItem(items));
             dynamic mi = viewModel.ModelItem;
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_SourceStringIsNotEmpty_DoesNotHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_XPathIsInvalid_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto { XPath = "%", OutputVariable = "[[a]]" } };
+            var items = new List<XPathDTO> { new XPathDTO { XPath = "%", OutputVariable = "[[a]]" } };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_OutputVariableHasSpecialCharacter_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto { XPath = "a", OutputVariable = "[[a$]]" } };
+            var items = new List<XPathDTO> { new XPathDTO { XPath = "a", OutputVariable = "[[a$]]" } };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -139,7 +139,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_XPathIsValidButNoOuputVariable_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto { XPath = "//root/number[@id='1']/text()", OutputVariable = "" } };
+            var items = new List<XPathDTO> { new XPathDTO { XPath = "//root/number[@id='1']/text()", OutputVariable = "" } };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "<x></x>");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_SourceStringIsEmpty_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -174,7 +174,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_SourceStringIsInValidXml_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "$$@");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -191,7 +191,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_SourceStringIsValidRecordset_DoesNotHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec().set]]");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_SourceStringRecordsetHasANegativeIndex_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec(-1).set]]");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -224,7 +224,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
         public void XPathDesignerViewModel_ValidateThis_SourceStringRecordsetHasASpecialCharacter_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<XPathDto> { new XPathDto() };
+            var items = new List<XPathDTO> { new XPathDTO() };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "[[rec(@).set]]");
             var viewModel = CreateXPathDesignerViewModel(mi);
@@ -252,7 +252,7 @@ namespace Dev2.Activities.Designers.Tests.XPath
             StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.XPathXmlInvalidExpressionErrorTest);
         }
 
-        static ModelItem CreateModelItem(IEnumerable<XPathDto> items, string displayName = "XPath")
+        static ModelItem CreateModelItem(IEnumerable<XPathDTO> items, string displayName = "XPath")
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfXPathActivity());
             modelItem.SetProperty("DisplayName", displayName);

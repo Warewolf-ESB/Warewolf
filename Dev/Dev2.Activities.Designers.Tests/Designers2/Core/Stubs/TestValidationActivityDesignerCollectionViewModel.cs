@@ -17,7 +17,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
 {
-    public class TestValidationActivityDesignerCollectionViewModel : ActivityCollectionDesignerViewModel<ActivityDto>
+    public class TestValidationActivityDesignerCollectionViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
         public TestValidationActivityDesignerCollectionViewModel(ModelItem modelItem)
             : base(modelItem)

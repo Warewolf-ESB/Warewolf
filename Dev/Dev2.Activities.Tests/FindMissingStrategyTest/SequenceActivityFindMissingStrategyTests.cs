@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void SequenceActivityFindMissingStrategy_GetActivityFields_WithAssignAndDataMerge_ReturnsAllVariables()
         {
             //------------Setup for test--------------------------
-            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDto> { new ActivityDto("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDto("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
 
             DsfDataMergeActivity dataMergeActivity = new DsfDataMergeActivity { Result = "[[Result]]" };
             dataMergeActivity.MergeCollection.Add(new DataMergeDTO("[[rec().a]]", "Index", "6", 1, "[[b]]", "Left"));
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         public void SequenceActivityFindMissingStrategy_GetActivityFields_WithAssignAndDecision_ReturnsAllVariables()
         {
             //------------Setup for test--------------------------
-            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDto> { new ActivityDto("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDto("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
 
             DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity { OnErrorVariable = "[[error]]" };
 

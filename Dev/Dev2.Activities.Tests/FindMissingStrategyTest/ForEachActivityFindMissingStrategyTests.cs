@@ -75,7 +75,7 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         [TestMethod]
         public void GetActivityFieldsOffDsfForEachActivityWithADsfMultiAssignActivityInsideItExpectedAllFindMissingFieldsToBeReturned()
         {
-            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDto> { new ActivityDto("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDto("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
+            DsfMultiAssignActivity multiAssignActivity = new DsfMultiAssignActivity { FieldsCollection = new List<ActivityDTO> { new ActivityDTO("[[AssignRight1]]", "[[AssignLeft1]]", 1), new ActivityDTO("[[AssignRight2]]", "[[AssignLeft2]]", 2) } };
             DsfForEachActivity activity = new DsfForEachActivity
                                           {
                                               ForEachElementName = "5",
