@@ -155,6 +155,7 @@ namespace Warewolf.UI.Load.Specs
         [When("I start the Studio")]
         public void StartStudio()
         {
+            Assert.IsTrue(ScenarioContext.Current.ContainsKey("studioProcess"), "This test expects the Close the Studio step to have run before this step. To start the Studio that was stopped in that step.");
             var studioProcess = ScenarioContext.Current.Get<String>("studioProcess");
             var startInfo = new ProcessStartInfo
             {
