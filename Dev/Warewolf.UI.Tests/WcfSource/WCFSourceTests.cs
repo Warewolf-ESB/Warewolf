@@ -4,6 +4,7 @@ using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
 using Warewolf.UI.Tests.WcfSource.WcfSourceUIMapClasses;
 using System.ServiceModel;
 using System;
+using System.Diagnostics;
 
 namespace Warewolf.UI.Tests
 {
@@ -11,7 +12,7 @@ namespace Warewolf.UI.Tests
     public class WcfSourceTests
     {
         ServiceHost host;
-        const string hostName = "http://localhost/UITestWcfEndpointService";
+        const string hostName = "http://localhost:3144/UITestWcfEndpointService";
 
         [TestCleanup]
         public void Close_WCF_Endpoint()
@@ -36,8 +37,10 @@ namespace Warewolf.UI.Tests
         [TestInitialize()]
         public void MyTestInitialize()
         {
-            host = new ServiceHost(typeof(UITestWcfEndpointService).ToString(), new Uri(hostName));
+            host = new ServiceHost(typeof(UITestWcfEndpointService));
+            host.Open();
             UIMap.SetPlaybackSettings();
+            Debugger.Break();
             UIMap.AssertStudioIsRunning();
         }
         
