@@ -8,6 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using System.ComponentModel;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
@@ -51,12 +52,14 @@ namespace Dev2.Studio.Core.Models
             {
                 if(!string.IsNullOrEmpty(TagName))
                 {
-                    return $"d.Get(\"{TagName}\",AmbientDataList)";
+                    return string.Format("d.Get(\"{0}\",AmbientDataList)", TagName);
                 }
                 return string.Empty;
             }
         }
         public bool IsValid => true;
+
+        #region IDataErrorInfo Members
 
         public string Error => null;
 
@@ -90,15 +93,22 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-        string ValidateStringCannotBeNull(string propertyName, string value)
+        private string ValidateStringCannotBeNull(string propertyName, string value)
         {
             string error = null;
 
-            if (Selected && string.IsNullOrEmpty(value))
+            if(Selected)
             {
-                error = string.Format(ErrorResource.IsRequired, propertyName);
+                if(string.IsNullOrEmpty(value))
+                {
+                    error = string.Format(ErrorResource.IsRequired, propertyName);
+
+                }
             }
+
             return error;
         }
+
+        #endregion
     }
 }

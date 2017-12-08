@@ -59,7 +59,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
             int row = 1;
             foreach(var variable in xpathDtos)
             {
-                xPath.ResultsCollection.Add(new XPathDto(variable.Item1, variable.Item2, row, true));
+                xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
             scenarioContext.Add("activity", xPath);

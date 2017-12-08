@@ -37,8 +37,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithEvaluatedSingleExpression()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
@@ -57,11 +57,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void RecursiveEvaluation()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[recset]]", "gRec", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[field]]", "opt", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[recset]]", "gRec", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[field]]", "opt", fieldCollection.Count));
 
-            fieldCollection.Add(new ActivityDto("[[cRec(1).opt]]", "[[[[recset]]().[[field]]]]", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]]", "[[[[recset]]().[[field]]]]", fieldCollection.Count));
             SetupArguments(
                             @"<DataList>
   <cRec>
@@ -102,9 +102,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithEvaluatedDoubleExpressionSameRecordSet()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[cRec().display]]", "[[gRec().display]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec().display]]", fieldCollection.Count));
 
             const string data = "<ADL><gRec><opt>Value1</opt><display>display1</display></gRec></ADL>";
 
@@ -125,8 +125,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithEvaluatedSingleExpressionMultRecords()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
 
             const string data = "<root><gRec><opt>Value1</opt><display>display1</display></gRec></root>";
 
@@ -145,9 +145,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithEvaluatedDoubleExpressionMultRecords()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[cRec().display]]", "[[gRec().display]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[gRec().opt]]", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[cRec().display]]", "[[gRec().display]]", fieldCollection.Count));
 
             const string data = "<ADL><gRec><opt>Value1</opt><display>display1</display></gRec></ADL>";
 
@@ -169,14 +169,14 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithEvaluatedRecursiveRightSingleAssignMultRecords()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[rsElement]]", "gRec", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[rsFieldElement]]", "opt", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[gRec(1).opt]]", "Value1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[gRec(1).display]]", "display1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[gRec(2).opt]]", "Value2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[gRec(2).display]]", "display2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", "[[[[rsElement]]().[[rsFieldElement]]]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[rsElement]]", "gRec", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[rsFieldElement]]", "opt", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[gRec(1).opt]]", "Value1", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[gRec(1).display]]", "display1", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "Value2", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[gRec(2).display]]", "display2", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "[[[[rsElement]]().[[rsFieldElement]]]]", fieldCollection.Count));
 
             const string data = "<root><rsElement></rsElement><rsFieldElement></rsFieldElement><gRec><opt></opt><display></display></gRec></root>";
 
@@ -195,9 +195,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithEvaluatedMultLeftIndexInBoundsExpressionMultRecords()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec(1).opt]]", "[[gRec().opt]]", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[cRec(1).display]]", "[[gRec().display]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]]", "[[gRec().opt]]", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[cRec(1).display]]", "[[gRec().display]]", fieldCollection.Count));
 
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
@@ -219,8 +219,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MultiAssignTenAtOnce_Expected_MultiAssignCorrectlySetsAllScalarValues()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testName1]]", "bob", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testName1]]", "bob", fieldCollection.Count));
             SetupArguments(
                             ActivityStrings.NewScalarShape
                           , ActivityStrings.NewScalarShape
@@ -237,8 +237,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MultiAssignDateFormat_Expected_MultiAssignCorrectlySetsCorrectDateValues()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testName1]]", "!~calculation~!now()!~~calculation~!", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testName1]]", "!~calculation~!now()!~~calculation~!", fieldCollection.Count));
             SetupArguments(
                             ActivityStrings.NewScalarShape
                           , ActivityStrings.NewScalarShape
@@ -253,8 +253,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MultiAssignWithAnEmptyField_Expected_FieldInDataListNotAssignedValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec(1).opt]]", "[[gRec().opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec(1).opt]]", "[[gRec().opt]]", fieldCollection.Count));
             fieldCollection[0].FieldName = "";
 
             SetupArguments(
@@ -273,9 +273,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MultiAssignWithAnEmptyValue_Expected_FieldInDataListNotAssignedValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testValue1]]", "bob", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[testName1]]", "jim", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testValue1]]", "bob", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[testName1]]", "jim", fieldCollection.Count));
             fieldCollection[0].FieldValue = "";
             fieldCollection[1].FieldValue = "";
             SetupArguments(
@@ -294,8 +294,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MultiAssignWithSpecialCharsInValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testValue1]]", "somevalue", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testValue1]]", "somevalue", fieldCollection.Count));
             fieldCollection[0].FieldValue = "testValue@#";
 
             SetupArguments(
@@ -315,9 +315,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithAddingOneRecSets()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testRecSet1().testRec1]]", "testRecValue1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("", "", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testRecSet1().testRec1]]", "testRecValue1", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("", "", fieldCollection.Count));
             SetupArguments(
                             ActivityStrings.recsetDataListShape
                           , "<root></root>"
@@ -336,8 +336,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithAddingTenRecSets_Expected_RecordSetPopulatedToIndex()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testRecSet1(10).testRec1]]", "testRecValue1", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testRecSet1(10).testRec1]]", "testRecValue1", fieldCollection.Count));
 
             SetupArguments(
                                         ActivityStrings.recsetDataListShape
@@ -357,8 +357,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithEditingExistingRecSets_Expected_RecordSetDataOverwritten()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testRecSet1(1).testRec1]]", "testRecValue1", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testRecSet1(1).testRec1]]", "testRecValue1", fieldCollection.Count));
 
             SetupArguments(
                             ActivityStrings.recsetDataListShape
@@ -379,12 +379,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void ScalarInRecordset_Expected_MultiAssignCorrectlyIdentifiesField()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
 
-            fieldCollection.Add(new ActivityDto("[[a]]", "1", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[b]]", "2", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[c]]", "abctest", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[recset().a]]", "abc123", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[a]]", "1", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[b]]", "2", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[c]]", "abctest", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[recset().a]]", "abc123", fieldCollection.Count));
 
             SetupArguments(
                 ActivityStrings.scalar_in_recordset_adl
@@ -405,8 +405,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void AssignRecordSetWithAppendRecordAndNoExistingRecordExpectedRecordInFirst()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", "New Value", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", "New Value", fieldCollection.Count));
 
             SetupArguments(
                             @"<root>
@@ -428,8 +428,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithCalculationOnBlankRecordSetExpectedCalculationReplacesBlankWithZero()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[scalar]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec().opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[scalar]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec().opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                                         @"<root>
@@ -454,8 +454,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MultiAssignWithAppendCalculationToSameBlankRecordSetAndBlankIndexExpectedValueInFirst()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec().opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec().opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                                         @"<root>
@@ -479,8 +479,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithAppendCalculationToSameBlankRecordSetAndStaredIndexExpectedValueInFirst()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[cRec().opt]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec(*).opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[cRec().opt]]", GlobalConstants.CalculateTextConvertPrefix + "sum([[cRec(*).opt]])+1" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                                         @"<root>
@@ -505,9 +505,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithImpliedConcatenationExpectedCorrectSetsScalarValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[var]]", "var", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[var]]", "[[var]]iable", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[var]]", "var", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[var]]", "[[var]]iable", fieldCollection.Count));
 
             SetupArguments(
                                         @"<root>
@@ -529,8 +529,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssignWithExplicitConcatenationExpectedCorrectSetsScalarValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[var]]", GlobalConstants.CalculateTextConvertPrefix + "concatenate(\"variable\", \"variable\")" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[var]]", GlobalConstants.CalculateTextConvertPrefix + "concatenate(\"variable\", \"variable\")" + GlobalConstants.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                                         @"<root>
@@ -557,8 +557,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void StarToStar_Expected_AllValuesOverwrittenWithRecordSetFrom()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec(*).opt]]", "[[cRec(*).opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec(*).opt]]", fieldCollection.Count));
 
             const string shape = @"<ADL>
 <gRec>
@@ -599,8 +599,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Star_To_NoIndex_Expected_ValuesAppendedToRecordSet()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec().opt]]", "[[cRec(*).opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec().opt]]", "[[cRec(*).opt]]", fieldCollection.Count));
 
             const string shape = @"<ADL>
 <gRec>
@@ -631,8 +631,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void NoIndex_To_Star_LastValueOverwritesAllCurrentDataListValues()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec(*).opt]]", "[[cRec().opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec().opt]]", fieldCollection.Count));
 
             const string dl = @"<ADL>
   <cRec>
@@ -664,8 +664,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void Index_To_Star_Expected_AllValuesOverwrittenByIndexValue()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec(*).opt]]", "[[cRec(2).opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec(*).opt]]", "[[cRec(2).opt]]", fieldCollection.Count));
 
 
             const string dl = @"<ADL>
@@ -703,8 +703,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void Star_To_Index_Expected_IndexSetToLastValueOfAssignedRecordSet()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec(2).opt]]", "[[cRec(*).opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "[[cRec(*).opt]]", fieldCollection.Count));
 
             const string shape = @"<ADL>
 <gRec>
@@ -736,8 +736,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void StarToScalar_Expected_ScalarSetToLastValueInRecordSet()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testScalar]]", "[[cRec(*).opt]]", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testScalar]]", "[[cRec(*).opt]]", fieldCollection.Count));
             SetupArguments(
                             @"<root>
   <cRec>
@@ -768,9 +768,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfBaseActivity_GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec(1).opt]]", "\"testData\"", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[gRec(2).opt]]", "some value [[gRec(1).opt]] another", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec(1).opt]]", "\"testData\"", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "some value [[gRec(1).opt]] another", fieldCollection.Count));
             var act = new DsfDotNetMultiAssignActivity { OutputMapping = null, FieldsCollection = fieldCollection };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
@@ -784,9 +784,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecursiveEvaluateRecordset_WhenDataContainsQuotes_ShouldEvaluateWithoutExtraEscaping()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[gRec(1).opt]]", "\"testData\"", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[gRec(2).opt]]", "some value [[gRec(1).opt]] another", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[gRec(1).opt]]", "\"testData\"", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[gRec(2).opt]]", "some value [[gRec(1).opt]] another", fieldCollection.Count));
 
             TestStartNode = new FlowStep
             {
@@ -808,9 +808,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecursiveEvaluateScalar_WhenDataContainsQuotes_ShouldEvaluateWithoutExtraEscaping()
         {
 
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[testScalar]]", "\"testData\"", fieldCollection.Count));
-            fieldCollection.Add(new ActivityDto("[[testScalar]]", "some value [[testScalar]] another", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[testScalar]]", "\"testData\"", fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[testScalar]]", "some value [[testScalar]] another", fieldCollection.Count));
 
             TestStartNode = new FlowStep
             {
@@ -835,8 +835,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssign_CalculateMode_PrefixEncasing_Test()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[Variable]]", DsfDotNetMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", DsfDotNetMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)", fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -856,8 +856,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssign_CalculateMode_SuffixEncasing_Test()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[Variable]]", "sum(5)" + DsfDotNetMultiAssignActivity.CalculateTextConvertSuffix, fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", "sum(5)" + DsfDotNetMultiAssignActivity.CalculateTextConvertSuffix, fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -878,8 +878,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssign_CalculateMode_ValidEncasing_Test()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[Variable]]", String.Format(DsfDotNetMultiAssignActivity.CalculateTextConvertFormat, "sum(5)"), fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfDotNetMultiAssignActivity.CalculateTextConvertFormat, "sum(5)"), fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -900,9 +900,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssign_CalculateMode_ValidComplexExpression()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
             var expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
-            fieldCollection.Add(new ActivityDto("[[Variable]]", String.Format(DsfDotNetMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfDotNetMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -922,8 +922,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiAssign_ErrorHandeling_Expected_ErrorTag()
         {
-            var fieldCollection = new ObservableCollection<ActivityDto>();
-            fieldCollection.Add(new ActivityDto("[[//().rec]]", "testData", fieldCollection.Count));
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            fieldCollection.Add(new ActivityDTO("[[//().rec]]", "testData", fieldCollection.Count));
 
             SetupArguments(
                             "<ADL><Variable></Variable></ADL>"
@@ -947,9 +947,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDto> fieldsCollection = new List<ActivityDto>
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
             {
-                new ActivityDto("[[result]]", "[[rs(*).val]] [[result]]", 1),
+                new ActivityDTO("[[result]]", "[[rs(*).val]] [[result]]", 1),
             };
 
             DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
@@ -974,9 +974,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDto> fieldsCollection = new List<ActivityDto>
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
             {
-                new ActivityDto("[[result]]", "[[rs(*).val]]", 1),
+                new ActivityDTO("[[result]]", "[[rs(*).val]]", 1),
             };
 
             DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
@@ -1001,9 +1001,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDto> fieldsCollection = new List<ActivityDto>
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
             {
-                new ActivityDto("[[rs(*).val]]", "abc", 1),
+                new ActivityDTO("[[rs(*).val]]", "abc", 1),
             };
 
             DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
@@ -1028,9 +1028,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDto> fieldsCollection = new List<ActivityDto>
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
             {
-                new ActivityDto("[[rs(*).val]]", "[[result]]", 1),
+                new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
 
             DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
@@ -1051,9 +1051,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDto> fieldsCollection = new List<ActivityDto>
+            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
             {
-                new ActivityDto("[[rs(*).val]]", "[[result]]", 1),
+                new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
 
             DsfDotNetMultiAssignActivity act = new DsfDotNetMultiAssignActivity { FieldsCollection = fieldsCollection };
@@ -1072,7 +1072,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDto> fieldCollection, string outputMapping = null)
+        private void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
             {

@@ -69,7 +69,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:ActivityDto}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextVariable}"
@@ -101,7 +101,7 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
 
-                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:ActivityDto}">
+                <DataGridTemplateColumn Width="*" d:DataContext="{d:DesignInstance Type=activities:ActivityDTO}">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <ui:IntellisenseTextBox DefaultText="{Binding WatermarkTextValue}"

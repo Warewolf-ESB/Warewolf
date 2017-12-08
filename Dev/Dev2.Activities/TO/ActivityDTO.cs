@@ -29,29 +29,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// <summary>
     /// Used for activties
     /// </summary>
-
-    public class ActivityDto : ValidatedObject, IDev2TOFn
-
+    
+    public class ActivityDTO : ValidatedObject, IDev2TOFn
+    
     {
         string _fieldName;
         string _fieldValue;
         int _indexNumber;
 
         bool _isFieldNameFocused;
-        bool _isFieldValueFocused;
-        string _errorMessage;
+        private bool _isFieldValueFocused;
+        private string _errorMessage;
 
-        public ActivityDto()
+        public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)
         {
         }
 
-        public ActivityDto(string fieldName, string fieldValue, int indexNumber)
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber)
             : this(fieldName, fieldValue, indexNumber, false)
         {
         }
 
-        public ActivityDto(string fieldName, string fieldValue, int indexNumber, bool inserted)
+        public ActivityDTO(string fieldName, string fieldValue, int indexNumber, bool inserted)
         {
             Inserted = inserted;
             FieldName = fieldName;
@@ -66,8 +66,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
+            
         }
 
         [FindMissing]
@@ -123,14 +125,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            var result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
+            bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
 
 
         public bool CanAdd()
         {
-            var result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
+            bool result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
             return result;
         }
 

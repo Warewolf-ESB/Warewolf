@@ -41,7 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             BuildShapeAndTestData();
 
-            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
             var multiAssign = new DsfMultiAssignActivity();
 
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 
             scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -81,11 +81,11 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
 
             if (fieldCollection == null)
             {
-                fieldCollection = new List<ActivityDto>();
+                fieldCollection = new List<ActivityDTO>();
                 scenarioContext.Add("fieldCollection", fieldCollection);
             }
 
-            fieldCollection.Add(new ActivityDto(variable, value, 1, true));
+            fieldCollection.Add(new ActivityDTO(variable, value, 1, true));
         }
 
         [Given(@"I have a variable ""(.*)"" with a value of ""(.*)""")]

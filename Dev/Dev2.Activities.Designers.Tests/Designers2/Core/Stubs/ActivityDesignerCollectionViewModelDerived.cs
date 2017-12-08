@@ -16,7 +16,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers.Tests.Designers2.Core.Stubs
 {
-    public class ActivityDesignerCollectionViewModelDerived : ActivityCollectionDesignerViewModel<ActivityDto>
+    public class ActivityDesignerCollectionViewModelDerived : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
         public ActivityDesignerCollectionViewModelDerived(ModelItem modelItem)
             : base(modelItem)

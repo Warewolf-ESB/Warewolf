@@ -116,8 +116,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.Controls
             {
                 var indexNumber = i + 1;
                 var dto = blankFieldAndValues[i]
-                    ? new ActivityDto("", "", indexNumber)
-                    : new ActivityDto("field" + indexNumber, "value" + indexNumber, indexNumber, i == 0);
+                    ? new ActivityDTO("", "", indexNumber)
+                    : new ActivityDTO("field" + indexNumber, "value" + indexNumber, indexNumber, i == 0);
 
                 modelItemCollection.Add(dto);
             }

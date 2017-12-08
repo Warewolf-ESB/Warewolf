@@ -29,7 +29,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     
     public class XPathActivityTests : BaseActivityUnitTest
     {
-        IList<XPathDto> _resultsCollection = new List<XPathDto>();
+        IList<XPathDTO> _resultsCollection = new List<XPathDTO>();
         private const string Source = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
 
         /// <summary>
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             if(_resultsCollection == null)
             {
-                _resultsCollection = new List<XPathDto>();
+                _resultsCollection = new List<XPathDTO>();
             }
             _resultsCollection.Clear();
         }
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void XPath_Execute_WhenLoadingTestResultsFile_ExpectParsableXML()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "//type/method", 1));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, "", _resultsCollection);
 
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod] // - OK
         public void EmptySourceStringExpectedNoData()
         {
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "//type/method", 1));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, "", _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
@@ -102,7 +102,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void ScalarExpectedPathsAndInsertToScalarLastValue()
         {
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "//type/method", 1));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
             const string Expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void ScalarExpectedWithXPathInScalarPathsAndInsertToScalarLastValue()
         {
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "[[xpath]]", 1));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpath]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpath/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpath>//type/method</xpath><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
@@ -148,8 +148,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void XPathActivity_Execute_MultipleScalars_XPathExecuteAndInsertMutipleScalars()
         {
 
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "//type/method/@name", 1));
-            _resultsCollection.Add(new XPathDto("[[OutVar2]]", "//type/method/@signature", 2));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
+            _resultsCollection.Add(new XPathDTO("[[OutVar2]]", "//type/method/@signature", 2));
             SetUpActivityArguments();
             IDSFDataObject result = ExecuteProcess();
 
@@ -175,7 +175,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void XPathActivity_Execute_ScalarWithXPathInRecset_XPathExecuteAndInsertMutipleScalars()
         {
 
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "[[xpaths(*).path]]", 1));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "[[xpaths(*).path]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
@@ -200,7 +200,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecsetWithXPathInRecsetExpectedXPathExecuteAndInsertMutipleScalars()
         {
 
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "[[xpaths(*).path]]", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "[[xpaths(*).path]]", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
@@ -219,8 +219,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("XPathActivity_OnExecute")]
         public void MixedScalarsAndRecordsetWithIndexExpectedXPathEvalInsertMutipleScalarAndRecordsets()
         {
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "//type/method/@name", 1));
-            _resultsCollection.Add(new XPathDto("[[recset1(2).field1]]", "//type/method/@signature", 2));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(2).field1]]", "//type/method/@signature", 2));
 
             SetUpActivityArguments();
 
@@ -249,8 +249,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void XPathActivity_Execute_MixedScalarsAndRecordsetWithoutIndex_XPathValuesToEndInsertingMutipleScalarAndRecordsets()
         {
 
-            _resultsCollection.Add(new XPathDto("[[OutVar1]]", "//type/method/@name", 1));
-            _resultsCollection.Add(new XPathDto("[[recset1().field1]]", "//type/method/@signature", 2));
+            _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1().field1]]", "//type/method/@signature", 2));
 
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root></root>", dataSplitPreDataList, Source, _resultsCollection);
@@ -281,8 +281,8 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         public void MutiRecsetsWithNoIndexExpectedXPathResultsAppendToTheRecordsets()
         {
-            _resultsCollection.Add(new XPathDto("[[recset1().rec1]]", "//type/method/@name", 1));
-            _resultsCollection.Add(new XPathDto("[[recset1().field1]]", "//type/method/@signature", 2));
+            _resultsCollection.Add(new XPathDTO("[[recset1().rec1]]", "//type/method/@name", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1().field1]]", "//type/method/@signature", 2));
 
             SetupArguments("<root></root>", "<ADL><xmlData/><recset1>\r\n\t\t<field1/>\r\n\t\t<rec1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>", Source, _resultsCollection);
             IDSFDataObject result = ExecuteProcess();
@@ -310,7 +310,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecsetWithStarExpectedXPathsResultsOverwriteRecordsFromIndex1()
         {
 
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//type/method/@signature", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//type/method/@signature", 1));
 
             SetUpActivityArguments();
 
@@ -337,7 +337,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void RecsetWithStarExpectedXPaths_InsideForEach_ShouldRespect_UpdateValueForRecordsetIndex()
         {
 
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//type/method/@signature", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//type/method/@signature", 1));
 
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             var act = new DsfXPathActivity { SourceString = Source, ResultsCollection = _resultsCollection };
@@ -392,7 +392,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void XPath_Execute_RecordsetWithStar_OneXPathResultUpserted()
         {
             //init
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>", "<x><a>1</a></x>", _resultsCollection);
 
             //exe
@@ -414,7 +414,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_UpdateForEachInputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             //------------Execute Test---------------------------
@@ -431,7 +431,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void GetOutputs_Called_ShouldReturnListWithResultValueInIt()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
@@ -447,7 +447,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_UpdateForEachInputs_MoreThan1Updates_Updates()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             var tuple1 = new Tuple<string, string>("//x/a/text()", "Test");
@@ -467,7 +467,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_UpdateForEachOutputs_NullUpdates_DoesNothing()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             act.UpdateForEachOutputs(null);
@@ -483,7 +483,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_UpdateForEachOutputs_MoreThan1Updates_Updates()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             var tuple1 = new Tuple<string, string>("Test", "Test");
@@ -502,7 +502,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_UpdateForEachOutputs_1Updates_UpdateCommandResult()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             var tuple1 = new Tuple<string, string>("[[recset1(*).field1]]", "Test");
@@ -520,7 +520,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_GetForEachInputs_WhenHasExpression_ReturnsInputList()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             //------------Execute Test---------------------------
@@ -539,7 +539,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfXPathActivity_GetForEachOutputs_WhenHasResult_ReturnsOutputList()
         {
             //------------Setup for test--------------------------
-            _resultsCollection.Add(new XPathDto("[[recset1(*).field1]]", "//x/a/text()", 1));
+            _resultsCollection.Add(new XPathDTO("[[recset1(*).field1]]", "//x/a/text()", 1));
             var act = new DsfXPathActivity { ResultsCollection = _resultsCollection, SourceString = "xml" };
 
             //------------Execute Test---------------------------
@@ -562,7 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
 
-        private void SetupArguments(string currentDL, string testData, string sourceString, IList<XPathDto> resultCollection)
+        private void SetupArguments(string currentDL, string testData, string sourceString, IList<XPathDTO> resultCollection)
         {
             TestStartNode = new FlowStep
             {

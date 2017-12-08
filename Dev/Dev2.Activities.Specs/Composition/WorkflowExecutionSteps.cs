@@ -2609,11 +2609,11 @@ namespace Dev2.Activities.Specs.Composition
                     value = serialize;
                 }
 
-                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDto(variable, value, 1, true));
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
@@ -2634,11 +2634,11 @@ namespace Dev2.Activities.Specs.Composition
                 var endOfRecordsetName = variable.IndexOf('(');
                 variable = variable.Substring(0, endOfRecordsetName) + "_" + recordsetNameRandomizer.ToString() + variable.Substring(endOfRecordsetName, variable.Length - endOfRecordsetName);
 
-                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDto(variable, value, 1, true));
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
@@ -2659,11 +2659,11 @@ namespace Dev2.Activities.Specs.Composition
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
 
-                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                assignActivity.FieldsCollection.Add(new ActivityDto(variable, value, 1, true));
+                assignActivity.FieldsCollection.Add(new ActivityDTO(variable, value, 1, true));
             }
             _commonSteps.AddActivityToActivityList(parentName, assignName, assignActivity);
         }
@@ -2972,7 +2972,7 @@ namespace Dev2.Activities.Specs.Composition
                     value = $"!~calculation~!{value}!~~calculation~!";
                 }
 
-                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDto> fieldCollection);
+                _scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -3124,9 +3124,9 @@ namespace Dev2.Activities.Specs.Composition
                 ,
                 DisplayName = xpathName
                 ,
-                ResultsCollection = new List<XPathDto>
+                ResultsCollection = new List<XPathDTO>
                 {
-                    new XPathDto("[[singleValue]]", source, 1, true)
+                    new XPathDTO("[[singleValue]]", source, 1, true)
                 }
             };
             _commonSteps.AddActivityToActivityList(parentName, xpathName, dsfXPathActivity);
@@ -3377,7 +3377,7 @@ namespace Dev2.Activities.Specs.Composition
                     activity.SourceString = valueToSplit;
                 }
                 _commonSteps.AddVariableToVariableList(variable);
-                activity.ResultsCollection.Add(new DataSplitDto(variable, type, at, 1, include, true));
+                activity.ResultsCollection.Add(new DataSplitDTO(variable, type, at, 1, include, true));
             }
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, activity);

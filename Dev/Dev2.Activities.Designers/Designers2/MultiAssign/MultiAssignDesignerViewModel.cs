@@ -20,7 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Activities.Designers2.MultiAssign
 {
-    public class MultiAssignDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDto>
+    public class MultiAssignDesignerViewModel : ActivityCollectionDesignerViewModel<ActivityDTO>
     {
         readonly Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public MultiAssignDesignerViewModel(ModelItem modelItem)
@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers2.MultiAssign
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            var dto = mi.GetCurrentValue() as ActivityDto;
+            var dto = mi.GetCurrentValue() as ActivityDTO;
             if(dto == null)
             {
                 yield break;

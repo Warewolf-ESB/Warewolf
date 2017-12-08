@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestCategory("DataSplitDesignerViewModel_Constructor")]
         public void DataSplitDesignerViewModel_Constructor__ModelItemIsValid_ListHasFourItems()
         {
-            var items = new List<DataSplitDto> { new DataSplitDto() };
+            var items = new List<DataSplitDTO> { new DataSplitDTO() };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             Assert.AreEqual(6, viewModel.ItemsList.Count);
         }
@@ -40,7 +40,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestCategory("DataSplitDesignerViewModel_Constructor")]
         public void DataSplitDesignerViewModel_Constructor__ModelItemIsValid_CollectionNameIsSetToResultsCollection()
         {
-            var items = new List<DataSplitDto> { new DataSplitDto() };
+            var items = new List<DataSplitDTO> { new DataSplitDTO() };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             Assert.AreEqual("ResultsCollection", viewModel.CollectionName);
         }
@@ -80,12 +80,12 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestCategory("DataSplitDesignerViewModel_Constructor")]
         public void DataSplitDesignerViewModel_Constructor_ModelItemIsInitializedWith4Items_ResultsCollectionHasFourItems()
         {
-            var items = new List<DataSplitDto>
+            var items = new List<DataSplitDTO>
             {
-                new DataSplitDto("", DataSplitDto.SplitTypeNone, "", 0),
-                new DataSplitDto("", DataSplitDto.SplitTypeNone, "", 0),
-                new DataSplitDto("", DataSplitDto.SplitTypeNone, "", 0),
-                new DataSplitDto("", DataSplitDto.SplitTypeNone, "", 0)
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0),
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0),
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0),
+                new DataSplitDTO("", DataSplitDTO.SplitTypeNone, "", 0)
             };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             dynamic mi = viewModel.ModelItem;
@@ -97,17 +97,17 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
         public void DataSplitDesignerViewModel_OnSplitTypeChanged_EnableAt_SetCorrectly()
         {
-            VerifySplitTypeAgainstEnabledAt(DataSplitDto.SplitTypeIndex, true);
-            VerifySplitTypeAgainstEnabledAt(DataSplitDto.SplitTypeChars, true);
-            VerifySplitTypeAgainstEnabledAt(DataSplitDto.SplitTypeNewLine, false);
-            VerifySplitTypeAgainstEnabledAt(DataSplitDto.SplitTypeSpace, false);
-            VerifySplitTypeAgainstEnabledAt(DataSplitDto.SplitTypeTab, false);
-            VerifySplitTypeAgainstEnabledAt(DataSplitDto.SplitTypeEnd, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeIndex, true);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeChars, true);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeNewLine, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeSpace, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeTab, false);
+            VerifySplitTypeAgainstEnabledAt(DataSplitDTO.SplitTypeEnd, false);
         }
 
         static void VerifySplitTypeAgainstEnabledAt(string splitType, bool expectedEnableAt)
         {
-            var items = new List<DataSplitDto> { new DataSplitDto("", splitType, ",", 0) };
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, ",", 0) };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             viewModel.SplitTypeUpdatedCommand.Execute(0);
             dynamic mi = viewModel.ModelItemCollection[0];
@@ -122,17 +122,17 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         [TestCategory("DataSplitDesignerViewModel_OnSplitTypeChanged")]
         public void DataSplitDesignerViewModel_OnSplitTypeChanged_IsEscapeCharEnabled_SetCorrectly()
         {
-            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDto.SplitTypeIndex, false);
-            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDto.SplitTypeChars, true);
-            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDto.SplitTypeNewLine, true);
-            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDto.SplitTypeSpace, true);
-            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDto.SplitTypeTab, true);
-            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDto.SplitTypeEnd, false);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeIndex, false);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeChars, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeNewLine, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeSpace, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeTab, true);
+            VerifySplitTypeAgainstIsEscapeCharEnabled(DataSplitDTO.SplitTypeEnd, false);
         }
 
         static void VerifySplitTypeAgainstIsEscapeCharEnabled(string splitType, bool expectedIsEscapeCharEnabled)
         {
-            var items = new List<DataSplitDto> { new DataSplitDto("", splitType, "", 0) { EscapeChar = "'" } };
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", splitType, "", 0) { EscapeChar = "'" } };
             var viewModel = new DataSplitDesignerViewModel(CreateModelItem(items));
             viewModel.SplitTypeUpdatedCommand.Execute(0);
             dynamic mi = viewModel.ModelItemCollection[0];
@@ -143,7 +143,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         }
 
 
-        static ModelItem CreateModelItem(IEnumerable<DataSplitDto> items, string displayName = "Split")
+        static ModelItem CreateModelItem(IEnumerable<DataSplitDTO> items, string displayName = "Split")
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDataSplitActivity());
             modelItem.SetProperty("DisplayName", displayName);
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsNotEmpty_DoesNotHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<DataSplitDto> { new DataSplitDto("", DataSplitDto.SplitTypeChars, "", 0) };
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", DataSplitDTO.SplitTypeChars, "", 0) };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", "a,b,c");
             var viewModel = new DataSplitDesignerViewModel(mi);
@@ -189,7 +189,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
         public void DataSplitDesignerViewModel_ValidateThis_SourceStringIsEmptyOrWhiteSpace_DoesHaveErrors()
         {
             //------------Setup for test--------------------------
-            var items = new List<DataSplitDto> { new DataSplitDto("", DataSplitDto.SplitTypeChars, "", 0) };
+            var items = new List<DataSplitDTO> { new DataSplitDTO("", DataSplitDTO.SplitTypeChars, "", 0) };
             var mi = CreateModelItem(items);
             mi.SetProperty("SourceString", " ");
             var viewModel = new DataSplitDesignerViewModel(mi);
@@ -219,7 +219,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             mi.SetProperty("DisplayName", "Split");
             mi.SetProperty("SourceString", "a,b");
 
-            var dto = new DataSplitDto("a]]", DataSplitDto.SplitTypeIndex, "a", 0);
+            var dto = new DataSplitDTO("a]]", DataSplitDTO.SplitTypeIndex, "a", 0);
 
             
             var miCollection = mi.Properties["ResultsCollection"].Collection;
@@ -276,7 +276,7 @@ namespace Dev2.Activities.Designers.Tests.DataSplit
             mi.SetProperty("DisplayName", "Split");
             mi.SetProperty("SourceString", "a,b");
 
-            var dto = new DataSplitDto("a]]", DataSplitDto.SplitTypeIndex, "a", 0);
+            var dto = new DataSplitDTO("a]]", DataSplitDTO.SplitTypeIndex, "a", 0);
 
             
             var miCollection = mi.Properties["ResultsCollection"].Collection;
