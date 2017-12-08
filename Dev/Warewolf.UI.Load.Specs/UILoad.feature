@@ -29,13 +29,15 @@ Scenario: Studio Large Debug Out UI Load Test
 Scenario: Studio Large Variable List UI Load Test
 	Given The Warewolf Studio is running
 	When I open "Variable List UI Load Testing" workflow
-	#Given I start the timer
-	#When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
-	#Then the timer duration is between "180" and "360" seconds
 	Given I start the timer
 	When I Remove Assign Row 1 With Context Menu
 	And I Click VariableList Scalar Row1 Delete Button
 	Then the timer duration is between "30" and "60" seconds
+	Given I start the timer
+	When I Open Assign Tool Large View
+	And I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
+	And I Click Assign Tool Large View Done Button
+	Then the timer duration is between "180" and "360" seconds
 	
 Scenario: Studio With Many Large Workflow Tabs Open UI Load Test
 	Given there are "20" duplicates of All Tools workflow in the explorer
