@@ -43,7 +43,7 @@ namespace Warewolf.Studio.ViewModels
             LoadLocalHostEnvironment(localhostEnvironment);
             ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
-            ShowConnectControl = true;           
+            ShowConnectControl = true;
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             _statsArea = statsArea;
             foreach (var environmentViewModel in _environments)
