@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,10 +16,9 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
-using System;
+using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     public class FindRecordsTO : ValidatedObject, IDev2TOFn
     {
@@ -39,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             : this("Match On", "Equal", 0)
         {
         }
-        
+
         public IList<string> WhereOptionList { get; set; }
 
         public FindRecordsTO(string searchCriteria, string searchType, int indexNum)
@@ -68,10 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string From
         {
-            get
-            {
-                return _from;
-            }
+            get => _from;
             set
             {
                 _from = value;
@@ -85,10 +81,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string To
         {
-            get
-            {
-                return _to;
-            }
+            get => _to;
             set
             {
                 _to = value;
@@ -102,10 +95,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string SearchCriteria
         {
-            get
-            {
-                return _searchCriteria;
-            }
+            get => _searchCriteria;
             set
             {
                 _searchCriteria = value;
@@ -118,10 +108,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string SearchType
         {
-            get
-            {
-                return _searchType;
-            }
+            get => _searchType;
             set
             {
                 if (value != null)
@@ -137,18 +124,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-
         }
 
         public bool IsSearchCriteriaEnabled
         {
-            get
-            {
-                return _isSearchCriteriaEnabled;
-            }
+            get => _isSearchCriteriaEnabled;
             set
             {
                 _isSearchCriteriaEnabled = value;
@@ -158,10 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsSearchCriteriaVisible
         {
-            get
-            {
-                return _isSearchCriteriaVisible;
-            }
+            get => _isSearchCriteriaVisible;
             set
             {
                 _isSearchCriteriaVisible = value;
@@ -171,10 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNum;
-            }
+            get => _indexNum;
             set
             {
                 _indexNum = value;
@@ -240,10 +216,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     break;
                 case "SearchCriteria":
-     
+
                     ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1", new VariableUtils()));
                     break;
                 default:
+                    Dev2Logger.Info("No Rule Set for the Find Records TO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
                     break;
             }
 

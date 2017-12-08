@@ -14,8 +14,7 @@ namespace Dev2.Activities.Sharepoint
 {
     public class SharepointUtils
     {
-
-        public IEnumerable<SharepointReadListTo> GetValidReadListItems(IList<SharepointReadListTo> sharepointReadListTos)
+        public static IEnumerable<SharepointReadListTo> GetValidReadListItems(IList<SharepointReadListTo> sharepointReadListTos)
         {
             if (sharepointReadListTos == null)
             {
@@ -46,7 +45,7 @@ namespace Dev2.Activities.Sharepoint
                 {
                     var searchTo = sharepointSearchTo;
                     var sharepointFieldTo = fields.FirstOrDefault(to => to.InternalName == searchTo.InternalName);
-                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo,update);
+                    var buildQueryFromTo = BuildQueryFromTo(sharepointSearchTo, env, sharepointFieldTo, update);
                     if (buildQueryFromTo != null)
                     {
                         queryString.AppendLine(string.Join(Environment.NewLine, buildQueryFromTo));
@@ -58,21 +57,20 @@ namespace Dev2.Activities.Sharepoint
                 }
                 queryString.Append("</Where></Query></View>");
                 camlQuery.ViewXml = queryString.ToString();
-
             }
             return camlQuery;
         }
 
-        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo,int update)
+        IEnumerable<string> BuildQueryFromTo(SharepointSearchTo sharepointSearchTo, IExecutionEnvironment env, ISharepointFieldTo sharepointFieldTo, int update)
         {
             var warewolfEvalResult = env.Eval(sharepointSearchTo.ValueToMatch, update);
             var fieldType = sharepointFieldTo.GetFieldType();
             if (sharepointSearchTo.SearchType == "In")
             {
-                var startSearchTerm = string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef>", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName);
-               
-                startSearchTerm+="<Values>";
-                if(warewolfEvalResult.IsWarewolfAtomListresult)
+                var startSearchTerm = $"{SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType)}<FieldRef Name=\"{sharepointSearchTo.InternalName}\"></FieldRef>";
+
+                startSearchTerm += "<Values>";
+                if (warewolfEvalResult.IsWarewolfAtomListresult)
                 {
                     if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult listResult)
                     {
@@ -82,7 +80,7 @@ namespace Dev2.Activities.Sharepoint
                             if (valueString.Contains(","))
                             {
                                 var listOfValues = valueString.Split(',');
-                                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
+                                startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
                             }
                             else
                             {
@@ -100,12 +98,12 @@ namespace Dev2.Activities.Sharepoint
                         if (valueString.Contains(","))
                         {
                             var listOfValues = valueString.Split(',');
-                            startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value));
+                            startSearchTerm = listOfValues.Select(listOfValue => CastWarewolfValueToCorrectType(listOfValue, sharepointFieldTo.Type)).Aggregate(startSearchTerm, (current, value) => current + $"<Value Type=\"{fieldType}\">{value}</Value>");
                         }
                         else
                         {
                             var value = CastWarewolfValueToCorrectType(valueString, sharepointFieldTo.Type);
-                            startSearchTerm += string.Format("<Value Type=\"{0}\">{1}</Value>", fieldType, value);
+                            startSearchTerm += $"<Value Type=\"{fieldType}\">{value}</Value>";
                         }
                     }
                 }
@@ -115,16 +113,15 @@ namespace Dev2.Activities.Sharepoint
             }
             else
             {
-                
                 var iterator = new WarewolfIterator(warewolfEvalResult);
                 while (iterator.HasMoreData())
                 {
-                    yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"{2}\">{3}</Value>{4}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName, fieldType, CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));
+                    yield return $"{SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType)}<FieldRef Name=\"{sharepointSearchTo.InternalName}\"></FieldRef><Value Type=\"{fieldType}\">{CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type)}</Value>{SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType)}";
                 }
             }
         }
 
-        public object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)
+        public static object CastWarewolfValueToCorrectType(object value, SharepointFieldType type)
         {
             object returnValue = null;
             switch (type)
@@ -139,7 +136,7 @@ namespace Dev2.Activities.Sharepoint
                 case SharepointFieldType.DateTime:
                     returnValue = Convert.ToDateTime(value, CultureInfo.InvariantCulture);
                     break;
-                case SharepointFieldType.Integer:                
+                case SharepointFieldType.Integer:
                     returnValue = Convert.ToInt32(value);
                     break;
                 case SharepointFieldType.Text:
@@ -147,6 +144,7 @@ namespace Dev2.Activities.Sharepoint
                     returnValue = value.ToString();
                     break;
                 default:
+                    Dev2Logger.Info("No Cast type for the Sharepoint Property Name: " + type, GlobalConstants.WarewolfInfo);
                     break;
             }
             return returnValue;
