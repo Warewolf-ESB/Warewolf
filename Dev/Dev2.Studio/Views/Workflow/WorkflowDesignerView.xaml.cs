@@ -43,7 +43,7 @@ namespace Dev2.Studio.Views.Workflow
             }
             if (e.ChangedButton == MouseButton.Right)
             {
-                DependencyObject node = e.OriginalSource as DependencyObject;
+                var node = e.OriginalSource as DependencyObject;
                 while (node != null)
                 {
                     if (node is ActivityDesigner)

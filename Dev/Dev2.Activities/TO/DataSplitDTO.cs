@@ -191,21 +191,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "OutputVariable":
                     if (!string.IsNullOrEmpty(OutputVariable))
                     {
-                        var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "0");
+                        var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "0", new VariableUtils());
                         ruleSet.Add(outputExprRule);
-                        ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
+                        ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
                     }
                     break;
                 case "At":
                     switch(SplitType)
                     {
                         case SplitTypeIndex:
-                            var atIndexExprRule = new IsValidExpressionRule(() => At, datalist, "1");
+                            var atIndexExprRule = new IsValidExpressionRule(() => At, datalist, "1", new VariableUtils());
                             ruleSet.Add(atIndexExprRule);
                             ruleSet.Add(new IsPositiveNumberRule(() => atIndexExprRule.ExpressionValue));
                             break;
                         case SplitTypeChars:
-                            var atCharsExprRule = new IsValidExpressionRule(() => At, datalist, ",");
+                            var atCharsExprRule = new IsValidExpressionRule(() => At, datalist, ",", new VariableUtils());
                             ruleSet.Add(atCharsExprRule);
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;

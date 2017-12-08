@@ -156,7 +156,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add(new object[] { "Bob" });
             dt.Rows.Add(new object[] { "Dave" });
@@ -166,11 +166,11 @@ namespace Dev2.Sql.Tests
             var sqlServer = new OracleServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
+                var pvt = new PrivateObject(sqlServer);
                 pvt.SetField("_connection", conn.Object);
                 pvt.SetField("_command",mockCommand.Object);
                 //------------Execute Test---------------------------
-                IDbDataParameter[] param = new IDbDataParameter[] { new SqlParameter("a", "a"), new SqlParameter("b", "b") };
+                var param = new IDbDataParameter[] { new SqlParameter("a", "a"), new SqlParameter("b", "b") };
 
                 OracleServer.AddParameters(mockCommand.Object,param);
                 Assert.AreEqual(2,added.Count);
@@ -200,7 +200,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add(new object[] { "Bob" });
             dt.Rows.Add(new object[] { "Dave" });
@@ -211,7 +211,7 @@ namespace Dev2.Sql.Tests
             var sqlServer = new OracleServer(factory.Object);
             try
             {
-                PrivateObject pvt = new PrivateObject(sqlServer);
+                var pvt = new PrivateObject(sqlServer);
                 pvt.SetField("_connection", conn.Object);
                 pvt.SetField("_command", mockCommand.Object);
                 //------------Execute Test---------------------------
@@ -241,7 +241,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add(new object[] { "Bob" });
             dt.Rows.Add(new object[] { "Dave" });
@@ -277,7 +277,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add(new object[] { "Bob" });
             dt.Rows.Add(new object[] { "Dave" });
@@ -291,7 +291,7 @@ namespace Dev2.Sql.Tests
             try
             {
 
-                PrivateObject pvt = new PrivateObject(sqlServer);
+                var pvt = new PrivateObject(sqlServer);
                 pvt.SetField("_connection", conn.Object);
                 //------------Execute Test---------------------------
                 sqlServer.CreateCommand();

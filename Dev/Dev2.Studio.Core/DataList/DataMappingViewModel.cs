@@ -26,15 +26,15 @@ namespace Dev2.Studio.ViewModels.DataList
     {
         #region Locals
 
-        private IWebActivity _activity;
+        IWebActivity _activity;
 
-        private bool _isInitialLoad;
+        bool _isInitialLoad;
 
-        private string _activityName;
-        private string _xmlOutput;
+        string _activityName;
+        string _xmlOutput;
 
-        private IInputOutputViewModel _currentlySelectedOutput;
-        private IInputOutputViewModel _currentlySelectedInput;
+        IInputOutputViewModel _currentlySelectedOutput;
+        IInputOutputViewModel _currentlySelectedInput;
 
         #endregion Locals
 
@@ -79,7 +79,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 activeDataList = DataListSingleton.DataListAsXmlString;
             }
 
-            ActivityDataMappingBuilder ioBuilder = new ActivityDataMappingBuilder
+            var ioBuilder = new ActivityDataMappingBuilder
             {
                 DataList = activeDataList,
             };
@@ -176,7 +176,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string GetInputString(IList<IInputOutputViewModel> inputData)
         {
-            string inputString = string.Empty;
+            var inputString = string.Empty;
             IList<IDev2Definition> inputs = new List<IDev2Definition>();
             if(inputData.Count != 0)
             {
@@ -191,7 +191,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string GetOutputString(IList<IInputOutputViewModel> outputData)
         {
-            string outputString = string.Empty;
+            var outputString = string.Empty;
             IList<IDev2Definition> outputs = new List<IDev2Definition>();
             if(outputData.Count != 0)
             {

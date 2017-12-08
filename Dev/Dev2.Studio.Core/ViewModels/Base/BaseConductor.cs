@@ -17,8 +17,8 @@ namespace Dev2.Studio.Core.ViewModels.Base
     public class BaseConductor<T> : Conductor<T>.Collection.OneActive, IDisposable
         where T : IScreen
     {
-        private readonly IEventAggregator _eventPublisher;
-        private bool _disposed;
+        readonly IEventAggregator _eventPublisher;
+        bool _disposed;
 
         public IEventAggregator EventPublisher => _eventPublisher;
 

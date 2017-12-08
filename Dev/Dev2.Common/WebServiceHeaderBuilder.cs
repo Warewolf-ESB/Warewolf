@@ -36,7 +36,7 @@ namespace Dev2.Common
             }
         }
 
-        private static void SetupHeader(IHeaderRegion region, NameValue jsonHeader)
+        static void SetupHeader(IHeaderRegion region, NameValue jsonHeader)
         {
             if (region.Headers == null ||
                 region.Headers.All(value => string.IsNullOrEmpty(value.Value) && string.IsNullOrEmpty(value.Name)))

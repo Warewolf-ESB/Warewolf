@@ -116,7 +116,7 @@ namespace Dev2.Activities.Sharepoint
             else
             {
                 
-                WarewolfIterator iterator = new WarewolfIterator(warewolfEvalResult);
+                var iterator = new WarewolfIterator(warewolfEvalResult);
                 while (iterator.HasMoreData())
                 {
                     yield return string.Format("{0}<FieldRef Name=\"{1}\"></FieldRef><Value Type=\"{2}\">{3}</Value>{4}", SharepointSearchOptions.GetStartTagForSearchOption(sharepointSearchTo.SearchType), sharepointSearchTo.InternalName, fieldType, CastWarewolfValueToCorrectType(iterator.GetNextValue(), sharepointFieldTo.Type), SharepointSearchOptions.GetEndTagForSearchOption(sharepointSearchTo.SearchType));

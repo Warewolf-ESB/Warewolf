@@ -42,7 +42,7 @@ namespace Dev2.TO
 
         string CalculateDestinationNameFromSourceName(string sourceName)
         {
-            LanguageAST.LanguageExpression parsed = FsInteropFunctions.ParseLanguageExpression(sourceName,0);
+            var parsed = FsInteropFunctions.ParseLanguageExpression(sourceName,0);
             if (parsed.IsScalarExpression)
             {
                 return ((LanguageAST.LanguageExpression.ScalarExpression)parsed).Item;
@@ -63,7 +63,7 @@ namespace Dev2.TO
             {
                 if (_evalResultAsObject == null)
                 {
-                    CommonFunctions.WarewolfEvalResult e = EvalResult;
+                    var e = EvalResult;
                     _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
                     if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
                     {
@@ -204,7 +204,7 @@ namespace Dev2.TO
 
         object CreateArrayOfObjectsFromRecordSet(int i)
         {
-            JsonMappingEvaluated jsonMappingEvaluated = Evaluations.First();
+            var jsonMappingEvaluated = Evaluations.First();
             return new JProperty(
                         jsonMappingEvaluated.Simple.DestinationName,
                 GetEvalResult(jsonMappingEvaluated.EvalResult, i));
@@ -232,7 +232,7 @@ namespace Dev2.TO
         {
             if (evalResult.IsWarewolfAtomListresult)
             {
-                WarewolfAtomList<DataStorage.WarewolfAtom> lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
+                var lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
                 if (i > lst.Count)
                 {
                     return null;
@@ -249,9 +249,9 @@ namespace Dev2.TO
             }
             if (evalResult.IsWarewolfRecordSetResult)
             {
-                DataStorage.WarewolfRecordset recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+                var recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
 
-                KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>>[] data = recset.Data.ToArray();
+                var data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
                 for (int j = 0; j < recset.Count; j++)
                 {

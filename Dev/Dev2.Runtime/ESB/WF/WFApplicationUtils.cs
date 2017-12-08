@@ -122,12 +122,12 @@ namespace Dev2.Runtime.ESB.WF
                 if (debugState.StateType == StateType.End)
                 {
                     debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
-                    string dataObjectExecutionId = dataObject.ExecutionID.ToString();
+                    var dataObjectExecutionId = dataObject.ExecutionID.ToString();
                     try
                     {
                         var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
                         var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
-                        string executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
+                        var executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
                         if (dataObject.Environment.HasErrors())
                         {
                             Dev2Logger.Error(executionLogginResultString, dataObjectExecutionId);
@@ -150,7 +150,7 @@ namespace Dev2.Runtime.ESB.WF
         }
 
 
-        private static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
+        static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
         {
             var debugState = new DebugState
             {
@@ -180,9 +180,9 @@ namespace Dev2.Runtime.ESB.WF
             return debugState;
         }
 
-        private readonly Func<IDebugDispatcher> _getDebugDispatcher = () => DebugDispatcher.Instance;
+        readonly Func<IDebugDispatcher> _getDebugDispatcher = () => DebugDispatcher.Instance;
 
-        private List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
+        List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var results = new List<DebugItem>();
@@ -210,7 +210,7 @@ namespace Dev2.Runtime.ESB.WF
             return results;
         }
 
-        private string GetVariableName(IDev2Definition value)
+        string GetVariableName(IDev2Definition value)
         {
             string variableName;
             if (value.IsJsonArray && value.Name.StartsWith("@"))
@@ -229,20 +229,20 @@ namespace Dev2.Runtime.ESB.WF
             return variableName;
         }
 
-        private void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
+        void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
         {
             var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);
         }
 
-        private readonly IResourceCatalog _lazyCat = ResourceCatalog.Instance;
+        readonly IResourceCatalog _lazyCat = ResourceCatalog.Instance;
         /// <summary>
         /// Finds the service shape.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="resourceId">The ID of the resource</param>
         /// <returns></returns>
-        private string FindServiceShape(Guid workspaceId, Guid resourceId)
+        string FindServiceShape(Guid workspaceId, Guid resourceId)
         {
             const string EmptyDataList = "<DataList></DataList>";
             var resource = _lazyCat.GetResource(workspaceId, resourceId);

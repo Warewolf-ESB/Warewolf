@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Interfaces;
+using System;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -66,36 +67,8 @@ namespace Warewolf.Studio.ViewModels
                 case enSourceType.ODBC:
                     _shell.NewOdbcSource(string.Empty);
                     break;
-                case enSourceType.WebService:
-                    break;
-                case enSourceType.DynamicService:
-                    break;
-                case enSourceType.ManagementDynamicService:
-                    break;
-                case enSourceType.PluginSource:
-                    break;
-                case enSourceType.Unknown:
-                    break;
-                case enSourceType.Dev2Server:
-                    break;
-                case enSourceType.EmailSource:
-                    break;
-                case enSourceType.WebSource:
-                    break;
-                case enSourceType.OauthSource:
-                    break;
-                case enSourceType.SharepointServerSource:
-                    break;
-                case enSourceType.RabbitMQSource:
-                    break;
-                case enSourceType.ExchangeSource:
-                    break;
-                case enSourceType.WcfSource:
-                    break;
-                case enSourceType.ComPluginSource:
-                    break;
                 default:
-                    break;
+                    throw new ArgumentException("Unrecognized Source Type: " + type.ToString());
             }
         }
 
@@ -118,36 +91,8 @@ namespace Warewolf.Studio.ViewModels
                 case enSourceType.ODBC:
                     _shell.EditOdbcResource(selectedSource);
                     break;
-                case enSourceType.WebService:
-                    break;
-                case enSourceType.DynamicService:
-                    break;
-                case enSourceType.ManagementDynamicService:
-                    break;
-                case enSourceType.PluginSource:
-                    break;
-                case enSourceType.Unknown:
-                    break;
-                case enSourceType.Dev2Server:
-                    break;
-                case enSourceType.EmailSource:
-                    break;
-                case enSourceType.WebSource:
-                    break;
-                case enSourceType.OauthSource:
-                    break;
-                case enSourceType.SharepointServerSource:
-                    break;
-                case enSourceType.RabbitMQSource:
-                    break;
-                case enSourceType.ExchangeSource:
-                    break;
-                case enSourceType.WcfSource:
-                    break;
-                case enSourceType.ComPluginSource:
-                    break;
                 default:
-                    break;
+                    throw new ArgumentException("Unrecognized Source Type: " + type.ToString());
             }
         }
 

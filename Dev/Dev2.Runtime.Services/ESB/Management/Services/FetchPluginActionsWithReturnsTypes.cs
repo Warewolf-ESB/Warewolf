@@ -5,11 +5,9 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
@@ -21,7 +19,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchPluginActionsWithReturnsTypes : DefaultEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _catalog;
+        readonly IResourceCatalog _catalog;
 
         public FetchPluginActionsWithReturnsTypes(IResourceCatalog catalog)
         {
@@ -33,11 +31,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         }
 
-        public override string HandlesType()
-        {
-            return "FetchPluginActionsWithReturnsTypes";
-        }
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -46,14 +39,14 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var pluginSource = serializer.Deserialize<PluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
                 
-                PluginServices services = new PluginServices();
+                var services = new PluginServices();
                 var src = Resources.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 if (ns != null)
                 {
-                    PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
+                    var svc = new PluginService { Namespace = ns.FullName, Source = src };
 
                     var serviceMethodList = services.MethodsWithReturns(svc, Guid.Empty, Guid.Empty);
-                    List<IPluginAction> methods = serviceMethodList.Select(a => new PluginAction
+                    var methods = serviceMethodList.Select(a => new PluginAction
                     {
                         FullName = ns.FullName,
                         Inputs = a.Parameters.Select(x => new ServiceInput(x.Name, x.DefaultValue ?? "")
@@ -111,17 +104,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
-
         public IResourceCatalog Resources => _catalog ?? ResourceCatalog.Instance;
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchPluginActionsWithReturnsTypes";
     }
 }

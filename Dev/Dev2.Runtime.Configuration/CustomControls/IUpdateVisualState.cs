@@ -23,7 +23,7 @@ namespace System.Windows.Controls
     /// InteractionHelper with access to the type's UpdateVisualState method.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1064:ExceptionsShouldBePublic", Justification = "This is not an exception class.")]
-    internal interface IUpdateVisualState
+interface IUpdateVisualState
     {
         /// <summary>
         /// Update the visual state of the control.

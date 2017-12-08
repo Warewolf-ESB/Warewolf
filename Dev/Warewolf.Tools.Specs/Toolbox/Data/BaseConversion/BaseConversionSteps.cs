@@ -22,7 +22,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
     [Binding]
     public class BaseConversionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public BaseConversionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         public void WhenTheBaseConversionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

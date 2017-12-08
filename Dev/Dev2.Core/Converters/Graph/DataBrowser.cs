@@ -22,8 +22,8 @@ namespace Unlimited.Framework.Converters.Graph
 
         public IEnumerable<IPath> Map(object data)
         {
-            IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
-            IMapper mapper = interrogator.CreateMapper(data);
+            var interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
+            var mapper = interrogator.CreateMapper(data);
 
             if (mapper == null)
             {
@@ -35,15 +35,15 @@ namespace Unlimited.Framework.Converters.Graph
 
         public object SelectScalar(IPath path, object data)
         {
-            IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
-            INavigator navigator = interrogator.CreateNavigator(data, path.GetType());
+            var interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
+            var navigator = interrogator.CreateNavigator(data, path.GetType());
 
             if (navigator == null)
             {
                 throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path));
             }
 
-            object value = navigator.SelectScalar(path);
+            var value = navigator.SelectScalar(path);
 
             navigator.Dispose();
 
@@ -52,15 +52,15 @@ namespace Unlimited.Framework.Converters.Graph
 
         public IEnumerable<object> SelectEnumerable(IPath path, object data)
         {
-            IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
-            INavigator navigator = interrogator.CreateNavigator(data, path.GetType());
+            var interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
+            var navigator = interrogator.CreateNavigator(data, path.GetType());
 
             if (navigator == null)
             {
                 throw new Exception(string.Format(ErrorResource.CouldntCreateNavigator, path));
             }
 
-            IEnumerable<object> values = navigator.SelectEnumerable(path);
+            var values = navigator.SelectEnumerable(path);
 
             navigator.Dispose();
 
@@ -73,8 +73,8 @@ namespace Unlimited.Framework.Converters.Graph
 
             if (paths.Count > 0)
             {
-                IInterrogator interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
-                INavigator navigator = interrogator.CreateNavigator(data, paths[0].GetType());
+                var interrogator = InterrogatorFactory.CreateInteregator(data.GetType());
+                var navigator = interrogator.CreateNavigator(data, paths[0].GetType());
 
                 if (navigator == null)
                 {

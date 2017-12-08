@@ -50,7 +50,7 @@ namespace Dev2.Tests.Runtime.Services
         public void HandlesType_GivenServiceIsCreated_ShouldHandleCorrectly()
         {
             //---------------Set up test pack-------------------
-            DuplicateResourceService resourceService = new DuplicateResourceService();
+            var resourceService = new DuplicateResourceService();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Services
         public void CreateServiceEntry_GivenServiceIsCreated_ShouldCreateCorrectDynamicService()
         {
             //---------------Set up test pack-------------------
-            DuplicateResourceService resourceService = new DuplicateResourceService();
+            var resourceService = new DuplicateResourceService();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
                     DuplicatedItems = new List<IExplorerItem> { resource.Object }
                 });
             var workScpace = new Mock<IWorkspace>();
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            var resourceService = new DuplicateResourceService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -115,11 +115,11 @@ namespace Dev2.Tests.Runtime.Services
                     DuplicatedItems = new List<IExplorerItem> { resource.Object }
                 });
             var workScpace = new Mock<IWorkspace>();
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            var resourceService = new DuplicateResourceService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             try
             {
                 stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>
@@ -152,7 +152,7 @@ namespace Dev2.Tests.Runtime.Services
                     DuplicatedItems = new List<IExplorerItem> { resource.Object }
                 });
             var workScpace = new Mock<IWorkspace>();
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            var resourceService = new DuplicateResourceService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -180,11 +180,11 @@ namespace Dev2.Tests.Runtime.Services
                 .Throws(new Exception("Catalog Error"));
             var workScpace = new Mock<IWorkspace>();
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DuplicateResourceService resourceService = new DuplicateResourceService(resourceCatalog.Object);
+            var resourceService = new DuplicateResourceService(resourceCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
-            StringBuilder stringBuilder = new StringBuilder();
+            var stringBuilder = new StringBuilder();
             try
             {
                 stringBuilder = resourceService.Execute(new Dictionary<string, StringBuilder>

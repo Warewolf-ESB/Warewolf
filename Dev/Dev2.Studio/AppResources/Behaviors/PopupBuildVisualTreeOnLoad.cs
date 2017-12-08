@@ -22,7 +22,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             AssociatedObject.Loaded += AssociatedObject_Loaded;
         }
 
-        private void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
+        void AssociatedObject_Loaded(object sender, RoutedEventArgs e)
         {
             AssociatedObject.Loaded -= AssociatedObject_Loaded;
 

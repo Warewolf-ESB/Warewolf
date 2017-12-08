@@ -18,8 +18,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[scalar]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
             env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
-            WarewolfAtomList<DataStorage.WarewolfAtom> atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
-            CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
+            var newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             Assert.IsNotNull(newWarewolfAtomListresult);
             newWarewolfAtomListresult.Item.AddSomething(DataStorage.WarewolfAtom.NewDataString("KingDom Of The Zulu"));
             var debugEvalResult = new DebugItemWarewolfAtomListResult(newWarewolfAtomListresult, warewolfAtomResult, "newValue", "Variable", "", "", "");
@@ -43,8 +43,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[scalar]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
             env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
-            WarewolfAtomList<DataStorage.WarewolfAtom> atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
-            CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
+            var newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             Assert.IsNotNull(newWarewolfAtomListresult);
             newWarewolfAtomListresult.Item.AddSomething(DataStorage.WarewolfAtom.NewDataString("KingDom Of The Zulu"));
             var debugEvalResult = new DebugItemWarewolfAtomListResult(newWarewolfAtomListresult, warewolfAtomResult, "newValue", "[[@Variable()]]", "", "", "");
@@ -69,8 +69,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[scalar]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
             env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
-            WarewolfAtomList<DataStorage.WarewolfAtom> atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
-            CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
+            var newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             Assert.IsNotNull(newWarewolfAtomListresult);
             newWarewolfAtomListresult.Item.AddSomething(DataStorage.WarewolfAtom.NewDataString("KingDom Of The Zulu"));
             var debugEvalResult = new DebugItemWarewolfAtomListResult(newWarewolfAtomListresult, warewolfAtomResult, "newValue", "[[Variable().Name]]", "", "", "");
@@ -96,8 +96,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             env.Setup(environment => environment.EvalToExpression(It.IsAny<string>(), It.IsAny<int>())).Returns("[[@scalar()]]");
             var warewolfAtomResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("{\"PolicyNo\":\"A0003\",\"DateId\":32,\"SomeVal\":\"Bob\"}"));
             env.Setup(environment => environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(warewolfAtomResult);
-            WarewolfAtomList<DataStorage.WarewolfAtom> atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
-            CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
+            var atomList = new WarewolfAtomList<DataStorage.WarewolfAtom>(DataStorage.WarewolfAtom.NewDataString("Home"));
+            var newWarewolfAtomListresult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomListresult(atomList) as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             var debugEvalResult = new DebugItemWarewolfAtomListResult(newWarewolfAtomListresult, "newValue", "[[@home]]", "a", "b", "b", "");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------

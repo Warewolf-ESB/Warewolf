@@ -21,9 +21,6 @@ namespace Dev2.Common.Interfaces
         public IList<IServiceInput> Inputs { get; set; }
         public Type ReturnType { get; set; }
         public IList<INameValue> Variables { get; set; }
-        public string GetHashCodeBySource()
-        {
-            return FullName + Method;
-        }
+        public string GetHashCodeBySource() => FullName + Method;
     }
 }

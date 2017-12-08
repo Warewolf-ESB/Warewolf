@@ -20,7 +20,7 @@ namespace Dev2.Validation
 {
     public class IsValidCalculateRule : Rule<string>
     {
-        private readonly ISyntaxTreeBuilderHelper _syntaxBuilder;
+        readonly ISyntaxTreeBuilderHelper _syntaxBuilder;
 
         public IsValidCalculateRule(Func<string> getValue)
             : base(getValue)

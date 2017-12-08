@@ -17,7 +17,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Publish
     [Binding]
     public class PublishRabbitMqSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public PublishRabbitMqSteps(ScenarioContext scenarioContext)
         {
@@ -126,11 +126,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Publish
             var vm = scenarioContext.Get<RabbitMQPublishDesignerViewModel>("ViewModel");
             vm.SelectedRabbitMQSource = SourceDefinitions().FirstOrDefault(a => a.ResourceName == resourceName);
         }
-        private IEnumerable<IRabbitMQServiceSourceDefinition> SourceDefinitions()
+        IEnumerable<IRabbitMQServiceSourceDefinition> SourceDefinitions()
         {
             return new List<IRabbitMQServiceSourceDefinition>(new[]
             {
-                new RabbitMQServiceSourceDefinition(){ResourceName = "Test (localhost)"}, 
+                new RabbitMQServiceSourceDefinition(){ResourceName = "Test (localhost)"},
             });
         }
         [Given(@"RabbitMQ Source is Enabled")]

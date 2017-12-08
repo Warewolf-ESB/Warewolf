@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
     [Binding]
     public class FindIndexSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public FindIndexSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         [Given(@"a find index recordset")]
         public void GivenAFindIndexRecordset(Table table)
         {
-            List<TableRow> records = table.Rows.ToList();
+            var records = table.Rows.ToList();
 
             if (records.Count == 0)
             {
@@ -159,7 +159,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         public void WhenTheDataFindIndexToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -187,8 +187,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out string actualValue, out string error);
 
-            List<string> records = actualValue.Split(',').ToList();
-            List<TableRow> tableRows = table.Rows.ToList();
+            var records = actualValue.Split(',').ToList();
+            var tableRows = table.Rows.ToList();
 
             Assert.AreEqual(tableRows.Count, records.Count);
 

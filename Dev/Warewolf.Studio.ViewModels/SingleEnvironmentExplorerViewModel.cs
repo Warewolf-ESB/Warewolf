@@ -40,7 +40,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool FilterByType { get; set; }
+        bool FilterByType { get; set; }
 
         protected override async Task Refresh(bool refresh)
         {
@@ -56,11 +56,11 @@ namespace Warewolf.Studio.ViewModels
             IsRefreshing = false;
         }
 
-        private void Filter()
+        void Filter()
         {
-            if(!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrEmpty(SearchText))
             {
-                if(FilterByType)
+                if (FilterByType)
                 {
                     Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == "Folder" || a.ResourceType == "WorkflowService"));
                 }
@@ -71,7 +71,7 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if(FilterByType)
+                if (FilterByType)
                 {
                     Environments.First().Filter(a => a.ResourceType == "Folder" || a.ResourceType == "WorkflowService");
                 }

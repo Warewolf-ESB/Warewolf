@@ -128,7 +128,6 @@
     <Compile Include="ResourceHistory.cs" />
     <Compile Include="ServerSchedulerFactory.cs" />
     <Compile Include="ScheduledResource.cs" />
-    <Compile Include="InvalidScheduleException.cs" />
     <Compile Include="ScheduleTrigger.cs" />
     <Compile Include="ScheduledResourceModel.cs" />
     <Compile Include="Win32Sec.cs" />

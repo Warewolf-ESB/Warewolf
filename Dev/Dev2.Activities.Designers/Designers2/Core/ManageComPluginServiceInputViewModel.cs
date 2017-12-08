@@ -42,18 +42,18 @@ namespace Dev2.Activities.Designers2.Core
         readonly IComViewModel _viewmodel;
         readonly IComPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
-        private bool _okSelected;
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private IComPluginService _model;
-        private bool _pasteResponseVisible;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
+        bool _okSelected;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        IComPluginService _model;
+        bool _pasteResponseVisible;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
 
         public ManageComPluginServiceInputViewModel(IComViewModel model, IComPluginServiceModel serviceModel)
         {

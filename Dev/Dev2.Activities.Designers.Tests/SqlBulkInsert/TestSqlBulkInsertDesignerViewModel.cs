@@ -19,7 +19,7 @@ using Dev2.TO;
 
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
-    internal class TestSqlBulkInsertDesignerViewModel : SqlBulkInsertDesignerViewModel
+    class TestSqlBulkInsertDesignerViewModel : SqlBulkInsertDesignerViewModel
     {
         public TestSqlBulkInsertDesignerViewModel(ModelItem modelItem, IServer server, IEventAggregator eventPublisher)
             : base(modelItem, new SynchronousAsyncWorker(), server, eventPublisher)

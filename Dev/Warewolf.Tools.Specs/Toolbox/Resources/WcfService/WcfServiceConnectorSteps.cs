@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
     [Binding]
     public class WcfServiceConnectorSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public WcfServiceConnectorSteps(ScenarioContext scenarioContext)
         {

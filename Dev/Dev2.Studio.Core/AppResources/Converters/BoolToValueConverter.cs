@@ -28,9 +28,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? boolValue = value as bool?;
+            var boolValue = value as bool?;
 
-            if(boolValue == null)
+            if (boolValue == null)
             {
                 return Binding.DoNothing;
             }

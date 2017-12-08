@@ -27,7 +27,7 @@ namespace Dev2.Data.Tests
         [TestMethod]
         public void GivenResourceName_ResourceForTree_ToString_ShouldReturtnResourceName()
         {
-            ResourceForTree resourceForTree = new ResourceForTree();
+            var resourceForTree = new ResourceForTree();
             Assert.IsNotNull(resourceForTree);
             resourceForTree.ResourceName = "SomeName";
             var res = resourceForTree.ToString();

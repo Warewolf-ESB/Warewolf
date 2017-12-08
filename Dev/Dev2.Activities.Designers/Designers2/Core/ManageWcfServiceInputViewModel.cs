@@ -24,25 +24,25 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWcfServiceInputViewModel : IManageWcfServiceInputViewModel
     {
-        private readonly IGenerateOutputArea _generateOutputArea;
-        private readonly IGenerateInputArea _generateInputArea;
-        private bool _isEnabled;
-        private bool _pasteResponseAvailable;
-        private readonly IWcfEndPointViewModel _viewmodel;
-        private readonly IWcfServiceModel _serviceModel;
-        private bool _isGenerateInputsEmptyRows;
-        private bool _okSelected;
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private IWcfService _model;
-        private bool _pasteResponseVisible;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
+        bool _isEnabled;
+        bool _pasteResponseAvailable;
+        readonly IWcfEndPointViewModel _viewmodel;
+        readonly IWcfServiceModel _serviceModel;
+        bool _isGenerateInputsEmptyRows;
+        bool _okSelected;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        IWcfService _model;
+        bool _pasteResponseVisible;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
 
         public ManageWcfServiceInputViewModel(IWcfEndPointViewModel model, IWcfServiceModel serviceModel)
         {
@@ -85,7 +85,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void ResetOutputsView()
+        void ResetOutputsView()
         {
             IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;

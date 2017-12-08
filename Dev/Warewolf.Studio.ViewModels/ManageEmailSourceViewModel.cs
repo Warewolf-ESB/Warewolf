@@ -16,28 +16,28 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ManageEmailSourceViewModel : SourceBaseImpl<IEmailServiceSource>, IManageEmailSourceViewModel
     {
-        private string _hostName;
-        private string _userName;
-        private string _password;
-        private int _port;
-        private int _timeout;
-        private string _testMessage;
-        private string _emailFrom;
-        private string _emailTo;
+        string _hostName;
+        string _userName;
+        string _password;
+        int _port;
+        int _timeout;
+        string _testMessage;
+        string _emailFrom;
+        string _emailTo;
         string _resourceName;
-        private bool _enableSsl;
-        private bool _enableSslYes;
-        private bool _enableSslNo;
+        bool _enableSsl;
+        bool _enableSslYes;
+        bool _enableSslNo;
 
-        private IEmailServiceSource _emailServiceSource;
-        private readonly IManageEmailSourceModel _updateManager;
+        IEmailServiceSource _emailServiceSource;
+        readonly IManageEmailSourceModel _updateManager;
         CancellationTokenSource _token;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
         string _headerText;
-        private bool _enableSend;
-        private bool _isDisposed;
+        bool _enableSend;
+        bool _isDisposed;
 
         public ManageEmailSourceViewModel(IManageEmailSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator)
             : this(updateManager, aggregator)
@@ -181,7 +181,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SaveConnection()
+        void SaveConnection()
         {
             if (_emailServiceSource == null)
             {
@@ -220,7 +220,7 @@ namespace Warewolf.Studio.ViewModels
             TestPassed = false;
         }
 
-       public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
+        public Task<IRequestServiceNameViewModel> RequestServiceNameViewModel { get; set; }
 
         void Save(IEmailServiceSource source)
         {
@@ -480,7 +480,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void TestConnection()
+        void TestConnection()
         {
             _token = new CancellationTokenSource();
             var t = new Task(SetupProgressSpinner, _token.Token);

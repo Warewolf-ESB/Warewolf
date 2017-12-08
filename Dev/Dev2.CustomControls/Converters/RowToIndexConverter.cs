@@ -18,7 +18,7 @@ namespace Dev2.CustomControls.Converters
 {
     public class RowToIndexConverter : MarkupExtension, IValueConverter
     {
-        private static RowToIndexConverter _converter;
+        static RowToIndexConverter _converter;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

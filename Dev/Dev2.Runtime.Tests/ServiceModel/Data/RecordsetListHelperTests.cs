@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var jsonPath = new JsonPath();
             jsonPath.ActualPath = "OneRecordset().AnotherRecset()";
             //------------Execute Test---------------------------
-            Tuple<string, string> splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
+            var splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
             //------------Assert Results-------------------------
             Assert.AreEqual("OneRecordset", splitRecordsetAndFieldNames.Item1);
             Assert.AreEqual("AnotherRecset", splitRecordsetAndFieldNames.Item2);
@@ -43,7 +43,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var jsonPath = new JsonPath();
             jsonPath.ActualPath = "OneRecordset().AnotherRecset()";
             //------------Execute Test---------------------------
-            Tuple<string, string> splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
+            var splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
             //------------Assert Results-------------------------
             Assert.AreEqual("OneRecordset", splitRecordsetAndFieldNames.Item1);
             Assert.AreEqual("AnotherRecset", splitRecordsetAndFieldNames.Item2);
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var jsonPath = new JsonPath();
             jsonPath.ActualPath = "OneRecordset().AnotherRecset().AndAnotherRecset()";
             //------------Execute Test---------------------------
-            Tuple<string, string> splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
+            var splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
             //------------Assert Results-------------------------
             Assert.AreEqual("OneRecordset_AnotherRecset", splitRecordsetAndFieldNames.Item1);
             Assert.AreEqual("AndAnotherRecset", splitRecordsetAndFieldNames.Item2);
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var jsonPath = new JsonPath();
             jsonPath.ActualPath = "OneRecordset().AnotherRecset().AndAnotherRecset";
             //------------Execute Test---------------------------
-            Tuple<string, string> splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
+            var splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
             //------------Assert Results-------------------------
             Assert.AreEqual("OneRecordset_AnotherRecset", splitRecordsetAndFieldNames.Item1);
             Assert.AreEqual("AndAnotherRecset", splitRecordsetAndFieldNames.Item2);
@@ -88,7 +88,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             var jsonPath = new JsonPath();
             jsonPath.ActualPath = "ScalarValue";
             //------------Execute Test---------------------------
-            Tuple<string, string> splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
+            var splitRecordsetAndFieldNames = RecordsetListHelper.SplitRecordsetAndFieldNames(jsonPath);
             //------------Assert Results-------------------------
             Assert.AreEqual("", splitRecordsetAndFieldNames.Item1);
             Assert.AreEqual("ScalarValue", splitRecordsetAndFieldNames.Item2);

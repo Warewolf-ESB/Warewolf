@@ -162,7 +162,6 @@
     <Compile Include="ExtMethods\ObjectExtensions.cs" />
     <Compile Include="ExtMethods\StringExtension.cs" />
     <Compile Include="ExtMethods\TypeExtensions.cs" />
-    <Compile Include="FileResource.cs" />
     <Compile Include="GlobalConstants.cs" />
     <Compile Include="Interfaces\IAssemblyWrapper.cs" />
     <Compile Include="IncludeApi.cs" />
@@ -185,7 +184,6 @@
     <Compile Include="Patterns\SpookyAction.cs" />
     <Compile Include="PluginAction.cs" />
     <Compile Include="PluginConstructor.cs" />
-    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="PropertyApi.cs" />
     <Compile Include="RecordSetSearchPayload.cs" />
     <Compile Include="SaveResult.cs" />
@@ -209,11 +207,7 @@
     <Compile Include="Utils\StringTransform.cs" />
     <Compile Include="Utils\TextUtils.cs" />
     <Compile Include="Utils\VersionInfo.cs" />
-    <Compile Include="VersionConflictException.cs" />
     <Compile Include="WorkflowExecutionWatcher.cs" />
-    <Compile Include="Wrappers\DirectoryEntriesWrapper.cs" />
-    <Compile Include="Wrappers\DirectoryEntryFactory.cs" />
-    <Compile Include="Wrappers\DirectoryEntryWrapper.cs" />
     <Compile Include="Wrappers\DirectoryWrapper.cs" />
     <Compile Include="Wrappers\DomainWrapper.cs" />
     <Compile Include="Wrappers\DropboxClientWrapper.cs" />

@@ -38,8 +38,8 @@ namespace Dev2.FindMissingStrategies
         /// <returns>Returns all the fields in a list of strings</returns>
         public List<string> GetActivityFields(object activity)
         {
-            List<string> results = new List<string>();
-            Dev2FindMissingStrategyFactory stratFac = new Dev2FindMissingStrategyFactory();
+            var results = new List<string>();
+            var stratFac = new Dev2FindMissingStrategyFactory();
             if (activity is DsfForEachActivity forEachActivity)
             {
                 IFindMissingStrategy strategy;
@@ -84,11 +84,11 @@ namespace Dev2.FindMissingStrategies
                 }
             }
 
-            IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
-            foreach(PropertyInfo propertyInfo in properties)
+            var properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(activity);
+            foreach (PropertyInfo propertyInfo in properties)
             {
-                object property = propertyInfo.GetValue(activity, null);
-                if(property != null)
+                var property = propertyInfo.GetValue(activity, null);
+                if (property != null)
                 {
                     results.Add(property.ToString());
                 }

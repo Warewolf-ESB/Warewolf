@@ -10,12 +10,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using WarewolfCOMIPC.Client;
 
-
-
 namespace WarewolfCOMIPC
 {
-    
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
@@ -24,9 +21,8 @@ namespace WarewolfCOMIPC
                 return;
             }
 
-            string token = args[0];
-
-            // Create new named pipe with token from client
+            var token = args[0];
+            
             Console.WriteLine("Starting Server Pipe Stream");
             using (var pipe = new NamedPipeServerStream(token, PipeDirection.InOut, 253, PipeTransmissionMode.Message))
             {
@@ -36,12 +32,8 @@ namespace WarewolfCOMIPC
             }
         }
 
-        private static void AcceptMessagesFromPipe(NamedPipeServerStream pipe)
+        static void AcceptMessagesFromPipe(NamedPipeServerStream pipe)
         {
-
-
-            // Receive CallData from client
-            //var formatter = new BinaryFormatter();
             Console.WriteLine("IpcClient Connected to Server Pipe Stream");
             var serializer = new JsonSerializer();
             var sr = new StreamReader(pipe);
@@ -51,10 +43,9 @@ namespace WarewolfCOMIPC
             {
                 callData = serializer.Deserialize<string>(jsonTextReader);
             }
-            catch 
+            catch
             {
                 callData = null;
-                //
             }
             if (callData != null)
             {
@@ -69,9 +60,9 @@ namespace WarewolfCOMIPC
                     {
                         LoadLibrary(data, serializer, pipe);
                     }
-                    catch(Exception e)
+                    catch (Exception e)
                     {
-                        var newException = new Exception("Error executing COM",e);
+                        var newException = new Exception("Error executing COM", e);
                         var sw = new StreamWriter(pipe);
                         try
                         {
@@ -80,7 +71,7 @@ namespace WarewolfCOMIPC
                         catch
                         {
                             Console.WriteLine("IpcClient Data not read nor Deserialized to Server Pipe Stream");
-                        } 
+                        }
                         sw.Flush();
                         Console.WriteLine("Execution errored " + data.MethodToCall);
                     }
@@ -93,7 +84,7 @@ namespace WarewolfCOMIPC
             }
         }
 
-        private static void LoadLibrary(CallData data, JsonSerializer formatter, NamedPipeServerStream pipe)
+        static void LoadLibrary(CallData data, JsonSerializer formatter, NamedPipeServerStream pipe)
         {
             var execute = data.Execute;
             if (!string.IsNullOrEmpty(data.ExecuteType))
@@ -108,7 +99,7 @@ namespace WarewolfCOMIPC
                         Console.WriteLine("Executing GetType for:" + data.CLSID);
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
-                        Type dispatchedtype = DispatchUtility.GetType(objectInstance, false);
+                        var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
                         Console.WriteLine("Got Type:" + dispatchedtype.FullName);
 
                         Console.WriteLine("Serializing and sending:" + dispatchedtype.FullName);
@@ -123,9 +114,9 @@ namespace WarewolfCOMIPC
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var objectInstance = Activator.CreateInstance(type);
                         var dispatchedtype = DispatchUtility.GetType(objectInstance, false);
-                        MethodInfo[] methods = dispatchedtype.GetMethods();
+                        var methods = dispatchedtype.GetMethods();
 
-                        List<MethodInfoTO> methodInfos = methods
+                        var methodInfos = methods
                             .Select(info => new MethodInfoTO
                             {
                                 Name = info.Name,
@@ -193,7 +184,6 @@ namespace WarewolfCOMIPC
                     {
                         var type = Type.GetTypeFromCLSID(data.CLSID, true);
                         var loadedAssembly = type.Assembly;
-                        // ensure we flush out the rubbish that GAC brings ;)
                         var namespaces = loadedAssembly.GetTypes()
                             .Select(t => t.FullName)
                             .Distinct()
@@ -212,7 +202,7 @@ namespace WarewolfCOMIPC
             }
         }
 
-        private static object[] BuildValuedTypeParams(ParameterInfoTO[] setupInfo)
+        static object[] BuildValuedTypeParams(ParameterInfoTO[] setupInfo)
         {
             var valuedTypeList = new object[setupInfo.Length];
 
@@ -221,7 +211,7 @@ namespace WarewolfCOMIPC
                 var methodParameter = setupInfo[index];
 
                 var methodParameterTypeName = methodParameter.TypeName;
-                var type = Type.GetTypeFromProgID(methodParameterTypeName.Substring(0,methodParameterTypeName.IndexOf("&,",StringComparison.InvariantCultureIgnoreCase)));
+                var type = Type.GetTypeFromProgID(methodParameterTypeName.Substring(0, methodParameterTypeName.IndexOf("&,", StringComparison.InvariantCultureIgnoreCase)));
                 if (type != null)
                 {
                     BuildObjectType(type, methodParameter, valuedTypeList, index);
@@ -234,10 +224,10 @@ namespace WarewolfCOMIPC
             return valuedTypeList;
         }
 
-        private static void BuildPrimitiveType(string methodParameterTypeName, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
+        static void BuildPrimitiveType(string methodParameterTypeName, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
         {
             var type = Type.GetType(methodParameterTypeName);
-            if(type != null)
+            if (type != null)
             {
                 try
                 {
@@ -254,7 +244,7 @@ namespace WarewolfCOMIPC
             }
         }
 
-        private static void BuildObjectType(Type type, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
+        static void BuildObjectType(Type type, ParameterInfoTO methodParameter, object[] valuedTypeList, int index)
         {
             var obj = Activator.CreateInstance(type);
             if (JsonConvert.DeserializeObject(methodParameter.DefaultValue.ToString()) is JObject anonymousType)

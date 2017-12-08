@@ -14,15 +14,15 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private ManageComPluginServiceModel _target;
+        ManageComPluginServiceModel _target;
 
-        private Guid _localhostServerEnvironmentId;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IServer> _localhostServerMock;
-        private Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
+        Guid _localhostServerEnvironmentId;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IServer> _localhostServerMock;
+        Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
 
-        private Mock<IStudioUpdateManager> _mockStudioUpdateManager;
-        private Mock<IQueryManager> _mockQueryManager;
+        Mock<IStudioUpdateManager> _mockStudioUpdateManager;
+        Mock<IQueryManager> _mockQueryManager;
 
         #endregion Fields
 

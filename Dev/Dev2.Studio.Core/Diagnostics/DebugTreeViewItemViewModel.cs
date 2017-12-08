@@ -26,8 +26,8 @@ namespace Dev2.Studio.Core
         bool _isSelected;
         TContent _content;
         IDebugTreeViewItemViewModel _parent;
-        private bool? _mockSelected;
-        private string _testDescription;
+        bool? _mockSelected;
+        string _testDescription;
 
         protected DebugTreeViewItemViewModel()
         {

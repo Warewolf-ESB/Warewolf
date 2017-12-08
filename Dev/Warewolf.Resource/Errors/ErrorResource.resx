@@ -765,6 +765,9 @@
   <data name="MultipleResourcesFound" xml:space="preserve">
     <value>Multiple Resources found for Resource ID: {0}</value>
   </data>
+  <data name="NoResourcesFound" xml:space="preserve">
+    <value>No Resources found for Resource ID: {0}</value>
+  </data>
   <data name="MustBeRealNumber" xml:space="preserve">
     <value>must be a real number</value>
   </data>
@@ -1315,5 +1318,14 @@ Please contact your Windows System Administrator.</value>
   </data>
   <data name="ServerBusyHeader" xml:space="preserve">
     <value>Server is currently busy</value>
+  </data>
+  <data name="CaseConvertInputInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'StringToConvert' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="BaseConvertInputInvalidExpressionErrorTest" xml:space="preserve">
+    <value>'FromExpression' - Result - Invalid expression: opening and closing brackets don't match</value>
+  </data>
+  <data name="GatherSystemInfoInputInvalidExpressionErrorTest" xml:space="preserve">
+    <value>Result - Invalid expression: opening and closing brackets don't match</value>
   </data>
 </root>

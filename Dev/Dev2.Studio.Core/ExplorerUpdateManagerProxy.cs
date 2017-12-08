@@ -29,9 +29,9 @@ namespace Dev2.Studio.Core
         public void AddFolder(string path, string name, Guid id)
         {
             var controller = CommunicationControllerFactory.CreateController("AddFolderService");
-            string resourcePath = String.IsNullOrEmpty(path) ? name : $"{path}\\{name}";
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
-            ServerExplorerItem explorerItemModel = new ServerExplorerItem
+            var resourcePath = String.IsNullOrEmpty(path) ? name : $"{path}\\{name}";
+            var serialiser = new Dev2JsonSerializer();
+            var explorerItemModel = new ServerExplorerItem
             {
                 DisplayName = name,
                 ResourceType = "Folder",

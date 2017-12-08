@@ -21,7 +21,7 @@ namespace Dev2.Studio.AppResources.Converters
 {
     public class MessageBoxImageToSystemIconConverter : IValueConverter
     {
-        private static readonly IntPtr Hicon;
+        static readonly IntPtr Hicon;
 
         static MessageBoxImageToSystemIconConverter()
         {
@@ -65,7 +65,7 @@ namespace Dev2.Studio.AppResources.Converters
             throw new NotImplementedException();
         }
 
-        private BitmapSource BitmapSourceFromIcon(Icon icon)
+        BitmapSource BitmapSourceFromIcon(Icon icon)
         {
             return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }

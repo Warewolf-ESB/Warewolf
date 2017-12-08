@@ -16,9 +16,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         public void ToStringFullySetupObjectExpectedJsonSerializedObjectReturnedAsString()
         {
-            DropBoxSource testDropBoxSource = SetupDefaultDropBoxSource();
-            string actualDropBoxSourceToString = testDropBoxSource.ToString();
-            string expected = JsonConvert.SerializeObject(testDropBoxSource);
+            var testDropBoxSource = SetupDefaultDropBoxSource();
+            var actualDropBoxSourceToString = testDropBoxSource.ToString();
+            var expected = JsonConvert.SerializeObject(testDropBoxSource);
             Assert.AreEqual(expected, actualDropBoxSourceToString);
         }
 
@@ -26,8 +26,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void ToStringEmptyObjectExpected()
         {
             var testDropBoxSource = new DropBoxSource();
-            string actualSerializedDropBoxSource = testDropBoxSource.ToString();
-            string expected = JsonConvert.SerializeObject(testDropBoxSource);
+            var actualSerializedDropBoxSource = testDropBoxSource.ToString();
+            var expected = JsonConvert.SerializeObject(testDropBoxSource);
             Assert.AreEqual(expected, actualSerializedDropBoxSource);
         }
 
@@ -75,10 +75,10 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         public void ToXmlEmptyObjectExpectedXElementContainingNoInformationRegardingSource()
         {
             var testDropBoxSource = new DropBoxSource();
-            XElement expectedXml = testDropBoxSource.ToXml();
+            var expectedXml = testDropBoxSource.ToXml();
 
-            IEnumerable<XAttribute> attrib = expectedXml.Attributes();
-            IEnumerator<XAttribute> attribEnum = attrib.GetEnumerator();
+            var attrib = expectedXml.Attributes();
+            var attribEnum = attrib.GetEnumerator();
             while (attribEnum.MoveNext())
             {
                 if (attribEnum.Current.Name == "Name")
@@ -93,7 +93,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         #region Private Test Methods
 
-        private DropBoxSource SetupDefaultDropBoxSource()
+        DropBoxSource SetupDefaultDropBoxSource()
         {
             var testDropBoxSource = new DropBoxSource
             {

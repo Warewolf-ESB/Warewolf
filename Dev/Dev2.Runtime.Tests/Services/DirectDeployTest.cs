@@ -100,7 +100,7 @@ namespace Dev2.Tests.Runtime.Services
             var directDeploy = new DirectDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = directDeploy.Execute(null, null);
+            var jsonResult = directDeploy.Execute(null, null);
             var result = serializer.Deserialize<IEnumerable<DeployResult>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.Any(r => r.HasError));
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Runtime.Services
             var directDeploy = new DirectDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = directDeploy.Execute(values, null);
+            var jsonResult = directDeploy.Execute(values, null);
             var result = serializer.Deserialize<IEnumerable<DeployResult>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.Any(r => r.HasError));
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Runtime.Services
             directDeploy.TestCatalog = testCatalogMock.Object;
             directDeploy.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = directDeploy.Execute(inputs, null);
+            var jsonResult = directDeploy.Execute(inputs, null);
             var result = serializer.Deserialize<IEnumerable<DeployResult>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.All(r => r.HasError));
@@ -207,7 +207,7 @@ namespace Dev2.Tests.Runtime.Services
             directDeploy.TestCatalog = testCatalogMock.Object;
             directDeploy.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = directDeploy.Execute(inputs, null);
+            var jsonResult = directDeploy.Execute(inputs, null);
             var result = serializer.Deserialize<IEnumerable<DeployResult>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.All(r => r.HasError));
@@ -253,7 +253,7 @@ namespace Dev2.Tests.Runtime.Services
             directDeploy.TestCatalog = testCatalogMock.Object;
             directDeploy.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = directDeploy.Execute(inputs, null);
+            var jsonResult = directDeploy.Execute(inputs, null);
             var result = serializer.Deserialize<IEnumerable<DeployResult>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.All(r => r.HasError));
@@ -299,7 +299,7 @@ namespace Dev2.Tests.Runtime.Services
             directDeploy.TestCatalog = testCatalogMock.Object;
             directDeploy.ResourceCatalog = resourceCatalog.Object;
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = directDeploy.Execute(inputs, null);
+            var jsonResult = directDeploy.Execute(inputs, null);
             var result = serializer.Deserialize<IEnumerable<DeployResult>>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.All(r => !r.HasError));

@@ -64,7 +64,7 @@ namespace Dev2.ConnectionHelpers
                 if (ConnectedServerChanged != null)
                 {
                     var localhost = Servers.FirstOrDefault(s => s.Server.IsLocalHost);
-                    Guid localhostId = localhost?.Server.EnvironmentID ?? Guid.Empty;
+                    var localhostId = localhost?.Server.EnvironmentID ?? Guid.Empty;
                     ConnectedServerChanged(this, new ConnectedServerChangedEvent(localhostId));
                 }
             }
@@ -142,13 +142,13 @@ namespace Dev2.ConnectionHelpers
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(connectedState, environmentId, false));
         }
 
-        private void Disconnect(IServer environment)
+        void Disconnect(IServer environment)
         {
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environment.EnvironmentID, false));
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Disconnected, environment.EnvironmentID, true));
         }
 
-        private void Connect(IConnectControlEnvironment selectedServer)
+        void Connect(IConnectControlEnvironment selectedServer)
         {
             var environmentId = selectedServer.Server.EnvironmentID;
             ConnectedStatusChanged?.Invoke(this, new ConnectionStatusChangedEventArg(ConnectionEnumerations.ConnectedState.Busy, environmentId, false));

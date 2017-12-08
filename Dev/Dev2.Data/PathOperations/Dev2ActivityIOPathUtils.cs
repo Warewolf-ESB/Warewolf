@@ -33,17 +33,17 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public static string ExtractFullDirectoryPath(string path)
         {
-            string result = path;
-            StringBuilder tmpBuilder = new StringBuilder();
+            var result = path;
+            var tmpBuilder = new StringBuilder();
 
-            if(!IsDirectory(path))
+            if (!IsDirectory(path))
             {
                 char spliter = '/';
 
-                string[] tmp = path.Split(spliter);
+                var tmp = path.Split(spliter);
 
 
-                if(tmp.Length == 1)
+                if (tmp.Length == 1)
                 {
                     spliter = '\\';
                     tmp = path.Split(spliter);
@@ -73,12 +73,12 @@ namespace Dev2.PathOperations
             {
                 if(!IsDirectory(path))
                 {
-                    Uri uri = new Uri(path);
+                    var uri = new Uri(path);
                     result = Path.GetFileName(uri.LocalPath);
                 }
                 else
                 {
-                    Uri uri = new Uri(path);
+                    var uri = new Uri(path);
                     result = Path.GetFileName(uri.LocalPath);
                 }
             }
@@ -99,11 +99,11 @@ namespace Dev2.PathOperations
         {
             bool result = false;
 
-            Uri uri = new Uri(path);
+            var uri = new Uri(path);
 
-            string fileName = Path.GetFileName(uri.LocalPath);
+            var fileName = Path.GetFileName(uri.LocalPath);
 
-            if(fileName.Contains(@"*") || fileName.Contains(@"?"))
+            if (fileName.Contains(@"*") || fileName.Contains(@"?"))
             {
                 result = true;
             }
@@ -167,17 +167,17 @@ namespace Dev2.PathOperations
 
         public static enActivityIOPathType ExtractPathType(string path)
         {
-            enActivityIOPathType result = enActivityIOPathType.Invalid;
+            var result = enActivityIOPathType.Invalid;
 
-            Array vals = Enum.GetValues(typeof(enActivityIOPathType));
+            var vals = Enum.GetValues(typeof(enActivityIOPathType));
 
             int pos = 0;
 
             while(pos < vals.Length && result == enActivityIOPathType.Invalid)
             {
-                string toCheck = vals.GetValue(pos) + @":";
-                string checkPath = path.ToUpper();
-                if(checkPath.StartsWith(toCheck))
+                var toCheck = vals.GetValue(pos) + @":";
+                var checkPath = path.ToUpper();
+                if (checkPath.StartsWith(toCheck))
                 {
                     result = (enActivityIOPathType)vals.GetValue(pos);
                 }

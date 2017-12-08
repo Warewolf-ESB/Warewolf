@@ -45,7 +45,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsDoesntStartWith.Exists, "Doesnt Start With match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsBase64.Exists, "Is Base 64 match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsBetween.Exists, "Is Between match type combobox list item does not exist.");
-            Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsBinary.Exists, "IsB inary match type combobox list item does not exist.");
+            Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsBinary.Exists, "Is Binary match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsDate.Exists, "Is Date match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsEmail.Exists, "Is Email match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsIsHex.Exists, "Is Hex match type combobox list item does not exist.");
@@ -60,7 +60,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsNotAlphanumeric.Exists, "Not Alphanumeric match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsNotBase64.Exists, "Not Base64 match type combobox list item does not exist.");
             Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.ComboboxListItemAsNotBetween.Exists, "Not Between match type combobox list item does not exist.");
-            DialogsUIMap.Click_Decision_Dialog_Cancel_Button();
         }
 
         [TestMethod]
@@ -72,6 +71,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging in from the toolbox and clicking done on the dialog.");
             ControlFlowToolsUIMap.CopyAndPaste_Decision_Tool_On_The_Designer();
             Assert.IsFalse(UIMap.ControlExistsNow(DialogsUIMap.DecisionOrSwitchDialog), "Decision large view dialog openned after copy and paste.");
+        }
+
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void DecisionTool_MatchVariable_AddNewRow_UITest()
+        {
+            DialogsUIMap.DecisionOrSwitchDialog.LargeView.Table.Row1.MatchValueCell.MatchValueIntellisenseCombobox.Textbox.Text = "[[var]]";
+            DialogsUIMap.DecisionOrSwitchDialog.LargeView.Table.Row2.MatchValueCell.MatchValueIntellisenseCombobox.Textbox.Text = "[[var]]";
+            Assert.IsTrue(DialogsUIMap.DecisionOrSwitchDialog.LargeView.Table.Row3.Exists, "Third row not created automatically in decision after entering a match variable into the first two rows.");
         }
 
         #region Additional test attributes
