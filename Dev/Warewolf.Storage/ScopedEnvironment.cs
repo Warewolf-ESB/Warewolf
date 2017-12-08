@@ -9,10 +9,10 @@ namespace Warewolf.Storage
 {
     public class ScopedEnvironment : IExecutionEnvironment
     {
-        private readonly IExecutionEnvironment _inner;
-        private string _datasource;
-        private readonly string _alias;
-        private readonly Func<string, int, string, string> _doReplace;
+        readonly IExecutionEnvironment _inner;
+        string _datasource;
+        readonly string _alias;
+        readonly Func<string, int, string, string> _doReplace;
         public ScopedEnvironment(IExecutionEnvironment inner, string datasource, string alias)
         {
             _inner = inner;
@@ -44,12 +44,12 @@ namespace Warewolf.Storage
             _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
         }
 
-        private string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
+        string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
         {
             return exp.Replace(_alias, datasource);
         }
 
-        private string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
+        string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
         {
             var magic = _doReplace(datasource, update, exp);
             return magic;

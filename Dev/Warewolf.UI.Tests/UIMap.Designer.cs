@@ -1039,6 +1039,18 @@ namespace Warewolf.UI.Tests
                 return this.mComboboxListItemAsLocalServerSource;
             }
         }
+        
+        public IntellisenseOptionsList IntellisenseOptionsList
+        {
+            get
+            {
+                if ((this.mIntellisenseOptionsList == null))
+                {
+                    this.mIntellisenseOptionsList = new IntellisenseOptionsList(this);
+                }
+                return this.mIntellisenseOptionsList;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1173,6 +1185,8 @@ namespace Warewolf.UI.Tests
         private WpfText mDependenciesText;
         
         private ComboboxListItemAsLocalServerSource mComboboxListItemAsLocalServerSource;
+        
+        private IntellisenseOptionsList mIntellisenseOptionsList;
         #endregion
     }
     
@@ -19906,6 +19920,42 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class IntellisenseOptionsList : WpfList
+    {
+        
+        public IntellisenseOptionsList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "Selector";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem FirstOption
+        {
+            get
+            {
+                if ((this.mFirstOption == null))
+                {
+                    this.mFirstOption = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mFirstOption.SearchProperties[WpfListItem.PropertyNames.Name] = "[[val]]";
+                    this.mFirstOption.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFirstOption;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mFirstOption;
         #endregion
     }
     

@@ -38,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(dsfWebDeleteActivity);
         }
 
-        private static TestDsfWebDeleteActivity CreateTestDeleteActivity()
+        static TestDsfWebDeleteActivity CreateTestDeleteActivity()
         {
             var testDsfWebDeleteActivity = new TestDsfWebDeleteActivity();
             testDsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;

@@ -23,7 +23,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class ReadDropboxSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ReadDropboxSteps(ScenarioContext scenarioContext)
         {
@@ -158,7 +158,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New Readlist Dropbox Source window is opened")]
         public void ThenTheReadNewDropboxSourceWindowIsOpened()
         {
-            Mock<IEventAggregator> eventAggregator = GetEventAggregator();
+            var eventAggregator = GetEventAggregator();
             eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));
         }
 

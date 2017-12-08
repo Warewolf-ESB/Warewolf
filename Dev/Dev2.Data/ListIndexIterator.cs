@@ -14,9 +14,9 @@ namespace Dev2.Data.Binary_Objects
 {
     public class ListIndexIterator : IIndexIterator
     {
-        private int _curValue;
-        private int _curPos;
-        private ListOfIndex _indexList;
+        int _curValue;
+        int _curPos;
+        ListOfIndex _indexList;
 
         public ListOfIndex IndexList
         {

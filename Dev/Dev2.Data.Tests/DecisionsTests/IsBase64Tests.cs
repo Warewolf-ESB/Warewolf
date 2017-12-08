@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var endsWith = new IsBase64();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "aGVsbG8=";
             //------------Execute Test---------------------------
             bool result = endsWith.Invoke(cols);
@@ -28,7 +28,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var endsWith = new IsBase64();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "aGVsbG8ASS@";
             //------------Execute Test---------------------------
             bool result = endsWith.Invoke(cols);

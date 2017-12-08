@@ -6,10 +6,10 @@ namespace Warewolf.Studio.Themes.Luna
 {
     public class SharedResourceDictionary : ResourceDictionary
     {
-        private Uri _sourceUri;
+        Uri _sourceUri;
 
         public static Dictionary<Uri, ResourceDictionary> SharedDictionaries { get => sharedDictionaries; set => sharedDictionaries = value; }
-        private static Dictionary<Uri, ResourceDictionary> sharedDictionaries = new Dictionary<Uri, ResourceDictionary>();
+        static Dictionary<Uri, ResourceDictionary> sharedDictionaries = new Dictionary<Uri, ResourceDictionary>();
 
         public new Uri Source
         {

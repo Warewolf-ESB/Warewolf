@@ -230,7 +230,7 @@ namespace Dev2.TO
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -248,7 +248,7 @@ namespace Dev2.TO
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
                     }
-                    ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1", new VariableUtils()));
                     return ruleSet;
                 default:
                     return ruleSet;

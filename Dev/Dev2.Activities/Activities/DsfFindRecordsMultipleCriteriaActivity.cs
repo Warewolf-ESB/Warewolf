@@ -126,7 +126,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     throw new Exception(ErrorResource.ScalarsNotAllowed + Environment.NewLine + string.Join(Environment.NewLine, scalarValues));
                 }
-                List<int> results = new List<int>();
+                var results = new List<int>();
                 if (dataObject.IsDebugMode())
                 {
                     AddDebugInputValues(dataObject, toSearch, ref allErrors, update);
@@ -237,16 +237,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         Func<DataStorage.WarewolfAtom, bool> CreateFuncFromOperator(string searchType, IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> from, IEnumerable<DataStorage.WarewolfAtom> to)
         {
 
-            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(searchType);
+            var opt = FindRecsetOptions.FindMatch(searchType);
             return opt.GenerateFunc(values, from, to, RequireAllFieldsToMatch);
         }
 
-        private void ValidateRequiredFields(FindRecordsTO searchTo, out ErrorResultTO errors)
+        void ValidateRequiredFields(FindRecordsTO searchTo, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             if (string.IsNullOrEmpty(searchTo.SearchType))
             {
-                errors.AddError(string.Format(ErrorResource.IsRequired ,"Search Type"));
+                errors.AddError(string.Format(ErrorResource.IsRequired, "Search Type"));
             }
 
             if (searchTo.SearchType.Equals("Is Between"))
@@ -258,7 +258,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (string.IsNullOrEmpty(searchTo.To))
                 {
-                    errors.AddError(string.Format(ErrorResource.IsRequired,"TO"));
+                    errors.AddError(string.Format(ErrorResource.IsRequired, "TO"));
                 }
             }
         }
@@ -313,7 +313,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var indexCount = 1;
             foreach (var findRecordsTo in resultsCollection)
             {
-                DebugItem debugItem = new DebugItem();
+                var debugItem = new DebugItem();
                 if (!String.IsNullOrEmpty(findRecordsTo.SearchType))
                 {
                     AddDebugItem(new DebugItemStaticDataParams("", indexCount.ToString(CultureInfo.InvariantCulture)), debugItem);
@@ -353,7 +353,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             var listOfValidRows = ResultsCollection.Where(c => !c.CanRemove()).ToList();
             if (listOfValidRows.Count > 0)
             {
-                FindRecordsTO findRecordsTo = ResultsCollection.Last(c => !c.CanRemove());
+                var findRecordsTo = ResultsCollection.Last(c => !c.CanRemove());
                 var startIndex = ResultsCollection.IndexOf(findRecordsTo) + 1;
                 foreach (var s in listToAdd)
                 {
@@ -447,7 +447,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 foreach (Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
+                    var t1 = t;
                     var items = ResultsCollection.Where(c => !string.IsNullOrEmpty(c.SearchCriteria) && c.SearchCriteria.Equals(t1.Item1));
 
                     // issues updates

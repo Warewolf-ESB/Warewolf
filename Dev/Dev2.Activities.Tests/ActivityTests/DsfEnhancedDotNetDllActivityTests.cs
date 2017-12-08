@@ -1219,7 +1219,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
     }
 
-    internal class DsfEnhancedDotNetDllActivityMock : DsfEnhancedDotNetDllActivity
+    class DsfEnhancedDotNetDllActivityMock : DsfEnhancedDotNetDllActivity
     {
         
         public void ExecuteMock(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors)

@@ -31,7 +31,7 @@ namespace Dev2.Diagnostics.Test
                 
                 catch { }
 
-                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+                var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),   
@@ -93,7 +93,7 @@ namespace Dev2.Diagnostics.Test
             Assert.AreEqual(perfmonContainer.InstanceOutputDefinition, "dave");
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
 
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -111,9 +111,9 @@ namespace Dev2.Diagnostics.Test
 
     class Cont : IEsbExecutionContainer
     {
-        private string _instanceOutputDefinition;
-        private string _instanceInputDefinition;
-        private int _callCount;
+        string _instanceOutputDefinition;
+        string _instanceInputDefinition;
+        int _callCount;
 
         #region Implementation of IEsbExecutionContainer
 

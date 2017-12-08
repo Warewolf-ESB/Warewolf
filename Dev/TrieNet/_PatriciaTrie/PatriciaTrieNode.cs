@@ -11,9 +11,9 @@ namespace Gma.DataStructures.StringSearch
     [DebuggerDisplay("'{m_Key}'")]
     public class PatriciaTrieNode<TValue> : TrieNodeBase<TValue>
     {
-        private Dictionary<char, PatriciaTrieNode<TValue>> m_Children;
-        private StringPartition m_Key;
-        private Queue<TValue> m_Values;
+        Dictionary<char, PatriciaTrieNode<TValue>> m_Children;
+        StringPartition m_Key;
+        Queue<TValue> m_Values;
 
         protected PatriciaTrieNode(StringPartition key, TValue value)
             : this(key, new Queue<TValue>(new[] {value}), new Dictionary<char, PatriciaTrieNode<TValue>>())
@@ -51,7 +51,7 @@ namespace Gma.DataStructures.StringSearch
 
         internal virtual void Add(StringPartition keyRest, TValue value)
         {
-            ZipResult zipResult = m_Key.ZipWith(keyRest);
+            var zipResult = m_Key.ZipWith(keyRest);
 
             switch (zipResult.MatchKind)
             {
@@ -76,7 +76,7 @@ namespace Gma.DataStructures.StringSearch
         }
 
 
-        private void SplitOne(ZipResult zipResult, TValue value)
+        void SplitOne(ZipResult zipResult, TValue value)
         {
             var leftChild = new PatriciaTrieNode<TValue>(zipResult.ThisRest, m_Values, m_Children);
 
@@ -88,7 +88,7 @@ namespace Gma.DataStructures.StringSearch
             m_Children.Add(zipResult.ThisRest[0], leftChild);
         }
 
-        private void SplitTwo(ZipResult zipResult, TValue value)
+        void SplitTwo(ZipResult zipResult, TValue value)
         {
             var leftChild = new PatriciaTrieNode<TValue>(zipResult.ThisRest, m_Values, m_Children);
             var rightChild = new PatriciaTrieNode<TValue>(zipResult.OtherRest, value);
@@ -144,7 +144,7 @@ namespace Gma.DataStructures.StringSearch
             var result = new StringBuilder();
             result.Append(m_Key);
 
-            string subtreeResult = string.Join(" ; ", m_Children.Values.Select(node => node.Traversal()).ToArray());
+            var subtreeResult = string.Join(" ; ", m_Children.Values.Select(node => node.Traversal()).ToArray());
             if (subtreeResult.Length != 0)
             {
                 result.Append("[");

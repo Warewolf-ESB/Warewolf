@@ -20,7 +20,7 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public static bool IsTextAmPm(string data, bool treatAsTime)
         {
-            string lowerData = data.ToLower();
+            var lowerData = data.ToLower();
             return lowerData == "am" || lowerData == "pm" || lowerData == "a.m" || lowerData == "p.m" ||
                    lowerData == "a.m." || lowerData == "p.m.";
         }

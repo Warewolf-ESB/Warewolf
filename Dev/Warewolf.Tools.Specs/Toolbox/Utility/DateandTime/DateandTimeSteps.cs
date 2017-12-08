@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
     [Binding]
     public class DateandTimeSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DateandTimeSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -126,7 +126,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         public void WhenTheDatetimeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -137,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out string actualValue, out string error);
 
-            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
 
             converter.ConvertFrom(actualValue);
         }

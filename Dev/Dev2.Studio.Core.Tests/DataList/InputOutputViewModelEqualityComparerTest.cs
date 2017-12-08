@@ -57,8 +57,8 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
             var inputOutputViewModelEqualityComparer = new InputOutputViewModelEqualityComparer();
 
-            Mock<IInputOutputViewModel> obj1 = new Mock<IInputOutputViewModel>();
-            Mock<IInputOutputViewModel> obj2 = new Mock<IInputOutputViewModel>();
+            var obj1 = new Mock<IInputOutputViewModel>();
+            var obj2 = new Mock<IInputOutputViewModel>();
 
             obj1.Setup(c => c.DisplayName).Returns("rs().val");
             obj2.Setup(c => c.DisplayName).Returns("rs().val");
@@ -78,8 +78,8 @@ namespace Dev2.Core.Tests.DataList
             //------------Setup for test--------------------------
             var inputOutputViewModelEqualityComparer = new InputOutputViewModelEqualityComparer();
 
-            Mock<IInputOutputViewModel> obj1 = new Mock<IInputOutputViewModel>();
-            Mock<IInputOutputViewModel> obj2 = new Mock<IInputOutputViewModel>();
+            var obj1 = new Mock<IInputOutputViewModel>();
+            var obj2 = new Mock<IInputOutputViewModel>();
 
             obj1.Setup(c => c.DisplayName).Returns("rs().val2");
             obj2.Setup(c => c.DisplayName).Returns("rs().val");

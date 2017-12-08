@@ -21,8 +21,8 @@ namespace Dev2.Studio.Views.ResourceManagement
     /// </summary>
     public partial class RenameResourceDialog
     {
-        
-        private readonly bool _openDependencyGraph = false;
+
+        readonly bool _openDependencyGraph = false;
 
         public bool OpenDependencyGraph => _openDependencyGraph;
 
@@ -42,7 +42,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             tbDisplay.Text = message;
         }
 
-        private void Button1_OnClick(object sender, RoutedEventArgs e)
+        void Button1_OnClick(object sender, RoutedEventArgs e)
         {
             DialogResult = true;
         }

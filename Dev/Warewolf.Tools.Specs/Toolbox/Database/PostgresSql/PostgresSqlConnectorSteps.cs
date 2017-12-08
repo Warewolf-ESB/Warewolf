@@ -25,10 +25,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class PostgresSqlConnectorSteps
     {
-        private DbSourceDefinition _postgresSqlSource;
-        private DbAction _selectedAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getEmployees;
+        DbSourceDefinition _postgresSqlSource;
+        DbAction _selectedAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getEmployees;
 
         [Given(@"I drag a PostgresSql Server database connector")]
         public void GivenIDragAPostgresSqlServerDatabaseConnector()

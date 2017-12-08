@@ -346,7 +346,6 @@
     </None>
     <Compile Include="CommandLineParameters.cs" />
     <Compile Include="ServerLifecycleManager.cs" />
-    <Compile Include="WebServerResources.Designer.cs" />
     <Compile Include="WindowsServiceManager.cs">
       <SubType>Component</SubType>
     </Compile>

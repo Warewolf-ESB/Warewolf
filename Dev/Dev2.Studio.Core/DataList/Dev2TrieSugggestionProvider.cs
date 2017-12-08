@@ -14,9 +14,9 @@ namespace Dev2.Studio.Core.DataList
     {
         #region Implementation of ISuggestionProvider
 
-        private readonly char[] _tokenisers = "!#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
-        private ITrie<string> PatriciaTrie { get; set; }
-        private ObservableCollection<string> _variableList;
+        readonly char[] _tokenisers = "!#$%^&-=_+{}|:\"?><`~<>?:'{}| [](".ToCharArray();
+        ITrie<string> PatriciaTrie { get; set; }
+        ObservableCollection<string> _variableList;
 
         public ObservableCollection<string> VariableList
         {
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Core.DataList
                 {
                     if (var is LanguageAST.LanguageExpression.ScalarExpression currentVar)
                     {
-                        string key = DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item);
+                        var key = DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item);
                         foreach (var permutation in PermuteCapitalizations(key))
                         {
                             PatriciaTrieScalars.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(currentVar.Item));
@@ -112,7 +112,7 @@ namespace Dev2.Studio.Core.DataList
                         {
                             if (var is LanguageAST.LanguageExpression.ScalarExpression scalarExpression)
                             {
-                                string key = DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item);
+                                var key = DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item);
                                 foreach (var permutation in PermuteCapitalizations(key))
                                 {
                                     PatriciaTrie.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(scalarExpression.Item));
@@ -124,7 +124,7 @@ namespace Dev2.Studio.Core.DataList
             }
         }
 
-        private static LanguageAST.LanguageExpression ParseExpression(string a)
+        static LanguageAST.LanguageExpression ParseExpression(string a)
         {
             try
             {
@@ -138,7 +138,7 @@ namespace Dev2.Studio.Core.DataList
             return LanguageAST.LanguageExpression.NewWarewolfAtomExpression(DataStorage.WarewolfAtom.Nothing);
         }
 
-        private LanguageAST.JsonIdentifierExpression AddJsonVariables(LanguageAST.JsonIdentifierExpression currentVar, string parentName)
+        LanguageAST.JsonIdentifierExpression AddJsonVariables(LanguageAST.JsonIdentifierExpression currentVar, string parentName)
         {
             if (currentVar != null)
             {
@@ -151,7 +151,7 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    string key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    var key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
@@ -167,7 +167,7 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    string key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    var key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
@@ -182,7 +182,7 @@ namespace Dev2.Studio.Core.DataList
                     {
                         objectName = "@" + objectName;
                     }
-                    string key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
+                    var key = DataListUtil.AddBracketsToValueIfNotExist(objectName);
                     foreach (var permutation in PermuteCapitalizations(key))
                     {
                         PatriciaTrieJsonObjects.Add(permutation, DataListUtil.AddBracketsToValueIfNotExist(objectName));
@@ -194,10 +194,10 @@ namespace Dev2.Studio.Core.DataList
             return null;
         }
 
-        private SuffixTrie<string> PatriciaTrieRecsetsFields { get; set; }
-        private SuffixTrie<string> PatriciaTrieRecsets { get; set; }
-        private SuffixTrie<string> PatriciaTrieScalars { get; set; }
-        private SuffixTrie<string> PatriciaTrieJsonObjects { get; set; }
+        SuffixTrie<string> PatriciaTrieRecsetsFields { get; set; }
+        SuffixTrie<string> PatriciaTrieRecsets { get; set; }
+        SuffixTrie<string> PatriciaTrieScalars { get; set; }
+        SuffixTrie<string> PatriciaTrieJsonObjects { get; set; }
         public int Level { get; set; }
 
         public Dev2TrieSugggestionProvider()
@@ -222,7 +222,7 @@ namespace Dev2.Studio.Core.DataList
                     caretIndex = orignalText.Length;
                 }
 
-                string texttrimmedRight = orignalText.Substring(0, caretIndex);
+                var texttrimmedRight = orignalText.Substring(0, caretIndex);
                 int start = texttrimmedRight.LastIndexOf(texttrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
                 filter = texttrimmedRight.Substring(start);
             }
@@ -286,7 +286,7 @@ namespace Dev2.Studio.Core.DataList
             return trie.Retrieve(filter);
         }
 
-        private List<string> PermuteCapitalizations(string key)
+        List<string> PermuteCapitalizations(string key)
         {
             var suffixes = new List<string>();
             suffixes.Add(key);
@@ -305,7 +305,7 @@ namespace Dev2.Studio.Core.DataList
         string ReverseCase(string input)
         {
             var array = input?.Select(c => char.IsLetter(c) ? (char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)) : c).ToArray();
-            string reversedCase = new string(array);
+            var reversedCase = new string(array);
             return reversedCase;
         }
 

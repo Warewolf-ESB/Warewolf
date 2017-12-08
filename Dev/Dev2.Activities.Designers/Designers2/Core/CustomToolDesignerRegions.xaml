@@ -25,7 +25,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Warewolf.Studio.Themes.Luna;component/Theme.xaml"/>
     </ResourceDictionary.MergedDictionaries>
-    <core1:DotNetActionsWidthConverter x:Key="DotNetActionsWidthConverter" />
 
     <ControlTemplate x:Key="NewSelectionGrid">
         <Grid x:Name="SourcesGrid">

@@ -26,7 +26,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             new CustomTextWriter();
             //------------Execute Test---------------------------
-            string loggingFileName = CustomTextWriter.LoggingFileName;
+            var loggingFileName = CustomTextWriter.LoggingFileName;
             //------------Assert Results-------------------------
             StringAssert.Contains(loggingFileName, "Warewolf Studio.log");   
         }
@@ -39,7 +39,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             new CustomTextWriter();
             //------------Execute Test---------------------------
-            string loggingFileName = CustomTextWriter.LoggingFileName;
+            var loggingFileName = CustomTextWriter.LoggingFileName;
             //------------Assert Results-------------------------
             StringAssert.Contains(loggingFileName, "Warewolf Studio.log");
 
@@ -52,7 +52,7 @@ namespace Dev2.Infrastructure.Tests.Logs
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            string loggingFileName = CustomTextWriter.LoggingFileName;
+            var loggingFileName = CustomTextWriter.LoggingFileName;
             //------------Assert Results-------------------------
             StringAssert.Contains(loggingFileName, "Warewolf Studio.log");
         }
@@ -94,7 +94,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             //------------Setup for test--------------------------
             var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             //------------Execute Test---------------------------
-            string loggingFileName = CustomTextWriter.LoggingFileName;
+            var loggingFileName = CustomTextWriter.LoggingFileName;
             //------------Assert Results-------------------------
             StringAssert.Contains(loggingFileName, localAppDataPath);
             StringAssert.Contains(loggingFileName, "Warewolf");
@@ -112,7 +112,7 @@ namespace Dev2.Infrastructure.Tests.Logs
             new CustomTextWriter();
             var localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
             //------------Execute Test---------------------------
-            string loggingFileName = CustomTextWriter.LoggingFileName;
+            var loggingFileName = CustomTextWriter.LoggingFileName;
             //------------Assert Results-------------------------
             StringAssert.Contains(loggingFileName, localAppDataPath);
             StringAssert.Contains(loggingFileName, "Warewolf");

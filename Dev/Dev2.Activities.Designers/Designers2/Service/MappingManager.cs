@@ -21,9 +21,9 @@ namespace Dev2.Activities.Designers2.Service
 {
     public class MappingManager
     {
-        private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
-        private IWebActivityFactory _activityFactory;
-        private IDataMappingViewModelFactory _mappingFactory;
+        readonly ServiceDesignerViewModel _serviceDesignerViewModel;
+        IWebActivityFactory _activityFactory;
+        IDataMappingViewModelFactory _mappingFactory;
         bool _resourcesUpdated;
 
         internal MappingManager(ServiceDesignerViewModel serviceDesignerViewModel)
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Designers2.Service
             DataMappingViewModel = new DataMappingViewModel(webAct, OnMappingCollectionChanged);
         }
 
-        private void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void OnMappingCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems != null)
             {
@@ -98,7 +98,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void OnMappingPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void OnMappingPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
@@ -133,7 +133,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)
+        void CheckRequiredMappingChangedErrors(DesignValidationMemo memo)
         {
             var keepError = false;
             var reqiredMappingChanged = memo.Errors.FirstOrDefault(c => c.FixType == FixType.IsRequiredChanged);
@@ -146,7 +146,7 @@ namespace Dev2.Activities.Designers2.Service
 
                     foreach (var input in inputOutputViewModels)
                     {
-                        IInputOutputViewModel currentInputViewModel = input;
+                        var currentInputViewModel = input;
                         var inputOutputViewModel = DataMappingViewModel?.Inputs.FirstOrDefault(c => c.Name == currentInputViewModel.Name);
                         if (inputOutputViewModel != null)
                         {
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void CheckIsDeleted(DesignValidationMemo memo)
+        void CheckIsDeleted(DesignValidationMemo memo)
         {
             var error = memo.Errors.FirstOrDefault(c => c.FixType == FixType.Delete);
             _serviceDesignerViewModel.IsDeleted = error != null;
@@ -220,12 +220,12 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private ErrorInfo CreateMappingIsRequiredMessage()
+        ErrorInfo CreateMappingIsRequiredMessage()
         {
             return new ErrorInfo { ErrorType = ErrorType.Critical, FixData = CreateFixedData(), FixType = FixType.IsRequiredChanged, InstanceID = _serviceDesignerViewModel.UniqueID };
         }
 
-        private string CreateFixedData()
+        string CreateFixedData()
         {
             var serializer = new Dev2JsonSerializer();
             var result = serializer.Serialize(DataMappingListFactory.CreateListInputMapping(DataMappingViewModel.GetInputString(DataMappingViewModel.Inputs)));
@@ -260,7 +260,7 @@ namespace Dev2.Activities.Designers2.Service
 
                 foreach (var newMapping in newMappings)
                 {
-                    IInputOutputViewModel mapping = newMapping;
+                    var mapping = newMapping;
                     var oldMapping = oldMappings.FirstOrDefault(m => m.Name.Equals(mapping.Name, StringComparison.InvariantCultureIgnoreCase));
                     if (oldMapping != null)
                     {

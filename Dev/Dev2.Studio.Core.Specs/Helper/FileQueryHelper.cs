@@ -29,7 +29,7 @@ namespace Dev2.Studio.Core.Specs.Helper
             private set;
         }
 
-        private readonly List<string> _queryCollection;
+        readonly List<string> _queryCollection;
 
         public void Add(string path)
         {

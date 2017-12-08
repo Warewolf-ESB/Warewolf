@@ -15,7 +15,7 @@ namespace Dev2.PerformanceCounters.Management
     public class PerformanceCounterPersistence : IPerformanceCounterPersistence
     {
 
-        private readonly IFile _file;
+        readonly IFile _file;
 
         #region Implementation of IPerformanceCounterPersistence
 
@@ -91,7 +91,7 @@ namespace Dev2.PerformanceCounters.Management
 
         }
 
-        private IList<IPerformanceCounter> CreateDefaultPerfCounters()
+        IList<IPerformanceCounter> CreateDefaultPerfCounters()
         {
             var toSerialise = DefaultCounters;
             Save(toSerialise);

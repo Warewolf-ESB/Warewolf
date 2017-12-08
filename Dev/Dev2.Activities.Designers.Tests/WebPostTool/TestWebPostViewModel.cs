@@ -27,12 +27,12 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
     {
         #region Test Setup
 
-        private static MyWebModel GetMockModel()
+        static MyWebModel GetMockModel()
         {
             return new MyWebModel();
         }
 
-        private static DsfWebPostActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        static DsfWebPostActivity GetPostActivityWithOutPuts(MyWebModel mod)
         {
             return new DsfWebPostActivity()
             {
@@ -49,12 +49,12 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             };
         }
 
-        private static DsfWebPostActivity GetEmptyPostActivity()
+        static DsfWebPostActivity GetEmptyPostActivity()
         {
             return new DsfWebPostActivity();
         }
 
-        private WebServicePostViewModel GetWebServicePostViewModel()
+        WebServicePostViewModel GetWebServicePostViewModel()
         {
             return new WebServicePostViewModel(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
         }
@@ -127,7 +127,7 @@ namespace Dev2.Activities.Designers.Tests.WebPostTool
             Assert.AreEqual(1, oldCount);
             //---------------Execute Test ----------------------
             var human = new Human();
-            Dev2JsonSerializer h = new Dev2JsonSerializer();
+            var h = new Dev2JsonSerializer();
             var humanString = h.Serialize(human);
             postViewModel.InputArea.PostData = humanString;
             var newCount = postViewModel.InputArea.Headers.Count;

@@ -16,19 +16,19 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DotNetSourceRegion : ISourceToolRegion<IPluginSource>
     {
-        private bool _isEnabled;
-        private IPluginSource _selectedSource;
-        private ICollection<IPluginSource> _sources;
-        private readonly ModelItem _modelItem;
-        private Guid _sourceId;
-        private Action _sourceChangedAction;
-        private double _labelWidth;
-        private string _newSourceHelpText;
-        private string _editSourceHelpText;
-        private string _sourcesHelpText;
-        private string _newSourceToolText;
-        private string _editSourceToolText;
-        private string _sourcesToolText;
+        bool _isEnabled;
+        IPluginSource _selectedSource;
+        ICollection<IPluginSource> _sources;
+        readonly ModelItem _modelItem;
+        Guid _sourceId;
+        Action _sourceChangedAction;
+        double _labelWidth;
+        string _newSourceHelpText;
+        string _editSourceHelpText;
+        string _sourcesHelpText;
+        string _newSourceToolText;
+        string _editSourceToolText;
+        string _sourcesToolText;
 
         public DotNetSourceRegion(IPluginServiceModel model, ModelItem modelItem)
         {
@@ -146,7 +146,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetInitialValues()
+        void SetInitialValues()
         {
             IsEnabled = true;
         }
@@ -252,7 +252,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetSelectedSource(IPluginSource value)
+        void SetSelectedSource(IPluginSource value)
         {
             if (value != null)
             {

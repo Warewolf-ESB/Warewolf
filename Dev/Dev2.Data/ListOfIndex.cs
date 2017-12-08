@@ -22,7 +22,7 @@ namespace Dev2.Data.Binary_Objects
 
         public List<int> Indexes { get; private set; }
 
-        private ListOfIndex()
+        ListOfIndex()
         {
 
         }

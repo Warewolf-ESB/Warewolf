@@ -14,9 +14,9 @@ namespace Gma.DataStructures.StringSearch
         )]
     public struct StringPartition : IEnumerable<char>
     {
-        private readonly string m_Origin;
-        private readonly int m_PartitionLength;
-        private readonly int m_StartIndex;
+        readonly string m_Origin;
+        readonly int m_PartitionLength;
+        readonly int m_StartIndex;
 
         public StringPartition(string origin)
             : this(origin, 0, origin==null ? 0 : origin.Length)
@@ -145,12 +145,12 @@ namespace Gma.DataStructures.StringSearch
                 }
             }
 
-            SplitResult thisSplitted = Split(splitIndex);
-            SplitResult otherSplitted = other.Split(splitIndex);
+            var thisSplitted = Split(splitIndex);
+            var otherSplitted = other.Split(splitIndex);
 
-            StringPartition commonHead = thisSplitted.Head;
-            StringPartition restThis = thisSplitted.Rest;
-            StringPartition restOther = otherSplitted.Rest;
+            var commonHead = thisSplitted.Head;
+            var restThis = thisSplitted.Rest;
+            var restOther = otherSplitted.Rest;
             return new ZipResult(commonHead, restThis, restOther);
         }
 

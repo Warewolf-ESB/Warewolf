@@ -18,7 +18,7 @@ namespace Dev2.ViewModels
     public class StudioTestViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
     {
         readonly IPopupController _popupController;
-        private DebugOutputViewModel _debugOutputViewModel;
+        DebugOutputViewModel _debugOutputViewModel;
 
         public StudioTestViewModel(IEventAggregator eventPublisher, IServiceTestViewModel vm, IPopupController popupController, IView view)
             : base(eventPublisher)

@@ -28,22 +28,22 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<ISharePointSourceModel> _updateManagerMock;
-        private Mock<IEventAggregator> _aggregatorMock;
-        private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IServer> _environmentMock;
-        private Mock<ISharepointServerSource> _sharepointServerSourceMock;
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
+        Mock<ISharePointSourceModel> _updateManagerMock;
+        Mock<IEventAggregator> _aggregatorMock;
+        Mock<IAsyncWorker> _asyncWorkerMock;
+        Mock<IServer> _environmentMock;
+        Mock<ISharepointServerSource> _sharepointServerSourceMock;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
 
-        private List<string> _changedProperties;
-        private SharepointServerSourceViewModel _target;
+        List<string> _changedProperties;
+        SharepointServerSourceViewModel _target;
 
-        private List<string> _changedPropertiesSource;
-        private SharepointServerSourceViewModel _targetSource;
+        List<string> _changedPropertiesSource;
+        SharepointServerSourceViewModel _targetSource;
 
-        private List<string> _changedPropertiesRequestServiceViewModel;
-        private SharepointServerSourceViewModel _targetRequestServiceViewModel;
+        List<string> _changedPropertiesRequestServiceViewModel;
+        SharepointServerSourceViewModel _targetRequestServiceViewModel;
 
         #endregion Fields
 

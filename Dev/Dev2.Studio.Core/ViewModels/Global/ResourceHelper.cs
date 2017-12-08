@@ -29,7 +29,7 @@ namespace Dev2.Studio.Core
             {
                 return String.Empty;
             }
-            string displayName = resourceModel.ResourceName;
+            var displayName = resourceModel.ResourceName;
             if (resourceModel.Environment != null && !resourceModel.Environment.IsLocalHost)
             {
                 if (!resourceModel.Environment.Name.Contains("localhost"))

@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     [Binding]
     public class XPathSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public XPathSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -115,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         public void WhenTheXpathToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -138,15 +138,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Then(@"the xpath result for this varibale ""(.*)"" will be")]
         public void ThenTheXpathResultForThisVaribaleWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+            var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out string error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
             for(int i = 0; i < tableRows.Count; i++)
             {

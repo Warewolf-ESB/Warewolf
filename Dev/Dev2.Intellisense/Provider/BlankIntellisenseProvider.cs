@@ -32,10 +32,7 @@ namespace Dev2.Intellisense.Provider
 
         public IntellisenseProviderType IntellisenseProviderType { get; private set; }
 
-        public string PerformResultInsertion(string input, IntellisenseProviderContext context)
-        {
-            return string.Empty;
-        }
+        public string PerformResultInsertion(string input, IntellisenseProviderContext context) => string.Empty;
 
         public IList<IntellisenseProviderResult> GetIntellisenseResults(IntellisenseProviderContext context)
         {

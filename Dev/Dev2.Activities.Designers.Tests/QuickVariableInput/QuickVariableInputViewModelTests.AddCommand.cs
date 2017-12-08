@@ -362,7 +362,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         }
     }
 
-    internal class FakeWorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
+    class FakeWorkflowDesignerViewModel : BaseWorkSurfaceViewModel,
                                        IHandle<AddStringListToDataListMessage>
     {
         public int WasHandled = 0;

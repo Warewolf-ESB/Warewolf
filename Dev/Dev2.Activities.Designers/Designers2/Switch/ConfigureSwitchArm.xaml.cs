@@ -15,7 +15,7 @@ namespace Dev2.Activities.Designers2.Switch
             InitializeComponent();
         }
 
-        private void SwitchArmCaseTextbox_OnLoaded(object sender, RoutedEventArgs e)
+        void SwitchArmCaseTextbox_OnLoaded(object sender, RoutedEventArgs e)
         {
             if (sender is IntellisenseTextBox textBox)
             {

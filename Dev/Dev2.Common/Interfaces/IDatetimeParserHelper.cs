@@ -1,6 +1,6 @@
 namespace Dev2.Common.Interfaces
 {
-    internal interface IDatetimeParserHelper
+    interface IDatetimeParserHelper
     {
         bool IsNumberWeekOfYear(string data, bool treatAsTime);
         bool IsNumberDayOfYear(string data, bool treatAsTime);

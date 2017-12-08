@@ -42,9 +42,7 @@ namespace Dev2.Services.Execution
         }
 
         public string ProcedureName { private get; set; }
-
-
-
+        
         MySqlServer SetupMySqlServer(ErrorResultTO errors)
         {
             var server = new MySqlServer();
@@ -275,7 +273,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool MySqlExecution(ErrorResultTO errors, int update)
+        bool MySqlExecution(ErrorResultTO errors, int update)
         {
             try
             {

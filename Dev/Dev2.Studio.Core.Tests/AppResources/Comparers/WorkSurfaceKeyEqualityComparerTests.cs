@@ -12,14 +12,14 @@ using System;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Core.Tests.Environments;
-using Dev2.Factory;
-using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Factory;
+using Dev2.Studio.AppResources.Comparers;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var serverId = Guid.NewGuid();
             var enviroId = Guid.NewGuid();
 
-            WorkSurfaceKey key1 = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
+            var key1 = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
             Assert.IsNotNull(key1);
             key1.EnvironmentID = enviroId;
             key1.ResourceID = resId;

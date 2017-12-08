@@ -107,8 +107,8 @@ namespace Dev2.Activities.Designers2.Sequence
             if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
             {
                 var explorerItemModel = dataObject.GetData(GlobalConstants.UpgradedExplorerItemModelFormat);
-                Guid envId = new Guid();
-                Guid resourceId = new Guid();
+                var envId = new Guid();
+                var resourceId = new Guid();
 
                 if (explorerItemModel == null)
                 {
@@ -126,12 +126,12 @@ namespace Dev2.Activities.Designers2.Sequence
 
                 try
                 {
-                    IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
+                    var server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
                     var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
                     if (resource != null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
+                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                         if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                         {
@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers2.Sequence
                             }
                         }
 
-                        ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
+                        var modelItem = ModelItemUtils.CreateModelItem(d);
                         if (modelItem != null)
                         {
                             dynamic mi = ModelItem;
