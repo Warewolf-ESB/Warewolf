@@ -23,7 +23,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Warewolf.Exchange.Email.Connector.Wrapper;
+using Warewolf.Exchange.Email.Wrapper;
 
 namespace Dev2.Activities.Exchange
 {
