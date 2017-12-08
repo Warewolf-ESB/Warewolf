@@ -3,7 +3,7 @@ Feature: UILoad
 	As a Warewolf Studio user
 	I can only tolerate so much lag
 
-Scenario: Studio UI Load Test
+Scenario: Studio Large Deploy UI Load Test
 	Given there are "20" duplicates of All Tools workflow in the explorer
 	And I start the timer
 	When I Select Local Server Source From Explorer
@@ -15,6 +15,9 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I Click Deploy Tab Deploy Button with no version conflict dialog
 	Then the timer duration is between "160" and "320" seconds
+	
+Scenario: Studio Large Debug Out UI Load Test
+	Given The Warewolf Studio is running
 	When I open "Debug Output UI Load Testing" workflow
 	Given I start the timer
 	When I Debug with input of "200"
@@ -22,6 +25,9 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
 	Then the timer duration is between "10" and "30" seconds
+	
+Scenario: Studio Large Variable List UI Load Test
+	Given The Warewolf Studio is running
 	When I open "Variable List UI Load Testing" workflow
 	#Given I start the timer
 	#When I Enter variable text as "[[new_variable]]" and value text as "new value" into assign row 1
@@ -30,21 +36,33 @@ Scenario: Studio UI Load Test
 	When I Remove Assign Row 1 With Context Menu
 	And I Click VariableList Scalar Row1 Delete Button
 	Then the timer duration is between "30" and "60" seconds
-	Given I have "20" All Tools workflows tabs open
+	
+Scenario: Studio Large Explorer UI Load Test
+	Given there are "20" duplicates of All Tools workflow in the explorer
+	And I have "20" All Tools workflows tabs open
 	And I start the timer
 	When I Filter the Explorer with "All Tools"
 	And I Open Explorer First Item With Double Click
 	Then the timer duration is between "45" and "90" seconds
-	Given I start the timer
+	
+Scenario: Studio Long Workflow UI Load Test
+	Given The Warewolf Studio is running
+	And I start the timer
 	When I open "Large Workflow UI Load Testing" workflow
 	Then the timer duration is between "45" and "90" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
 	Then the timer duration is between "10" and "60" seconds
-	Given I start the timer
+	
+Scenario: Studio Large Dependancies Graph UI Load Test
+	Given The Warewolf Studio is running
+	And I start the timer
 	When I Select Show Dependencies In Explorer Context Menu for service "Dependencies Graph UI Load Testing"
 	Then the timer duration is between "10" and "60" seconds
-	Given I have "100" scheduled tasks
+	
+Scenario: Studio Many Scheduled Tasks UI Load Test
+	Given The Warewolf Studio is running
+	And I have "100" scheduled tasks
 	And I start the timer
 	When I Click Scheduler Ribbon Button
 	Then the timer duration is between "5" and "30" seconds
@@ -58,6 +76,9 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I delete the UI Load Test scheduled task
 	Then the timer duration is between "5" and "30" seconds
+	
+Scenario: Studio Many Workflow Tests UI Load Test
+	Given The Warewolf Studio is running
 	When I Filter the Explorer with "Tests UI Load Testing"
 	And I start the timer
 	And I Click Show Explorer First Item Tests From Explorer Context Menu
@@ -69,7 +90,10 @@ Scenario: Studio UI Load Test
 	Given I start the timer
 	When I Delete The First Test
 	Then the timer duration is between "10" and "60" seconds
-	Given I start the timer
+	
+Scenario: Studio Shutdown And Startup UI Load Test
+	Given The Warewolf Studio is running
+	And I start the timer
 	When I close the Studio
 	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
