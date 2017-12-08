@@ -30,12 +30,15 @@ namespace Dev2.Activities.Sharepoint
     [ToolDescriptorInfo("SharepointLogo", "Update List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Update_List_Item")]
     public class SharepointUpdateListItemActivity : DsfActivityAbstract<string>
     {
+        readonly SharepointUtils _sharepointUtils;
+
         public SharepointUpdateListItemActivity()
         {
             DisplayName = "Sharepoint Update List Item";
             ReadListItems = new List<SharepointReadListTo>();
             FilterCriteria = new List<SharepointSearchTo>();
             RequireAllCriteriaToMatch = true;
+            _sharepointUtils = new SharepointUtils();
         }
 
         public List<SharepointSearchTo> FilterCriteria { get; set; }
@@ -91,7 +94,7 @@ namespace Dev2.Activities.Sharepoint
             ErrorResultTO allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -110,7 +113,7 @@ namespace Dev2.Activities.Sharepoint
                     var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
                     using (var ctx = sharepointHelper.GetContext())
                     {
-                        var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update, RequireAllCriteriaToMatch);
+                        var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update, RequireAllCriteriaToMatch);
                         List list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
@@ -175,7 +178,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env, int update)
         {
-            var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+            var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
                 DebugItem debugItem = new DebugItem();
