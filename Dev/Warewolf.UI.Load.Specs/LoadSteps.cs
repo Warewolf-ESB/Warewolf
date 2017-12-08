@@ -44,20 +44,23 @@ namespace Warewolf.UI.Load.Specs
         [AfterFeature]
         public static void RemoveScheduledTasks()
         {
-            var localTaskService = ScenarioContext.Current.Get<TaskService>("localTaskService");
-            var numberOfTasks = ScenarioContext.Current.Get<String>("numberOfTasks");
-            for (var i = int.Parse(numberOfTasks); i > 0; i--)
+            if (ScenarioContext.Current.ContainsKey("localTaskService"))
             {
-                try
+                var localTaskService = ScenarioContext.Current.Get<TaskService>("localTaskService");
+                var numberOfTasks = ScenarioContext.Current.Get<String>("numberOfTasks");
+                for (var i = int.Parse(numberOfTasks); i > 0; i--)
                 {
-                    localTaskService.GetFolder("Warewolf").DeleteTask("UILoadTest" + i.ToString());
+                    try
+                    {
+                        localTaskService.GetFolder("Warewolf").DeleteTask("UILoadTest" + i.ToString());
+                    }
+                    catch (InvalidComObjectException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
-                catch (InvalidComObjectException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
+                localTaskService.Dispose();
             }
-            localTaskService.Dispose();
         }
 
         [Given(@"I start the timer")]
@@ -137,23 +140,26 @@ namespace Warewolf.UI.Load.Specs
         public void CloseStudio()
         {
             var studioProcess = Process.GetProcessesByName("Warewolf Studio");
-            if (studioProcess != null && studioProcess.Length > 0)
-            {
-                ScenarioContext.Current.Add("studioProcess", studioProcess[0].MainModule.FileName);
-                Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
-                studioProcess[0].WaitForExit();
-            }
+            Assert.IsTrue(studioProcess != null && studioProcess.Length > 0, "Studio not running.");
+            ScenarioContext.Current.Add("studioProcess", studioProcess[0].MainModule.FileName);
+            Mouse.Click(UIMap.MainStudioWindow.CloseStudioButton);
+            studioProcess[0].WaitForExit();
+        }
+
+        [Then("I wait for Studio to release its Mutex")]
+        public void WaitForStudioMutex()
+        {
+            Playback.Wait(30000);
         }
 
         [When("I start the Studio")]
         public void StartStudio()
         {
             var studioProcess = ScenarioContext.Current.Get<String>("studioProcess");
-            var startInfo = new ProcessStartInfo() {
+            var startInfo = new ProcessStartInfo
+            {
                 FileName = studioProcess,
-                CreateNoWindow = false,
-                UseShellExecute = true,
-                WindowStyle = ProcessWindowStyle.Normal
+                UseShellExecute = false
             };
             Process.Start(startInfo);
         }
