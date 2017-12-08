@@ -36,6 +36,7 @@ namespace Dev2.Activities.Sharepoint
             FilterCriteria = new List<SharepointSearchTo>();
             ReadListItems = new List<SharepointReadListTo>();
             RequireAllCriteriaToMatch = true;
+            _sharepointUtils = new SharepointUtils();
             _indexCounter = 1;
         }
 
@@ -88,8 +89,9 @@ namespace Dev2.Activities.Sharepoint
         {
             return enFindMissingType.MixedActivity;
         }
-        
-        int _indexCounter;
+
+        readonly SharepointUtils _sharepointUtils;
+        private int _indexCounter;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -114,7 +116,7 @@ namespace Dev2.Activities.Sharepoint
                 var fields = sharepointHelper.LoadFieldsForList(SharepointList, true);
                 using (var ctx = sharepointHelper.GetContext())
                 {
-                    var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields,update , RequireAllCriteriaToMatch);
+                    var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields,update , RequireAllCriteriaToMatch);
                     var list = sharepointHelper.LoadFieldsForList(SharepointList, ctx, false);
                     listItems = list.GetItems(camlQuery);
                     ctx.Load(listItems);
