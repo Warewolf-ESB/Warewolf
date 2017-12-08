@@ -149,7 +149,7 @@ namespace Warewolf.UI.Load.Specs
         [Then("I wait for Studio to release its Mutex")]
         public void WaitForStudioMutex()
         {
-            Playback.Wait(30000);
+            Playback.Wait(60000);
         }
 
         [When("I start the Studio")]
