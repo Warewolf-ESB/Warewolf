@@ -20,7 +20,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	Given The Warewolf Studio is running
 	When I open "Debug Output UI Load Testing" workflow
 	Given I start the timer
-	When I Debug with input of "1000"
+	When I Debug with input of "500"
 	Then the timer duration is between "30" and "90" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
