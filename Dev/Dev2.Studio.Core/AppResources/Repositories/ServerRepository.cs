@@ -73,7 +73,7 @@ namespace Dev2.Studio.Core
         #region CTOR
         
         public ServerRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppUsageStats.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
         
