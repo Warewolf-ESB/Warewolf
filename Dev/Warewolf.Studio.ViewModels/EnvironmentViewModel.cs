@@ -207,11 +207,12 @@ namespace Warewolf.Studio.ViewModels
                     IsExpanded = !IsExpanded;
                 }
             });
-            server.Connect();
+            //server.Connect();
             IsConnected = server.IsConnected;
 
             server.NetworkStateChanged += (args, server1) =>
              {
+                 IsConnected = server1.IsConnected;
                  if (args.State == ConnectionNetworkState.Connected)
                  {
                      Application.Current.Dispatcher.Invoke(async () =>
