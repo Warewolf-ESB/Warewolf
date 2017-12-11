@@ -612,7 +612,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.MySqlDatabaseDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "MySql Database(MySqlDatabaseDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "MySql Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -773,6 +773,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mInputLargeDataGridTable = new WpfTable(this);
                     #region Search Criteria
                     this.mInputLargeDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+                    this.mInputLargeDataGridTable.SearchProperties[WpfTable.PropertyNames.Instance] = "2";
                     this.mInputLargeDataGridTable.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -839,6 +840,38 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                 return this.mOnErrorCustom;
             }
         }
+        
+        public WpfButton TestButton
+        {
+            get
+            {
+                if ((this.mTestButton == null))
+                {
+                    this.mTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestButton;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -861,6 +894,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         private WpfEdit mRecordSetTextBoxEdit;
         
         private OnErrorCustom mOnErrorCustom;
+        
+        private WpfButton mTestButton;
+        
+        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -887,7 +924,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mMySQLSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mMySQLSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "MySQLSourceFromTool";
-                    this.mMySQLSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mMySQLSourceFromToolListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMySQLSourceFromToolListItem;
@@ -1313,7 +1350,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mODBCSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mODBCSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "ODBCSourceFromTool";
-                    this.mODBCSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mODBCSourceFromToolListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mODBCSourceFromToolListItem;
@@ -1540,7 +1577,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.OracleDatabaseDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Oracle Database(OracleDatabaseDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "Oracle Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -1685,6 +1722,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mLargeDataGridTable = new WpfTable(this);
                     #region Search Criteria
                     this.mLargeDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+                    this.mLargeDataGridTable.SearchProperties[WpfTable.PropertyNames.Instance] = "2";
                     this.mLargeDataGridTable.WindowTitles.Add("Warewolf");
                     #endregion
                 }
@@ -1767,6 +1805,38 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                 return this.mOnErrorCustom;
             }
         }
+        
+        public WpfButton TestButton
+        {
+            get
+            {
+                if ((this.mTestButton == null))
+                {
+                    this.mTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestButton;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1789,6 +1859,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         private WpfEdit mRecordSetTextBoxEdit;
         
         private OnErrorCustom2 mOnErrorCustom;
+        
+        private WpfButton mTestButton;
+        
+        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -1815,7 +1889,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mOracleSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mOracleSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "OracleSourceFromTool";
-                    this.mOracleSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mOracleSourceFromToolListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOracleSourceFromToolListItem;
@@ -2357,7 +2431,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mSQLServerSourceFromTListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mSQLServerSourceFromTListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "SQLServerSourceFromTool";
-                    this.mSQLServerSourceFromTListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mSQLServerSourceFromTListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSQLServerSourceFromTListItem;
@@ -2956,7 +3030,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     #region Search Criteria
                     this.mQuickVariableInputContentPane.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
                     this.mQuickVariableInputContentPane.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
-                    this.mQuickVariableInputContentPane.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mQuickVariableInputContentPane.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mQuickVariableInputContentPane;
@@ -3265,7 +3339,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mTestingDB = new WpfListItem(this);
                     #region Search Criteria
                     this.mTestingDB.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mTestingDB.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mTestingDB.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTestingDB;
@@ -3281,7 +3355,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mNewDatabaseSource = new WpfListItem(this);
                     #region Search Criteria
                     this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
-                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNewDatabaseSource;
@@ -3827,7 +3901,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         {
             #region Search Criteria
             this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.PostgreSqlDatabaseDesigner";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "PostgreSQL Database(PostgreSqlDatabaseDesigner)";
+            this.SearchProperties.Add(new PropertyExpression(WpfControl.PropertyNames.AutomationId, "PostgreSQL Database", PropertyExpressionOperator.Contains));
             this.WindowTitles.Add("Warewolf");
             #endregion
         }
@@ -3975,22 +4049,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
             }
         }
         
-        public WpfTable LargeDataGridTable
-        {
-            get
-            {
-                if ((this.mLargeDataGridTable == null))
-                {
-                    this.mLargeDataGridTable = new WpfTable(this);
-                    #region Search Criteria
-                    this.mLargeDataGridTable.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
-                    this.mLargeDataGridTable.WindowTitles.Add("Warewolf");
-                    #endregion
-                }
-                return this.mLargeDataGridTable;
-            }
-        }
-        
         public WpfButton GenerateOutputsButton
         {
             get
@@ -4050,6 +4108,50 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                 return this.mOnErrorCustom;
             }
         }
+        
+        public TestInputsTable1 TestInputsTable
+        {
+            get
+            {
+                if ((this.mTestInputsTable == null))
+                {
+                    this.mTestInputsTable = new TestInputsTable1(this);
+                }
+                return this.mTestInputsTable;
+            }
+        }
+        
+        public WpfButton TestButton
+        {
+            get
+            {
+                if ((this.mTestButton == null))
+                {
+                    this.mTestButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mTestButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "TestActionButton";
+                    this.mTestButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTestButton;
+            }
+        }
+        
+        public WpfButton DoneButton
+        {
+            get
+            {
+                if ((this.mDoneButton == null))
+                {
+                    this.mDoneButton = new WpfButton(this);
+                    #region Search Criteria
+                    this.mDoneButton.SearchProperties[WpfButton.PropertyNames.AutomationId] = "GenerateOutputsDoneButton";
+                    this.mDoneButton.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mDoneButton;
+            }
+        }
         #endregion
         
         #region Fields
@@ -4063,8 +4165,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         
         private WpfButton mRefreshButton;
         
-        private WpfTable mLargeDataGridTable;
-        
         private WpfButton mGenerateOutputsButton;
         
         private WpfTable mOutputsMappingDataGrTable;
@@ -4072,6 +4172,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         private WpfEdit mRecordSetTextBoxEdit;
         
         private OnErrorCustom5 mOnErrorCustom;
+        
+        private TestInputsTable1 mTestInputsTable;
+        
+        private WpfButton mTestButton;
+        
+        private WpfButton mDoneButton;
         #endregion
     }
     
@@ -4114,10 +4220,26 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mPostgreSQLSourceFromListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mPostgreSQLSourceFromListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "PostgreSQLSourceFromTool";
-                    this.mPostgreSQLSourceFromListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mPostgreSQLSourceFromListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPostgreSQLSourceFromListItem;
+            }
+        }
+        
+        public WpfListItem NewPostgresSourceListItem
+        {
+            get
+            {
+                if ((this.mNewPostgresSourceListItem == null))
+                {
+                    this.mNewPostgresSourceListItem = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mNewPostgresSourceListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "NewPostgresSource";
+                    this.mNewPostgresSourceListItem.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mNewPostgresSourceListItem;
             }
         }
         #endregion
@@ -4126,6 +4248,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         private WpfListItem mPostgreSourceTest;
         
         private WpfListItem mPostgreSQLSourceFromListItem;
+        
+        private WpfListItem mNewPostgresSourceListItem;
         #endregion
     }
     
@@ -4331,6 +4455,135 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         
         #region Fields
         private WpfEdit mTextEdit;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TestInputsTable1 : WpfTable
+    {
+        
+        public TestInputsTable1(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfTable.PropertyNames.AutomationId] = "LargeDataGrid";
+            this.SearchProperties[WpfTable.PropertyNames.Instance] = "2";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Row12 Row1
+        {
+            get
+            {
+                if ((this.mRow1 == null))
+                {
+                    this.mRow1 = new Row12(this);
+                }
+                return this.mRow1;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Row12 mRow1;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Row12 : WpfRow
+    {
+        
+        public Row12(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchConfigurations.Add(SearchConfiguration.AlwaysSearch);
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public Cell Cell
+        {
+            get
+            {
+                if ((this.mCell == null))
+                {
+                    this.mCell = new Cell(this);
+                }
+                return this.mCell;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private Cell mCell;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class Cell : WpfCell
+    {
+        
+        public Cell(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+        }
+        
+        #region Properties
+        public TestDataIntellisenseCombobox TestDataIntellisenseCombobox
+        {
+            get
+            {
+                if ((this.mTestDataIntellisenseCombobox == null))
+                {
+                    this.mTestDataIntellisenseCombobox = new TestDataIntellisenseCombobox(this);
+                }
+                return this.mTestDataIntellisenseCombobox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private TestDataIntellisenseCombobox mTestDataIntellisenseCombobox;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class TestDataIntellisenseCombobox : WpfComboBox
+    {
+        
+        public TestDataIntellisenseCombobox(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfComboBox.PropertyNames.HelpText] = "This data is used for testing and not at run time.";
+            this.WindowTitles.Add("Warewolf");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit Textbox
+        {
+            get
+            {
+                if ((this.mTextbox == null))
+                {
+                    this.mTextbox = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mTextbox.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "Text";
+                    this.mTextbox.WindowTitles.Add("Warewolf");
+                    #endregion
+                }
+                return this.mTextbox;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mTextbox;
         #endregion
     }
     
@@ -5062,7 +5315,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mMySQLSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mMySQLSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "MySQLSourceFromTool";
-                    this.mMySQLSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mMySQLSourceFromToolListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mMySQLSourceFromToolListItem;
@@ -5488,7 +5741,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mODBCSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mODBCSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "ODBCSourceFromTool";
-                    this.mODBCSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mODBCSourceFromToolListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mODBCSourceFromToolListItem;
@@ -5990,7 +6243,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mOracleSourceFromToolListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mOracleSourceFromToolListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "OracleSourceFromTool";
-                    this.mOracleSourceFromToolListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mOracleSourceFromToolListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mOracleSourceFromToolListItem;
@@ -6309,13 +6562,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
             }
         }
         
-        public TestInputsTable1 TestInputsTable
+        public TestInputsTable2 TestInputsTable
         {
             get
             {
                 if ((this.mTestInputsTable == null))
                 {
-                    this.mTestInputsTable = new TestInputsTable1(this);
+                    this.mTestInputsTable = new TestInputsTable2(this);
                 }
                 return this.mTestInputsTable;
             }
@@ -6439,7 +6692,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         
         private WpfButton mGenerateOutputsButton;
         
-        private TestInputsTable1 mTestInputsTable;
+        private TestInputsTable2 mTestInputsTable;
         
         private WpfButton mTestInputsButton;
         
@@ -6532,7 +6785,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mSQLServerSourceFromTListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mSQLServerSourceFromTListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "SQLServerSourceFromTool";
-                    this.mSQLServerSourceFromTListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mSQLServerSourceFromTListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mSQLServerSourceFromTListItem;
@@ -6561,13 +6814,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         }
         
         #region Properties
-        public Row12 Row1
+        public Row13 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row12(this);
+                    this.mRow1 = new Row13(this);
                 }
                 return this.mRow1;
             }
@@ -6587,17 +6840,17 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         #endregion
         
         #region Fields
-        private Row12 mRow1;
+        private Row13 mRow1;
         
         private Row21 mRow2;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Row12 : WpfRow
+    public class Row13 : WpfRow
     {
         
-        public Row12(UITestControl searchLimitContainer) : 
+        public Row13(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -6798,10 +7051,10 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class TestInputsTable1 : WpfTable
+    public class TestInputsTable2 : WpfTable
     {
         
-        public TestInputsTable1(UITestControl searchLimitContainer) : 
+        public TestInputsTable2(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -6812,13 +7065,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         }
         
         #region Properties
-        public Row13 Row1
+        public Row14 Row1
         {
             get
             {
                 if ((this.mRow1 == null))
                 {
-                    this.mRow1 = new Row13(this);
+                    this.mRow1 = new Row14(this);
                 }
                 return this.mRow1;
             }
@@ -6826,15 +7079,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
         #endregion
         
         #region Fields
-        private Row13 mRow1;
+        private Row14 mRow1;
         #endregion
     }
     
     [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class Row13 : WpfRow
+    public class Row14 : WpfRow
     {
         
-        public Row13(UITestControl searchLimitContainer) : 
+        public Row14(UITestControl searchLimitContainer) : 
                 base(searchLimitContainer)
         {
             #region Search Criteria
@@ -7131,7 +7384,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     #region Search Criteria
                     this.mQuickVariableInputContentPane.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.QuickVariableInputView";
                     this.mQuickVariableInputContentPane.SearchProperties[WpfControl.PropertyNames.AutomationId] = "QuickVariableInputContent";
-                    this.mQuickVariableInputContentPane.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mQuickVariableInputContentPane.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mQuickVariableInputContentPane;
@@ -7440,7 +7693,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mTestingDB = new WpfListItem(this);
                     #region Search Criteria
                     this.mTestingDB.SearchProperties[WpfListItem.PropertyNames.Instance] = "3";
-                    this.mTestingDB.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mTestingDB.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mTestingDB;
@@ -7456,7 +7709,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mNewDatabaseSource = new WpfListItem(this);
                     #region Search Criteria
                     this.mNewDatabaseSource.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
-                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mNewDatabaseSource.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mNewDatabaseSource;
@@ -8289,7 +8542,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database.DatabaseToolsUIMapClasses
                     this.mPostgreSQLSourceFromListItem = new WpfListItem(this);
                     #region Search Criteria
                     this.mPostgreSQLSourceFromListItem.SearchProperties[WpfListItem.PropertyNames.Name] = "PostgreSQLSourceFromTool";
-                    this.mPostgreSQLSourceFromListItem.WindowTitles.Add("Warewolf (DEV2\\DYLAN.DELPORT)");
+                    this.mPostgreSQLSourceFromListItem.WindowTitles.Add("Warewolf");
                     #endregion
                 }
                 return this.mPostgreSQLSourceFromListItem;

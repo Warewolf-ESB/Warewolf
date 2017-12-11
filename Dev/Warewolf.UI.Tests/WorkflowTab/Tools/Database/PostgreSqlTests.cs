@@ -10,8 +10,6 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
     [CodedUITest]
     public class PostgreSqlTests
     {
-        const string SourceName = "PostgreSQLSourceFromTool";
-
         [TestMethod]
         [TestCategory("Database Tools")]
         public void PostgreSQLDatabaseTool_Small_And_LargeView_Then_NewSource_UITest()
@@ -44,7 +42,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             Assert.IsTrue(DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.TestConnectionButton.Enabled, "Test Connection Button is not enabled.");
             DBSourceUIMap.Click_DB_Source_Wizard_Test_Connection_Button();
             DBSourceUIMap.Select_postgres_From_DB_Source_Wizard_Database_Combobox();
-            UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
+            UIMap.Save_With_Ribbon_Button_And_Dialog("PostgreSQLSourceFromTool");
             DBSourceUIMap.Click_Close_DB_Source_Wizard_Tab_Button();
             //Edit Source
             DatabaseToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
@@ -58,6 +56,22 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             DatabaseToolsUIMap.PostgreSqlDatabaseTool_ChangeView_With_DoubleClick();
             DatabaseToolsUIMap.Click_EditSourceButton_On_PostgreSQLTool();
             Assert.AreEqual("TestDB", DBSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.DBSourceTab.WorkSurfaceContext.ManageDatabaseSourceControl.DatabaseComboxBox.TestDBText.DisplayText);
+        }
+
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void PostgreSQLDatabaseConnectorTool_Test_Connection_From_Design_Surface_UITest()
+        {
+            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.SourcesComboBox.Expanded = true;
+            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.SourcesComboBox.NewPostgresSourceListItem);
+            DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox.Expanded = true;
+            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.ActionsComboBox.GetCountries);
+            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.GenerateOutputsButton);
+            DatabaseToolsUIMap.GetTestInputTextboxFromRow(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.TestInputsTable.Row1).Text = "a";
+            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.TestButton);
+            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.LargeView.DoneButton);
+            Mouse.Click(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.DoneButton);
+            Assert.IsTrue(DatabaseToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.PostgreSqlActivitCustom.SmallView.Exists, "PostgreSQL database connector tool small view does not exist after entering valid data, testing it and clicking done.");
         }
 
         #region Additional test attributes
