@@ -7,7 +7,6 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-using System;
 
 namespace Dev2.ViewModels
 {
@@ -53,26 +52,18 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
-    
-        public string ResourceType => "DeployViewer";
 
-        #region Implementation of IHelpSource
+        public string ResourceType => "DeployViewer";
 
         public string HelpText { get; set; }
         public SingleExplorerDeployViewModel ViewModel { get; set; }
         public IView View { get; set; }
 
-        #endregion
-
-        #region Implementation of IStudioTab
-
         public bool IsDirty => false;
 
-        public void CloseView() => throw new NotImplementedException();
+        public void CloseView() { }
 
-        public bool DoDeactivate(bool showMessage) => throw new NotImplementedException();
-
-        #endregion
+        public bool DoDeactivate(bool showMessage) => true;
 
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;
