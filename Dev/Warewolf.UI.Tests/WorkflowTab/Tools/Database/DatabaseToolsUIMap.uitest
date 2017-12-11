@@ -555,10 +555,10 @@
                                                                 <WindowTitle>Warewolf</WindowTitle>
                                                               </WindowTitles>
                                                               <AndCondition>
-                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ControlType">Custom</PropertyCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                                 <PropertyCondition Name="ClassName">Uia.ODBCDatabaseDesigner</PropertyCondition>
-                                                                <PropertyCondition Name="AutomationId">ODBC Data Source(ODBCDatabaseDesigner)</PropertyCondition>
+                                                                <PropertyCondition Name="AutomationId" Operator="Contains">ODBC Data Source</PropertyCondition>
                                                               </AndCondition>
                                                               <SupportLevel>0</SupportLevel>
                                                               <Descendants>
@@ -789,6 +789,19 @@
                                                                           </Descendants>
                                                                         </UIObject>
                                                                       </Descendants>
+                                                                    </UIObject>
+                                                                    <UIObject ControlType="Button" Id="TestButton" FriendlyName="Test" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">TestActionButton</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants />
                                                                     </UIObject>
                                                                   </Descendants>
                                                                 </UIObject>
