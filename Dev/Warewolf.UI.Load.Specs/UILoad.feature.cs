@@ -127,7 +127,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 26
  testRunner.When("I Filter the Debug with \"Match Item\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 27
- testRunner.Then("the timer duration is between \"30\" and \"90\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the timer duration is between \"60\" and \"120\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -209,7 +209,7 @@ this.ScenarioSetup(scenarioInfo);
 #line 53
  testRunner.When("I open \"Large Workflow UI Load Testing\" workflow", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 54
- testRunner.Then("the timer duration is between \"60\" and \"120\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+ testRunner.Then("the timer duration is between \"10\" and \"60\" seconds", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line 55
  testRunner.Given("I start the timer", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
 #line 56
