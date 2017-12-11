@@ -20,8 +20,8 @@ namespace Dev2.Scheduler
 {
     public class ScheduleTrigger : IScheduleTrigger
     {
-        private IDev2TaskService _service;
-        private ITaskServiceConvertorFactory _factory;
+        IDev2TaskService _service;
+        ITaskServiceConvertorFactory _factory;
         public ScheduleTrigger(TaskState state, ITrigger trigger, IDev2TaskService service, ITaskServiceConvertorFactory factory)
         {
             _service = service;
@@ -41,21 +41,21 @@ namespace Dev2.Scheduler
             }
         }
 
-        private string SetXmlFromTrigger(ITrigger value)
+        string SetXmlFromTrigger(ITrigger value)
         {
-            _factory= _factory ?? new TaskServiceConvertorFactory();
-           _service= _service ?? new Dev2TaskService(_factory);
+            _factory = _factory ?? new TaskServiceConvertorFactory();
+            _service = _service ?? new Dev2TaskService(_factory);
             using (var task = _service.NewTask())
             {
                 task.AddAction(_factory.CreateExecAction("notepad"));
                 task.AddTrigger(value);
-              
+
                 return task.XmlText;
             }
         }
 
 
-        private ITrigger GetTriggerFromXml(string nativeXml)
+        ITrigger GetTriggerFromXml(string nativeXml)
         {
             _factory = _factory ?? new TaskServiceConvertorFactory();
             _service = _service ?? new Dev2TaskService(_factory);

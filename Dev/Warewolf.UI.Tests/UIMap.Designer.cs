@@ -1039,6 +1039,34 @@ namespace Warewolf.UI.Tests
                 return this.mComboboxListItemAsLocalServerSource;
             }
         }
+        
+        public IntellisenseOptionsList IntellisenseOptionsList
+        {
+            get
+            {
+                if ((this.mIntellisenseOptionsList == null))
+                {
+                    this.mIntellisenseOptionsList = new IntellisenseOptionsList(this);
+                }
+                return this.mIntellisenseOptionsList;
+            }
+        }
+        
+        public WpfListItem ComboboxListItemAsSharepointTestServer
+        {
+            get
+            {
+                if ((this.mComboboxListItemAsSharepointTestServer == null))
+                {
+                    this.mComboboxListItemAsSharepointTestServer = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mComboboxListItemAsSharepointTestServer.SearchProperties[WpfListItem.PropertyNames.Name] = @"{""Server"":""http://rsaklfsvrdev/"",""AuthenticationType"":""Windows"",""UserName"":"""",""Password"":"""",""IsSource"":true,""IsService"":false,""IsFolder"":false,""IsReservedService"":false,""IsServer"":false,""IsResourceVersion"":false,""IsSharepointOnline"":false,""Version"":null,""ResourceID"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""ResourceType"":""SharepointServerSource"",""ResourceName"":""SharePoint Test Server"",""IsValid"":false,""Errors"":[],""ReloadActions"":false,""UserPermissions"":0,""VersionInfo"":{""DateTimeStamp"":""2015-07-07T09:49:43.2102319+02:00"",""Reason"":""Save"",""User"":""Unknown"",""VersionNumber"":""1"",""ResourceId"":""94d4b4ca-31e1-494d-886b-cd94224c9a8b"",""VersionId"":""6d47f370-c0d3-4b96-89d7-52090a38331a""}}";
+                    this.mComboboxListItemAsSharepointTestServer.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mComboboxListItemAsSharepointTestServer;
+            }
+        }
         #endregion
         
         #region Fields
@@ -1173,6 +1201,10 @@ namespace Warewolf.UI.Tests
         private WpfText mDependenciesText;
         
         private ComboboxListItemAsLocalServerSource mComboboxListItemAsLocalServerSource;
+        
+        private IntellisenseOptionsList mIntellisenseOptionsList;
+        
+        private WpfListItem mComboboxListItemAsSharepointTestServer;
         #endregion
     }
     
@@ -19906,6 +19938,42 @@ namespace Warewolf.UI.Tests
         
         #region Fields
         private WpfText mText;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class IntellisenseOptionsList : WpfList
+    {
+        
+        public IntellisenseOptionsList(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfList.PropertyNames.AutomationId] = "Selector";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfListItem FirstOption
+        {
+            get
+            {
+                if ((this.mFirstOption == null))
+                {
+                    this.mFirstOption = new WpfListItem(this);
+                    #region Search Criteria
+                    this.mFirstOption.SearchProperties[WpfListItem.PropertyNames.Name] = "[[val]]";
+                    this.mFirstOption.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mFirstOption;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfListItem mFirstOption;
         #endregion
     }
     

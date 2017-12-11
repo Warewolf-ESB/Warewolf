@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers2.FormatNumber
         
         string RoundingType { set => SetProperty(value); get => GetProperty<string>(); }
 
-        private void SetRoundingDecimalPlaces(string value)
+        void SetRoundingDecimalPlaces(string value)
         {
             SetProperty(value);
         }

@@ -33,7 +33,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
                 return Binding.DoNothing;
             }
 
-            DateTime dateTime = (DateTime)value;
+            var dateTime = (DateTime)value;
 
             if (string.IsNullOrWhiteSpace(Format))
             {

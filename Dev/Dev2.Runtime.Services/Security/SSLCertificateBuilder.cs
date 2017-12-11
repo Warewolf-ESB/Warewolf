@@ -25,7 +25,7 @@ namespace Dev2.Runtime.Security
         static string _location;
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
-        private const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
+        const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
 
         public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
         {

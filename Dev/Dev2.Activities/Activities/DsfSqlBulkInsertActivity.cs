@@ -239,7 +239,7 @@ namespace Dev2.Activities
 
         void DoInsertForMySql(DbSource runtimeDatabase, SqlBulkCopyOptions currentOptions, IWarewolfListIterator parametersIteratorCollection, IWarewolfIterator batchItr, IWarewolfIterator timeoutItr, IDSFDataObject dataObject, ErrorResultTO errorResultTo, ErrorResultTO allErrors, ref bool addExceptionToErrorList, int update)
         {
-            MySqlBulkLoader sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString));
+            var sqlBulkCopy = new MySqlBulkLoader(new MySqlConnection(runtimeDatabase.ConnectionString));
             TableName = TableName.Replace("[", "").Replace("]", "");
             if (TableName.Contains("."))
             {
@@ -327,8 +327,8 @@ namespace Dev2.Activities
 
         void AddBatchSizeAndTimeOutToDebug(IExecutionEnvironment executionEnvironment, int update)
         {
-            DebugItem debugItem = new DebugItem();
-            if(!string.IsNullOrEmpty(BatchSize))
+            var debugItem = new DebugItem();
+            if (!string.IsNullOrEmpty(BatchSize))
             {
                 AddDebugInputItemFromEntry(BatchSize, "Batch Size ", executionEnvironment, debugItem, update);
             }
@@ -672,7 +672,7 @@ namespace Dev2.Activities
                 foreach(Tuple<string, string> t in updates)
                 {
                     // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
+                    var t1 = t;
                     var items = InputMappings.Where(c => !string.IsNullOrEmpty(c.InputColumn) && c.InputColumn.Equals(t1.Item1));
 
                     // issues updates

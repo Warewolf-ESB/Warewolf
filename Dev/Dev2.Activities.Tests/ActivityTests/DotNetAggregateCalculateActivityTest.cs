@@ -12,22 +12,15 @@ using Dev2.Common;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
-    /// <summary>
-    /// Summary description for CalculateActivityTest
-    /// </summary>
     [TestClass]
     public class DotNetAggregateCalculateActivityTest : BaseActivityUnitTest
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DsfCalculateActivity_OnExecute")]
-        public void DsfCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
+        public void DotNetAggregateCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
         {
             TestStartNode = new FlowStep
             {
@@ -50,9 +43,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 result = ExecuteProcess();
                 GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
-                Assert.IsTrue(res.Second != 0);
+                Assert.IsTrue(res.Millisecond != 0);
             }
-            Assert.IsTrue(res.Second != 0);
+            Assert.IsTrue(res.Millisecond != 0);
         }
 
         [TestMethod]

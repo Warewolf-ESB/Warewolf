@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 namespace Unlimited.Framework.Converters.Graph.Poco
 {
     [Serializable]
-    internal class PocoPathSegment : IPathSegment
+class PocoPathSegment : IPathSegment
     {
         #region Constructors
 

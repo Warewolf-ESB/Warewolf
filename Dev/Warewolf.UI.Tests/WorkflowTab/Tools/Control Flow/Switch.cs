@@ -22,6 +22,14 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Control_Flow
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.Connector1.Exists, "No connectors exist on design surface after dragging tool onto start node autoconnector.");
         }
 
+        [TestMethod]
+        [TestCategory("Control Flow Tools")]
+        public void SwitchTool_DragDialogWindow_UITest()
+        {
+            Mouse.StartDragging(DialogsUIMap.DecisionOrSwitchDialog);
+            Mouse.StopDragging(100, 100);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]

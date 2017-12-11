@@ -80,17 +80,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while(colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                Dev2CRUDOperationTO opTo = new Dev2CRUDOperationTO(Overwrite);
+                var broker = ActivityIOFactory.CreateOperationsBroker();
+                var opTo = new Dev2CRUDOperationTO(Overwrite);
 
                 try
                 {
-                    IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
+                    var dst = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(outputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                    IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
-                    string result = broker.Create(dstEndPoint, opTo, true);
+                    var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+                    var result = broker.Create(dstEndPoint, opTo, true);
                     outputs.Add(DataListFactory.CreateOutputTO(Result, result));
                 }
                 catch(Exception e)

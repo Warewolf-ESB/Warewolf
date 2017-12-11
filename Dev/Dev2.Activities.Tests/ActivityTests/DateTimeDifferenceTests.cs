@@ -49,7 +49,7 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[Result]]"
                          );
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "209";
             GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
             // remove test datalist ;)
@@ -70,7 +70,7 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[resCol(*).res]]"
                          );
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
             // remove test datalist ;)
 
@@ -91,7 +91,7 @@ namespace ActivityUnitTests.ActivityTests
                             , "Days"
                             , "[[Result]]"
                             );
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "209";
             GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
@@ -144,7 +144,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
+        void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
         {
             TestStartNode = new FlowStep
             {

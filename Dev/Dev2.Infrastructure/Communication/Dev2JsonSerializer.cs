@@ -45,7 +45,7 @@ namespace Dev2.Communication
             return JsonConvert.SerializeObject(message, Formatting, _serializerSettings);
         }
 
-        public T Deserialize<T>([NotNull] string message)
+        public T Deserialize<T>(string message)
         {
             VerifyArgument.IsNotNull("message", message);
             return JsonConvert.DeserializeObject<T>(message, _deSerializerSettings);
@@ -60,9 +60,9 @@ namespace Dev2.Communication
 
         public StringBuilder SerializeToBuilder(object obj)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            using(StringWriter sw = new StringWriter(result))
+            using (StringWriter sw = new StringWriter(result))
             {
                 var jsonSerializer = new JsonSerializer
                 {
@@ -87,14 +87,14 @@ namespace Dev2.Communication
         {
             if(message != null && message.Length > 0)
             {
-                JsonSerializer serializer = new JsonSerializer
+                var serializer = new JsonSerializer
                 {
                     TypeNameHandling = _deSerializerSettings.TypeNameHandling,
                     TypeNameAssemblyFormatHandling = _serializerSettings.TypeNameAssemblyFormatHandling,
                     ReferenceLoopHandling = _serializerSettings.ReferenceLoopHandling,
                     PreserveReferencesHandling = _serializerSettings.PreserveReferencesHandling
                 };
-                using(MemoryStream ms = new MemoryStream(message.Length))
+                using (MemoryStream ms = new MemoryStream(message.Length))
                 {
                     // now load the stream ;)
 

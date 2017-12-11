@@ -16,8 +16,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2Task : IDev2Task
     {
-        private readonly Task _nativeObject;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly Task _nativeObject;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2Task(ITaskServiceConvertorFactory taskServiceConvertorFactory, Task nativeObject)
         {

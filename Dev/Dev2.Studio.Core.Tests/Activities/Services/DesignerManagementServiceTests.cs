@@ -56,13 +56,13 @@ namespace Dev2.Core.Tests.Activities.Services
         [Owner("Trevor Williams-Ros")]
         public void DesignerManagementService_UnitTest_GetResourceModel_SameAsConstructorInstance()
         {
-            Mock<IContextualResourceModel> resourceModel = Dev2MockFactory.SetupResourceModelMock();
-            Mock<IResourceRepository> resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
+            var resourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var resourceRepository = Dev2MockFactory.SetupFrameworkRepositoryResourceModelMock(resourceModel, new List<IResourceModel>());
 
             var designerManagementService = new DesignerManagementService(resourceModel.Object, resourceRepository.Object);
 
-            IContextualResourceModel expected = resourceModel.Object;
-            IContextualResourceModel actual = designerManagementService.GetRootResourceModel();
+            var expected = resourceModel.Object;
+            var actual = designerManagementService.GetRootResourceModel();
 
             Assert.AreEqual(expected, actual);
         }

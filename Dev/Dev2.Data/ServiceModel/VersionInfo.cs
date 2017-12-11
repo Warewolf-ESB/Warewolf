@@ -35,7 +35,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             else
             {
-                XElement versionXml = XElement.Parse(xml);
+                var versionXml = XElement.Parse(xml);
                 DateTimeStamp = DateTime.Parse(versionXml.AttributeSafe("DateTimeStamp"));
                 Reason = versionXml.AttributeSafe("Reason");
                 User = versionXml.AttributeSafe("User");

@@ -11,20 +11,20 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private string _message;
-        private string _title;
-        private MessageBoxButton _buttons;
-        private FontAwesomeIcon _icon;
-        private bool _isDependenciesButtonVisible;
-        private bool _isError;
-        private bool _isInfo;
-        private bool _isQuestion;
-        private List<string> _duplicates;
-        private bool _isDeleteAnywayButtonVisible;
-        private bool _applyToAll;
+        string _message;
+        string _title;
+        MessageBoxButton _buttons;
+        FontAwesomeIcon _icon;
+        bool _isDependenciesButtonVisible;
+        bool _isError;
+        bool _isInfo;
+        bool _isQuestion;
+        List<string> _duplicates;
+        bool _isDeleteAnywayButtonVisible;
+        bool _applyToAll;
 
-        private List<string> _changedProperties;
-        private MessageBoxViewModel _target;
+        List<string> _changedProperties;
+        MessageBoxViewModel _target;
 
         #endregion Fields
 

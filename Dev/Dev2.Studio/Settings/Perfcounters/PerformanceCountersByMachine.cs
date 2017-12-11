@@ -5,13 +5,13 @@ namespace Dev2.Settings.Perfcounters
 {
     public class PerformanceCountersByMachine : BindableBase,IPerformanceCountersByMachine
     {
-        private string _machineName;
-        private bool _requestPerSecond;
-        private bool _totalErrors;
-        private bool _averageExecutionTime;
-        private bool _concurrentRequests;
-        private bool _workFlowsNotFound;
-        private bool _notAuthorisedErrors;
+        string _machineName;
+        bool _requestPerSecond;
+        bool _totalErrors;
+        bool _averageExecutionTime;
+        bool _concurrentRequests;
+        bool _workFlowsNotFound;
+        bool _notAuthorisedErrors;
         public string MachineName
         {
             get

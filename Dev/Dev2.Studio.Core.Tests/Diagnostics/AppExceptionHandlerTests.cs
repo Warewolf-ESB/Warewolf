@@ -193,7 +193,7 @@ namespace Dev2.Core.Tests.Diagnostics
 
         #region Private Test Methods
 
-        private static Exception GetException()
+        static Exception GetException()
         {
             return new Exception("Test Exception", new Exception("Test inner Exception"));
         }

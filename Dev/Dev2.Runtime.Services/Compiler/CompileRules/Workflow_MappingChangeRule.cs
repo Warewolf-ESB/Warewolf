@@ -25,7 +25,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
     /// <summary>
     /// Detect IO mapping changes for WFs
     /// </summary>
-    internal class Workflow_MappingChangeRule : IServiceCompileRule
+    class Workflow_MappingChangeRule : IServiceCompileRule
     {
         public ServerCompileMessageType HandlesType()
         {

@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.Util
                     }
             };
 
-            Resource res = new Resource
+            var res = new Resource
             {
                 Inputs = "inputs",
                 Outputs = "outputs",

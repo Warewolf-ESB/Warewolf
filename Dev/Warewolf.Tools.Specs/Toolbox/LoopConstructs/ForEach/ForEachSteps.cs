@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
     [Binding]
     public class ForEachSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ForEachSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             this.scenarioContext = scenarioContext;
         }
 
-        private const string ResultRecordsetVariable = "[[r().v]]";
+        const string ResultRecordsetVariable = "[[r().v]]";
 
         protected override void BuildDataList()
         {
@@ -133,14 +133,14 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             scenarioContext.Add("activity", dsfForEach);
         }
 
-        private string BuildInputMappings()
+        string BuildInputMappings()
         {
             var inputMappings = new StringBuilder();
             inputMappings.Append("<Inputs>");
 
             var inMapTo = scenarioContext.Get<string>("inMapTo");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
 
             var inMapFrom = scenarioContext.Get<string>("inMapFrom");
             inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>", inColumn,
@@ -150,14 +150,14 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             return inputMappings.ToString();
         }
 
-        private string BuildOutputMappings()
+        string BuildOutputMappings()
         {
             var outputMappings = new StringBuilder();
             outputMappings.Append("<Outputs>");
 
             var outMapFrom = scenarioContext.Get<string>("outMapFrom");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
 
             var outMapTo = scenarioContext.Get<string>("outMapTo");
             outputMappings.Append(string.Format(
@@ -218,7 +218,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void WhenTheForeachToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
+            var result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
             scenarioContext.Add("result", result);
         }
         
@@ -236,7 +236,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
     public class mockEsb : IEsbChannel
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public mockEsb(ScenarioContext scenarioContext)
         {

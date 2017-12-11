@@ -3400,6 +3400,82 @@
                                                             </UIObject>
                                                           </Descendants>
                                                         </UIObject>
+                                                        <UIObject ControlType="TreeItem" Id="ObjectTreeItem" FriendlyName="Object" SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <SearchConfigurations>
+                                                            <SearchConfiguration>Expand</SearchConfiguration>
+                                                          </SearchConfigurations>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                            <PropertyCondition Name="Name">Object</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants>
+                                                            <UIObject ControlType="TreeItem" Id="ObjTreeItem" FriendlyName="obj" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <SearchConfigurations>
+                                                                <SearchConfiguration>Expand</SearchConfiguration>
+                                                              </SearchConfigurations>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">TreeItem</PropertyCondition>
+                                                                <PropertyCondition Name="Name">obj</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants>
+                                                                <UIObject ControlType="Pane" Id="ScrollViewerPane" FriendlyName="varsScrolBar" SpecialControlType="None">
+                                                                  <TechnologyName>UIA</TechnologyName>
+                                                                  <WindowTitles>
+                                                                    <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                  </WindowTitles>
+                                                                  <AndCondition>
+                                                                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                    <PropertyCondition Name="ControlType">Pane</PropertyCondition>
+                                                                    <PropertyCondition Name="ClassName">Uia.ScrollViewer</PropertyCondition>
+                                                                    <PropertyCondition Name="AutomationId">varsScrolBar</PropertyCondition>
+                                                                  </AndCondition>
+                                                                  <SupportLevel>0</SupportLevel>
+                                                                  <Descendants>
+                                                                    <UIObject ControlType="Edit" Id="NameTextBox" FriendlyName="UI_NameTextBox_AutoID" SpecialControlType="None">
+                                                                      <TechnologyName>UIA</TechnologyName>
+                                                                      <WindowTitles>
+                                                                        <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                      </WindowTitles>
+                                                                      <AndCondition>
+                                                                        <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                        <PropertyCondition Name="ControlType">Edit</PropertyCondition>
+                                                                        <PropertyCondition Name="AutomationId">UI_NameTextBox_AutoID</PropertyCondition>
+                                                                      </AndCondition>
+                                                                      <SupportLevel>0</SupportLevel>
+                                                                      <Descendants>
+                                                                        <UIObject ControlType="Button" Id="ViewObjectsButton" FriendlyName="ViewObjectsButton" SpecialControlType="None">
+                                                                          <TechnologyName>UIA</TechnologyName>
+                                                                          <WindowTitles>
+                                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                                          </WindowTitles>
+                                                                          <AndCondition>
+                                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                                            <PropertyCondition Name="AutomationId">ViewObjectsButton</PropertyCondition>
+                                                                          </AndCondition>
+                                                                          <SupportLevel>0</SupportLevel>
+                                                                          <Descendants />
+                                                                        </UIObject>
+                                                                      </Descendants>
+                                                                    </UIObject>
+                                                                  </Descendants>
+                                                                </UIObject>
+                                                              </Descendants>
+                                                            </UIObject>
+                                                          </Descendants>
+                                                        </UIObject>
                                                       </Descendants>
                                                     </UIObject>
                                                     <UIObject ControlType="Edit" Id="SearchTextbox" FriendlyName="SearchTextBox" SpecialControlType="None">
@@ -3694,6 +3770,20 @@
                                                             <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                                                             <PropertyCondition Name="ControlType">Text</PropertyCondition>
                                                             <PropertyCondition Name="AutomationId">UI_DebugOutputValueTextBlock_AutoID</PropertyCondition>
+                                                          </AndCondition>
+                                                          <SupportLevel>0</SupportLevel>
+                                                          <Descendants />
+                                                        </UIObject>
+                                                        <UIObject ControlType="Button" Id="MoreLink" FriendlyName="..." SpecialControlType="None">
+                                                          <TechnologyName>UIA</TechnologyName>
+                                                          <WindowTitles>
+                                                            <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
+                                                          </WindowTitles>
+                                                          <AndCondition>
+                                                            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                            <PropertyCondition Name="ControlType">Button</PropertyCondition>
+                                                            <PropertyCondition Name="AutomationId">MoreLink</PropertyCondition>
+                                                            <PropertyCondition Name="Instance">4</PropertyCondition>
                                                           </AndCondition>
                                                           <SupportLevel>0</SupportLevel>
                                                           <Descendants />
@@ -4420,6 +4510,17 @@
               <Descendants />
             </UIObject>
           </Descendants>
+        </TopLevelWindow>
+        <TopLevelWindow ControlType="Window" Id="UIWpfWindow" FriendlyName="Wpf" SpecialControlType="None" SessionId="10028920">
+          <TechnologyName>UIA</TechnologyName>
+          <WindowTitles />
+          <AndCondition>
+            <PropertyCondition Name="ControlType">Window</PropertyCondition>
+            <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+            <PropertyCondition Name="ClassName" Operator="Contains">HwndWrapper</PropertyCondition>
+          </AndCondition>
+          <SupportLevel>0</SupportLevel>
+          <Descendants />
         </TopLevelWindow>
       </TopLevelWindows>
     </UIMap>

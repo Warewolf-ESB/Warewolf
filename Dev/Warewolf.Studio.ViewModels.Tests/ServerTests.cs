@@ -30,11 +30,11 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ServerTests
     {
-        private Mock<IServer> _env;
-        private Mock<IEnvironmentConnection> _envConnection;
-        private Mock<IExplorerRepository> _proxyLayer;
-        private Guid _serverId;
-        private Mock<IAuthorizationService> _authorizationService;
+        Mock<IServer> _env;
+        Mock<IEnvironmentConnection> _envConnection;
+        Mock<IExplorerRepository> _proxyLayer;
+        Guid _serverId;
+        Mock<IAuthorizationService> _authorizationService;
 
         [TestInitialize]
         public void Initialize()
@@ -148,32 +148,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Assert Results-------------------------
             Assert.IsNotNull(server.GetPermissions(It.IsAny<Guid>()));
             Assert.AreEqual(Permissions.Administrator, server.GetPermissions(It.IsAny<Guid>()));
-        }
-
-        [TestMethod]
-        [Owner("Sanele Mthembu")]
-        public void Permissions_GivenServerIsConnected_ShouldReturn1()
-        {
-            //------------Setup for test--------------------------
-            _envConnection.Setup(connection => connection.IsConnected).Returns(true);
-            var query = new Mock<IQueryManager>();
-            var windowsGroupPermissions = new List<IWindowsGroupPermission>
-            {
-                new Mock<IWindowsGroupPermission>().Object
-            };
-            query.Setup(manager => manager.FetchPermissions()).Returns(windowsGroupPermissions);
-            _proxyLayer.Setup(repository => repository.QueryManagerProxy).Returns(query.Object);
-            var server = new Server(Guid.Empty, _envConnection.Object);
-            server.ProxyLayer = _proxyLayer.Object;
-            server.Permissions = windowsGroupPermissions;
-            //------------Assert Precondition-------------------------
-            Assert.IsNotNull(server.Permissions);
-            Assert.AreEqual(1, server.Permissions.Count);
-            //------------Execute Test---------------------------
-            server.Permissions = new List<IWindowsGroupPermission>();
-            //------------Assert Results-------------------------
-            Assert.AreEqual(0, server.Permissions.Count);
-        }        
+        }   
         
         [TestMethod]
         [Owner("Sanele Mthembu")]
@@ -479,8 +454,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             _envConnection.Setup(model => model.IsLocalHost).Returns(false);
             var server = new Server(Guid.Empty, _envConnection.Object);
-            PrivateObject privateObj = new PrivateObject(server);
-            Dictionary<string, string> info = new Dictionary<string, string>();
+            var privateObj = new PrivateObject(server);
+            var info = new Dictionary<string, string>();
             info.Add("information", "value for inforamtion");
             privateObj.SetField("_serverInformation", info);
             var information = server.GetServerInformation();
@@ -494,7 +469,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Setup for test--------------------------
             _envConnection.Setup(model => model.IsLocalHost).Returns(false);
             var server = new Server(Guid.Empty, _envConnection.Object);
-            PrivateObject privateObj = new PrivateObject(server);
+            var privateObj = new PrivateObject(server);
             privateObj.SetField("_version", "0.0.0.1");
             var version = server.GetServerVersion();
             Assert.IsNotNull(version);
@@ -557,7 +532,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var env = new Server(Guid.NewGuid(), connection.Object, repo.Object);
             const string expectedDisplayName = "localhost";
             //------------Execute Test---------------------------
-            string displayName = env.DisplayName;
+            var displayName = env.DisplayName;
             //------------Assert Results-------------------------
             Assert.AreEqual(expectedDisplayName, displayName);
         }

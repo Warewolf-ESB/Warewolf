@@ -10,7 +10,7 @@ namespace Dev2.Diagnostics.Debug
         readonly IDictionary<Tuple<Guid,string>, IList<IDebugState>> _data = new Dictionary<Tuple<Guid, string>, IList<IDebugState>>();
         static readonly object Lock = new object();
 
-        private static TestDebugMessageRepo _instance;
+        static TestDebugMessageRepo _instance;
 
         /// <summary>
         /// Gets the instance.

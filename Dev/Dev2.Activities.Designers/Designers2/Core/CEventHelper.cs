@@ -30,7 +30,7 @@ namespace Dev2.Activities.Designers2.Core
                 return DicEventFieldInfos[t];
             }
 
-            List<FieldInfo> lst = new List<FieldInfo>();
+            var lst = new List<FieldInfo>();
             BuildEventFields(t, lst);
             DicEventFieldInfos.Add(t, lst);
             return lst;
@@ -63,10 +63,10 @@ namespace Dev2.Activities.Designers2.Core
                     return;
                 }
 
-                Type t = obj.GetType();
-                IEnumerable<FieldInfo> eventFields = GetTypeEventFields(t);
+                var t = obj.GetType();
+                var eventFields = GetTypeEventFields(t);
 
-                foreach(var fi in eventFields.Where(fi => eventName == "" || String.Compare(eventName, fi.Name, StringComparison.OrdinalIgnoreCase) == 0))
+                foreach (var fi in eventFields.Where(fi => eventName == "" || String.Compare(eventName, fi.Name, StringComparison.OrdinalIgnoreCase) == 0))
                 {
                     // After hours and hours of research and trial and error, it turns out that
                     // STATIC Events have to be treated differently from INSTANCE Events...
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Designers2.Core
                         var ei = t.GetEvent(fi.Name, AllBindings);
                         if (ei != null)
                         {
-                            object val = fi.GetValue(obj);
+                            var val = fi.GetValue(obj);
                             if (val is Delegate mdel)
                             {
                                 foreach (Delegate del in mdel.GetInvocationList())

@@ -18,13 +18,13 @@ namespace Warewolf.Studio.Models.Help
             _token=_aggregator.GetEvent<HelpChangedEvent>().Subscribe(FireOnHelpReceived);
         }
 
-        private void FireOnHelpReceived(IHelpDescriptor obj)
+        void FireOnHelpReceived(IHelpDescriptor obj)
         {
             OnHelpTextReceived?.Invoke(this, obj);
         }
 
         public event HelpTextReceived OnHelpTextReceived;
-        private readonly SubscriptionToken _token;     
+        readonly SubscriptionToken _token;
 
         #endregion
 

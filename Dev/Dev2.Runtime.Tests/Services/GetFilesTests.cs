@@ -64,7 +64,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test-------------------------
             FileSystemInfo fileSystemInfo = new FileSytemInfoMock();
-            GetFiles files = new GetFiles();
+            var files = new GetFiles();
             //------------Execute Test---------------------------
             var results = files.BuildFileListing(fileSystemInfo);
             //------------Assert Results-------------------------

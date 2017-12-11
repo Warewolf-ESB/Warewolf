@@ -258,7 +258,7 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             
 
             var viewModel = new DataMergeDesignerViewModel(mi);
-            viewModel.GetDatalistString = () =>
+            viewModel._getDatalistString = () =>
                 {
                     const string trueString = "True";
                     const string noneString = "None";

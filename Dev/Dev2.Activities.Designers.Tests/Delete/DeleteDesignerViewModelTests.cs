@@ -67,8 +67,8 @@ namespace Dev2.Activities.Designers.Tests.Delete
         public void DeleteDesignerViewModel_Validate_CorrectFieldsAreValidated()
         {
             //------------Setup for test-------------------------
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);

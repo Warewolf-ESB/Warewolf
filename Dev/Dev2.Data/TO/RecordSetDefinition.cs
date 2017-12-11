@@ -17,8 +17,8 @@ namespace Dev2.DataList.Contract
     public class RecordSetDefinition : IRecordSetDefinition {
 
         #region Attributes
-        private readonly string _setName;
-        private readonly IList<IDev2Definition> _columns;
+        readonly string _setName;
+        readonly IList<IDev2Definition> _columns;
 
         #endregion
 

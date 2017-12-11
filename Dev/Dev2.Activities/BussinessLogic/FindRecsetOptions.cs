@@ -23,7 +23,7 @@ namespace Dev2.DataList
     public static class FindRecsetOptions
     {
 
-        private static Dictionary<string, IFindRecsetOptions> _options = new Dictionary<string, IFindRecsetOptions>();
+        static Dictionary<string, IFindRecsetOptions> _options = new Dictionary<string, IFindRecsetOptions>();
 
         /// <summary>
         /// A static constructor is used to initialize any static data,
@@ -34,7 +34,7 @@ namespace Dev2.DataList
         {
             var type = typeof(IFindRecsetOptions);
 
-            List<Type> types = typeof(IFindRecsetOptions).Assembly.GetTypes()
+            var types = typeof(IFindRecsetOptions).Assembly.GetTypes()
                    .Where(t => type.IsAssignableFrom(t)).ToList();
 
             foreach (Type t in types)
@@ -50,14 +50,14 @@ namespace Dev2.DataList
             SortRecordsetOptions();
         }
 
-        private static void SortRecordsetOptions()
+        static void SortRecordsetOptions()
         {
-            Dictionary<string, IFindRecsetOptions> tmpDictionary = new Dictionary<string, IFindRecsetOptions>();
-            
+            var tmpDictionary = new Dictionary<string, IFindRecsetOptions>();
+
             foreach (string findRecordsOperation in GlobalConstants.FindRecordsOperations)
-            
+
             {
-                KeyValuePair<string, IFindRecsetOptions> firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType().Equals(findRecordsOperation,StringComparison.InvariantCultureIgnoreCase));
+                var firstOrDefault = _options.FirstOrDefault(c => c.Value.HandlesType().Equals(findRecordsOperation, StringComparison.InvariantCultureIgnoreCase));
                 if (!string.IsNullOrEmpty(firstOrDefault.Key))
                 {
                     tmpDictionary.Add(firstOrDefault.Key, firstOrDefault.Value);

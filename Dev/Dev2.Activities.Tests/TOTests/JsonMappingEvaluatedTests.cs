@@ -39,10 +39,10 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Execute Test---------------------------
 
             // scalar evaluating to atom
-            string sn = "[[a]]";
+            var sn = "[[a]]";
             const string sns = "[[as]]";
             const string snf = "[[af]]";
-            string dn = "a";
+            var dn = "a";
             const string dns = "as";
             const string dnf = "af";
             var scalarsSn = new[] { "[[x().z]]", "[[x]]", sn, sns, snf };

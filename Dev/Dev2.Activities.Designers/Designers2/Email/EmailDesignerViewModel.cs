@@ -238,7 +238,7 @@ namespace Dev2.Activities.Designers2.Email
             {
                 return;
             }
-            Uri uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
+            var uri = new Uri(new Uri(AppSettings.LocalHost), "wwwroot/sources/Service/EmailSources/Test");
             var jsonData = testSource.ToString();
 
             var requestInvoker = CreateWebRequestInvoker();
@@ -445,7 +445,7 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsNullRule(() => EmailSource));
                     break;
                 case "FromAccount":
-                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist, "user@test.com");
+                    var fromExprRule = new IsValidExpressionRule(() => FromAccount, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(fromExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => fromExprRule.ExpressionValue));
                     break;
@@ -453,22 +453,22 @@ namespace Dev2.Activities.Designers2.Email
                     ruleSet.Add(new IsRequiredWhenOtherIsNotEmptyRule(() => Password, () => FromAccount));
                     break;
                 case "To":
-                    var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com");
+                    var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(toExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => toExprRule.ExpressionValue));
                     break;
                 case "Cc":
-                    var ccExprRule = new IsValidExpressionRule(() => Cc, datalist, "user@test.com");
+                    var ccExprRule = new IsValidExpressionRule(() => Cc, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(ccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => ccExprRule.ExpressionValue));
                     break;
                 case "Bcc":
-                    var bccExprRule = new IsValidExpressionRule(() => Bcc, datalist, "user@test.com");
+                    var bccExprRule = new IsValidExpressionRule(() => Bcc, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(bccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => bccExprRule.ExpressionValue));
                     break;
                 case "Attachments":
-                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, datalist, @"c:\test.txt");
+                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, datalist, @"c:\test.txt", new VariableUtils());
                     ruleSet.Add(attachmentsExprRule);
                     ruleSet.Add(new IsValidFileNameRule(() => attachmentsExprRule.ExpressionValue));
                     break;

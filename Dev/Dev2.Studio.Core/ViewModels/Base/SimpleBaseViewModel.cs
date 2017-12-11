@@ -19,14 +19,14 @@ namespace Dev2.Studio.Core.ViewModels.Base
     {
         #region Class Members
 
-        private bool _closeRequested;
-        private ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
+        bool _closeRequested;
+        ViewModelDialogResults _viewModelResults = ViewModelDialogResults.Cancel;
 
         public bool IsDisposed {private set; get;}
 
         #endregion Class Members
 
-        private ValidationController _validationController;
+        ValidationController _validationController;
 
         public ValidationController ValidationController
         {

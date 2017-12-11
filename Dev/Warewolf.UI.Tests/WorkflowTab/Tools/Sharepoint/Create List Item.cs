@@ -39,6 +39,15 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint
             Assert.IsFalse(SharepointSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.SharepointServerSourceTab.SharepointServerSourceView.SharepointView.CancelTestButton.Enabled, "Cancel Test button is  enabled.");
         }
 
+        [TestMethod]
+        [TestCategory("Sharepoint Tools")]
+        public void SharepointCreateListTool_LargeView_DoneButton_UITest()
+        {
+            SharepointToolsUIMap.Open_SharepointCreateTool_LargeView();
+            Mouse.Click(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.DoneButton);
+            Assert.IsTrue(SharepointToolsUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCreateListItem.SmallView.Exists, "Clicking done button on sharepoint create item tool does not collapse to small view.");
+        }
+
         #region Additional test attributes
 
         [TestInitialize()]

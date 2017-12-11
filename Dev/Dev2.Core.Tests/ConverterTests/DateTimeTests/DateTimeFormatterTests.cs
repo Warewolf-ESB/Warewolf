@@ -141,7 +141,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             dateTimeTO.DateTime = "2013/02/07 08:38:56.953 PM";
             dateTimeTO.InputFormat = "yyyy/mm/dd 12h:min:ss.sp am/pm";
             dateTimeTO.OutputFormat = "sp";
-            dateTimeTO.TimeModifierType = "Split Secs";
+            dateTimeTO.TimeModifierType = "Milliseconds";
             dateTimeTO.TimeModifierAmount = -53;
             formatter.TryFormat(dateTimeTO, out string result, out string errorMsg);
 
@@ -273,8 +273,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "06-01-2013";
             const string formatString = "dd-mm-yyyy";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "w", "", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "w", "", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2");
         }
@@ -289,8 +289,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "06-01-2013";
             const string formatString = "dd-mm-yyyy";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "ww", "", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "ww", "", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "02");
         }
@@ -308,8 +308,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2012/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", 25, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", 25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2012/02/15 11:21:51 AM");
         }
@@ -321,8 +321,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", -25, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", -25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -334,8 +334,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -351,8 +351,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2012/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", 25, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", 25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2037/02/15 11:21:51 AM");
         }
@@ -364,8 +364,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", -25, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", -25, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2000/02/15 11:21:51 AM");
         }
@@ -377,8 +377,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Years", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -394,8 +394,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", 12, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", 12, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2026/02/15 11:21:51 AM");
         }
@@ -407,8 +407,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", -12, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", -12, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2024/02/15 11:21:51 AM");
         }
@@ -420,8 +420,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Months", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -437,8 +437,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/06/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", 30, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", 30, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/07/15 11:21:51 AM");
         }
@@ -450,8 +450,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/06/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", -30, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", -30, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/05/16 11:21:51 AM");
         }
@@ -463,8 +463,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Days", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -480,8 +480,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", 2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/03/01 11:21:51 AM");
         }
@@ -493,8 +493,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", -2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/01 11:21:51 AM");
         }
@@ -506,8 +506,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Weeks", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -523,8 +523,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", 2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 01:21:51 PM");
         }
@@ -536,8 +536,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", -2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 09:21:51 AM");
         }
@@ -549,8 +549,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Hours", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -566,8 +566,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", 2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:23:51 AM");
         }
@@ -579,8 +579,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", -2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:19:51 AM");
         }
@@ -592,8 +592,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Minutes", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
@@ -609,8 +609,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", 2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", 2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:53 AM");
         }
@@ -622,8 +622,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", -2, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", -2, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:49 AM");
         }
@@ -635,15 +635,15 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string inputString = "2025/02/15 11:21:51 AM";
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
-            IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", 0, "");
+            var dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Seconds", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
         #endregion Seconds Tests
 
-        #region Split Secs Tests
+        #region Milliseconds Tests
 
         //28.09.2012: massimo.guerrera - Added after bug was found
         [TestMethod]
@@ -653,7 +653,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
             IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Split Secs", 1000, "");
+            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Milliseconds", 1000, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:52 AM");
         }
@@ -666,7 +666,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
             IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Split Secs", -1000, "");
+            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Milliseconds", -1000, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:50 AM");
         }
@@ -679,12 +679,12 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             const string formatString = "yyyy/mm/dd 12h:min:ss am/pm";
 
             IDateTimeFormatter dateTimeFormatter = DateTimeConverterFactory.CreateFormatter();
-            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Split Secs", 0, "");
+            IDateTimeOperationTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeTO(inputString, formatString, "yyyy/mm/dd 12h:min:ss am/pm", "Milliseconds", 0, "");
             dateTimeFormatter.TryFormat(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "2025/02/15 11:21:51 AM");
         }
 
-        #endregion Split Secs Tests
+        #endregion Milliseconds Tests
 
         #endregion Time Modifier Tests
     }

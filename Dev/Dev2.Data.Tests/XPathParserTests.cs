@@ -43,7 +43,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count);
@@ -57,7 +57,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "boolean(/dotfuscator)";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(1, data.Count);
@@ -70,7 +70,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlDocument, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count);
@@ -205,7 +205,7 @@ namespace Dev2.Data.Tests
             const string xPath = "//UnitTest/@name";
 
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
+            var returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
             var dataList = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(11, dataList.Count);
@@ -342,9 +342,9 @@ namespace Dev2.Data.Tests
             const string xPath = "TestRun/TestSettings/Deployment";
 
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
+            var returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
-            string expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
+            var expected = @"<Deployment userDeploymentRoot=""D:\Builds\ReleaseGate\TestResults"" useDefaultDeploymentRoot=""false"" runDeploymentRoot=""RSAKLFASHLEY$_RSAKLFASHLEY 2013-11-01 13_43_52"">
   <DeploymentItem filename=""ConsoleAppToTestExecuteCommandLineActivity\bin\Debug\ConsoleAppToTestExecuteCommandLineActivity.exe""/>
   <DeploymentItem filename=""Binaries\IronPython.Modules.dll""/>
   <DeploymentItem filename=""Binaries\Microsoft.Scripting.dll""/>
@@ -363,9 +363,9 @@ namespace Dev2.Data.Tests
             Assert.AreEqual(expected, actual);
 
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
-            expected = new StringBuilder(expected).Replace(" ","").Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n","").ToString();
+            expected = new StringBuilder(expected).Replace(" ", "").Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString();
             actual = new StringBuilder(actual).Replace(" ", "").Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString();
         }
 
@@ -497,7 +497,7 @@ namespace Dev2.Data.Tests
             const string xPath = "TestRun/TestSettings/Deployment/@userDeploymentRoot";
 
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(data, xPath);
+            var returnData = _xPathParser.ExecuteXPath(data, xPath);
             //------------Assert Results-------------------------
             const string expected = @"D:\Builds\ReleaseGate\TestResults";
 
@@ -536,7 +536,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//x/a/text()";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath("<x><a>1</a></x>", XPath);
+            var returnData = _xPathParser.ExecuteXPath("<x><a>1</a></x>", XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(1, data.Count);
@@ -549,7 +549,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count);
@@ -562,7 +562,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "/excludelist/type/method";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count);
@@ -577,7 +577,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method/@name";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(6, data.Count);
@@ -592,7 +592,7 @@ namespace Dev2.Data.Tests
             //------------Setup for test--------------------------
             const string XPath = "//type/method/@name|//type/method/@signature";
             //------------Execute Test---------------------------
-            IEnumerable<string> returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
+            var returnData = _xPathParser.ExecuteXPath(XmlData, XPath);
             //------------Assert Results-------------------------
             var data = returnData as IList<string> ?? returnData.ToList();
             Assert.AreEqual(12, data.Count);
@@ -662,7 +662,7 @@ namespace Dev2.Data.Tests
             Assert.AreEqual("http://www.webserviceX.NET/", ret.ToList()[0]);
         }
 
-        private string LoadFile(string name)
+        string LoadFile(string name)
         {
 
 

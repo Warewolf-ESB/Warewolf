@@ -96,7 +96,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , "2013/02/07 08:38:56.953 PM"
                          , "yyyy/MM/dd hh:mm:ss.FFFF tt"
                          , "yyyy/MM/dd hh:mm:ss.FFFF tt"
-                         , "Split Secs"
+                         , "Milliseconds"
                          , 327
                          , "[[MyTestResult]]");
 
@@ -299,7 +299,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
+        void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
         {
             TestStartNode = new FlowStep
             {

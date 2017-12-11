@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfZip : DsfAbstractMultipleFilesActivity, IZip, IPathInput, IPathOutput, IPathOverwrite,
                           IDestinationUsernamePassword
     {
-        private string _compressionRatio;
+        string _compressionRatio;
 
         public DsfZip()
             : base("Zip")
@@ -130,7 +130,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
 
-            Dev2ZipOperationTO zipTo = ActivityIOFactory.CreateZipTO(ColItr.FetchNextValue(_compresItr),
+            var zipTo = ActivityIOFactory.CreateZipTO(ColItr.FetchNextValue(_compresItr),
                                                                          ColItr.FetchNextValue(_archPassItr),
                                                                          ColItr.FetchNextValue(_archNameItr),
                                                                          Overwrite);

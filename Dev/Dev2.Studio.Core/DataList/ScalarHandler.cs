@@ -10,9 +10,9 @@ using Dev2.Studio.ViewModels.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class ScalarHandler : IScalarHandler
+    class ScalarHandler : IScalarHandler
     {
-        private readonly DataListViewModel _vm;
+        readonly DataListViewModel _vm;
 
         public ScalarHandler(DataListViewModel dataListViewModel)
         {
@@ -46,7 +46,7 @@ namespace Dev2.Studio.Core.DataList
         {
             if (xmlNode.Attributes != null)
             {
-                IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
+                var scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(xmlNode.Attributes[Common.Description]), Common.ParseColumnIODirection(xmlNode.Attributes[GlobalConstants.DataListIoColDirection]));
                 if (scalar != null)
                 {
                     scalar.IsEditable = Common.ParseIsEditable(xmlNode.Attributes[Common.IsEditable]);
@@ -65,7 +65,7 @@ namespace Dev2.Studio.Core.DataList
             }
             else
             {
-                IScalarItemModel scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(null), Common.ParseColumnIODirection(null));
+                var scalar = DataListItemModelFactory.CreateScalarItemModel(xmlNode.Name, Common.ParseDescription(null), Common.ParseColumnIODirection(null));
                 if (scalar != null)
                 {
                     scalar.IsEditable = Common.ParseIsEditable(null);
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void AddRowToScalars()
         {
-            List<IScalarItemModel> blankList = _vm.ScalarCollection.Where(c => c.IsBlank).ToList();
+            var blankList = _vm.ScalarCollection.Where(c => c.IsBlank).ToList();
             if (blankList.Count != 0)
             {
                 return;
@@ -116,7 +116,7 @@ namespace Dev2.Studio.Core.DataList
 
         public void RemoveBlankScalars()
         {
-            List<IScalarItemModel> blankList = _vm.ScalarCollection.Where(c => c.IsBlank).ToList();
+            var blankList = _vm.ScalarCollection.Where(c => c.IsBlank).ToList();
             if (blankList.Count <= 1)
             {
                 return;
