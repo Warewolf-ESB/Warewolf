@@ -356,10 +356,8 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.DesignSurfaceContextMenu.InsertRowMenuItem, MouseButtons.Left, ModifierKeys.None, new Point(6, 6));
             Assert.IsTrue(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign tool row 3 does not exist after insert a new row.");
         }
-
-        [Given(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
+        
         [When(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
-        [Then(@"I Enter variable text as ""(.*)"" and value text as ""(.*)"" into assign row 1")]
         public void Enter_Variable_And_Value_Into_Assign(string VariableText, string ValueText)
         {
             Enter_Variable_And_Value_Into_Assign(VariableText, ValueText, 1);
@@ -371,11 +369,11 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses
             {
                 case 2:
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_2();
-                    Assert.IsTrue(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2.");
+                    Assert.IsTrue(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row3.Exists, "Assign row 3 does not exist after enter data into row 2.");
                     break;
                 default:
                     Assign_Value_To_Variable_With_Assign_Tool_Small_View_Row_1();
-                    Assert.IsTrue(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.SmallView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
+                    Assert.IsTrue(MainStudioWindow.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.WorkflowDesigner_Custom.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.MultiAssign.LargeView.DataGrid.Row2.Exists, "Assign row 2 does not exist after enter data into row 1.");
                     break;
             }
         }
