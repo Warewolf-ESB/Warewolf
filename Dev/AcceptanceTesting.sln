@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -211,10 +211,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Services.Execution.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.CustomControls.Tests", "Dev2.CustomControls.Tests\Dev2.CustomControls.Tests.csproj", "{9C5F4031-344A-4DAF-8B74-21728678D470}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC", "WarewolfCOMIPC\WarewolfCOMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WarewolfCOMIPC.Client", "WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ComDll", "Warewolf.UIBindingTests.ComDll\Warewolf.UIBindingTests.ComDll.csproj", "{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ComPluginSource", "Warewolf.UIBindingTests.ComPluginSource\Warewolf.UIBindingTests.ComPluginSource.csproj", "{33A52ABE-7B5E-4B1A-A958-2CAC502C653D}"
@@ -275,10 +271,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 		SonarQube\Warewolf-ESBCSharp.ruleset = SonarQube\Warewolf-ESBCSharp.ruleset
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC", "Warewolf.COMIPC\Warewolf.COMIPC.csproj", "{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Client", "Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj", "{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}"
+EndProject
 Global
-	GlobalSection(Performance) = preSolution
-		HasPerformanceSessions = true
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
@@ -862,22 +859,6 @@ Global
 		{9C5F4031-344A-4DAF-8B74-21728678D470}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C5F4031-344A-4DAF-8B74-21728678D470}.Release|x86.ActiveCfg = Release|Any CPU
 		{9C5F4031-344A-4DAF-8B74-21728678D470}.Release|x86.Build.0 = Release|Any CPU
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.ActiveCfg = Debug|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.Build.0 = Debug|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|x86.ActiveCfg = Debug|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|x86.Build.0 = Debug|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.ActiveCfg = Release|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.Build.0 = Release|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|x86.ActiveCfg = Release|x86
-		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|x86.Build.0 = Release|x86
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|x86.Build.0 = Debug|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.ActiveCfg = Release|Any CPU
-		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.Build.0 = Release|Any CPU
 		{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B51F904-5A54-4BE2-82BF-F8EE0BBD3170}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -1073,12 +1054,29 @@ Global
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|x86.ActiveCfg = Release|Any CPU
 		{17125877-2CF0-42B2-89D3-418E40BDE5D0}.Release|x86.Build.0 = Release|Any CPU
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|x86.ActiveCfg = Debug|x86
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Debug|x86.Build.0 = Debug|x86
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|Any CPU.ActiveCfg = Release|x86
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|x86.ActiveCfg = Release|x86
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513}.Release|x86.Build.0 = Release|x86
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Debug|x86.Build.0 = Debug|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.ActiveCfg = Release|Any CPU
+		{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {2A281509-6C4A-4586-81E7-2E1A45B23FEA}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 	GlobalSection(CodealikeProperties) = postSolution
 		SolutionGuid = 5a0c3994-6f1d-461d-8c94-696b3470e61c
