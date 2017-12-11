@@ -161,11 +161,11 @@ namespace Dev2.Studio.ViewModels
                 {
                     environment.IsSelected = false;
                 }
-                var environmentViewModel =
-                    environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
+                var environmentViewModel = environmentViewModels.FirstOrDefault(model => model.ResourceId == _activeServer.EnvironmentID);
                 if (environmentViewModel != null)
                 {
                     environmentViewModel.IsSelected = true;
+                    ExplorerViewModel.SelectedEnvironment = environmentViewModel;
                 }
             }
         }
