@@ -129,8 +129,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     var json = new JObject(); 
 
-                    List<JsonMappingTo> jsonMappingList = JsonMappings.ToList();
-                    List<JsonMappingCompoundTo> results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
+                    var jsonMappingList = JsonMappings.ToList();
+                    var results = jsonMappingList.Where(to => !String.IsNullOrEmpty(to.SourceName)).Select(jsonMapping =>
                         new JsonMappingCompoundTo(dataObject.Environment, jsonMapping
                             )).ToList();
                     results.ForEach(x =>
@@ -174,7 +174,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch (Exception e)
             {
-
                 JsonMappings.ToList().ForEach(x =>
 
                 {
@@ -193,7 +192,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
-                    string errorString = allErrors.MakeDataListReady();
+                    var errorString = allErrors.MakeDataListReady();
                     dataObject.Environment.AddError(errorString);
                 }
                 if (dataObject.IsDebugMode())
@@ -232,55 +231,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #endregion Get Inputs/Outputs
 
 
-        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
-        {
-            if (updates != null)
-            {
-                foreach (Tuple<string, string> t in updates)
-                {
-                    // locate all updates for this tuple
-                    Tuple<string, string> t1 = t;
-                    var items = JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName) && c.SourceName.Equals(t1.Item1));
-
-                    // issues updates
-                    foreach (var a in items)
-                    {
-                        a.SourceName = t.Item2;
-                    }
-
-                }
-            }
-        }
-
-        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates)
-        {
-            if (updates != null)
-            {
-                foreach (var t in updates)
-                {
-                    if (JsonString == t.Item1)
-                    {
-                        JsonString = t.Item2;
-                    }
-                }
-            }
-        }
+        public override void UpdateForEachInputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
+        
+        public override void UpdateForEachOutputs(IList<Tuple<string, string>> updates) => throw new NotImplementedException();
 
         #region GetForEachInputs/Outputs
 
-        public override IList<DsfForEachItem> GetForEachInputs()
-        {
+        public override IList<DsfForEachItem> GetForEachInputs() => throw new NotImplementedException();
 
-            var items = JsonMappings.Where(c => !string.IsNullOrEmpty(c.SourceName)).Select(c => c.SourceName).ToArray();
-
-            return GetForEachItems(items);
-        }
-
-        public override IList<DsfForEachItem> GetForEachOutputs()
-        {
-            var items = JsonString;
-            return GetForEachItems(items);
-        }
+        public override IList<DsfForEachItem> GetForEachOutputs() => throw new NotImplementedException();
 
         #endregion
 

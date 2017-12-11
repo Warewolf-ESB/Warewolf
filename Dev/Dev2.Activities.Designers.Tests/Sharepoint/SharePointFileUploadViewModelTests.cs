@@ -20,10 +20,10 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public const string TestOwner = "Bernardt Joubert";
         public const string Category = "SharePoint";
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var fileUploadactivity = new SharepointFileUploadActivity();
-           
+
             return ModelItemUtils.CreateModelItem(fileUploadactivity);
         }
 

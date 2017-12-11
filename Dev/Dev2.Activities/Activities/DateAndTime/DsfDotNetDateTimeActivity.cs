@@ -128,15 +128,15 @@ namespace Dev2.Activities.DateAndTime
             try
             {
                 IsSingleValueRule.ApplyIsSingleValueRule(Result, allErrors);
-                AddDebugInfo(dataObject, update);
+                
                 AddValidationErrors(allErrors);
 
                 if (!allErrors.HasErrors())
                 {
                     var colItr = new WarewolfListIterator();
-                    var now = System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat, CultureInfo.InvariantCulture);
+                    
 
-                    var dtItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(DateTime) ? now : DateTime, dataObject.Environment, update);
+                    var dtItr = CreateDataListEvaluateIterator(DateTime, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(dtItr);
                     var ifItr = CreateDataListEvaluateIterator(string.IsNullOrEmpty(InputFormat) ? GlobalConstants.Dev2DotNetDefaultDateTimeFormat : InputFormat, dataObject.Environment, update);
                     colItr.AddVariableToIterateOn(ifItr);
@@ -161,6 +161,15 @@ namespace Dev2.Activities.DateAndTime
                             string error;
                             if (format.TryFormat(transObj, out result, out error))
                             {
+                                if (string.IsNullOrEmpty(DateTime) && dataObject.IsDebugMode())
+                                {
+
+                                    var defaultDateTimeDebugItem = new DebugItem();
+                                    AddDebugItem(new DebugItemStaticDataParams("System Date Time", "Input"), defaultDateTimeDebugItem);
+                                    AddDebugItem(new DebugItemStaticDataParams(result, "="), defaultDateTimeDebugItem);
+                                    _debugInputs.Add(defaultDateTimeDebugItem);
+                                }
+                                AddDebugInfo(dataObject, update);
                                 string expression = Result;
                                 dataObject.Environment.Assign(expression, result, update);
                             }
@@ -171,7 +180,9 @@ namespace Dev2.Activities.DateAndTime
                         }
                         if (dataObject.IsDebugMode() && !allErrors.HasErrors())
                         {
-                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                            
+                            var resDebug = new DebugEvalResult(Result, "", dataObject.Environment, update);                            
+                            AddDebugOutputItem(resDebug);
                         }
                     }
                 }
@@ -223,17 +234,10 @@ namespace Dev2.Activities.DateAndTime
         {
             if (dataObject.IsDebugMode())
             {
-                if (string.IsNullOrEmpty(DateTime))
-                {
-                    var defaultDateTimeDebugItem = new DebugItem();
-                    AddDebugItem(new DebugItemStaticDataParams("System Date Time", "Input"), defaultDateTimeDebugItem);
-                    AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "="), defaultDateTimeDebugItem);
-                    _debugInputs.Add(defaultDateTimeDebugItem);
-                }
-                else
+                if (!string.IsNullOrEmpty(DateTime))
                 {
                     AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
-                }
+                }                
 
                 var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
 
@@ -268,7 +272,7 @@ namespace Dev2.Activities.DateAndTime
             }
         }
 
-        private IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
+        IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
             int tmpTimeAmount = 0;
             if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))

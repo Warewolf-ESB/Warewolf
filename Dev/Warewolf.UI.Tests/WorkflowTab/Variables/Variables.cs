@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.WorkflowTab.Tools.Data.DataToolsUIMapClasses;
 using Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses;
+using Warewolf.UI.Tests.DialogsUIMapClasses;
 
 namespace Warewolf.UI.Tests
 {
@@ -147,7 +148,7 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [TestCategory("Variables")]
-        public void Fileter_Then_Clear_VariableList_Returns_All_Variables_CaseInsensitiveLower()
+        public void Filter_Then_Clear_VariableList_Returns_All_Variables_CaseInsensitiveLower()
         {
             WorkflowTabUIMap.Add_Variables("nums,result,delim,negnumbers");
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem1.Exists);
@@ -174,6 +175,18 @@ namespace Warewolf.UI.Tests
             Assert.AreEqual("delim", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem3.ScrollViewerPane.NameTextbox.Text);
             Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem4.Exists);
             Assert.AreEqual("negnumbers", WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.VariableTreeItem.TreeItem4.ScrollViewerPane.NameTextbox.Text);
+        }
+
+
+        [TestMethod]
+        [TestCategory("Variables")]
+        public void Show_JSON_Edit_Dialog()
+        {
+            DataToolsUIMap.Enter_Object_value();
+            Mouse.DoubleClick(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.Variables.DatalistView.VariableTree.ObjectTreeItem.ObjTreeItem.ScrollViewerPane.NameTextBox.ViewObjectsButton, new Point(10,10));
+            Assert.AreEqual("Object", DialogsUIMap.EditObjectDialog.TitleText.DisplayText, "Edit Object Dialog Title is Wrong");
+            Assert.IsTrue(DialogsUIMap.EditObjectDialog.ResponseTextbox.Exists, "Edit Object Textbox Does Not Exist on the Edit Object Dialog");
+            Assert.IsTrue(DialogsUIMap.EditObjectDialog.CloseButton.Exists, "Close Button does not exist on Edit Object Dialog");
         }
 
         #region Additional test attributes
@@ -231,6 +244,21 @@ namespace Warewolf.UI.Tests
         }
 
         private DataToolsUIMap _DataToolsUIMap;
+
+        DialogsUIMap DialogsUIMap
+        {
+            get
+            {
+                if (_DialogsUIMap == null)
+                {
+                    _DialogsUIMap = new DialogsUIMap();
+                }
+
+                return _DialogsUIMap;
+            }
+        }
+
+        private DialogsUIMap _DialogsUIMap;
 
         #endregion
     }

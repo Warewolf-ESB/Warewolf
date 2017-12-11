@@ -10,7 +10,7 @@ namespace Dev2.Data
         public void IndexListIndexIterator_ShouldHaveConstructor()
         {
             var indexes = new List<int> {1, 2, 3};
-            IndexListIndexIterator indexListIndexIterator = new IndexListIndexIterator(indexes);
+            var indexListIndexIterator = new IndexListIndexIterator(indexes);
             Assert.IsNotNull(indexListIndexIterator);
         }
            
@@ -18,7 +18,7 @@ namespace Dev2.Data
         public void IndexListIndexIterator_MaxIndex_ShouldReturnLastIndex()
         {
             var indexes = new List<int> {1, 2, 3};
-            IndexListIndexIterator indexListIndexIterator = new IndexListIndexIterator(indexes);
+            var indexListIndexIterator = new IndexListIndexIterator(indexes);
             Assert.IsNotNull(indexListIndexIterator);
             var maxIndex = indexListIndexIterator.MaxIndex();
             Assert.AreEqual(3, maxIndex);

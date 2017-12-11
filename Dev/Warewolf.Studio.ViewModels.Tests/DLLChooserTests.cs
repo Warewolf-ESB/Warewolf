@@ -10,10 +10,10 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IDllListingModel> _modelMock;
-        private Mock<IManagePluginSourceModel> _updateManagerMock;
-        private List<string> _changedProperties;
-        private DLLChooser _target;
+        Mock<IDllListingModel> _modelMock;
+        Mock<IManagePluginSourceModel> _updateManagerMock;
+        List<string> _changedProperties;
+        DLLChooser _target;
 
         #endregion Fields
 

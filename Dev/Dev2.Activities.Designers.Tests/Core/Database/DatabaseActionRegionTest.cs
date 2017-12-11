@@ -29,10 +29,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             //------------Setup for test--------------------------
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion,new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion,new SynchronousAsyncWorker());
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dbActionRegion.Errors.Count);
@@ -52,11 +52,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var action = new DbAction() { Name = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
             sourceRegion.SelectedSource = dbsrc;
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             dbActionRegion.SelectedAction = action;
 
             //------------Assert Results-------------------------
@@ -77,11 +77,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var action = new DbAction() { Name = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()),enSourceType.SqlDatabase);
             sourceRegion.SelectedSource = dbsrc;
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             dbActionRegion.SelectedAction = action;
             dbActionRegion.IsRefreshing = true;
             //------------Assert Results-------------------------
@@ -104,10 +104,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var action = new DbAction() { Name = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             dbActionRegion.SomethingChanged += (a, b) => { evt = true; };
             dbActionRegion.SelectedAction = action;
 
@@ -131,10 +131,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var action1 = new DbAction() { Name = "bravo" ,SourceId = Guid.NewGuid()};
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -168,10 +168,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var action1 = new DbAction() { Name = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -202,10 +202,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var s2 = new DbSourceDefinition() { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
             var cloned = dbActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -227,12 +227,12 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var action = new DbAction() { Name = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Execute Test---------------------------
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
-            
-            DbActionMemento dbActionRegionToRestore = new DbActionMemento();
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, new SynchronousAsyncWorker());
+
+            var dbActionRegionToRestore = new DbActionMemento();
             dbActionRegionToRestore.IsEnabled = false;
             dbActionRegionToRestore.SelectedAction = action;
 

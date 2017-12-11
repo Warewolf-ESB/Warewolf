@@ -14,11 +14,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
@@ -26,9 +24,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find dependencies for a service
-    /// </summary>
     public class FindDependencies : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
@@ -41,7 +36,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        private IResourceCatalog _resourceCatalog;
+        IResourceCatalog _resourceCatalog;
 
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -93,7 +88,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.Message.Append("</graph>");
                 }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
             catch (Exception e)
@@ -144,35 +139,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-        public override string HandlesType()
-        {
-            return "FindDependencyService";
-        }
-
-        public override DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder(@"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #region Private Methods
 
-
-        private StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
+        StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
         {
             var sb = new StringBuilder();
 
@@ -181,9 +150,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (dependencies != null)
             {
                 sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
-                
+
                 dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-                
+
                 sb.Append("</node>");
                 seenResource.Add(resourceGuid);
                 dependencies.ToList().ForEach(c =>
@@ -198,10 +167,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-
         #endregion
 
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), @"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>");
 
-
+        public override string HandlesType() => "FindDependencyService";
     }
 }

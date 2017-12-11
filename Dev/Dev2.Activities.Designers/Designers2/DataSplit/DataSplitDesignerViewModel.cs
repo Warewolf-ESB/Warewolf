@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers2.DataSplit
                 case "SourceString":
                     if (!string.IsNullOrEmpty(SourceString) && !string.IsNullOrWhiteSpace(SourceString))
                     {
-                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1");
+                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1", new VariableUtils());
                         ruleSet.Add(inputExprRule);
                     }
                     else

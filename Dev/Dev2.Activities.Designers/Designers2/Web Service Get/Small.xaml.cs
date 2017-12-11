@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.WebServiceGet
 {
-    // Interaction logic for Small.xaml
     public partial class Small
     {
         public Small()
@@ -20,13 +19,6 @@ namespace Dev2.Activities.Designers2.WebServiceGet
             InitializeComponent();
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return null;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => null;
     }
 }

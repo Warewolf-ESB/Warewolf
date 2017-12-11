@@ -16,13 +16,12 @@ using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-
     [ValueConversion(typeof(bool), typeof(bool))]
     public class InverseScheduleStatusConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
+            var schedulerStatus = (SchedulerStatus?)value;
 
             if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
             {
@@ -31,15 +30,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return true;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
-            if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }

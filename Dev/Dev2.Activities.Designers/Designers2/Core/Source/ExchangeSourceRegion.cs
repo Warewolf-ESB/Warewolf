@@ -16,11 +16,11 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class ExchangeSourceRegion : ISourceToolRegion<IExchangeSource>
     {
-        private Guid _sourceId;
-        private readonly ModelItem _modelItem;
-        private Action _sourceChangedAction;
-        private IExchangeSource _selectedSource;
-        private ICollection<IExchangeSource> _sources;
+        Guid _sourceId;
+        readonly ModelItem _modelItem;
+        Action _sourceChangedAction;
+        IExchangeSource _selectedSource;
+        ICollection<IExchangeSource> _sources;
         public ICommand EditSourceCommand { get; set; }
         public ICommand NewSourceCommand { get; set; }
 
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             return SelectedSource != null;
         }
 
-        private void SetSourceId(Guid value)
+        void SetSourceId(Guid value)
         {
             _sourceId = value;
             _modelItem?.SetProperty("SourceId", value);
@@ -150,7 +150,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetSelectedSource(IExchangeSource value)
+        void SetSelectedSource(IExchangeSource value)
         {
             if (value != null)
             {
@@ -158,7 +158,7 @@ namespace Dev2.Activities.Designers2.Core.Source
                 SavedSource = value;
                 SetSourceId(value.ResourceID);
             }
-            
+
             OnPropertyChanged("SelectedSource");
         }
 

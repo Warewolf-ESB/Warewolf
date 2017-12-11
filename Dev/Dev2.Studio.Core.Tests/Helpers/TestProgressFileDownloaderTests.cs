@@ -9,7 +9,6 @@
 */
 
 using System;
-using Dev2.Common.Interfaces.Utils;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.CustomControls.Progress;
 using Dev2.Studio.Core.Helpers;
@@ -19,15 +18,11 @@ using Moq;
 namespace Dev2.Core.Tests.Helpers
 {
     [TestClass]
-   
     public class TestProgressFileDownloaderTests
     {
-        
-       
-
         [TestMethod]
         [TestCategory("ProgressFileDownloaderUnitTest")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for ProgressFileDownloader's Cancel method, it is expected to stop the download and the progress dialog")]
+        [Description("Test for ProgressFileDownloader's Cancel method, it is expected to stop the download and the progress dialog")]
         [Owner("Ashley Lewis")]
         public void ProgressFileDownloaderUnitTestDownloadAsyncDownloadStopedAndProgressDialogClosed()
         {
@@ -37,29 +32,26 @@ namespace Dev2.Core.Tests.Helpers
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.Close()).Verifiable();
             ProgressFileDownloader.GetProgressDialogViewModel = (x, y) => mockProgressDialog.Object;
-            var testProgressFileDownloader = new TestProgressFileDownloader(mockWebClient.Object, new Mock<IFile>().Object,new Mock<ICryptoProvider>().Object);
+            var testProgressFileDownloader = new TestProgressFileDownloader(mockWebClient.Object, new Mock<IFile>().Object);
             //exe
             testProgressFileDownloader.TestCancelDownload();
 
             //assert
             mockWebClient.Verify(c => c.CancelAsync());
-
         }
 
         [TestMethod]
         [TestCategory("ProgressFileDownloaderUnitTest")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.Description("Test for ProgressFileDownloader's RehydrateDialog method, it is expected to rehydrate the progress dialogs label and progress values")]
+        [Description("Test for ProgressFileDownloader's RehydrateDialog method, it is expected to rehydrate the progress dialogs label and progress values")]
         [Owner("Ashley Lewis")]
-
         public void ProgressFileDownloader_UnitTest_RehydrateDialog_ProgressDialogRehydrated()
-
         {
             //init
             var mockWebClient = new Mock<IDev2WebClient>();
             var mockProgressDialog = new Mock<IProgressDialog>();
             mockProgressDialog.Setup(c => c.StatusChanged(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<long>())).Verifiable();
             ProgressFileDownloader.GetProgressDialogViewModel = (x, y) => mockProgressDialog.Object;
-            var testProgressFileDownloader = new TestProgressFileDownloader(mockWebClient.Object, new Mock<IFile>().Object,new Mock<ICryptoProvider>().Object);
+            var testProgressFileDownloader = new TestProgressFileDownloader(mockWebClient.Object, new Mock<IFile>().Object);
             //exe
             testProgressFileDownloader.TestRehydrateDialog("test file", 50, 2000);
 #pragma warning disable 168
@@ -67,39 +59,22 @@ namespace Dev2.Core.Tests.Helpers
 #pragma warning restore 168
             //assert
             mockProgressDialog.Verify(c => c.StatusChanged(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<long>()), Times.Once());
-        }
-        
+        }        
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ProgresssFileDownloader_Ctor")]
-
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfWebClientsNull()
         {
-
-            new ProgressFileDownloader(null,  new Mock<IFile>().Object, new Mock<ICryptoProvider>().Object);
-
-
+            new ProgressFileDownloader(null,  new Mock<IFile>().Object);
         }
 
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ProgresssFileDownloader_Ctor")]
         public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfFileClientsNull()
-        {
-            
-            new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, null, new Mock<ICryptoProvider>().Object);
-            
-        }
-
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("ProgresssFileDownloader_Ctor")]
-        public void ProgresssFileDownloader_Ctor_VerifyExceptionThrownIfCryptoIsNull()
-        {
-            
-            new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, new Mock<IFile>().Object, null);
-            
+        {            
+            new ProgressFileDownloader(new Mock<IDev2WebClient>().Object, null);            
         }
 
         [TestMethod]
@@ -110,12 +85,12 @@ namespace Dev2.Core.Tests.Helpers
             //------------Setup for test--------------------------
             var webClient = new Mock<IDev2WebClient>();
             var file = new Mock<IFile>();
-            var crytpto = new Mock<ICryptoProvider>();
 #pragma warning disable 168
-            var a = new ProgressFileDownloader(webClient.Object, file.Object, crytpto.Object);
+            var a = new ProgressFileDownloader(webClient.Object, file.Object);
          
 #pragma warning restore 168
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ProgressFileDownloader_Cleanup ")]
@@ -129,6 +104,7 @@ namespace Dev2.Core.Tests.Helpers
             ProgressFileDownloader.PerformCleanup(dir.Object,"c:\bob",file.Object);
              file.Verify(a=>a.Delete(It.IsAny<string>()),Times.Exactly(3));
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ProgressFileDownloader_Cleanup ")]
@@ -141,9 +117,6 @@ namespace Dev2.Core.Tests.Helpers
 
             ProgressFileDownloader.PerformCleanup(dir.Object, "c:\bob", file.Object);
             file.Verify(a => a.Delete(It.IsAny<string>()), Times.Exactly(2));
-        }
-       
-    }
-
-
+        }       
+    }    
 }

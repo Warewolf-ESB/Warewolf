@@ -33,8 +33,8 @@ namespace Dev2.Core.Tests
 {
     public static class Dev2MockFactory
     {
-        private static Mock<ShellViewModel> _mockMainViewModel;
-        private static Mock<IContextualResourceModel> _mockResourceModel;
+        static Mock<ShellViewModel> _mockMainViewModel;
+        static Mock<IContextualResourceModel> _mockResourceModel;
 
         static Dev2MockFactory()
         {
@@ -189,7 +189,7 @@ namespace Dev2.Core.Tests
 
         public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)
         {
-            Mock<IPopupController> result = new Mock<IPopupController>();
+            var result = new Mock<IPopupController>();
             result.Setup(moq => moq.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(returningResult).Verifiable();
 
             return result;

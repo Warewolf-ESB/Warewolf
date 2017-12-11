@@ -23,7 +23,7 @@ namespace Dev2.Studio.Interfaces
          EventHandler<IServer> ServerReConnected { get; set; }
         bool ShouldUpdateActiveEnvironment { get; set; }
 
-        Task<bool> Connect(IServer connection);
+        Task<bool> ConnectAsync(IServer connection);
         event SelectedServerChanged SelectedEnvironmentChanged;
         void LoadServers();
     }

@@ -62,7 +62,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
             mockEnvironmentModel.Setup(model => model.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
-            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(true));
+            mockEnvironmentModel.Setup(model => model.LoadDialogAsync(It.IsAny<Guid>())).Returns(Task.FromResult(true));
             var serverRepo = new Mock<IServerRepository>();
             var connectionObject = new Mock<IEnvironmentConnection>();
             serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
@@ -321,7 +321,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var mockRequestServiceNameView = new Mock<IRequestServiceNameView>();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
-            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            mockEnvironmentModel.Setup(model => model.LoadDialogAsync(It.IsAny<Guid>())).Returns(Task.FromResult(false));
             var serverRepo = new Mock<IServerRepository>();
             var connectionObject = new Mock<IEnvironmentConnection>();
             serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
@@ -347,7 +347,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var called = false;
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
-            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            mockEnvironmentModel.Setup(model => model.LoadDialogAsync(It.IsAny<Guid>())).Returns(Task.FromResult(false));
             var serverRepo = new Mock<IServerRepository>();
             var connectionObject = new Mock<IEnvironmentConnection>();
             serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
@@ -378,7 +378,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mockRequestServiceNameView.Setup(view => view.RequestClose()).Verifiable();
             CustomContainer.RegisterInstancePerRequestType<IRequestServiceNameView>(() => mockRequestServiceNameView.Object);
             var mockEnvironmentModel = new Mock<IEnvironmentViewModel>();
-            mockEnvironmentModel.Setup(model => model.LoadDialog(It.IsAny<Guid>())).Returns(Task.FromResult(false));
+            mockEnvironmentModel.Setup(model => model.LoadDialogAsync(It.IsAny<Guid>())).Returns(Task.FromResult(false));
             var serverRepo = new Mock<IServerRepository>();
             var connectionObject = new Mock<IEnvironmentConnection>();
             serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
@@ -471,7 +471,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void FixReferences_GivenIsNew_ShouldBeFalse()
         {
             //---------------Set up test pack-------------------
-            RequestServiceNameViewModel viewModel = new RequestServiceNameViewModel();
+            var viewModel = new RequestServiceNameViewModel();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(viewModel);
             //---------------Execute Test ----------------------

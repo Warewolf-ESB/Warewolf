@@ -23,8 +23,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
     {
         #region Class Members
 
-        private const string _seperatorSymbol = ".";
-        private const string _enumerableSymbol = "()";
+        const string _seperatorSymbol = ".";
+        const string _enumerableSymbol = "()";
 
         #endregion Class Members
 

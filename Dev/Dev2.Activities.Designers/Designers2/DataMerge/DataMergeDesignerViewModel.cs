@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.DataMerge
 {
     public class DataMergeDesignerViewModel : ActivityCollectionDesignerViewModel<DataMergeDTO>
     {
-        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> _getDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
         public IList<string> AlignmentTypes { get; private set; }
         
@@ -97,16 +97,16 @@ namespace Dev2.Activities.Designers2.DataMerge
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("Input", GetDatalistString()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
+            foreach (var error in dto.GetRuleSet("Input", _getDatalistString()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
             {
                 yield return error;
             }
 
-            foreach(var error in dto.GetRuleSet("At", GetDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            foreach(var error in dto.GetRuleSet("At", _getDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("Padding", GetDatalistString()).ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
+            foreach(var error in dto.GetRuleSet("Padding", _getDatalistString()).ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
             {
                 yield return error;
             }

@@ -2,7 +2,7 @@
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class CommunicationContextExtenstions
+    static class CommunicationContextExtenstions
     {
         public static string GetServiceName(this ICommunicationContext ctx)
         {

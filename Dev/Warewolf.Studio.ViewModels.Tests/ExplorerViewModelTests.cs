@@ -20,13 +20,13 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private ExplorerViewModel _target;
+        ExplorerViewModel _target;
 
-        private Guid _localhostServerEnvironmentId;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IServer> _localhostServerMock;
-        private Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
-        private Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator> _eventAggregatorMock;
+        Guid _localhostServerEnvironmentId;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IServer> _localhostServerMock;
+        Mock<IWindowsGroupPermission> _windowsGroupPermissionMock;
+        Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator> _eventAggregatorMock;
 
         #endregion Fields
 
@@ -84,7 +84,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify( it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify( it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -438,7 +438,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
             //act
-            await _target.ConnectControlViewModel.Connect(connectionMock.Object);
+            await _target.ConnectControlViewModel.ConnectAsync(connectionMock.Object);
 
             //assert   
             Assert.IsTrue(isEnvironments);
@@ -480,7 +480,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
 
             //act
-            await _target.ConnectControlViewModel.Connect(serverConnectionMock.Object);
+            await _target.ConnectControlViewModel.ConnectAsync(serverConnectionMock.Object);
 
             //assert   
             Assert.IsTrue(isEnvironments);
@@ -542,7 +542,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
         }
 
@@ -570,7 +570,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
             environmentViewModelMock.Verify(it => it.Filter("someText"));
             environmentViewModelMock.Verify(it => it.SetPropertiesForDialogFromPermissions(It.IsAny<IWindowsGroupPermission>()));
         }
@@ -595,11 +595,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SelectedEnvironment = environmentViewModelMock.Object;
 
             //act
-            await _target.RefreshSelectedEnvironment();
+            await _target.RefreshSelectedEnvironmentAsync();
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);
-            environmentViewModelMock.Verify(it => it.Load(It.IsAny<bool>(), It.IsAny<bool>()));
+            environmentViewModelMock.Verify(it => it.LoadAsync(It.IsAny<bool>(), It.IsAny<bool>()));
         }
 
         [TestMethod]

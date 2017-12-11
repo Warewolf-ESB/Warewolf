@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptPasswordsAndConnectionStrings(matchingString);
+            var output = upgrader.EncryptPasswordsAndConnectionStrings(matchingString);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(matchingString);
             output.Should().NotContain(pieceToReplace);
@@ -79,19 +79,19 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         {
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
-            Regex cs = new Regex(@"ConnectionString=""([^""]+)""");
+            var cs = new Regex(@"ConnectionString=""([^""]+)""");
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
+            var output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(_beforeContainingSource);
             output.Should().NotContain(_connectionString);
-            Match m = cs.Match(output);
+            var m = cs.Match(output);
             m.Success.Should().BeTrue();
             m.Groups.Count.Should().BeGreaterOrEqualTo(1);
             m.Groups[1].Success.Should().BeTrue();
-            string x = m.Groups[1].Value;
+            var x = m.Groups[1].Value;
             DpapiWrapper.Decrypt(x).Should().Be(_connectionString);
         }
 
@@ -103,15 +103,15 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         {
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
-            Regex cs = new Regex(@"ConnectionString=""([^""]+)""");
+            var cs = new Regex(@"ConnectionString=""([^""]+)""");
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
+            var output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(_beforeContainingSource);
             output.Should().NotContain(_connectionString);
-            string output2 = upgrader.EncryptSourceConnectionStrings(output);
+            var output2 = upgrader.EncryptSourceConnectionStrings(output);
             output.Should().NotBeNullOrEmpty();
             output2.Should().Be(output);
         }

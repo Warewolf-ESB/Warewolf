@@ -104,7 +104,7 @@ namespace Dev2.Controller
             ServicePayload.AddArgument(key, value);
         }
 
-        private static string ContainsAuthorizationError(string authorizationError, out bool containsAuthorization)
+        static string ContainsAuthorizationError(string authorizationError, out bool containsAuthorization)
         {
             var authorizationErrors = new List<string>
             {
@@ -126,7 +126,7 @@ namespace Dev2.Controller
             return authorizationError;
         }
 
-        private static void ShowAuthorizationErrorPopup(string ex)
+        static void ShowAuthorizationErrorPopup(string ex)
         {
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
@@ -156,8 +156,8 @@ namespace Dev2.Controller
                 }
 
                 ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                StringBuilder payload = connection.ExecuteCommand(toSend, workspaceId);
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
+                var payload = connection.ExecuteCommand(toSend, workspaceId);
                 ValidatePayload(connection, payload, popupController);
                 var executeCommand = serializer.Deserialize<T>(payload);
                 if (executeCommand == null)
@@ -181,7 +181,7 @@ namespace Dev2.Controller
         }
 
 
-        private static T CheckAuthorization<T>(ExecuteMessage message) where T : class
+        static T CheckAuthorization<T>(ExecuteMessage message) where T : class
         {
             if (message != null)
             {
@@ -215,19 +215,22 @@ namespace Dev2.Controller
             return default(T);
         }
 
-        private static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
+        static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
             if (payload == null || payload.Length == 0)
             {
                 if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
-                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    });
                 }
             }
         }
 
-        private static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
+        static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
         {
             if (connection != null)
             {
@@ -286,7 +289,7 @@ namespace Dev2.Controller
                     }
 
                     ServicePayload.ServiceName = ServiceName;
-                    StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                    var toSend = serializer.SerializeToBuilder(ServicePayload);
                     var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
                     var executeCommand = serializer.Deserialize<T>(payload);
                     if (executeCommand == null)
@@ -354,7 +357,7 @@ namespace Dev2.Controller
                 }
 
                 ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
                 var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
 
                 try
@@ -396,7 +399,7 @@ namespace Dev2.Controller
                 }
 
                 ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
                 var payload = connection.ExecuteCommand(toSend, workspaceId);
                 try
                 {

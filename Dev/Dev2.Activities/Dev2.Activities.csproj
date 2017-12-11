@@ -272,7 +272,6 @@
     <Compile Include="Activities\DsfCommentActivity.cs" />
     <Compile Include="Activities\DsfWebPostActivity.cs" />
     <Compile Include="Activities\DsfWebPutActivity.cs" />
-    <Compile Include="Activities\DsfWebserviceActivity.cs" />
     <Compile Include="Activities\DsfWorkflowActivity.cs" />
     <Compile Include="Activities\DsfXPathActivity.cs" />
     <Compile Include="Activities\EmailSender.cs" />
@@ -343,6 +342,8 @@
     <Compile Include="BussinessLogic\RsOpNotHex.cs" />
     <Compile Include="BussinessLogic\RsOpNotRegex.cs" />
     <Compile Include="BussinessLogic\RsOpNotStartsWith.cs" />
+    <Compile Include="Factories\Case\CaseConverter.cs" />
+    <Compile Include="Factories\Case\CaseConverterFactory.cs" />
     <Compile Include="Factories\Dev2FindMissingStrategyFactory.cs" />
     <Compile Include="FindMissingStrategies\DataGridActivityFindMissingStrategy.cs" />
     <Compile Include="FindMissingStrategies\DsfActivityFindMissingStrategy.cs" />
@@ -417,11 +418,9 @@
     <Compile Include="Validation\IsSingleRecordSetRule.cs" />
     <Compile Include="Validation\IsSingleValueRuleSet.cs" />
     <Compile Include="Validation\IsValidCalculateRule.cs" />
-    <Compile Include="Validation\IsValidExpressionRule.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingSourceExpression.cs" />
     <Compile Include="Validation\IsValidJsonCreateMappingSourceRule.cs" />
     <Compile Include="Validation\ShouldNotBeVariableRule.cs" />
-    <Compile Include="Validation\VariableUtils.cs" />
     <Compile Include="Value Objects\ForEachBootstrapTOEnvironment.cs" />
     <Compile Include="Value Objects\ForEachInnerActivityTO.cs" />
   </ItemGroup>

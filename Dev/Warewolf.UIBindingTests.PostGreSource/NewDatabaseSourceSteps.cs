@@ -444,7 +444,7 @@ namespace Warewolf.UIBindingTests.PostGreSource
             Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
-        private static void CleanupResource()
+        static void CleanupResource()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel =

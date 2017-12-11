@@ -17,8 +17,8 @@ namespace Dev2.TaskScheduler.Wrappers
 { // cant really test this. 
     public class Dev2TaskEventLog : ITaskEventLog
     {
-        private readonly ITaskServiceConvertorFactory _factory;
-        private readonly TaskEventLog _taskLog;
+        readonly ITaskServiceConvertorFactory _factory;
+        readonly TaskEventLog _taskLog;
 
         public Dev2TaskEventLog(ITaskServiceConvertorFactory factory, TaskEventLog taskLog)
         {

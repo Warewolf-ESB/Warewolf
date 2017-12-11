@@ -9,11 +9,11 @@ using Dev2.Runtime.ResourceCatalogImpl;
 
 namespace Dev2.Runtime.Hosting
 {
-    internal class ResourceCatalogPluginContainer
+    class ResourceCatalogPluginContainer
     {
-        private readonly IServerVersionRepository _versionRepository;
-        private readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
-        private readonly IEnumerable<DynamicService> _managementServices;
+        readonly IServerVersionRepository _versionRepository;
+        readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
+        readonly IEnumerable<DynamicService> _managementServices;
 
         public ResourceCatalogPluginContainer(IServerVersionRepository versionRepository, ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IEnumerable<DynamicService> managementServices = null)
         {

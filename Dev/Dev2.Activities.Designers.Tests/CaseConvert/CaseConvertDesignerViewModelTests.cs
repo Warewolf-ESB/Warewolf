@@ -17,6 +17,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System;
+using Dev2.TO;
 
 namespace Dev2.Activities.Designers.Tests.CaseConvert
 {
@@ -68,7 +70,6 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
                 new CaseConvertTO("", "None", "", 0)
             };
             var viewModel = new CaseConvertDesignerViewModel(CreateModelItem(items));
-            viewModel.Validate();
             dynamic mi = viewModel.ModelItem;
             Assert.AreEqual(4, mi.ConvertCollection.Count);
         }
@@ -109,6 +110,47 @@ namespace Dev2.Activities.Designers.Tests.CaseConvert
             Assert.AreEqual(2, mi.ConvertCollection.Count);
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("CaseConvertDesignerViewModel_ValidateCollectionItem")]
+        public void CaseConvertDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
+        {
+            //------------Setup for test--------------------------
+            var mi = ModelItemUtils.CreateModelItem(new DsfCaseConvertActivity());
+            mi.SetProperty("DisplayName", "Case Convert");
+
+            var dto = new CaseConvertTO("a&]]", "Upper", "", 0, true);
+
+
+            var miCollection = mi.Properties["ConvertCollection"].Collection;
+            var dtoModelItem = miCollection.Add(dto);
+
+
+            var viewModel = new CaseConvertDesignerViewModel(mi);
+            viewModel._getDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(2, viewModel.Errors.Count);
+
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.CaseConvertInputInvalidExpressionErrorTest);
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsStringToConvertFocused");
+        }
+
+        void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)
+        {
+            Assert.IsFalse(modelItem.GetProperty<bool>(isFocusedPropertyName));
+            doError.Invoke();
+            Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
+        }
 
         static ModelItem CreateModelItem(IEnumerable<CaseConvertTO> items, string displayName = "Case Convert")
         {

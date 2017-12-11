@@ -5,11 +5,9 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -20,11 +18,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class FetchPluginActions : DefaultEsbManagementEndpoint
     {
-        public override string HandlesType()
-        {
-            return "FetchPluginActions";
-        }
-
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
@@ -33,11 +26,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var pluginSource = serializer.Deserialize<PluginSourceDefinition>(values["source"]);
                 var ns = serializer.Deserialize<INamespaceItem>(values["namespace"]);
                 
-                PluginServices services = new PluginServices();
+                var services = new PluginServices();
                 var src = ResourceCatalog.Instance.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 if(ns != null)
                 {
-                    PluginService svc = new PluginService { Namespace = ns.FullName, Source = src };
+                    var svc = new PluginService { Namespace = ns.FullName, Source = src };
 
                     var serviceMethodList = services.Methods(svc, Guid.Empty, Guid.Empty);
                     var methods = serviceMethodList.Select(a => new PluginAction
@@ -73,18 +66,11 @@ namespace Dev2.Runtime.ESB.Management.Services
                 });
             }
         }
-        
-        public override DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
 
         public ResourceCatalog Resources => ResourceCatalog.Instance;
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchPluginActions";
     }
 }

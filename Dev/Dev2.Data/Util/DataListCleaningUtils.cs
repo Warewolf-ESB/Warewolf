@@ -27,14 +27,14 @@ namespace Dev2.DataList.Contract
                 try
                 {
                     var allRegions = new List<string>();
-                    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                    IList<IParseTO> makeParts = parser.MakeParts(result);
-                    foreach(var makePart in makeParts.Where(c => !c.HangingOpen))
+                    var parser = new Dev2DataLanguageParser();
+                    var makeParts = parser.MakeParts(result);
+                    foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
                         if(makePart.Child != null)
                         {
                             int indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);
-                            string tmpresult = makePart.Payload.Insert(indexOfBracket + 1, DataListUtil.AddBracketsToValueIfNotExist(makePart.Child.Payload));
+                            var tmpresult = makePart.Payload.Insert(indexOfBracket + 1, DataListUtil.AddBracketsToValueIfNotExist(makePart.Child.Payload));
                             allRegions.Add(string.Concat("[[", tmpresult, "]]"));
                         }
                         else
@@ -53,13 +53,13 @@ namespace Dev2.DataList.Contract
             return new List<string> { null };
         }
 
-        private static IEnumerable<string> AddChildrenPart(IParseTO child)
+        static IEnumerable<string> AddChildrenPart(IParseTO child)
         {
-            List<string> results = new List<string>();
-            if(child != null)
+            var results = new List<string>();
+            if (child != null)
             {
                 results.Add(DataListUtil.AddBracketsToValueIfNotExist(child.Payload));
-                if(child.Child != null)
+                if (child.Child != null)
                 {
                     results.AddRange(AddChildrenPart(child.Child).Select(DataListUtil.AddBracketsToValueIfNotExist));
                 }
@@ -74,9 +74,9 @@ namespace Dev2.DataList.Contract
                 try
                 {
                     var allRegions = new List<string>();
-                    Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
-                    IList<IParseTO> makeParts = parser.MakeParts(result);
-                    foreach(var makePart in makeParts.Where(c => !c.HangingOpen))
+                    var parser = new Dev2DataLanguageParser();
+                    var makeParts = parser.MakeParts(result);
+                    foreach (var makePart in makeParts.Where(c => !c.HangingOpen))
                     {
                         allRegions.Add(DataListUtil.AddBracketsToValueIfNotExist(makePart.Payload));
                         allRegions.AddRange(AddChildrenPartForFindMissing(makePart.Child));
@@ -92,13 +92,13 @@ namespace Dev2.DataList.Contract
 
         }
 
-        private static IEnumerable<string> AddChildrenPartForFindMissing(IParseTO child)
+        static IEnumerable<string> AddChildrenPartForFindMissing(IParseTO child)
         {
-            List<string> results = new List<string>();
-            if(child != null)
+            var results = new List<string>();
+            if (child != null)
             {
                 results.Add(DataListUtil.AddBracketsToValueIfNotExist(child.Payload));
-                if(child.Child != null)
+                if (child.Child != null)
                 {
                     results.AddRange(AddChildrenPart(child.Child).Select(DataListUtil.AddBracketsToValueIfNotExist));
                 }

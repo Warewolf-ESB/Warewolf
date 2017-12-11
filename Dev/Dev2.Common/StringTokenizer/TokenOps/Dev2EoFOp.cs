@@ -14,7 +14,7 @@ using System.Text;
 
 namespace Dev2.Common
 {
-    internal class Dev2EoFOp : IDev2SplitOp
+    class Dev2EoFOp : IDev2SplitOp
     {
         public bool IsFinalOp()
         {

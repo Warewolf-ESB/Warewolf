@@ -31,7 +31,7 @@ namespace Dev2.Data.ServiceModel.Helper
         /// <returns></returns>
         public static string ExtractDataList(StringBuilder serviceDef)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             var xe = serviceDef.ToXElement();
 

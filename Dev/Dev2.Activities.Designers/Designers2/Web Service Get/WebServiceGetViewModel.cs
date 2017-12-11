@@ -27,11 +27,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
 {
     public class WebServiceGetViewModel : CustomToolWithRegionBase, IWebServiceGetViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IWebGetInputArea _inputArea;
-        private ISourceToolRegion<IWebServiceSource> _sourceRegion;
+        IOutputsToolRegion _outputsRegion;
+        IWebGetInputArea _inputArea;
+        ISourceToolRegion<IWebServiceSource> _sourceRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         }
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageWebServiceInputViewModel(this, Model));
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             SetWorstDesignError(worstError[0]);
         }
 
-        private void SetWorstDesignError(IErrorInfo value)
+        void SetWorstDesignError(IErrorInfo value)
         {
             if (_worstDesignError != value)
             {
@@ -178,7 +178,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        private void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -252,7 +252,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -275,14 +275,14 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceGetViewModel), new PropertyMetadata(ErrorType.None));
         
         bool _generateOutputsVisible;
-        private IServiceInputBuilder _builder;
+        IServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
-        
+        string Type => GetProperty<string>();
 
-        private void FixErrors()
+
+        void FixErrors()
         {
         }
 
@@ -436,10 +436,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             return webServiceDefinition;
         }
 
-        private IList<IServiceInput> InputsFromModel()
+        IList<IServiceInput> InputsFromModel()
         {
             var dt = new List<IServiceInput>();
-            string s = InputArea.QueryString;
+            var s = InputArea.QueryString;
             _builder = _builder ?? new ServiceInputBuilder();
             _builder.GetValue(s, dt);
             foreach (var nameValue in InputArea.Headers)
@@ -450,7 +450,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Get
             return dt;
         }
 
-        private IWebServiceModel Model { get; set; }
+        IWebServiceModel Model { get; set; }
         public bool GenerateOutputsVisible
         {
             get

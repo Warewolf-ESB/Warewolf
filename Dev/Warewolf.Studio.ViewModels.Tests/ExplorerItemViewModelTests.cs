@@ -25,15 +25,15 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private ExplorerItemViewModel _target;
-        private Mock<IServer> _serverMock;
-        private Mock<IStudioUpdateManager> _updateManager;
-        private Mock<IExplorerTreeItem> _explorerTreeItemMock;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IExplorerRepository> _explorerRepositoryMock;
-        private Mock<IPopupController> _popupControllerMock;
-        private Mock<IWindowsGroupPermission> _windowsGroupPermissionsMock;
-        private Mock<IExplorerTooltips> _explorerTooltips;
+        ExplorerItemViewModel _target;
+        Mock<IServer> _serverMock;
+        Mock<IStudioUpdateManager> _updateManager;
+        Mock<IExplorerTreeItem> _explorerTreeItemMock;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IExplorerRepository> _explorerRepositoryMock;
+        Mock<IPopupController> _popupControllerMock;
+        Mock<IWindowsGroupPermission> _windowsGroupPermissionsMock;
+        Mock<IExplorerTooltips> _explorerTooltips;
 
         #endregion Fields
 
@@ -447,7 +447,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(_target.RunAllTestsCommand.CanExecute(null));
 
             //assert
-            _shellViewModelMock.Verify(it => it.RunAllTests(_target.ResourceId));
+            _shellViewModelMock.Verify(it => it.RunAllTests(null, _target.ResourceId));
         }
 
         [TestMethod]
@@ -1508,7 +1508,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var child = new Mock<IExplorerItemViewModel>();
             _target.Children.Add(child.Object);
 
-            PrivateObject privateObject = new PrivateObject(_target);
+            var privateObject = new PrivateObject(_target);
             privateObject.SetField("_explorerRepository", mock.Object);
             //act
             _target.Delete();
@@ -2097,7 +2097,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 childDestItem.Object
             });
             //act
-            var result = await _target.Move(movedItem.Object);
+            var result = await _target.MoveAsync(movedItem.Object);
             //assert
             Assert.IsFalse(result);
             _shellViewModelMock.Verify(it => it.ShowPopup(It.IsAny<IPopupMessage>()));
@@ -2128,7 +2128,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             //act
-            var result = await _target.Move(destinationMock.Object);
+            var result = await _target.MoveAsync(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
             _explorerRepositoryMock.Verify(it => it.Move(_target, destinationMock.Object));
@@ -2246,7 +2246,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerRepositoryMock.Setup(a => a.Move(It.IsAny<IExplorerItemViewModel>(), It.IsAny<IExplorerTreeItem>())).Throws(new Exception());
             _serverMock.SetupGet(it => it.UpdateRepository).Returns(studioUpdateManagerMock.Object);
             //act
-            var result = await _target.Move(destinationMock.Object);
+            var result = await _target.MoveAsync(destinationMock.Object);
             //assert
             Assert.IsFalse(result);
         }

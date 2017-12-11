@@ -18,9 +18,9 @@ namespace Dev2.Infrastructure.Tests.Communication
     public class FutureRecieptTest
     {
 
-        private static readonly Guid RequestID = Guid.NewGuid();
+        static readonly Guid RequestID = Guid.NewGuid();
 
-        
+
 
         [TestMethod]
         [Owner("Travis Frisinger")]

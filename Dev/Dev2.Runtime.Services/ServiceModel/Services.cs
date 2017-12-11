@@ -106,7 +106,7 @@ namespace Dev2.Runtime.ServiceModel
                                 }
                                 dbService.Recordset.Fields.Clear();
 
-                                ServiceMappingHelper smh = new ServiceMappingHelper();
+                                var smh = new ServiceMappingHelper();
                                 smh.MapDbOutputs(outputDescription, ref dbService, addFields);
                             }
                             return dbService.Recordset;
@@ -125,7 +125,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
@@ -144,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
@@ -162,7 +162,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
 
@@ -180,7 +180,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
                             dbService.Recordset.Name = @"Unnamed";

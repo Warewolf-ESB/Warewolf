@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers2.Core.Errors
             _errorsCounter = 0;
         }
 
-        private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
+        void Hyperlink_OnClick(object sender, RoutedEventArgs e)
         {
             var hyperlink = sender as Hyperlink;
             if (hyperlink?.DataContext is ActionableErrorInfo actionableErrorInfo)

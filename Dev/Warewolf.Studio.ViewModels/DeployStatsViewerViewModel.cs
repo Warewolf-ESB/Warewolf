@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
         List<Conflict> _conflicts;
         IEnumerable<IExplorerTreeItem> _new;
         IList<IExplorerTreeItem> _items;
-        private ICollection<IExplorerItemViewModel> _destinationItems;
+        ICollection<IExplorerItemViewModel> _destinationItems;
 
         public DeployStatsViewerViewModel(IDeployDestinationExplorerViewModel destination)
         {
@@ -37,11 +37,11 @@ namespace Warewolf.Studio.ViewModels
             Status = @"";
         }
 
-        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
             if (_destination?.SelectedEnvironment != null && _destination.SelectedEnvironment.AsList().Count <= 0)
             {
-                await _destination.SelectedEnvironment.Load(true, true).ConfigureAwait(true);
+                await _destination.SelectedEnvironment.LoadAsync(true, true).ConfigureAwait(true);
                 CheckDestinationPermissions();
             }
         }
@@ -187,8 +187,8 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
-        {            
+        static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
+        {
             return Equals(currentItem.Server, explorerItemViewModel.Server);
         }
 

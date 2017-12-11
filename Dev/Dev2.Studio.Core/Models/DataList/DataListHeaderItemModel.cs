@@ -19,8 +19,8 @@ namespace Dev2.Studio.Core.Models.DataList
 {
     public class DataListHeaderItemModel : PropertyChangedBase
     {
-        private string _displayName;
-        private IEnumerable<IDataListItemModel> _children;
+        string _displayName;
+        IEnumerable<IDataListItemModel> _children;
 
         public DataListHeaderItemModel(string displayName)
         {

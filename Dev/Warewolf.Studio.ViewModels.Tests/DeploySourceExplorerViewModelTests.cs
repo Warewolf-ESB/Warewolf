@@ -19,14 +19,14 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private DeploySourceExplorerViewModel _target;
-        private Mock<IEnvironmentViewModel> _selectedEnvironment;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IServer> _serverMock;
-        private Mock<IEventAggregator> _eventAggregatorMock;
-        private Mock<IDeployStatsViewerViewModel> _deployStatsViewerViewModel;
-        private Mock<IStudioUpdateManager> _studioUpdateManagerMock;
-        private Mock<IExplorerItem> _explorerItemMock;
+        DeploySourceExplorerViewModel _target;
+        Mock<IEnvironmentViewModel> _selectedEnvironment;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IServer> _serverMock;
+        Mock<IEventAggregator> _eventAggregatorMock;
+        Mock<IDeployStatsViewerViewModel> _deployStatsViewerViewModel;
+        Mock<IStudioUpdateManager> _studioUpdateManagerMock;
+        Mock<IExplorerItem> _explorerItemMock;
 
         #endregion Fields
 
@@ -243,8 +243,12 @@ namespace Warewolf.Studio.ViewModels.Tests
             explorerItemViewModelMock.SetupGet(it => it.ResourceName).Returns("newServerName");
             explorerItemViewModelMock.SetupGet(it => it.ResourceId).Returns(serverId);
             explorerItemViewModelMock.SetupGet(it => it.Children).Returns(new ObservableCollection<IExplorerItemViewModel>());
+            environmentViewModelMock
+                .Setup(it => it.AsList())
+                .Returns(new List<IExplorerItemViewModel>() { explorerItemViewModelMock.Object });
             env.AddChild(explorerItemViewModelMock.Object);
             env.ResourceId = serverId;
+            env.Server = serverMock.Object;
             var environmentViewModels = _target.Environments.Union(new[] { environmentViewModelMock.Object }).ToList();
             _target.Environments = new ObservableCollection<IEnvironmentViewModel>(environmentViewModels);
 
@@ -280,7 +284,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             serverMock.Setup(it => it.ConnectAsync()).ReturnsAsync(true);
 
             //act
-            await _target.ConnectControlViewModel.Connect(serverMock.Object);
+            await _target.ConnectControlViewModel.ConnectAsync(serverMock.Object);
 
             //assert
             Assert.IsTrue(isEnvironmentChanged);

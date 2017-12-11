@@ -542,11 +542,11 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         }
 
-      
 
 
 
-        private Task<IExplorerRepositoryResult> ValueFunction(ExecStatus status)
+
+        Task<IExplorerRepositoryResult> ValueFunction(ExecStatus status)
         {
             IExplorerRepositoryResult result = new ExplorerRepositoryResult(status, "");
             return Task.FromResult(result);

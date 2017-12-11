@@ -37,12 +37,12 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
 {
     public class WcfEndPointViewModel : CustomToolWithRegionBase, IWcfEndPointViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IWcfInputRegion _inputArea;
-        private ISourceToolRegion<IWcfServerSource> _sourceRegion;
-        private IActionToolRegion<IWcfAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IWcfInputRegion _inputArea;
+        ISourceToolRegion<IWcfServerSource> _sourceRegion;
+        IActionToolRegion<IWcfAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -65,7 +65,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageWcfServiceInputViewModel(this, Model));
@@ -81,7 +81,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageWcfServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageWcfServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -294,10 +294,10 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
-        
+        string Type => GetProperty<string>();
 
-        private void FixErrors()
+
+        void FixErrors()
         {
         }
 
@@ -332,7 +332,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
                 ActionRegion = new WcfActionRegion(Model, ModelItem, SourceRegion) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
@@ -470,7 +470,7 @@ namespace Dev2.Activities.Designers2.WCFEndPoint
             }
         }
 
-        private IWcfServiceModel Model { get; set; }
+        IWcfServiceModel Model { get; set; }
 
         public void SetRegionVisibility(bool value)
         {

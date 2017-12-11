@@ -20,17 +20,17 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
 {
     public class DropBoxFileListDesignerViewModel : ActivityDesignerViewModel,INotifyPropertyChanged
     {
-        private ObservableCollection<DropBoxSource> _sources;
-        private string _toPath;
-        private string _result;
-        private List<string> _files;
-        private bool _includeMediaInfo;
-        private bool _isRecursive;
-        private bool _includeDeleted;
-        private bool _isFilesSelected;
-        private bool _isFoldersSelected;
-        private bool _isFilesAndFoldersSelected;
-        private readonly IDropboxSourceManager _sourceManager;
+        ObservableCollection<DropBoxSource> _sources;
+        string _toPath;
+        string _result;
+        List<string> _files;
+        bool _includeMediaInfo;
+        bool _isRecursive;
+        bool _includeDeleted;
+        bool _isFilesSelected;
+        bool _isFoldersSelected;
+        bool _isFilesAndFoldersSelected;
+        readonly IDropboxSourceManager _sourceManager;
         public DropBoxFileListDesignerViewModel(ModelItem modelItem)
             : this(modelItem, new DropboxSourceManager())
         {
@@ -220,13 +220,13 @@ namespace Dev2.Activities.Designers2.DropBox2016.DropboxFile
         }
 
 
-        private void EditDropBoxSource()
+        void EditDropBoxSource()
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;
             if (activeServer != null)
             {
-                shellViewModel.OpenResource(SelectedSource.ResourceID,activeServer.EnvironmentID, activeServer);
+                shellViewModel.OpenResource(SelectedSource.ResourceID, activeServer.EnvironmentID, activeServer);
             }
         }
 

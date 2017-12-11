@@ -5,7 +5,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class WebRequestExtentions
+    static class WebRequestExtentions
     {
         public static void BindRequestVariablesToDataObject( this WebRequestTO request, ref IDSFDataObject dataObject)
         {
@@ -67,12 +67,6 @@ namespace Dev2.Runtime.WebServer
                                     .TrimEnd('/');
             }
             return path.Replace("/", "\\");
-        }
-
-        public static bool IsRunAllTestsRequest( this WebRequestTO webRequest, string serviceName)
-        {
-            var isRunAllTestsRequest = !string.IsNullOrEmpty(serviceName) && serviceName == "*" && (webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || webRequest.WebServerUrl.EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase));
-            return isRunAllTestsRequest;
         }
     }
 }

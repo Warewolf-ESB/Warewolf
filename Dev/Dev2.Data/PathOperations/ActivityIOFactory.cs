@@ -31,9 +31,9 @@ namespace Dev2.PathOperations
     public static class ActivityIOFactory
     {
 
-        private static IList<Type> _endPoints;
-        private static readonly object EndPointsLock = new object();
-        private static IList<IActivityIOOperationsEndPoint> _referenceCheckers;
+        static IList<Type> _endPoints;
+        static readonly object EndPointsLock = new object();
+        static IList<IActivityIOOperationsEndPoint> _referenceCheckers;
 
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass) => CreatePathFromString(path, user, pass, "");
 
@@ -48,7 +48,7 @@ namespace Dev2.PathOperations
         public static IActivityIOPath CreatePathFromString(string path, string user, string pass, bool isNotCertVerifiable, string privateKeyFile)
         {
             VerifyArgument.IsNotNull("path", path);
-            enActivityIOPathType type = Dev2ActivityIOPathUtils.ExtractPathType(path);
+            var type = Dev2ActivityIOPathUtils.ExtractPathType(path);
             if (type == enActivityIOPathType.Invalid)
             {
                 // Default to file system
@@ -80,11 +80,11 @@ namespace Dev2.PathOperations
 
                     var type = typeof(IActivityIOOperationsEndPoint);
 
-                    List<Type> types = Assembly.GetExecutingAssembly().GetTypes()
+                    var types = Assembly.GetExecutingAssembly().GetTypes()
                         .Where(t => type.IsAssignableFrom(t))
                         .ToList();
 
-                    foreach(Type t in types)
+                    foreach (Type t in types)
                     {
                         if(t != typeof(IActivityIOOperationsEndPoint))
                         {

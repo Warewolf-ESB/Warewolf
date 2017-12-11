@@ -20,8 +20,8 @@ namespace Dev2.MathOperations
 {
     public class FunctionEvaluator : IFunctionEvaluator
     {
-        private readonly IDev2CalculationManager _manager;
-        private readonly FunctionEvaluatorOption _functionEvaluatorOption;
+        readonly IDev2CalculationManager _manager;
+        readonly FunctionEvaluatorOption _functionEvaluatorOption;
 
         public FunctionEvaluator()
         {
@@ -69,7 +69,7 @@ namespace Dev2.MathOperations
             return evaluationState;
         }
 
-        private string PerformEvaluation(CalculationValue value)
+        string PerformEvaluation(CalculationValue value)
         {
             string evaluation;
             var dateTime = value.ToDateTime();

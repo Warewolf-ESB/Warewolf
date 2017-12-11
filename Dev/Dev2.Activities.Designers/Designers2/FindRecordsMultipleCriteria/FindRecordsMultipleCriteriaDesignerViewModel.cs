@@ -145,7 +145,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
             {
                 case "FieldsToSearch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => FieldsToSearch));
-                    ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, GetDatalistString(), "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => FieldsToSearch, GetDatalistString(), "1", new VariableUtils()));
                     ruleSet.Add(new HasNoDuplicateEntriesRule(() => FieldsToSearch));
                     ruleSet.Add(new HasNoIndexsInRecordsetsRule(() => FieldsToSearch));
                     ruleSet.Add(new ScalarsNotAllowedRule(() => FieldsToSearch));
@@ -153,7 +153,7 @@ namespace Dev2.Activities.Designers2.FindRecordsMultipleCriteria
 
                 case "Result":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Result));
-                    ruleSet.Add(new IsValidExpressionRule(() => Result, GetDatalistString(), "1"));
+                    ruleSet.Add(new IsValidExpressionRule(() => Result, GetDatalistString(), "1", new VariableUtils()));
                     break;
                 default:
                     break;

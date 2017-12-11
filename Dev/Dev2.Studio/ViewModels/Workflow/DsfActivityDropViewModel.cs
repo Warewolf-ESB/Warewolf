@@ -27,10 +27,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         public IExplorerViewModel SingleEnvironmentExplorerViewModel { get; private set; }
         #region Fields
 
-        private RelayCommand _executeCommmand;
-        private DelegateCommand _cancelComand;
+        RelayCommand _executeCommmand;
+        DelegateCommand _cancelComand;
 
-        private IContextualResourceModel _selectedResource;
+        IContextualResourceModel _selectedResource;
 
         #endregion Fields
 
@@ -115,13 +115,13 @@ namespace Dev2.Studio.ViewModels.Workflow
         public bool CanOkay => CanSelect();
 
 
-        private bool CanSelect()
+        bool CanSelect()
         {
             bool isMatched = false;
 
             var explorerItemModel = SingleEnvironmentExplorerViewModel.SelectedItem;
 
-            if(explorerItemModel != null)
+            if (explorerItemModel != null)
             {
                 isMatched = explorerItemModel.IsService;
             }
@@ -132,7 +132,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workSurfaceContextViewModel = conductorBaseWithActiveItem?.ActiveItem;
             var contextualResourceModel = workSurfaceContextViewModel?.ContextualResourceModel;
             var guid = contextualResourceModel?.ID;
-            if(explorerItemModel != null && explorerItemModel.ResourceId == guid)
+            if (explorerItemModel != null && explorerItemModel.ResourceId == guid)
             {
                 return false;
             }

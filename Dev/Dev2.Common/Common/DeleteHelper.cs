@@ -23,8 +23,8 @@ namespace Dev2.Common.Common
                 return false;
             }
 
-            string dirRoot = Path.GetDirectoryName(path);
-            string pattern = Path.GetFileName(path);
+            var dirRoot = Path.GetDirectoryName(path);
+            var pattern = Path.GetFileName(path);
             // directory
             if (IsDirectory(path))
             {
@@ -37,7 +37,7 @@ namespace Dev2.Common.Common
             {
                 if (dirRoot != null)
                 {
-                    string[] fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
+                    var fileList = Directory.GetFileSystemEntries(dirRoot, pattern, SearchOption.TopDirectoryOnly);
                     foreach (string file in fileList)
                     {
                         if (IsDirectory(file))
@@ -62,14 +62,14 @@ namespace Dev2.Common.Common
             return true;
         }
 
-        private static bool IsDirectory(string path)
+        static bool IsDirectory(string path)
         {
             if (path.IndexOf("*", StringComparison.Ordinal) >= 0)
             {
                 return false;
             }
 
-            FileAttributes attr = File.GetAttributes(path);
+            var attr = File.GetAttributes(path);
             if ((attr & FileAttributes.Directory) == FileAttributes.Directory)
             {
                 return true;

@@ -12,10 +12,10 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     public class DropboxFileRead : IDropboxFileRead
     {
-        private readonly bool _recursive;
-        private readonly string _path;
-        private readonly bool _includeMediaInfo;
-        private readonly bool _includeDeleted;
+        readonly bool _recursive;
+        readonly string _path;
+        readonly bool _includeMediaInfo;
+        readonly bool _includeDeleted;
 
         public DropboxFileRead(bool recursive, string path, bool includeMediaInfo, bool includeDeleted)
         {
@@ -71,7 +71,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
         }
 
-        private void InitializeCertPinning()
+        void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
             {

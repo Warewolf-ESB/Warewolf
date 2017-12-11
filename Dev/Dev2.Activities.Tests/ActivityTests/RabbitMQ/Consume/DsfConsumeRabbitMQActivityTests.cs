@@ -110,7 +110,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Prefetch = null,
                 IsObject = true
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 IsObject = true,
                 ObjectName = "a"
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 IsObject = true,
                 ObjectName = "a"
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -190,7 +190,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 ObjectName = "a",
                 _messages = new List<string>(new[] { "a" })
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 ObjectName = "a",
                 _messages = new List<string>(new[] { "a", "b" })
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -943,7 +943,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual("Queue Q1 not found", ex.Message);
             }
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             try

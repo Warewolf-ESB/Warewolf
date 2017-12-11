@@ -342,10 +342,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
     public class SqlServerModel : IDbServiceModel
     {
 #pragma warning disable 649
-        private IStudioUpdateManager _updateRepository;
+        IStudioUpdateManager _updateRepository;
 #pragma warning restore 649
 #pragma warning disable 169
-        private IQueryManager _queryProxy;
+        IQueryManager _queryProxy;
 #pragma warning restore 169
 
         public ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
@@ -428,7 +428,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             {
                 return null;
             }
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("a");
             dt.Columns.Add("b");
             dt.Columns.Add("c");
@@ -446,10 +446,10 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
     public class SqlServerModelWithOneColumnReturn : IDbServiceModel
     {
 #pragma warning disable 649
-        private IStudioUpdateManager _updateRepository;
+        IStudioUpdateManager _updateRepository;
 #pragma warning restore 649
 #pragma warning disable 169
-        private IQueryManager _queryProxy;
+        IQueryManager _queryProxy;
 #pragma warning restore 169
 
         public ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
@@ -532,7 +532,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
             {
                 return null;
             }
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("a");
             dt.TableName = "bob";
             return dt;
@@ -544,7 +544,7 @@ namespace Dev2.Activities.Designers.Tests.SqlServer
 
         #endregion
     }
-    internal class InputViewForTest : ManageDatabaseServiceInputViewModel
+    class InputViewForTest : ManageDatabaseServiceInputViewModel
     {
         public InputViewForTest(IDatabaseServiceViewModel model, IDbServiceModel serviceModel)
             : base(model, serviceModel)

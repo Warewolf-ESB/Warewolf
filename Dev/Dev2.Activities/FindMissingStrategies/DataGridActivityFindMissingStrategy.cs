@@ -41,8 +41,8 @@ namespace Dev2.FindMissingStrategies
         /// <returns>Returns all the fields in a list of strings</returns>
         public List<string> GetActivityFields(object activity)
         {
-            List<string> results = new List<string>();
-            Type activityType = activity.GetType();
+            var results = new List<string>();
+            var activityType = activity.GetType();
 
             if (activityType == typeof(DsfBaseConvertActivity))
             {
@@ -567,15 +567,15 @@ namespace Dev2.FindMissingStrategies
         }
 
 
-        private IList<string> InternalFindMissing<T>(IEnumerable<T> data)
+        IList<string> InternalFindMissing<T>(IEnumerable<T> data)
         {
             IList<string> results = new List<string>();
             foreach (T row in data)
             {
-                IEnumerable<PropertyInfo> properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
+                var properties = StringAttributeRefectionUtils.ExtractAdornedProperties<FindMissingAttribute>(row);
                 foreach (PropertyInfo propertyInfo in properties)
                 {
-                    object property = propertyInfo.GetValue(row, null);
+                    var property = propertyInfo.GetValue(row, null);
                     if (property != null)
                     {
                         results.Add(property.ToString());

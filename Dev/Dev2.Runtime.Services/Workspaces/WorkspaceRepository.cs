@@ -38,8 +38,8 @@ namespace Dev2.Workspaces
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
-        private static readonly object WorkspaceLock = new object();
-        private static readonly object UserMapLock = new object();
+        static readonly object WorkspaceLock = new object();
+        static readonly object UserMapLock = new object();
 
         #region Singleton Instance
 
@@ -187,8 +187,8 @@ namespace Dev2.Workspaces
             //TODO, 2012-10-24, This is a temporary implementation which brute force 
             //                  refreshes all client workspaces by removing them,
             //                  no changes in the client workspaces are preserved.
-            List<Guid> worksSpacesToRemove = _items.Keys.Where(k => k != ServerWorkspaceID).ToList();
-            foreach(Guid workspaceGuid in worksSpacesToRemove)
+            var worksSpacesToRemove = _items.Keys.Where(k => k != ServerWorkspaceID).ToList();
+            foreach (Guid workspaceGuid in worksSpacesToRemove)
             {
                 _items.TryRemove(workspaceGuid, out IWorkspace workspace);
             }
@@ -259,25 +259,25 @@ namespace Dev2.Workspaces
 
         #region Read
 
-        private IWorkspace Read(Guid workdspaceID)
+        IWorkspace Read(Guid workdspaceID)
         {
             // force a lock on the file system ;)
-            lock(WorkspaceLock)
+            lock (WorkspaceLock)
             {
                 var filePath = GetFileName(workdspaceID);
                 var fileExists = File.Exists(filePath);
-                using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
                     var formatter = new BinaryFormatter();
-                    if(fileExists)
+                    if (fileExists)
                     {
                         try
                         {
                             return (IWorkspace)formatter.Deserialize(stream);
                         }
-                         
-                        catch(Exception ex)
-                        
+
+                        catch (Exception ex)
+
                         {
                             Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.

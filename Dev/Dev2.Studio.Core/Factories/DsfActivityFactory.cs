@@ -29,11 +29,7 @@ namespace Dev2.Studio.Core.Factories
             {
                 if(ifNullCreateNew)
                 {
-                    if (resource.ServerResourceType == "WebService")
-                    {
-                        activityToUpdate = new DsfWebserviceActivity();
-                    }
-                    else if (resource.ServerResourceType == "PluginService")
+                    if (resource.ServerResourceType == "PluginService")
                     {
                         activityToUpdate = new DsfPluginActivity();
                     }

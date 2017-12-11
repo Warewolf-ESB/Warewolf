@@ -74,7 +74,7 @@ namespace Dev2.Dialogs
         {
             environmentViewModel.Connect();
 
-            await environmentViewModel.LoadDialog("");
+            await environmentViewModel.LoadDialogAsync("");
             switch (_activityType)
             {
                 case enDsfActivityType.Workflow:
@@ -130,7 +130,7 @@ namespace Dev2.Dialogs
             dropWindow.ShowDialog();
             if(dropViewModel.DialogResult == ViewModelDialogResults.Okay)
             {
-                DsfActivityDropViewModel model = dropViewModel;
+                var model = dropViewModel;
                 SelectedResource = model.SelectedExplorerItemModel;
                 return true;
             }
