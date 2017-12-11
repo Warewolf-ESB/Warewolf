@@ -709,7 +709,7 @@ namespace Dev2.ViewModels.Merge
                         }
                         if (!conflict.IsMergeExpanderEnabled)
                         {
-                            isValid = true;
+                            return true;
                         }
                         return isValid;
                         });
