@@ -94,9 +94,9 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewSchedule(resourceId);
         }
 
-        public void RunAllTestsCommand(Guid resourceId)
+        public void RunAllTestsCommand(string ResourcePath, Guid resourceId)
         {
-            _shellViewModel.RunAllTests(resourceId);
+            _shellViewModel.RunAllTests(ResourcePath, resourceId);
         }
 
         public void CopyUrlCommand(Guid resourceId, IServer server)
@@ -181,7 +181,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewServerSource(resourcePath);
         }
 
-        private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
+        static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
             shellViewModel.SetActiveServer(server.EnvironmentID);
         }

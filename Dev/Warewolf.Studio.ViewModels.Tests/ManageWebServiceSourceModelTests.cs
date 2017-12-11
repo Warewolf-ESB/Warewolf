@@ -13,12 +13,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IStudioUpdateManager> _updateRepositoryMock;
+        Mock<IStudioUpdateManager> _updateRepositoryMock;
 
-        private string _serverName;
+        string _serverName;
 
-        private ManageWebServiceSourceModel _target;
-        private Mock<IQueryManager> _queryManager;
+        ManageWebServiceSourceModel _target;
+        Mock<IQueryManager> _queryManager;
 
         #endregion Fields
 

@@ -26,8 +26,8 @@ namespace Dev2.Core.Tests.Settings
 {
     public class TestSettingsViewModel : SettingsViewModel
     {
-        private SecurityViewModel _theSecurityViewModel;
-        private PerfcounterViewModel _thePerfcounterViewModel;
+        SecurityViewModel _theSecurityViewModel;
+        PerfcounterViewModel _thePerfcounterViewModel;
 
         public TestSettingsViewModel()
         {

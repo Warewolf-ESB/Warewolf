@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters
 {
-    internal class Dev2HexConverter : IBaseConverter
+    class Dev2HexConverter : IBaseConverter
     {
         public string ConvertToBase(byte[] payload)
         {

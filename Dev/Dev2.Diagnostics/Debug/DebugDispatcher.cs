@@ -19,8 +19,8 @@ namespace Dev2.Diagnostics.Debug
 {
     public class DebugDispatcher : IDebugDispatcher
     {
-        private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
-        private static bool _shutdownRequested;
+        readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
+        static bool _shutdownRequested;
         static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Objects,

@@ -22,12 +22,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private EnvironmentViewModel _target;
+        EnvironmentViewModel _target;
 
-        private Mock<IServer> _serverMock;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IPopupController> _popupControllerMock;
-        private Mock<IExplorerTooltips> _explorerTooltips;
+        Mock<IServer> _serverMock;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IPopupController> _popupControllerMock;
+        Mock<IExplorerTooltips> _explorerTooltips;
 
         #endregion Fields
 

@@ -19,7 +19,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
     [TestClass]
     public class SelectAndApplyActivityTests : BaseActivityUnitTest
     {
-        private DsfSelectAndApplyActivity CreateActivity()
+        DsfSelectAndApplyActivity CreateActivity()
         {
             return new DsfSelectAndApplyActivity();
         }
@@ -81,7 +81,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToUpperApplied()
         {
             //------------Setup for test--------------------------
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity
+            var activity = new DsfCaseConvertActivity
             {
                 ConvertCollection = new List<ICaseConvertTO>
                 {
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToCorrectIndex()
         {
             //------------Setup for test--------------------------
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity
+            var activity = new DsfCaseConvertActivity
             {
                 ConvertCollection = new List<ICaseConvertTO>
                 {
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
         public void SelectAndApplyActivity_SetupExecute_GivenCaseConvertActivityApplied_ToCorrectIndex_ComplexObjects()
         {
             //------------Setup for test--------------------------
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity
+            var activity = new DsfCaseConvertActivity
             {
                 ConvertCollection = new List<ICaseConvertTO>
                 {
@@ -156,7 +156,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             DataObject.Environment.AssignJson(new AssignValue("[[@Person().Name]]", "Orlando"), 0);
             const string dataSource = "[[@Person(*).Name]]";
             const string alias = "[[a]]";
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
+            var dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
             {
                 DataSource = dataSource,
                 Alias = alias,
@@ -235,7 +235,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "0.875768"), 0);
             const string dataSource = "[[@Person(*).Age]]";
             const string alias = "[[result]]";
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
+            var dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
             {
                 DataSource = dataSource,
                 Alias = alias,
@@ -282,7 +282,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "1"), 0);
             DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "-3.4554"), 0);
             DataObject.Environment.AssignJson(new AssignValue("[[@Person().Age]]", "0.875768"), 0);
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity();
+            var dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity();
             dsfSelectAndApplyActivity.ApplyActivityFunc.Handler = activity;
             TestStartNode = new FlowStep
             {
@@ -367,7 +367,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
 
         #region Private Test Methods
 
-        private DsfSelectAndApplyActivity SetupArguments(string currentDl, string testData, IDev2Activity activity, bool isInputMapping = false, string inputMapping = null)
+        DsfSelectAndApplyActivity SetupArguments(string currentDl, string testData, IDev2Activity activity, bool isInputMapping = false, string inputMapping = null)
         {
             //DsfActivity activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
             DataObject.Environment = new ExecutionEnvironment();
@@ -378,11 +378,11 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             DataObject.Environment.Assign("[[Person().Name]]", "Orlando", 0);
             const string dataSource = "[[Person(*).Name]]";
             const string alias = "[[a]]";
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
+            var dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
             {
                 DataSource = dataSource,
                 Alias = alias,
-                
+
                 //ApplyActivityFunc = activity
             };
             var handler = activity as Activity;
@@ -395,8 +395,8 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             TestData = currentDl;
             return dsfSelectAndApplyActivity;
         }
-        
-        private DsfSelectAndApplyActivity SetupArgumentsForFormatNumber(string currentDl, string testData, IDev2Activity activity, bool isInputMapping = false, string inputMapping = null)
+
+        DsfSelectAndApplyActivity SetupArgumentsForFormatNumber(string currentDl, string testData, IDev2Activity activity, bool isInputMapping = false, string inputMapping = null)
         {
             //DsfActivity activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
             DataObject.Environment = new ExecutionEnvironment();
@@ -407,7 +407,7 @@ namespace Dev2.Tests.Activities.ActivityTests.SelectAndApply
             DataObject.Environment.Assign("[[Person().Age]]", "0.875768", 0);
             const string dataSource = "[[Person(*).Age]]";
             const string alias = "[[result]]";
-            DsfSelectAndApplyActivity dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
+            var dsfSelectAndApplyActivity = new DsfSelectAndApplyActivity
             {
                 DataSource = dataSource,
                 Alias = alias,

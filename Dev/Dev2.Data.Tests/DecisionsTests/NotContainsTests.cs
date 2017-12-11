@@ -24,7 +24,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new NotContains();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "Test";
 
@@ -43,7 +43,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new NotContains();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "No";
 

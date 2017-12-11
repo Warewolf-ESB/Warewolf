@@ -211,7 +211,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
             foreach(var expectedParameter in expected.Method.Parameters)
             {
-                MethodParameter parameter = expectedParameter;
+                var parameter = expectedParameter;
                 var actualParameter = actual.Method.Parameters.First(p => p.Name == parameter.Name);
                 Assert.AreEqual(expectedParameter.DefaultValue, actualParameter.DefaultValue);
             }
@@ -219,11 +219,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             foreach(var expectedRecordset in expected.Recordsets)
             {
                 // expect actual to have removed recordset notation ()...
-                Recordset recordset = expectedRecordset;
+                var recordset = expectedRecordset;
                 var actualRecordset = actual.Recordsets.First(rs => rs.Name == recordset.Name.Replace("()", ""));
                 foreach(var expectedField in expectedRecordset.Fields)
                 {
-                    RecordsetField field = expectedField;
+                    var field = expectedField;
                     var actualField = actualRecordset.Fields.First(f => f.Name == field.Name);
                     Assert.AreEqual(expectedField.Alias, actualField.Alias);
                     // expect actual to have removed recordset notation ()...

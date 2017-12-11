@@ -31,7 +31,7 @@ namespace Dev2.BussinessLogic
 
         static bool RunBetween(IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> tovals, DataStorage.WarewolfAtom a)
         {
-            WarewolfListIterator iterator = new WarewolfListIterator();
+            var iterator = new WarewolfListIterator();
             var from = new WarewolfAtomIterator(warewolfAtoms);
             var to = new WarewolfAtomIterator(tovals);
             iterator.AddVariableToIterateOn(@from);

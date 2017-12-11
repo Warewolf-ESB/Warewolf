@@ -16,8 +16,8 @@ namespace Dev2.DataList.Contract
     public class RecordSetCollection : IRecordSetCollection {
 
         #region Attributes
-        private readonly IList<IRecordSetDefinition> _recordSets;
-        private readonly IList<string> _recordSetNames;
+        readonly IList<IRecordSetDefinition> _recordSets;
+        readonly IList<string> _recordSetNames;
 
         #endregion
 

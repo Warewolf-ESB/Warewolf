@@ -45,14 +45,14 @@ namespace Dev2.Runtime.ESB.Execution
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
             errors = new ErrorResultTO();
-            Guid result = GlobalConstants.NullDataListID;
+            var result = GlobalConstants.NullDataListID;
             DataObject.ExecutionID = DataObject.ExecutionID ?? Guid.NewGuid();
             var user = Thread.CurrentPrincipal;
             if (string.IsNullOrEmpty(DataObject.WebUrl))
             {
                 DataObject.WebUrl = $"{EnvironmentVariables.WebServerUri}secure/{DataObject.ServiceName}.{DataObject.ReturnType}?" + DataObject.QueryString;
             }
-            string dataObjectExecutionId = DataObject.ExecutionID.ToString();
+            var dataObjectExecutionId = DataObject.ExecutionID.ToString();
             if (!DataObject.IsSubExecution)
             {
                 Dev2Logger.Debug(string.Format(GlobalConstants.ExecuteWebRequestString, DataObject.ServiceName, user?.Identity?.Name, user?.Identity?.AuthenticationType, user?.Identity?.IsAuthenticated, DataObject.RawPayload), dataObjectExecutionId);
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ESB.Execution
             {
                 DataObject.ServerID = HostSecurityProvider.Instance.ServerID;
             }
-            string executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : "Execute"));
+            var executionForServiceString = string.Format(GlobalConstants.ExecutionForServiceString, DataObject.ServiceName, DataObject.ResourceID, (DataObject.IsDebug ? "Debug" : "Execute"));
             Dev2Logger.Info("Started " + executionForServiceString, dataObjectExecutionId);
             if (!string.IsNullOrWhiteSpace(DataObject.ParentServiceName))
             {
@@ -91,14 +91,14 @@ namespace Dev2.Runtime.ESB.Execution
                 errors.AddError(err, true);
             }
 
-            string executionTypeString = DataObject.IsSubExecution ? "Completed Sub " : "Completed ";
+            var executionTypeString = DataObject.IsSubExecution ? "Completed Sub " : "Completed ";
             Dev2Logger.Info(executionTypeString + executionForServiceString, dataObjectExecutionId);
             return result;
         }
 
         Guid ExecuteWf()
         {
-            Guid result = new Guid();
+            var result = new Guid();
             DataObject.StartTime = DateTime.Now;
             var wfappUtils = new WfApplicationUtils();
             ErrorResultTO invokeErrors;
@@ -153,15 +153,15 @@ namespace Dev2.Runtime.ESB.Execution
     
         public void Eval(DynamicActivity flowchartProcess, IDSFDataObject dsfDataObject, int update)
         {
-            IDev2Activity resource = new ActivityParser().Parse(flowchartProcess);
+            var resource = new ActivityParser().Parse(flowchartProcess);
 
             EvalInner(dsfDataObject, resource, update);
         }
 
-        private void Eval(Guid resourceID, IDSFDataObject dataObject)
+        void Eval(Guid resourceID, IDSFDataObject dataObject)
         {
             Dev2Logger.Debug("Getting Resource to Execute", dataObject.ExecutionID.ToString());
-            IDev2Activity resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
+            var resource = ResourceCatalog.Instance.Parse(TheWorkspace.ID, resourceID, dataObject.ExecutionID.ToString());
             Dev2Logger.Debug("Got Resource to Execute", dataObject.ExecutionID.ToString());
             EvalInner(dataObject, resource, dataObject.ForEachUpdateValue);
 

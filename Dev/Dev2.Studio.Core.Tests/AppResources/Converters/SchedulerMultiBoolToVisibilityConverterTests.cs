@@ -22,7 +22,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         [TestCategory("SchedulerMultiBoolToVisibilityConverter_Convert")]
         public void SchedulerMultiBoolToVisibilityConverter_Convert_WithTrueFalse_ReturnsCollapsed()
         {
-            SchedulerMultiBoolToVisibilityConverter schedulerMultiBoolToVisibilityConverter = new SchedulerMultiBoolToVisibilityConverter();
+            var schedulerMultiBoolToVisibilityConverter = new SchedulerMultiBoolToVisibilityConverter();
             object[] values = { true, false };
             var actual = schedulerMultiBoolToVisibilityConverter.Convert(values, null, null, null);
 
@@ -34,7 +34,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         [TestCategory("SchedulerMultiBoolToVisibilityConverter_Convert")]
         public void SchedulerMultiBoolToVisibilityConverter_Convert_WithFalseFalse_ReturnsVisible()
         {
-            SchedulerMultiBoolToVisibilityConverter schedulerMultiBoolToVisibilityConverter = new SchedulerMultiBoolToVisibilityConverter();
+            var schedulerMultiBoolToVisibilityConverter = new SchedulerMultiBoolToVisibilityConverter();
             object[] values = { false, false };
             var actual = schedulerMultiBoolToVisibilityConverter.Convert(values, null, null, null);
 

@@ -28,7 +28,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
         public void DbColumn_Constructor_WhenUsingDbTable_ExpectAllPropertiesTransfered()
         {
             //------------Setup for test--------------------------
-            DataColumn dc = new DataColumn { AllowDBNull = true, AutoIncrement = false, ColumnName = "myColumn", MaxLength = 20, DataType = typeof(string) };
+            var dc = new DataColumn { AllowDBNull = true, AutoIncrement = false, ColumnName = "myColumn", MaxLength = 20, DataType = typeof(string) };
             //------------Execute Test---------------------------
             var dbColumn = new DbColumn(dc);
 

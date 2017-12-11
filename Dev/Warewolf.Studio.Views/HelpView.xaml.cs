@@ -12,10 +12,10 @@ namespace Warewolf.Studio.Views
         public HelpView()
         {
             InitializeComponent();
-            RichTextDocument richTextDocument = XamRichTextEditor.Document;
-            
-            Color color = (Color)ColorConverter.ConvertFromString("#FFF4F2EE");
-            
+            var richTextDocument = XamRichTextEditor.Document;
+
+            var color = (Color)ColorConverter.ConvertFromString("#FFF4F2EE");
+
             var colorInfo = new ColorInfo(color);
             richTextDocument.RootNode.Settings = new DocumentSettings
             {

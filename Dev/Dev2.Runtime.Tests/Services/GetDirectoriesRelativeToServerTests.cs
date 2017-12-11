@@ -98,10 +98,10 @@ namespace Dev2.Tests.Runtime.Services
         {
             //----------------Setup---------------------------------------------
             var esb = new GetDirectoriesRelativeToServer();
-            Mock<IExplorerServerResourceRepository> mockRepo = new Mock<IExplorerServerResourceRepository>();
-            ServerExplorerItem serverExplorerItem = new ServerExplorerItem();
+            var mockRepo = new Mock<IExplorerServerResourceRepository>();
+            var serverExplorerItem = new ServerExplorerItem();
             serverExplorerItem.ResourceType = "Server";
-            ServerExplorerItem levelOneFolder = new ServerExplorerItem();
+            var levelOneFolder = new ServerExplorerItem();
             levelOneFolder.ResourceType = "Folder";
             levelOneFolder.DisplayName = "Test1";
             levelOneFolder.ResourcePath = "Test1";
@@ -110,7 +110,7 @@ namespace Dev2.Tests.Runtime.Services
             levelOneFolderTwo.ResourceType = "Folder";
             levelOneFolderTwo.DisplayName = "Test2";
             levelOneFolderTwo.ResourcePath = "Test2";
-            ServerExplorerItem levelTwoFolderInFolderTwo = new ServerExplorerItem();
+            var levelTwoFolderInFolderTwo = new ServerExplorerItem();
             levelTwoFolderInFolderTwo.ResourceType = "Folder";
             levelTwoFolderInFolderTwo.DisplayName = "InnerTest2";
             levelTwoFolderInFolderTwo.ResourcePath = levelOneFolderTwo.ResourcePath + "\\InnerTest2";
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
             var actual = esb.Execute(new Dictionary<string, StringBuilder> { { "Directory", new StringBuilder("Resources") } }, null);
             //----------------Assert Results-----------------------------------------
             Assert.AreNotEqual(string.Empty, actual);
-             string expected = @"<JSON>{
+             var expected = @"<JSON>{
   ""$id"": ""1"",
   ""$type"": ""Dev2.Runtime.ESB.Management.Services.JsonTreeNode, Dev2.Runtime.Services"",
   ""title"": ""Root"",
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Services
             FixBreaks(ref expected, ref actuals);
             Assert.AreEqual(expected, actuals);
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();

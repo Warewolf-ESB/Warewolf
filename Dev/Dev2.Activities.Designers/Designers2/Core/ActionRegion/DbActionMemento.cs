@@ -21,8 +21,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class DbActionMemento : IActionToolRegion<IDbAction>
     {
-        private IDbAction _selectedAction;
-        private EventHandler<List<string>> _errorsHandler;
+        IDbAction _selectedAction;
+        EventHandler<List<string>> _errorsHandler;
 
         #region Implementation of INotifyPropertyChanged
 

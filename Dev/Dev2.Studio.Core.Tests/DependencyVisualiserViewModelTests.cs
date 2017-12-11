@@ -471,7 +471,7 @@ namespace Dev2.Core.Tests
 
 
 
-        private Task<ExecuteMessage> ValueFunction()
+        Task<ExecuteMessage> ValueFunction()
         {
             var executeMessage = new ExecuteMessage();
             var fromResult = Task.FromResult(executeMessage);

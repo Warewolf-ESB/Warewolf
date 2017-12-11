@@ -76,14 +76,14 @@ namespace Dev2.Studio
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
-        
-        
-        
-        private Mutex _processGuard = null;
-        
-        
-        private AppExceptionHandler _appExceptionHandler;
-        private bool _hasShutdownStarted;
+
+
+
+        Mutex _processGuard = null;
+
+
+        AppExceptionHandler _appExceptionHandler;
+        bool _hasShutdownStarted;
 
         public App()
         {
@@ -151,10 +151,10 @@ namespace Dev2.Studio
 #endif
         }
 
-        private static ISplashView _splashView;
+        static ISplashView _splashView;
 
-        private ManualResetEvent _resetSplashCreated;
-        private Thread _splashThread;
+        ManualResetEvent _resetSplashCreated;
+        Thread _splashThread;
         protected void InitializeShell(StartupEventArgs e)
         {
             _resetSplashCreated = new ManualResetEvent(false);
@@ -187,8 +187,8 @@ namespace Dev2.Studio
             toolboxPane?.Activate();
         }
 
-        private static void CreateDummyWorkflowDesignerForCaching()
-        {            
+        static void CreateDummyWorkflowDesignerForCaching()
+        {
             var workflowDesigner = new WorkflowDesigner();
             workflowDesigner.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
             var designerConfigService = workflowDesigner.Context.Services.GetService<DesignerConfigurationService>();
@@ -217,7 +217,7 @@ namespace Dev2.Studio
             }
 
             MetadataStore.AddAttributeTable(builder.CreateTable());
-            workflowDesigner.Context.Services.Subscribe<DesignerView>(instance=>
+            workflowDesigner.Context.Services.Subscribe<DesignerView>(instance =>
             {
                 instance.WorkflowShellHeaderItemsVisibility = ShellHeaderItemsVisibility.All;
                 instance.WorkflowShellBarItemVisibility = ShellBarItemVisibility.None;
@@ -227,7 +227,7 @@ namespace Dev2.Studio
             workflowDesigner.Load(activityBuilder);
         }
 
-        private async void CheckForDuplicateResources()
+        async void CheckForDuplicateResources()
         {
             var server = ServerRepository.Instance.Source;
             var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
@@ -239,7 +239,7 @@ namespace Dev2.Studio
             }
         }
 
-        private void ShowSplash()
+        void ShowSplash()
         {
             var repository = ServerRepository.Instance;
             var server = repository.Source;
@@ -264,18 +264,18 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
-            
-            
-          
+
+
+
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
             var splashPage = new SplashPage { DataContext = splashViewModel };
             SplashView = splashPage;
             SplashView.Show(false);
-            
+
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
-            Dispatcher.Run();           
+            Dispatcher.Run();
         }
 
         protected override void OnExit(ExitEventArgs e)
@@ -352,7 +352,7 @@ namespace Dev2.Studio
 
         public static ISplashView SplashView { get => _splashView; set => _splashView = value; }
 
-        private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
            
             if (_appExceptionHandler != null)

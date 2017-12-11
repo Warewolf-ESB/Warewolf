@@ -27,15 +27,15 @@ namespace Dev2.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             var value = GetValue();
-            string[] fields = value.Split(',');
-            for(int i = 0; i < fields.Length; i++)
+            var fields = value.Split(',');
+            for (int i = 0; i < fields.Length; i++)
             {
                 fields[i] = ReplaceRecordsetIndexWithBlank(fields[i]);
             }
 
-            IEnumerable<string> enumerable = fields.Distinct();
+            var enumerable = fields.Distinct();
 
-            if(enumerable.Count() != fields.Length)
+            if (enumerable.Count() != fields.Length)
             {
                 return CreatError();
             }
@@ -50,7 +50,7 @@ namespace Dev2.Providers.Validation.Rules
         /// <returns></returns>
         public static string ReplaceRecordsetIndexWithBlank(string expression)
         {
-            string extractIndexRegionFromRecordset = ExtractIndexRegionFromRecordset(expression);
+            var extractIndexRegionFromRecordset = ExtractIndexRegionFromRecordset(expression);
             return expression.Replace("(" + extractIndexRegionFromRecordset + ")", "()");
         }
 
@@ -61,7 +61,7 @@ namespace Dev2.Providers.Validation.Rules
         /// <returns></returns>
         public static string ExtractIndexRegionFromRecordset(string rs)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             int start = rs.IndexOf("(", StringComparison.Ordinal);
             if(start > 0)

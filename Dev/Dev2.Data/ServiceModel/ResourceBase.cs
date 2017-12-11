@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     [Serializable]
     public abstract class ResourceBase : IResource
     {
-        private IVersionInfo _versionInfo;
+        IVersionInfo _versionInfo;
 
         protected ResourceBase()
         {
@@ -246,7 +246,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private string GetResourceTypeFromString(string actionTypeStr)
+        string GetResourceTypeFromString(string actionTypeStr)
         {
             if (Enum.TryParse(actionTypeStr, out enActionType actionType))
             {
@@ -299,7 +299,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 );
         }
 
-        private string GetRootElement()
+        string GetRootElement()
         {
             if (IsSource)
             {
@@ -326,7 +326,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             return xe.ToStringBuilder();
         }
 
-        private XElement WriteErrors()
+        XElement WriteErrors()
         {
             if (Errors == null || Errors.Count == 0)
             {
@@ -447,7 +447,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void GetDependenciesForWorkflowService(XElement xml)
+        void GetDependenciesForWorkflowService(XElement xml)
         {
             var loadXml = xml.Descendants("XamlDefinition").ToList();
             if (loadXml.Count != 1)
@@ -472,7 +472,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                               select desc;
                     var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
                     var count = xElements.Count;
-                    
+
                     if (count > 0)
                     {
                         Dependencies = new List<IResourceForTree>();
@@ -508,7 +508,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private string GetResourceTypeFromName(string localName)
+        string GetResourceTypeFromName(string localName)
         {
             switch (localName)
             {
@@ -525,7 +525,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddDatabaseSourcesForSqlBulkInsertTool(XElement elementToUse)
+        void AddDatabaseSourcesForSqlBulkInsertTool(XElement elementToUse)
         {
             if (elementToUse == null)
             {
@@ -551,10 +551,10 @@ namespace Dev2.Runtime.ServiceModel.Data
                 {
                     Dependencies.Add(CreateResourceForTree(resId, Guid.Empty, resourceName, resourceType));
                 }
-            }           
+            }
         }
 
-        private void AddEmailSources(XElement elementToUse)
+        void AddEmailSources(XElement elementToUse)
         {
             if (elementToUse == null)
             {
@@ -583,7 +583,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddDotnetSources(XElement elementToUse)
+        void AddDotnetSources(XElement elementToUse)
         {
             if (elementToUse == null)
             {
@@ -613,7 +613,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddRabbitMqSources(XElement elementToUse)
+        void AddRabbitMqSources(XElement elementToUse)
         {
             if (elementToUse == null)
             {
@@ -641,7 +641,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddWebSources(XElement elementToUse)
+        void AddWebSources(XElement elementToUse)
         {
             if (elementToUse == null)
             {
@@ -652,11 +652,11 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                      where (desc.Name.LocalName.Contains("DsfWebDeleteActivity") 
+                                      where (desc.Name.LocalName.Contains("DsfWebDeleteActivity")
                                             || desc.Name.LocalName.Contains("DsfWebGetActivity")
                                             || desc.Name.LocalName.Contains("DsfWebPostActivity")
                                             || desc.Name.LocalName.Contains("DsfWebPutActivity")
-                                            
+
                                             ) && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
@@ -675,7 +675,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddSharepointSources(XElement elementToUse)
+        void AddSharepointSources(XElement elementToUse)
         {
             if (elementToUse == null)
             {
@@ -686,7 +686,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                 Dependencies = new List<IResourceForTree>();
             }
             var dependenciesFromXml = from desc in elementToUse.Descendants()
-                                      where (desc.Name.LocalName.Contains("SharepointCopyFileActivity") 
+                                      where (desc.Name.LocalName.Contains("SharepointCopyFileActivity")
                                             || desc.Name.LocalName.Contains("SharepointCreateListItemActivity")
                                             || desc.Name.LocalName.Contains("SharepointDeleteFileActivity")
                                             || desc.Name.LocalName.Contains("SharepointDeleteListItemActivity")
@@ -696,7 +696,7 @@ namespace Dev2.Runtime.ServiceModel.Data
                                             || desc.Name.LocalName.Contains("SharepointReadFolderItemActivity")
                                             || desc.Name.LocalName.Contains("SharepointReadListActivity")
                                             || desc.Name.LocalName.Contains("SharepointUpdateListItemActivity")
-                                            
+
                                             ) && desc.HasAttributes
                                       select desc;
             var xElements = dependenciesFromXml as List<XElement> ?? dependenciesFromXml.ToList();
@@ -715,7 +715,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private void AddRemoteServerDependencies(XElement element)
+        void AddRemoteServerDependencies(XElement element)
         {
             var environmentIdString = element.AttributeSafe("EnvironmentID");
             if (Guid.TryParse(environmentIdString, out Guid environmentId) && environmentId != Guid.Empty)
@@ -730,7 +730,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
         }
 
-        private static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, string resourceType)
+        static ResourceForTree CreateResourceForTree(Guid resourceId, Guid uniqueId, string resourceName, string resourceType)
         {
             return new ResourceForTree
             {

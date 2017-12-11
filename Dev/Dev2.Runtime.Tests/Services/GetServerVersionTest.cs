@@ -71,8 +71,8 @@ namespace Dev2.Tests.Runtime.Services
                 var getVersions = new GetServerVersion();
                 var serializer = new Dev2JsonSerializer();
                 //------------Execute Test---------------------------
-                StringBuilder jsonResult = getVersions.Execute(null, null);
-                var result = serializer.Deserialize<string>(jsonResult);
+                var jsonResult = getVersions.Execute(null, null);
+            var result = serializer.Deserialize<string>(jsonResult);
                 //------------Assert Results-------------------------
                 Assert.IsNotNull(result);
             }
@@ -85,8 +85,8 @@ namespace Dev2.Tests.Runtime.Services
                 //------------Setup for test--------------------------
                 var getVersions = new GetVersions();
                 var resourceId = Guid.NewGuid();
-                ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
-                var repo = new Mock<IServerVersionRepository>();
+                var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var repo = new Mock<IServerVersionRepository>();
                 var ws = new Mock<IWorkspace>();
                 repo.Setup(a => a.GetVersions(resourceId)).Returns(new List<IExplorerItem> {item});
                 var serializer = new Dev2JsonSerializer();

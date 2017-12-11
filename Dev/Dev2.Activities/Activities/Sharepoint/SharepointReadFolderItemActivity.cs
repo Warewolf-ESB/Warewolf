@@ -89,7 +89,7 @@ namespace Dev2.Activities.Sharepoint
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -147,8 +147,8 @@ namespace Dev2.Activities.Sharepoint
                     {
                         if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
-                            string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
                             if (IsFoldersSelected)
                             {
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Sharepoint
 
                                 foreach (var folder in folders)
                                 {
-                                    string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                                     indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), folder));
                                     indexToUpsertTo++;
@@ -170,7 +170,7 @@ namespace Dev2.Activities.Sharepoint
 
                                 foreach (var file in files)
                                 {
-                                    string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                         indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
                                     indexToUpsertTo++;
@@ -187,7 +187,7 @@ namespace Dev2.Activities.Sharepoint
 
                                 foreach (var fileAndfolder in folderAndPathList)
                                 {
-                                    string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                         indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), fileAndfolder));
                                     indexToUpsertTo++;
@@ -237,7 +237,7 @@ namespace Dev2.Activities.Sharepoint
                         {
                             var folders = GetSharePointFolders(sharepointSource, path);
 
-                            string xmlList = string.Join(",", folders.Select(c => c));
+                            var xmlList = string.Join(",", folders.Select(c => c));
                             outputs.Add(DataListFactory.CreateOutputTO(Result));
                             outputs.Last().OutputStrings.Add(xmlList);
                         }
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Sharepoint
                         {
                             var files = GetSharePointFiles(sharepointSource, path);
 
-                            string xmlList = string.Join(",", files.Select(c => c));
+                            var xmlList = string.Join(",", files.Select(c => c));
                             outputs.Add(DataListFactory.CreateOutputTO(Result));
                             outputs.Last().OutputStrings.Add(xmlList);
                         }
@@ -273,7 +273,7 @@ namespace Dev2.Activities.Sharepoint
             return outputs;
         }
 
-        private void ValidateRequest()
+        void ValidateRequest()
         {
             if (SharepointServerResourceId == Guid.Empty)
             {
@@ -281,14 +281,14 @@ namespace Dev2.Activities.Sharepoint
             }
         }
 
-        private IEnumerable<string> GetSharePointFiles(SharepointSource sharepointSource, string path)
+        IEnumerable<string> GetSharePointFiles(SharepointSource sharepointSource, string path)
         {
             var sharepointHelper = sharepointSource.CreateSharepointHelper();
             var files = sharepointHelper.LoadFiles(path);
             return files;
         }
 
-        private IEnumerable<string> GetSharePointFolders(SharepointSource sharepointSource, string path)
+        IEnumerable<string> GetSharePointFolders(SharepointSource sharepointSource, string path)
         {
             var sharepointHelper = sharepointSource.CreateSharepointHelper();
             var folders = sharepointHelper.LoadFolders(path);

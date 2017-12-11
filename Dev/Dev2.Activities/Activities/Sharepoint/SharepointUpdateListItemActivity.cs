@@ -51,7 +51,7 @@ namespace Dev2.Activities.Sharepoint
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject,0);
         }
 
@@ -91,14 +91,14 @@ namespace Dev2.Activities.Sharepoint
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             try
             {
                 var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
-                    Dictionary<string, IWarewolfIterator> listOfIterators = new Dictionary<string, IWarewolfIterator>();
+                    var listOfIterators = new Dictionary<string, IWarewolfIterator>();
                     if (sharepointSource == null)
                     {
                         var contents = ResourceCatalog.GetResourceContents(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -114,7 +114,7 @@ namespace Dev2.Activities.Sharepoint
                     using (var ctx = sharepointHelper.GetContext())
                     {
                         var camlQuery = _sharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update, RequireAllCriteriaToMatch);
-                        List list = ctx.Web.Lists.GetByTitle(SharepointList);
+                        var list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();
@@ -181,7 +181,7 @@ namespace Dev2.Activities.Sharepoint
             var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
-                DebugItem debugItem = new DebugItem();
+                var debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                 var variableName = varDebug.VariableName;
                 if (!string.IsNullOrEmpty(variableName))
@@ -194,7 +194,7 @@ namespace Dev2.Activities.Sharepoint
             }
             if (FilterCriteria != null && FilterCriteria.Any())
             {
-                string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
+                var requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
 
                 foreach (var varDebug in FilterCriteria)
                 {
@@ -203,7 +203,7 @@ namespace Dev2.Activities.Sharepoint
                         return;
                     }
 
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;
                     if (!string.IsNullOrEmpty(fieldName))

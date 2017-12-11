@@ -6,7 +6,7 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class DropboxSourceManager : IDropboxSourceManager
     {
-        private readonly IServer _targetEnvironment;
+        readonly IServer _targetEnvironment;
 
         public DropboxSourceManager(IServer targetEnvironment)
         {

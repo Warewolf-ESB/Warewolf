@@ -21,13 +21,13 @@ namespace Dev2.Scheduler
 {
     public class ServerSchedulerFactory : IServerSchedulerFactory
     {
-        private readonly IDev2TaskService _service;
-        private readonly ITaskServiceConvertorFactory _factory;
-        private readonly string _agentPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerAgentPath);
-        private readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
-  
-        private readonly IDirectoryHelper _dir;
-        private readonly Func<IScheduledResource, string> _pathResolve;
+        readonly IDev2TaskService _service;
+        readonly ITaskServiceConvertorFactory _factory;
+        readonly string _agentPath = string.Format("{0}\\{1}", Environment.CurrentDirectory, GlobalConstants.SchedulerAgentPath);
+        readonly string _debugOutputPath = string.Format("{0}\\{1}", Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData), GlobalConstants.SchedulerDebugPath);
+
+        readonly IDirectoryHelper _dir;
+        readonly Func<IScheduledResource, string> _pathResolve;
 
         public ServerSchedulerFactory(IDev2TaskService service, ITaskServiceConvertorFactory factory, IDirectoryHelper directory, Func<IScheduledResource, string> pathResolve)
         {
@@ -46,7 +46,7 @@ namespace Dev2.Scheduler
             CreateDir();
         }
 
-        private void CreateDir()
+        void CreateDir()
         {
             _dir.CreateIfNotExists(_debugOutputPath);
         }

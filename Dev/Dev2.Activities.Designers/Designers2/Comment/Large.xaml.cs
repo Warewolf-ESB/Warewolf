@@ -2,9 +2,6 @@
 
 namespace Dev2.Activities.Designers2.Comment
 {
-    /// <summary>
-    /// Interaction logic for Large.xaml
-    /// </summary>
     public partial class Large
     {
         public Large()
@@ -12,13 +9,6 @@ namespace Dev2.Activities.Designers2.Comment
             InitializeComponent();
         }
 
-        #region Overrides of ActivityDesignerTemplate
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
-
-        #endregion
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

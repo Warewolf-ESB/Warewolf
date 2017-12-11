@@ -30,14 +30,14 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var act = new DsfComDllActivity() { SourceId = id };
             var src = new Mock<IComPluginServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>());
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()), sourceRegion, comNamespaceRegion);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(0, dotNetActionRegion.Errors.Count);
@@ -57,15 +57,15 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var action = new PluginAction { FullName = "bravo", Method = "bravo", ReturnType = typeof(string), Variables = new List<INameValue>()};
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
             sourceRegion.SelectedSource = dotNetsrc;
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
             dotNetActionRegion.SelectedAction = action;
 
             //------------Assert Results-------------------------
@@ -91,15 +91,15 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var action2 = new PluginAction { FullName = "simpson", Method = "simpson", ReturnType = typeof(string), Variables = new List<INameValue>()};
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
             sourceRegion.SelectedSource = dotNetsrc;
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
             dotNetActionRegion.SelectedAction = action;
 
             //------------Assert Results-------------------------
@@ -142,14 +142,14 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var action = new PluginAction { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc, s2 });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
             dotNetActionRegion.SomethingChanged += (a, b) => { evt = true; };
             dotNetActionRegion.SelectedAction = action;
 
@@ -173,14 +173,14 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var action1 = new PluginAction { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc, s2 });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -214,14 +214,14 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var action1 = new PluginAction { FullName = "bravo1" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc, s2 });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -252,14 +252,14 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var s2 = new ComPluginSourceDefinition { Id = Guid.NewGuid() };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc, s2 });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
             var cloned = dotNetActionRegion.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -281,16 +281,16 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             var action = new PluginAction { FullName = "bravo" };
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { dotNetsrc, s2 });
 
-            ComSourceRegion sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var sourceRegion = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             var namespaceItem = new NamespaceItem { FullName = "johnny" };
-            ComNamespaceRegion comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
+            var comNamespaceRegion = new ComNamespaceRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion);
             comNamespaceRegion.SelectedNamespace = namespaceItem;
 
             //------------Execute Test---------------------------
-            ComActionRegion dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
-            
-            ComActionRegion dotNetActionRegionToRestore = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+            var dotNetActionRegion = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
+
+            var dotNetActionRegionToRestore = new ComActionRegion(src.Object, ModelItemUtils.CreateModelItem(act), sourceRegion, comNamespaceRegion);
             dotNetActionRegionToRestore.IsEnabled = false;
             dotNetActionRegionToRestore.SelectedAction = action;
 

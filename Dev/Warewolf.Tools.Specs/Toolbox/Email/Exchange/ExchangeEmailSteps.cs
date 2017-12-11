@@ -21,7 +21,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
     [Binding]
     public class ExchangeEmailSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -224,14 +224,14 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         public void WhenTheExchangeEmailToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
         [When(@"the exchange email tool is executed ""(.*)""")]
         public void WhenTheExchangeEmailToolIsExecuted(string p0)
         {
             BuildDataList(p0);
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -259,9 +259,9 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
-            string fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
+            var fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
             bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
+            var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
             var hasAnError = expectedError == actuallyHasErrors;

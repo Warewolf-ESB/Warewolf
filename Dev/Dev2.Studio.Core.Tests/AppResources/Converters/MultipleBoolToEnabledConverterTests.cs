@@ -21,7 +21,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         [TestCategory("MultipleBoolToEnabledConverter_Convert")]
         public void MultipleBoolToEnabledConverter_Convert_WithTrueTrueFalse_ReturnsFalse()
         {
-            MultipleBoolToEnabledConverter multipleBoolToEnabledConverter = new MultipleBoolToEnabledConverter();
+            var multipleBoolToEnabledConverter = new MultipleBoolToEnabledConverter();
             object[] values = { true, true, false };
             var actual = multipleBoolToEnabledConverter.Convert(values, null, null, null);
 
@@ -33,7 +33,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         [TestCategory("MultipleBoolToEnabledConverter_Convert")]
         public void MultipleBoolToEnabledConverter_Convert_WithTrueTrueTrue_ReturnsTrue()
         {
-            MultipleBoolToEnabledConverter multipleBoolToEnabledConverter = new MultipleBoolToEnabledConverter();
+            var multipleBoolToEnabledConverter = new MultipleBoolToEnabledConverter();
             object[] values = { true, true, true };
             var actual = multipleBoolToEnabledConverter.Convert(values, null, null, null);
 
@@ -45,7 +45,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
         [TestCategory("MultipleBoolToEnabledConverter_Convert")]
         public void MultipleBoolToEnabledConverter_Convert_WithTrueTrueNull_ReturnsTrue()
         {
-            MultipleBoolToEnabledConverter multipleBoolToEnabledConverter = new MultipleBoolToEnabledConverter();
+            var multipleBoolToEnabledConverter = new MultipleBoolToEnabledConverter();
             object[] values = { true, true, null };
             var actual = multipleBoolToEnabledConverter.Convert(values, null, null, null);
 

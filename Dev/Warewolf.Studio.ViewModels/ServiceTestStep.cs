@@ -14,23 +14,23 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestStep : BindableBase, IServiceTestStep
     {
-        private string _stepDescription;
-        private StepType _type;
-        private string _activityType;
-        private ObservableCollection<IServiceTestOutput> _stepOutputs;
-        private Guid _uniqueId;
-        private IServiceTestStep _parent;
-        private ObservableCollection<IServiceTestStep> _children;
-        private bool _isTestStepExpanded;
-        private bool _isTestStepExpanderEnabled;
-        private bool _assertSelected;
-        private bool _mockSelected;
-        private ImageSource _stepIcon;
-        private bool _testPassed;
-        private bool _testPending;
-        private bool _testInvalid;
-        private bool _testFailing;
-        private TestRunResult _result;
+        string _stepDescription;
+        StepType _type;
+        string _activityType;
+        ObservableCollection<IServiceTestOutput> _stepOutputs;
+        Guid _uniqueId;
+        IServiceTestStep _parent;
+        ObservableCollection<IServiceTestStep> _children;
+        bool _isTestStepExpanded;
+        bool _isTestStepExpanderEnabled;
+        bool _assertSelected;
+        bool _mockSelected;
+        ImageSource _stepIcon;
+        bool _testPassed;
+        bool _testPending;
+        bool _testInvalid;
+        bool _testFailing;
+        TestRunResult _result;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -128,7 +128,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
+        void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
         {
             if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch")
             {
@@ -191,19 +191,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateTestPassed()
+        void UpdateTestPassed()
         {
             var testPassed = _result.RunTestResult == RunResult.TestPassed;
             TestPassed = !MockSelected && testPassed;
         }
 
-        private void UpdateTestFailed()
+        void UpdateTestFailed()
         {
             var testFailed = _result.RunTestResult == RunResult.TestFailed;
             TestFailing = !MockSelected && testFailed;
         }
 
-        private void UpdateTestInvalid()
+        void UpdateTestInvalid()
         {
             var testInvalid = _result.RunTestResult == RunResult.TestInvalid ||
                               _result.RunTestResult == RunResult.TestResourceDeleted ||
@@ -211,7 +211,7 @@ namespace Warewolf.Studio.ViewModels
             TestInvalid = !MockSelected && testInvalid;
         }
 
-        private void UpdateTestPending()
+        void UpdateTestPending()
         {
             var testPending = _result.RunTestResult != RunResult.TestFailed &&
                                   _result.RunTestResult != RunResult.TestPassed &&
@@ -386,7 +386,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddNewRecordsetOutput(string varName)
+        void AddNewRecordsetOutput(string varName)
         {
             if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
             {

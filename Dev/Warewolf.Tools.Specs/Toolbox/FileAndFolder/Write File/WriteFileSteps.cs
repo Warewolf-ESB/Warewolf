@@ -28,7 +28,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
     [Binding]
     public class WriteFileSteps : FileToolsBase
     {
-        private readonly ScenarioContext _scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public WriteFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -57,14 +57,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         public void WhenTheWriteFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             _scenarioContext.Add("result", result);
         }
 
         [Given(@"the input contents from a file ""(.*)""")]
         public void GivenTheInputContentsFromAFile(string fileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
+            var resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
                                                 fileName);
             var content = ReadFile(resourceName);
             _scenarioContext.Add("content", content);
@@ -73,17 +73,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         [Then(@"the output contents from a file ""(.*)""")]
         public void ThenTheOutputContentsFromAFile(string fileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
+            var resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
                                               fileName);
             var expectedContents = ReadFile(resourceName);
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
+            var source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
                             _scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
                             _scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                             true);
 
-            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+            var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
             var fileContents = broker.Get(sourceEndPoint);
 

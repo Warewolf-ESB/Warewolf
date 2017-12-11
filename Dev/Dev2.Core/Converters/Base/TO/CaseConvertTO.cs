@@ -24,8 +24,7 @@ namespace Dev2
         string _convertType;
         string _result;
         string _stringToConvert;
-        bool _isStringToConvertFocused;
-        Dictionary<string, List<IActionableErrorInfo>> _errors;
+        bool _isStringToConvertFocused;                         
 
         public CaseConvertTO()
         {
@@ -73,16 +72,6 @@ namespace Dev2
                     _convertType = value;
                     OnPropertyChanged("ConvertType");
                 }
-            }
-        }
-
-        public Dictionary<string, List<IActionableErrorInfo>> Errors
-        {
-            get => _errors;
-            set
-            {
-                _errors = value;
-                OnPropertyChanged("Errors");
             }
         }
 

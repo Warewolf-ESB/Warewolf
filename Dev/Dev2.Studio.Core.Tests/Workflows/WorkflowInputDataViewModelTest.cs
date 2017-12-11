@@ -42,8 +42,8 @@ namespace Dev2.Core.Tests.Workflows
     [ExcludeFromCodeCoverage]
     public class WorkflowInputDataViewModelTest
     {
-        private readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
-        private readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
+        readonly Guid _resourceID = Guid.Parse("2b975c6d-670e-49bb-ac4d-fb1ce578f66a");
+        readonly Guid _serverID = Guid.Parse("51a58300-7e9d-4927-a57b-e5d700b11b55");
         const string ResourceName = "TestWorkflow";
 
         /// <summary>
@@ -188,10 +188,10 @@ namespace Dev2.Core.Tests.Workflows
             serviceDebugInfo.SetupGet(s => s.ServiceInputData).Returns(StringResourcesTest.DebugInputWindow_XMLData);
             var workflowInputDataviewModel = new WorkflowInputDataViewModel(serviceDebugInfo.Object, CreateDebugOutputViewModel().SessionID);
             workflowInputDataviewModel.LoadWorkflowInputs();
-            OptomizedObservableCollection<IDataListItem> inputValues = GetInputTestDataDataNames();
+            var inputValues = GetInputTestDataDataNames();
 
             // Cannot perform Collection Assert due to use of mocks for datalist items to remove dependancies during test
-            for(int i = 0; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
+            for (int i = 0; i < workflowInputDataviewModel.WorkflowInputs.Count; i++)
             {
                 Assert.AreEqual(inputValues[i].DisplayValue, workflowInputDataviewModel.WorkflowInputs[i].DisplayValue);
                 Assert.AreEqual(inputValues[i].Value, workflowInputDataviewModel.WorkflowInputs[i].Value);
@@ -750,15 +750,15 @@ namespace Dev2.Core.Tests.Workflows
             Assert.AreEqual(expectedPayload, actualPayload);
         }
 
-       
+
 
         #region Private Methods
-       
-        private OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
+
+        OptomizedObservableCollection<IDataListItem> GetInputTestDataDataNames()
         {
             const int numberOfRecords = 6;
             const int numberOfRecordFields = 2;
-            OptomizedObservableCollection<IDataListItem> items = new OptomizedObservableCollection<IDataListItem>();
+            var items = new OptomizedObservableCollection<IDataListItem>();
             items.AddRange(GetDataListItemScalar());
             items.AddRange(CreateTestDataListItemRecords(numberOfRecords, numberOfRecordFields));
 
@@ -767,9 +767,9 @@ namespace Dev2.Core.Tests.Workflows
 
         }
 
-        private IList<IDataListItem> GetDataListItemScalar()
+        IList<IDataListItem> GetDataListItemScalar()
         {
-            IList<IDataListItem> scalars = new OptomizedObservableCollection<IDataListItem> 
+            IList<IDataListItem> scalars = new OptomizedObservableCollection<IDataListItem>
                                                                             {  CreateScalar("scalar1", "ScalarData1")
                                                                              , CreateScalar("scalar2", "ScalarData2")
                                                                             };
@@ -777,12 +777,12 @@ namespace Dev2.Core.Tests.Workflows
 
         }
 
-        private IList<IDataListItem> CreateTestDataListItemRecords(int numberOfRecords, int recordFieldCount)
+        IList<IDataListItem> CreateTestDataListItemRecords(int numberOfRecords, int recordFieldCount)
         {
             IList<IDataListItem> recordSets = new List<IDataListItem>();
-            for(int i = 1; i <= numberOfRecords; i++)
+            for (int i = 1; i <= numberOfRecords; i++)
             {
-                for(int j = 1; j <= recordFieldCount; j++)
+                for (int j = 1; j <= recordFieldCount; j++)
                 {
                     recordSets.Add(CreateRecord("Recset", "Field" + j, "Field" + j + "Data" + i, i));
                 }
@@ -792,9 +792,9 @@ namespace Dev2.Core.Tests.Workflows
 
         }
 
-        private IDataListItem CreateScalar(string scalarName, string scalarValue)
+        IDataListItem CreateScalar(string scalarName, string scalarValue)
         {
-            Mock<IDataListItem> item = new Mock<IDataListItem>();
+            var item = new Mock<IDataListItem>();
             item.Setup(itemName => itemName.DisplayValue).Returns(scalarName);
             item.Setup(itemName => itemName.Field).Returns(scalarName);
             item.Setup(itemName => itemName.RecordsetIndexType).Returns(enRecordsetIndexType.Numeric);
@@ -803,9 +803,9 @@ namespace Dev2.Core.Tests.Workflows
             return item.Object;
         }
 
-        private IDataListItem CreateRecord(string recordSetName, string recordSetField, string recordSetValue, int recordSetIndex)
+        IDataListItem CreateRecord(string recordSetName, string recordSetField, string recordSetValue, int recordSetIndex)
         {
-            Mock<IDataListItem> records = new Mock<IDataListItem>();
+            var records = new Mock<IDataListItem>();
             records.Setup(rec => rec.DisplayValue).Returns(recordSetName + "(" + recordSetIndex + ")." + recordSetField);
             records.Setup(rec => rec.Field).Returns(recordSetField);
             records.Setup(rec => rec.Index).Returns(Convert.ToString(recordSetIndex));
@@ -817,7 +817,7 @@ namespace Dev2.Core.Tests.Workflows
             return records.Object;
         }
 
-        private Mock<IContextualResourceModel> GetMockResource()
+        Mock<IContextualResourceModel> GetMockResource()
         {
             var mockResource = new Mock<IContextualResourceModel>();
             mockResource.SetupGet(r => r.ServerID).Returns(_serverID);
@@ -828,7 +828,7 @@ namespace Dev2.Core.Tests.Workflows
             return mockResource;
         }
 
-        private Mock<IServiceDebugInfoModel> GetMockServiceDebugInfo(Mock<IContextualResourceModel> mockResouce)
+        Mock<IServiceDebugInfoModel> GetMockServiceDebugInfo(Mock<IContextualResourceModel> mockResouce)
         {
             var serviceDebugInfo = new Mock<IServiceDebugInfoModel>();
             serviceDebugInfo.SetupGet(sd => sd.DebugModeSetting).Returns(DebugMode.DebugInteractive);

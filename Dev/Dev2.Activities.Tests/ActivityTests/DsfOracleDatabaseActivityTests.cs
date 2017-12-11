@@ -11,12 +11,12 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DsfOracleDatabaseActivityTests
     {
-        private static DsfOracleDatabaseActivity CreateDsfOracleDatabaseActivity()
+        static DsfOracleDatabaseActivity CreateDsfOracleDatabaseActivity()
         {
             return new DsfOracleDatabaseActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }

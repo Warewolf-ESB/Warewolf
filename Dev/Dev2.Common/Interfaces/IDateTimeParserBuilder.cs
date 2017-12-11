@@ -1,6 +1,6 @@
 namespace Dev2.Common.Interfaces
 {
-    internal interface IDateTimeParserBuilder
+    interface IDateTimeParserBuilder
     {
         void Build();
     }

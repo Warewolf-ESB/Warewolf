@@ -63,7 +63,7 @@ namespace Dev2.DynamicServices.Objects
 
                 for (int i = 0; i < GlobalConstants._xamlPoolSize; i++)
                 {
-                    Activity activity = ActivityXamlServices.Load(xamlStream);
+                    var activity = ActivityXamlServices.Load(xamlStream);
                     xamlStream.Seek(0, SeekOrigin.Begin);
                     workflowPool.Enqueue(new PooledServiceActivity(generation, activity));
                 }

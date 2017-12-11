@@ -24,8 +24,8 @@ namespace TestingDotnetDllCascading
     [Serializable]
     public class Human
     {
-        private List<Food> _favouriteFoodsProperty;
-        
+        List<Food> _favouriteFoodsProperty;
+
         public string Name { get; set; }
         public Human()
         {

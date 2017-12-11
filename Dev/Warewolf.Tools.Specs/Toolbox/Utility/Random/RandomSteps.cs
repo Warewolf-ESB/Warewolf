@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
     [Binding]
     public class RandomSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public RandomSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -113,7 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         public void WhenTheRandomToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -124,8 +124,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out string actualValue, out string error);
             
-            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
+
             converter.ConvertFrom(actualValue);
             if (length == 0)
             {
@@ -144,9 +144,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out string actualValue, out string error);
             
-            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            
-            if(actualValue != null)
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
+
+            if (actualValue != null)
             {
                 converter.ConvertFrom(actualValue);
             }
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
                                        out string actualValue, out string error);
-            decimal d = decimal.Parse(actualValue);
+            var d = decimal.Parse(actualValue);
             Assert.IsTrue(d >= from && d <= to);
         }
 

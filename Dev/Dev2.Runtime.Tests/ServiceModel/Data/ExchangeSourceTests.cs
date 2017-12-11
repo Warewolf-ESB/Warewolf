@@ -17,7 +17,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public const string TestOwner = "Bernardt Joubert";
         public const string Category = "Exchange Email";
 
-        private ExchangeSource SetupDefaultSource()
+        ExchangeSource SetupDefaultSource()
         {
             return new ExchangeSource(new FakeEmailSender())
             {

@@ -16,7 +16,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             var url1 = "http://localhost:3142/secure/QLINK/WriteProcess/QlinkTrailerCreation.tests";
             var list = new List<Task>();
 
-            var passRequest = ExececuteRequest(new Uri(url1));
+            var passRequest = ExecuteRequest(new Uri(url1));
             list.Add(passRequest);
             passRequest.ContinueWith((b) =>
             {
@@ -49,7 +49,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             Task.WaitAll(list.ToArray());
         }
 
-        private class PatientWebClient : WebClient
+        class PatientWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)
             {
@@ -60,7 +60,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        private Task<string> ExececuteRequest(Uri url)
+        internal static Task<string> ExecuteRequest(Uri url)
         {
             try
             {

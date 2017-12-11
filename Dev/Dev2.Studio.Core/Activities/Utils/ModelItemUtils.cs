@@ -49,8 +49,8 @@ namespace Dev2.Studio.Core.Activities.Utils
     
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
+            var ec = new EditingContext();
+            var mtm = new ModelTreeManager(ec);
 
             return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
         }
@@ -63,9 +63,9 @@ namespace Dev2.Studio.Core.Activities.Utils
 
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
-            
+            var ec = new EditingContext();
+            var mtm = new ModelTreeManager(ec);
+
             mtm.Load(objectToMakeModelItem);
            
             return mtm.Root;

@@ -37,7 +37,7 @@ namespace Dev2.ViewModels.Workflow
         public static void BuildDataPart(string dataPartFieldData, Dictionary<IDataListVerifyPart, string> unique) => BuildDataPart(dataPartFieldData, unique, false);
         public static void BuildDataPart(string dataPartFieldData, Dictionary<IDataListVerifyPart, string> unique, bool isJsonObjectSource)
         {
-            Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
+            var dataLanguageParser = new Dev2DataLanguageParser();
             dataPartFieldData = DataListUtil.StripBracketsFromValue(dataPartFieldData);
             IDataListVerifyPart verifyPart;
         
@@ -52,7 +52,7 @@ namespace Dev2.ViewModels.Workflow
             }
             else
             {
-                string[] fieldList = dataPartFieldData.Split('.');
+                var fieldList = dataPartFieldData.Split('.');
                 string fullyFormattedStringValue;
                 if (fieldList.Length > 1 && !String.IsNullOrEmpty(fieldList[0]))
                 {
@@ -126,41 +126,41 @@ namespace Dev2.ViewModels.Workflow
                 }
             }
         }
-        
-        private static bool IsJSonInputValid(string dataPartFieldData, Dev2DataLanguageParser dataLanguageParser)
+
+        static bool IsJSonInputValid(string dataPartFieldData, Dev2DataLanguageParser dataLanguageParser)
         {
             var isValid = false;
             var removeBrace = dataPartFieldData.Contains("()") ? dataPartFieldData.Replace("()", "") : RemoveRecordSetBrace(dataPartFieldData);
             var replaceAtSign = removeBrace.Replace("@", "");
             var intellisenseResult = dataLanguageParser.ValidateName(string.IsNullOrEmpty(replaceAtSign) ? dataPartFieldData : replaceAtSign, "");
             if (intellisenseResult == null)
-             {
-                 isValid = true;
-             }
-             else
-             {
-                 var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
-                 if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
-                 {
-                     if (!intellisenseResult.Message.Contains("invalid char"))
-                     {
-                         if (char.IsLetter(dataPartFieldData[1]))
-                         {
-                             isValid = true;
-                         }
-                     }
-                 }
-        
-                 if (dataPartFieldData.Contains('.'))
-                 {
-                     var fields = dataPartFieldData.Replace("@", "").Split('.');
-                     if(fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
-                     {
-                         isValid = true;
-                     }
-                 }
-             }
-             return isValid;
+            {
+                isValid = true;
+            }
+            else
+            {
+                var indexOfAtSign = dataPartFieldData.IndexOf("@", StringComparison.Ordinal);
+                if (dataPartFieldData.Contains("@") && (indexOfAtSign == 0) && (indexOfAtSign + 1 >= dataPartFieldData.Length))
+                {
+                    if (!intellisenseResult.Message.Contains("invalid char"))
+                    {
+                        if (char.IsLetter(dataPartFieldData[1]))
+                        {
+                            isValid = true;
+                        }
+                    }
+                }
+
+                if (dataPartFieldData.Contains('.'))
+                {
+                    var fields = dataPartFieldData.Replace("@", "").Split('.');
+                    if (fields.All(p => !string.IsNullOrEmpty(p) && char.IsLetter(p[0])))
+                    {
+                        isValid = true;
+                    }
+                }
+            }
+            return isValid;
         }
 
         public  static void AddDataVerifyPart(IDataListVerifyPart part, string nameOfPart, Dictionary<IDataListVerifyPart, string> unique)

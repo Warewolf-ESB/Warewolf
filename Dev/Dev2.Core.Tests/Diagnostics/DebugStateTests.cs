@@ -266,7 +266,7 @@ namespace Dev2.Tests.Diagnostics
 
             var debugStateIn = DebugStateIn();
 
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Label, Value = "MyLabel" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Variable, Value = "[[MyVar]]" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Value, Value = "MyValue" });
@@ -301,7 +301,7 @@ namespace Dev2.Tests.Diagnostics
         [TestCategory("DebugItem_Add")]
         public void DebugItem_Add_GroupIndexIsGreaterThan10_MoreLinkHasData()
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { GroupIndex = 1, GroupName = "[[record(*).row]]", Label = "", Operator = "=", Value = "1", Type = DebugItemResultType.Variable, Variable = "[[record(1).row]]" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 2, GroupName = "[[record(*).row]]", Label = "", Operator = "=", Value = "2", Type = DebugItemResultType.Variable, Variable = "[[record(2).row]]" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 3, GroupName = "[[record(*).row]]", Label = "", Operator = "=", Value = "3", Type = DebugItemResultType.Variable, Variable = "[[record(3).row]]" });
@@ -336,7 +336,7 @@ namespace Dev2.Tests.Diagnostics
         public void JsonConverter_GivenStatetype_ShouldConvertToString()
         {
             //---------------Set up test pack-------------------
-            DebugState debugState = new DebugState() { StateType = StateType.End };
+            var debugState = new DebugState() { StateType = StateType.End };
             //---------------Assert Precondition----------------
             Assert.IsFalse(debugState.IsAdded);
             //---------------Execute Test ----------------------

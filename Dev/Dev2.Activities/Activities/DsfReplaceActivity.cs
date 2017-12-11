@@ -111,7 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -119,7 +119,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
+            var replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             IErrorResultTO errors;
             IErrorResultTO allErrors = new ErrorResultTO();
 

@@ -510,6 +510,18 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
                 return this.mUsernameTextBox;
             }
         }
+        
+        public ContentManager ContentManager
+        {
+            get
+            {
+                if ((this.mContentManager == null))
+                {
+                    this.mContentManager = new ContentManager(this);
+                }
+                return this.mContentManager;
+            }
+        }
         #endregion
         
         #region Fields
@@ -528,6 +540,8 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
         private WpfEdit mPasswordTextBox;
         
         private WpfEdit mUsernameTextBox;
+        
+        private ContentManager mContentManager;
         #endregion
     }
     
@@ -826,6 +840,43 @@ namespace Warewolf.UI.Tests.ServerSource.ServerSourceUIMapClasses
         
         #region Fields
         private WpfCustom mSpinner;
+        #endregion
+    }
+    
+    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
+    public class ContentManager : WpfCustom
+    {
+        
+        public ContentManager(UITestControl searchLimitContainer) : 
+                base(searchLimitContainer)
+        {
+            #region Search Criteria
+            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.XamDockManager";
+            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "ContentDockManager";
+            this.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+            #endregion
+        }
+        
+        #region Properties
+        public WpfEdit ErrorTextBlock
+        {
+            get
+            {
+                if ((this.mErrorTextBlock == null))
+                {
+                    this.mErrorTextBlock = new WpfEdit(this);
+                    #region Search Criteria
+                    this.mErrorTextBlock.SearchProperties[WpfEdit.PropertyNames.AutomationId] = "ErrorTextBlock";
+                    this.mErrorTextBlock.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
+                    #endregion
+                }
+                return this.mErrorTextBlock;
+            }
+        }
+        #endregion
+        
+        #region Fields
+        private WpfEdit mErrorTextBlock;
         #endregion
     }
 }

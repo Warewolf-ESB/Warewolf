@@ -132,7 +132,7 @@ namespace Dev2.Runtime.ServiceModel
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
         }
 
-        private static string GetAddress(WebSource source, string relativeUri)
+        static string GetAddress(WebSource source, string relativeUri)
         {
             if (source == null)
             {

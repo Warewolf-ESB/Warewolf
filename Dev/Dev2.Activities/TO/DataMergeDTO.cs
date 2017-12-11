@@ -203,7 +203,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;

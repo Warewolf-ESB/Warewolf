@@ -20,9 +20,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         protected void AddError(string key, string value)
         {
-            KeyValuePair<string, string> errorInfo = new KeyValuePair<string, string>(key, value);
+            var errorInfo = new KeyValuePair<string, string>(key, value);
 
-            if(!ValidationErrors.ContainsKey(key))
+            if (!ValidationErrors.ContainsKey(key))
             {
                 if(!ValidationErrors.Contains(errorInfo))
                 {

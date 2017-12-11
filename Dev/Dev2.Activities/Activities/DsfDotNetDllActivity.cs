@@ -73,7 +73,7 @@ namespace Dev2.Activities
                     int pos = 0;
                     foreach (var itr in itrs)
                     {
-                        string injectVal = itrCollection.FetchNextValue(itr);
+                        var injectVal = itrCollection.FetchNextValue(itr);
                         var param = methodParameters.ToList()[pos];
 
 

@@ -31,7 +31,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
     {
         #region Class Members
 
-        private static readonly List<Type> _knownTypes;
+        static readonly List<Type> _knownTypes;
 
         #endregion Class Members
 
@@ -109,13 +109,13 @@ namespace Unlimited.Framework.Converters.Graph.Output
 
         #region Private Methods
 
-        private static IEnumerable<Type> GetKnownTypes()
+        static IEnumerable<Type> GetKnownTypes()
         {
-            Type pathType = typeof (IPath);
-            Type outputDescriptionType = typeof (IOutputDescription);
-            Type dataSourceShapeType = typeof (IDataSourceShape);
+            var pathType = typeof(IPath);
+            var outputDescriptionType = typeof(IOutputDescription);
+            var dataSourceShapeType = typeof(IDataSourceShape);
 
-            List<Type> knownTypes = typeof (OutputDescription).Assembly.GetTypes()
+            var knownTypes = typeof(OutputDescription).Assembly.GetTypes()
                 .Where(t => pathType.IsAssignableFrom(t) && t != pathType ||
                             outputDescriptionType.IsAssignableFrom(t) && t != outputDescriptionType ||
                             dataSourceShapeType.IsAssignableFrom(t) && t != dataSourceShapeType).ToList();
@@ -123,7 +123,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
             return knownTypes;
         }
 
-        private static string StripKnownLegacyTags(string data)
+        static string StripKnownLegacyTags(string data)
         {
             return data.Replace("<Dev2XMLResult>", null).Replace("</Dev2XMLResult>", null).Replace("<JSON />", null);
         }

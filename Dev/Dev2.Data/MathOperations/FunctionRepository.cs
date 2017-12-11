@@ -27,9 +27,9 @@ namespace Dev2.MathOperations
     // to perform evaluations on
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
-        private readonly List<IFunction> _functions;
-        private static readonly IDev2CalculationManager CalcManager = new Dev2CalculationManager();
-        private bool _isDisposed;
+        readonly List<IFunction> _functions;
+        static readonly IDev2CalculationManager CalcManager = new Dev2CalculationManager();
+        bool _isDisposed;
 
         internal FunctionRepository()
         {
@@ -82,7 +82,7 @@ namespace Dev2.MathOperations
                 catch (InvalidOperationException ioex)
                 {
                     Dev2Logger.Error(ioex, GlobalConstants.WarewolfError);
-                    IFunction func = MathOpsFactory.CreateFunction();
+                    var func = MathOpsFactory.CreateFunction();
                     return func;
                 }
             }
@@ -95,7 +95,7 @@ namespace Dev2.MathOperations
         /// </summary>
         public void Load()
         {
-            IEnumerable<CalculationFunction> calcFunctions = CalcManager.GetAllFunctions();
+            var calcFunctions = CalcManager.GetAllFunctions();
 
             foreach (CalculationFunction calcFunction in calcFunctions)
             {
