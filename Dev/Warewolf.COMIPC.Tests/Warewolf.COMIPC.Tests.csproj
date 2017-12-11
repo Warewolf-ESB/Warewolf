@@ -66,14 +66,6 @@
       <Project>{85617545-2121-4683-9828-daedb5878ce9}</Project>
       <Name>Dev2.Runtime.Tests</Name>
     </ProjectReference>
-    <ProjectReference Include="..\WarewolfCOMIPC.Client\WarewolfCOMIPC.Client.csproj">
-      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
-      <Name>WarewolfCOMIPC.Client</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\WarewolfCOMIPC\WarewolfCOMIPC.csproj">
-      <Project>{d58ab24f-c45b-4df1-9cde-54aff7995513}</Project>
-      <Name>WarewolfCOMIPC</Name>
-    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
