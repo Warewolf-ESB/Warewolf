@@ -595,7 +595,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SelectedEnvironment = environmentViewModelMock.Object;
 
             //act
-            await _target.RefreshSelectedEnvironment();
+            await _target.RefreshSelectedEnvironmentAsync();
 
             //assert
             environmentViewModelMock.VerifyGet(it => it.IsConnected);

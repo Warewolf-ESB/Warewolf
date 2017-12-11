@@ -87,12 +87,6 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
 
-
-
-
-
-
-
 namespace Dev2.Studio.ViewModels.Workflow
 
 {
@@ -107,8 +101,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                                              IWorkflowDesignerViewModel
     {
         static readonly Type[] DecisionSwitchTypes = { typeof(FlowSwitch<string>), typeof(FlowDecision) };
-
-        #region Overrides of Screen
 
         protected readonly IDesignerManagementService DesignerManagementService;
         readonly IWorkflowHelper _workflowHelper;
@@ -130,10 +122,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
-
-        #endregion
-
-        #region Constructor
+        
         /// <summary>
         /// Constructor
         /// </summary>
@@ -245,8 +234,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         void SetViewPermissions()
         {
-            CanViewSwagger = true;
-            CanCopyUrl = true;
+            CanViewSwagger = !ResourceModel.IsVersionResource;
+            CanCopyUrl = !ResourceModel.IsVersionResource;
         }
 
         void SetNonePermissions()
@@ -620,8 +609,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        #endregion
-
         public DebugOutputViewModel DebugOutputViewModel
         {
             get
@@ -629,11 +616,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return _debugOutputViewModel;
             }
             set { _debugOutputViewModel = value; }
-        }
-
-        #region Overrides of ViewAware
-
-        #endregion
+        }        
 
         public IDataListViewModel DataListViewModel
         {
@@ -652,8 +635,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 NotifyOfPropertyChange(() => DataListViewModel);
             }
         }
-
-        #region Properties
 
         public override bool HasVariables => true;
         public override bool HasDebugOutput => true;
@@ -753,10 +734,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public StringBuilder DesignerText => ServiceDefinition;
 
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
-
-        #endregion
-
-        #region Commands
+        
 
         public ICommand CollapseAllCommand
         {
@@ -764,7 +742,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return _collapseAllCommand ?? (_collapseAllCommand = new DelegateCommand(param =>
                 {
-                    bool val = Convert.ToBoolean(param);
+                    var val = Convert.ToBoolean(param);
                     if (val)
                     {
                         DesignerManagementService.RequestCollapseAll();
@@ -783,7 +761,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 return _expandAllCommand ?? (_expandAllCommand = new DelegateCommand(param =>
                 {
-                    bool val = Convert.ToBoolean(param);
+                    var val = Convert.ToBoolean(param);
                     if (val)
                     {
                         DesignerManagementService.RequestExpandAll();
@@ -815,7 +793,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error("OpenWorkflowLinkCommand", e, "Warewolf Error");
+                            Dev2Logger.Error("OpenWorkflowLinkCommand", e, GlobalConstants.WarewolfError);
                         }
 
                     }
@@ -1064,10 +1042,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }));
             }
         }
-
-        #endregion
-
-        #region Private Methods
         /// <summary>
         /// Fixes up items added. Assigns unique Id. Initialises as flow step
         /// </summary>
@@ -1143,8 +1117,8 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (!string.IsNullOrEmpty(tmp))
             {
-                int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                int end = tmp.IndexOf(",", StringComparison.Ordinal);
+                var start = tmp.IndexOf("(", StringComparison.Ordinal);
+                var end = tmp.IndexOf(",", StringComparison.Ordinal);
 
                 if (start < end && start >= 0)
                 {
@@ -1314,9 +1288,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.GetPosition(freePormPanel);
             }
         }
-
-        #region DataList Workflow Specific Methods
-
+        
         IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             var dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
@@ -1398,14 +1370,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             return workflowFields;
         }
 
-        public List<String> GetDecisionElements(string expression, IDataListViewModel datalistModel)
+        public static List<String> GetDecisionElements(string expression, IDataListViewModel datalistModel)
         {
             var decisionFields = new List<string>();
             if (!string.IsNullOrEmpty(expression))
             {
-                int startIndex = expression.IndexOf('"');
+                var startIndex = expression.IndexOf('"');
                 startIndex = startIndex + 1;
-                int endindex = expression.IndexOf('"', startIndex);
+                var endindex = expression.IndexOf('"', startIndex);
                 var decisionValue = expression.Substring(startIndex, endindex - startIndex);
 
                 try
@@ -1505,12 +1477,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             return activityFields;
         }
 
-        #endregion
-
-        #endregion
-
-        #region Internal Methods
-
         void OnItemSelected(Selection item)
         {
             var primarySelection = item.PrimarySelection;
@@ -1519,11 +1485,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SelectedItem = primarySelection;
         }
 
-        public Action<ModelItem> ItemSelectedAction { get; set; }
-
-        #endregion Internal Methods
-
-        #region Public Methods
+        public Action<ModelItem> ItemSelectedAction { get; set; }        
 
         /// <summary>
         ///     Handels the list of strings to be added to the data list without a pop up message
@@ -1543,7 +1505,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     WorkflowDesignerDataPartUtils.BuildDataPart(s, _uniqueWorkflowParts);
                 }
-                IList<IDataListVerifyPart> partsToAdd = _uniqueWorkflowParts.Keys.ToList();
+                var partsToAdd = _uniqueWorkflowParts.Keys.ToList();
                 var uniqueDataListPartsToAdd = dlvm.MissingDataListParts(partsToAdd);
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
@@ -1624,7 +1586,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.ModelChanged += WdOnModelChanged;
                 _wd.View.Focus();
 
-                int indexOfOpenItem = -1;
+                var indexOfOpenItem = -1;
                 if (_wd.ContextMenu?.Items != null)
                 {
                     foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
@@ -2171,10 +2133,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workflowFields = BuildWorkflowFields();
             DataListViewModel?.UpdateDataListItems(ResourceModel, workflowFields);
         }
-
-        #endregion
-
-        #region Event Handlers
+        
         [ExcludeFromCodeCoverage]
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -2309,7 +2268,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         [ExcludeFromCodeCoverage]
-        IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
+        static IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
             var server = CustomContainer.Get<IServerRepository>().ActiveServer;
 
@@ -2363,15 +2322,12 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         static void ApplyIsDraggedInstance(string isWorkflow)
         {
-            if (isWorkflow.Contains("DsfSqlServerDatabaseActivity") || isWorkflow.Contains("DsfMySqlDatabaseActivity")
+            IsItemDragged.Instance.IsDragged |= (isWorkflow.Contains("DsfSqlServerDatabaseActivity") || isWorkflow.Contains("DsfMySqlDatabaseActivity")
                 || isWorkflow.Contains("DsfODBCDatabaseActivity") || isWorkflow.Contains("DsfOracleDatabaseActivity")
                 || isWorkflow.Contains("DsfPostgreSqlActivity") || isWorkflow.Contains("DsfWebDeleteActivity")
                 || isWorkflow.Contains("DsfWebGetActivity") || isWorkflow.Contains("DsfWebPostActivity")
                 || isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity")
-                || isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity"))
-            {
-                IsItemDragged.Instance.IsDragged = true;
-            }
+                || isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity"));
         }
 
         [ExcludeFromCodeCoverage]
@@ -2638,10 +2594,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }).Start();
             }
         }
-
-        #endregion
-
-        #region OnDispose
+        
         protected override void OnDispose()
         {
             if (_wd != null)
@@ -2694,13 +2647,13 @@ namespace Dev2.Studio.ViewModels.Workflow
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
 
-            catch { }
+            catch
+            {
+            }
 
             _debugSelectionChangedService?.Unsubscribe();
             base.OnDispose();
         }
-
-        #endregion
 
         /// <summary>
         /// Gets the work surface context.
@@ -2710,9 +2663,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </value>
         public override WorkSurfaceContext WorkSurfaceContext => ResourceModel?.ResourceType.ToWorkSurfaceContext() ?? WorkSurfaceContext.Unknown;
 
-        #region Overrides of ViewAware
-
-        #endregion
 
         /// <summary>
         /// Gets the environment model.
@@ -2737,23 +2687,17 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
         public bool WorkspaceSave => _workspaceSave;
 
-        #region Implementation of IHandle<EditActivityMessage>
-
         public void Handle(EditActivityMessage message)
         {
             Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             EditActivity(message.ModelItem, message.ParentEnvironmentID);
         }
 
-        #endregion
-
         void FireWdChanged()
         {
             WdOnModelChanged(new object(), new EventArgs());
             GetWorkflowLink();
         }
-
-        #region Implementation of IHandle<SaveUnsavedWorkflow>
 
         public void Handle(SaveUnsavedWorkflowMessage message)
         {
@@ -2862,12 +2806,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
-        #region Implementation of IWorkflowDesignerViewModel
-
         public System.Action WorkflowChanged { get; set; }
 
-        #endregion
-
-        #endregion
     }
 }

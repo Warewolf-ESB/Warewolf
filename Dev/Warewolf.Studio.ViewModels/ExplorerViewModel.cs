@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
 
         protected ExplorerViewModelBase()
         {
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await Refresh(true).ConfigureAwait(true));
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await RefreshAsync(true).ConfigureAwait(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
@@ -159,18 +159,18 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                await RefreshEnvironment(environmentViewModel, true).ConfigureAwait(true);
+                await RefreshEnvironmentAsync(environmentViewModel, true).ConfigureAwait(true);
             }
         }
 
-        public async Task RefreshSelectedEnvironment()
+        public async Task RefreshSelectedEnvironmentAsync()
         {
             if (SelectedEnvironment != null)
             {
-                await RefreshEnvironment(SelectedEnvironment, true).ConfigureAwait(true);
+                await RefreshEnvironmentAsync(SelectedEnvironment, true).ConfigureAwait(true);
             }
         }
-        protected virtual async Task Refresh(bool refresh)
+        protected virtual async Task RefreshAsync(bool refresh)
         {
             IsRefreshing = true;
             var environmentId = ConnectControlViewModel?.SelectedConnection.EnvironmentID;
@@ -178,14 +178,14 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.DisplayName.Replace("(Connected)", "").Trim() == resourceName);
             foreach (var environmentViewModel in environmentViewModels)
             {
-                await RefreshEnvironment(environmentViewModel, refresh).ConfigureAwait(true);
+                await RefreshEnvironmentAsync(environmentViewModel, refresh).ConfigureAwait(true);
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
 
         }
 
-        async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
+        async Task RefreshEnvironmentAsync(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
             environmentViewModel.IsConnecting = true;
@@ -304,7 +304,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment) 
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment)
             : this(shellViewModel, aggregator, shouldUpdateActiveEnvironment, null, true)
         {
         }
@@ -324,7 +324,7 @@ namespace Warewolf.Studio.ViewModels
             if (loadLocalHost)
             {
 #pragma warning disable CS4014
-                LoadEnvironment(localhostEnvironment,false,false);
+                LoadEnvironmentAsync(localhostEnvironment,false,false);
 #pragma warning restore CS4014
             }
 
@@ -342,12 +342,12 @@ namespace Warewolf.Studio.ViewModels
 
         async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            var environmentViewModel = CreateEnvironmentViewModel(sender, environmentId, true);
+            var environmentViewModel = CreateEnvironmentViewModelAsync(sender, environmentId, true);
             SelectedEnvironment = await environmentViewModel.ConfigureAwait(true);
         }
 
-        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId) => await CreateEnvironmentViewModel(sender, environmentId, false).ConfigureAwait(true);
-        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId, bool shouldLoad)
+        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId) => await CreateEnvironmentViewModelAsync(sender, environmentId, false).ConfigureAwait(true);
+        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModelAsync(object sender, Guid environmentId, bool shouldLoad)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             if (environmentViewModel == null)
@@ -387,7 +387,7 @@ namespace Warewolf.Studio.ViewModels
                 _environments.Add(environmentModel);
             }
             Environments = _environments;
-            var result = await LoadEnvironment(environmentModel, IsDeploy).ConfigureAwait(true);
+            var result = await LoadEnvironmentAsync(environmentModel, IsDeploy).ConfigureAwait(true);
             IsLoading = result;
         }
 
@@ -406,7 +406,7 @@ namespace Warewolf.Studio.ViewModels
                         _environments.Add(existing);
                         OnPropertyChanged(() => Environments);
                     }
-                    var result = await LoadEnvironment(existing, IsDeploy).ConfigureAwait(true);
+                    var result = await LoadEnvironmentAsync(existing, IsDeploy).ConfigureAwait(true);
 
                     IsLoading = result;
                     ShowServerDownError = false;
@@ -492,7 +492,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
         {
             IsLoading = true;
             localhostEnvironment.Connect();

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
@@ -18,7 +17,6 @@ namespace Warewolf.Studio.ViewModels
             : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server).ConfigureAwait(true); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
@@ -45,26 +43,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
-        {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true).ConfigureAwait(true);
-            environmentViewModel?.Server?.GetServerVersion();
-            environmentViewModel?.Server?.GetMinSupportedVersion();
-            SelectedEnvironment = environmentViewModel;
-            StatsArea?.ReCalculate();
-            if (environmentViewModel != null)
-            {
-                AfterLoad(environmentViewModel.ResourceId);
-            }
-            return environmentViewModel;
-        }
-
         public override bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -92,10 +73,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool DeployTests
         {
-            get
-            {
-                return _deployTests;
-            }
+            get => _deployTests;
             set
             {
                 _deployTests = value;
