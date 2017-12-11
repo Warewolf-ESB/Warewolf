@@ -24,7 +24,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	Then the timer duration is between "30" and "90" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
-	Then the timer duration is between "10" and "30" seconds
+	Then the timer duration is between "30" and "90" seconds
 	
 Scenario: Studio Large Variable List UI Load Test
 	Given The Warewolf Studio is running
