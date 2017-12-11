@@ -24,7 +24,7 @@ Scenario: Studio Large Debug Out UI Load Test
 	Then the timer duration is between "60" and "120" seconds
 	Given I start the timer
 	When I Filter the Debug with "Match Item"
-	Then the timer duration is between "30" and "90" seconds
+	Then the timer duration is between "60" and "120" seconds
 	
 Scenario: Studio Large Variable List UI Load Test
 	Given The Warewolf Studio is running
@@ -51,7 +51,7 @@ Scenario: Studio Openning Long Workflow UI Load Test
 	Given The Warewolf Studio is running
 	And I start the timer
 	When I open "Large Workflow UI Load Testing" workflow
-	Then the timer duration is between "60" and "120" seconds
+	Then the timer duration is between "10" and "60" seconds
 	Given I start the timer
 	When I Click Close Workflow Tab Button
 	Then the timer duration is between "10" and "60" seconds
