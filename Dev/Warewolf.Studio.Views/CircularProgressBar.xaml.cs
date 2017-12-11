@@ -31,7 +31,7 @@ namespace Warewolf.Studio.Views
 
         #region Fields
 
-        private readonly DispatcherTimer _animationTimer;
+        readonly DispatcherTimer _animationTimer;
 
         #endregion
 
@@ -95,16 +95,16 @@ namespace Warewolf.Studio.Views
         /// <param name="offset">The offset.</param>
         /// <param name="posOffSet">The pos off set.</param>
         /// <param name="step">The step to change.</param>
-        private static void SetPosition(DependencyObject ellipse, double offset, double posOffSet, double step)
+        static void SetPosition(DependencyObject ellipse, double offset, double posOffSet, double step)
         {
-            ellipse.SetValue(Canvas.LeftProperty, 50 + Math.Sin(offset + posOffSet*step)*50);
-            ellipse.SetValue(Canvas.TopProperty, 50 + Math.Cos(offset + posOffSet*step)*50);
+            ellipse.SetValue(Canvas.LeftProperty, 50 + Math.Sin(offset + posOffSet * step) * 50);
+            ellipse.SetValue(Canvas.TopProperty, 50 + Math.Cos(offset + posOffSet * step) * 50);
         }
 
         /// <summary>
         ///     Starts this instance.
         /// </summary>
-        private void Start()
+        void Start()
         {
             _animationTimer.Tick += OnAnimationTick;
             _animationTimer.Start();
@@ -113,7 +113,7 @@ namespace Warewolf.Studio.Views
         /// <summary>
         ///     Stops this instance.
         /// </summary>
-        private void Stop()
+        void Stop()
         {
             _animationTimer.Stop();
             _animationTimer.Tick -= OnAnimationTick;
@@ -124,9 +124,9 @@ namespace Warewolf.Studio.Views
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.EventArgs" /> instance containing the event data.</param>
-        private void OnAnimationTick(object sender, EventArgs e)
+        void OnAnimationTick(object sender, EventArgs e)
         {
-            SpinnerRotate.Angle = (SpinnerRotate.Angle + 36)%360;
+            SpinnerRotate.Angle = (SpinnerRotate.Angle + 36) % 360;
         }
 
         /// <summary>
@@ -134,10 +134,10 @@ namespace Warewolf.Studio.Views
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
-        private void OnCanvasLoaded(object sender, RoutedEventArgs e)
+        void OnCanvasLoaded(object sender, RoutedEventArgs e)
         {
             const double offset = Math.PI;
-            const double step = Math.PI*2/10.0;
+            const double step = Math.PI * 2 / 10.0;
 
             SetPosition(Circle0, offset, 0.0, step);
             SetPosition(Circle1, offset, 1.0, step);
@@ -155,7 +155,7 @@ namespace Warewolf.Studio.Views
         /// </summary>
         /// <param name="sender">The sender.</param>
         /// <param name="e">The <see cref="System.Windows.RoutedEventArgs" /> instance containing the event data.</param>
-        private void OnCanvasUnloaded(object sender, RoutedEventArgs e)
+        void OnCanvasUnloaded(object sender, RoutedEventArgs e)
         {
             Stop();
         }
@@ -168,9 +168,9 @@ namespace Warewolf.Studio.Views
         ///     The <see cref="System.Windows.DependencyPropertyChangedEventArgs" /> instance containing the event
         ///     data.
         /// </param>
-        private void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        void OnVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            var isVisible = (bool) e.NewValue;
+            var isVisible = (bool)e.NewValue;
 
             if (isVisible)
             {

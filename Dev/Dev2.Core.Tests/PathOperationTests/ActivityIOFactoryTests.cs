@@ -57,7 +57,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "","");
+            var result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "","");
 
             Assert.AreEqual(enActivityIOPathType.FileSystem, result.PathType);
         }
@@ -71,7 +71,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
+            var result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
 
             Assert.AreEqual(enActivityIOPathType.FTP, result.PathType);
         }
@@ -166,7 +166,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         {
 
-            IActivityIOPath result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTPS_AuthPath, "", "");
+            var result = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTPS_AuthPath, "", "");
 
             Assert.AreEqual(enActivityIOPathType.FTPS, result.PathType);
         }
@@ -185,8 +185,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         {
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
-            IActivityIOOperationsEndPoint result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FileSystem_Path, "", "");
+            var result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             Assert.IsTrue(result.GetType() == typeof(Dev2FileSystemProvider));
         }
@@ -201,8 +201,8 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         {
 
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
-            IActivityIOOperationsEndPoint result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
+            var path = ActivityIOFactory.CreatePathFromString(ParserStrings.PathOperations_FTP_Path, "", "");
+            var result = ActivityIOFactory.CreateOperationEndPointFromIOPath(path);
 
             Assert.IsTrue(result.GetType() == typeof(Dev2FTPProvider));
         }
@@ -220,7 +220,7 @@ namespace Unlimited.UnitTest.Framework.PathOperationTests
 
         {
 
-            IActivityOperationsBroker result = ActivityIOFactory.CreateOperationsBroker();
+            var result = ActivityIOFactory.CreateOperationsBroker();
 
             Assert.IsTrue(result != null);
         }

@@ -38,8 +38,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         int _indexNumber;
 
         bool _isFieldNameFocused;
-        private bool _isFieldValueFocused;
-        private string _errorMessage;
+        bool _isFieldValueFocused;
+        string _errorMessage;
 
         public ActivityDTO()
             : this("[[Variable]]", "Expression", 0)

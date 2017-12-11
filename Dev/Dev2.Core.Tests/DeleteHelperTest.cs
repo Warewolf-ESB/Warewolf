@@ -21,15 +21,15 @@ namespace Dev2.Tests
 
         #region Private Helpers
 
-        private static void Cleanup(string dir)
+        static void Cleanup(string dir)
         {
             try
             {
                 Directory.Delete(dir, true);
             }
-            
+
             catch { }
-            
+
         }
 
         #endregion

@@ -23,7 +23,7 @@ namespace Dev2.Converters.Graph.DataTable
 
         public DataTablePath(string tblName, string colName)
         {
-            string tmp = colName;
+            var tmp = colName;
 
             if (!string.IsNullOrEmpty(tblName))
             {

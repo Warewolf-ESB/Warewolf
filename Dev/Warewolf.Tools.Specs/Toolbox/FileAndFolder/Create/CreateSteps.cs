@@ -21,7 +21,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
     [Binding]
     public class CreateSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CreateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -38,7 +38,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         public void WhenTheCreateFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

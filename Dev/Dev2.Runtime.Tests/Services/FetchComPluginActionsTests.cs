@@ -43,11 +43,11 @@ namespace Dev2.Tests.Runtime.Services
         public void BuildServiceInputName_GivenTypeNames_ShouldConcatinateTypeWithName()
         {
             //---------------Set up test pack-------------------
-            FetchComPluginActions comPluginActions = new FetchComPluginActions();
+            var comPluginActions = new FetchComPluginActions();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(comPluginActions);
             //---------------Execute Test ----------------------
-            PrivateObject privateObject = new PrivateObject(comPluginActions);
+            var privateObject = new PrivateObject(comPluginActions);
             var invoke = privateObject.Invoke("BuildServiceInputName", "Class2", "Project1.Class2&, Project1, Version=5.0.0.0, Culture=neutral, PublicKeyToken=null");
             //---------------Test Result -----------------------
             Assert.AreEqual("Class2 (Project1.Class2)", invoke.ToString());
@@ -58,11 +58,11 @@ namespace Dev2.Tests.Runtime.Services
         public void BuildServiceInputName_GivenCursorLocationEnumGetCorrectEnumName()
         {
             //---------------Set up test pack-------------------
-            FetchComPluginActions comPluginActions = new FetchComPluginActions();
+            var comPluginActions = new FetchComPluginActions();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(comPluginActions);
             //---------------Execute Test ----------------------
-            PrivateObject privateObject = new PrivateObject(comPluginActions);
+            var privateObject = new PrivateObject(comPluginActions);
 
             var typeConverter = TypeDescriptor.GetConverter("ADODB.CursorLocationEnum, ADODB, Version=6.1.0.0, Culture=neutral, PublicKeyToken=null");
 

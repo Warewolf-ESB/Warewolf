@@ -21,19 +21,19 @@ namespace Warewolf.Studio.Core
 {
     public class FileListingModel : BindableBase, IFileListingModel,IEquatable<FileListingModel>
     {
-        private readonly IFileChooserModel _model;
-        private bool _isExpanded;
-        private bool _isVisible;
-        private readonly IFileListing _file;
-        private ObservableCollection<IFileListingModel> _children;
-        private string _filter;
-        private bool _progressVisibility;
-        private int _currentProgress;
+        readonly IFileChooserModel _model;
+        bool _isExpanded;
+        bool _isVisible;
+        readonly IFileListing _file;
+        ObservableCollection<IFileListingModel> _children;
+        string _filter;
+        bool _progressVisibility;
+        int _currentProgress;
         bool _isSelected;
         bool _isExpanderVisible;
         bool _isChecked;
         readonly Action _selectedAction;
-        private bool _useIsSelected;
+        bool _useIsSelected;
 
         public FileListingModel(IFileChooserModel model, IFileListing file, Action selected)
             : this(model, file, selected,false)
@@ -61,7 +61,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private bool UseIsSelected
+        bool UseIsSelected
         {
             get { return _useIsSelected; }
             set
@@ -137,8 +137,6 @@ namespace Warewolf.Studio.Core
                 }
             }
         }
-
-        public ICommand ExpandingCommand { get; set; }
 
         public string FullName { get; set; }
 

@@ -33,11 +33,11 @@ namespace Dev2.Studio.Views.DataList
 
         #region Events
 
-        private void NametxtTextChanged(object sender, RoutedEventArgs e)
+        void NametxtTextChanged(object sender, RoutedEventArgs e)
         {
             if (DataContext is IDataListViewModel vm)
             {
-                TextBox txtbox = sender as TextBox;
+                var txtbox = sender as TextBox;
                 if (txtbox?.DataContext is IDataListItemModel itemThatChanged)
                 {
                     itemThatChanged.IsExpanded = true;
@@ -46,9 +46,9 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
-        private void Inputcbx_OnChecked(object sender, RoutedEventArgs e)
+        void Inputcbx_OnChecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
+            var checkBox = sender as CheckBox;
             if (checkBox == null || !checkBox.IsEnabled)
             {
                 return;
@@ -56,9 +56,9 @@ namespace Dev2.Studio.Views.DataList
             WriteToResourceModel();
         }
 
-        private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
+        void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
+            var checkBox = sender as CheckBox;
             if (checkBox == null || !checkBox.IsEnabled)
             {
                 return;
@@ -66,7 +66,7 @@ namespace Dev2.Studio.Views.DataList
             WriteToResourceModel();
         }
 
-        private void NametxtFocusLost(object sender, RoutedEventArgs e)
+        void NametxtFocusLost(object sender, RoutedEventArgs e)
         {
             DoDataListValidation(sender);
         }
@@ -77,7 +77,7 @@ namespace Dev2.Studio.Views.DataList
             {
                 if (sender is TextBox txtbox)
                 {
-                    IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
+                    var itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.ValidateNames(itemThatChanged);
 
@@ -95,7 +95,7 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
-        private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             WriteToResourceModel();
         }
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Views.DataList
 
         #region Private Methods
 
-        private void WriteToResourceModel()
+        void WriteToResourceModel()
         {
             if (DataContext is IDataListViewModel vm && !vm.IsSorting)
             {
@@ -114,7 +114,7 @@ namespace Dev2.Studio.Views.DataList
 
         #endregion Private Methods
 
-        private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             var vm = DataContext as IDataListViewModel;
             var model = vm?.Parent as WorkSurfaceContextViewModel;

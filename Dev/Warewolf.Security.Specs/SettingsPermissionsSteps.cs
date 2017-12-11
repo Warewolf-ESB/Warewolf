@@ -27,7 +27,7 @@ namespace Dev2.Activities.Specs.Permissions
     [Binding]
     public class SettingsPermissionsSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public SettingsPermissionsSteps(ScenarioContext scenarioContext)
         {
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Specs.Permissions
 
             var currentSettings = environmentModel.ResourceRepository.ReadSettings(environmentModel);
             FeatureContext.Current.Add("initialSettings", currentSettings);
-            Data.Settings.Settings settings = new Data.Settings.Settings
+            var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission>())
             };
@@ -79,17 +79,17 @@ namespace Dev2.Activities.Specs.Permissions
 
         }
 
-        private static string GetUserGroup()
+        static string GetUserGroup()
         {
             return ConfigurationManager.AppSettings["userGroup"];
         }
 
-        private static string GetSecuritySpecsPassword()
+        static string GetSecuritySpecsPassword()
         {
             return ConfigurationManager.AppSettings["SecuritySpecsPassword"];
         }
 
-        private static string GetSecuritySpecsUser()
+        static string GetSecuritySpecsUser()
         {
             return ConfigurationManager.AppSettings["SecuritySpecsUser"];
         }
@@ -111,11 +111,11 @@ namespace Dev2.Activities.Specs.Permissions
                     groupPermssions.Permissions |= permission;
                 }
             }
-            Data.Settings.Settings settings = new Data.Settings.Settings
+            var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
-            
+
             var environmentModel = FeatureContext.Current.Get<IServer>("environment");
             EnsureEnvironmentConnected(environmentModel);
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Specs.Permissions
                     groupPermssions.Permissions |= permission;
                 }
             }
-            Data.Settings.Settings settings = new Data.Settings.Settings
+            var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Specs.Permissions
                     groupPermssions.Permissions |= permission;
                 }
             }
-            Data.Settings.Settings settings = new Data.Settings.Settings
+            var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
@@ -240,7 +240,7 @@ namespace Dev2.Activities.Specs.Permissions
         public void ThenResourcesShouldHave(string resourcePerms)
         {
             var environmentModel = LoadResources();
-            SecPermissions resourcePermissions = SecPermissions.None;
+            var resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
@@ -260,7 +260,7 @@ namespace Dev2.Activities.Specs.Permissions
         public void ThenResourcesShouldNotHave(string resourcePerms)
         {
             var environmentModel = LoadResources();
-            SecPermissions resourcePermissions = SecPermissions.None;
+            var resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
@@ -287,7 +287,7 @@ namespace Dev2.Activities.Specs.Permissions
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
             Assert.IsNotNull(resourceModel, "Did not find: " + resourceName);
-            SecPermissions resourcePermissions = SecPermissions.None;
+            var resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourceRights.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {
@@ -313,7 +313,7 @@ namespace Dev2.Activities.Specs.Permissions
 
             var resourceModel = resourceRepository.FindSingle(model => model.Category.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
             Assert.IsNotNull(resourceModel);
-            SecPermissions resourcePermissions = SecPermissions.None;
+            var resourcePermissions = SecPermissions.None;
             var permissionsStrings = resourcePerms.Split(new[] { ", " }, StringSplitOptions.RemoveEmptyEntries);
             foreach (var permissionsString in permissionsStrings)
             {

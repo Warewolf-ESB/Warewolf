@@ -36,7 +36,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
     [Binding]
     public class DecisionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
 
         public DecisionSteps(ScenarioContext scenarioContext)
@@ -68,7 +68,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 dds.AddModelItem(dev2Decision);
             }
 
-            string modelData = dds.ToVBPersistableModel();
+            var modelData = dds.ToVBPersistableModel();
             scenarioContext.Add("modelData", modelData);
 
             decisionActivity.ExpressionText = string.Join("", GlobalConstants.InjectedDecisionHandler, "(\"", modelData,
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
             }
-            FlowDecision x = new FlowDecision();
+            var x = new FlowDecision();
             x.Condition=decisionActivity;
             TestStartNode = new FlowStep
                 {
@@ -205,7 +205,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
         public void WhenTheDecisionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -230,8 +230,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
         public bool ExecuteDecisionStack(string decisionDataPayload, IList<string> oldAmbientData, int update)
         {
-            Guid dlId = FetchDataListID(oldAmbientData);
-            string newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
+            var dlId = FetchDataListID(oldAmbientData);
+            var newDecisionData = Dev2DecisionStack.FromVBPersitableModelToJSON(decisionDataPayload);
             var dds = EvaluateRegion(newDecisionData, dlId, update);
 
             var env = Dev2DataListDecisionHandler._environments[dlId];
@@ -246,8 +246,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
                             for (int i = 0; i < dds.TotalDecisions; i++)
                             {
-                                Dev2Decision dd = dds.GetModelItem(i);
-                                enDecisionType typeOf = dd.EvaluationFn;
+                                var dd = dds.GetModelItem(i);
+                                var typeOf = dd.EvaluationFn;
 
                                 // Treat Errors special
                                 if (typeOf == enDecisionType.IsError || typeOf == enDecisionType.IsNotError)
@@ -255,7 +255,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                     dd.Col1 = env.FetchErrors();
                                 }
 
-                                IDecisionOperation op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
+                                var op = Dev2DecisionFactory.Instance().FetchDecisionFunction(typeOf);
                                 if (op != null)
                                 {
                                     try
@@ -312,7 +312,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             throw new InvalidExpressionException(ErrorResource.DataListErrors);
         }
 
-        private Dev2DecisionStack EvaluateRegion(string payload, Guid dlId, int update)
+        Dev2DecisionStack EvaluateRegion(string payload, Guid dlId, int update)
         {
 
             var env = Dev2DataListDecisionHandler._environments[dlId];
@@ -328,7 +328,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                     var invalidDecisions = new List<Dev2Decision>();
                     for (int i = 0; i < dds.TotalDecisions; i++)
                     {
-                        Dev2Decision dd = dds.GetModelItem(i);
+                        var dd = dds.GetModelItem(i);
 
                         if (dd.Col1 != null && DataListUtil.GetRecordsetIndexType(dd.Col1) == enRecordsetIndexType.Star)
                         {
@@ -400,7 +400,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             return warewolfEvalResult;
         }
 
-        private string FetchStackValue(Dev2DecisionStack stack, int stackIndex, int columnIndex)
+        string FetchStackValue(Dev2DecisionStack stack, int stackIndex, int columnIndex)
         {
             // if out of bounds return an empty string ;)
             if (stackIndex >= stack.TheStack.Count)
@@ -500,7 +500,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
         public Guid FetchDataListID(IList<string> oldAmbientData)
         {
-            Guid dlID = GlobalConstants.NullDataListID;
+            var dlID = GlobalConstants.NullDataListID;
             if (oldAmbientData != null && oldAmbientData.Count == 1)
             {
                 Guid.TryParse(oldAmbientData[0], out dlID);

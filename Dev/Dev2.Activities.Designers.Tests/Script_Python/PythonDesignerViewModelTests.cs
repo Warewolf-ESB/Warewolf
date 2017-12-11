@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Script_Python
     public class PythonDesignerViewModelTests
     {
 
-        private static string GetJsTmpFile()
+        static string GetJsTmpFile()
         {
             var codeBase = Assembly.GetExecutingAssembly().Location;
             var directoryName = Path.GetDirectoryName(codeBase);

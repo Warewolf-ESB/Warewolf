@@ -93,10 +93,10 @@ namespace Dev2.Core.Tests.DataList
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
@@ -184,10 +184,10 @@ namespace Dev2.Core.Tests.DataList
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
@@ -276,10 +276,10 @@ namespace Dev2.Core.Tests.DataList
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
@@ -359,10 +359,10 @@ namespace Dev2.Core.Tests.DataList
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
@@ -445,10 +445,10 @@ namespace Dev2.Core.Tests.DataList
 
             var activityDataMappingBuilder = new ActivityDataMappingBuilder();
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(@"<Inputs><Input Name=""f1"" Source=""[[recset1(*).f1a]]"" Recordset=""recset1"" /><Input Name=""f2"" Source=""[[recset2(*).f2a]]"" Recordset=""recset2"" /></Inputs>");
             activity.Setup(c => c.SavedOutputMapping).Returns(@"<Outputs><Output Name=""result"" MapsTo=""[[result]]"" Value=""[[resultValue]]"" /></Outputs>");
@@ -534,10 +534,10 @@ namespace Dev2.Core.Tests.DataList
                 DataList = "<DataList><recordSet><vale/></recordSet></DataList>"
             };
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
@@ -619,10 +619,10 @@ namespace Dev2.Core.Tests.DataList
                 DataList = "<DataList><recordSet><vale/></recordSet></DataList>"
             };
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);
@@ -703,10 +703,10 @@ namespace Dev2.Core.Tests.DataList
                 DataList = "<DataList><recordSet><vale/></recordSet></DataList>"
             };
 
-            Mock<IContextualResourceModel> resourceModel = new Mock<IContextualResourceModel>();
+            var resourceModel = new Mock<IContextualResourceModel>();
             resourceModel.Setup(c => c.DataList).Returns("<DataList/>");
 
-            Mock<IWebActivity> activity = new Mock<IWebActivity>();
+            var activity = new Mock<IWebActivity>();
 
             activity.Setup(c => c.SavedInputMapping).Returns(string.Empty);
             activity.Setup(c => c.SavedOutputMapping).Returns(string.Empty);

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces.DB;
 
 
@@ -26,7 +25,7 @@ namespace Dev2.Common.Interfaces
         public bool HasError { get; set; }
         public bool IsProperty { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

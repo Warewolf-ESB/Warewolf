@@ -14,9 +14,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Studio.Core.Helpers
 {
-    /// <summary>
-    ///     NO TEST COVERAGE!!!!
-    /// </summary>
     public static class TypeSwitch
     {
         public static void Do(object source, params CaseInfo[] cases)
@@ -41,7 +38,7 @@ namespace Dev2.Studio.Core.Helpers
             }
             else
             {
-                Type type = source.GetType();
+                var type = source.GetType();
                 foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault || entry.Target.IsAssignableFrom(type)))
                 {
                     entry.Action(source);

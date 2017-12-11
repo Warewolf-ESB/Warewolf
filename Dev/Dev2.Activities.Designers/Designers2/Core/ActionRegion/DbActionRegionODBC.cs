@@ -19,20 +19,20 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class DbActionRegionOdbc : IODBCActionToolRegion<IDbAction>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IDbSource> _source;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IDbSource> _source;
+        bool _isEnabled;
 
-        private Action _sourceChangedAction;
-        private IDbAction _selectedAction;
-        private readonly IDbServiceModel _model;
-        private ICollection<IDbAction> _actions;
-        private bool _isActionEnabled;
-        private bool _isGenerateOutputsEnabled;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
-        private string _commandText;
+        Action _sourceChangedAction;
+        IDbAction _selectedAction;
+        readonly IDbServiceModel _model;
+        ICollection<IDbAction> _actions;
+        bool _isActionEnabled;
+        bool _isGenerateOutputsEnabled;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
+        string _commandText;
 
         public DbActionRegionOdbc()
         {
@@ -57,13 +57,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             IsActionEnabled = _source?.SelectedSource != null;
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                
+
                 if (_source?.SelectedSource != null)
                 {
                     CommandText = String.Empty;
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                 }
                 IsRefreshing = false;
-                
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -86,7 +86,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }

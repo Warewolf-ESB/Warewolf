@@ -61,7 +61,7 @@ namespace Dev2.Runtime.WebServer.Security
 
         AuthorizationRequest GetAuthorizationRequest(HttpActionContext actionContext)
         {
-            AuthorizationRequest authorizationRequest = actionContext.GetAuthorizationRequest();
+            var authorizationRequest = actionContext.GetAuthorizationRequest();
 
             try
             {

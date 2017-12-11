@@ -27,13 +27,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(!(value is TimeSpan))
-            {
-                return Binding.DoNothing;
-            }
-
-            TimeSpan timeSpan = (TimeSpan)value;
-
+            var timeSpan = value as TimeSpan? ?? throw new ArgumentException("value must be TimeSpan");
             if(string.IsNullOrWhiteSpace(Format))
             {
                 return timeSpan.ToString();
@@ -41,10 +35,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return timeSpan.ToString(Format);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 
         #endregion Override Mehods
     }

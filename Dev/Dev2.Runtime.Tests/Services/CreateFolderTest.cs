@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var createFolderService = new AddFolderService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
             item.ResourcePath = @"root\";
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();

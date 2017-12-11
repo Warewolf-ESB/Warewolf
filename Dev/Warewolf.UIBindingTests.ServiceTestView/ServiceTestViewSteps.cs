@@ -20,7 +20,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
     [Binding]
     public sealed class ServiceTestViewSteps
     {
-        private Mock<IContextualResourceModel> CreateMockResourceModel()
+        Mock<IContextualResourceModel> CreateMockResourceModel()
         {
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
@@ -33,7 +33,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
             return moqModel;
         }
 
-        private IContextualResourceModel CreateResourceModel(bool isConnected = true)
+        IContextualResourceModel CreateResourceModel(bool isConnected = true)
         {
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();

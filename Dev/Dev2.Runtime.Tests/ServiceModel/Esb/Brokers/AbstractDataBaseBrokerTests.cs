@@ -50,8 +50,8 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
         {
             //------------Setup for test--------------------------
-            TestDatabaseBroker broker = new TestDatabaseBroker();
-            Mock<DbSource> source = new Mock<DbSource>();
+            var broker = new TestDatabaseBroker();
+            var source = new Mock<DbSource>();
             //------------Execute Test---------------------------
 
             var result = broker.GetServiceMethods(source.Object);
@@ -69,9 +69,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
         {
             //------------Setup for test--------------------------
-            TestDatabaseBroker broker = new TestDatabaseBroker();
+            var broker = new TestDatabaseBroker();
 
-            DbSource source = new DbSource();
+            var source = new DbSource();
 
             TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
 
@@ -100,9 +100,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Esb.Brokers
 
         {
             //------------Setup for test--------------------------
-            TestDatabaseBroker broker = new TestDatabaseBroker();
+            var broker = new TestDatabaseBroker();
 
-            DbSource source = new DbSource { ReloadActions = true };
+            var source = new DbSource { ReloadActions = true };
 
             TestDatabaseBroker.TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
             var methodList = new ServiceMethodList { new ServiceMethod("bob", "bob src", null, null, null, null) };

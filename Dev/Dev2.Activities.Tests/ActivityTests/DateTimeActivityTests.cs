@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 0
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "1978/07/23 03:30 PM";
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
@@ -72,7 +72,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "2012/11/28 02:12:41 AM";
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
@@ -96,11 +96,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyDateRecordSet().Date]]");
 
-            IDSFDataObject result = ExecuteProcess();
-            DateTime firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
-            string firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
-            DateTime secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
-            string secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var result = ExecuteProcess();
+            var firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
+            var firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
+            var secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
             GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out IList<string> actual, out string error);
             // remove test datalist ;)
             var firstResult = actual[2];
@@ -123,7 +123,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 327
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             // remove test datalist ;)
@@ -139,7 +139,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
 
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -151,7 +151,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             DateTime actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             if (actual == "0")
             {
@@ -218,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
+        void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
         {
             TestStartNode = new FlowStep
             {

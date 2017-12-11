@@ -79,6 +79,7 @@
     <Compile Include="DBSource\OracleSource\OracleSourceTests.cs" />
     <Compile Include="DBSource\PostgreSQLSource\PostgreSQLSourceTests.cs" />
     <Compile Include="DBSource\SQLServerSource\SQLServerSourceTests.cs" />
+    <Compile Include="Debug Output\Debug Output.cs" />
     <Compile Include="DebugInputWindow\DebugInputWindowTests.cs" />
     <Compile Include="DebugInputWindow\SaveDebugInputs.cs" />
     <Compile Include="DebugInputWindow\TextboxHeightChanges.cs" />
@@ -133,7 +134,7 @@
       <DependentUpon>ExchangeSourceUIMap.uitest</DependentUpon>
     </Compile>
     <Compile Include="Explorer\Context Menu.cs" />
-    <Compile Include="Explorer\DeleteExplorerResource.cs" />
+    <Compile Include="Explorer\Delete.cs" />
     <Compile Include="Explorer\DragAndDrop.cs" />
     <Compile Include="Explorer\ExplorerUIMap.cs">
       <DependentUpon>ExplorerUIMap.uitest</DependentUpon>
@@ -145,6 +146,7 @@
     <Compile Include="Explorer\Folders.cs" />
     <Compile Include="Explorer\Refresh.cs" />
     <Compile Include="Explorer\Rename.cs" />
+    <Compile Include="Explorer\ShowServerVersion.cs" />
     <Compile Include="Explorer\View Swagger.cs" />
     <Compile Include="Explorer\VersionHistory.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs">
@@ -373,7 +375,7 @@
     <Compile Include="WorkflowTab\Tools\Utility\Date Time.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Format Number.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\RabbitMQConsume.cs" />
-    <Compile Include="WorkflowTab\Tools\Utility\RabbitMQPublish.cs" />
+    <Compile Include="WorkflowTab\Tools\Utility\RabbitMQPublish.cs" />    
     <Compile Include="WorkflowTab\Tools\Utility\Random.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\Sys Info.cs" />
     <Compile Include="WorkflowTab\Tools\Utility\UtilityToolsUIMap.cs">

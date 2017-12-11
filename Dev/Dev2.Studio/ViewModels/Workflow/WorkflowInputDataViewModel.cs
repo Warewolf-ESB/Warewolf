@@ -41,24 +41,24 @@ namespace Dev2.Studio.ViewModels.Workflow
     public class WorkflowInputDataViewModel : SimpleBaseViewModel
     {
         #region Fields
-        private OptomizedObservableCollection<IDataListItem> _workflowInputs;
-        private RelayCommand _executeCommmand;
-        private string _xmlData;
+        OptomizedObservableCollection<IDataListItem> _workflowInputs;
+        RelayCommand _executeCommmand;
+        string _xmlData;
         readonly IContextualResourceModel _resourceModel;
-        private bool _rememberInputs;
+        bool _rememberInputs;
         RelayCommand _viewInBrowserCommmand;
         static DataListConversionUtils _dataListConversionUtils = new DataListConversionUtils();
         bool _canViewInBrowser;
         bool _canDebug;
         readonly IPopupController _popupController;
-        private RelayCommand _cancelCommand;
+        RelayCommand _cancelCommand;
         IApplicationTracker _applicationTracker;
         #endregion Fields
 
         public event Action DebugExecutionStart;
         public event Action DebugExecutionFinished;
 
-        private void OnDebugExecutionFinished()
+        void OnDebugExecutionFinished()
         {
             var handler = DebugExecutionFinished;
             handler?.Invoke();
@@ -108,9 +108,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             
             _popupController = CustomContainer.Get<IPopupController>();
         }
-        
-        private IDev2StudioSessionBroker Broker { get; set; }
-        
+
+        IDev2StudioSessionBroker Broker { get; set; }
+
         IDataListModel DataList { get; set; }
         
         public DebugTO DebugTo { get; private set; }
@@ -164,7 +164,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private bool CanViewInBrowser
+        bool CanViewInBrowser
         {
             get
             {
@@ -182,7 +182,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private bool CanDebug
+        bool CanDebug
         {
             get
             {
@@ -319,7 +319,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (!IsInError)
             {              
                 DoSaveActions();
-                string payload = BuildWebPayLoad();
+                var payload = BuildWebPayLoad();
                 SendViewInBrowserRequest(payload);
                 SendFinishedMessage();
                 RequestClose();
@@ -391,7 +391,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (itemToAdd != null && itemToAdd.CanHaveMutipleRows)
             {
-                IRecordSet recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
+                var recordset = DataList.ShapeRecordSets.FirstOrDefault(set => set.Name == itemToAdd.Recordset);
                 if (recordset != null)
                 {
                     var recsetCols = new List<IScalar>();
@@ -431,16 +431,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (itemToRemove != null && itemToRemove.CanHaveMutipleRows)
             {
                 var numberOfRows = WorkflowInputs.Count(c => c.Recordset == itemToRemove.Recordset && c.Field == itemToRemove.Field);
-                List<IDataListItem> listToRemove = WorkflowInputs.Where(c => c.Index == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
+                var listToRemove = WorkflowInputs.Where(c => c.Index == numberOfRows.ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset).ToList();
 
                 if (numberOfRows == 2)
                 {
-                    IEnumerable<IDataListItem> firstRow = WorkflowInputs.Where(c => c.Index == @"1" && c.Recordset == itemToRemove.Recordset);
+                    var firstRow = WorkflowInputs.Where(c => c.Index == @"1" && c.Recordset == itemToRemove.Recordset);
                     bool removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
 
                     if (removeRow)
                     {
-                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == @"2" && c.Recordset == itemToRemove.Recordset);
+                        var listToChange = WorkflowInputs.Where(c => c.Index == @"2" && c.Recordset == itemToRemove.Recordset);
 
                         foreach (IDataListItem item in listToChange)
                         {
@@ -458,7 +458,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 {
                     if (numberOfRows > 2)
                     {
-                        IEnumerable<IDataListItem> listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
+                        var listToChange = WorkflowInputs.Where(c => c.Index == (numberOfRows - 1).ToString(CultureInfo.InvariantCulture) && c.Recordset == itemToRemove.Recordset);
                         foreach (IDataListItem item in listToChange)
                         {
                             item.Value = string.Empty;
@@ -475,16 +475,16 @@ namespace Dev2.Studio.ViewModels.Workflow
             return itemsRemoved;
         }
 
-        private int UpdateIndexToSelect(IDataListItem itemToRemove, IDataListItem item)
+        int UpdateIndexToSelect(IDataListItem itemToRemove, IDataListItem item)
         {
             if (itemToRemove.Index == item.Index)
             {
-                IDataListItem item1 = item;
+                var item1 = item;
                 return WorkflowInputs.IndexOf(WorkflowInputs.Last(c => c.Recordset == item1.Recordset));
             }
             return WorkflowInputs.IndexOf(itemToRemove);
         }
-        
+
         public void SetXmlData() => SetXmlData(false);
         public void SetXmlData(bool includeBlank)
         {
@@ -516,7 +516,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string JsonData { get; private set; }
 
-        private void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
+        void AddObjectsToObject(IEnumerable<IDataListItem> objects, JObject dataListObject)
         {
             foreach (var o in objects)
             {
@@ -537,7 +537,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void AddToDataListObject(JObject dataListObject, IDataListItem o, string json)
+        void AddToDataListObject(JObject dataListObject, IDataListItem o, string json)
         {
             try
             {
@@ -556,7 +556,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject,bool includeBlank = false)
+        static void AddRecordsetsToObject(IEnumerable<IDataListItem> recSets, JObject dataListObject, bool includeBlank = false)
         {
             var groupedRecsets = recSets.GroupBy(item => item.Recordset);
             foreach (var groupedRecset in groupedRecsets)
@@ -585,14 +585,14 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static void AddScalarsToObject(IEnumerable<IDataListItem> scalars, JObject dataListObject)
+        static void AddScalarsToObject(IEnumerable<IDataListItem> scalars, JObject dataListObject)
         {
             foreach (var dataListItem in scalars)
             {
                 dataListObject.Add(dataListItem.DisplayValue, new JValue(dataListItem.Value ?? string.Empty));
             }
         }
-        
+
         public void SetWorkflowInputData()
         {
             WorkflowInputs.Clear();
@@ -614,10 +614,10 @@ namespace Dev2.Studio.ViewModels.Workflow
                     {
                         recsetCols.AddRange(column.Value);
                     }
-                    IEnumerable<IDataListItem> numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
-                    IDataListItem lastItem = numberOfRows.Last();
+                    var numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
+                    var lastItem = numberOfRows.Last();
                     int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
-                    string indexString = lastItem.Index;
+                    var indexString = lastItem.Index;
                     int indexNum = Convert.ToInt32(indexString) + 1;
                     indexToSelect = indexToInsertAt + 1;
                     itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, indexToInsertAt, indexNum);
@@ -665,8 +665,8 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected override void OnDispose()
         {
         }
-        
-        private bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
+
+        bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
             bool itemsAdded = false;
             if (dlItem.CanHaveMutipleRows)

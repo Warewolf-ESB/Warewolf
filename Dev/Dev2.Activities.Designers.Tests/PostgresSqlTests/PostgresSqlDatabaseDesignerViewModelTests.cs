@@ -245,13 +245,13 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
     public class PostgreSqlModel : IDbServiceModel
     {
 #pragma warning disable 649
-        private IStudioUpdateManager _updateRepository;
+        IStudioUpdateManager _updateRepository;
 #pragma warning restore 649
 #pragma warning disable 169
-        private IQueryManager _queryProxy;
+        IQueryManager _queryProxy;
 #pragma warning restore 169
 
-        private readonly ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
+        readonly ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
         {
             new DbSourceDefinition()
             {
@@ -264,7 +264,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             }
         };
 
-        private readonly ObservableCollection<IDbAction> _actions = new ObservableCollection<IDbAction>
+        readonly ObservableCollection<IDbAction> _actions = new ObservableCollection<IDbAction>
         {
             new DbAction()
             {

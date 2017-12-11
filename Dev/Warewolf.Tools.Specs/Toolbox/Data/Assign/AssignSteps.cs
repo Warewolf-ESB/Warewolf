@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     [Binding]
     public class AssignSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public AssignSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -129,7 +129,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public void WhenTheAssignToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

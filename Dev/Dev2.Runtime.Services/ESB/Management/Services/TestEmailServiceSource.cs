@@ -5,11 +5,9 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
@@ -17,20 +15,14 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class TestEmailServiceSource : IEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
@@ -38,7 +30,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("EmailServiceSource", out StringBuilder resourceDefinition);
 
                 IEmailServiceSource src = serializer.Deserialize<EmailServiceSourceDefinition>(resourceDefinition);
-                EmailSource con = new EmailSource
+                var con = new EmailSource
                 {
                     Host = src.HostName,
                     UserName = src.UserName,
@@ -68,18 +60,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><EmailServiceSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><EmailServiceSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
-
-        public string HandlesType()
-        {
-            return "TestEmailServiceSource";
-        }
+        public string HandlesType() => "TestEmailServiceSource";
     }
 }

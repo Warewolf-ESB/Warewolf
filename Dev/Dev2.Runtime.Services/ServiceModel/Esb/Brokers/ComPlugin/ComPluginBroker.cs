@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
 
         public IOutputDescription TestPlugin(ComPluginService pluginService)
         {
-            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            var args = new ComPluginInvokeArgs
             {
                 Is32Bit = ((ComPluginSource)pluginService.Source).Is32Bit,
                 ClsId = ((ComPluginSource)pluginService.Source).ClsId,

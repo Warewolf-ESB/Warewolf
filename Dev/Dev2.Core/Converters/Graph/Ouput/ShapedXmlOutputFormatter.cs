@@ -49,16 +49,16 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
         #region Private Properties
 
-        private IDataBrowser DataBrowser { get; set; }
+        IDataBrowser DataBrowser { get; set; }
 
         #endregion Private Properties
 
         #region Methods
-        
+
         public object Format(object data)
         {
-            Dictionary<string, IList<IPath>> groupedPaths = GroupPaths(OutputDescription.DataSourceShapes[0]);
-            
+            var groupedPaths = GroupPaths(OutputDescription.DataSourceShapes[0]);
+
             var rootNode = new XElement(RootNodeName);
             foreach (var paths in groupedPaths.Values)
             {
@@ -92,21 +92,21 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// <summary>
         ///     Selects a single value
         /// </summary>
-        private XElement SelectScalar(IPath path, object data)
+        XElement SelectScalar(IPath path, object data)
         {
-            object selectResult = DataBrowser.SelectScalar(path, data);
+            var selectResult = DataBrowser.SelectScalar(path, data);
             return new XElement(GetNodeName(path.OutputExpression), selectResult);
         }
 
         /// <summary>
         ///     Selects values
         /// </summary>
-        private IEnumerable<XElement> SelectEnumerable(IPath path, object data)
+        IEnumerable<XElement> SelectEnumerable(IPath path, object data)
         {
             IList<XElement> returnNodes = new List<XElement>();
             IList<object> selectResults = DataBrowser.SelectEnumerable(path, data).ToList();
-            string recordsetNodeName = GetRecordsetNodeName(path.OutputExpression);
-            string nodeName = GetNodeName(path.OutputExpression);
+            var recordsetNodeName = GetRecordsetNodeName(path.OutputExpression);
+            var nodeName = GetNodeName(path.OutputExpression);
 
             if (selectResults.Count > 0)
             {
@@ -134,14 +134,14 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         ///     parellel they are related
         ///     by position in the enumeration.
         /// </summary>
-        private IEnumerable<XElement> SelectEnumerableAsRelated(IList<IPath> paths, object data)
+        IEnumerable<XElement> SelectEnumerableAsRelated(IList<IPath> paths, object data)
         {
             IList<XElement> returnNodes = new List<XElement>();
 
             if (paths.Count > 0)
             {
-                Dictionary<IPath, IList<object>> selectResults = DataBrowser.SelectEnumerablesAsRelated(paths, data);
-                string recordsetNodeName = GetRecordsetNodeName(paths[0].OutputExpression);
+                var selectResults = DataBrowser.SelectEnumerablesAsRelated(paths, data);
+                var recordsetNodeName = GetRecordsetNodeName(paths[0].OutputExpression);
                 var nodeNames = new Dictionary<IPath, string>();
                 long resultCount = selectResults[paths[0]].Count;
 
@@ -153,7 +153,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
                     if (selectResults[path].Count != resultCount)
                     {
                         throw new Exception(string.Format(ErrorResource.NumberOfResultsMismatch, path.OutputExpression));
-                    }                    
+                    }
 
                     //
                     // Index node name by path
@@ -188,7 +188,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// <summary>
         ///     Groups paths by their output expressions
         /// </summary>
-        private Dictionary<string, IList<IPath>> GroupPaths(IDataSourceShape dataSourceShape)
+        Dictionary<string, IList<IPath>> GroupPaths(IDataSourceShape dataSourceShape)
         {
             var groupedPaths = new Dictionary<string, IList<IPath>>();
 
@@ -196,7 +196,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
             {
                 if (!string.IsNullOrWhiteSpace(path.OutputExpression))
                 {
-                    string key = GetOutputDescriptionKey(path.OutputExpression);
+                    var key = GetOutputDescriptionKey(path.OutputExpression);
 
                     if (groupedPaths.TryGetValue(key, out IList<IPath> dataSourceShapePaths))
                     {
@@ -216,15 +216,15 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// <summary>
         ///     Gets the value to use as a key for an ouotput description
         /// </summary>
-        private string GetOutputDescriptionKey(string outputDescription)
+        string GetOutputDescriptionKey(string outputDescription)
         {
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
+            var parser = DataListFactory.CreateLanguageParser();
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
+            var parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
 
             if (parts.Count <= 0)
             {
-                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid,outputDescription));
+                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid, outputDescription));
             }
 
             string key;
@@ -237,15 +237,15 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// <summary>
         ///     Gets the name of a node from an output description
         /// </summary>
-        private string GetNodeName(string outputDescription)
+        string GetNodeName(string outputDescription)
         {
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
+            var parser = DataListFactory.CreateLanguageParser();
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
+            var parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
 
             if (parts.Count <= 0)
             {
-                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid,outputDescription));
+                throw new Exception(string.Format(ErrorResource.OutputDecriptionInvalid, outputDescription));
             }
 
             return parts.Last().Option.Field;
@@ -254,11 +254,11 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
         /// <summary>
         ///     Gets the name of a recordset node from an output
         /// </summary>
-        private string GetRecordsetNodeName(string outputDescription)
+        string GetRecordsetNodeName(string outputDescription)
         {
-            IDev2DataLanguageParser parser = DataListFactory.CreateLanguageParser();
+            var parser = DataListFactory.CreateLanguageParser();
 
-            IList<IIntellisenseResult> parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
+            var parts = parser.ParseDataLanguageForIntellisense(outputDescription, "");
 
             if (parts.Count <= 0)
             {

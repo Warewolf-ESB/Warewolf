@@ -11,8 +11,8 @@ namespace Dev2.Studio.Core.DataList
     public class PartIsUsed : IPartIsUsed
     {
         readonly ObservableCollection<IRecordSetItemModel> _recsetCollection;
-        private readonly ObservableCollection<IScalarItemModel> _scalarCollection;
-        private readonly ObservableCollection<IComplexObjectItemModel> _complexObjectItemModels;
+        readonly ObservableCollection<IScalarItemModel> _scalarCollection;
+        readonly ObservableCollection<IComplexObjectItemModel> _complexObjectItemModels;
 
         public PartIsUsed(ObservableCollection<IRecordSetItemModel> recsetCollection, ObservableCollection<IScalarItemModel> scalarCollection, ObservableCollection<IComplexObjectItemModel> complexObjectItemModels)
         {
@@ -45,7 +45,7 @@ namespace Dev2.Studio.Core.DataList
             });
         }
 
-        private static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
+        static void ProcessFoundRecordSets(IDataListVerifyPart part, IRecordSetItemModel recsetToRemove, bool isUsed)
         {
             if (recsetToRemove == null)
             {

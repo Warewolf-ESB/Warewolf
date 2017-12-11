@@ -14,8 +14,8 @@ using System.Collections.Generic;
 namespace Dev2.DataList.Contract
 {
     public class OutputTO {
-        private readonly string _outPutDescription;
-        private readonly IList<string> _outputStrings;
+        readonly string _outPutDescription;
+        readonly IList<string> _outputStrings;
 
         internal OutputTO(string outputDescription) {
             _outPutDescription = outputDescription;

@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Common.Interfaces
 {
-    public interface IPluginService : IEquatable<IPluginService>
+    public interface IPluginService
     {
         string Name { get; set; }
         Guid Id { get; set; }

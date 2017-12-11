@@ -8,7 +8,7 @@ namespace Dev2.Activities.DropBox2016
 {
     public class DropboxSoureFileValidator : IFilenameValidator
     {
-        private readonly string _dropBoxSource;
+        readonly string _dropBoxSource;
 
         public DropboxSoureFileValidator(string dropBoxSource)
         {

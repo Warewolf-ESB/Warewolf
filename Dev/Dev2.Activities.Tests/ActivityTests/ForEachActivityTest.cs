@@ -47,7 +47,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , ActivityStrings.ForEachDataListShape
                           , enForEachType.NumOfExecution
                           );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(0));
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "2"
                           );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(2));
@@ -90,7 +90,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "-2"
                           );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(0));
@@ -109,7 +109,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "9"
                           );
 
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(5));
@@ -128,7 +128,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "5"
                           );
 
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(5));
@@ -146,7 +146,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "-5"
                           , "9"
                            );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
 
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "5"
                           , "-9"
                            );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(0));
         }
@@ -184,7 +184,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "6,9,"
                           );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(2));
@@ -203,7 +203,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "6,9,9,6"
                           );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(4));
@@ -223,7 +223,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , null
                           , "9,5,1,"
                           );
-            Mock<IEsbChannel> coms = ExecuteForEachProcess(out IDSFDataObject result);
+            var coms = ExecuteForEachProcess(out IDSFDataObject result);
             ErrorResultTO errors;
             // remove test datalist ;)
             coms.Verify(c => c.ExecuteSubRequest(It.IsAny<IDSFDataObject>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>(), out errors, It.IsAny<int>(), false), Times.Exactly(3));
@@ -249,7 +249,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsDebug = true,
             };
 
-            DsfForEachActivity act = new DsfForEachActivity();
+            var act = new DsfForEachActivity();
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -275,7 +275,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ForEachNestingLevel = 1
             };
 
-            DsfForEachActivity act = new DsfForEachActivity();
+            var act = new DsfForEachActivity();
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -312,9 +312,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private DsfActivity CreateWorkflow()
+        DsfActivity CreateWorkflow()
         {
-            DsfActivity activity = new DsfActivity
+            var activity = new DsfActivity
             {
                 ServiceName = "MyTestService",
                 InputMapping = ActivityStrings.ForEach_Input_Mapping,
@@ -327,9 +327,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             return activity;
         }
 
-        private DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
+        DsfActivity CreateWorkflow(string mapping, bool isInputMapping)
         {
-            DsfActivity activity = new DsfActivity();
+            var activity = new DsfActivity();
             if (isInputMapping)
             {
                 activity.InputMapping = mapping;
@@ -347,14 +347,14 @@ namespace Dev2.Tests.Activities.ActivityTests
             return activity;
         }
 
-        private DsfForEachActivity SetupArguments(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
+        DsfForEachActivity SetupArguments(string currentDl, string testData, enForEachType type, bool isInputMapping = false, string inputMapping = null, string from = null, string to = null, string csvIndexes = null, string numberExecutions = null)
         {
             var activityFunction = new ActivityFunc<string, bool>();
-            DsfActivity activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
+            var activity = inputMapping != null ? CreateWorkflow(inputMapping, isInputMapping) : CreateWorkflow();
 
             activityFunction.Handler = activity;
             var id = Guid.NewGuid().ToString();
-            DsfForEachActivity dsfForEachActivity = new DsfForEachActivity
+            var dsfForEachActivity = new DsfForEachActivity
             {
                 DataFunc = activityFunction,
                 ForEachType = type,

@@ -43,23 +43,23 @@ namespace Dev2.Studio.Core.Models
     {
         #region Class Members
 
-        private bool _allowCategoryEditing = true;
-        private string _category;
-        private string _comment;
-        private string _dataList;
-        private string _dataTags;
-        private string _displayName = string.Empty;
-        private IServer _environment;
-        private string _helpLink;
-        private bool _isDatabaseService;
-        private bool _isDebugMode;
-        private bool _isResourceService;
-        private string _resourceName;
-        private ResourceType _resourceType;
-        private string _tags;
-        private string _unitTestTargetWorkflowService;
-        private StringBuilder _workflowXaml;
-        private Version _version;
+        bool _allowCategoryEditing = true;
+        string _category;
+        string _comment;
+        string _dataList;
+        string _dataTags;
+        string _displayName = string.Empty;
+        IServer _environment;
+        string _helpLink;
+        bool _isDatabaseService;
+        bool _isDebugMode;
+        bool _isResourceService;
+        string _resourceName;
+        ResourceType _resourceType;
+        string _tags;
+        string _unitTestTargetWorkflowService;
+        StringBuilder _workflowXaml;
+        Version _version;
         bool _isPluginService;
         bool _isWorkflowSaved;
         Guid _id;
@@ -532,11 +532,11 @@ namespace Dev2.Studio.Core.Models
 
         public StringBuilder ToServiceDefinition(bool prepairForDeployment)
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            if(ResourceType == ResourceType.WorkflowService)
+            if (ResourceType == ResourceType.WorkflowService)
             {
-                StringBuilder xaml = WorkflowXaml;
+                var xaml = WorkflowXaml;
                 if (xaml==null || xaml.Length==0)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
@@ -548,7 +548,7 @@ namespace Dev2.Studio.Core.Models
                 if (xaml != null && xaml.Length != 0)
                 {
                     var service = CreateWorkflowXElement(xaml);
-                    XmlWriterSettings xws = new XmlWriterSettings { OmitXmlDeclaration = true };
+                    var xws = new XmlWriterSettings { OmitXmlDeclaration = true };
                     using (XmlWriter xwriter = XmlWriter.Create(result, xws))
                     {
                         service.Save(xwriter);
@@ -590,8 +590,8 @@ namespace Dev2.Studio.Core.Models
 
         XElement CreateWorkflowXElement(StringBuilder xaml)
         {
-            XElement dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
-            XElement service = new XElement("Service",
+            var dataList = string.IsNullOrEmpty(DataList) ? new XElement("DataList") : XElement.Parse(DataList);
+            var service = new XElement("Service",
                 new XAttribute("ID", ID),
                 new XAttribute("Version", Version?.ToString() ?? "1.0"),
                 new XAttribute("ServerID", ServerID.ToString()),
@@ -650,8 +650,8 @@ namespace Dev2.Studio.Core.Models
         {
             get
             {
-                PropertyInfo prop = GetType().GetProperty(columnName);
-                IEnumerable<ValidationAttribute> validationMap = prop.GetCustomAttributes(typeof(ValidationAttribute), true).Cast<ValidationAttribute>();
+                var prop = GetType().GetProperty(columnName);
+                var validationMap = prop.GetCustomAttributes(typeof(ValidationAttribute), true).Cast<ValidationAttribute>();
                 string errMsg;
 
 

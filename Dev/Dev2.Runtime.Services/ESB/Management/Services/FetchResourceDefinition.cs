@@ -15,10 +15,8 @@ using System.Security.Cryptography;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -34,9 +32,6 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Fetch a service body definition
-    /// </summary>
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
         const string PayloadStart = @"<XamlDefinition>";
@@ -65,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 var res = new ExecuteMessage { HasError = false };
@@ -131,7 +126,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             if (!res.Message.IsNullOrEmpty())
             {
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                var dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
             }
             if (prepairForDeployment)
@@ -150,11 +145,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(res);
         }
 
-        private static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
+        static void DoWorkflowServiceMessage(StringBuilder result, ExecuteMessage res)
         {
             var startIdx = result.IndexOf(PayloadStart, 0, false);
 
-            if(startIdx >= 0)
+            if (startIdx >= 0)
             {
                 // remove beginning junk
                 startIdx += PayloadStart.Length;
@@ -162,7 +157,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 startIdx = result.IndexOf(PayloadEnd, 0, false);
 
-                if(startIdx > 0)
+                if (startIdx > 0)
                 {
                     var len = result.Length - startIdx;
                     result = result.Remove(startIdx, len);
@@ -174,7 +169,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 // handle services ;)
                 startIdx = result.IndexOf(AltPayloadStart, 0, false);
-                if(startIdx >= 0)
+                if (startIdx >= 0)
                 {
                     // remove begging junk
                     startIdx += AltPayloadStart.Length;
@@ -182,7 +177,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                     startIdx = result.IndexOf(AltPayloadEnd, 0, false);
 
-                    if(startIdx > 0)
+                    if (startIdx > 0)
                     {
                         var len = result.Length - startIdx;
                         result = result.Remove(startIdx, len);
@@ -200,7 +195,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
-            Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
+            var replacements = new Dictionary<string, StringTransform>
                                                                {
                                                                    {
                                                                        "Source", new StringTransform
@@ -235,28 +230,17 @@ namespace Dev2.Runtime.ESB.Management.Services
                                                                               }
                                                                    }
                                                                };
-            string xml = stringBuilder.ToString();
-            StringBuilder output = new StringBuilder();
+            var xml = stringBuilder.ToString();
+            var output = new StringBuilder();
 
             xml = StringTransform.TransformAllMatches(xml, replacements.Values.ToList());
             output.Append(xml);
             return output;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            serviceEntry.Actions.Add(serviceAction);
-
-            return serviceEntry;
-        }
-
-        public string HandlesType()
-        {
-            return @"FetchResourceDefinitionService";
-        }
+        public string HandlesType() => @"FetchResourceDefinitionService";
 
     }
 }

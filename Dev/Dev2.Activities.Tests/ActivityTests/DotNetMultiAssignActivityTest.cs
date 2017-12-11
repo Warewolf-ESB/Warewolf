@@ -1072,7 +1072,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
+        void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
             {
