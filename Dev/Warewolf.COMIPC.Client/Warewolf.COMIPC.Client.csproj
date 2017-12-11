@@ -7,8 +7,8 @@
     <ProjectGuid>{BCA6F2B3-C102-45B5-8F64-F0CCE2533F1F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WarewolfCOMIPC.Client</RootNamespace>
-    <AssemblyName>WarewolfCOMIPC.Client</AssemblyName>
+    <RootNamespace>Warewolf.COMIPC.Client</RootNamespace>
+    <AssemblyName>Warewolf.COMIPC.Client</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
