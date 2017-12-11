@@ -67,7 +67,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Database
             UIMap.SetPlaybackSettings();
             UIMap.AssertStudioIsRunning();
             UIMap.Click_NewWorkflow_RibbonButton();
-            WorkflowTabUIMap.Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface();
+            WorkflowTabUIMap.Drag_Toolbox_ODBC_Connector_Onto_DesignSurface();
         }
 
         UIMap UIMap
