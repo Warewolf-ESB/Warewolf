@@ -933,10 +933,10 @@
     <Content Include="Help\PageNotAvailable.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ruiSDK_5.1.0.x64.dll">
+    <Content Include="..\Binaries\ruiSDK_5.1.0.x64.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="ruiSDK_5.1.0.x86.dll">
+    <Content Include="..\Binaries\ruiSDK_5.1.0.x86.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
