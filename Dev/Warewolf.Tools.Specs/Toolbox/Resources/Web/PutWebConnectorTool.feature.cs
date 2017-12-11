@@ -89,11 +89,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 14
  testRunner.Then("Put Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1566 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1594 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 15
- testRunner.And("Put Header appears as", ((string)(null)), table1566, "And ");
+ testRunner.And("Put Header appears as", ((string)(null)), table1594, "And ");
 #line 17
  testRunner.And("Put Edit is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 18
@@ -105,11 +105,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 21
  testRunner.And("Put Generate Outputs is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1567 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1595 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
 #line 22
- testRunner.And("Put mapped outputs are", ((string)(null)), table1567, "And ");
+ testRunner.And("Put mapped outputs are", ((string)(null)), table1595, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -134,11 +134,11 @@ this.ScenarioSetup(scenarioInfo);
 #line 30
  testRunner.Then("Put Header is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1568 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1596 = new TechTalk.SpecFlow.Table(new string[] {
                         "Header",
                         "Value"});
 #line 31
- testRunner.And("Put Header appears as", ((string)(null)), table1568, "And ");
+ testRunner.And("Put Header appears as", ((string)(null)), table1596, "And ");
 #line 33
  testRunner.And("Put Body is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 34
@@ -164,17 +164,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 44
  testRunner.Then("Put Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1569 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1597 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1569.AddRow(new string[] {
+            table1597.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table1569.AddRow(new string[] {
+            table1597.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
 #line 45
- testRunner.And("Put mapped outputs are", ((string)(null)), table1569, "And ");
+ testRunner.And("Put mapped outputs are", ((string)(null)), table1597, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -211,29 +211,29 @@ this.ScenarioSetup(scenarioInfo);
 #line 62
  testRunner.And("Put Url as \"http://rsaklfsvrtfsbld/integrationTestSite/GetCountries.ashx\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
-            TechTalk.SpecFlow.Table table1570 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1598 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name",
                         "Value"});
-            table1570.AddRow(new string[] {
+            table1598.AddRow(new string[] {
                         "[[a]]",
                         "T"});
 #line 63
- testRunner.And("I add Put Header as", ((string)(null)), table1570, "And ");
+ testRunner.And("I add Put Header as", ((string)(null)), table1598, "And ");
 #line 66
  testRunner.When("I click Put Generate Outputs", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 67
  testRunner.Then("the Put Generate Outputs window is shown", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1571 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1599 = new TechTalk.SpecFlow.Table(new string[] {
                         "Name"});
-            table1571.AddRow(new string[] {
+            table1599.AddRow(new string[] {
                         "[[a]]"});
-            table1571.AddRow(new string[] {
+            table1599.AddRow(new string[] {
                         "[[extension]]"});
-            table1571.AddRow(new string[] {
+            table1599.AddRow(new string[] {
                         "[[prefix]]"});
 #line 68
- testRunner.And("Put Input variables are", ((string)(null)), table1571, "And ");
+ testRunner.And("Put Input variables are", ((string)(null)), table1599, "And ");
 #line 73
  testRunner.And("Put Test is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 74
@@ -245,17 +245,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 77
  testRunner.Then("Put Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1572 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1600 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1572.AddRow(new string[] {
+            table1600.AddRow(new string[] {
                         "CountryID",
                         "[[CountryID]]"});
-            table1572.AddRow(new string[] {
+            table1600.AddRow(new string[] {
                         "Description",
                         "[[Description]]"});
 #line 78
-    testRunner.And("Put mapped outputs are", ((string)(null)), table1572, "And ");
+    testRunner.And("Put mapped outputs are", ((string)(null)), table1600, "And ");
 #line hidden
             this.ScenarioCleanup();
         }
@@ -325,17 +325,17 @@ this.ScenarioSetup(scenarioInfo);
 #line 106
  testRunner.Then("Put Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1573 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1601 = new TechTalk.SpecFlow.Table(new string[] {
                         "Mapped From",
                         "Mapped To"});
-            table1573.AddRow(new string[] {
+            table1601.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
-            table1573.AddRow(new string[] {
+            table1601.AddRow(new string[] {
                         "b",
                         "[[rec().b]]"});
 #line 107
- testRunner.And("Put mapped outputs are", ((string)(null)), table1573, "And ");
+ testRunner.And("Put mapped outputs are", ((string)(null)), table1601, "And ");
 #line 111
  testRunner.When("I Select \"Google Address Lookup\" as a Put web Source", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
 #line 112
@@ -386,14 +386,14 @@ this.ScenarioSetup(scenarioInfo);
 #line 131
  testRunner.Then("Put Mapping is Enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
-            TechTalk.SpecFlow.Table table1574 = new TechTalk.SpecFlow.Table(new string[] {
+            TechTalk.SpecFlow.Table table1602 = new TechTalk.SpecFlow.Table(new string[] {
                         "Output",
                         "Output Alias"});
-            table1574.AddRow(new string[] {
+            table1602.AddRow(new string[] {
                         "a",
                         "[[rec().a]]"});
 #line 132
- testRunner.And("Put mapped outputs are", ((string)(null)), table1574, "And ");
+ testRunner.And("Put mapped outputs are", ((string)(null)), table1602, "And ");
 #line hidden
             this.ScenarioCleanup();
         }

@@ -66,6 +66,10 @@
       <Project>{85617545-2121-4683-9828-daedb5878ce9}</Project>
       <Name>Dev2.Runtime.Tests</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Warewolf.COMIPC.Client\Warewolf.COMIPC.Client.csproj">
+      <Project>{bca6f2b3-c102-45b5-8f64-f0cce2533f1f}</Project>
+      <Name>Warewolf.COMIPC.Client</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
