@@ -388,7 +388,7 @@ namespace Dev2.ViewModels.Merge
                     HasMergeStarted = true;
                 }
 
-                if (!args.IsMergeChecked)
+                if (!args.IsMergeChecked && args.Container.IsChecked)
                 {
                     RemovePreviousTool(sender, args);
                     GetMatchingConflictParent();
@@ -399,6 +399,11 @@ namespace Dev2.ViewModels.Merge
                 RemovePreviousToolArm(container);
 
                 container.IsMergeExpanderEnabled = container.HasConflict;
+                if (container.DiffViewModel == args || container.CurrentViewModel == args)
+                {
+                    container.DiffViewModel.IsMergeEnabled = container.HasConflict;
+                    container.CurrentViewModel.IsMergeEnabled = container.HasConflict;
+                }
                 AddActivity(args);
                 var conflict = UpdateNextEnabledState(container);
                 if (conflict is IToolConflict nextConflict)
