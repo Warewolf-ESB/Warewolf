@@ -31,16 +31,7 @@ namespace Warewolf.UI.Tests.ContextMenu
         [TestMethod]
         public void CodedUIShowStartNodeContextMenuItems_For_Version()
         {
-            UIMap.Click_NewWorkflow_RibbonButton();
-            WorkflowTabUIMap.Drag_Toolbox_MultiAssign_Onto_DesignSurface();
-            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
-            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("FirstVersion");
-            DialogsUIMap.Click_SaveDialog_Save_Button();
-            const string Variable1Name = "SomeVariable";
-            const string Variable1Value = "50";
-            DataToolsUIMap.Enter_Variable_And_Value_Into_Assign("[[" + Variable1Name + "]]", Variable1Value, 1);
-            WorkflowTabUIMap.Save_Workflow_Using_Shortcut();
-            ExplorerUIMap.Filter_Explorer("FirstVersion");
+            ExplorerUIMap.Filter_Explorer("ContextMenuVersion");
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Mouse.DoubleClick(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
             WorkflowTabUIMap.DisplayStartNodeContextMenu();
