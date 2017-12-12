@@ -1,4 +1,10 @@
-﻿using System;
+﻿using Dev2.Common.Interfaces.DB;
+using Dev2.Common.Interfaces.ServerProxyLayer;
+using Dev2.Common.Interfaces.Threading;
+using Dev2.Common.Interfaces.ToolBase;
+using Dev2.Runtime.Configuration.ViewModels.Base;
+using Dev2.Studio.Core.Activities.Utils;
+using System;
 using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,19 +12,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
-using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Common.Interfaces.Threading;
-using Dev2.Common.Interfaces.ToolBase;
-using Dev2.Runtime.Configuration.ViewModels.Base;
-using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
-
-
-
-
-
-
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
@@ -44,12 +38,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             ToolRegionName = "DbActionRegion";
         }
 
-        public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source,IAsyncWorker worker)
+        public DbActionRegion(IDbServiceModel model, ModelItem modelItem, ISourceToolRegion<IDbSource> source, IAsyncWorker worker)
         {
             try
             {
                 Errors = new List<string>();
-                
+
                 LabelWidth = 46;
                 ToolRegionName = "DbActionRegion";
                 _modelItem = modelItem;
@@ -62,7 +56,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 {
                     LoadActions(model);
                 }
-                
+
                 RefreshActionsCommand = new DelegateCommand(o =>
                 {
                     if (_source.SelectedSource != null)
@@ -70,7 +64,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                         _source.SelectedSource.ReloadActions = true;
                         LoadActions(model);
                     }
-                }, o=>CanRefresh());
+                }, o => CanRefresh());
 
                 _modelItem = modelItem;
             }
@@ -124,23 +118,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        void CallErrorsEventHandler()
-        {
-            ErrorsHandler?.Invoke(this, new List<string>(Errors));
-        }
+        void CallErrorsEventHandler() => ErrorsHandler?.Invoke(this, new List<string>(Errors));
 
-        void SetExecuteActionString(string value)
-        {
-            _modelItem.SetProperty("ExecuteActionString", value);
-        }
+        void SetExecuteActionString(string value) => _modelItem.SetProperty("ExecuteActionString", value);
 
         public string ProcedureName
         {
-            get { return _modelItem.GetProperty<string>("ProcedureName"); }
-            set
-            {
-                _modelItem.SetProperty("ProcedureName", value);
-            }
+            get => _modelItem.GetProperty<string>("ProcedureName");
+            set => _modelItem.SetProperty("ProcedureName", value);
         }
 
         public bool CanRefresh()
@@ -152,10 +137,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IDbAction SelectedAction
         {
-            get
-            {
-                return _selectedAction;
-            }
+            get => _selectedAction;
             set
             {
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
@@ -173,7 +155,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                         region.IsEnabled = false;
                     }
                 }
-                
+
                 RestoreIfPrevious(value);
                 OnPropertyChanged();
             }
@@ -210,7 +192,9 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged();
             }
         }
+
         public ICommand RefreshActionsCommand { get; set; }
+
         public bool IsActionEnabled
         {
             get
@@ -223,6 +207,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 OnPropertyChanged();
             }
         }
+
         public bool IsRefreshing
         {
             get
@@ -249,13 +234,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 _sourceChangedAction = value;
             }
         }
+
         public event SomethingChanged SomethingChanged;
+
         public double LabelWidth
         {
-            get
-            {
-                return _labelWidth;
-            }
+            get => _labelWidth;
             set
             {
                 _labelWidth = value;
@@ -266,18 +250,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         #region Implementation of IToolRegion
 
         public string ToolRegionName { get; set; }
+
         public bool IsEnabled
         {
-            get
-            {
-                return _isEnabled;
-            }
+            get => _isEnabled;
             set
             {
                 _isEnabled = value;
                 OnPropertyChanged();
             }
         }
+
         public IList<IToolRegion> Dependants { get; set; }
 
         public IToolRegion CloneRegion()
@@ -312,7 +295,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             set;
         }
 
-        #endregion
+        #endregion Implementation of IToolRegion
 
         #region Implementation of IActionToolRegion<IDbAction>
 
@@ -328,6 +311,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
+
         void StorePreviousValues(string name)
         {
             _previousRegions.Remove(name);
@@ -343,17 +327,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        bool IsAPreviousValue(IDbAction value)
-        {
-            return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
-        }
+        bool IsAPreviousValue(IDbAction value) => value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
 
         public IList<string> Errors
         {
-            get
-            {
-                return _errors;
-            }
+            get => _errors;
             set
             {
                 _errors = value;
@@ -364,17 +342,11 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public IDbAction SavedAction
         {
-            get
-            {
-                return _modelItem.GetProperty<IDbAction>("SavedAction");
-            }
-            set
-            {
-                _modelItem.SetProperty("SavedAction", value);
-            }
+            get => _modelItem.GetProperty<IDbAction>("SavedAction");
+            set => _modelItem.SetProperty("SavedAction", value);
         }
 
-        #endregion
+        #endregion Implementation of IActionToolRegion<IDbAction>
 
         public event PropertyChangedEventHandler PropertyChanged;
 
