@@ -107,7 +107,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             regionToRestore.QueryString = "blob";
             regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore);
+            region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------
 
             Assert.AreEqual(region.QueryString, "blob");
