@@ -20,7 +20,6 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
 {
     [TestClass]
-
     public class DropboxFileListViewModelTest
     {
 
@@ -28,7 +27,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.DropboxFiles
         [TestInitialize]
         public void DropboxFileList_Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         DropBoxFileListDesignerViewModel CreateMockViewModel()

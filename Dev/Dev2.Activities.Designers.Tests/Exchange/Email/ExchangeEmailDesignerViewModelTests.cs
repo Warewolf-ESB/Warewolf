@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         static ModelItem CreateModelItem()
