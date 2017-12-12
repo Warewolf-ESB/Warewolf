@@ -31,7 +31,7 @@ namespace Warewolf.UI.Tests.ContextMenu
         [TestMethod]
         public void CodedUIShowStartNodeContextMenuItems_For_Version()
         {
-            ExplorerUIMap.Filter_Explorer("ContextMenuVersionWorkflow");
+            ExplorerUIMap.Filter_Explorer("ContextMenuVersion");
             ExplorerUIMap.Select_ShowVersionHistory_From_ExplorerContextMenu();
             Mouse.DoubleClick(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.FirstSubItem);
             WorkflowTabUIMap.DisplayStartNodeContextMenu();
