@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Runtime.CompilerServices;
 using Dev2.Common.Interfaces.ToolBase;
 
 namespace Dev2.Activities.Designers2.Core
 {
-    public class ErrorRegion:IToolRegion
+    public class ErrorRegion : IToolRegion
     {
         public ErrorRegion()
         {
@@ -28,15 +27,9 @@ namespace Dev2.Activities.Designers2.Core
 
         public IList<IToolRegion> Dependants { get; set; }
 
-        public IToolRegion CloneRegion()
-        {
-            return new ErrorRegion();
-        }
+        public IToolRegion CloneRegion() => new ErrorRegion();
 
-        public void RestoreRegion(IToolRegion toRestore)
-        {
-
-        }
+        public void RestoreRegion(IToolRegion toRestore) => throw new NotImplementedException();
 
         public EventHandler<List<string>> ErrorsHandler
         {
@@ -47,12 +40,5 @@ namespace Dev2.Activities.Designers2.Core
         public IList<string> Errors => new List<string>();
 
         #endregion
-
-    
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            var handler = PropertyChanged;
-            handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
     }
 }
