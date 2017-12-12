@@ -1,43 +1,17 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System;
-using System.Activities;
-using System.Activities.Core.Presentation;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Metadata;
-using System.Activities.Presentation.Model;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.View;
-using System.Activities.Statements;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Versioning;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-using System.Xaml;
-using System.Xml.Linq;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Collections;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -54,7 +28,7 @@ using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Factories;
 using Dev2.Factory;
-using Dev2.Interfaces;
+using Dev2.Instrumentation;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -84,12 +58,35 @@ using Dev2.Utils;
 using Dev2.ViewModels.Workflow;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
+using System;
+using System.Activities;
+using System.Activities.Core.Presentation;
+using System.Activities.Presentation;
+using System.Activities.Presentation.Metadata;
+using System.Activities.Presentation.Model;
+using System.Activities.Presentation.Services;
+using System.Activities.Presentation.View;
+using System.Activities.Statements;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Reflection;
+using System.Runtime.Versioning;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Threading;
+using System.Xaml;
+using System.Xml.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels.Workflow
-
 {
     public class FromToolBox
     {
@@ -117,7 +114,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected Dictionary<IDataListVerifyPart, string> _uniqueWorkflowParts;
 
         protected WorkflowDesigner _wd;
-        DesignerMetadata _wdMeta;      
+        DesignerMetadata _wdMeta;
 
         VirtualizedContainerService _virtualizedContainerService;
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
@@ -126,37 +123,16 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         IApplicationTracker _applicationTracker;
         public bool IsStartNodeErrorMessageSet { get; set; }
-        #endregion
 
-        #region Constructor
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="resource"> Workflow that appears on design surface</param>
-        /// <param name="createDesigner"></param>
         public WorkflowDesignerViewModel(IContextualResourceModel resource, bool createDesigner = true)
             : this(resource, new WorkflowHelper(), createDesigner)
         {
         }
 
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="resource">Resource that will be opened</param>
-        /// <param name="workflowHelper">seriali</param>
-        /// <param name="createDesigner">create a new designer flag</param>
         public WorkflowDesignerViewModel(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
             : this(EventPublishers.Aggregator, resource, workflowHelper, createDesigner)
         {
         }
-
-        /// <summary>
-        /// Constructor
-        /// </summary>
-        /// <param name="eventPublisher">Event publisher that is not the singleton</param>
-        /// <param name="resource">Resource that will be opened</param>
-        /// <param name="workflowHelper">Serialization helper</param>
-        /// <param name="createDesigner">create a new designer flag</param>
 
         WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = true)
 
@@ -164,17 +140,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 CustomContainer.Get<IPopupController>(), new AsyncWorker(), createDesigner)
         {
         }
-
-        /// <summary>
-        /// Unit Testing Constructor
-        /// </summary>
-        /// <param name="eventPublisher"> Non singleton event publisher</param>
-        /// <param name="resource">Resource that will be opened</param>
-        /// <param name="workflowHelper">Serialisation Helper</param>
-        /// <param name="popupController">Injected popup controller</param>
-        /// <param name="asyncWorker"></param>
-        /// <param name="createDesigner">Create a new designer flag</param>
-        /// <param name="liteInit"> Lite initialise designer. Testing only</param>
 
         public WorkflowDesignerViewModel(IEventAggregator eventPublisher, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IAsyncWorker asyncWorker, bool createDesigner = true, bool liteInit = false)
             : base(eventPublisher)
@@ -292,7 +257,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanCopyUrl
         {
-            get { return _canCopyUrl; }
+            get => _canCopyUrl;
             set
             {
                 _canCopyUrl = value;
@@ -310,7 +275,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string CopyUrlTooltip
         {
-            get { return _copyUrlTooltip; }
+            get => _copyUrlTooltip;
             set
             {
                 _copyUrlTooltip = value;
@@ -320,7 +285,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanViewSwagger
         {
-            get { return _canViewSwagger; }
+            get => _canViewSwagger;
             set
             {
                 _canViewSwagger = value;
@@ -338,7 +303,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string ViewSwaggerTooltip
         {
-            get { return _viewSwaggerTooltip; }
+            get => _viewSwaggerTooltip;
             set
             {
                 _viewSwaggerTooltip = value;
@@ -348,7 +313,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanShowDependencies
         {
-            get { return _canShowDependencies; }
+            get => _canShowDependencies;
             set
             {
                 _canShowDependencies = value;
@@ -366,7 +331,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string ShowDependenciesTooltip
         {
-            get { return _showDependenciesTooltip; }
+            get => _showDependenciesTooltip;
             set
             {
                 _showDependenciesTooltip = value;
@@ -376,7 +341,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDeploy
         {
-            get { return _canDeploy; }
+            get => _canDeploy;
             set
             {
                 _canDeploy = value;
@@ -394,7 +359,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string DeployTooltip
         {
-            get { return _deployTooltip; }
+            get => _deployTooltip;
             set
             {
                 _deployTooltip = value;
@@ -404,7 +369,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDuplicate
         {
-            get { return _canDuplicate; }
+            get => _canDuplicate;
             set
             {
                 _canDuplicate = value;
@@ -422,7 +387,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string DuplicateTooltip
         {
-            get { return _duplicateTooltip; }
+            get => _duplicateTooltip;
             set
             {
                 _duplicateTooltip = value;
@@ -432,7 +397,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanRunAllTests
         {
-            get { return _canRunAllTests; }
+            get => _canRunAllTests;
             set
             {
                 _canRunAllTests = value;
@@ -450,7 +415,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string RunAllTestsTooltip
         {
-            get { return _runAllTestsTooltip; }
+            get => _runAllTestsTooltip;
             set
             {
                 _runAllTestsTooltip = value;
@@ -460,7 +425,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanCreateTest
         {
-            get { return _canCreateTest; }
+            get => _canCreateTest;
             set
             {
                 _canCreateTest = value;
@@ -478,7 +443,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string CreateTestTooltip
         {
-            get { return _createTestTooltip; }
+            get => _createTestTooltip;
             set
             {
                 _createTestTooltip = value;
@@ -488,7 +453,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanCreateSchedule
         {
-            get { return _canCreateSchedule; }
+            get => _canCreateSchedule;
             set
             {
                 _canCreateSchedule = value;
@@ -506,7 +471,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string ScheduleTooltip
         {
-            get { return _scheduleTooltip; }
+            get => _scheduleTooltip;
             set
             {
                 _scheduleTooltip = value;
@@ -516,7 +481,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDebugBrowser
         {
-            get { return _debugBrowser; }
+            get => _debugBrowser;
             set
             {
                 _debugBrowser = value;
@@ -534,7 +499,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string DebugBrowserTooltip
         {
-            get { return _debugBrowserTooltip; }
+            get => _debugBrowserTooltip;
             set
             {
                 _debugBrowserTooltip = value;
@@ -544,7 +509,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDebugStudio
         {
-            get { return _canDebugStudio; }
+            get => _canDebugStudio;
             set
             {
                 _canDebugStudio = value;
@@ -562,7 +527,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string DebugStudioTooltip
         {
-            get { return _debugStudioTooltip; }
+            get => _debugStudioTooltip;
             set
             {
                 _debugStudioTooltip = value;
@@ -572,7 +537,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDebugInputs
         {
-            get { return _canDebugInputs; }
+            get => _canDebugInputs;
             set
             {
                 _canDebugInputs = value;
@@ -590,7 +555,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string DebugInputsTooltip
         {
-            get { return _debugInputsTooltip; }
+            get => _debugInputsTooltip;
             set
             {
                 _debugInputsTooltip = value;
@@ -602,9 +567,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
-
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
-
             }
         }
 
@@ -618,19 +581,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public DebugOutputViewModel DebugOutputViewModel
         {
-            get
-            {
-                return _debugOutputViewModel;
-            }
-            set { _debugOutputViewModel = value; }
-        }        
+            get => _debugOutputViewModel;
+            set => _debugOutputViewModel = value;
+        }
 
         public IDataListViewModel DataListViewModel
         {
-            get
-            {
-                return _dataListViewModel;
-            }
+            get => _dataListViewModel;
             set
             {
                 if (_dataListViewModel == value)
@@ -651,6 +608,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected virtual bool IsDesignerViewVisible => DesignerView != null && DesignerView.IsVisible;
 
 #pragma warning disable 108,114
+
         public string DisplayName
 #pragma warning restore 108,114
         {
@@ -669,7 +627,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 if (!string.IsNullOrEmpty(_resourceModel.DataList))
                 {
-
                     _workflowInputDataViewModel.DebugTo.DataList = _resourceModel.DataList;
                 }
                 _workflowLink = "";
@@ -720,11 +677,14 @@ namespace Dev2.Studio.ViewModels.Workflow
         public Visibility WorkflowLinkVisible => _resourceModel.IsVersionResource ? Visibility.Hidden : Visibility.Visible;
 
         public IPopupController PopUp { get; set; }
-
-        [ExcludeFromCodeCoverage]
+        
         public virtual object SelectedModelItem => _wd?.Context?.Items.GetValue<Selection>().SelectedObjects.FirstOrDefault();
 
-        public IContextualResourceModel ResourceModel { get { return _resourceModel; } set { _resourceModel = value; } }
+        public IContextualResourceModel ResourceModel
+        {
+            get => _resourceModel;
+            set => _resourceModel = value;
+        }
 
         public string WorkflowName => _resourceModel.ResourceName;
 
@@ -740,8 +700,11 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public StringBuilder DesignerText => ServiceDefinition;
 
-        public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(ModelService); } set { } }
-        
+        public StringBuilder ServiceDefinition
+        {
+            get => _workflowHelper.SerializeWorkflow(ModelService);
+            set { }
+        }
 
         public ICommand CollapseAllCommand
         {
@@ -793,7 +756,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             _applicationTracker.TrackEvent(Warewolf.Studio.Resources.Languages.TrackEventMenu.EventCategory,
                                                                 Warewolf.Studio.Resources.Languages.TrackEventMenu.LinkUrl);
-
                         }
                         SaveToWorkspace();
                         if (_workflowInputDataViewModel.WorkflowInputCount == 0)
@@ -808,7 +770,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                         {
                             Dev2Logger.Error("OpenWorkflowLinkCommand", e, GlobalConstants.WarewolfError);
                         }
-
                     }
                 }));
             }
@@ -1055,16 +1016,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }));
             }
         }
-        /// <summary>
-        /// Fixes up items added. Assigns unique Id. Initialises as flow step
-        /// </summary>
-        /// <param name="addedItem"></param>
-        /// <returns></returns>
-
-
-
+        
         protected ModelItem PerformAddItems(ModelItem addedItem)
-
 
         {
             var mi = addedItem;
@@ -1157,6 +1110,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return switchExpressionValue;
         }
+
         void InitializeFlowStep(ModelItem mi)
         {
             // PBI 9135 - 2013.07.15 - TWR - Changed to "as" check so that database activity also flows through this
@@ -1183,7 +1137,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (DataObject != null)
             {
-
                 if (DataObject is ExplorerItemViewModel viewModel)
                 {
                     var serverRepository = CustomContainer.Get<IServerRepository>();
@@ -1203,13 +1156,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-
-
-        /// <summary>
-        /// Log the action to action tracking engine
-        /// </summary>
-        /// <param name="theResource">dragged resource</param>
-        private void TrackAction(IContextualResourceModel theResource)
+        void TrackAction(IContextualResourceModel theResource)
         {
             if (_applicationTracker != null)
             {
@@ -1227,7 +1174,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
                 else
                 {
-                    // other than above 
+                    // other than above
                     _applicationTracker.TrackCustomEvent(Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.EventCategory,
                                         Warewolf.Studio.Resources.Languages.TrackEventWorkflowTabs.ItemDragged, theResource.DisplayName);
                 }
@@ -1307,14 +1254,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return innerAct;
         }
 
-        /// <summary>
-        ///     Prevents the delete from being executed if it is a FlowChart.
-        /// </summary>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        [ExcludeFromCodeCoverage]
-        void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
+        private void PreventCommandFromBeingExecuted(CanExecuteRoutedEventArgs e)
         {
             if (Designer?.Context != null)
             {
@@ -1336,13 +1276,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             e.Handled = true;
         }
 
-        /// <summary>
-        ///     Sets the last dropped point.
-        /// </summary>
-        /// <param name="e">
-        ///     The <see cref="DragEventArgs" /> instance containing the event data.
-        /// </param>
-        [ExcludeFromCodeCoverage]
         void SetLastDroppedPoint(DragEventArgs e)
         {
             var senderAsFrameworkElement = ModelService.Root.View as FrameworkElement;
@@ -1352,7 +1285,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.GetPosition(freePormPanel);
             }
         }
-        
+
         IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             var dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
@@ -1399,9 +1332,11 @@ namespace Dev2.Studio.ViewModels.Workflow
                     case "FlowDecision":
                         propertyName = "Condition";
                         break;
+
                     case "FlowSwitch`1":
                         propertyName = "Expression";
                         break;
+
                     default:
                         break;
                 }
@@ -1484,7 +1419,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                             decisionFields.AddRange(parts.Select(part => DataListUtil.StripBracketsFromValue(part.Option.DisplayValue)));
                         }
                     }
-
                 }
             }
             return decisionFields;
@@ -1492,7 +1426,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         static IEnumerable<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
         {
-            // Travis.Frisinger - 25.01.2013 
+            // Travis.Frisinger - 25.01.2013
             // We now need to parse this data for regions ;)
 
             var parser = DataListFactory.CreateLanguageParser();
@@ -1549,7 +1483,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SelectedItem = primarySelection;
         }
 
-        public Action<ModelItem> ItemSelectedAction { get; set; }        
+        public Action<ModelItem> ItemSelectedAction { get; set; }
 
         /// <summary>
         ///     Handels the list of strings to be added to the data list without a pop up message
@@ -1573,32 +1507,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 var uniqueDataListPartsToAdd = dlvm.MissingDataListParts(partsToAdd);
                 dlvm.AddMissingDataListItems(uniqueDataListPartsToAdd);
             }
-        }
-
-        /// <summary>
-        /// Notifies the item selected.
-        /// </summary>
-        /// <param name="primarySelection">The primary selection.</param>
-        /// <returns></returns>
-        public bool NotifyItemSelected(object primarySelection)
-        {
-
-            if (primarySelection is ModelItem selectedItem)
-            {
-                if (selectedItem.ItemType == typeof(DsfForEachActivity))
-                {
-                    dynamic test = selectedItem;
-                    ModelItem innerActivity = RecursiveForEachCheck(test);
-                    if (innerActivity != null)
-                    {
-                        //Commenting this out to allow for the Foreach tool to expand to large view.
-                        //Do not take out until we have finalized that this is not to be used
-                        //selectedItem = innerActivity;
-                    }
-                }
-                //Selection.Union(_wd.Context, selectedItem);
-            }
-            return false;
         }
 
         /// <summary>
@@ -1680,7 +1588,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 UpdateErrorIconWithCorrectMessage();
             }
         }
-
 
         void SetHashTable()
         {
@@ -1804,16 +1711,20 @@ namespace Dev2.Studio.ViewModels.Workflow
 
                                 BringIntoView(selectedModelItem);
                                 break;
+
                             case ActivitySelectionType.Add:
                                 AddModelItemToSelection(selectedModelItem);
 
                                 BringIntoView(selectedModelItem);
                                 break;
+
                             case ActivitySelectionType.Remove:
                                 RemoveModelItemFromSelection(selectedModelItem);
                                 break;
+
                             case ActivitySelectionType.None:
                                 break;
+
                             default:
                                 break;
                         }
@@ -1828,12 +1739,10 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (ModelService != null)
             {
-
                 var selectedModelItem = (from mi in _modelItems
                                          let instanceID = ModelItemUtils.GetUniqueID(mi)
                                          where instanceID == itemId || instanceID == parentId
                                          select mi).FirstOrDefault();
-
 
                 if (selectedModelItem == null)
                 {
@@ -1871,7 +1780,9 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             Selection.Unsubscribe(_wd.Context, SelectedItemChanged);
         }
+
         public List<ModelItem> DebugModels => SelectedDebugItems;
+
         void AddModelItemToSelection(ModelItem selectedModelItem)
         {
             if (SelectedDebugItems.Contains(selectedModelItem))
@@ -1931,6 +1842,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             Application.Current?.Dispatcher?.InvokeAsync(() => view?.BringIntoView(), DispatcherPriority.Background);
         }
+
         protected void LoadDesignerXaml()
         {
             var xaml = _resourceModel.WorkflowXaml;
@@ -2099,9 +2011,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             return ServiceDefinition.IsEqual(ResourceModel.WorkflowXaml);
         }
 
-        /// <summary>
-        /// Processes the data list configuration load.
-        /// </summary>
         void ProcessDataListOnLoad()
         {
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(true);
@@ -2122,15 +2031,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             ResourceModel.Environment.ResourceRepository.Save(ResourceModel);
             _workspaceSave = true;
         }
-
-        /// <summary>
-        /// Processes the data list configuration load.
-        /// </summary>
+        
         public void UpdateDataList()
         {
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
-
 
         public static bool ValidatResourceModel(string dataList)
         {
@@ -2143,19 +2048,13 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             catch (Exception)
             {
-
                 return false;
             }
             return true;
-
         }
-
-        /// <summary>
-        /// Adds the missing with no pop up and find unused data list items.
-        /// </summary>
+        
         public void AddMissingWithNoPopUpAndFindUnusedDataListItems()
         {
-            //DoWorkspaceSave();
             UpdateDataList();
         }
 
@@ -2174,11 +2073,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
             return selectedModelItem;
         }
-
-        /// <summary>
-        /// Adds the missing with no pop up and find unused data list items implementation.
-        /// </summary>
-        /// <param name="isLoadEvent">if set to <c>true</c> [is load event].</param>
+        
         void AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(bool isLoadEvent)
         {
             if (DataListViewModel != null)
@@ -2209,21 +2104,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             DataListViewModel?.UpdateDataListItems(ResourceModel, workflowFields);
         }
         
-        [ExcludeFromCodeCoverage]
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = HandleMouseClick(e.LeftButton, e.ClickCount, e.OriginalSource as DependencyObject, e.Source as DesignerView);
         }
-
-        /// <summary>
-        /// Handles Mouse click events on Designer
-        /// </summary>
-        /// <param name="leftButtonState">State of left button</param>
-        /// <param name="clickCount">Double,Single click</param>
-        /// <param name="dp">Item Clicked</param>
-        /// <param name="designerView">Designer view</param>
-        /// <returns></returns>
-        [ExcludeFromCodeCoverage]
+        
         bool HandleMouseClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
         {
             if (HandleDoubleClick(leftButtonState, clickCount, dp, designerView))
@@ -2263,8 +2148,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             return false;
         }
-
-
 
         [ExcludeFromCodeCoverage]
         bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
@@ -2341,8 +2224,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
-
-        [ExcludeFromCodeCoverage]
+        
         static IResourcePickerDialog CreateResourcePickerDialog(enDsfActivityType activityType)
         {
             var server = CustomContainer.Get<IServerRepository>().ActiveServer;
@@ -2357,13 +2239,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             ResourcePickerDialog.CreateAsync(activityType, env);
             return res;
         }
-
-        /// <summary>
-        /// Views the preview drop.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="DragEventArgs"/> instance containing the event data.</param>
-        [ExcludeFromCodeCoverage]
+        
         void ViewPreviewDrop(object sender, DragEventArgs e)
         {
             SetLastDroppedPoint(e);
@@ -2404,8 +2280,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 || isWorkflow.Contains("DsfWebPutActivity") || isWorkflow.Contains("DsfComDllActivity")
                 || isWorkflow.Contains("DsfEnhancedDotNetDllActivity") || isWorkflow.Contains("DsfWcfEndPointActivity"));
         }
-
-        [ExcludeFromCodeCoverage]
+        
         bool WorkflowDropFromResourceToolboxItem(IDataObject dataObject, string isWorkflow, bool dropOccured, bool handled)
         {
             var activityType = ResourcePickerDialog.DetermineDropActivityType(isWorkflow);
@@ -2505,12 +2380,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         ModelItem _selectedItem;
         IEnumerable<ModelItem> _modelItems;
         IEnumerable<ModelItem> _activityCollection;
-
-        /// <summary>
-        /// Models the service model changed.
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">The <see cref="ModelChangedEventArgs"/> instance containing the event data.</param>
+        
         protected void ModelServiceModelChanged(object sender, ModelChangedEventArgs e)
         {
             if (e.ModelChangeInfo != null &&
@@ -2610,15 +2480,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         protected IServer ActiveEnvironment { get; set; }
-
-        /// <summary>
-        ///     Handler attached to intercept checks for executing the delete command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        [ExcludeFromCodeCoverage]
+        
         void CanExecuteRoutedEventHandler(object sender, CanExecuteRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete ||      //triggered from deleting an activity
@@ -2629,16 +2491,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 PreventCommandFromBeingExecuted(e);
             }
         }
-
-
-        /// <summary>
-        ///     Handler attached to intercept checks for executing the delete command
-        /// </summary>
-        /// <param name="sender">The sender.</param>
-        /// <param name="e">
-        ///     The <see cref="CanExecuteRoutedEventArgs" /> instance containing the event data.
-        /// </param>
-        [ExcludeFromCodeCoverage]
+        
         void PreviewExecutedRoutedEventHandler(object sender, ExecutedRoutedEventArgs e)
         {
             if (e.Command == ApplicationCommands.Delete)
@@ -2648,7 +2501,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             if (e.Command == System.Activities.Presentation.View.DesignerView.PasteCommand)
             {
-
                 var dataObject = Clipboard.GetDataObject();
                 if (dataObject != null)
                 {
@@ -2674,7 +2526,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }).Start();
             }
         }
-        
+
         protected override void OnDispose()
         {
             if (_wd != null)
@@ -2710,8 +2562,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _uniqueWorkflowParts.Clear();
                 _uniqueWorkflowParts = null;
             }
-
-            // remove this value from our helper class's cache ;)
+            
             if (ResourceModel != null)
             {
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(ResourceModel);
@@ -2726,7 +2577,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 CEventHelper.RemoveAllEventHandlers(_wd);
             }
-
             catch
             {
             }
@@ -2735,25 +2585,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             base.OnDispose();
         }
 
-        /// <summary>
-        /// Gets the work surface context.
-        /// </summary>
-        /// <value>
-        /// The work surface context.
-        /// </value>
         public override WorkSurfaceContext WorkSurfaceContext => ResourceModel?.ResourceType.ToWorkSurfaceContext() ?? WorkSurfaceContext.Unknown;
 
-
-        /// <summary>
-        /// Gets the environment model.
-        /// </summary>
-        /// <value>
-        /// The environment model.
-        /// </value>
-        /// <exception cref="System.NotImplementedException"></exception>
         public IServer Server => ResourceModel.Environment;
 
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
+
         public ModelItem SelectedItem
         {
             get
@@ -2765,6 +2602,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _selectedItem = value;
             }
         }
+
         public bool WorkspaceSave => _workspaceSave;
 
         public void Handle(EditActivityMessage message)
@@ -2813,10 +2651,12 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             NewWorkflowNames.Instance.Remove(unsavedName);
         }
+
         internal void RemoveAllWorkflowName(string unsavedName)
         {
             NewWorkflowNames.Instance.RemoveAll(unsavedName);
         }
+
         void DisposeDesigner()
         {
             if (_wd != null)
@@ -2866,6 +2706,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }
             }
         }
+
         void UpdateResourceModel(SaveUnsavedWorkflowMessage message, IContextualResourceModel resourceModel, string unsavedName)
         {
             resourceModel.ResourceName = message.ResourceName;
@@ -2886,7 +2727,11 @@ namespace Dev2.Studio.ViewModels.Workflow
             resourceModel.IsWorkflowSaved = true;
         }
 
-        public System.Action WorkflowChanged { get; set; }
+        public bool NotifyItemSelected(object primarySelection)
+        {
+            return false;
+        }
 
+        public System.Action WorkflowChanged { get; set; }
     }
 }

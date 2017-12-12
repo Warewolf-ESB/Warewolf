@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-#if !DEBUG
 using System;
 using System.Configuration;
 
@@ -20,23 +19,13 @@ namespace Dev2.Util
 
         static string _serviceName;
         public static string ServiceName => _serviceName ?? (_serviceName = ConfigurationManager.AppSettings["ServiceName"] ?? "Warewolf Server");
-
+        
         public static bool CollectUsageStats
         {
             get
             {
                 Boolean.TryParse(ConfigurationManager.AppSettings["CollectUsageStats"], out bool collectUsageStats);
                 return collectUsageStats;
-            }
-        }
-        public static string ServicesAddress => LocalHost + "/wwwroot/services/Service/Resources/{0}";
-
-
-        public static string ConfigFilePath
-        {
-            get
-            {
-                return ConfigurationManager.AppSettings["ConfigFilePath"];
             }
         }
 
@@ -56,6 +45,7 @@ namespace Dev2.Util
                 return ConfigurationManager.AppSettings["AppName"];
             }
         }
+
         public static string ProductUrl
         {
             get
@@ -63,6 +53,7 @@ namespace Dev2.Util
                 return ConfigurationManager.AppSettings["ProductUrl"];
             }
         }
+
         public static string AesHexKey
         {
             get
@@ -70,8 +61,5 @@ namespace Dev2.Util
                 return ConfigurationManager.AppSettings["AesHexKey"];
             }
         }
-
-      
     }
 }
-#endif
