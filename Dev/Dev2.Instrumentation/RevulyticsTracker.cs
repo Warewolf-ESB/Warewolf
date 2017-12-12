@@ -7,22 +7,16 @@ using RUISDK_5_1_0;
 using Warewolf.Studio.Resources.Languages;
 namespace Dev2.Instrumentation
 {
-    /// <summary>
-    ///     Revulytics -User action tracking
-    /// </summary>
     public class RevulyticsTracker : IApplicationTracker
     {
-        private const int Protocol = 1;
-        private const bool MultiSessionEnabled = true;
+        const int Protocol = 1;
+        const bool MultiSessionEnabled = true;
 
-        private const bool ReachOutOnAutoSync = true;
+        const bool ReachOutOnAutoSync = true;
 
-        // current instance of the Revulytics
-        private static RevulyticsTracker _revulyticsTrackerInstance;
+        static RevulyticsTracker _revulyticsTrackerInstance;
 
-
-        //to check if object is not in use
-        private static readonly object SyncLock = new object();
+        static readonly object SyncLock = new object();
 
         public string AesHexKey { get; set; }
 
@@ -33,6 +27,7 @@ namespace Dev2.Instrumentation
         public string ProductId { get; set; }
 
         public string ProductUrl { get; set; }
+
         public string SdkFilePath { get; set; }
 
         public RUISDK RuiSdk { get; set; }
@@ -40,11 +35,9 @@ namespace Dev2.Instrumentation
         public string Username { get; set; }
 
         public string ProductVersion { get; set; }
-        public RUIResult EnableApplicationResultStatus { get; set; }
 
-        /// <summary>
-        ///     set the variables by reading config file
-        /// </summary>
+        public RUIResult EnableApplicationResultStatus { get; set; }
+        
         public RevulyticsTracker()
         {
             SdkFilePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(RUISDK)).Location);
@@ -55,14 +48,6 @@ namespace Dev2.Instrumentation
             AesHexKey = AppSettings.AesHexKey;
         }
 
-      
-
-        /// <summary>
-        ///     This function create config file for revulytics tracking.
-        ///     And call the SetProductVersion and StartSession methods
-        /// </summary>
-        /// <param name="productVersion">current product version of the application</param>
-        /// <param name="username">login user</param>
         public void EnableAppplicationTracker(string productVersion, string username)
         {
             ProductVersion = productVersion;
@@ -103,9 +88,6 @@ namespace Dev2.Instrumentation
             }
         }
 
-        /// <summary>
-        ///     This Function will stop the current session and action tracking.
-        /// </summary>
         public void DisableAppplicationTracker()
         {
             try
@@ -120,18 +102,6 @@ namespace Dev2.Instrumentation
             }
         }
 
-        /// <summary>
-        ///     This function will log the event with event category in the revulytics log.
-        ///     If CollectUsageStats set to true then only it will log to revulytics
-        ///     Below is standard comment for TrackEventText method provided by revulytics.
-        ///     * Conditioning: All leading white space is removed.
-        ///     * Conditioning: All trailing white space is removed.
-        ///     * Conditioning: All internal white spaces other than space characters(' ') are removed.
-        ///     * Conditioning: Trimmed to a maximum of 128 UTF8 characters.
-        ///     * Validation: eventCategory can be empty; eventName cannot be empty.
-        /// </summary>
-        /// <param name="category">Event Category</param>
-        /// <param name="eventName">Action name</param>
         public void TrackEvent(string category, string eventName)
         {
             if (AppSettings.CollectUsageStats && RuiSdk != null)
@@ -141,20 +111,6 @@ namespace Dev2.Instrumentation
             }
         }
 
-
-        /// <summary>
-        ///     This function will log the event based on event category,event name in the revulytics log.
-        ///     If CollectUsageStats set to true then only it will log to revulytics
-        ///     Below is standard comment for TrackEventText method provided by revulytics.
-        ///     * Conditioning: All leading white space is removed.
-        ///     * Conditioning: All trailing white space is removed.
-        ///     * Conditioning: All internal white spaces other than space characters(' ') are removed.
-        ///     * Conditioning: Trimmed to a maximum of 128 UTF8 characters.
-        ///     * Validation: eventCategory can be empty; eventName cannot be empty.
-        /// </summary>
-        /// <param name="eventCategory">Category of event like,item dragged, tab opened</param>
-        /// <param name="eventName">name of the object/action</param>
-        /// <param name="customValues">values of object ot variable</param>
         public void TrackCustomEvent(string eventCategory, string eventName, string customValues)
         {
             if (AppSettings.CollectUsageStats && RuiSdk != null)
@@ -165,11 +121,6 @@ namespace Dev2.Instrumentation
 
         }
 
-        /// <summary>
-        ///     This function will return single instance of action tracking object
-        ///     through out the application life cycle.
-        /// </summary>
-        /// <returns>RevulyticsTracker object</returns>
         public static RevulyticsTracker GetTrackerInstance()
         {
             if (_revulyticsTrackerInstance == null)
@@ -185,13 +136,6 @@ namespace Dev2.Instrumentation
             return _revulyticsTrackerInstance;
         }
 
-   
-
-
-        /// <summary>
-        ///     This Function will create the config for revulytics action tracking
-        /// </summary>
-        /// <returns>RUIResult object</returns>
         public RUIResult CreateRevulyticsConfig()
         {
             var result = RUIResult.configNotCreated;
@@ -219,51 +163,31 @@ namespace Dev2.Instrumentation
 
         }
 
-        /// <summary>
-        ///     This function set the product version in revulytics.
-        /// </summary>
         public RUIResult SetProductVersion()
         {
             return RuiSdk.SetProductVersion(ProductVersion);
         }
 
-        /// <summary>
-        ///     This function will start the revultics session for login user.
-        /// </summary>
         public RUIResult StartSession()
         {
             return RuiSdk.StartSession(Username);
         }
 
-        /// <summary>
-        ///     This function will stop the revultics session for login user.
-        /// </summary>
         public RUIResult StopSession()
         {
             return RuiSdk.StopSession(Username);
         }
 
-
-        /// <summary>
-        ///     This function will write into log if result is other than ok
-        ///     while calling the revulytics method
-        /// </summary>
-        /// <param name="result">RUIResult object</param>
-        private static void LogResult(RUIResult result)
+        static void LogResult(RUIResult result)
         {
             var errormMessage = $"{DateTime.Now:g} :: Tracker Error -> {result}";
 
             Dev2Logger.Error(errormMessage, Core.RevulyticsSdkError);
         }
 
-        /// <summary>
-        ///     This function will write into log if result is other than ok
-        ///     while calling the revulytics method
-        /// </summary>
-        /// <param name="result">RUIResult object</param>
-        private static void LogErrorResult(RUIResult result)
+        static void LogErrorResult(RUIResult result)
         {
-            if (result!= RUIResult.ok)
+            if (result != RUIResult.ok)
             {
                 var errormMessage = $"{DateTime.Now:g} :: Tracker Error -> {result}";
                 Dev2Logger.Error(errormMessage, Core.RevulyticsSdkError);
