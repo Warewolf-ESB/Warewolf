@@ -71,6 +71,7 @@
     <Compile Include="ToolDescriptor.cs" />
     <Compile Include="ToolDescriptorCore.cs" />
     <Compile Include="ToolDescriptorInfo.cs" />
+    <Compile Include="WarewolfWebClient.cs" />
     <Compile Include="WcfService.cs" />
   </ItemGroup>
   <ItemGroup>
