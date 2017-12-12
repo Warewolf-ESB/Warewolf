@@ -143,14 +143,10 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         ICollection<IServiceInput> InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
         {
-            if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
-            {
-                var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
-                var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
-                _datatalistMapper.MapInputsToDatalist(serviceInputs);
-                return serviceInputs;
-            }
-            return new List<IServiceInput>();
+            var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
+            var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
+            _datatalistMapper.MapInputsToDatalist(serviceInputs);
+            return serviceInputs;
         }
 
         public bool IsInputsEmptyRows

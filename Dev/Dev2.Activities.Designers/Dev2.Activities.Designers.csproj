@@ -167,7 +167,6 @@
     </Compile>
     <Compile Include="Designers2\Core\ActionRegion\WcfActionMemento.cs" />
     <Compile Include="Designers2\Core\InputRegion\ServiceInputNameComparer.cs" />
-    <Compile Include="Designers2\Core\InputRegion\ServiceInputNameValueComparer.cs" />
     <Compile Include="Designers2\Core\ViewPropertyBuilder.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
