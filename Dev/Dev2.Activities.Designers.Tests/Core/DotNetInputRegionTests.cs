@@ -142,7 +142,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var regionToRestore = new DotNetInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
-            region.RestoreRegion(regionToRestore);
+            region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------
 
         }
