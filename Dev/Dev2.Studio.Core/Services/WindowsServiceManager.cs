@@ -11,7 +11,6 @@
 using System;
 using System.ServiceProcess;
 using Dev2.Util;
-using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.Core.Services
 {
