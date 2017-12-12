@@ -180,7 +180,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
