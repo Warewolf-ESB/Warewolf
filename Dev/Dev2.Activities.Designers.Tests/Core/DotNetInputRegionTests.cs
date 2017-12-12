@@ -45,9 +45,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
 
             var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()));
-            var DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetActionRegionInst = new DotNetActionRegion();
 
-            var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
+            var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegionInst);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
         }
@@ -76,7 +76,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()));
-            var DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetActionRegion = new DotNetActionRegion();
 
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -99,7 +99,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()));
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            var DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetActionRegion = new DotNetActionRegion();
 
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -116,7 +116,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()));
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            var DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetActionRegion = new DotNetActionRegion();
 
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
             var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()));
-            var DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetActionRegion = new DotNetActionRegion();
 
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
             
@@ -162,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(lst);
             var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()));
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            var DotNetActionRegion = new DotNetActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetActionRegion = new DotNetActionRegion();
 
             var region = new DotNetInputRegion(ModelItemUtils.CreateModelItem(act), DotNetActionRegion);
 
