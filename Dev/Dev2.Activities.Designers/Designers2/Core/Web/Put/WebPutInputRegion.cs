@@ -179,13 +179,13 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPutRegionClone()
+            return new WebPutRegionClone
             {
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
                 IsEnabled = IsEnabled
-            };
+            } as IToolRegion;
         }
 
         public void RestoreRegion(IToolRegion toRestore)
