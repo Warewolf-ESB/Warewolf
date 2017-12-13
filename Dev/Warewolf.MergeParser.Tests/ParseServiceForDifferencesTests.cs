@@ -1,6 +1,5 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Dev2.Studio.Core.Activities.Utils;
 using System.Activities.Statements;
 using System.Collections.Generic;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
@@ -12,9 +11,6 @@ using Dev2.Data.SystemTemplates.Models;
 using Dev2.Utilities;
 using Dev2.Studio.Interfaces;
 using Moq;
-using System.Activities.Presentation;
-using System.Activities.Presentation.Services;
-using System.Activities.Presentation.Model;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Warewolf.MergeParser.Tests
@@ -63,25 +59,25 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(otherChart);
 
             var psd = new ServiceDifferenceParser(activityParser, new ResourceDefinationCleaner());
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(4, count);
 
-            Assert.IsTrue(conflicts.diffTree.All(d => !d.IsInConflict));
-            Assert.AreEqual(randomActivityUniqueId, conflicts.diffTree[0].UniqueId);
-            Assert.AreEqual(calculateUniqueId, conflicts.diffTree[1].UniqueId);
+            Assert.IsTrue(diffTree.All(d => !d.IsInConflict));
+            Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
+            Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
 
-            Assert.IsTrue(conflicts.currentTree.All(d => !d.IsInConflict));
-            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
-            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[1].UniqueId);
+            Assert.IsTrue(currentTree.All(d => !d.IsInConflict));
+            Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
+            Assert.AreEqual(calculateUniqueId, currentTree[1].UniqueId);
 
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -94,8 +90,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(randomActivityUniqueId, devActivityDiff.UniqueID);
 
             //Second Node
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -194,26 +190,26 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(otherChart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(4, count);
 
-            Assert.IsTrue(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(randomActivityUniqueId, conflicts.diffTree[0].UniqueId);
-            Assert.AreEqual(calculateUniqueId, conflicts.diffTree[1].UniqueId);
+            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
+            Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
 
-            Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
-            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[1].UniqueId);
+            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
+            Assert.AreEqual(calculateUniqueId, currentTree[1].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
             Assert.IsTrue(tupleDifference.IsInConflict);
@@ -227,8 +223,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(randomActivityUniqueId, devActivityDiff.UniqueID);
 
             //difference chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
             Assert.IsFalse(tupleDifference1.IsInConflict);
@@ -309,26 +305,26 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(otherChart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(5, count);
 
-            Assert.IsTrue(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.diffTree[2].UniqueId);
-            Assert.AreEqual(baseConvertId, conflicts.diffTree[1].UniqueId);
+            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(calculateUniqueId, diffTree[2].UniqueId);
+            Assert.AreEqual(baseConvertId, diffTree[1].UniqueId);
 
-            Assert.IsFalse(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[1].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
+            Assert.IsFalse(currentTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(calculateUniqueId, currentTree[1].UniqueId);
+            Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -340,8 +336,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(randomActivityUniqueId, devActivityCurr.UniqueID);
 
             //Second chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -354,7 +350,7 @@ namespace Warewolf.MergeParser.Tests
 
             //Third node
             //difference chart
-            var tupleDifference2 = conflicts.diffTree[2];
+            var tupleDifference2 = diffTree[2];
 
             var devActivityDiff2 = tupleDifference2.Activity;
             Assert.IsNotNull(devActivityDiff2);
@@ -415,26 +411,26 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(5, count);
 
-            Assert.IsFalse(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.diffTree[1].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.diffTree[0].UniqueId);
+            Assert.IsFalse(diffTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
+            Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
 
-            Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(baseConvertId, conflicts.currentTree[1].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
+            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(baseConvertId, currentTree[1].UniqueId);
+            Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -446,8 +442,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(randomActivityUniqueId, devActivityDiff.UniqueID);
 
             //Second chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -532,26 +528,26 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(7, count);
 
-            Assert.IsFalse(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.diffTree[1].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.diffTree[0].UniqueId);
+            Assert.IsFalse(diffTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(calculateUniqueId, diffTree[1].UniqueId);
+            Assert.AreEqual(randomActivityUniqueId, diffTree[0].UniqueId);
 
-            Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[1].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
+            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(calculateUniqueId, currentTree[1].UniqueId);
+            Assert.AreEqual(randomActivityUniqueId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -563,8 +559,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(randomActivityUniqueId, devActivityDiff.UniqueID);
 
             //Second chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -628,24 +624,24 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(2, count);
 
-            Assert.IsTrue(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(assignId, conflicts.diffTree[0].UniqueId);
+            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(assignId, diffTree[0].UniqueId);
 
-            Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(assignId, conflicts.currentTree[0].UniqueId);
+            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -763,24 +759,24 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(8, count);
-            Assert.IsTrue(conflicts.diffTree.First().IsInConflict);
-            Assert.IsTrue(conflicts.currentTree.First().IsInConflict);
-            Assert.IsTrue(conflicts.diffTree.Last().IsInConflict);
-            Assert.IsTrue(conflicts.currentTree.Last().IsInConflict);
-            Assert.AreEqual(assignId, conflicts.diffTree[0].UniqueId);
-            Assert.AreEqual(assignId, conflicts.currentTree[0].UniqueId);
+            Assert.IsTrue(diffTree.First().IsInConflict);
+            Assert.IsTrue(currentTree.First().IsInConflict);
+            Assert.IsTrue(diffTree.Last().IsInConflict);
+            Assert.IsTrue(currentTree.Last().IsInConflict);
+            Assert.AreEqual(assignId, diffTree[0].UniqueId);
+            Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -792,8 +788,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(assignId, devActivityDiff.UniqueID);
 
             //Decision Node chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -906,24 +902,24 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(4, count);
-            Assert.IsFalse(conflicts.diffTree.First().IsInConflict);
-            Assert.IsFalse(conflicts.currentTree.First().IsInConflict);
-            Assert.IsTrue(conflicts.diffTree.Last().IsInConflict);
-            Assert.IsTrue(conflicts.currentTree.Last().IsInConflict);
-            Assert.AreEqual(assignId, conflicts.diffTree[0].UniqueId);
-            Assert.AreEqual(assignId, conflicts.currentTree[0].UniqueId);
+            Assert.IsFalse(diffTree.First().IsInConflict);
+            Assert.IsFalse(currentTree.First().IsInConflict);
+            Assert.IsTrue(diffTree.Last().IsInConflict);
+            Assert.IsTrue(currentTree.Last().IsInConflict);
+            Assert.AreEqual(assignId, diffTree[0].UniqueId);
+            Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -935,8 +931,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(assignId, devActivityDiff.UniqueID);
 
             //Decision Node chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -1055,25 +1051,25 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(8, count);
 
-            Assert.IsTrue(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.IsTrue(conflicts.diffTree.Any(d => !d.IsInConflict));
-            Assert.IsTrue(conflicts.currentTree.Any(d => !d.IsInConflict));
-            Assert.AreEqual(assignId, conflicts.diffTree[0].UniqueId);
-            Assert.AreEqual(assignId, conflicts.currentTree[0].UniqueId);
+            Assert.IsTrue(diffTree.Any(d => d.IsInConflict));
+            Assert.IsTrue(currentTree.Any(d => d.IsInConflict));
+            Assert.IsTrue(diffTree.Any(d => !d.IsInConflict));
+            Assert.IsTrue(currentTree.Any(d => !d.IsInConflict));
+            Assert.AreEqual(assignId, diffTree[0].UniqueId);
+            Assert.AreEqual(assignId, currentTree[0].UniqueId);
 
             //First Node chart
-            var tupleDifference = conflicts.diffTree[0];
-            var tupleCurrent = conflicts.currentTree[0];
+            var tupleDifference = diffTree[0];
+            var tupleCurrent = currentTree[0];
             Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
@@ -1085,8 +1081,8 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(assignId, devActivityDiff.UniqueID);
 
             //Decision Node chart
-            var tupleDifference1 = conflicts.diffTree[1];
-            var tupleCurrent1 = conflicts.currentTree[1];
+            var tupleDifference1 = diffTree[1];
+            var tupleCurrent1 = currentTree[1];
             Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
@@ -1197,137 +1193,23 @@ namespace Warewolf.MergeParser.Tests
             var diff = CreateContextualResourceModel(chart);
 
             var psd = new ServiceDifferenceParser();
-            var conflicts = psd.GetDifferences(current, diff);
+            var (currentTree, diffTree) = psd.GetDifferences(current, diff);
 
-            var currConflicts = conflicts.currentTree;
-            var diffConflicts = conflicts.diffTree;
+            var currConflicts = currentTree;
+            var diffConflicts = diffTree;
 
             var count = currConflicts.Count + diffConflicts.Count;
 
             Assert.AreEqual(6, count);
 
-            Assert.IsTrue(conflicts.diffTree.First().IsInConflict);
-            Assert.IsTrue(conflicts.currentTree.First().IsInConflict);
+            Assert.IsTrue(diffTree.First().IsInConflict);
+            Assert.IsTrue(currentTree.First().IsInConflict);
 
-            Assert.IsTrue(conflicts.diffTree.Last().IsInConflict);
-            Assert.IsTrue(conflicts.currentTree.Last().IsInConflict);
+            Assert.IsTrue(diffTree.Last().IsInConflict);
+            Assert.IsTrue(currentTree.Last().IsInConflict);
 
-            Assert.AreEqual(assignId, conflicts.diffTree[0].UniqueId);
-            Assert.AreEqual(assignId, conflicts.currentTree[0].UniqueId);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GetAllNodes_WhenDecisionConnected_ReturnsTrueArmsAndFalseArms()
-        {
-            var activityParser = new ActivityParser();
-            var shellView = new Mock<IShellViewModel>();
-            var serverMock = new Mock<IServer>();
-            shellView.Setup(model => model.ActiveServer).Returns(serverMock.Object);
-            CustomContainer.Register(shellView.Object);
-            CustomContainer.Register<IActivityParser>(activityParser);
-            var bb = new DsfFlowDecisionActivity();
-            var jsonSerializer = new Dev2JsonSerializer();
-            var toolId1 = Guid.NewGuid().ToString();
-            var toolId2 = Guid.NewGuid().ToString();
-            var dev2DecisionStack = new Dev2DecisionStack
-            {
-                TheStack = new List<Dev2Decision>
-                {
-                    new Dev2Decision
-                    {
-                        Cols1 = new List<DataStorage.WarewolfAtom>
-                        {
-                            DataStorage.WarewolfAtom.NewDataString("a")
-                        }
-                    },
-                    new Dev2Decision
-                    {
-                        Cols1 = new List<DataStorage.WarewolfAtom>
-                        {
-                            DataStorage.WarewolfAtom.NewDataString("a")
-                        }
-                    }
-                },
-                DisplayText = "a",
-                FalseArmText = "ErrorArm",
-                TrueArmText = "true Arm",
-                Version = "2",
-                Mode = Dev2DecisionMode.AND
-            };
-            bb.ExpressionText = jsonSerializer.Serialize(dev2DecisionStack);
-
-            var assignId = Guid.NewGuid().ToString();
-            var chart = new Flowchart
-            {
-                StartNode = new FlowStep
-                {
-                    Action = new DsfMultiAssignActivity
-                    {
-                        FieldsCollection = new List<ActivityDTO>
-                        {
-                            new ActivityDTO("field1","field1",1),
-                            new ActivityDTO("field2","field2",4),
-                            new ActivityDTO("field3","field3",3),
-                            new ActivityDTO("field3","field3",2),
-                        },
-                        UniqueID = assignId
-                    },
-                    Next = new FlowDecision
-                    {
-                        DisplayName = "DisplayName",
-                        True = new FlowStep
-                        {
-                            Action = ActivityBuilderFactory.BuildActivity(typeof(DsfCalculateActivity), toolId1),
-                            Next = new FlowStep
-                            {
-                                Action = ActivityBuilderFactory.BuildActivity(typeof(DsfBaseConvertActivity), toolId2)
-                            }
-                        },
-                        Condition = bb
-                    }
-                }
-            };
-
-            var otherChart = new Flowchart
-            {
-                StartNode = new FlowStep
-                {
-                    Action = new DsfMultiAssignActivity
-                    {
-                        FieldsCollection = new List<ActivityDTO>
-                        {
-                            new ActivityDTO("field1","field1",1),
-                            new ActivityDTO("field2","field2",2),
-                            new ActivityDTO("field2","fff",4),
-                            new ActivityDTO("field3","field3",3),
-                        },
-                        UniqueID = assignId
-
-                    },
-                    Next = new FlowDecision
-                    {
-                        DisplayName = "DisplayName",
-                        True = new FlowStep
-                        {
-                            Action = ActivityBuilderFactory.BuildActivity(typeof(DsfCalculateActivity), toolId1),
-                            Next = new FlowStep
-                            {
-                                Action = ActivityBuilderFactory.BuildActivity(typeof(DsfBaseConvertActivity), toolId2)
-                            }
-                        },
-                        Condition = bb
-                    }
-                }
-            };
-
-            var current = CreateContextualResourceModel(otherChart);
-            var diff = CreateContextualResourceModel(chart);
-
-            var psd = new ServiceDifferenceParser();
-            var diffs = psd.GetDifferences(current, diff);
-            var allNodes = psd.GetAllNodes();
-            Assert.AreEqual(0, allNodes.Count);
+            Assert.AreEqual(assignId, diffTree[0].UniqueId);
+            Assert.AreEqual(assignId, currentTree[0].UniqueId);
         }
     }
 
