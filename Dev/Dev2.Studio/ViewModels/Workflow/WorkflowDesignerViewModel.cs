@@ -3299,6 +3299,5 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public System.Action WorkflowChanged { get; set; }
 
-        #endregion
     }
 }
