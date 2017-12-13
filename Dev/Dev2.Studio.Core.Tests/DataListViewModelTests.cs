@@ -39,8 +39,8 @@ namespace Dev2.Core.Tests
     {
         #region Locals
 
-        DataListViewModel _dataListViewModel;
-        Mock<IContextualResourceModel> _mockResourceModel;
+        public static DataListViewModel _dataListViewModel;
+        public static Mock<IContextualResourceModel> _mockResourceModel;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
             AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
-        void Setup()
+        public static void Setup()
         {
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -1273,7 +1273,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
         }
 
-        void SortCleanup()
+        public static void SortCleanup()
         {
             _dataListViewModel.ScalarCollection.Clear();
             _dataListViewModel.RecsetCollection.Clear();
@@ -1397,31 +1397,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
-
-            SortCleanup();
-        }
-
-        [TestMethod]
-        public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
-        {
-            //Initialize
-            Setup();
-            for (var i = 2500; i > 0; i--)
-            {
-                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
-            }
-            var timeBefore = DateTime.Now;
-
-            //Execute
-            _dataListViewModel.SortCommand.Execute(null);
-
-            var endTime = DateTime.Now.Subtract(timeBefore);
-            //Assert
-            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar1750", _dataListViewModel.ScalarCollection[1750].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar2500", _dataListViewModel.ScalarCollection[2500].DisplayName, "Sort datalist with large list failed");
-            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 2500 variables. Took {endTime}");
 
             SortCleanup();
         }
