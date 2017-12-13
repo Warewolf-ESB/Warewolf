@@ -26,18 +26,7 @@ namespace Dev2.Activities.Specs.Deploy
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
             _commonSteps = new CommonSteps(_scenarioContext);
         }
-
-        [AfterScenario("Deploy")]
-        public void Cleanup()
-        {
-            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
-            var contextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
-            if (contextualResourceModel != null && contextualResourceModel.Count > 0)
-            {
-            }
-            File.Move(@"\\tst-ci-remote\c$\ProgramData\Warewolf\Resources\OriginalWorkFlowName", @"\\tst-ci-remote\c$\ProgramData\Warewolf\Resources\RenamedWorkFlowToDeploy");
-        }
-
+        
         [BeforeScenario("Deploy")]
         public void RollBack()
         {
@@ -126,6 +115,17 @@ namespace Dev2.Activities.Specs.Deploy
             var loadContextualResourceModel = destinationServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.AreEqual(p0, loadContextualResourceModel.DisplayName, "Failed to Update DisplayName after deploy");
             Assert.AreEqual(p0, loadContextualResourceModel.ResourceName, "Failed to Update ResourceName after deploy");
+        }
+
+
+        [Given(@"I RollBack Resource")]
+        [When(@"I RollBack Resource")]
+        [Then(@"I RollBack Resource")]
+        public void RollBackResource()
+        {
+            var destinationServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var previousVersions = destinationServer.ProxyLayer.GetVersions(_resourceId);
+            destinationServer.ProxyLayer.Rollback(_resourceId, previousVersions.First().VersionNumber);
         }
     }
 }

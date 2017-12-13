@@ -93,6 +93,8 @@ testRunner.When("I Deploy resource to remote", ((string)(null)), ((TechTalk.Spec
 testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 15
 testRunner.Then("the destination resource is \"OriginalWorkFlowName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 16
+testRunner.And("I RollBack Resource", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line hidden
             this.ScenarioCleanup();
         }
