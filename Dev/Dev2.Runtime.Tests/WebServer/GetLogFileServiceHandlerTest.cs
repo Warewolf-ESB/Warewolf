@@ -22,7 +22,7 @@ namespace Dev2.Tests.Runtime.WebServer
     [TestClass]
     public class GetLogFileServiceHandlerTest
     {
-        private NameValueCollection LocalQueryString => new NameValueCollection
+        NameValueCollection LocalQueryString => new NameValueCollection
         {
             { "Name", "the_name" },
             { "numLines", "5" },

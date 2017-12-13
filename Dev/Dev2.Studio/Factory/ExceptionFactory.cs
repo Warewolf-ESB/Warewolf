@@ -88,11 +88,11 @@ namespace Dev2.Studio.Factory
                 builder.AppendLine("StackTrace:");
                 builder.AppendLine(exception.StackTrace);
                 
-                string fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
-                StackTrace theStackTrace = new StackTrace();
+                var fullStackTrace = Environment.NewLine + Environment.NewLine + "Additional Trace Info" + Environment.NewLine + Environment.NewLine;
+                var theStackTrace = new StackTrace();
                 for (int j = theStackTrace.FrameCount - 1; j >= 0; j--)
                 {
-                    string module = theStackTrace.GetFrame(j).GetMethod().Module.ToString();
+                    var module = theStackTrace.GetFrame(j).GetMethod().Module.ToString();
                     if (module != "WindowsBase.dll" && module != "CommonLanguageRuntimeLibrary")
                     {
                         fullStackTrace += "--> " + theStackTrace.GetFrame(j).GetMethod().Name + " (" + theStackTrace.GetFrame(j).GetMethod().Module + ")";
@@ -104,7 +104,7 @@ namespace Dev2.Studio.Factory
         }
 
         public static Func<string, string> GetUniqueOutputPath { get => getUniqueOutputPath; set => getUniqueOutputPath = value; }
-        private static Func<string, string> getUniqueOutputPath = extension => FileHelper.GetUniqueOutputPath(extension);
+        static Func<string, string> getUniqueOutputPath = extension => FileHelper.GetUniqueOutputPath(extension);
 
         public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server) => await CreateViewModel(e, server, ErrorSeverity.Default);
         public static async Task<IExceptionViewModel> CreateViewModel(Exception e, IServer server, ErrorSeverity isCritical)

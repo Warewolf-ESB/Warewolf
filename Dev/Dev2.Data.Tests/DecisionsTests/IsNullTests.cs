@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isNull = new IsNull();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
             bool result = isNull.Invoke(cols);
@@ -32,7 +32,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new IsNull();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = null;
             //------------Execute Test---------------------------
             bool result = notStartsWith.Invoke(cols);

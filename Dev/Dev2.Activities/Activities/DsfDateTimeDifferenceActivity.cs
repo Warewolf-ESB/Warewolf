@@ -242,7 +242,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
             AddDebugInputItem(new DebugEvalResult(expression, labelText, environment, update));
         }
@@ -255,7 +255,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="evaledInputFormat">The evaled input format.</param>
         /// <param name="outputType">Type of the output.</param>
         /// <returns></returns>
-        private static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
+        static IDateTimeDiffTO ConvertToDateTimeDiffTo(string input1, string input2, string evaledInputFormat, string outputType)
         {
             return DateTimeConverterFactory.CreateDateTimeDiffTO(input1, input2, evaledInputFormat, outputType);
         }

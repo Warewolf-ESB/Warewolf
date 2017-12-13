@@ -23,7 +23,7 @@ namespace Warewolf.UIBindingTests.Decision
             Utils.SetupResourceDictionaryActivities();
             var tos = new List<DecisionTO>();
             FeatureContext.Current["Tos"] = tos;
-            Dev2DecisionStack stack = new Dev2DecisionStack();
+            var stack = new Dev2DecisionStack();
             var mi = CreateModelItem(tos);
             FeatureContext.Current["modelItem"] = mi;
             var mockView = new Mock<IView>();
@@ -71,7 +71,7 @@ namespace Warewolf.UIBindingTests.Decision
         [Then(@"""(.*)"" fields are ""(.*)""")]
         public void ThenFieldsAre(string p0, string p1)
         {
-            Tuple<string, string> tuple = new Tuple<string, string>(p0, p1);
+            var tuple = new Tuple<string, string>(p0, p1);
             ScenarioContext.Current.Add("fields", tuple);
         }
 

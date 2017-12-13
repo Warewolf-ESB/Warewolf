@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveComPluginSource = new SaveComPluginSource();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(null, null);
+            var jsonResult = saveComPluginSource.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveComPluginSource = new SaveComPluginSource();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(values, null);
+            var jsonResult = saveComPluginSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveComPluginSource = new SaveComPluginSource(catalog.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(values, null);
+            var jsonResult = saveComPluginSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
@@ -173,7 +173,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveComPluginSource = new SaveComPluginSource(catalog.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(values, null);
+            var jsonResult = saveComPluginSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);

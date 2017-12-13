@@ -25,19 +25,19 @@ namespace Dev2.Scheduler
 {
     public class ScheduledResourceModel : IScheduledResourceModel
     {
-        private readonly string _debugHistoryPath;
-        private readonly ISecurityWrapper _securityWrapper;
-        private readonly ITaskServiceConvertorFactory _factory;
-        private readonly IDev2TaskService _taskService;
-        private readonly string _warewolfAgentPath;
-        private readonly string _warewolfFolderPath;
-        private IFileHelper _fileHelper;
-        private IDirectoryHelper _folderHelper;
-        private readonly IDictionary<int, string> _taskStates;
-        private readonly Func<IScheduledResource, string> _pathResolve;
-        private const string Sebatchlogonright = "SeBatchLogonRight";
-        private const char NameSeperator = ':';
-        private const char ArgWrapper = '"';
+        readonly string _debugHistoryPath;
+        readonly ISecurityWrapper _securityWrapper;
+        readonly ITaskServiceConvertorFactory _factory;
+        readonly IDev2TaskService _taskService;
+        readonly string _warewolfAgentPath;
+        readonly string _warewolfFolderPath;
+        IFileHelper _fileHelper;
+        IDirectoryHelper _folderHelper;
+        readonly IDictionary<int, string> _taskStates;
+        readonly Func<IScheduledResource, string> _pathResolve;
+        const string Sebatchlogonright = "SeBatchLogonRight";
+        const char NameSeperator = ':';
+        const char ArgWrapper = '"';
 
         public ScheduledResourceModel(IDev2TaskService taskService, string warewolfFolderId, string warewolfAgentPath,
                                       ITaskServiceConvertorFactory taskServiceFactory, string debugHistoryPath, ISecurityWrapper securityWrapper, Func<IScheduledResource, string> pathResolve)
@@ -93,7 +93,7 @@ namespace Dev2.Scheduler
 
         public void DeleteSchedule(IScheduledResource resource)
         {
-            ITaskFolder folder = TaskService.GetFolder(WarewolfFolderPath);
+            var folder = TaskService.GetFolder(WarewolfFolderPath);
             if (folder.TaskExists(resource.Name))
             {
                 folder.DeleteTask(resource.Name, false);
@@ -143,19 +143,13 @@ namespace Dev2.Scheduler
         }
 
         public string DebugHistoryPath => _debugHistoryPath;
-
-        /// <summary>
-        ///     Get the list of resource from windows task scheduler where
-        ///     has an action that is an exec action
-        ///     path matches warewolf agent path
-        /// </summary>
-        /// <returns></returns>
+        
         public ObservableCollection<IScheduledResource> GetScheduledResources()
         {
             try
             {
-                ITaskFolder folder = TaskService.GetFolder(WarewolfFolderPath);
-                IList<IDev2Task> allTasks = folder.ValidTasks; // we have the tasks with at least one action
+                var folder = TaskService.GetFolder(WarewolfFolderPath);
+                var allTasks = folder.ValidTasks; // we have the tasks with at least one action
                 return allTasks.Where(a => a.IsValidDev2Task()).Select(CreateScheduledResource).ToObservableCollection();
             }
             catch (FileNotFoundException)
@@ -166,13 +160,13 @@ namespace Dev2.Scheduler
             }
         }
 
-        private IExecAction BuildAction(IScheduledResource resource)
+        IExecAction BuildAction(IScheduledResource resource)
         {
             return ConvertorFactory.CreateExecAction(WarewolfAgentPath,
                 $"\"Workflow:{resource.WorkflowName.Trim()}\" \"TaskName:{resource.Name.Trim()}\" \"ResourceId:{resource.ResourceId}\"");
         }
 
-        private IScheduledResource CreateScheduledResource(IDev2Task arg)
+        IScheduledResource CreateScheduledResource(IDev2Task arg)
         {
             ITrigger trigger;
             DateTime nextDate;
@@ -215,7 +209,7 @@ namespace Dev2.Scheduler
                         {
                             resWorkflowName = _pathResolve(res);
                         }
-                        catch(NullReferenceException)
+                        catch (NullReferenceException)
                         {
                             resWorkflowName = split[1];
                             res.Errors.AddError($"Workflow: {resWorkflowName} not found. Task is invalid.");
@@ -252,7 +246,7 @@ namespace Dev2.Scheduler
                 }
             }
 
-            throw new InvalidScheduleException($"Invalid resource found:{arg.Definition.Data}"); // this should not be reachable because isvaliddev2task checks same conditions
+            throw new Exception($"Invalid resource found:{arg.Definition.Data}"); // this should not be reachable because isvaliddev2task checks same conditions
         }
 
         public int ArgCount => 3;
@@ -261,7 +255,7 @@ namespace Dev2.Scheduler
 
         public IList<IResourceHistory> CreateHistory(IScheduledResource resource)
         {
-            ITaskEventLog evt = _factory.CreateTaskEventLog($"\\{_warewolfFolderPath}\\" + resource.Name);
+            var evt = _factory.CreateTaskEventLog($"\\{_warewolfFolderPath}\\" + resource.Name);
             var groupings = from a in evt.Where(x => !string.IsNullOrEmpty(x.Correlation) 
                             && !string.IsNullOrEmpty(x.TaskCategory) && _taskStates.Values.Contains(x.TaskCategory))
                 group a by a.Correlation into corrGroup
@@ -338,7 +332,7 @@ namespace Dev2.Scheduler
             return DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId)) != null;
         }
 
-        private string GetUserName(string debugHistoryPath, string correlationId)
+        string GetUserName(string debugHistoryPath, string correlationId)
         {
             var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
             if (file != null)
@@ -349,7 +343,7 @@ namespace Dev2.Scheduler
             return "";
         }
 
-        private IList<IDebugState> CreateDebugHistory(string debugHistoryPath, string correlationId)
+        IList<IDebugState> CreateDebugHistory(string debugHistoryPath, string correlationId)
         {
             var serializer = new Dev2JsonSerializer();
             var file = DirectoryHelper.GetFiles(debugHistoryPath).FirstOrDefault(a => a.Contains(correlationId));
@@ -362,9 +356,9 @@ namespace Dev2.Scheduler
             return serializer.Deserialize<List<IDebugState>>(FileHelper.ReadAllText(file));
         }
 
-        private IDev2TaskDefinition CreateNewTask(IScheduledResource resource)
+        IDev2TaskDefinition CreateNewTask(IScheduledResource resource)
         {
-            IDev2TaskDefinition created = TaskService.NewTask();
+            var created = TaskService.NewTask();
             created.Data = $"{resource.Name}~{resource.NumberOfHistoryToKeep}";
 
             var trigger = _factory.SanitiseTrigger(resource.Trigger.Trigger);

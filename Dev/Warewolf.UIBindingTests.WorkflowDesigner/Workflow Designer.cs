@@ -42,7 +42,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
     [TestClass]
     public class Workflow_Designer
     {
-        private Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IShellViewModel> _shellViewModelMock;
 
         [TestInitialize]
         public void Init()
@@ -943,7 +943,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
         {
             var eventAggregator = new EventAggregator();
 
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
             mockResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(WorkflowDesignerUnitTest.WorkflowXAMLForTest());
 
             var dataListViewModel = WorkflowDesignerUnitTest.CreateDataListViewModel(mockResourceModel, eventAggregator);
@@ -954,11 +954,11 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
             DataListSingleton.SetDataList(dataListViewModel);
-            Mock<IPopupController> mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
+            var mockPopUp = Dev2MockFactory.CreateIPopup(MessageBoxResult.Yes);
 
             dataListItems.ToList().ForEach(dataListViewModel.ScalarCollection.Add);
             dataListViewModel.RecsetCollection.Clear();
-            WorkflowDesignerViewModel workflowDesigner = WorkflowDesignerUnitTest.CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
+            var workflowDesigner = WorkflowDesignerUnitTest.CreateWorkflowDesignerViewModelWithDesignerAttributesInitialized(mockResourceModel.Object, eventAggregator);
             workflowDesigner.PopUp = mockPopUp.Object;
 
             Assert.IsFalse(workflowDesigner.CanCopyUrl);
@@ -1083,11 +1083,11 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
                 }
             };
 
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            Guid envId2 = Guid.NewGuid();
-            Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var mockWorkflowHelper = new Mock<IWorkflowHelper>();
+            var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            var envId2 = Guid.NewGuid();
+            var mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
 
@@ -1143,7 +1143,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
 
-            List<ModelItem> flowNodes = new List<ModelItem>();
+            var flowNodes = new List<ModelItem>();
             flowNodes.Add(source.Object);
             flowNodes.Add(source1.Object);
             flowNodes.Add(source2.Object);
@@ -1169,11 +1169,11 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
                 }
             };
 
-            Mock<IContextualResourceModel> mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            Mock<IWorkflowHelper> mockWorkflowHelper = new Mock<IWorkflowHelper>();
-            Mock<IServer> mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
-            Guid envId2 = Guid.NewGuid();
-            Mock<IServer> mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            var mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var mockWorkflowHelper = new Mock<IWorkflowHelper>();
+            var mockEnv = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
+            var envId2 = Guid.NewGuid();
+            var mockEnv2 = Dev2MockFactory.SetupEnvironmentModel(mockResourceModel, null);
             mockEnv.Setup(c => c.EnvironmentID).Returns(envId2);
             mockResourceModel.Setup(c => c.Environment).Returns(mockEnv.Object);
 
@@ -1231,7 +1231,7 @@ namespace Warewolf.UIBindingTests.WorkflowDesigner
 
             var testClass = new WorkflowDesignerViewModelMock(mockResourceModel.Object, mockWorkflowHelper.Object);
 
-            List<ModelItem> flowNodes = new List<ModelItem>();
+            var flowNodes = new List<ModelItem>();
             flowNodes.Add(source.Object);
             flowNodes.Add(source1.Object);
             flowNodes.Add(source2.Object);

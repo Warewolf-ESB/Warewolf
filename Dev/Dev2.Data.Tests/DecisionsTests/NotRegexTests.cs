@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notRegEx = new NotRegEx();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Number 5 should";
             cols[1] = "d";
             //------------Execute Test---------------------------
@@ -29,7 +29,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new NotRegEx();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "324";
             cols[1] = "d";
             //------------Execute Test---------------------------

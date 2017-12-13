@@ -51,8 +51,8 @@ namespace Dev2.Studio.Controller
 
         #region Fields
 
-        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
-        private static Dev2DecisionCallbackHandler _callBackHandler;
+        static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
+        static Dev2DecisionCallbackHandler _callBackHandler;
 
         #endregion Fields
 
@@ -88,7 +88,7 @@ namespace Dev2.Studio.Controller
             {
                 try
                 {
-                    string tmp = FlowNodeHelper.CleanModelData(_callBackHandler.ModelData);
+                    var tmp = FlowNodeHelper.CleanModelData(_callBackHandler.ModelData);
                     var dds = JsonConvert.DeserializeObject<Dev2DecisionStack>(tmp);
 
                     if (dds == null)
@@ -145,16 +145,16 @@ namespace Dev2.Studio.Controller
             return null;
         }
 
-        private static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
+        static Dev2DecisionCallbackHandler StartSwitchDropWizard(ModelItem modelItem, string display)
         {
             var dataContext = new SwitchDesignerViewModel(modelItem, display);
             return ShowSwitchDialogWindow(modelItem, dataContext);
         }
 
         [ExcludeFromCodeCoverage]
-        private static Dev2DecisionCallbackHandler ShowSwitchDialogWindow(ModelItem modelItem, SwitchDesignerViewModel dataContext)
+        static Dev2DecisionCallbackHandler ShowSwitchDialogWindow(ModelItem modelItem, SwitchDesignerViewModel dataContext)
         {
-            var large = new ConfigureSwitch {DataContext = dataContext};
+            var large = new ConfigureSwitch { DataContext = dataContext };
             var window = new ActivityDefaultWindow();
             if (Application.Current != null)
             {
@@ -165,7 +165,7 @@ namespace Dev2.Studio.Controller
             {
                 contentPresenter.Content = large;
             }
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(modelItem?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
@@ -179,7 +179,7 @@ namespace Dev2.Studio.Controller
             window.SetEnableDoneButtonState(true);
             if (showDialog.HasValue && showDialog.Value)
             {
-                var callBack = new Dev2DecisionCallbackHandler {ModelData = JsonConvert.SerializeObject(dataContext.Switch)};
+                var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
                 return callBack;
             }
             return null;
@@ -220,9 +220,9 @@ namespace Dev2.Studio.Controller
         }
 
         [ExcludeFromCodeCoverage]
-        private static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
+        static Dev2DecisionCallbackHandler ShowSwitchArmDialog(SwitchDesignerViewModel dataContext)
         {
-            var large = new ConfigureSwitchArm {DataContext = dataContext};
+            var large = new ConfigureSwitchArm { DataContext = dataContext };
             var window = new ActivityDefaultWindow();
             if (Application.Current != null)
             {
@@ -238,7 +238,7 @@ namespace Dev2.Studio.Controller
             var showDialog = window.ShowDialog();
             if (showDialog.HasValue && showDialog.Value)
             {
-                var callBack = new Dev2DecisionCallbackHandler {ModelData = JsonConvert.SerializeObject(dataContext.Switch)};
+                var callBack = new Dev2DecisionCallbackHandler { ModelData = JsonConvert.SerializeObject(dataContext.Switch) };
                 return callBack;
             }
             return null;
@@ -248,7 +248,7 @@ namespace Dev2.Studio.Controller
         public static void EditSwitchCaseExpression(EditCaseExpressionMessage args)
         {
             OldSwitchValue = string.Empty;
-            ModelProperty switchCaseValue = args.ModelItem.Properties["Case"];
+            var switchCaseValue = args.ModelItem.Properties["Case"];
             var switchVal = args.ModelItem.Properties["ParentFlowSwitch"];
             if (switchVal != null)
             {
@@ -329,7 +329,7 @@ namespace Dev2.Studio.Controller
 
         #region Protected Methods
 
-        private static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
+        static Dev2DecisionCallbackHandler StartDecisionWizard(ModelItem mi)
         {
             var dataContext = new DecisionDesignerViewModel(mi);
 
@@ -337,9 +337,9 @@ namespace Dev2.Studio.Controller
         }
 
         [ExcludeFromCodeCoverage]
-        private static Dev2DecisionCallbackHandler ShowDecisionDialogWindow(ModelItem mi, DecisionDesignerViewModel dataContext)
+        static Dev2DecisionCallbackHandler ShowDecisionDialogWindow(ModelItem mi, DecisionDesignerViewModel dataContext)
         {
-            var large = new Large {DataContext = dataContext};
+            var large = new Large { DataContext = dataContext };
             var window = new ActivityDefaultWindow();
             if (Application.Current != null)
             {
@@ -352,7 +352,7 @@ namespace Dev2.Studio.Controller
             }
 
             window.SetEnableDoneButtonState(true);
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(mi?.Parent?.View);
             var dataContext1 = parentContentPane?.DataContext;
             if (dataContext1 != null)
             {
@@ -420,7 +420,7 @@ namespace Dev2.Studio.Controller
             else
             {
                 result = property.Value;
-                
+
                 var isCopyPaste = isNew && !string.IsNullOrEmpty(activity.ExpressionText);
                 if (result == null || isCopyPaste)
                 {                    

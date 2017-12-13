@@ -18,8 +18,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2ActionCollection : IActionCollection
     {
-        private readonly ActionCollection _nativeInstance;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly ActionCollection _nativeInstance;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2ActionCollection(ITaskServiceConvertorFactory taskServiceConvertorFactory,
             ActionCollection nativeInstance)
@@ -39,7 +39,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public IEnumerator<IAction> GetEnumerator()
         {
-            IEnumerator<Microsoft.Win32.TaskScheduler.Action> en = Instance.GetEnumerator();
+            var en = Instance.GetEnumerator();
             while (en.MoveNext())
             {
                 yield return _taskServiceConvertorFactory.CreateAction(en.Current);

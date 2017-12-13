@@ -16,7 +16,7 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2RepetitionPattern : IRepetitionPattern
     {
-        private readonly RepetitionPattern _nativeInstance;
+        readonly RepetitionPattern _nativeInstance;
 
         public Dev2RepetitionPattern(RepetitionPattern nativeInstance)
         {

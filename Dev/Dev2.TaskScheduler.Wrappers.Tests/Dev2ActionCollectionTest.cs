@@ -23,10 +23,10 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     [TestClass]
     public class Dev2ActionCollectionTest
     {
-        private  ActionCollection _nativeInstance;
-        private TaskDefinition _nativeTask;
-        private TaskService _nativeService;
-        private  Mock<ITaskServiceConvertorFactory> _taskServiceConvertorFactory;
+        ActionCollection _nativeInstance;
+        TaskDefinition _nativeTask;
+        TaskService _nativeService;
+        Mock<ITaskServiceConvertorFactory> _taskServiceConvertorFactory;
 
         [TestInitialize]
         public void Init()
@@ -112,7 +112,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         }
 
         #region Helpers
-        private Dev2ActionCollection CreateCollection()
+        Dev2ActionCollection CreateCollection()
         {
             var collection = new Dev2ActionCollection(_taskServiceConvertorFactory.Object, _nativeInstance);
             var nativeAction = new ExecAction("a", "b", "c");
@@ -121,7 +121,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             collection.Add(actionToAdd);
             return collection;
         }
-    #endregion
+        #endregion
     }
 
 }

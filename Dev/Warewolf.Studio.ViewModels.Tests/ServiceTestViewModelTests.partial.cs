@@ -144,11 +144,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             debugStateTreeViewItemViewModel.Content = debugState;
 
-            string expectedValue = "This is a long message to test that the Test Editor accepts a new line input that can be validated against the Test Editor input field.\n" +
+            var expectedValue = "This is a long message to test that the Test Editor accepts a new line input that can be validated against the Test Editor input field.\n" +
                 "This is a long message to test that the Test Editor accepts a new line input that can be validated against the Test Editor input field.";
 
-            DebugItem debugItem = new DebugItem();
-            DebugItemResult debugItemResult = new DebugItemResult();
+            var debugItem = new DebugItem();
+            var debugItemResult = new DebugItemResult();
             debugItemResult.Variable = "[[input]]";
             debugItemResult.Value = expectedValue;
             debugItemResult.Operator = "=";
@@ -476,7 +476,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(0, testSteps.Count);
         }
 
-        private static string GetJsonDataFile(string jsonDataFile)
+        static string GetJsonDataFile(string jsonDataFile)
         {
             var exists = File.Exists(jsonDataFile);
             if (!exists)

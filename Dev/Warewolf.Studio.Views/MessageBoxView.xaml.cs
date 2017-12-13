@@ -12,13 +12,10 @@ using Warewolf.Studio.ViewModels;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for MessageBoxView.xaml
-    /// </summary>
     public partial class MessageBoxView
     {
         readonly Grid _blackoutGrid = new Grid();
-        private bool _openDependencyGraph;
+        bool _openDependencyGraph;
         public bool OpenDependencyGraph => _openDependencyGraph;
 
         public MessageBoxView()
@@ -38,7 +35,7 @@ namespace Warewolf.Studio.Views
             DialogResult = false;
         }
 
-        private void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
+        void Hyperlink_OnRequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             if (sender is Hyperlink resourcePath)
             {
@@ -51,7 +48,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void MessageBoxView_OnLoaded(object sender, RoutedEventArgs e)
+        void MessageBoxView_OnLoaded(object sender, RoutedEventArgs e)
         {
             var messageBoxViewModel = DataContext as MessageBoxViewModel;
             if (messageBoxViewModel != null && messageBoxViewModel.IsYesButtonVisible)
@@ -66,7 +63,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void MessageBoxView_OnKeyDown(object sender, KeyEventArgs e)
+        void MessageBoxView_OnKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -74,17 +71,15 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void MessageBoxView_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        void MessageBoxView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
                 if (Application.Current != null)
                 {
                     var windowCollection = Application.Current.Windows;
-
                     foreach (var window in windowCollection)
                     {
-
                         if (window is Window window1 && window1.Name != "MainViewWindow")
                         {
                             window1.Close();
@@ -118,7 +113,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void BtnDeleteAll_OnClick(object sender, RoutedEventArgs e)
+        void BtnDeleteAll_OnClick(object sender, RoutedEventArgs e)
         {
             if (DataContext is MessageBoxViewModel messageBoxViewModel)
             {

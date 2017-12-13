@@ -77,15 +77,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while (colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                IActivityIOPath ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                var broker = ActivityIOFactory.CreateOperationsBroker();
+                var ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                IActivityIOOperationsEndPoint endpoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
+                var endpoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
                 try
                 {
-                    string result = broker.Get(endpoint);
+                    var result = broker.Get(endpoint);
                     outputs[0].OutputStrings.Add(result);
                 }
                 catch (Exception e)

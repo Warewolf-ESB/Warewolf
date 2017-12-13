@@ -30,17 +30,17 @@ namespace Dev2.Studio.AppResources.Behaviors
         public static readonly DependencyProperty CloseIndicatorProperty =
             DependencyProperty.Register("CloseIndicator", typeof(string), typeof(WindowCloseBehviour), new PropertyMetadata(CloseIndicatorChanged));
 
-        private static void CloseIndicatorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        static void CloseIndicatorChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            WindowCloseBehviour windowCloseBehviour = d as WindowCloseBehviour;
+            var windowCloseBehviour = d as WindowCloseBehviour;
 
-            if(windowCloseBehviour?.AssociatedObject == null)
+            if (windowCloseBehviour?.AssociatedObject == null)
             {
                 return;
             }
 
             bool value = Convert.ToBoolean(e.NewValue);
-            if(value)
+            if (value)
             {
                 windowCloseBehviour.AssociatedObject.Close();
             }

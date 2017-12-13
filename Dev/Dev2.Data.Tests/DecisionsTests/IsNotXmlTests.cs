@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {            
             //------------Setup for test--------------------------
             var isNotXml = new IsNotXml();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
             bool result = isNotXml.Invoke(cols);
@@ -43,7 +43,7 @@ Procedure:
 
             //------------Setup for test--------------------------
             var notStartsWith = new IsNotXml();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = xmlFragment;
             //------------Execute Test---------------------------
             bool result = notStartsWith.Invoke(cols);

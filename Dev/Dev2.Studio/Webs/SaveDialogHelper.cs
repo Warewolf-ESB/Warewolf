@@ -48,7 +48,7 @@ namespace Dev2.Webs
                 {
                     throw new ArgumentNullException(nameof(resourceModel));
                 }
-                IServer server = resourceModel.Environment;
+                var server = resourceModel.Environment;
                 ServerRepository.Instance.ActiveServer = server ?? throw new ArgumentNullException("environment");
 
                 if (server.Permissions == null)

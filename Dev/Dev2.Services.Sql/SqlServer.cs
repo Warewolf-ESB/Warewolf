@@ -32,7 +32,7 @@ namespace Dev2.Services.Sql
             _connection = null;
         }
 
-        private readonly IConnectionBuilder _connectionBuilder;
+        readonly IConnectionBuilder _connectionBuilder;
         public SqlServer(IConnectionBuilder connectionBuilder)
         {
             _connectionBuilder = connectionBuilder;
@@ -45,9 +45,9 @@ namespace Dev2.Services.Sql
 
         public bool IsConnected { get; }
         public string ConnectionString { get; }
-        private string _connectionString;
-        private ISqlConnection _connection;
-        private IDbTransaction _transaction;
+        string _connectionString;
+        ISqlConnection _connection;
+        IDbTransaction _transaction;
 
 
         public bool Connect(string connectionString)
@@ -228,9 +228,9 @@ namespace Dev2.Services.Sql
         {
         }
 
-        private DataTable GetSchema()
+        DataTable GetSchema()
         {
-            string commandText = GlobalConstants.SchemaQuery;
+            var commandText = GlobalConstants.SchemaQuery;
             _connection.TryOpen();
             using (_connection)
             {
@@ -243,7 +243,7 @@ namespace Dev2.Services.Sql
                 }
             }
         }
-        private static DataColumn GetDataColumn(DataTable dataTable, string columnName)
+        static DataColumn GetDataColumn(DataTable dataTable, string columnName)
         {
             var dataColumn = dataTable.Columns[columnName];
             if (dataColumn == null)
@@ -253,7 +253,7 @@ namespace Dev2.Services.Sql
             return dataColumn;
         }
 
-        private static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
+        static string GetFullProcedureName(DataRow row, DataColumn procedureDataColumn,
             DataColumn procedureSchemaColumn)
         {
             var procedureName = row[procedureDataColumn].ToString();
@@ -261,7 +261,7 @@ namespace Dev2.Services.Sql
             return schemaName + "." + procedureName;
         }
 
-        private List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
+        List<IDbDataParameter> GetProcedureParameters(IDbCommand command)
         {
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
             var originalCommandText = command.CommandText;
@@ -349,8 +349,8 @@ namespace Dev2.Services.Sql
             return sqlCommand;
         }
 
-        private string _commantText;
-        private CommandType _commandType;
+        string _commantText;
+        CommandType _commandType;
 
 
         public bool Connect(string connectionString, CommandType commandType, string commandText)

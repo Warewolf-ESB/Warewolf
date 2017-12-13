@@ -15,42 +15,42 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerTooltips : BindableBase, IExplorerTooltips
     {
-        private string _newServiceTooltip;
-        private string _newServerSourceTooltip;
-        private string _newSqlServerSourceTooltip;
-        private string _newMySqlSourceTooltip;
-        private string _newPostgreSqlSourceTooltip;
-        private string _newOracleSourceTooltip;
-        private string _newOdbcSourceTooltip;
-        private string _newWebSourceTooltip;
-        private string _newPluginSourceTooltip;
-        private string _newComPluginSourceTooltip;
-        private string _newEmailSourceTooltip;
-        private string _newExchangeSourceTooltip;
-        private string _newRabbitMqSourceTooltip;
-        private string _newDropboxSourceTooltip;
-        private string _newSharepointSourceTooltip;
-        private string _debugInputsTooltip;
-        private string _debugStudioTooltip;
-        private string _debugBrowserTooltip;
-        private string _scheduleTooltip;
-        private string _newFolderTooltip;
-        private string _renameTooltip;
-        private string _deleteTooltip;
-        private string _duplicateTooltip;
-        private string _createTestTooltip;
-        private string _runAllTestsTooltip;
-        private string _deployTooltip;
-        private string _dependenciesTooltip;
-        private string _viewSwaggerTooltip;
-        private string _viewApisJsonTooltip;
-        private string _showHideVersionsTooltip;
-        private string _rollbackTooltip;
-        private string _openTooltip;
-        private string _newWcfSourceTooltip;
-        private string _viewExecutionLoggingTooltip;
-        private string _serverVersionTooltip;
-        private string _deployResourceCheckboxTooltip;
+        string _newServiceTooltip;
+        string _newServerSourceTooltip;
+        string _newSqlServerSourceTooltip;
+        string _newMySqlSourceTooltip;
+        string _newPostgreSqlSourceTooltip;
+        string _newOracleSourceTooltip;
+        string _newOdbcSourceTooltip;
+        string _newWebSourceTooltip;
+        string _newPluginSourceTooltip;
+        string _newComPluginSourceTooltip;
+        string _newEmailSourceTooltip;
+        string _newExchangeSourceTooltip;
+        string _newRabbitMqSourceTooltip;
+        string _newDropboxSourceTooltip;
+        string _newSharepointSourceTooltip;
+        string _debugInputsTooltip;
+        string _debugStudioTooltip;
+        string _debugBrowserTooltip;
+        string _scheduleTooltip;
+        string _newFolderTooltip;
+        string _renameTooltip;
+        string _deleteTooltip;
+        string _duplicateTooltip;
+        string _createTestTooltip;
+        string _runAllTestsTooltip;
+        string _deployTooltip;
+        string _dependenciesTooltip;
+        string _viewSwaggerTooltip;
+        string _viewApisJsonTooltip;
+        string _showHideVersionsTooltip;
+        string _rollbackTooltip;
+        string _openTooltip;
+        string _newWcfSourceTooltip;
+        string _viewExecutionLoggingTooltip;
+        string _serverVersionTooltip;
+        string _deployResourceCheckboxTooltip;
         private string _mergeTooltip;
 
         public void SetSourceTooltips(bool canCreateSource)
@@ -68,19 +68,19 @@ namespace Warewolf.Studio.ViewModels
             SetDllTooltips(canCreateSource, noPermissionsToolTip);
         }
 
-        private void SetEmailTooltips(bool canCreateSource, string noPermissionsToolTip)
+        void SetEmailTooltips(bool canCreateSource, string noPermissionsToolTip)
         {
             NewEmailSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewEmailSourceTooltip : noPermissionsToolTip;
             NewExchangeSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewExchangeSourceTooltip : noPermissionsToolTip;
         }
 
-        private void SetDllTooltips(bool canCreateSource, string noPermissionsToolTip)
+        void SetDllTooltips(bool canCreateSource, string noPermissionsToolTip)
         {
             NewPluginSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewPluginSourceTooltip : noPermissionsToolTip;
             NewComPluginSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewComPluginSourceTooltip : noPermissionsToolTip;
         }
 
-        private void SetDatabaseTooltips(bool canCreateSource, string noPermissionsToolTip)
+        void SetDatabaseTooltips(bool canCreateSource, string noPermissionsToolTip)
         {
             NewSqlServerSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewSqlServerSourceTooltip : noPermissionsToolTip;
             NewMySqlSourceTooltip = canCreateSource ? Resources.Languages.Tooltips.NewMySqlSourceTooltip : noPermissionsToolTip;

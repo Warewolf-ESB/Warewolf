@@ -22,7 +22,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void InstantiationWithMalformedDataExpectedErrorInErrorsCollection()
         {
-            MainViewModel mainViewModel = new MainViewModel(new XElement("Malformed"), null, null, null);
+            var mainViewModel = new MainViewModel(new XElement("Malformed"), null, null, null);
             Assert.AreEqual(1, mainViewModel.Errors.Count, "When instantiated with malformed xml an error is expected.");
             Assert.AreEqual(Visibility.Visible, mainViewModel.ErrorsVisible, "When there are errors the ErrorsVisible property should have a value of visible.");
         }
@@ -30,7 +30,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void InstantiationWithNullDataExpectedErrorInErrorsCollection()
         {
-            MainViewModel mainViewModel = new MainViewModel(null, null, null, null);
+            var mainViewModel = new MainViewModel(null, null, null, null);
             Assert.AreEqual(1, mainViewModel.Errors.Count, "When instantiated with null data an error is expected.");
             Assert.AreEqual(Visibility.Visible, mainViewModel.ErrorsVisible, "When there are errors the ErrorsVisible property should have a value of visible.");
         }
@@ -39,11 +39,11 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         public void SaveCommandExecutedExpectedSaveCallbackInvokedWithCorrectData()
         {
             bool callbackExecuted = false;
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
-            string expected = config.ToXml().ToString();
-            string actual = "";
+            var config = new Configuration.Settings.Configuration("localhost");
+            var expected = config.ToXml().ToString();
+            var actual = "";
 
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), x =>
+            var mainViewModel = new MainViewModel(config.ToXml(), x =>
             {
                 actual = x.ToString();
                 callbackExecuted = true;
@@ -59,8 +59,8 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void SaveCommandExecutedWhereSaveCallbackIsNullExpectedNoException()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
+            var config = new Configuration.Settings.Configuration("localhost");
+            var mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
 
             mainViewModel.SaveCommand.Execute(null);
         }
@@ -68,9 +68,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void SaveCommandExecutedWhereSaveCallbackThrowsExceptionExpectedErrorInErrorsCollection()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
+            var config = new Configuration.Settings.Configuration("localhost");
 
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), x =>
+            var mainViewModel = new MainViewModel(config.ToXml(), x =>
             {
                 throw new Exception();
             }, null, null);
@@ -86,9 +86,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         public void CancelCommandExecutedExpectedCancelCallbackInvoked()
         {
             bool callbackExecuted = false;
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
+            var config = new Configuration.Settings.Configuration("localhost");
 
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, () =>
+            var mainViewModel = new MainViewModel(config.ToXml(), null, () =>
             {
                 callbackExecuted = true;
             }, null);
@@ -101,8 +101,8 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void CancelCommandExecutedWhereCancelCallbackIsNullExpectedNoException()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
+            var config = new Configuration.Settings.Configuration("localhost");
+            var mainViewModel = new MainViewModel(config.ToXml(), null, null, null);
 
             mainViewModel.SaveCommand.Execute(null);
         }
@@ -110,9 +110,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void CancelCommandExecutedWhereCancelCallbackThrowsExceptionExpectedErrorInErrorsCollection()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
+            var config = new Configuration.Settings.Configuration("localhost");
 
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, () =>
+            var mainViewModel = new MainViewModel(config.ToXml(), null, () =>
             {
                 throw new Exception();
             }, null);
@@ -126,9 +126,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void ClearErrorsCommandWhenThereAreErrorsExpectedErrorsCleared()
         {
-            Configuration.Settings.Configuration config = new Configuration.Settings.Configuration("localhost");
+            var config = new Configuration.Settings.Configuration("localhost");
 
-            MainViewModel mainViewModel = new MainViewModel(config.ToXml(), null, () =>
+            var mainViewModel = new MainViewModel(config.ToXml(), null, () =>
             {
                 throw new Exception();
             }, null);

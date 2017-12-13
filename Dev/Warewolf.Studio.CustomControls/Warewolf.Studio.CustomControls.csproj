@@ -119,22 +119,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ActivityDesignerToggleButton.cs" />
-    <Compile Include="CheckBoxColumn.cs" />
-    <Compile Include="CheckBoxColumnContentProvider.cs" />
-    <Compile Include="DataPresenterHelpers.cs" />
-    <Compile Include="DragDropExtension.cs" />
     <Compile Include="DoubleClickBehavior.cs" />
-    <Compile Include="ExpanderToBooleanConverter.cs" />
-    <Compile Include="PasswordBoxAssistant.cs" />
+    <Compile Include="DragDropExtension.cs" />
     <Compile Include="SearchTextBox.cs" />
-    <Compile Include="TextBoxColumn.cs" />
-    <Compile Include="TextColumnContentProvider.cs" />
     <Compile Include="VariableTextBox.cs" />
-    <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
-    <Compile Include="WidthConverter.cs" />
+    <Compile Include="ServiceTestWidthConverter.cs" />
     <None Include="..\Run Tests.ps1">
       <Visible>False</Visible>
       <Link>Run Tests.ps1</Link>
@@ -145,7 +137,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="WatermarkTextBox.cs" />
     <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

@@ -19,8 +19,8 @@ namespace Dev2.DataList.Contract
     public sealed class DataListFormat
     {
         #region Static Members
-        private static readonly object FormatLock = new object();
-        private static readonly Dictionary<string, DataListFormat> ExistingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
+        static readonly object FormatLock = new object();
+        static readonly Dictionary<string, DataListFormat> ExistingFormats = new Dictionary<string, DataListFormat>(StringComparer.Ordinal);
 
         public static DataListFormat CreateFormat(string formatName) => CreateFormat(formatName, EmitionTypes.XML, "");
         public static DataListFormat CreateFormat(string formatName, EmitionTypes publicFormatName, string headerType)
@@ -46,7 +46,7 @@ namespace Dev2.DataList.Contract
         #endregion
 
         #region Instance Fields
-        private readonly string _formatName;
+        readonly string _formatName;
         #endregion
 
         #region Public Properties

@@ -299,7 +299,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string errorMsg)
         {
-            string newErrorMsg = errorMsg;
+            var newErrorMsg = errorMsg;
 
             var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
@@ -465,7 +465,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             var protocol = table.Rows[0]["Protocol"];
             var serverName = table.Rows[0]["ServerName"];
             var suthentication = table.Rows[0]["Authentication"];
-            string port = table.Rows[0]["port"];
+            var port = table.Rows[0]["port"];
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             var resourceId = Guid.NewGuid();
 
@@ -503,8 +503,8 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var guid = ScenarioContext.Current.Get<Guid>("resourceId");
             var environmentModel = ScenarioContext.Current.Get<IServer>("environmentModel");
-            IContextualResourceModel loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
-            if(ScenarioContext.Current.ContainsKey("resourceModel"))
+            var loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
+            if (ScenarioContext.Current.ContainsKey("resourceModel"))
             {
                 ScenarioContext.Current["resourceModel"] = loadContextualResourceModel;
             }

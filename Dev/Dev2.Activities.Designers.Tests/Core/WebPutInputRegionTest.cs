@@ -32,24 +32,24 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
 
             Assert.AreEqual(false, region.IsEnabled);
             Assert.AreEqual(0, region.Errors.Count);
         }
-        private DsfWebPutActivity CreatePutActivity()
+        DsfWebPutActivity CreatePutActivity()
         {
             var id = Guid.NewGuid();
             var act = new DsfWebPutActivity() { SourceId = id };
             return act;
 
         }
-        private ISourceToolRegion<IWebServiceSource> CreateWebSourceRegion()
+        ISourceToolRegion<IWebServiceSource> CreateWebSourceRegion()
         {
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             return srcreg;
         }
         [TestMethod]
@@ -60,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPostInputRegion();
             Assert.AreEqual(region.IsEnabled, false);
         }
@@ -75,7 +75,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             region.PutData = "bob";
             Assert.AreEqual(region.IsEnabled, false);
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var mod = new Mock<IWebServiceModel>();
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebPutRegionClone();
             regionToRestore.IsEnabled = true;
@@ -129,7 +129,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var mod = new Mock<IWebServiceModel>();
             var  lst = new List<IWebServiceSource> { new WebServiceSourceDefinition(){HostName = "bob",DefaultQuery = "Dave"} , new WebServiceSourceDefinition(){HostName = "f",DefaultQuery = "g"} };
             mod.Setup(a => a.RetrieveSources()).Returns(lst);
-            WebSourceRegion srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
+            var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             var regionToRestore = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
 

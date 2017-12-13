@@ -77,7 +77,7 @@ namespace Dev2.Activities
             return GetOperatingSystemProperty("Version");
         }
 
-        private string GetOperatingSystemProperty(string property)
+        string GetOperatingSystemProperty(string property)
         {
             var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
                         select x.GetPropertyValue(property)).First();
@@ -267,7 +267,7 @@ namespace Dev2.Activities
         public string GetUserRolesInformation(IIdentity currentIdentity)
         {
             var stringBuilder = new StringBuilder();
-            WindowsIdentity identity = currentIdentity as WindowsIdentity ?? WindowsIdentity.GetCurrent();
+            var identity = currentIdentity as WindowsIdentity ?? WindowsIdentity.GetCurrent();
 
             if (identity.Groups != null)
             {
@@ -367,7 +367,7 @@ namespace Dev2.Activities
             return GetIPAddress(AddressFamily.InterNetworkV6);
         }
 
-        private string GetIPAddress(AddressFamily ipv)
+        string GetIPAddress(AddressFamily ipv)
         {
             var hosts = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
             var ips = (from host in hosts where host.AddressFamily == ipv select host.ToString()).ToList();

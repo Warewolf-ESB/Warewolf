@@ -15,7 +15,7 @@ namespace Dev2.Common
 {
     public class Dev2XamlCleaner
     {
-        private const string replacePrefix = "assembly=";
+        const string replacePrefix = "assembly=";
 
         public static readonly string[] badNamespaces =
         {
@@ -49,7 +49,7 @@ namespace Dev2.Common
         /// <returns></returns>
         public StringBuilder CleanServiceDef(StringBuilder def)
         {
-            StringBuilder result = StripNaughtyNamespaces(def);
+            var result = StripNaughtyNamespaces(def);
 
             result = ReplaceChangedNamespaces(result);
 
@@ -62,10 +62,10 @@ namespace Dev2.Common
         /// </summary>
         /// <param name="def">The def.</param>
         /// <returns></returns>
-        private StringBuilder ReplaceChangedNamespaces(StringBuilder def)
+        StringBuilder ReplaceChangedNamespaces(StringBuilder def)
         {
-            StringBuilder result = def;
-            for (int i = 0; i < replaceNamespaces.Length/2; i++)
+            var result = def;
+            for (int i = 0; i < replaceNamespaces.Length / 2; i++)
             {
                 result = result.Replace(replacePrefix + replaceNamespaces[i, 0],
                     replacePrefix + replaceNamespaces[i, 1]);
@@ -81,19 +81,19 @@ namespace Dev2.Common
         /// <returns></returns>
         public StringBuilder StripNaughtyNamespaces(StringBuilder def)
         {
-            StringBuilder result = def;
+            var result = def;
             foreach (string ns in badNamespaces)
             {
                 // Have to make it a string for Regex ;(
-                string defStr = def.ToString();
-                Match m = Regex.Match(defStr, ns);
+                var defStr = def.ToString();
+                var m = Regex.Match(defStr, ns);
                 if (m.Success)
                 {
                     // we have a hit ;)
                     // search backward for the start xmlns: ...
                     for (int i = 0; i < m.Groups.Count; i++)
                     {
-                        string val = m.Groups[i].Value;
+                        var val = m.Groups[i].Value;
                         result = result.Replace(val, string.Empty);
                     }
                 }

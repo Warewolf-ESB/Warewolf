@@ -41,7 +41,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -73,7 +73,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -89,7 +89,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -105,7 +105,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -121,7 +121,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -137,7 +137,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -169,7 +169,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -185,7 +185,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -201,7 +201,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -217,7 +217,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -233,7 +233,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -249,7 +249,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -265,7 +265,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -281,7 +281,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -297,7 +297,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------
@@ -313,7 +313,7 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
             var viewFactory = new ViewFactory();
-            PrivateObject privateObject = new PrivateObject(viewFactory);
+            var privateObject = new PrivateObject(viewFactory);
             //---------------Assert Precondition----------------
             Assert.IsInstanceOfType(viewFactory, typeof(IViewFactory));
             //---------------Execute Test ----------------------

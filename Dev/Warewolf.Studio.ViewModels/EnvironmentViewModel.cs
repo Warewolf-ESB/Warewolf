@@ -39,37 +39,37 @@ namespace Warewolf.Studio.ViewModels
 {
     public class EnvironmentViewModel : BindableBase, IEnvironmentViewModel
     {
-        private ObservableCollection<IExplorerItemViewModel> _children;
-        private bool _isConnecting;
-        private bool _isConnected;
-        private bool _isServerIconVisible;
-        private bool _isServerUnavailableIconVisible;
-        private bool _isExpanded;
-        private bool _isSelected;
-        private bool _canCreateFolder;
-        private bool _canShowServerVersion;
-        private bool _canCreateWorkflowService;
-        private readonly IShellViewModel _shellViewModel;
-        private readonly IConnectControlSingleton _connectControlSingleton;
-        private readonly bool _isDialog;
-        private bool _allowEdit;
-        private bool _allowResourceCheck;
-        private bool _isVisible;
-        private bool _showContextMenu;
-        private readonly IPopupController _controller;
-        private bool _canDrag;
-        private bool _forcedRefresh;
-        private bool _isResourceCheckedEnabled;
-        private bool? _isResource;
-        private string _filter;
-        private bool _canCreateSource;
-        private bool _canViewApisJson;
-        private bool _canDeploy;
-        private bool _isSaveDialog;
-        private bool _canViewExecutionLogging;
+        ObservableCollection<IExplorerItemViewModel> _children;
+        bool _isConnecting;
+        bool _isConnected;
+        bool _isServerIconVisible;
+        bool _isServerUnavailableIconVisible;
+        bool _isExpanded;
+        bool _isSelected;
+        bool _canCreateFolder;
+        bool _canShowServerVersion;
+        bool _canCreateWorkflowService;
+        readonly IShellViewModel _shellViewModel;
+        readonly IConnectControlSingleton _connectControlSingleton;
+        readonly bool _isDialog;
+        bool _allowEdit;
+        bool _allowResourceCheck;
+        bool _isVisible;
+        bool _showContextMenu;
+        readonly IPopupController _controller;
+        bool _canDrag;
+        bool _forcedRefresh;
+        bool _isResourceCheckedEnabled;
+        bool? _isResource;
+        string _filter;
+        bool _canCreateSource;
+        bool _canViewApisJson;
+        bool _canDeploy;
+        bool _isSaveDialog;
+        bool _canViewExecutionLogging;
         private bool _isMergeVisible;
 
-        private EnvironmentViewModel()
+        EnvironmentViewModel()
         {
             var connectControlSingleton = CustomContainer.Get<IConnectControlSingleton>();
             _connectControlSingleton = connectControlSingleton ?? ConnectControlSingleton.Instance;
@@ -208,11 +208,12 @@ namespace Warewolf.Studio.ViewModels
                     IsExpanded = !IsExpanded;
                 }
             });
-            server.Connect();
+            //server.Connect();
             IsConnected = server.IsConnected;
 
             server.NetworkStateChanged += (args, server1) =>
              {
+                 IsConnected = server1.IsConnected;
                  if (args.State == ConnectionNetworkState.Connected)
                  {
                      Application.Current.Dispatcher.Invoke(async () =>
@@ -249,7 +250,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task RefreshAsync()
+        async Task RefreshAsync()
         {
             var isDeploy = Children.Any(a => AllowResourceCheck);
             await LoadAsync(isDeploy, true);
@@ -259,7 +260,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateActiveEnvironment(IShellViewModel shellViewModel)
+        void UpdateActiveEnvironment(IShellViewModel shellViewModel)
         {
             shellViewModel.SetActiveServer(Server.EnvironmentID);
         }
@@ -268,7 +269,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int ChildrenCount => GetChildrenCount();
 
-        private int GetChildrenCount()
+        int GetChildrenCount()
         {
             var total = 0;
             if (Children != null)
@@ -760,12 +761,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ShowServerVersionAbout()
+        void ShowServerVersionAbout()
         {
             ShellViewModel.ShowAboutBox();
         }
 
-        private string GetChildNameFromChildren()
+        string GetChildNameFromChildren()
         {
             var count = 0;
             var folderName = Resources.Languages.Core.NewFolderLabel;
@@ -1029,7 +1030,7 @@ namespace Warewolf.Studio.ViewModels
             return AsList(Children);
         }
 
-        private ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
+        ICollection<IExplorerItemViewModel> AsList(ICollection<IExplorerItemViewModel> rootCollection)
         {
             return rootCollection.Union(rootCollection.SelectMany(a => a.AsList())).ToList();
         }
@@ -1120,7 +1121,7 @@ namespace Warewolf.Studio.ViewModels
             return explorerItemModels;
         }
 
-        private ExplorerItemViewModel CreateExplorerItem(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IExplorerItem explorerItem)
+        ExplorerItemViewModel CreateExplorerItem(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IExplorerItem explorerItem)
         {
             var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
             {
@@ -1184,7 +1185,7 @@ namespace Warewolf.Studio.ViewModels
             return itemCreated;
         }
 
-        private static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
+        static void SetPropertiesForDialog(IExplorerItemViewModel itemCreated)
         {
             itemCreated.AllowResourceCheck = false;
             itemCreated.CanCreateSource = false;

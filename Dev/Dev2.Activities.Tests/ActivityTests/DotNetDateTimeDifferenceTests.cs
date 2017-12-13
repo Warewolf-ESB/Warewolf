@@ -118,7 +118,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
+        void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
         {
             TestStartNode = new FlowStep
             {

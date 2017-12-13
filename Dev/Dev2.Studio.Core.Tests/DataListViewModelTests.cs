@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
         void Setup()
@@ -62,7 +62,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
             carRecordset.Input = true;
@@ -719,7 +719,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -750,7 +750,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -781,7 +781,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -811,7 +811,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[[Car]]", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -848,7 +848,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -878,7 +878,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.RecsetCollection.Clear();
             _dataListViewModel.ScalarCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("[Car]", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -1241,7 +1241,7 @@ namespace Dev2.Core.Tests
         public void WriteDataListToResourceModel_ScalarAnsrecset_Expected_Positive()
         {
             Setup();
-            string result = _dataListViewModel.WriteToResourceModel();
+            var result = _dataListViewModel.WriteToResourceModel();
 
             const string expectedResult = @"<DataList><Car Description=""A recordset of information about a car"" IsEditable=""True"" ColumnIODirection=""Both"" ><Make Description=""Make of vehicle"" IsEditable=""True"" ColumnIODirection=""Both"" /><Model Description=""Model of vehicle"" IsEditable=""True"" ColumnIODirection=""Both"" /></Car><Country Description=""name of Country"" IsEditable=""True"" ColumnIODirection=""Both"" /></DataList>";
 
@@ -1278,7 +1278,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ScalarCollection.Clear();
             _dataListViewModel.RecsetCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
 
@@ -1397,6 +1397,31 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
+
+            SortCleanup();
+        }
+
+        [TestMethod]
+        public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
+        {
+            //Initialize
+            Setup();
+            for (var i = 2500; i > 0; i--)
+            {
+                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
+            }
+            var timeBefore = DateTime.Now;
+
+            //Execute
+            _dataListViewModel.SortCommand.Execute(null);
+
+            var endTime = DateTime.Now.Subtract(timeBefore);
+            //Assert
+            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar1750", _dataListViewModel.ScalarCollection[1750].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar2500", _dataListViewModel.ScalarCollection[2500].DisplayName, "Sort datalist with large list failed");
+            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 2500 variables. Took {endTime}");
 
             SortCleanup();
         }
@@ -2063,7 +2088,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_UpdateDataListItems_NoMissingComplexObjectsWorkflowItems_ShouldMarkComplexObjectsValuesUsedTrue()
         {
             //------------Setup for test--------------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var resourceModel = new Mock<IResourceModel>().Object;
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string complexObject = "testing";
@@ -2093,7 +2118,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_ViewComplexObject_NoMissingComplexObjectsWorkflowItems_ShouldShowViewComplexObjectsTrue()
         {
             //------------Setup for test--------------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var resourceModel = new Mock<IResourceModel>().Object;
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string complexObject = "testing";
@@ -2124,7 +2149,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_DeleteComplexObject_NoMissingComplexObjectsWorkflowItems_ShouldShoDeleteComplexObjectsTrue()
         {
             //------------Setup for test--------------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var resourceModel = new Mock<IResourceModel>().Object;
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string complexObject = "testing";
@@ -2313,7 +2338,7 @@ namespace Dev2.Core.Tests
             var parts = new List<IDataListVerifyPart> { CreateScalarPart(scalarName).Object };
             //----------------------Precondition----------------------------
             //------------Execute Test---------------------------
-            List<IDataListVerifyPart> missingDataListParts = dataListViewModel.MissingDataListParts(parts);
+            var missingDataListParts = dataListViewModel.MissingDataListParts(parts);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, missingDataListParts.Count);
             Assert.AreEqual(scalarName, missingDataListParts[0].Field);
@@ -2333,7 +2358,7 @@ namespace Dev2.Core.Tests
             //----------------------Precondition----------------------------
             Assert.AreEqual(1, dataListViewModel.ScalarCollection.Count);
             //------------Execute Test---------------------------
-            List<IDataListVerifyPart> missingDataListParts = dataListViewModel.MissingDataListParts(parts);
+            var missingDataListParts = dataListViewModel.MissingDataListParts(parts);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, missingDataListParts.Count);
         }
@@ -2353,7 +2378,7 @@ namespace Dev2.Core.Tests
             dataListParts.Add(part.Object);
             //----------------------Precondition----------------------------
             //------------Execute Test---------------------------
-            List<IDataListVerifyPart> missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
+            var missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, missingDataListParts.Count);
         }
@@ -2377,7 +2402,7 @@ namespace Dev2.Core.Tests
             //----------------------Precondition----------------------------
             Assert.AreEqual(1, dataListViewModel.RecsetCollection[0].Children.Count);
             //------------Execute Test---------------------------
-            List<IDataListVerifyPart> missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
+            var missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
             //------------Assert Results-------------------------
             Assert.AreEqual(1, missingDataListParts.Count);
         }
@@ -2402,7 +2427,7 @@ namespace Dev2.Core.Tests
             //----------------------Precondition----------------------------
             Assert.AreEqual(2, dataListViewModel.RecsetCollection[0].Children.Count);
             //------------Execute Test---------------------------
-            List<IDataListVerifyPart> missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
+            var missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, missingDataListParts.Count);
         }
@@ -2427,7 +2452,7 @@ namespace Dev2.Core.Tests
             //----------------------Precondition----------------------------
             Assert.AreEqual(2, dataListViewModel.RecsetCollection[0].Children.Count);
             //------------Execute Test---------------------------
-            List<IDataListVerifyPart> missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
+            var missingDataListParts = dataListViewModel.MissingDataListParts(dataListParts);
             //------------Assert Results-------------------------
             Assert.AreEqual(0, missingDataListParts.Count);
         }
@@ -2438,7 +2463,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_UpdateDataListItems_NoMissingScalarWorkflowItems_ShouldMarkScalarValuesUsedTrue()
         {
             //------------Setup for test--------------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var resourceModel = new Mock<IResourceModel>().Object;
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string scalarName = "scalar";
@@ -2457,7 +2482,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_UpdateDataListItems_WithNoMissingRecsetWorkflowItems_ShouldMarkRecsetValueIsUsedTrue()
         {
             //------------Setup for test--------------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var resourceModel = new Mock<IResourceModel>().Object;
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string recsetName = "recset";
@@ -2482,7 +2507,7 @@ namespace Dev2.Core.Tests
         public void DataListViewModel_UpdateDataListItems_WithNoMissingRecsetFieldWorkflowItems_ShouldMarkRecsetFieldValueIsUsedTrue()
         {
             //------------Setup for test--------------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
+            var resourceModel = new Mock<IResourceModel>().Object;
             var dataListViewModel = new DataListViewModel(new Mock<IEventAggregator>().Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             const string recsetName = "recset";
@@ -2512,7 +2537,7 @@ namespace Dev2.Core.Tests
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(null);
 
@@ -2524,16 +2549,16 @@ namespace Dev2.Core.Tests
         public void SetComplexObjectParentIsUsed_GivenParentAndChild_ShouldSetAllToIsUsed()
         {
             //---------------Set up test pack-------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
-            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var resourceModel = new Mock<IResourceModel>().Object;
+            var eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
 
             var parent = CreateComplexObjectDataListModel("Child");
             var child = CreateComplexObjectDataListModel("Child", parent);
             dataListViewModel.ComplexObjectCollection.Add(child);
-            ComplexObjectHandler handler = new ComplexObjectHandler(dataListViewModel);
-            PrivateObject p = new PrivateObject(handler);
+            var handler = new ComplexObjectHandler(dataListViewModel);
+            var p = new PrivateObject(handler);
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
@@ -2548,8 +2573,8 @@ namespace Dev2.Core.Tests
         public void OnDispose_ShouldClearAndKillTheResource()
         {
             //---------------Set up test pack-------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
-            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var resourceModel = new Mock<IResourceModel>().Object;
+            var eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
             //---------------Assert Precondition----------------
@@ -2568,21 +2593,21 @@ namespace Dev2.Core.Tests
         public void GetDataListString_GivenComplexobjectModel_ShouldBuildXmlCorrectly()
         {
             //---------------Set up test pack-------------------
-            IResourceModel resourceModel = new Mock<IResourceModel>().Object;
-            Mock<IEventAggregator> eventAggregator = new Mock<IEventAggregator>();
+            var resourceModel = new Mock<IResourceModel>().Object;
+            var eventAggregator = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(eventAggregator.Object);
             dataListViewModel.InitializeDataListViewModel(resourceModel);
 
             IComplexObjectItemModel item = new ComplexObjectItemModel("Name", null, enDev2ColumnArgumentDirection.Input, "Name", null, false, "", true, true, false, false);
             dataListViewModel.ComplexObjectCollection.Add(item);
-            PrivateObject privateObject = new PrivateObject(dataListViewModel);
+            var privateObject = new PrivateObject(dataListViewModel);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try
             {
                 //---------------Test Result -----------------------
                 var invoke = privateObject.Invoke("GetDataListString");
-                XmlDocument document = new XmlDocument();
+                var document = new XmlDocument();
                 document.LoadXml(invoke.ToString());
             }
             catch(Exception e)
@@ -2639,7 +2664,7 @@ namespace Dev2.Core.Tests
 
         static IRecordSetItemModel CreateRecsetDataListModelWithTwoFields(string recsetName, string firstFieldName, string secondFieldName)
         {
-            IRecordSetItemModel recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
+            var recSetDataModel = DataListItemModelFactory.CreateRecordSetItemModel(recsetName, "A recordset of information about a car");
             recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel(firstFieldName, recSetDataModel));
             recSetDataModel.Children.Add(CreateRecordSetFieldDataListModel(secondFieldName, recSetDataModel));
             return recSetDataModel;
@@ -2647,7 +2672,7 @@ namespace Dev2.Core.Tests
 
         static IRecordSetFieldItemModel CreateRecordSetFieldDataListModel(string fieldName, IRecordSetItemModel recSetDataModel)
         {
-            IRecordSetFieldItemModel fieldDataListModel = DataListItemModelFactory.CreateRecordSetFieldItemModel(fieldName, "", recSetDataModel);
+            var fieldDataListModel = DataListItemModelFactory.CreateRecordSetFieldItemModel(fieldName, "", recSetDataModel);
             fieldDataListModel.DisplayName = recSetDataModel.DisplayName + "()." + fieldName;
             return fieldDataListModel;
         }
@@ -2688,7 +2713,7 @@ namespace Dev2.Core.Tests
         }
 
 
-        private IEnumerable<IScalarItemModel> CreateScalarListItems(IEnumerable<IDataListVerifyPart> parts)
+        IEnumerable<IScalarItemModel> CreateScalarListItems(IEnumerable<IDataListVerifyPart> parts)
         {
             return (from part in parts where part.IsScalar select DataListItemModelFactory.CreateScalarItemModel(part.Field, part.Description)).ToList();
         }

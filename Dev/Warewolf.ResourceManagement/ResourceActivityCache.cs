@@ -34,7 +34,7 @@ namespace Warewolf.ResourceManagement
             {
                 try
                 {
-                    IDev2Activity act = _activityParser.Parse(dynamicActivity);
+                    var act = _activityParser.Parse(dynamicActivity);
                     if (_cache.TryAdd(resourceIdGuid, act))
                     {
                         return act;
@@ -45,18 +45,15 @@ namespace Warewolf.ResourceManagement
                         return act;
                     });
                     return act;
-                }
-                    
-                catch(Exception err) //errors caught inside
-                    
+                }                    
+                catch(Exception err) //errors caught inside                    
                 {
                     Dev2Logger.Error(err, "Warewolf Error");
                     if(failOnException)
                     {
                         throw;
                     }
-                }
-   
+                }   
             }
             return null;
         }
@@ -74,16 +71,6 @@ namespace Warewolf.ResourceManagement
         public void RemoveFromCache(Guid resourceID)
         {
             _cache.TryRemove(resourceID, out IDev2Activity act);
-        }
-
-        public void AddToCache(Guid resourceID, DynamicActivity activity)
-        {
-            IDev2Activity act = _activityParser.Parse(activity);
-            _cache.AddOrUpdate(resourceID, act, (guid, dev2Activity) =>
-            {
-                _cache[resourceID] = act;
-                return act;
-            });
         }
     }
 }

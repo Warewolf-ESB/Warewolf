@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(null, null);
+            var jsonResult = deleteTest.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(values, null);
+            var jsonResult = deleteTest.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -119,7 +119,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(values, null);
+            var jsonResult = deleteTest.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(values, null);
+            var jsonResult = deleteTest.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);

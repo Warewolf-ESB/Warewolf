@@ -18,15 +18,15 @@ namespace Dev2.Runtime.Execution
     {
         #region fields
 
-        private readonly List<IExecutableService> _activeExecutions;
+        readonly List<IExecutableService> _activeExecutions;
 
         #endregion
 
         #region singleton
-        private static readonly Lazy<ExecutableServiceRepository> _instance
+        static readonly Lazy<ExecutableServiceRepository> _instance
             = new Lazy<ExecutableServiceRepository>(() => new ExecutableServiceRepository());
 
-        private ExecutableServiceRepository()
+        ExecutableServiceRepository()
         {
             _activeExecutions = new List<IExecutableService>();
         }
@@ -83,9 +83,9 @@ namespace Dev2.Runtime.Execution
             return exists;
         }
 
-        private IExecutableService GetParent(Guid workspaceID, Guid parentID)
+        IExecutableService GetParent(Guid workspaceID, Guid parentID)
         {
-            var service = _activeExecutions.FirstOrDefault(e => e!=null &&e.ID == parentID && e.WorkspaceID == workspaceID);
+            var service = _activeExecutions.FirstOrDefault(e => e != null && e.ID == parentID && e.WorkspaceID == workspaceID);
             return service;
         }
 

@@ -42,10 +42,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     public class DsfActivity : DsfActivityAbstract<bool>,IEquatable<DsfActivity>
     {
         #region Fields
-        private InArgument<string> _iconPath = string.Empty;
+        InArgument<string> _iconPath = string.Empty;
         string _previousInstanceId;
-        private ICollection<IServiceInput> _inputs;
-        private ICollection<IServiceOutputMapping> _outputs;
+        ICollection<IServiceInput> _inputs;
+        ICollection<IServiceOutputMapping> _outputs;
         #endregion
 
         #region Constructors
@@ -233,21 +233,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // ???? Why is this here....
             context.Properties.ToObservableCollection();
 
-            IEsbChannel esbChannel = DataObject.EsbChannel;
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var esbChannel = DataObject.EsbChannel;
+            var dataObject = context.GetExtension<IDSFDataObject>();
             dataObject.EnvironmentID = context.GetValue(EnvironmentID);
-            Guid datalistId = DataListExecutionID.Get(context);
+            var datalistId = DataListExecutionID.Get(context);
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
             dataObject.RemoteServiceType = context.GetValue(Type);
             var resourceId = context.GetValue(ResourceID);
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
 
             ParentServiceName = dataObject.ServiceName;
 
 
-            string parentServiceName = string.Empty;
-            string serviceName = string.Empty;
+            var parentServiceName = string.Empty;
+            var serviceName = string.Empty;
 
             var isRemote = dataObject.IsRemoteWorkflow();
 
@@ -297,7 +297,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!DeferExecution)
                 {
                     // In all cases the ShapeOutput will have merged the execution data up into the current
-                    ErrorResultTO tmpErrors = new ErrorResultTO();
+                    var tmpErrors = new ErrorResultTO();
 
                     if (esbChannel == null)
                     {
@@ -446,15 +446,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             dataObject.EnvironmentID = EnvironmentID?.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
             dataObject.RemoteServiceType = Type?.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
 
-            string parentServiceName = string.Empty;
-            string serviceName = string.Empty;
+            var parentServiceName = string.Empty;
+            var serviceName = string.Empty;
             var isRemote = dataObject.IsRemoteWorkflow();
 
             if ((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
@@ -474,7 +474,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                Guid resourceId = dataObject.ResourceID;
+                var resourceId = dataObject.ResourceID;
                 if (resourceId != Guid.Empty)
                 {
                     dataObject.ResourceID = resourceId;
@@ -491,9 +491,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (!DeferExecution)
                 {
-                    ErrorResultTO tmpErrors = new ErrorResultTO();
+                    var tmpErrors = new ErrorResultTO();
 
-                    IEsbChannel esbChannel = dataObject.EsbChannel;
+                    var esbChannel = dataObject.EsbChannel;
                     if (esbChannel == null)
                     {
                         throw new Exception(ErrorResource.NullESBChannel);
@@ -577,8 +577,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     return new List<string> { ObjectName };
                 }
-                IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-                IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                var parser = DataListFactory.CreateOutputParser();
+                var outputs = parser.Parse(OutputMapping);
                 return outputs.Select(definition => definition.RawValue).ToList();
             }
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
@@ -597,7 +597,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Debug IO
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            IDev2LanguageParser parser = DataListFactory.CreateInputParser();
+            var parser = DataListFactory.CreateInputParser();
             return GetDebugInputs(env, parser, update).Select(a => (DebugItem)a).ToList();
 
         }
@@ -613,7 +613,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         continue;
                     }
                     var tmpEntry = env.Eval(serviceInput.Value, update);
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     if (tmpEntry.IsWarewolfAtomResult)
                     {
                         if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
@@ -652,7 +652,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                IList<IDev2Definition> inputs = parser.Parse(InputMapping);
+                var inputs = parser.Parse(InputMapping);
 
 
                 foreach (IDev2Definition dev2Definition in inputs)
@@ -663,7 +663,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     var tmpEntry = env.Eval(dev2Definition.RawValue, update);
 
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     if (tmpEntry.IsWarewolfAtomResult)
                     {
 
@@ -725,7 +725,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!string.IsNullOrEmpty(ObjectName) && !(this is DsfEnhancedDotNetDllActivity))
                 {
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     AddDebugItem(new DebugEvalResult(ObjectName, "", environment, update), itemToAdd);
                     results.Add(itemToAdd);
                 }
@@ -738,7 +738,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         try
                         {
-                            DebugItem itemToAdd = new DebugItem();
+                            var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
                             results.Add(itemToAdd);
                         }
@@ -750,13 +750,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 else
                 {
-                    IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-                    IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                    var parser = DataListFactory.CreateOutputParser();
+                    var outputs = parser.Parse(OutputMapping);
                     foreach (IDev2Definition dev2Definition in outputs)
                     {
                         try
                         {
-                            DebugItem itemToAdd = new DebugItem();
+                            var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
                             results.Add(itemToAdd);
                         }

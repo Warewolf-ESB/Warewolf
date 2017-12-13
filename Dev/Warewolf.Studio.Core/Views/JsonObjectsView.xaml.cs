@@ -9,9 +9,6 @@ using Warewolf.Studio.Core;
 
 namespace Dev2.Studio.Core.Views
 {
-    /// <summary>
-    /// Interaction logic for JsonObjectsView.xaml
-    /// </summary>
     public partial class JsonObjectsView: IJsonObjectsView
     {
         readonly Grid _blackoutGrid = new Grid();
@@ -48,7 +45,7 @@ namespace Dev2.Studio.Core.Views
             ShowDialog();
         }
 
-        private void JsonObjectsView_OnKeyUp(object sender, KeyEventArgs e)
+        void JsonObjectsView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {

@@ -227,13 +227,13 @@ namespace Dev2.Core.Tests.Settings
             viewModel.IsDirty = true;
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             var repo = new Mock<IResourceRepository>();
             environment.Setup(a => a.ResourceRepository).Returns(repo.Object);
             viewModel.CurrentEnvironment = environment.Object;
-            PrivateObject p = new PrivateObject(viewModel,new PrivateType( typeof(SettingsViewModel)));
+            var p = new PrivateObject(viewModel,new PrivateType( typeof(SettingsViewModel)));
             p.SetProperty("SecurityViewModel", securityViewModel);
             //------------Execute Test---------------------------
             viewModel.SaveCommand.Execute(null);
@@ -259,7 +259,7 @@ namespace Dev2.Core.Tests.Settings
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             var repo = new Mock<IResourceRepository>();
@@ -289,7 +289,7 @@ namespace Dev2.Core.Tests.Settings
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(false);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
@@ -331,12 +331,12 @@ You need Administrator permission.", viewModel.Errors);
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            PrivateObject p = new PrivateObject(viewModel.SecurityViewModel);
+            var p = new PrivateObject(viewModel.SecurityViewModel);
             p.SetProperty("ServerPermissions", new ObservableCollection<WindowsGroupPermission>(){new WindowsGroupPermission
             {
                 WindowsGroup = "Some Group",
@@ -390,12 +390,12 @@ You need Administrator permission.", viewModel.Errors);
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             //viewModel.CurrentEnvironment = environment.Object;
             viewModel.IsDirty = true;
-            PrivateObject p = new PrivateObject(viewModel.SecurityViewModel);
+            var p = new PrivateObject(viewModel.SecurityViewModel);
             p.SetProperty("ResourcePermissions",new ObservableCollection<WindowsGroupPermission>(){new WindowsGroupPermission
             {
                 WindowsGroup = "Some Group",
@@ -432,7 +432,7 @@ You need Administrator permission.", viewModel.Errors);
 
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(false);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             viewModel.CurrentEnvironment = environment.Object;
@@ -460,7 +460,7 @@ You need Administrator permission.", viewModel.Errors);
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString(), ErrorMessage, securityViewModel);
             var environment = new Mock<IServer>();
             environment.Setup(e => e.IsConnected).Returns(true);
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             var repo = new Mock<IResourceRepository>();
@@ -750,7 +750,7 @@ You need Administrator permission.", viewModel.Errors);
 
         static void VerifySavePopup(Mock<IPopupController> popupController, bool showShown = true)
         {
-            Times times = showShown ? Times.Once() : Times.Never();
+            var times = showShown ? Times.Once() : Times.Never();
             popupController.Verify(p => p.ShowSettingsCloseConfirmation(), times);
 
         }
@@ -778,7 +778,7 @@ You need Administrator permission.", viewModel.Errors);
             environment.Setup(e => e.IsConnected).Returns(true);
             environment.Setup(c => c.ResourceRepository).Returns(mockResourceRepo.Object);
   
-            Mock<IAuthorizationService> authService = new Mock<IAuthorizationService>();
+            var authService = new Mock<IAuthorizationService>();
             authService.Setup(c => c.IsAuthorized(It.IsAny<AuthorizationContext>(), It.IsAny<string>())).Returns(true);
             environment.Setup(c => c.AuthorizationService).Returns(authService.Object);
             var viewModel = new TestSettingsViewModel(new Mock<Caliburn.Micro.IEventAggregator>().Object, popupController, new SynchronousAsyncWorker(), new Mock<IWin32Window>().Object, environment) { TheSecurityViewModel = securityViewModel };
@@ -800,7 +800,7 @@ You need Administrator permission.", viewModel.Errors);
             return settings;
         }
 
-        private static IPerformanceCounterTo CreatePerfCounterSettings()
+        static IPerformanceCounterTo CreatePerfCounterSettings()
         {
             var performanceCounterTo = new PerformanceCounterTo();
             var testCounter = new TestCounter { IsActive = true };
@@ -810,7 +810,7 @@ You need Administrator permission.", viewModel.Errors);
             return performanceCounterTo;
         }
 
-        private static LoggingSettingsTo CreateLoggingSettings()
+        static LoggingSettingsTo CreateLoggingSettings()
         {
             return new LoggingSettingsTo
             {
@@ -819,7 +819,7 @@ You need Administrator permission.", viewModel.Errors);
             };
         }
 
-        private static SecuritySettingsTO CreateSecuritySettings()
+        static SecuritySettingsTO CreateSecuritySettings()
         {
             return new SecuritySettingsTO(new[]
             {
@@ -828,10 +828,10 @@ You need Administrator permission.", viewModel.Errors);
                     IsServer = true, WindowsGroup = GlobalConstants.WarewolfGroup,
                     View = false, Execute = false, Contribute = true, DeployTo = true, DeployFrom = true, Administrator = true
                 },
-                new WindowsGroupPermission 
-                { 
-                    IsServer = true, WindowsGroup = "Deploy Admins", 
-                    View = false, Execute = false, Contribute = false, DeployTo = true, DeployFrom = true, Administrator = false 
+                new WindowsGroupPermission
+                {
+                    IsServer = true, WindowsGroup = "Deploy Admins",
+                    View = false, Execute = false, Contribute = false, DeployTo = true, DeployFrom = true, Administrator = false
                 },
 
                 new WindowsGroupPermission

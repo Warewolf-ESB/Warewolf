@@ -21,9 +21,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             try {
-                BitmapImage image = new BitmapImage();
+                var image = new BitmapImage();
                 if (value != null && value.ToString() != string.Empty) {
-                    Uri imageUri = new Uri(value.ToString(), UriKind.RelativeOrAbsolute);
+                    var imageUri = new Uri(value.ToString(), UriKind.RelativeOrAbsolute);
 
                     image = new BitmapImage();
                     image.BeginInit();

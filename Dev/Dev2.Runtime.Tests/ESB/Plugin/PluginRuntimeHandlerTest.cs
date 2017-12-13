@@ -887,7 +887,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         {
             //---------------Set up test pack-------------------
             var runtimeHandler = typeof(PluginRuntimeHandler);
-            PrivateType type = new PrivateType(runtimeHandler);
+            var type = new PrivateType(runtimeHandler);
 #pragma warning disable 618
             var type1 = typeof(OracleCommand);
 #pragma warning restore 618
@@ -908,7 +908,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
         {
             //---------------Set up test pack-------------------
             var runtimeHandler = typeof(PluginRuntimeHandler);
-            PrivateType type = new PrivateType(runtimeHandler);
+            var type = new PrivateType(runtimeHandler);
 #pragma warning disable 618
             var type1 = typeof(OracleCommand);
 #pragma warning restore 618
@@ -958,7 +958,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 loc = assembly.Location;
             }
 
-            Guid resourceID = Guid.Empty;
+            var resourceID = Guid.Empty;
             if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();
@@ -974,7 +974,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             };
         }
 
-        private static PluginService CreatePluginService()
+        static PluginService CreatePluginService()
         {
             return CreatePluginService(new List<IDev2MethodInfo>
             {
@@ -985,7 +985,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             }, typeof(DummyClassForPluginTest));
         }
 
-        private static PluginService CreatePluginService(List<IDev2MethodInfo> method, Type type, ServiceConstructor constructor = null)
+        static PluginService CreatePluginService(List<IDev2MethodInfo> method, Type type, ServiceConstructor constructor = null)
         {
             var source = CreatePluginSource(typeof(DummyClassForPluginTest));
             var service = new PluginService
@@ -1006,7 +1006,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
     }
     public class Main
     {
-        private readonly string _a;
+        readonly string _a;
 
         public Main(string a)
         {

@@ -30,11 +30,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
 {
     public class WebServiceDeleteViewModel : CustomToolWithRegionBase, IWebServiceDeleteViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IWebDeleteInputArea _inputArea;
-        private ISourceToolRegion<IWebServiceSource> _sourceRegion;
+        IOutputsToolRegion _outputsRegion;
+        IWebDeleteInputArea _inputArea;
+        ISourceToolRegion<IWebServiceSource> _sourceRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         }
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageWebServiceInputViewModel(this, Model));
@@ -171,7 +171,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             SetWorstDesignError(worstError[0]);
         }
 
-        private void SetWorstDesignError(IErrorInfo value)
+        void SetWorstDesignError(IErrorInfo value)
         {
             if (_worstDesignError != value)
             {
@@ -181,7 +181,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             }
         }
 
-        private void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageWebServiceInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -253,7 +253,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -276,11 +276,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(WebServiceDeleteViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private readonly IServiceInputBuilder _builder;
+        readonly IServiceInputBuilder _builder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
+        string Type => GetProperty<string>();
 
 
         void AddTitleBarMappingToggle()
@@ -433,10 +433,10 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             return webServiceDefinition;
         }
 
-        private IList<IServiceInput> InputsFromModel()
+        IList<IServiceInput> InputsFromModel()
         {
             var dt = new List<IServiceInput>();
-            string s = InputArea.QueryString;
+            var s = InputArea.QueryString;
             _builder.GetValue(s, dt);
             foreach (var nameValue in InputArea.Headers)
             {
@@ -446,7 +446,7 @@ namespace Dev2.Activities.Designers2.Web_Service_Delete
             return dt;
         }
 
-        private IWebServiceModel Model { get; set; }
+        IWebServiceModel Model { get; set; }
         public bool GenerateOutputsVisible
         {
             get

@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Provider
     {
         #region Class Members
 
-        private List<IntellisenseProviderResult> _intellisenseResults;
+        List<IntellisenseProviderResult> _intellisenseResults;
 
         #endregion Class Members
 
@@ -44,7 +44,7 @@ namespace Dev2.Intellisense.Provider
         {
             VerifyArgument.IsNotNull("Context",context);
            
-            string inputText = context.InputText ?? string.Empty;
+            var inputText = context.InputText ?? string.Empty;
             int caretPosition = context.CaretPosition;  
 
             if (caretPosition < 0 || caretPosition>inputText.Length)
@@ -99,7 +99,7 @@ namespace Dev2.Intellisense.Provider
                     IntellisenseResults.Clear();
                     var regions = context.InputText.Split(' ');
                     var sum = 0;
-                    string searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
+                    var searchText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
                         {
                             sum = sum + context.CaretPosition;
                             return sum >= context.CaretPosition;
