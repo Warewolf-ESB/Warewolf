@@ -31,7 +31,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void RollBack()
         {
             var formattableString = $"http://tst-ci-remote:3142";
-            AppSettings.LocalHost = $"http://{Environment.MachineName}:3142";
+            AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(new Uri(formattableString)))
             {
                 Name = "tst-ci-remote"
