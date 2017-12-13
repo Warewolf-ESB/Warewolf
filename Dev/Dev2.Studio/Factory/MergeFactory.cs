@@ -5,17 +5,16 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using System;
 using System.IO;
-using System.Text;
 using System.Xml.Linq;
 
 namespace Dev2.Factory
 {
     public class MergeFactory : IMergeFactory
     {
-
-        public void OpenMergeWindow(IShellViewModel shellViewModel, string item, WarwolfStartupEventArgs args)
+        public void OpenMergeWindow(IShellViewModel shellViewModel, WarwolfStartupEventArgs args)
         {
-            VerifyArgument.IsNotNull(nameof(shellViewModel), shellViewModel);            
+            VerifyArgument.IsNotNull(nameof(shellViewModel), shellViewModel);
+            VerifyArgument.IsNotNull(nameof(args), args);
             var cleanPath = args.Args[1].Replace('^', ' ');
             var mergeHeadPath = cleanPath;
             using (var stream = File.OpenRead(mergeHeadPath))
@@ -40,20 +39,22 @@ namespace Dev2.Factory
                     else
                     {
                         var resource = new Resource(resourceContent.ToStringBuilder().ToXElement());
-                        ResourceModel remoteResource = new ResourceModel(serverRepo.ActiveServer);
-                        remoteResource.DisplayName = resource.ResourceName;
-                        remoteResource.DataList = resource.DataList.ToString();
-                        remoteResource.ID = new Guid(resourceId);
-                        remoteResource.WorkflowXaml = serviceXml.Element("Service").Element("Action").ToString(SaveOptions.DisableFormatting).ToStringBuilder();
+                        var remoteResource = new ResourceModel(serverRepo.ActiveServer)
+                        {
+                            DisplayName = resource.ResourceName,
+                            DataList = resource.DataList.ToString(),
+                            ID = new Guid(resourceId),
+                            WorkflowXaml = serviceXml.Element("Service").Element("Action").ToString(SaveOptions.DisableFormatting).ToStringBuilder()
+                        };
                         shellViewModel.OpenMergeConflictsView(localResource, remoteResource, false);
                     }
                 }
             }
         }
 
-        string GetAttributeValue(XDocument document, string attName)
+        static string GetAttributeValue(XDocument document, string attName)
         {
-            XAttribute xAttribute = document.Element("Service").Attribute(attName);
+            var xAttribute = document.Element("Service").Attribute(attName);
             return xAttribute.Value;
         }
     }
