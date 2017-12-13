@@ -25,7 +25,7 @@ namespace WarewolfCOMIPC.Client
             // Pass token to child process
             var currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
             var currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
-            var clientPath = Path.Combine(currentAssemblyDirectoryPath, "WarewolfCOMIPC.exe");
+            var clientPath = Path.Combine(currentAssemblyDirectoryPath, "Warewolf.COMIPC.exe");
             var psi = new ProcessStartInfo(clientPath, token)
             {
                 Verb = "runas",
@@ -171,10 +171,7 @@ namespace WarewolfCOMIPC.Client
             }
 
         }
-
-        /// <summary>
-        /// Gracefully close connection to server
-        /// </summary>
+        
         protected void Close()
         {
             _pipeWrapper.Close();
