@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.AggregateCalculate
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -20,9 +19,6 @@ namespace Dev2.Activities.Designers2.AggregateCalculate
             InitializeComponent();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement(0);
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement(0);
     }
 }

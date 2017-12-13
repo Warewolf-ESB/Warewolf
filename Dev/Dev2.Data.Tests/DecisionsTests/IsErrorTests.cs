@@ -23,7 +23,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isError = new IsError();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
             bool result = isError.Invoke(cols);
@@ -38,7 +38,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isError = new IsError();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "";
             //------------Execute Test---------------------------
             bool result = isError.Invoke(cols);

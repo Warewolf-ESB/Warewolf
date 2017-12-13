@@ -28,7 +28,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var sqlBulkCopyWrapper = new SqlBulkCopyWrapper(null);
-            DataTable dataTable = new DataTable("myTable");
+            var dataTable = new DataTable("myTable");
 
             //------------Execute Test---------------------------
             sqlBulkCopyWrapper.WriteToServer(dataTable);

@@ -18,8 +18,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskFolder : ITaskFolder
     {
-        private readonly TaskFolder _instance;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TaskFolder _instance;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskFolder(ITaskServiceConvertorFactory taskServiceConvertorFactory, TaskFolder instance)
         {

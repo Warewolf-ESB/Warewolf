@@ -24,15 +24,15 @@ namespace Dev2.Activities.Designers.Tests.WCFEndPoint
         public const string TestOwner = "Bernardt Joubert";
         public const string Category = "WcfService";
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var wcfActivity = new DsfWcfEndPointActivity();
 
             return ModelItemUtils.CreateModelItem(wcfActivity);
         }
 
-        private static readonly Guid Id = Guid.NewGuid();
-        private static Mock<IWcfServiceModel> SetupEmptyMockSource()
+        static readonly Guid Id = Guid.NewGuid();
+        static Mock<IWcfServiceModel> SetupEmptyMockSource()
         {
             var ps = new Mock<IWcfServiceModel>();
             ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>() { new WcfServiceSourceDefinition() { Id = Id } });
@@ -59,7 +59,7 @@ namespace Dev2.Activities.Designers.Tests.WCFEndPoint
             };
             return new WcfEndPointViewModel(CreateModelItem(),ps.Object) {OutputsRegion = outputRegion};
         }
-        private static WcfServiceSourceDefinition GetSource()
+        static WcfServiceSourceDefinition GetSource()
         {
             return new WcfServiceSourceDefinition()
             {

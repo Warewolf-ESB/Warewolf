@@ -21,7 +21,7 @@ namespace Warewolf.Studio.Views
             PreviewDragOver += DropPointOnDragEnter;
         }
 
-        private void UIElement_OnMouseMove(object sender, MouseEventArgs e)
+        void UIElement_OnMouseMove(object sender, MouseEventArgs e)
         {
             if (sender is Grid grid && e.LeftButton == MouseButtonState.Pressed)
             {
@@ -33,13 +33,13 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void SelectAllText(object sender, RoutedEventArgs e)
+        void SelectAllText(object sender, RoutedEventArgs e)
         {
-            TextBox tb = sender as TextBox;
+            var tb = sender as TextBox;
             tb?.SelectAll();
         }
 
-        private void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
+        void SelectivelyIgnoreMouseButton(object sender, MouseButtonEventArgs e)
         {
             var imageSource = e.OriginalSource as FontAwesome.WPF.ImageAwesome;
             var rectSource = e.OriginalSource as Rectangle;
@@ -56,7 +56,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
+        void ToolGrid_OnMouseEnter(object sender, MouseEventArgs e)
         {
             if (sender is Grid grid)
             {
@@ -84,7 +84,7 @@ namespace Warewolf.Studio.Views
             e.Handled = true;
         }
 
-        private void ToolGrid_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void ToolGrid_OnMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (sender is Grid grid)
             {

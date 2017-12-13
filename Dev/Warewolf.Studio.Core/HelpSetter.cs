@@ -9,8 +9,8 @@ namespace Warewolf.Studio.Core
     {
         public string Text
         {
-            get { return (string)GetValue(TextProperty); }
-            set { SetValue(TextProperty, value); }
+            get => (string)GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
         public static readonly DependencyProperty TextProperty =
@@ -18,8 +18,8 @@ namespace Warewolf.Studio.Core
 
         public IUpdatesHelp DataContext
         {
-            get { return (IUpdatesHelp)GetValue(DataContextProperty); }
-            set { SetValue(DataContextProperty, value); }
+            get => (IUpdatesHelp)GetValue(DataContextProperty);
+            set => SetValue(DataContextProperty, value);
         }
 
         public static readonly DependencyProperty DataContextProperty =
@@ -29,12 +29,6 @@ namespace Warewolf.Studio.Core
         {
             base.OnAttached();
             FocusManager.AddGotFocusHandler(AssociatedObject, OnGotFocus);
-        }
-
-        protected override void OnDetaching()
-        {
-            FocusManager.RemoveGotFocusHandler(AssociatedObject, OnGotFocus);
-            base.OnDetaching();
         }
 
         void OnGotFocus(object sender, RoutedEventArgs args)

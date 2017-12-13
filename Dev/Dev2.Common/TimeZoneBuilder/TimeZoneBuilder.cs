@@ -7,7 +7,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class TimeZoneBuilder : ITimeZoneBuilder
+    class TimeZoneBuilder : ITimeZoneBuilder
     {
 
         #region Implementation of IDateTimeParserBuilder
@@ -28,10 +28,10 @@ namespace Dev2.Common.TimeZoneBuilder
                 {
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
-                        string min = minutes == 0 ? "00" : "30";
-                        string hrs = string.Concat(hours / Math.Abs(hours) < 0 ? "-" : "+",
+                        var min = minutes == 0 ? "00" : "30";
+                        var hrs = string.Concat(hours / Math.Abs(hours) < 0 ? "-" : "+",
                             Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
-                        string uct = string.Concat(UctShort, hrs, ":", min);
+                        var uct = string.Concat(UctShort, hrs, ":", min);
                         TimeZones.Add(uct.ToLower(), new TimeZoneTO(UctShort, uct, UctLong));
                     }
                 }
@@ -56,10 +56,10 @@ namespace Dev2.Common.TimeZoneBuilder
                 {
                     for (int minutes = 0; minutes < 2; minutes++)
                     {
-                        string min = minutes == 0 ? "00" : "30";
-                        string hrs = string.Concat(hours / Math.Abs(hours) < 0 ? "-" : "+",
+                        var min = minutes == 0 ? "00" : "30";
+                        var hrs = string.Concat(hours / Math.Abs(hours) < 0 ? "-" : "+",
                             Math.Abs(hours).ToString(CultureInfo.InvariantCulture).PadLeft(2, '0'));
-                        string gmt = string.Concat(GmtShort, hrs, ":", min);
+                        var gmt = string.Concat(GmtShort, hrs, ":", min);
                         TimeZones.Add(gmt.ToLower(), new TimeZoneTO(GmtShort, gmt, GmtLong));
                     }
                 }

@@ -41,7 +41,7 @@ namespace Dev2.Common
             }
             else
             {
-                WindowsIdentity identity = userPrinciple.Identity as WindowsIdentity;
+                var identity = userPrinciple.Identity as WindowsIdentity;
                 WindowsImpersonationContext impersonationContext = null;
                 if (identity != null)
                 {
@@ -66,14 +66,7 @@ namespace Dev2.Common
                     {
                         impersonationContext = identity.Impersonate();
                     }
-                    try
-                    {
-                        actionToBePerformed();
-                    }
-                    catch (Exception)
-                    {
-                        //Ignore
-                    }
+                    actionToBePerformed();
                 }
                 finally
                 {

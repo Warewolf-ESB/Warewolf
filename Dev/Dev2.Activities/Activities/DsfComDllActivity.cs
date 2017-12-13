@@ -75,7 +75,7 @@ namespace Dev2.Activities
                         int pos = 0;
                         foreach (var itr in itrs)
                         {
-                            string injectVal = itrCollection.FetchNextValue(itr);
+                            var injectVal = itrCollection.FetchNextValue(itr);
                             var param = methodParameters.ToList()[pos];
 
 
@@ -98,7 +98,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
+        void PerfromExecution(int update, IDSFDataObject dataObject, ComPluginInvokeArgs args)
         {
             if (!IsObject)
             {

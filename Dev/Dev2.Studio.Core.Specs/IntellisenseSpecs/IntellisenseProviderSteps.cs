@@ -165,7 +165,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
             ScenarioContext.Current.Add("context", context);
 
-            IIntellisenseProvider provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
+            var provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
 
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => i.IsError);
@@ -195,7 +195,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [Given(@"the suggestion list as '(.*)'")]
         public void GivenTheSuggestionListAs(string p0)
         {
-            Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider();
+            var provider = new Dev2TrieSugggestionProvider();
             provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
             var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.All;
             int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
@@ -239,7 +239,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
             ScenarioContext.Current.Add("context", context);
 
-            IIntellisenseProvider provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
+            var provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
 
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => !i.IsError).Select(i => i.Name).ToArray();
@@ -285,8 +285,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [When(@"I select the following string option '(.*)'")]
         public void WhenISelectTheFollowingStringOption(string option)
         { 
-            string originalText =ScenarioContext.Current["inputText"].ToString();
-             int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            var originalText =ScenarioContext.Current["inputText"].ToString();
+            int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
             if(option=="")
             {
                 ScenarioContext.Current["stringResult"] = new IntellisenseStringResult(originalText,caretpos) ;
@@ -296,7 +296,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var options =ScenarioContext.Current["stringOptions"] as IEnumerable<string>;
             Assert.IsTrue(options.Contains(option));
            
-            IntellisenseStringResultBuilder builder = new IntellisenseStringResultBuilder();
+            var builder = new IntellisenseStringResultBuilder();
             var res = builder.Build(option,caretpos, originalText,originalText);
             ScenarioContext.Current["stringResult"] = res;
         }

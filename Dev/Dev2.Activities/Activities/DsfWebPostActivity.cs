@@ -53,13 +53,13 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString=string.Empty;
+            var headerString=string.Empty;
             if (head != null)
             {
                 headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
             }
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "URL"), debugItem);
             AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
             _debugInputs.Add(debugItem);

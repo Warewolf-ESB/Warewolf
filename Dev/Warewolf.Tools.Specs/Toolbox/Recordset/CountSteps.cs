@@ -23,7 +23,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class CountSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CountSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -91,7 +91,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I have a recordset with this shape")]
         public void GivenIHaveARecordsetWithThisShape(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
             if (tableRows.Count == 0)
             {
@@ -124,7 +124,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public void WhenTheCountToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

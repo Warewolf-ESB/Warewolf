@@ -15,15 +15,7 @@ namespace Dev2.DataList.Contract
 {
     public class DataListVerifyPartDuplicationParser : EqualityComparer<IDataListVerifyPart>, IDataListVerifyPartDuplicationParser
     {
-        public override bool Equals(IDataListVerifyPart ComparePart, IDataListVerifyPart Comparator)
-        {
-            if(ComparePart.DisplayValue == Comparator.DisplayValue)
-            {
-                    return true;
-                }
-
-                    return false;
-            }
+        public override bool Equals(IDataListVerifyPart ComparePart, IDataListVerifyPart Comparator) => (ComparePart.DisplayValue == Comparator.DisplayValue);
 
         public override int GetHashCode(IDataListVerifyPart PartToVerify)
         {

@@ -46,13 +46,13 @@ namespace Dev2.Intellisense.Helper
 
         readonly string _networkName;
         readonly string _shareServer;
-        private readonly ShareType _shareType;
+        readonly ShareType _shareType;
 
         #endregion
 
         #region Constructor
 
-       
+
         public Share(string server, string netName, ShareType shareType)
         {
             if(ShareType.Special == shareType && "IPC$" == netName)
@@ -173,7 +173,7 @@ namespace Dev2.Intellisense.Helper
 
                 if(NoError == nRet && entriesRead > 0)
                 {
-                    Type t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
+                    var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
                     int offset = Marshal.SizeOf(t);
 
                     for(int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
@@ -181,12 +181,12 @@ namespace Dev2.Intellisense.Helper
                         IntPtr pItem = new IntPtr(lpItem);
                         if(1 == level)
                         {
-                            ShareInfo1 si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
+                            var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
                             shares.Add(si.NetName, string.Empty, si.ShareType, si.Remark);
                         }
                         else
                         {
-                            ShareInfo2 si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
+                            var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
                             shares.Add(si.NetName, si.Path, si.ShareType, si.Remark);
                         }
                     }

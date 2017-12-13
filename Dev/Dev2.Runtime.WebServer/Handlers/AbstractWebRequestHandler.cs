@@ -44,11 +44,11 @@ namespace Dev2.Runtime.WebServer.Handlers
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
         string _location;
-        private static IResourceCatalog _resourceCatalog;
-        private static ITestCatalog _testCatalog;
-        private static IDSFDataObject _dataObject;
-        private static IAuthorizationService _authorizationService;
-        private static IWorkspaceRepository _repository;
+        static IResourceCatalog _resourceCatalog;
+        static ITestCatalog _testCatalog;
+        static IDSFDataObject _dataObject;
+        static IAuthorizationService _authorizationService;
+        static IWorkspaceRepository _repository;
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
@@ -89,8 +89,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
             dataObject.SetupForRemoteInvoke(headers);
-            dataObject.SetEmitionType(serviceName, headers);
-            dataObject.SetupForTestExecution(webRequest, serviceName, headers);
+            dataObject.SetEmitionType(webRequest, serviceName, headers);
+            dataObject.SetupForTestExecution(serviceName, headers);
             if (dataObject.ServiceName == null)
             {
                 dataObject.ServiceName = serviceName;
@@ -120,7 +120,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ErrorResultTO errors = null;
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
-                if (dataObject.ReturnType == EmitionTypes.TEST)
+                if ((dataObject.ReturnType == EmitionTypes.TEST || dataObject.ReturnType == EmitionTypes.TRX) && dataObject.TestName == "*")
                 {
                     formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
                     return new StringResponseWriter(executePayload, formatter.ContentType);
@@ -140,7 +140,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             if (dataObject.IsServiceTestExecution)
             {
-                executePayload = ServiceTestExecutor.SetpForTestExecution(serializer, esbExecuteRequest, dataObject);
+                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
             if (dataObject.IsDebugFromWeb)
@@ -176,7 +176,7 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
-        private static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid)
+        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid)
         {
             return _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
             {
@@ -188,7 +188,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             };
         }
 
-        private static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
+        static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
         {
             var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
             var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray() ??
@@ -198,7 +198,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return serialize;
         }
 
-        private static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
+        static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
         {
             Guid workspaceGuid;
             if (workspaceId != null)
@@ -262,7 +262,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
-        private static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
+        static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
         {
             var data = reader.ReadToEnd();
             if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
@@ -296,7 +296,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        private static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
+        static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
         {
             if (payload != null)
             {
@@ -317,7 +317,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        private static string CleanupXml(string baseStr)
+        static string CleanupXml(string baseStr)
         {
             if (baseStr.Contains("?"))
             {
@@ -341,7 +341,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return baseStr;
         }
 
-        private static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
+        static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
         {
             // Extract request keys ;)
             foreach (var key in pairs.AllKeys)

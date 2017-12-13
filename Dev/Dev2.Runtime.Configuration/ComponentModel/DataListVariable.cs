@@ -14,7 +14,7 @@ namespace Dev2.Runtime.Configuration.ComponentModel
 {
     public class DataListVariable : PropertyChangedBase
     {
-        private string _name;
+        string _name;
 
         public string Name
         {

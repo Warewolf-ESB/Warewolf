@@ -258,7 +258,7 @@ namespace Dev2.Activities
                 }
 
                 var val = new StringBuilder(Dev2DecisionStack.ExtractModelFromWorkflowPersistedData(activity.ExpressionText));
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = val.ToString() };
+                var ds = new Dev2Switch { SwitchVariable = val.ToString() };
                 var swi = new DsfSwitch(activity);
                 if (!seenActivities.Contains(activity))
                 {

@@ -20,16 +20,9 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             SetInitialFocus();
         }
 
-        #region Overrides of ActivityDesignerTemplate
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return MainGrid;
-        }
-
-        #endregion
-
-        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             System.Diagnostics.Debug.WriteLine("a");
         }

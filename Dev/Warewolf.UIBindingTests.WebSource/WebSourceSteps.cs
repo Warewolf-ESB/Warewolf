@@ -24,7 +24,7 @@ namespace Warewolf.UIBindingTests.WebSource
     [Binding]
     public class WebSourceSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
         string illegalCharactersInPath = "Illegal characters in path.";
 
         public WebSourceSteps(ScenarioContext scenarioContext)

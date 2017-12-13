@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
     public class DropBoxUploadTests
     {
-        private Mock<IDropBoxUpload> CreateDropboxUploadMock()
+        Mock<IDropBoxUpload> CreateDropboxUploadMock()
         {
             var mock = new Mock<IDropBoxUpload>();
             var fileMetadata = new DropboxUploadSuccessResult(new FileMetadata());
@@ -21,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                  .Returns(fileMetadata);
             return mock;
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

@@ -25,7 +25,7 @@ namespace Dev2.Activities.SelectAndApply
     [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select_and_Apply")]
     public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>, IEquatable<DsfSelectAndApplyActivity>
     {
-        private class NullDataSource : Exception
+        class NullDataSource : Exception
         {
 
         }
@@ -68,9 +68,9 @@ namespace Dev2.Activities.SelectAndApply
         public string Alias { get; set; }
         public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
-        private string _previousParentId;
-        private Guid _originalUniqueID;
-        private string _childUniqueID;
+        string _previousParentId;
+        Guid _originalUniqueID;
+        string _childUniqueID;
 
         /// <summary>
         /// When overridden runs the activity's execution logic
@@ -138,7 +138,7 @@ namespace Dev2.Activities.SelectAndApply
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
             if (string.IsNullOrEmpty(DataSource))
@@ -165,7 +165,7 @@ namespace Dev2.Activities.SelectAndApply
 
             dataObject.ForEachNestingLevel++;
 
-            List<string> expressions = new List<string>();
+            var expressions = new List<string>();
             try
             {
                 string ds;
@@ -248,7 +248,7 @@ namespace Dev2.Activities.SelectAndApply
                             var debugStates = debugItems.LastOrDefault();
 
                             var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
-                            DebugItem itemToAdd = new DebugItem();
+                            var itemToAdd = new DebugItem();
                             itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                             debugStates?.AssertResultList?.Add(itemToAdd);
 
@@ -296,7 +296,7 @@ namespace Dev2.Activities.SelectAndApply
             }
         }
 
-        private void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult, IDSFDataObject dataObject)
+        void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult, IDSFDataObject dataObject)
         {
             RegularActivityAssertion(dataObject, serviceTestStep);
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
@@ -330,7 +330,7 @@ namespace Dev2.Activities.SelectAndApply
         }
         #endregion Overrides of DsfNativeActivity<bool>
 
-        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
+        void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueID);
 

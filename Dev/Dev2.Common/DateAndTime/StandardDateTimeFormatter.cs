@@ -16,41 +16,6 @@ namespace Dev2.Common.DateAndTime
 {
     public class StandardDateTimeFormatter : DateTimeFormatter
     {
-        protected new void CreateDateTimeFormatParts()
-        {
-            DateTimeFormatParts.Clear();
-            DateTimeFormatParts.Add("y", (a, b) => b.ToString("y"));
-            DateTimeFormatParts.Add("yy", (a, b) => b.ToString("yy"));
-            DateTimeFormatParts.Add("yyy", (a, b) => b.ToString("yyy"));
-            DateTimeFormatParts.Add("yyyy", (a, b) => b.ToString("yyyy"));
-            DateTimeFormatParts.Add("M", (a, b) => b.ToString("M"));
-            DateTimeFormatParts.Add("MM", (a, b) => b.ToString("MM"));
-            DateTimeFormatParts.Add("MMM", (a, b) => b.ToString("MMM"));
-            DateTimeFormatParts.Add("MMMM", (a, b) => b.ToString("MMMM"));
-            DateTimeFormatParts.Add("d", (a, b) => b.ToString("d"));
-            DateTimeFormatParts.Add("dd", (a, b) => b.ToString("dd"));
-            DateTimeFormatParts.Add("ddd", (a, b) => b.ToString("ddd"));
-            DateTimeFormatParts.Add("dddd", (a, b) => b.ToString("dddd"));
-            DateTimeFormatParts.Add("h", (a, b) => b.ToString("h"));
-            DateTimeFormatParts.Add("hh", (a, b) => b.ToString("hh"));
-            DateTimeFormatParts.Add("H", (a, b) => b.ToString("H"));
-            DateTimeFormatParts.Add("HH", (a, b) => b.ToString("HH"));
-            DateTimeFormatParts.Add("m", (a, b) => b.ToString("m"));
-            DateTimeFormatParts.Add("mm", (a, b) => b.ToString("mm"));
-            DateTimeFormatParts.Add("s", (a, b) => b.ToString("s"));
-            DateTimeFormatParts.Add("ss", (a, b) => b.ToString("ss"));
-            DateTimeFormatParts.Add("F", (a, b) => b.ToString("F"));
-            DateTimeFormatParts.Add("FF", (a, b) => b.ToString("FF"));
-            DateTimeFormatParts.Add("FFF", (a, b) => b.ToString("FFF"));
-            DateTimeFormatParts.Add("FFFF", (a, b) => b.ToString("FFFF"));
-            DateTimeFormatParts.Add("FFFFF", (a, b) => b.ToString("FFFFF"));
-            DateTimeFormatParts.Add("FFFFFF", (a, b) => b.ToString("FFFFFF"));
-            DateTimeFormatParts.Add("FFFFFFF", (a, b) => b.ToString("FFFFFFF"));
-            DateTimeFormatParts.Add("t", (a, b) => b.ToString("t"));
-            DateTimeFormatParts.Add("tt", (a, b) => b.ToString("tt"));
-            DateTimeFormatParts.Add("K", (a, b) => b.ToString("K"));
-            DateTimeFormatParts.Add("gg", (a, b) => b.ToString("gg"));
-        }
         public override bool TryFormat(IDateTimeOperationTO dateTimeTO, out string result, out string error)
         {
 

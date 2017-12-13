@@ -83,10 +83,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void MapJsonWithPrimitiveEnumerable_Expected_RootPrimitivePath()
         {
-            JsonMapper jsonMapper = new JsonMapper();
+            var jsonMapper = new JsonMapper();
 
-            string json = GivenPrimitiveRecordset();
-            IEnumerable<IPath> paths = jsonMapper.Map(json);
+            var json = GivenPrimitiveRecordset();
+            var paths = jsonMapper.Map(json);
 
             bool condition = paths.Any(p => p.ActualPath == JsonPath.EnumerableSymbol + JsonPath.SeperatorSymbol);
             Assert.IsTrue(condition);
@@ -98,10 +98,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void MapJsonWithScalarValue_Expected_PathToScalarValue()
         {
-            JsonMapper jsonMapper = new JsonMapper();
+            var jsonMapper = new JsonMapper();
 
-            string json = Given();
-            IEnumerable<IPath> paths = jsonMapper.Map(json);
+            var json = Given();
+            var paths = jsonMapper.Map(json);
 
             Assert.IsTrue(paths.Any(p => p.ActualPath == "Motto"));
         }
@@ -113,10 +113,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void MapJsonWithARecordset_Expected_PathToPropertyOnEnumerable()
         {
-            JsonMapper jsonMapper = new JsonMapper();
+            var jsonMapper = new JsonMapper();
 
-            string json = Given();
-            IEnumerable<IPath> paths = jsonMapper.Map(json);
+            var json = Given();
+            var paths = jsonMapper.Map(json);
 
             Assert.IsTrue(paths.Any(p => p.ActualPath == "Departments().Name"));
         }
@@ -127,10 +127,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void MapJsonWithARecordsetContainingScalarValues_Expected_PathToEnumerable()
         {
-            JsonMapper jsonMapper = new JsonMapper();
+            var jsonMapper = new JsonMapper();
 
-            string json = Given();
-            IEnumerable<IPath> paths = jsonMapper.Map(json);
+            var json = Given();
+            var paths = jsonMapper.Map(json);
 
             Assert.IsTrue(paths.Any(p => p.ActualPath == "PrimitiveRecordset()"));
         }
@@ -141,10 +141,10 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
         [TestMethod]
         public void MapJsonWithNestedRecordsetsContainingScalarValues_Expected_PathToPropertyOfEnumerable()
         {
-            JsonMapper jsonMapper = new JsonMapper();
+            var jsonMapper = new JsonMapper();
 
-            string json = Given();
-            IEnumerable<IPath> paths = jsonMapper.Map(json);
+            var json = Given();
+            var paths = jsonMapper.Map(json);
 
             Assert.IsTrue(paths.Any(p => p.ActualPath == "Departments().Employees().Name"));
         }

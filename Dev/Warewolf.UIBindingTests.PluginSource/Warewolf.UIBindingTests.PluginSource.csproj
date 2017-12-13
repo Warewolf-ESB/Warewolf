@@ -124,6 +124,14 @@
       <Project>{615EAE6D-040C-4364-B708-63DC8755CD4F}</Project>
       <Name>Dev2.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Dev2.Intellisense\Dev2.Intellisense.csproj">
+      <Project>{DB2FBC8D-3271-4D1D-A6BC-F4DFC530918B}</Project>
+      <Name>Dev2.Intellisense</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Runtime.Configuration\Dev2.Runtime.Configuration.csproj">
+      <Project>{9C43D5A2-FEFD-4632-9BF2-EE0E4C05BEBC}</Project>
+      <Name>Dev2.Runtime.Configuration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Dev2.Studio.Interfaces\Dev2.Studio.Interfaces.csproj">
       <Project>{37149E8E-FEF2-47C0-8391-80DCCE86D26D}</Project>
       <Name>Dev2.Studio.Interfaces</Name>

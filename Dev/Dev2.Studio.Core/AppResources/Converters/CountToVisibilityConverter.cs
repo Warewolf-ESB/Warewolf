@@ -21,9 +21,9 @@ namespace Dev2.Studio.Core.AppResources.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            IList list = value as IList;
+            var list = value as IList;
 
-            if(list == null || list.Count == 0)
+            if (list == null || list.Count == 0)
             {
                 return Visibility.Collapsed;
             }

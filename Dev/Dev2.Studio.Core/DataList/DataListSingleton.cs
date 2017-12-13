@@ -22,7 +22,7 @@ namespace Dev2.Studio.Core
 
         #region Locals
 
-        private static IDataListViewModel _activeDataList;
+        static IDataListViewModel _activeDataList;
 
         #endregion Locals
 

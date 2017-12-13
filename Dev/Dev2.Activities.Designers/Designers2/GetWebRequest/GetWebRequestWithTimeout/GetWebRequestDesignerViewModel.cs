@@ -64,13 +64,13 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                                         new PropertyMetadata(false));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        private string Url
+        string Url
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
-        private string Headers
+        string Headers
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
@@ -112,26 +112,21 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private string TimeOutText => GetProperty<string>();
+        string TimeOutText => GetProperty<string>();
 
         #region Overrides of ActivityDesignerViewModel
 
         protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            if (e.PropertyName == "Url" || e.PropertyName == "Headers")
             {
-                case "Url":
-                case "Headers":
-                    ExtractVariables();
-                    break;
-                default:
-                    break;
+                ExtractVariables();
             }
         }
 
         #endregion
 
-        private void ExtractVariables()
+        void ExtractVariables()
         {
             PreviewViewModel.Output = string.Empty;
             var urlVariables = DataListCleaningUtils
@@ -148,17 +143,17 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
-                
+
                 var mustRemainKeys = PreviewViewModel.Inputs
                                                      .Where(i => variableList.Contains(i.Key))
                                                      .ToList();
-                
 
-                
+
+
                 var mustRemove = PreviewViewModel.Inputs
                                                  .Where(i => !variableList.Contains(i.Key))
                                                  .ToList();
-                
+
 
                 mustRemove.ForEach(r => PreviewViewModel.Inputs.Remove(r));
 
@@ -173,7 +168,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private void DoPreview(object sender, PreviewRequestedEventArgs args)
+        void DoPreview(object sender, PreviewRequestedEventArgs args)
         {
             Errors = null;
             PreviewViewModel.Output = string.Empty;
@@ -189,7 +184,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
+        string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             var url = Url;
 
@@ -244,7 +239,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             return url;
         }
 
-        private void ValidateUrl(string urlValue)
+        void ValidateUrl(string urlValue)
         {
             if (string.IsNullOrWhiteSpace(urlValue))
             {
@@ -281,7 +276,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                 return webInvoker.ExecuteRequest(method, url, headers);
             };
 
-        private string GetPreviewOutput(string url)
+        string GetPreviewOutput(string url)
         {
             Errors = null;
             var result = string.Empty;
@@ -291,9 +286,9 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                                   ? new string[0]
                                   : Headers.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-                
+
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
-                
+
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>

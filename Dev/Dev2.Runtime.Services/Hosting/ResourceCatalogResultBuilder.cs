@@ -2,7 +2,7 @@ using Dev2.Common.Interfaces.Hosting;
 
 namespace Dev2.Runtime.Hosting
 {
-    internal static class ResourceCatalogResultBuilder
+    static class ResourceCatalogResultBuilder
     {
         public static ResourceCatalogResult CreateSuccessResult(string msg)
         {

@@ -20,19 +20,19 @@ namespace Dev2.ViewModels.Merge
     public class ConflictModelFactory : BindableBase, IConflictModelFactory
     {
         readonly IContextualResourceModel _resourceModel;
-        private bool _isWorkflowNameChecked;
-        private bool _isVariablesChecked;
+        bool _isWorkflowNameChecked;
+        bool _isVariablesChecked;
 
         public IMergeToolModel Model { get; set; }
         public delegate void ModelItemChanged(ModelItem modelItem, MergeToolModel mergeToolModel);
         public event ModelItemChanged OnModelItemChanged;
 
-        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict)
+        public ConflictModelFactory(IContextualResourceModel resourceModel, IConflictTreeNode conflict, IWorkflowDesignerViewModel workflowDesignerViewModel)
         {
             Children = new ObservableCollection<IMergeToolModel>();
             _resourceModel = resourceModel;
             var modelItem = ModelItemUtils.CreateModelItem(conflict.Activity);
-            Model = GetModel(modelItem, conflict, null);
+            Model = GetModel(modelItem, conflict, null, workflowDesignerViewModel);
         }
 
         public ConflictModelFactory()
@@ -124,7 +124,7 @@ namespace Dev2.ViewModels.Merge
         public IDataListViewModel DataListViewModel { get; set; }
         public ObservableCollection<IMergeToolModel> Children { get; set; }
 
-        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, string parentLabelDescription = "")
+        public IMergeToolModel GetModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, IWorkflowDesignerViewModel workflowDesignerViewModel, string parentLabelDescription = "")
         {
             if (modelItem == null || node == null || node.Activity == null)
             {
@@ -160,15 +160,16 @@ namespace Dev2.ViewModels.Merge
                 instance = Activator.CreateInstance(actual, modelItem) as ActivityDesignerViewModel;
             }
 
-            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance);
+            var mergeToolModel = CreateNewMergeToolModel(modelItem, node, parentItem, parentLabelDescription, instance, workflowDesignerViewModel);
             return mergeToolModel;
         }
 
-        private MergeToolModel CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, string parentLabelDescription, ActivityDesignerViewModel instance)
+        MergeToolModel CreateNewMergeToolModel(ModelItem modelItem, IConflictTreeNode node, IMergeToolModel parentItem, string parentLabelDescription, ActivityDesignerViewModel instance, IWorkflowDesignerViewModel workflowDesignerViewModel)
         {
             var mergeToolModel = new MergeToolModel
             {
                 ActivityDesignerViewModel = instance,
+                WorkflowDesignerViewModel = workflowDesignerViewModel,
                 MergeIcon = modelItem.GetImageSourceForTool(),
                 MergeDescription = node.Activity.GetDisplayName(),
                 UniqueId = node.Activity.UniqueID.ToGuid(),
@@ -180,7 +181,7 @@ namespace Dev2.ViewModels.Merge
                 HasParent = parentItem != null,
                 ParentDescription = parentLabelDescription,
                 IsTrueArm = parentLabelDescription?.ToLowerInvariant() == "true",
-                NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign"
+                NodeArmDescription = node.Activity.GetDisplayName() + " -> " + " Assign",
             };
 
             modelItem.PropertyChanged += (sender, e) =>

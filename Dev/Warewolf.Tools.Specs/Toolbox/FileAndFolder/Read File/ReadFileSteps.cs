@@ -23,7 +23,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
     [Binding]
     public class ReadFileSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ReadFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -40,7 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Read_File
         public void WhenTheReadFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

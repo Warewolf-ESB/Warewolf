@@ -9,11 +9,11 @@ namespace Dev2.PerformanceCounters.Management
 {
     public class WarewolfPerformanceCounterManager : IWarewolfPerformanceCounterLocater,IPerformanceCounterFactory,IPerformanceCounterRepository
     {
-        private IList<IPerformanceCounter> _counters;
-        private readonly IPerformanceCounterPersistence _perf;
-        private IList<IPerformanceCounter> _resourceCounters;
+        IList<IPerformanceCounter> _counters;
+        readonly IPerformanceCounterPersistence _perf;
+        IList<IPerformanceCounter> _resourceCounters;
 
-        
+
         public WarewolfPerformanceCounterManager(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourceCounters, IWarewolfPerformanceCounterRegister register, IPerformanceCounterPersistence perf)
         {
             _counters = counters;

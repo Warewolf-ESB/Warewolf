@@ -82,7 +82,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var getVersions = new GetVersion();
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
             var ax = getVersions.Execute(null, new Workspace(Guid.NewGuid()));
             Assert.AreEqual(ExecStatus.Fail, serialiser.Deserialize<ExplorerRepositoryResult>(ax).Status);
@@ -95,7 +95,7 @@ namespace Dev2.Tests.Runtime.Services
         {
             //------------Setup for test--------------------------
             var getVersions = new GetVersion();
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
             var ax = getVersions.Execute(new Dictionary<string, StringBuilder>(), new Workspace(Guid.NewGuid()));
             Assert.AreEqual(ExecStatus.Fail, serialiser.Deserialize<ExplorerRepositoryResult>(ax).Status);
@@ -112,7 +112,7 @@ namespace Dev2.Tests.Runtime.Services
             var versionId = Guid.NewGuid();
             //var wsId = Guid.NewGuid();
             var ws = new Mock<IWorkspace>();
-            VersionInfo version = new VersionInfo(DateTime.Now,"bob","dave","2",resourceId,versionId);
+            var version = new VersionInfo(DateTime.Now,"bob","dave","2",resourceId,versionId);
             var mockRes = new Mock<IResource>();
             var servVer = new Mock<IServerVersionRepository>();
             servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>(), It.IsAny<string>())).Returns(new StringBuilder(resourceOne));
@@ -124,7 +124,7 @@ namespace Dev2.Tests.Runtime.Services
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             getVersions.ServerVersionRepo = servVer.Object;
             getVersions.ResourceCatalog = cat.Object;
-            Dev2JsonSerializer serialisr = new Dev2JsonSerializer();
+            var serialisr = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
             var ax = getVersions.Execute(new Dictionary<string, StringBuilder> { { "versionInfo", serialisr.SerializeToBuilder(version) } }, ws.Object);
 
@@ -146,7 +146,7 @@ namespace Dev2.Tests.Runtime.Services
             var versionId = Guid.NewGuid();
             //var wsId = Guid.NewGuid();
             var ws = new Mock<IWorkspace>();
-            VersionInfo version = new VersionInfo(DateTime.Now, "bob", "dave", "2", resourceId, versionId);
+            var version = new VersionInfo(DateTime.Now, "bob", "dave", "2", resourceId, versionId);
             var mockRes = new Mock<IResource>();
             var servVer = new Mock<IServerVersionRepository>();
             servVer.Setup(a => a.GetVersion(It.IsAny<VersionInfo>(), It.IsAny<string>())).Returns(new StringBuilder(resourceOne));
@@ -158,7 +158,7 @@ namespace Dev2.Tests.Runtime.Services
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             getVersions.ServerVersionRepo = servVer.Object;
             getVersions.ResourceCatalog = cat.Object;
-            Dev2JsonSerializer serialisr = new Dev2JsonSerializer();
+            var serialisr = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
             var ax = getVersions.Execute(new Dictionary<string, StringBuilder> { { "versionInfo", serialisr.SerializeToBuilder(version) } }, ws.Object);
 

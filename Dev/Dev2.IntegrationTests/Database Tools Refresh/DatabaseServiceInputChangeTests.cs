@@ -42,7 +42,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
             var result = SqlHelper.RunSqlCommand(createProcedure);
             Assert.AreEqual(-1, result);
-            List<IServiceInput> inputs = new List<IServiceInput>()
+            var inputs = new List<IServiceInput>()
                 {
                     new ServiceInput("ProductId","[[ProductId]]"){ActionName = "dbo." + cleanProcName}
                 };
@@ -60,7 +60,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
-            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);
@@ -108,7 +108,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var createProcedure = "CREATE procedure [dbo].[" + cleanProcName + "](@ProductId int) as Begin select * from Country select * from City end";
             var result = SqlHelper.RunSqlCommand(createProcedure);
             Assert.AreEqual(-1, result);
-            List<IServiceInput> inputs = new List<IServiceInput>()
+            var inputs = new List<IServiceInput>()
                 {
                     new ServiceInput("ProductId","[[ProductId]]"){ActionName = "dbo." + cleanProcName}
                 };
@@ -126,7 +126,7 @@ namespace Dev2.Integration.Tests.Database_Tools_Refresh
             var controllerFactory = new CommunicationControllerFactory();
             var _proxyLayer = new StudioServerProxy(controllerFactory, environmentConnection);
             var mock = new Mock<IShellViewModel>();
-            ManageDbServiceModel dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
+            var dbServiceModel = new ManageDbServiceModel(new StudioResourceUpdateManager(controllerFactory, environmentConnection)
                                                                                     , _proxyLayer.QueryManagerProxy
                                                                                     , mock.Object
                                                                                     , environmentModel);

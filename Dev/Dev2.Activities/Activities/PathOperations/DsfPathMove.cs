@@ -29,7 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
-            Dev2CRUDOperationTO opTo = new Dev2CRUDOperationTO(Overwrite);
+            var opTo = new Dev2CRUDOperationTO(Overwrite);
             return broker.Move(scrEndPoint, dstEndPoint, opTo);
         }
 

@@ -27,14 +27,14 @@ namespace Warewolf.Studio.Views
 
         DispatcherTimer _timer;
 
-        private void StartTimer()
+        void StartTimer()
         {
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(18) };
             _timer.Tick += TimerElapsed;
             _timer.Start();
         }
 
-        private void TimerElapsed(object sender, EventArgs e)
+        void TimerElapsed(object sender, EventArgs e)
         {
             _timer.Stop();
 

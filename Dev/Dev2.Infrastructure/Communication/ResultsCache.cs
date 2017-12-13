@@ -16,12 +16,12 @@ namespace Dev2.Communication
 {
     public class ResultsCache
     {
-        private readonly ConcurrentDictionary<string, string> _resultCache = new ConcurrentDictionary<string, string>();
+        readonly ConcurrentDictionary<string, string> _resultCache = new ConcurrentDictionary<string, string>();
 
-        private static ResultsCache _instance;
+        static ResultsCache _instance;
         public static ResultsCache Instance => _instance ?? (_instance = new ResultsCache());
 
-        private ResultsCache() { }
+        ResultsCache() { }
 
         public bool AddResult(FutureReceipt receipt, string payload)
         {

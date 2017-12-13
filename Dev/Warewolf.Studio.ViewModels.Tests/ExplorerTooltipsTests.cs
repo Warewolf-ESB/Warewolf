@@ -5,7 +5,7 @@ namespace Warewolf.Studio.ViewModels.Tests
     [TestClass]
     public class ExplorerTooltipsTests
     {
-        private ExplorerTooltips _target;
+        ExplorerTooltips _target;
 
         [TestInitialize]
         public void TestInitialize()

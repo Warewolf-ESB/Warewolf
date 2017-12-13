@@ -23,8 +23,8 @@ namespace Dev2.Data.Operations
 
         public IEnumerable<int> FindIndex(string stringToSearchIn, string firstOccurrence, string charsToSearchFor, string direction, bool matchCase, string startIndex)
         {
-            enIndexFinderOccurrence occurrence = enIndexFinderOccurrence.FirstOccurrence;
-            enIndexFinderDirection dir = enIndexFinderDirection.LeftToRight;
+            var occurrence = enIndexFinderOccurrence.FirstOccurrence;
+            var dir = enIndexFinderDirection.LeftToRight;
             #region Set the enums according to the strings
 
             switch (firstOccurrence)
@@ -94,14 +94,14 @@ namespace Dev2.Data.Operations
 
         #region Private Methods
 
-        private IEnumerable<int> RightToLeftIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
+        IEnumerable<int> RightToLeftIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
         {
             int index = -1;
             IEnumerable<int> result;
-            switch(occurrence)
+            switch (occurrence)
             {
                 case enIndexFinderOccurrence.FirstOccurrence:
-                    if(lastIndex != -1)
+                    if (lastIndex != -1)
                     {
                         index = stringToSearchIn.Length - lastIndex - (charsToSearchFor.Length - 1);
                     }
@@ -109,7 +109,7 @@ namespace Dev2.Data.Operations
                     break;
 
                 case enIndexFinderOccurrence.LastOccurrence:
-                    if(firstIndex != -1)
+                    if (firstIndex != -1)
                     {
                         index = stringToSearchIn.Length - firstIndex - (charsToSearchFor.Length - 1);
                     }
@@ -117,13 +117,13 @@ namespace Dev2.Data.Operations
                     break;
 
                 case enIndexFinderOccurrence.AllOccurrences:
-                    List<int> foundIndexes = new List<int>();
+                    var foundIndexes = new List<int>();
                     stringToSearchIn = stringToSearchIn.ReverseString();
                     int currentIndex = firstIndex;
-                    while(currentIndex != -1 && currentIndex != stringToSearchIn.Length)
+                    while (currentIndex != -1 && currentIndex != stringToSearchIn.Length)
                     {
                         currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex, comparisonType);
-                        if(currentIndex != -1)
+                        if (currentIndex != -1)
                         {
                             currentIndex++;
                             foundIndexes.Add(currentIndex);
@@ -139,14 +139,14 @@ namespace Dev2.Data.Operations
             return result;
         }
 
-        private IEnumerable<int> LeftToRightIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
+        IEnumerable<int> LeftToRightIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
         {
             int index = -1;
             IEnumerable<int> result;
-            switch(occurrence)
+            switch (occurrence)
             {
                 case enIndexFinderOccurrence.FirstOccurrence:
-                    if(firstIndex != -1)
+                    if (firstIndex != -1)
                     {
                         index = firstIndex + 1;
                     }
@@ -154,7 +154,7 @@ namespace Dev2.Data.Operations
                     break;
 
                 case enIndexFinderOccurrence.LastOccurrence:
-                    if(lastIndex != -1)
+                    if (lastIndex != -1)
                     {
                         index = lastIndex + 1;
                     }
@@ -163,15 +163,15 @@ namespace Dev2.Data.Operations
 
                 case enIndexFinderOccurrence.AllOccurrences:
                     List<int> foundIndexes;
-                    if(firstIndex != -1)
+                    if (firstIndex != -1)
                     {
                         foundIndexes = new List<int> { firstIndex + 1 };
                         int currentIndex = firstIndex;
-                        while(currentIndex != -1)
+                        while (currentIndex != -1)
                         {
 
                             currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex + 1, comparisonType);
-                            if(currentIndex != -1)
+                            if (currentIndex != -1)
                             {
                                 foundIndexes.Add(currentIndex + 1);
                             }

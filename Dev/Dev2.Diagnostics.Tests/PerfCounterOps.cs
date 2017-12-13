@@ -33,7 +33,7 @@ namespace Dev2.Diagnostics.Test
 
                 }
 
-                WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+                var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                                                             {
                                                                 new WarewolfCurrentExecutionsPerformanceCounter(),
                                                                 new WarewolfNumberOfErrors(),    
@@ -80,7 +80,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
             Assert.AreEqual(counter.Name, "Concurrent requests currently executing");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -98,7 +98,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ConcurrentRequests).FromSafe();
             Assert.AreEqual(counter.Name, "Concurrent requests currently executing");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -129,7 +129,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.ExecutionErrors).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Total Errors");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -150,7 +150,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.ExecutionErrors).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Total Errors");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -181,7 +181,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(Guid.NewGuid(),WarewolfPerfCounterType.AverageExecutionTime).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Empty");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
 
             Assert.IsNull(counter.CreationData());
@@ -203,7 +203,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Request Per Second");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -224,7 +224,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid, WarewolfPerfCounterType.RequestsPerSecond).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Request Per Second");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -253,7 +253,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.ServicesNotFound).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Count of requests for workflows which don't exist");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -284,7 +284,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.NotAuthorisedErrors).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Count of Not Authorised errors");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             Assert.IsNotNull(innerCounter);
@@ -306,7 +306,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(WarewolfPerfCounterType.AverageExecutionTime).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Average workflow execution time");
             Assert.AreEqual(counter.Category, "Warewolf");
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             var innerBase = po.GetField("_baseCounter") as PerformanceCounter;
@@ -339,7 +339,7 @@ namespace Dev2.Diagnostics.Test
             var counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter(guid,WarewolfPerfCounterType.AverageExecutionTime).FromSafe(); ;
             Assert.AreEqual(counter.Name, "Average workflow execution time");
             Assert.AreEqual(counter.Category, GlobalConstants.WarewolfServices);
-            PrivateObject po = new PrivateObject(counter);
+            var po = new PrivateObject(counter);
             po.Invoke("Setup", new object[0]);
             var innerCounter = po.GetField("_counter") as PerformanceCounter;
             var innerBase = po.GetField("_baseCounter") as PerformanceCounter;

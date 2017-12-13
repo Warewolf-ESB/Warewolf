@@ -65,7 +65,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -77,7 +77,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
 
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             InitializeDebug(dataObject);
 
@@ -146,9 +146,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env, int update)
+        void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment env, int update)
         {
-            var data =  env.Eval(env.ToStar( expression), update);
+            var data = env.Eval(env.ToStar(expression), update);
             if (data.IsWarewolfAtomListresult)
             {
                 var lst = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;

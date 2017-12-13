@@ -17,7 +17,7 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskSettings : ITaskSettings
     {
-        private readonly TaskSettings _nativeInstance;
+        readonly TaskSettings _nativeInstance;
 
         public Dev2TaskSettings(TaskSettings nativeInstance)
         {

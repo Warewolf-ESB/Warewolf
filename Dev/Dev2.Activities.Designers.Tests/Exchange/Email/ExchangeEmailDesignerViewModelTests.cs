@@ -38,7 +38,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         static ModelItem CreateModelItem()
@@ -916,7 +916,7 @@ namespace Dev2.Activities.Designers.Tests.Exchange.Email
     public class TestExchangeServiceModel : IExchangeServiceModel
     {
         public ObservableCollection<IExchangeSource> Sources { get; set; }
-        private readonly ObservableCollection<IExchangeSource> _sources = new ObservableCollection<IExchangeSource>
+        readonly ObservableCollection<IExchangeSource> _sources = new ObservableCollection<IExchangeSource>
         {
             new ExchangeSourceDefinition
             {

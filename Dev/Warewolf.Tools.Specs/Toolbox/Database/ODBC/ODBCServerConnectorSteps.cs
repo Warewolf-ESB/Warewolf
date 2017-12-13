@@ -22,10 +22,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class ODBCServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I open workflow with ODBC connector")]
         public void GivenIOpenWorkflowWithODBC()
@@ -347,7 +347,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             AssertAgainstOutputs(table, outputMappings);
         }
 
-        private static void CheckODBCToolTestInputs(Table table, ICollection<IServiceOutputMapping> inputs)
+        static void CheckODBCToolTestInputs(Table table, ICollection<IServiceOutputMapping> inputs)
         {
             Assert.IsNotNull(inputs);
             //TODO:Assert.AreEqual(table.Rows.Count, outputMappings.Count, "Wrong number of outputs in ODBC view model.");
@@ -368,7 +368,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        private static void AssertAgainstOutputs(Table table, ICollection<IServiceOutputMapping> outputs)
+        static void AssertAgainstOutputs(Table table, ICollection<IServiceOutputMapping> outputs)
         {
             if (table.Rows.Count == 0)
             {

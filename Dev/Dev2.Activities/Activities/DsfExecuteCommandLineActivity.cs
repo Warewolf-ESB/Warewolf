@@ -53,10 +53,8 @@ namespace Dev2.Activities
         #endregion
         
         [Inputs("CommandFileName")]
-        [FindMissing]
-        
-        public string CommandFileName
-        
+        [FindMissing]        
+        public string CommandFileName        
         {
             get
             {
@@ -122,7 +120,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            IExecutionToken exeToken = dataObject.ExecutionToken;
+            var exeToken = dataObject.ExecutionToken;
 
 
             var allErrors = new ErrorResultTO();
@@ -153,9 +151,9 @@ namespace Dev2.Activities
 
                             allErrors.AddError(errorReader.ReadToEnd());
                             var bytes = Encoding.Default.GetBytes(outputReader.ToString().Trim());
-                            string readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
-                            
-                            foreach(var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
+                            var readValue = Encoding.ASCII.GetString(bytes).Replace("?", " ");
+
+                            foreach (var region in DataListCleaningUtils.SplitIntoRegions(CommandResult))
                             {
                                 dataObject.Environment?.Assign(region, readValue, update == 0 ? counter : update);
                             }
@@ -184,7 +182,7 @@ namespace Dev2.Activities
                 if (!string.IsNullOrEmpty(_fullPath))
                 {
                     File.Delete(_fullPath);
-                    string tmpFile = _fullPath.Replace(".bat", "");
+                    var tmpFile = _fullPath.Replace(".bat", "");
                     if (File.Exists(tmpFile))
                     {
                         File.Delete(tmpFile);
@@ -225,7 +223,7 @@ namespace Dev2.Activities
                 _process.StartInfo = processStartInfo ?? throw new ArgumentNullException("processStartInfo");
                 var processStarted = _process.Start();
 
-                StringBuilder reader = outputReader;
+                var reader = outputReader;
                 errorReader = _process.StandardError;
 
                 if (!ProcessHasStarted(processStarted, _process))
@@ -243,24 +241,18 @@ namespace Dev2.Activities
                     reader.Append(_process.StandardOutput.ReadToEnd());
                     if (!_process.HasExited && _process.Threads.Cast<ProcessThread>().Any(a => a.ThreadState == System.Diagnostics.ThreadState.Wait && a.WaitReason == ThreadWaitReason.UserRequest))
                     {
-                        _process.Kill();
-                    }
-
-                    else
-                    {
                         if (!_process.HasExited)
                         {
-                            var isWaitingForUserInput = ModalChecker.IsWaitingForUserInput(_process);
-
-                            if (!isWaitingForUserInput)
-                            {
-                                continue;
-                            }
                             _process.Kill();
-                            throw new ApplicationException(ErrorResource.UserInputRequired);
                         }
                     }
+                    if (ModalChecker.IsWaitingForUserInput(_process))
+                    {
+                        _process.Kill();
+                        throw new ApplicationException(ErrorResource.UserInputRequired);
+                    }
                     Thread.Sleep(10);
+                    continue;
                 }
                 
                 if (executionToken.IsUserCanceled)
@@ -273,20 +265,20 @@ namespace Dev2.Activities
             return true;
         }
 
-        private void KillProcessAndChildren(int pid)
+        void KillProcessAndChildren(int pid)
         {
-            ManagementObjectSearcher searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
-            ManagementObjectCollection moc = searcher.Get();
-            foreach(var mo in moc)
+            var searcher = new ManagementObjectSearcher("Select * From Win32_Process Where ParentProcessID=" + pid);
+            var moc = searcher.Get();
+            foreach (var mo in moc)
             {
                 KillProcessAndChildren(Convert.ToInt32(mo["ProcessID"]));
             }
             try
             {
-                Process proc = Process.GetProcessById(pid);
+                var proc = Process.GetProcessById(pid);
                 proc.Kill();
             }
-            catch(ArgumentException e)
+            catch (ArgumentException e)
             {
                 Dev2Logger.Warn(e.Message, "Warewolf Warn");
             }

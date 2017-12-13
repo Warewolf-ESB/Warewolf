@@ -16,7 +16,7 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2Action : IAction
     {
-        private readonly Microsoft.Win32.TaskScheduler.Action _nativeTnstance;
+        readonly Microsoft.Win32.TaskScheduler.Action _nativeTnstance;
 
         public Dev2Action(Microsoft.Win32.TaskScheduler.Action nativeTnstance)
         {

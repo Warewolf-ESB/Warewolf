@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 using System.Activities.Statements;
 using System.Activities.Presentation.Model;
 using System.Windows;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -35,15 +36,15 @@ namespace Dev2.ViewModels.Merge
         FlowNode _flowNode;
         IMergeToolModel _parent;
         string _nodeArmDescription;
-        bool _processEvents;
 
         public MergeToolModel()
         {
             Children = new ObservableCollection<IMergeToolModel>();
-            _processEvents = true;
         }
 
         public ActivityDesignerViewModel ActivityDesignerViewModel { get; set; }
+
+        public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
         [JsonIgnore]
         public ImageSource MergeIcon
@@ -71,17 +72,48 @@ namespace Dev2.ViewModels.Merge
             {
                 var current = MemberwiseClone();
                 _isMergeChecked = value;
-                if (_processEvents)
+
+                RemovePreviousActivity();
+                if (_isMergeChecked)
                 {
+                    AddActivity();
                     SomethingModelToolChanged?.Invoke(current, this);
                 }
                 OnPropertyChanged(() => IsMergeChecked);
             }
         }
 
+        void RemovePreviousActivity()
+        {
+            if (Container?.CurrentViewModel == this)
+            {
+                WorkflowDesignerViewModel?.RemoveItem(Container.CurrentViewModel);
+            }
+            if (Container?.DiffViewModel == this)
+            {
+                WorkflowDesignerViewModel?.RemoveItem(Container.DiffViewModel);
+            }
+        }
+
+        void AddActivity()
+        {
+            if (Container != null && Container.IsStartNode)
+            {
+                WorkflowDesignerViewModel?.RemoveStartNodeConnection();
+            }
+            if (ModelItem != null)
+            {
+                WorkflowDesignerViewModel?.AddItem(this);
+                if (WorkflowDesignerViewModel != null)
+                {
+                    WorkflowDesignerViewModel.SelectedItem = ModelItem;
+                }
+            }
+        }
+
         public bool IsMergeEnabled
         {
-            get => _isMergeEnabled;
+            get => _isMergeEnabled && Container.HasConflict;
             set
             {
                 _isMergeEnabled = value;
@@ -180,9 +212,6 @@ namespace Dev2.ViewModels.Merge
         {
             IsMergeEnabled = false;
             IsMergeChecked = false;
-            _processEvents = false;
         }
-
-        public void EnableEvents() => _processEvents = true;
     }
 }

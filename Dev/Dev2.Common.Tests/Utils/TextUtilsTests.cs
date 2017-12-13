@@ -29,7 +29,7 @@ namespace Dev2.Common.Tests.Utils
             const string expected = "warewolf\r\n is\\n awesome\r\n";
             const string stringToReplace = "warewolf\n is\\n awesome\r\n";
             //------------Execute Test---------------------------
-            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            var actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }
@@ -43,7 +43,7 @@ namespace Dev2.Common.Tests.Utils
             const string expected = "\r\nwarewolf\r\n is\\n awesome\r\n";
             const string stringToReplace = "\nwarewolf\n is\\n awesome\r\n";
             //------------Execute Test---------------------------
-            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            var actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }
@@ -57,7 +57,7 @@ namespace Dev2.Common.Tests.Utils
             const string expected = "t\r\nwarewolf\r\n is\\n awesome\r\n";
             const string stringToReplace = "t\nwarewolf\n is\\n awesome\r\n";
             //------------Execute Test---------------------------
-            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            var actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }
@@ -71,7 +71,7 @@ namespace Dev2.Common.Tests.Utils
             const string expected = "t\r\nwarewolf\r\n is\\n awesome\r\n";
             const string stringToReplace = "t\nwarewolf\n is\\n awesome\n";
             //------------Execute Test---------------------------
-            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            var actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }
@@ -85,7 +85,7 @@ namespace Dev2.Common.Tests.Utils
             const string expected = "\\nwarewolf\r\n is\\n awesome\r\ntest";
             const string stringToReplace = "\\nwarewolf\n is\\n awesome\ntest";
             //------------Execute Test---------------------------
-            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            var actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }
@@ -99,7 +99,7 @@ namespace Dev2.Common.Tests.Utils
             const string expected = "\\4\\\r\n\r\n\\\\\\\r\n\r\n\\n\r\n";
             const string stringToReplace = "\\4\\\n\n\\\\\\\n\n\\n\n";
             //------------Execute Test---------------------------
-            string actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
+            var actual = TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(stringToReplace);
             //------------Assert Results-------------------------
             Assert.AreEqual(expected, actual, "The replacement didn't work correctly");
         }

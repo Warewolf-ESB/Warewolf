@@ -32,8 +32,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
-        private readonly IResourceCatalog _catalog;
-        private readonly IAuthorizationService _authorizationService;
+        readonly IResourceCatalog _catalog;
+        readonly IAuthorizationService _authorizationService;
         public IPrincipal ExecutingUser { private get; set; }
 
         public InternalServiceRequestHandler()
@@ -94,14 +94,14 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
         }
 
-        private string BuildStudioUrl(string payLoad)
+        string BuildStudioUrl(string payLoad)
         {
             try
             {
                 var xElement = XDocument.Parse(payLoad);
                 xElement.Descendants().Where(e => e.Name == "BDSDebugMode" || e.Name == "DebugSessionID" || e.Name == "EnvironmentID").Remove();
                 var s = xElement.ToString(SaveOptions.DisableFormatting);
-                var buildStudioUrl = s.Replace(Environment.NewLine,string.Empty).Replace(" ", "%20");
+                var buildStudioUrl = s.Replace(Environment.NewLine, string.Empty).Replace(" ", "%20");
                 return buildStudioUrl;
             }
             catch (Exception e)

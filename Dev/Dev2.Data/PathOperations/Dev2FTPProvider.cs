@@ -71,7 +71,7 @@ namespace Dev2.Data.PathOperations
 
         void ReadFromFtp(IActivityIOPath path, ref Stream result)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
+            var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
             request.Method = WebRequestMethods.Ftp.DownloadFile;
             request.UseBinary = true;
             request.KeepAlive = true;
@@ -94,7 +94,7 @@ namespace Dev2.Data.PathOperations
 
                     if (ftpStream != null && ftpStream.CanRead)
                     {
-                        byte[] data = ftpStream.ToByteArray();
+                        var data = ftpStream.ToByteArray();
                         result = new MemoryStream(data);
                     }
                     else
@@ -250,7 +250,7 @@ namespace Dev2.Data.PathOperations
 
         int WriteToFtp(Stream src, IActivityIOPath dst)
         {
-            FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
+            var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
             request.Method = WebRequestMethods.Ftp.UploadFile;
             request.UseBinary = true;
             request.KeepAlive = false;
@@ -271,7 +271,7 @@ namespace Dev2.Data.PathOperations
             {
                 using (src)
                 {
-                    byte[] payload = src.ToByteArray();
+                    var payload = src.ToByteArray();
                     int writeLen = payload.Length;
                     requestStream.Write(payload, 0, writeLen);
                 }
@@ -354,7 +354,7 @@ namespace Dev2.Data.PathOperations
 
         IList<IActivityIOPath> ListDirectoryStandardFtp(IActivityIOPath src)
         {
-            List<IActivityIOPath> result = new List<IActivityIOPath>();
+            var result = new List<IActivityIOPath>();
             try
             {
                 var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(src.Path));
@@ -383,7 +383,7 @@ namespace Dev2.Data.PathOperations
                             {
                                 while (!reader.EndOfStream)
                                 {
-                                    string uri = BuildValidPathForFtp(src, reader.ReadLine());
+                                    var uri = BuildValidPathForFtp(src, reader.ReadLine());
                                     result.Add(ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, true, src.PrivateKeyFile));
                                 }
                             }
@@ -393,7 +393,7 @@ namespace Dev2.Data.PathOperations
             }
             catch (WebException webEx)
             {
-                FtpWebResponse webResponse = webEx.Response as FtpWebResponse;
+                var webResponse = webEx.Response as FtpWebResponse;
                 {
                     if (webResponse?.StatusCode == FtpStatusCode.ActionNotTakenFileUnavailable)
                     {
@@ -422,7 +422,7 @@ namespace Dev2.Data.PathOperations
 
         IList<IActivityIOPath> ListDirectorySftp(IActivityIOPath src)
         {
-            List<IActivityIOPath> result = new List<IActivityIOPath>();
+            var result = new List<IActivityIOPath>();
             var sftp = BuildSftpClient(src);
             try
             {
@@ -473,7 +473,7 @@ namespace Dev2.Data.PathOperations
             FtpWebResponse response = null;
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
+                var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(dst.Path));
                 request.Method = WebRequestMethods.Ftp.MakeDirectory;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -543,7 +543,7 @@ namespace Dev2.Data.PathOperations
 
         public enPathType PathIs(IActivityIOPath path)
         {
-            enPathType result = enPathType.File;
+            var result = enPathType.File;
             if (Dev2ActivityIOPathUtils.IsDirectory(path.Path))
             {
                 result = enPathType.Directory;
@@ -571,7 +571,7 @@ namespace Dev2.Data.PathOperations
             catch (Exception ex)
             {
                 Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
-                string message = $"{ex.Message} : [{src.Path}]";
+                var message = $"{ex.Message} : [{src.Path}]";
                 throw new Exception(message, ex);
             }
             return dirs.Select(dir => BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
@@ -588,7 +588,7 @@ namespace Dev2.Data.PathOperations
             catch (Exception ex)
             {
                 Dev2Logger.Error(this, ex, GlobalConstants.WarewolfError);
-                string message = $"{ex.Message} : [{src.Path}]";
+                var message = $"{ex.Message} : [{src.Path}]";
                 throw new Exception(message, ex);
             }
             return dirs.Select(dir => BuildValidPathForFtp(src, dir)).Select(uri => ActivityIOFactory.CreatePathFromString(uri, src.Username, src.Password, src.PrivateKeyFile)).ToList();
@@ -602,9 +602,9 @@ namespace Dev2.Data.PathOperations
             set;
         }
 
-        private static string ConvertSslToPlain(string path)
+        static string ConvertSslToPlain(string path)
         {
-            string result = path;
+            var result = path;
             result = result.Replace(@"FTPS:", @"FTP:").Replace(@"ftps:", @"ftp:");
             return result;
         }
@@ -613,15 +613,15 @@ namespace Dev2.Data.PathOperations
         {
             if (pathStack.Count > 0)
             {
-                string path = pathStack[0];
+                var path = pathStack[0];
                 pathStack.RemoveAt(0);
                 bool addBack = true;
                 var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile);
                 IList<IActivityIOPath> allFiles = ListFilesInDirectory(pathFromString).GroupBy(a => a.Path).Select(g => g.First()).ToList();
-                IList<IActivityIOPath> allDirs = ListFoldersInDirectory(pathFromString);
+                var allDirs = ListFoldersInDirectory(pathFromString);
                 if (allDirs.Count == 0)
                 {
-                    IActivityIOPath tmpPath = pathFromString;
+                    var tmpPath = pathFromString;
                     allFiles.Insert(allFiles.Count, tmpPath);
                     DeleteOp(allFiles);
                     addBack = false;
@@ -653,7 +653,7 @@ namespace Dev2.Data.PathOperations
             string result = null;
             try
             {
-                FtpWebRequest req = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path));
+                var req = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path));
                 if (user != string.Empty)
                 {
                     req.Credentials = new NetworkCredential(user, pass);
@@ -716,13 +716,13 @@ namespace Dev2.Data.PathOperations
             return result.ToString();
         }
 
-        private static void AddResults(SftpClient sftp, string fromPath, StringBuilder result)
+        static void AddResults(SftpClient sftp, string fromPath, StringBuilder result)
         {
             var fileList = sftp.ListDirectory(fromPath);
 
             foreach (var filePath in fileList)
             {
-                string filename = filePath.Name;
+                var filename = filePath.Name;
                 if (filename == @".." || filename == @"." || filename.EndsWith(@"."))
                 {
                     continue;
@@ -731,9 +731,9 @@ namespace Dev2.Data.PathOperations
             }
         }
 
-        private List<string> ExtractList(string basePath, string payload, Func<string, bool> matchFunc)
+        List<string> ExtractList(string basePath, string payload, Func<string, bool> matchFunc)
         {
-            List<string> result = new List<string>();
+            var result = new List<string>();
 
             var parts = GetParts(payload);
             foreach (string p in parts)
@@ -741,7 +741,7 @@ namespace Dev2.Data.PathOperations
                 int idx = p.LastIndexOf(@" ", StringComparison.Ordinal);
                 if (idx > 0)
                 {
-                    string part = p.Substring(idx + 1).Trim();
+                    var part = p.Substring(idx + 1).Trim();
                     if (matchFunc(p))
                     {
                         if (!basePath.EndsWith(@"/"))
@@ -774,7 +774,7 @@ namespace Dev2.Data.PathOperations
 
         static string[] GetParts(string payload)
         {
-            string[] parts = payload.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var parts = payload.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
             if (parts.Length == 1)
             {
@@ -788,7 +788,7 @@ namespace Dev2.Data.PathOperations
             return parts;
         }
 
-        private bool DeleteOp(IList<IActivityIOPath> src)
+        bool DeleteOp(IList<IActivityIOPath> src)
         {
             return src.All(IsStandardFtp) ? DeleteUsingStandardFtp(src) : DeleteUsingSftp(src);
         }
@@ -800,7 +800,7 @@ namespace Dev2.Data.PathOperations
             {
                 try
                 {
-                    FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(activityIOPath.Path));
+                    var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(activityIOPath.Path));
                     request.Method = PathIs(activityIOPath) == enPathType.Directory ? WebRequestMethods.Ftp.RemoveDirectory : WebRequestMethods.Ftp.DeleteFile;
                     request.UseBinary = true;
                     request.KeepAlive = false;
@@ -864,13 +864,13 @@ namespace Dev2.Data.PathOperations
             return true;
         }
 
-        private static bool EnableSsl(IActivityIOPath path)
+        static bool EnableSsl(IActivityIOPath path)
         {
             var result = path.PathType == enActivityIOPathType.FTPS || path.PathType == enActivityIOPathType.FTPES;
             return result;
         }
 
-        private bool IsFilePresent(IActivityIOPath path)
+        bool IsFilePresent(IActivityIOPath path)
         {
             var isFilePresent = IsStandardFtp(path) ? IsFilePresentStandardFtp(path) : IsFilePresentSftp(path);
             return isFilePresent;
@@ -882,7 +882,7 @@ namespace Dev2.Data.PathOperations
             bool isAlive;
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
+                var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
                 request.Method = WebRequestMethods.Ftp.GetFileSize;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -946,7 +946,7 @@ namespace Dev2.Data.PathOperations
             return isAlive;
         }
 
-        private bool IsDirectoryAlreadyPresent(IActivityIOPath path)
+        bool IsDirectoryAlreadyPresent(IActivityIOPath path)
         {
             var isAlive = IsStandardFtp(path) ? IsDirectoryAlreadyPresentStandardFtp(path) : IsDirectoryAlreadyPresentSftp(path);
             return isAlive;
@@ -958,7 +958,7 @@ namespace Dev2.Data.PathOperations
             bool isAlive;
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
+                var request = (FtpWebRequest)WebRequest.Create(ConvertSslToPlain(path.Path));
                 request.Method = WebRequestMethods.Ftp.ListDirectory;
                 request.UseBinary = true;
                 request.KeepAlive = false;
@@ -1032,7 +1032,7 @@ namespace Dev2.Data.PathOperations
             return isAlive;
         }
 
-        private bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
+        bool AcceptAllCertifications(object sender, X509Certificate certification, X509Chain chain, SslPolicyErrors sslPolicyErrors)
         {
             return true;
         }

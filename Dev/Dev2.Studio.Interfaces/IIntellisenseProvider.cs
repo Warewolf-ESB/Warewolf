@@ -32,16 +32,16 @@ namespace Dev2.Studio.Interfaces
 
     public sealed class IntellisenseProviderResult
     {
-        private readonly IIntellisenseProvider _provider;
-        private readonly string _name;
-        private readonly string _description;
-        private readonly string _dropdownDescription;
-        private readonly bool _isError;
-        private readonly bool _isPopup;
-        private readonly int _startIndex;
-        private readonly int _endIndex;
-        private readonly string[] _arguments;
-        private readonly string[] _argumentDescriptions;
+        readonly IIntellisenseProvider _provider;
+        readonly string _name;
+        readonly string _description;
+        readonly string _dropdownDescription;
+        readonly bool _isError;
+        readonly bool _isPopup;
+        readonly int _startIndex;
+        readonly int _endIndex;
+        readonly string[] _arguments;
+        readonly string[] _argumentDescriptions;
 
         public IIntellisenseProvider Provider => _provider;
         public string Name => _name;
@@ -65,7 +65,7 @@ namespace Dev2.Studio.Interfaces
 
             if (_arguments != null && _arguments.Length != 0)
             {
-                List<string> args = new List<string>(_arguments);
+                var args = new List<string>(_arguments);
                 for (int i = args.Count - 1; i >= 0; i--)
                 {
                     if (String.IsNullOrEmpty(args[i]))

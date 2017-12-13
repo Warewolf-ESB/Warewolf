@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.Services
             deleteTest.TestCatalog = repo.Object;
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(null, null);
+            var jsonResult = deleteTest.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);

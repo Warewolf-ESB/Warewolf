@@ -36,7 +36,7 @@ namespace Dev2.Services.Execution.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IDSFDataObject>();
-            DataTable dt = GetTable();
+            var dt = GetTable();
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.HasRecordSet(It.IsAny<string>()));
             var newDatabaseServiceExecution = new DatabaseServiceExecution(mock.Object)
@@ -62,7 +62,7 @@ namespace Dev2.Services.Execution.Tests
         {
             //---------------Set up test pack-------------------
             var mock = new Mock<IDSFDataObject>();
-            DataTable dt = GetTable();
+            var dt = GetTable();
             var env = new Mock<IExecutionEnvironment>();
             env.Setup(environment => environment.HasRecordSet(It.IsAny<string>()));
             var newDatabaseServiceExecution = new DatabaseServiceExecution(mock.Object)
@@ -84,7 +84,7 @@ namespace Dev2.Services.Execution.Tests
         static DataTable GetTable()
         {
             // Here we create a DataTable with four columns.
-            DataTable table = new DataTable();
+            var table = new DataTable();
             table.Columns.Add("Dosage", typeof(int));
             table.Columns.Add("Drug", typeof(string));
             table.Columns.Add("Patient", typeof(string));

@@ -33,7 +33,7 @@ namespace Dev2.Activities.Specs.Merge
         public void Setup()
         {
             var merge = new MergeFeature(_scenarioContext);
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var mergeParser = new ServiceDifferenceParser();
             var pop = new Mock<IPopupController>();
             CustomContainer.Register<IServiceDifferenceParser>(mergeParser);

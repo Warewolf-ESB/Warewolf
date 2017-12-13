@@ -120,20 +120,26 @@ namespace Dev2.Activities.Designers2.Sequence
 
                     if (resource == null)
                     {
-                        return false;
-                    }
-                    var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
-                    d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
-                    ValidateRemoteProperties(resource, d);
+                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
+                        d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
+                        if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+                        {
+                            dynamic mvm = Application.Current.MainWindow.DataContext;
+                            if (mvm != null && mvm.ActiveItem != null)
+                            {
+                                WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                            }
+                        }
 
-                    var modelItem = ModelItemUtils.CreateModelItem(d);
-                    if (modelItem == null)
-                    {
-                        return false;
-                    }
-                    dynamic mi = ModelItem;
-                    ModelItemCollection activitiesCollection = mi.Activities;
-                    activitiesCollection.Insert(activitiesCollection.Count, d);
+                        var modelItem = ModelItemUtils.CreateModelItem(d);
+                        if (modelItem != null)
+                        {
+                            dynamic mi = ModelItem;
+                            ModelItemCollection activitiesCollection = mi.Activities;
+                            activitiesCollection.Insert(activitiesCollection.Count, d);
+                            return true;
+                        }
+                    }                    
                     return true;
                 }
                 catch (RuntimeBinderException e)

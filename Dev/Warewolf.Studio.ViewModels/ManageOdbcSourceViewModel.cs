@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels
             InitializeViewModel();
         }
 
-        private void InitializeViewModel()
+        void InitializeViewModel()
         {
             CanSelectServer = false;
             CanSelectUser = false;

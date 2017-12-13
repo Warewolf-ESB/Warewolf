@@ -14,18 +14,18 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 {
     public class ComNamespaceRegion : INamespaceToolRegion<INamespaceItem>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IComPluginSource> _source;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IComPluginSource> _source;
+        bool _isEnabled;
 
-        private Action _sourceChangedNamespace;
-        private INamespaceItem _selectedNamespace;
-        private readonly IComPluginServiceModel _model;
-        private ICollection<INamespaceItem> _namespaces;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private bool _isNamespaceEnabled;
-        private IList<string> _errors;
+        Action _sourceChangedNamespace;
+        INamespaceItem _selectedNamespace;
+        readonly IComPluginServiceModel _model;
+        ICollection<INamespaceItem> _namespaces;
+        bool _isRefreshing;
+        double _labelWidth;
+        bool _isNamespaceEnabled;
+        IList<string> _errors;
 
         public ComNamespaceRegion()
         {
@@ -94,16 +94,16 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
 
-                
+
                 UpdateBasedOnSource();
-                
-                
+
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -115,7 +115,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
         }
 
-        private void UpdateBasedOnSource()
+        void UpdateBasedOnSource()
         {
             if (_source?.SelectedSource != null)
             {
@@ -251,7 +251,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         #region Implementation of INamespaceToolRegion<INamespaceItem>
 
-        private void SetSelectedNamespace(INamespaceItem value)
+        void SetSelectedNamespace(INamespaceItem value)
         {
             _selectedNamespace = value;
             SavedNamespace = value;

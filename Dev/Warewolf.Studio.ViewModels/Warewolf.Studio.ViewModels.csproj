@@ -192,7 +192,6 @@
     <Compile Include="ManageWebServiceSourceModel.cs" />
     <Compile Include="ManageWebserviceSourceViewModel.cs" />
     <Compile Include="MenuViewModel.cs" />
-    <Compile Include="ManagePasteViewModel.cs" />
     <Compile Include="MessageBoxViewModel.cs" />
     <Compile Include="..\AssemblyCommonInfo.cs" Condition="Exists('..\AssemblyCommonInfo.cs')">
       <Link>Properties\AssemblyCommonInfo.cs</Link>

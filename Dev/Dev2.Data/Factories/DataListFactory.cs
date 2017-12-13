@@ -45,7 +45,7 @@ namespace Dev2.DataList.Contract
 
         public static string GenerateMapping(IList<IDev2Definition> defs, enDev2ArgumentType typeOf)
         {
-            DefinitionBuilder b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
+            var b = new DefinitionBuilder { ArgumentType = typeOf, Definitions = defs };
 
             return b.Generate();
         }
@@ -78,12 +78,12 @@ namespace Dev2.DataList.Contract
 
         static IRecordSetCollection RecordSetCollection(IList<IDev2Definition> parsedOutput, bool isOutput, bool isDbService)
         {
-            RecordSetCollectionBuilder b = new RecordSetCollectionBuilder();
+            var b = new RecordSetCollectionBuilder();
 
             b.SetParsedOutput(parsedOutput);
             b.IsOutput = isOutput;
             b.IsDbService = isDbService;
-            IRecordSetCollection result = b.Generate();
+            var result = b.Generate();
 
             return result;
         }
@@ -134,9 +134,9 @@ namespace Dev2.DataList.Contract
 
         public static IList<IDev2DataLanguageIntellisensePart> GenerateIntellisensePartsFromDataList(string dataList, IIntellisenseFilterOpsTO fiterTo)
         {
-            DataListIntellisenseBuilder dlib = new DataListIntellisenseBuilder { FilterTO = fiterTo, DataList = dataList };
+            var dlib = new DataListIntellisenseBuilder { FilterTO = fiterTo, DataList = dataList };
 
-            IList<IDev2DataLanguageIntellisensePart> result = dlib.Generate();
+            var result = dlib.Generate();
 
             return result;
         }

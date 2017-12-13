@@ -88,14 +88,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while(colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                var broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
-                Dev2PutRawOperationTO putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)));
-                IActivityIOPath opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                var putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)));
+                var opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
+                var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
 
                 try
                 {
@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        string result = broker.PutRaw(endPoint, putTo);
+                        var result = broker.PutRaw(endPoint, putTo);
                         outputs[0].OutputStrings.Add(result);
                     }
                 }
@@ -198,9 +198,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
-        
 
-        private string GetMethod()
+
+        string GetMethod()
         {
             return GetCorrectWriteType().GetDescription();
         }

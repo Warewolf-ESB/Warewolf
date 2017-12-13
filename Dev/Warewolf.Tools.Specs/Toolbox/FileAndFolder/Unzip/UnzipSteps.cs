@@ -31,7 +31,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
     [Binding]
     public class UnzipSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public UnzipSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -55,7 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         public void WhenTheUnzipFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -64,7 +64,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
         {
             scenarioContext.Add("singleFile", true);
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -134,12 +134,12 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             scenarioContext.Add("activity", unzip);
         }
 
-        private void CopyZipFileToSourceLocation()
+        void CopyZipFileToSourceLocation()
         {
             RunwithRetry(1);
         }
 
-        private void RunwithRetry(int retrycount)
+        void RunwithRetry(int retrycount)
         {
             if (retrycount == 0)
             {
@@ -149,7 +149,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             const int TimeOut = 300000;
 
             var cancel = new CancellationTokenSource();
-            Task a = new Task(RunCopy, cancel.Token);
+            var a = new Task(RunCopy, cancel.Token);
             a.Start();
             a.Wait(TimeOut);
 
@@ -168,24 +168,24 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Unzip
             }
         }
 
-        private void RunCopy()
+        void RunCopy()
         {
             try
             {
-                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
+                var source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
                                                                                 scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
                                                                                 scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                                                                                 true);
-                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
-                string resourceName = "Warewolf.Tools.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
+                var resourceName = "Warewolf.Tools.Specs.Toolbox.FileAndFolder.Unzip.Test.zip";
                 if (scenarioContext.ContainsKey("WhenTheUnzipFileToolIsExecutedWithASingleFile"))
                 {
                     resourceName = "TestFile.zip";
                 }
 
-                Assembly assembly = Assembly.GetExecutingAssembly();
-                List<string> filesToCleanup = new List<string>();
+                var assembly = Assembly.GetExecutingAssembly();
+                var filesToCleanup = new List<string>();
                 using (Stream stream = assembly.GetManifestResourceStream(resourceName))
                 {
                     if (stream != null)

@@ -530,7 +530,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         static Mock<IEsbChannel> CreateMockEsbChannel()
         {
-            Mock<IEsbChannel> esbChannelMock = new Mock<IEsbChannel>();
+            var esbChannelMock = new Mock<IEsbChannel>();
             return esbChannelMock;
         }
 

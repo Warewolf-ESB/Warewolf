@@ -7,7 +7,7 @@ namespace Dev2.Common
 {
     public static class Mapper
     {
-        private static readonly Dictionary<KeyValuePair<Type, Type>, object> Maps = new Dictionary<KeyValuePair<Type, Type>, object>();
+        static readonly Dictionary<KeyValuePair<Type, Type>, object> Maps = new Dictionary<KeyValuePair<Type, Type>, object>();
 
         public static void AddMap<TFrom, TTo>()
             where TFrom : class

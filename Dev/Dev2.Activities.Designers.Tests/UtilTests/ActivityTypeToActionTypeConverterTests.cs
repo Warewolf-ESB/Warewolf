@@ -23,7 +23,7 @@ namespace Dev2.Activities.Designers.Tests.UtilTests
         public void ActivityTypeToActionTypeConverter_ConvertToActionType_ConvertWorkflow_ExpectedWorkflowEnum()
         {
             //------------Execute Test---------------------------
-            enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("Workflow");
+            var actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("Workflow");
             //------------Assert Results-------------------------
             Assert.AreEqual(enActionType.Workflow, actionType);
         }
@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers.Tests.UtilTests
         public void ActivityTypeToActionTypeConverter_ConvertToActionType_ConvertWebService_ExpectedWebServiceEnum()
         {
             //------------Execute Test---------------------------
-            enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("WebService");
+            var actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("WebService");
             //------------Assert Results-------------------------
             Assert.AreEqual(enActionType.InvokeWebService, actionType);
         }
@@ -45,7 +45,7 @@ namespace Dev2.Activities.Designers.Tests.UtilTests
         public void ActivityTypeToActionTypeConverter_ConvertToActionType_ConvertPluginService_ExpectedPluginServiceEnum()
         {
             //------------Execute Test---------------------------
-            enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("PluginService");
+            var actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("PluginService");
             //------------Assert Results-------------------------
             Assert.AreEqual(enActionType.Plugin, actionType);
         }
@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.UtilTests
         public void ActivityTypeToActionTypeConverter_ConvertToActionType_ConvertDbService_ExpectedDbServiceEnum()
         {
             //------------Execute Test---------------------------
-            enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("DbService");
+            var actionType = ActivityTypeToActionTypeConverter.ConvertToActionType("DbService");
             //------------Assert Results-------------------------
             Assert.AreEqual(enActionType.InvokeStoredProc, actionType);
         }
