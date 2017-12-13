@@ -29,13 +29,13 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         readonly string _warewolfserverName;
         string _headerText;
-        private bool _isDisposed;
+        bool _isDisposed;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        private IDllListingModel _selectedDll;
-        private string _gacAssemblyName;
-        private string _fileSystemAssemblyName;
-        private string _configFilePath;
-        private bool _canSelectConfigFiles;
+        IDllListingModel _selectedDll;
+        string _gacAssemblyName;
+        string _fileSystemAssemblyName;
+        string _configFilePath;
+        bool _canSelectConfigFiles;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker)
@@ -340,13 +340,13 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        private IPluginSource ToSource()
+        IPluginSource ToSource()
         {
             if (_pluginSource == null)
             {
                 return ToNewSource();
             }
-            
+
             else
             {
                 _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
@@ -356,7 +356,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IPluginSource ToNewSource()
+        IPluginSource ToNewSource()
         {
             return new PluginSourceDefinition
             {
@@ -367,7 +367,7 @@ namespace Warewolf.Studio.ViewModels
                 GACAssemblyName = _gacAssemblyName,
                 Id = _pluginSource?.Id ?? Guid.NewGuid()
             };
-            
+
         }
 
         public IRequestServiceNameViewModel RequestServiceNameViewModel

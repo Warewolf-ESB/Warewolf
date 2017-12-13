@@ -17,7 +17,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     }
     public class AssemblyLoader : IAssemblyLoader
     {
-        private readonly IAssemblyWrapper _assemblyWrapper;
+        readonly IAssemblyWrapper _assemblyWrapper;
 
         public AssemblyLoader()
             : this(new AssemblyWrapper())
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             _assemblyWrapper = assemblyWrapper;
         }
 
-        private readonly List<string> _loadedAssemblies = new List<string>();
+        readonly List<string> _loadedAssemblies = new List<string>();
         #region Implementation of IAssemblyLoader
 
         public bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)

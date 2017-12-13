@@ -1,6 +1,6 @@
 namespace Dev2.Common.Interfaces
 {
-    internal interface ITimeZoneBuilder : IDateTimeParserBuilder
+    interface ITimeZoneBuilder : IDateTimeParserBuilder
     {
     }
 }

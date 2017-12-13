@@ -14,10 +14,10 @@ namespace Dev2.Services.Sql
 {
     public sealed class MySqlServer : IDbServer
     {
-        private readonly IDbFactory _factory;
-        private IDbCommand _command;
-        private MySqlConnection _connection;
-        private IDbTransaction _transaction;
+        readonly IDbFactory _factory;
+        IDbCommand _command;
+        MySqlConnection _connection;
+        IDbTransaction _transaction;
 
         public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
@@ -31,11 +31,11 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
-            
+            var proceduresDataTable = GetSchema(_connection);
+
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                var fullProcedureName = row["Name"].ToString();
                 if (row["Db"].ToString() == dbName)
                 {
                     using (
@@ -45,9 +45,9 @@ namespace Dev2.Services.Sql
                         try
                         {
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-       
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
 
 
@@ -97,8 +97,8 @@ namespace Dev2.Services.Sql
         {
             VerifyConnection();
             MySqlDataReader reader = null;
-            List<string> result = new List<string>();
-            MySqlCommand cmd = new MySqlCommand("SHOW DATABASES", _connection);
+            var result = new List<string>();
+            var cmd = new MySqlCommand("SHOW DATABASES", _connection);
             try
             {
                 reader = cmd.ExecuteReader();
@@ -155,11 +155,11 @@ namespace Dev2.Services.Sql
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
+            var proceduresDataTable = GetSchema(_connection);
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                var fullProcedureName = row["Name"].ToString();
                 if (row["Db"].ToString() == dbName)
                 {
                     using (
@@ -168,9 +168,9 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                           
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
 
 
@@ -187,9 +187,9 @@ namespace Dev2.Services.Sql
             }
         }
 
-        
 
-        private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
+
+        string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {
             string helpText;
 
@@ -209,7 +209,7 @@ namespace Dev2.Services.Sql
 
         #region VerifyConnection
 
-        private void VerifyConnection()
+        void VerifyConnection()
         {
             if (!IsConnected)
             {
@@ -246,11 +246,11 @@ namespace Dev2.Services.Sql
 
         #endregion
 
-        private static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
+        static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
-                 var da = new MySqlDataAdapter(command as MySqlCommand);
+                var da = new MySqlDataAdapter(command as MySqlCommand);
                 using (da)
                 {
                     return handler(da);
@@ -262,7 +262,7 @@ namespace Dev2.Services.Sql
                 {
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
-                    exceptionDataTable.LoadDataRow(new object[] {e.Message}, true);
+                    exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
                     return handler(new MySqlDataAdapter());
                 }
                 throw;
@@ -282,31 +282,31 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private DataTable GetSchema(IDbConnection connection)
+        DataTable GetSchema(IDbConnection connection)
         {
-            string CommandText = GlobalConstants.SchemaQueryMySql;
+            var CommandText = GlobalConstants.SchemaQueryMySql;
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);
             }
         }
 
-        private string GetHelpText(IDbConnection connection, string objectName)
+        string GetHelpText(IDbConnection connection, string objectName)
         {
             using (
                 IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
-                return ExecuteReader(command, delegate(IDataAdapter reader)
+                return ExecuteReader(command, delegate (IDataAdapter reader)
                     {
                         var sb = new StringBuilder();
-                        DataSet ds = new DataSet(); //conn is opened by dataadapter
+                        var ds = new DataSet(); //conn is opened by dataadapter
                         reader.Fill(ds);
-                        var t =  ds.Tables[0];
+                        var t = ds.Tables[0];
                         var dataTableReader = t.CreateDataReader();
                         while (dataTableReader.Read())
                         {
-                            object value = dataTableReader.GetValue(2);
+                            var value = dataTableReader.GetValue(2);
                             if (value != null)
                             {
                                 sb.Append(value);
@@ -332,14 +332,14 @@ namespace Dev2.Services.Sql
         {
             outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            string originalCommandText = command.CommandText;
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
             command.CommandText =
                 string.Format(
                     "SELECT param_list FROM mysql.proc WHERE db='{0}' AND name='{1}'",
                     dbName, procedureName);
-            DataTable dataTable = FetchDataTable(command);
+            var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
                 if (row?[0] is byte[] bytes)
@@ -391,7 +391,7 @@ namespace Dev2.Services.Sql
 
         #region IDisposable
 
-        private bool _disposed;
+        bool _disposed;
 
         public MySqlServer()
         {

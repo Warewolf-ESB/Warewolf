@@ -18,8 +18,8 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class WebGetRequestHandler : AbstractWebRequestHandler
     {
-        private IResourceCatalog _catalog;
-        private ITestCatalog _testCatalog;
+        IResourceCatalog _catalog;
+        ITestCatalog _testCatalog;
 
         public WebGetRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog)
         {

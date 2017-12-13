@@ -23,18 +23,18 @@ namespace Dev2.Runtime.Hosting
             return new ResourceUpgrader(CreateUpgradePath());
         }
 
-        private static List<IUpgradePath> CreateUpgradePath()
+        static List<IUpgradePath> CreateUpgradePath()
         {
-            List<IUpgradePath> upgrades = new List<IUpgradePath>
+            var upgrades = new List<IUpgradePath>
             {
                 new UpgradePath(
-                    upgradesFrom: new Version(), 
-                    upgradesTo: new Version(0, 4, 17, 27001), 
+                    upgradesFrom: new Version(),
+                    upgradesTo: new Version(0, 4, 17, 27001),
                     upgrade: new BaseResourceUpgrader()
                     ),
                     new UpgradePath(
-                    upgradesFrom: new Version(0,4,2,3), 
-                    upgradesTo: new Version(0, 5, 22, 27001), 
+                    upgradesFrom: new Version(0,4,2,3),
+                    upgradesTo: new Version(0, 5, 22, 27001),
                     upgrade: new EncryptionResourceUpgrader()
                     )
             };

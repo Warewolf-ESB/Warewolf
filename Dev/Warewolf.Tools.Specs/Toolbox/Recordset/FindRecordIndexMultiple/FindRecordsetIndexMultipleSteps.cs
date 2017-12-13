@@ -25,7 +25,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
     [Binding]
     public class FindRecordsetIndexMultipleSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public FindRecordsetIndexMultipleSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -89,7 +89,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"I have the following recordset to search for multiple criteria")]
         public void GivenIHaveTheFollowingRecordsetToSearchForMultipleCriteria(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             var rs = table.Header.ToArray()[0];
             var field = table.Header.ToArray()[1];
 
@@ -137,9 +137,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
         [Given(@"I have the following recordset in my datalist")]
         public void GivenIHaveTheFollowingRecordsetInMyDatalist(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
-            if(tableRows.Count == 0)
+            if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
@@ -197,7 +197,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
             searchList.Add(new FindRecordsTO(string.Empty, searchType, row, false, from, to));
         }
 
-        private List<FindRecordsTO> GetSearchList()
+        List<FindRecordsTO> GetSearchList()
         {
             scenarioContext.TryGetValue("searchList", out List<FindRecordsTO> searchList);
 
@@ -226,7 +226,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
         public void WhenTheFindRecordsIndexMultipleToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -238,9 +238,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
             if(DataListUtil.IsValueRecordset(ResultVariable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultVariable);
-                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultVariable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultVariable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 

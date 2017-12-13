@@ -29,11 +29,11 @@ namespace Warewolf.Studio.Views
             ShowDialog();
         }
 
-        private void ChooseDLLView_OnClosing(object sender, CancelEventArgs e)
+        void ChooseDLLView_OnClosing(object sender, CancelEventArgs e)
         {
         }
 
-        private void ChooseDLLView_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void ChooseDLLView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {

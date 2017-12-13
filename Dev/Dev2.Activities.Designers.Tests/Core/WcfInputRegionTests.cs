@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         [TestMethod]
@@ -52,8 +52,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -82,8 +82,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -104,8 +104,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -120,8 +120,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -138,8 +138,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             
@@ -163,8 +163,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWcfServiceModel>();
             var lst = new ObservableCollection<IWcfServerSource>() { new WcfServiceSourceDefinition() { Name = "bravo" }, new WcfServiceSourceDefinition() { Name = "johnny" } };
             src.Setup(a => a.RetrieveSources()).Returns(lst);
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
 
@@ -259,7 +259,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
-        private IWcfAction ValueFunction()
+        IWcfAction ValueFunction()
         {
             return new WcfAction()
             {

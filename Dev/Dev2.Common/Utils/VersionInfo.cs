@@ -31,11 +31,11 @@ namespace Dev2.Studio.Utils
             return new Version(versionResource.FileVersion);
         }
 
-        private static VersionResource GetVersionResource()
+        static VersionResource GetVersionResource()
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
+            var asm = Assembly.GetExecutingAssembly();
             var versionResource = new VersionResource();
-            string fileName = asm.Location;
+            var fileName = asm.Location;
             versionResource.LoadFrom(fileName);
             return versionResource;
         }

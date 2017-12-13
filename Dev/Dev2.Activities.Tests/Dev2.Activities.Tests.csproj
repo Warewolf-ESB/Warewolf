@@ -247,7 +247,6 @@
     <Compile Include="ActivityComparerTests\WebTools\DsfWebDeleteActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebPostActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\WebTools\DsfWebPutActivityComparerTests.cs" />
-    <Compile Include="ActivityComparerTests\WebTools\DsfWebServiceActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\XPath\DsfXPathActivityComparerTests.cs" />
     <Compile Include="ActivityComparerTests\Sharepoint\SharepointUpdateListItemActivityEqualityTests.cs" />
     <Compile Include="ActivityComparerTests\RabbitMQ\DsfConsumeRabbitMqActivityComparerTests.cs" />

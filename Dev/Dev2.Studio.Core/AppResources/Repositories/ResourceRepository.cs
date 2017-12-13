@@ -44,7 +44,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
     {
         readonly HashSet<Guid> _cachedServices;
         IServer _server;
-        private readonly List<IResourceModel> _resourceModels;
+        readonly List<IResourceModel> _resourceModels;
         bool _isLoaded;
         readonly IDeployService _deployService = new DeployService();
         readonly object _updatingPermissions = new object();
@@ -94,7 +94,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Load();
         }
 
-        private void ShowServerDisconnectedPopup()
+        void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _server.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
@@ -140,16 +140,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                 foreach (var serializableResource in toReloadResources)
                 {
                     var resource = HydrateResourceModel(serializableResource, _server.Connection.ServerID, true);
-                    var resourceToUpdate = _resourceModels.FirstOrDefault(r => ResourceModelEqualityComparer.Current.Equals(r, resource));
-
-                    if (resourceToUpdate != null)
-                    {
-                        resourceToUpdate.Update(resource);
-                    }
-                    else
-                    {
-                        _resourceModels.Add(resource);
-                    }
+                    _resourceModels.Add(resource);
                     return resource;
                 }
             }
@@ -164,6 +155,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             {
                 return null;
             }
+
             var func = expression.Compile();
             return _resourceModels.FindAll(func.Invoke);
         }
@@ -200,8 +192,13 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return GetContextualResourceModel(resourceId, toReloadResources);
         }
 
-        private IContextualResourceModel GetContextualResourceModel(Guid resourceId, List<SerializableResource> toReloadResources)
+        IContextualResourceModel GetContextualResourceModel(Guid resourceId, List<SerializableResource> toReloadResources)
         {
+            if (toReloadResources != null && toReloadResources.Count == 0)
+            {
+                Dev2Logger.Error(string.Format(ErrorResource.NoResourcesFound, resourceId), "Warewolf Error");
+                return null;
+            }
             if (toReloadResources != null && toReloadResources.Count == 1)
             {
                 var serializableResource = toReloadResources[0];
@@ -248,7 +245,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             return executeMessage;
         }
 
-        private void AddResourceIfNotExist(IResourceModel instanceObj)
+        void AddResourceIfNotExist(IResourceModel instanceObj)
         {
             Dev2Logger.Info($"Save Resource: {instanceObj.ResourceName}  Environment:{_server.Name}", GlobalConstants.WarewolfInfo);
             var workflow = FindSingle(c => c.ID == instanceObj.ID);
@@ -431,7 +428,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             Dev2Logger.Warn("Loading Resources - End", GlobalConstants.WarewolfWarn);
         }
 
-        private static CommunicationController GetCommunicationControllerForLoadResources()
+        static CommunicationController GetCommunicationControllerForLoadResources()
         {
             Dev2Logger.Warn("Loading Resources - Start", GlobalConstants.WarewolfWarn);
             var comsController = new CommunicationController { ServiceName = "FindResourceService" };
@@ -488,7 +485,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
                     return null;
                 }
             }
-            var id = data.ResourceID;
+            var id = data.ResourceID;       
 
             if (!IsInCache(id) || forced)
             {
@@ -558,7 +555,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         internal Func<string, ICommunicationController> GetCommunicationController = serviveName => new CommunicationController { ServiceName = serviveName };
 
-        private ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
+        ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
         {
             var comsController = GetCommunicationController("SaveResourceService");
             var message = new CompressedExecuteMessage();
@@ -814,7 +811,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
             var lists = comController.ExecuteCommand<List<SharepointListTo>>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             return lists;
         }
-        private string CreateServiceName(Type type)
+        string CreateServiceName(Type type)
         {
             var serviceName = $"Fetch{type.Name}s";
             return serviceName;

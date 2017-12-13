@@ -50,9 +50,9 @@ namespace Warewolf.UIBindingTests.Core
 
         public static void SetupResourceDictionary()
         {
-            Application app = Application.Current ?? new Application();
-            ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
-            foreach(var resourceDictionary in themeDictionary.MergedDictionaries)
+            var app = Application.Current ?? new Application();
+            var themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
+            foreach (var resourceDictionary in themeDictionary.MergedDictionaries)
             {
                 app.Resources.MergedDictionaries.Add(resourceDictionary);
                 var resourceDictionaries = resourceDictionary.MergedDictionaries;
@@ -78,8 +78,8 @@ namespace Warewolf.UIBindingTests.Core
 
         public static void SetupResourceDictionaryActivities()
         {
-            Application app = Application.Current ?? new Application();
-            ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
+            var app = Application.Current ?? new Application();
+            var themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
             app.Resources.MergedDictionaries.Add(themeDictionary);
   
 

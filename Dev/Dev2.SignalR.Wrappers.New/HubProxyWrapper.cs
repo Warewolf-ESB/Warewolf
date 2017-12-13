@@ -28,7 +28,7 @@ namespace Dev2.SignalR.Wrappers.New
 
         public ISubscriptionWrapper Subscribe(string sendmemo)
         {
-            Subscription s = _hubProxy.Subscribe(sendmemo);
+            var s = _hubProxy.Subscribe(sendmemo);
             return new SubscriptionWrapper(s);
         }
 

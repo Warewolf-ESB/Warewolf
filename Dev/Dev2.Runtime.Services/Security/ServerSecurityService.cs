@@ -22,7 +22,7 @@ namespace Dev2.Runtime.Security
 {
     public class ServerSecurityService : SecurityServiceBase
     {
-        private bool _disposing;
+        bool _disposing;
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
         public ServerSecurityService()
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.Security
             var reader = new SecurityRead();
             var result = reader.Execute(null, null);
             var serializer = new Dev2JsonSerializer();
-            SecuritySettingsTO securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
+            var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
             TimeOutPeriod = securitySettingsTO.CacheTimeout;
             return securitySettingsTO.WindowsGroupPermissions;
         }

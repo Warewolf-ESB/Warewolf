@@ -15,7 +15,7 @@ namespace Dev2.Data.TO
     public class ParseTO : IParseTO
     {
 
-        private string _payload = string.Empty;
+        string _payload = string.Empty;
 
         public string Payload {
             get {

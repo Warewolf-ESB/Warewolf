@@ -337,7 +337,7 @@ namespace Warewolf.Studio.ViewModels
             });
             RunAllTestsCommand = new DelegateCommand(type =>
             {
-                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourceId);
+                _explorerItemViewModelCommandController.RunAllTestsCommand(ResourcePath, ResourceId);
             });
             CopyUrlCommand = new DelegateCommand(type =>
             {
@@ -479,7 +479,7 @@ namespace Warewolf.Studio.ViewModels
         {
             IsNewFolderVisible = _isFolder;
             IsCreateTestVisible = _isService;
-            IsRunAllTestsVisible = _isService;
+            IsRunAllTestsVisible = _isService || _isFolder;
             IsViewSwaggerVisible = _isService;
             IsMergeVisible = _isService;
             IsViewJsonApisVisible = _isService || _isFolder;
@@ -1243,7 +1243,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public bool CanViewRunAllTests
         {
-            get => _canViewRunAllTests && IsService && !IsSaveDialog;
+            get => _canViewRunAllTests && !IsSaveDialog;
             set
             {
                 _canViewRunAllTests = value;

@@ -308,8 +308,6 @@
     <Compile Include="ServiceModel\Esb\Brokers\TestDbServer.cs" />
     <Compile Include="ServiceModel\Utils\ServiceMappingHelperTest.cs" />
     <Compile Include="Services\FetchCurrentServerLogTests.cs" />
-    <Compile Include="ESB\WebServiceContainerMock.cs" />
-    <Compile Include="ESB\WebServiceContainerTests.cs" />
     <Compile Include="ServiceModel\DummyClassForPluginTest.cs" />
     <Compile Include="ServiceModel\PluginServicesMock.cs" />
     <Compile Include="ServiceModel\PluginServicesTest.cs" />
@@ -372,7 +370,6 @@
     <Compile Include="WebServer\AbstractWebRequestHandlerTests.cs" />
     <Compile Include="WebServer\Controllers\TestWebServerController.cs" />
     <Compile Include="WebServer\Controllers\TestUserWebServerController.cs" />
-    <Compile Include="WebServer\Controllers\WebServerControllerTests.cs" />
     <Compile Include="WebServer\DataObjectExtentionsTests.cs" />
     <Compile Include="WebServer\GetApisJsonServiceHandlerTest.cs" />
     <Compile Include="WebServer\Hubs\EsbHubTests.cs" />
@@ -428,6 +425,10 @@
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{A7D9DA27-F023-4588-AA64-AC2DE44C0B82}</Project>
       <Name>Dev2.Diagnostics</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Infrastructure.Tests\Dev2.Infrastructure.Tests.csproj">
+      <Project>{D754B817-A714-4E6E-BD46-8C4FFFFBDACB}</Project>
+      <Name>Dev2.Infrastructure.Tests</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Infrastructure\Dev2.Infrastructure.csproj">
       <Project>{615eae6d-040c-4364-b708-63dc8755cd4f}</Project>

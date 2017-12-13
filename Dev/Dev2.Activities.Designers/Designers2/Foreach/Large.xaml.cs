@@ -8,8 +8,8 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Windows;
 using Dev2.Activities.Utils;
+using System.Windows;
 
 namespace Dev2.Activities.Designers2.Foreach
 {
@@ -45,16 +45,13 @@ namespace Dev2.Activities.Designers2.Foreach
                 }
             }
             var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
-            if(multipleItemsToSequence)
+            if (multipleItemsToSequence)
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

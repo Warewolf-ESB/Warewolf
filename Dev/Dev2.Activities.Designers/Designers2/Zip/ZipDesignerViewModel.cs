@@ -68,7 +68,7 @@ namespace Dev2.Activities.Designers2.Zip
         public override void Validate()
         {
             Errors = null;
-            string password = ArchivePassword;
+            var password = ArchivePassword;
             ValidateUserNameAndPassword();
             ValidateDestinationUsernameAndPassword();
             ValidateInputAndOutputPaths();

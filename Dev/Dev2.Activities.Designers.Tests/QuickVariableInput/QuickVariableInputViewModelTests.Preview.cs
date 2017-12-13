@@ -83,7 +83,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_AllFieldsPopulatedOverWriteFalse_CorrectPreviewOutput()
         {
-             string Expected = @"1 [[Customer().Fname]]
+             var Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
 
@@ -110,10 +110,10 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_AllFieldsPopulatedOverWriteTrue_CorrectPreviewOutput()
         {
-             string Expected = @"1 [[Customer().Fname]]
+             var Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
-            
+
             var qviViewModel = new QuickVariableInputViewModel((source, overwrite) => {} )
             {
                 Suffix = "",
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_MoreThenThreeItemsBeingAdded_CorrectPreviewOutput()
         {
-             string Expected = @"1 [[Customer().Fname]]
+             var Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]
 ...";
@@ -180,7 +180,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_RemoveEmptyEntriesFalse_CorrectPreviewOutput()
         {
-             string Expected = @"1 [[Customer().Fname]]
+             var Expected = @"1 [[Customer().Fname]]
 2 
 3 [[Customer().TelNo]]";
 
@@ -208,7 +208,7 @@ namespace Dev2.Activities.Designers.Tests.QuickVariableInput
         [TestCategory("QuickVariableInputViewModel_PreviewRequested")]
         public void QuickVariableInputViewModel_PreviewRequested_RemoveEmptyEntriesTrue_CorrectPreviewOutput()
         {
-             string Expected = @"1 [[Customer().Fname]]
+             var Expected = @"1 [[Customer().Fname]]
 2 [[Customer().LName]]
 3 [[Customer().TelNo]]";
 

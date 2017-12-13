@@ -16,7 +16,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
     [Binding]
     public class AssignObjectSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public AssignObjectSteps(ScenarioContext scenarioContext)
         {
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
         public void WhenTheAssignObjectToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

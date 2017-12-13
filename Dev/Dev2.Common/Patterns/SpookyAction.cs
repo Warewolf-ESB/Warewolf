@@ -27,19 +27,19 @@ namespace Dev2.Common
     public class SpookyAction<TReflect, THandle>
         where TReflect : ISpookyLoadable<THandle>
     {
-        private readonly ConcurrentDictionary<THandle, TReflect> _options =
+        readonly ConcurrentDictionary<THandle, TReflect> _options =
             new ConcurrentDictionary<THandle, TReflect>();
 
-        private bool _initialized;
+        bool _initialized;
 
         /// <summary>
         ///     Private method for intitailizing the list of options
         /// </summary>
-        private void Bootstrap()
+        void Bootstrap()
         {
-            Type type = typeof(TReflect);
+            var type = typeof(TReflect);
 
-            List<Type> types =
+            var types =
                 type.Assembly.GetTypes()
                     .Where(t => type.IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                     .ToList();

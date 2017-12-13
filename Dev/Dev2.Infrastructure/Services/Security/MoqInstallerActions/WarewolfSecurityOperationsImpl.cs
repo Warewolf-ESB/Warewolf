@@ -21,11 +21,11 @@ namespace Dev2.Services.Security.MoqInstallerActions
     /// <summary>
     /// This is the group operations class used in the installer
     /// </summary>
-    internal class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
+    class WarewolfSecurityOperationsImpl : IWarewolfSecurityOperations
     {
-        private const string WarewolfGroup = "Warewolf Administrators";
-        private const string AdministratorsGroup = "Administrators";
-        private const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
+        const string WarewolfGroup = "Warewolf Administrators";
+        const string AdministratorsGroup = "Administrators";
+        const string WarewolfGroupDesc = "Warewolf Administrators have complete and unrestricted access to Warewolf";
 
         // http://ss64.com/nt/syntax-security_groups.html
 
@@ -33,7 +33,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
         {
             using (var ad = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer"))
             {
-                DirectoryEntry newGroup = ad.Children.Add(WarewolfGroup, "Group");
+                var newGroup = ad.Children.Add(WarewolfGroup, "Group");
                 newGroup.Invoke("Put", "Description", WarewolfGroupDesc);
                 newGroup.CommitChanges();
             }
@@ -234,7 +234,7 @@ namespace Dev2.Services.Security.MoqInstallerActions
             // ,user
             if (domainChar >= 0)
             {
-                string domain = currentUser.Substring(0, domainChar);
+                var domain = currentUser.Substring(0, domainChar);
                 user = currentUser.Substring(domainChar + 1);
                 userPath = string.Format("WinNT://{0}/{1},user", domain, user);
             }

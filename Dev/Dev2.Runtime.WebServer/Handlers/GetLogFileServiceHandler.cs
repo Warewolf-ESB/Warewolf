@@ -1,6 +1,13 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
+/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using Dev2.Common;
 using Dev2.Runtime.WebServer.Responses;
 
@@ -10,63 +17,7 @@ namespace Dev2.Runtime.WebServer.Handlers
     {
         public override void ProcessRequest(ICommunicationContext ctx)
         {
-            if (ctx.Request.QueryString.HasKeys())
-            {
-                var numberOfLines = GlobalConstants.LogFileNumberOfLines;
-                try
-                {
-                    var numberOfLinesString = ctx.Request.QueryString.Get("numLines");
-                    if (int.TryParse(numberOfLinesString, out int numLines))
-                    {
-                        if (numLines > 0)
-                        {
-                            numberOfLines = numLines;
-                        }
-                    }
-                }
-                catch (Exception)
-                {
-                    //Bad Query return default number of lines
-                }
-
-                string serverLogFile;
-                var logFile = EnvironmentVariables.ServerLogFile;
-                if (File.Exists(logFile))
-                {
-                    var buffor = new Queue<string>(numberOfLines);
-                    Stream stream = File.Open(logFile, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
-                    var file = new StreamReader(stream);
-                    while (!file.EndOfStream)
-                    {
-                        string line = file.ReadLine();
-
-                        if (buffor.Count >= numberOfLines)
-                        {
-                            buffor.Dequeue();
-                        }
-
-                        buffor.Enqueue(line);
-                    }
-                    string[] lastLines = buffor.ToArray();
-                    serverLogFile = string.Join(Environment.NewLine, lastLines);
-                }
-                else
-                {
-                    serverLogFile = "Could not locate Warewolf Server log file.";
-                }
-                var response = new StringResponseWriter(serverLogFile, "text/xml");
-                ctx.Send(response);
-            }
-            else
-            {
-                var result = GetFileFromPath(EnvironmentVariables.ServerLogFile);
-                ctx.Send(result);
-            }
-        }
-
-        static IResponseWriter GetFileFromPath(string filePath)
-        {
-            return new FileResponseWriter(filePath);
+            ctx.Send(new FileResponseWriter(EnvironmentVariables.ServerLogFile));
         }
     }
 }

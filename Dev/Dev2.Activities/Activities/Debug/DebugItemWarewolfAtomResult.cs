@@ -15,7 +15,7 @@ namespace Dev2.Activities.Debug
         readonly string _rightLabel;
         readonly string _operand;
         readonly string _assignFromVariable;
-        private readonly bool _mockSelected;
+        readonly bool _mockSelected;
 
         public DebugItemWarewolfAtomResult(string value, string variable, string leftLabel)
             : this(value, variable, leftLabel, false)

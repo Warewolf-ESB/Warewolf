@@ -17,7 +17,7 @@ namespace Dev2.ViewModels
         where T : IEquatable<T>
     {
         readonly IPopupController _popupController;
-        private readonly IServer _server;
+        readonly IServer _server;
 
         public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IServer server)
             : base(eventPublisher)
@@ -126,7 +126,7 @@ namespace Dev2.ViewModels
             {
                 if (IsDirty)
                 {
-                    MessageBoxResult result = IsDirtyPopup();
+                    var result = IsDirtyPopup();
                     switch (result)
                     {
                         case MessageBoxResult.No:
@@ -146,7 +146,7 @@ namespace Dev2.ViewModels
                 }
                 else if (ViewModel.HasChanged)
                 {
-                    MessageBoxResult result = HasChangedPopup();
+                    var result = HasChangedPopup();
                     switch (result)
                     {
                         case MessageBoxResult.No:
@@ -178,7 +178,7 @@ namespace Dev2.ViewModels
             return true;
         }
 
-        private MessageBoxResult IsDirtyPopup()
+        MessageBoxResult IsDirtyPopup()
         {
             return _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
                                     $"Save {ViewModel.Header.Replace("*", "")}?",
@@ -186,7 +186,7 @@ namespace Dev2.ViewModels
                                                       MessageBoxImage.Information, "", false, false, true, false, false, false);
         }
 
-        private MessageBoxResult HasChangedPopup()
+        MessageBoxResult HasChangedPopup()
         {
             return _popupController.Show(string.Format(StringResources.ItemSource_HasChanged_NotTested),
                                     $"Test {ViewModel.Header.Replace("*", "")}?",

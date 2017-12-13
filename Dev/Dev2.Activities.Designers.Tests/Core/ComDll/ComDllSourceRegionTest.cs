@@ -26,7 +26,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>());
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfComDllActivity()));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, region.Errors.Count);
@@ -46,7 +46,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc });
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             //------------Assert Results-------------------------
             Assert.AreEqual(pluginSrc, region.SelectedSource);
@@ -68,7 +68,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             region.SomethingChanged += (a, b) => { evt = true; };
             region.SelectedSource = s2;
 
@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -124,7 +124,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -156,7 +156,7 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             var cloned = region.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -178,9 +178,9 @@ namespace Dev2.Activities.Designers.Tests.Core.ComDll
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { pluginSrc, s2 });
 
             //------------Execute Test---------------------------
-            ComSourceRegion region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
-            
-            ComSourceRegion regionToRestore = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+            var region = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
+
+            var regionToRestore = new ComSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act));
             regionToRestore.IsEnabled = false;
             regionToRestore.SelectedSource = s2;
 

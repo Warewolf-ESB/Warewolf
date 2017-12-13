@@ -76,7 +76,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                            _resultsCollection);
 
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
             var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
@@ -122,7 +122,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                            _resultsCollection);
 
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             var col1List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col1", out string error);
             var col2List = RetrieveAllRecordSetFieldValues(result.Environment, "rs", "col2", out error);
@@ -152,7 +152,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, "", _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
@@ -165,7 +165,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = @"Title|Fname|LNa";
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
@@ -186,19 +186,19 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source.Replace("\r", ""), _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { @"Title|Fname|LNa", "me|TelNo|", "1.Mr|", "Frank|Williams|" };
-            List<string> actual = new List<string>();
+            var expected = new List<string> { @"Title|Fname|LNa", "me|TelNo|", "1.Mr|", "Frank|Williams|" };
+            var actual = new List<string>();
 
-            for(int i = 1; i <= 4; i++)
+            for (int i = 1; i <= 4; i++)
             {
                 GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out string returnVal, out string error);
                 actual.Add(returnVal.Trim());
             }
             // remove test datalist ;)
 
-            ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             Assert.AreEqual(4, actual.Count());
             Assert.AreEqual(4, expected.Count());
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -212,8 +212,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { @"" 
+            var result = ExecuteProcess();
+            var expected = new List<string> { @"" 
                                                      , @"Branson|0812457"
                                                      };
 
@@ -225,8 +225,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            List<string> actual = actualRecordSet.Select(entry => entry).ToList();
-            ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            var actual = actualRecordSet.Select(entry => entry).ToList();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -238,8 +238,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { @"me|TelNo|
+            var result = ExecuteProcess();
+            var expected = new List<string> { @"me|TelNo|
 1.Mr"
                                                      , @"|0795628443
 2."
@@ -249,7 +249,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 4."
                                                      , @"via|0724587310"
                                                      , @"Branson|0812457"};
-            List<string> actual = new List<string>();
+            var actual = new List<string>();
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
             Assert.AreEqual("896", actualScalar);
 
@@ -257,7 +257,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            string[] foo = actual.ToArray();
+            var foo = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(foo.Select(s => s.Trim()));
@@ -273,7 +273,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 2));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = @"me|TelNo|
 1.Mr";
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
@@ -286,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "Index", "15", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "Title|Fname|LNa";
 
@@ -304,7 +304,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = @"Title";
 
@@ -322,7 +322,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = @"Title|Fname|LName|TelNo|
 1.Mr|Frank|Williams|0795628443
@@ -347,10 +347,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string source = "Test source string with spaces";
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "Test", "source" };
-            List<string> actual = new List<string>();
+            var expected = new List<string> { "Test", "source" };
+            var actual = new List<string>();
 
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string tempActual, out string error);
             actual.Add(tempActual);
@@ -366,7 +366,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "New Line", "", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = @"Title|Fname|LName|TelNo|";
             GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
@@ -384,10 +384,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[recset2().field2]]", "Tab", "", 1));
             const string sourceString = "Test	Data	To	Split";
             SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, sourceString, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "Test", "Data", "To", "Split" };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out string error);
+            var expected = new List<string> { "Test", "Data", "To", "Split" };
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out string error);
 
             // remove test datalist ;)
 
@@ -399,7 +399,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             _resultsCollection.Add(new DataSplitDTO("[[OutVar1]]", "End", "", 1));
             SetupArguments("<root>" + ActivityStrings.DataSplit_preDataList + "</root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = @"Title|Fname|LName|TelNo|
 1.Mr|Frank|Williams|0795628443
@@ -449,10 +449,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             TestData = ActivityStrings.DataSplit_preDataList;
             SetupArguments("<root></root>", ActivityStrings.DataSplit_preDataList, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> actual1 = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
-            List<string> actual2 = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out error);
+            var actual1 = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
+            var actual2 = RetrieveAllRecordSetFieldValues(result.Environment, "recset2", "field2", out error);
 
             // remove test datalist ;)
 
@@ -467,8 +467,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new DataSplitDTO("[[recset1().rec1]]", "Index", "15", 2));
 
             SetupArguments("<root></root>", ActivityStrings.DataList_NewPreEx, _source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { @"me|TelNo|
+            var result = ExecuteProcess();
+            var expected = new List<string> { @"me|TelNo|
 1.Mr"
                                                      , @"|0795628443
 2."
@@ -487,12 +487,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                         @"896"
                                                         
                                                         };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
 
-            string[] foo = actual.ToArray();
+            var foo = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(foo.Select(s => s.Trim()));
@@ -509,9 +509,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments(@"<root></root>", ActivityStrings.DataSplit_DataListShape, _source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "Title|Fname|LNa"
+            var expected = new List<string> { "Title|Fname|LNa"
                                                     , @"me|TelNo|
 1.Mr"
                                                     , "|Frank|Williams"
@@ -528,21 +528,21 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "5.Sir|Richard|"
                                                     , "Branson|0812457"
                                                     };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
-            string[] foo = actual.ToArray();
+            var foo = actual.ToArray();
             actual.Clear();
             actual.AddRange(foo.Select(f => f.Trim()));
 
-            string exp = expected.ToString();
-            string act = actual.ToString();
+            var exp = expected.ToString();
+            var act = actual.ToString();
 
             FixBreaks(ref exp, ref act);
             Assert.AreEqual(exp, act);
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -579,8 +579,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             #endregion Ugly String of Current DataList
 
             SetupArguments(currentDL, ActivityStrings.DataSplit_preDataList, "[[recset1(*).field1]]", _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expectedRecSet1 = new List<string> { "This is test data to split"
+            var result = ExecuteProcess();
+            var expectedRecSet1 = new List<string> { "This is test data to split"
                                                             , "This is the second test data to split"
                                                             , "This"
                                                             , "is"
@@ -596,7 +596,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                             , "data"
                                                             , "to"
                                                             , "split" };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
@@ -610,7 +610,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             IList<DataSplitDTO> resultsCollection = new List<DataSplitDTO> { new DataSplitDTO("[[CompanyName]]", "Index", "2", 1) };
-            DsfDataSplitActivity act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
+            var act = new DsfDataSplitActivity { SourceString = "[[CompanyName]]", ResultsCollection = resultsCollection };
 
             //------------Execute Test---------------------------
             act.UpdateForEachInputs(null);
@@ -709,7 +709,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection)
+        void SetupArguments(string currentDL, string testData, string sourceString, IList<DataSplitDTO> resultCollection)
         {
             TestStartNode = new FlowStep
             {

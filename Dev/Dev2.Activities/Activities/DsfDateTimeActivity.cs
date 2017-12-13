@@ -107,10 +107,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Ctor
-
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
+        
         protected override void OnExecute(NativeActivityContext context)
         {
             IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
@@ -125,8 +122,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
             ErrorResultTO allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             // Process if no errors
@@ -279,14 +274,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Used for converting the properties of this activity to a DateTimeTO object
         /// </summary>
-        private IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
+        IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
             //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             //Create a DateTimeTO using the DateTimeConverterFactory and send through the properties of this activity.DONE
             int tmpTimeAmount = 0;
-            if(!string.IsNullOrWhiteSpace(tTimeModifierAmount))
+            if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
-                if(!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
+                if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
                 {
                     throw new Exception(ErrorResource.TimeMustBeNumeric);
                 }

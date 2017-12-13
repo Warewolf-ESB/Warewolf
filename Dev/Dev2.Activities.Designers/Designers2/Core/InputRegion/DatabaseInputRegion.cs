@@ -18,13 +18,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public sealed class DatabaseInputRegion : IDatabaseInputRegion
     {
-        private readonly IActionInputDatatalistMapper _datatalistMapper;
-        private readonly ModelItem _modelItem;
-        private readonly IActionToolRegion<IDbAction> _action;
+        readonly IActionInputDatatalistMapper _datatalistMapper;
+        readonly ModelItem _modelItem;
+        readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
 
-        private ICollection<IServiceInput> _inputs;
-        private bool _isInputsEmptyRows;
+        ICollection<IServiceInput> _inputs;
+        bool _isInputsEmptyRows;
 
         public DatabaseInputRegion()
         {
@@ -52,13 +52,13 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             IsEnabled = _action?.SelectedAction != null;
         }
 
-        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null)
             {
@@ -74,12 +74,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Inputs", Inputs);
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems == null)
             {
@@ -100,7 +100,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             _datatalistMapper = datatalistMapper;
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
@@ -121,12 +121,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateOnActionSelection()
+        void UpdateOnActionSelection()
         {
             IsEnabled = _action?.SelectedAction != null;
             var inputCopy = Inputs.ToArray().Clone() as ICollection<IServiceInput>;
@@ -156,7 +156,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             OnPropertyChanged("Inputs");
         }
 
-        private ICollection<IServiceInput> InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
+        ICollection<IServiceInput> InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
         {
             if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
             {
@@ -248,7 +248,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

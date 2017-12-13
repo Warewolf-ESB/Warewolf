@@ -9,15 +9,15 @@
 */
 
 using System;
+using Dev2.Util;
+
+#if ! DEBUG
+using Dev2.Studio.Utils;
 using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using Dev2.Util;
 using Trackerbird.Tracker;
-
-#if ! DEBUG
-using Dev2.Studio.Utils;
 #endif
 
 namespace Dev2.Instrumentation
@@ -29,10 +29,10 @@ namespace Dev2.Instrumentation
         {
 #if !DEBUG
             Start("2386158864", "http://40589.tbnet1.com");
-            TBApp.StartAutoSync(true);            
+            TBApp.StartAutoSync(true);
 #endif
         }
-        
+
         public static void StartStudio()
         {
 #if !DEBUG
@@ -41,7 +41,7 @@ namespace Dev2.Instrumentation
         }
 
 #if !DEBUG
-        static void Start(string productId, string callHomeUrl)        
+        static void Start(string productId, string callHomeUrl)
         {
             Perform(() =>
             {
@@ -75,7 +75,7 @@ namespace Dev2.Instrumentation
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue)
         {
 #if ! DEBUG
-            if (AppSettings.CollectUsageStats)
+            if (AppUsageStats.CollectUsageStats)
             {
                 Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
             }
@@ -84,14 +84,15 @@ namespace Dev2.Instrumentation
 
         public static void TrackException(string className, string methodName, Exception ex)
         {
-            if (AppSettings.CollectUsageStats)
+#if !DEBUG
+            if (AppUsageStats.CollectUsageStats)
             {
                 var idx = className.LastIndexOf('.');
                 var newClassName = className.Substring(idx + 1);
                 newClassName = newClassName.Replace("`", "").Replace("1", "");
-                TrackEvent(TrackerEventGroup.Exception, string.Format("{0}.{1}", newClassName, methodName));
+                TrackEvent(TrackerEventGroup.Exception, $"{newClassName}.{methodName}");
             }
-
+#endif
         }
 
 #if !DEBUG

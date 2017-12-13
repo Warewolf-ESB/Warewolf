@@ -41,12 +41,12 @@ namespace Dev2.Activities.Designers2.Oracle
 {
     public class OracleDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDatabaseInputRegion _inputArea;
-        private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IDbActionToolRegion<IDbAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDatabaseInputRegion _inputArea;
+        ISourceToolRegion<IDbSource> _sourceRegion;
+        IDbActionToolRegion<IDbAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         Guid UniqueId => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageDatabaseServiceInputViewModel(this, Model));
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Oracle
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers2.Oracle
             SetDisplayName("");
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
-            
+
             Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
 
             if (OutputsRegion != null && OutputsRegion.IsEnabled)
@@ -221,7 +221,7 @@ namespace Dev2.Activities.Designers2.Oracle
             SetWorstDesignError(worstError[0]);
         }
 
-        private void SetWorstDesignError(IErrorInfo value)
+        void SetWorstDesignError(IErrorInfo value)
         {
             if (_worstDesignError != value)
             {
@@ -254,7 +254,7 @@ namespace Dev2.Activities.Designers2.Oracle
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -277,14 +277,14 @@ namespace Dev2.Activities.Designers2.Oracle
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(OracleDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private readonly IAsyncWorker _worker;
-        private readonly IViewPropertyBuilder _propertyBuilder;
+        readonly IAsyncWorker _worker;
+        readonly IViewPropertyBuilder _propertyBuilder;
 
         public ICommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
-        
-        
+        string Type => GetProperty<string>();
+
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -316,7 +316,7 @@ namespace Dev2.Activities.Designers2.Oracle
                 ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker);
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
@@ -454,7 +454,7 @@ namespace Dev2.Activities.Designers2.Oracle
             }
         }
 
-        private IDbServiceModel Model { get; }
+        IDbServiceModel Model { get; }
 
         void SetRegionVisibility(bool value)
         {

@@ -40,23 +40,23 @@ namespace Dev2.Studio.Core.Models
 {
     public class ResourceModel : ValidationController, IDataErrorInfo, IContextualResourceModel
     {
-        private bool _allowCategoryEditing = true;
-        private string _category;
-        private string _comment;
-        private string _dataList;
-        private string _dataTags;
-        private string _displayName = string.Empty;
-        private IServer _environment;
-        private string _helpLink;
-        private bool _isDatabaseService;
-        private bool _isDebugMode;
-        private bool _isResourceService;
-        private string _resourceName;
-        private ResourceType _resourceType;
-        private string _tags;
-        private string _unitTestTargetWorkflowService;
-        private StringBuilder _workflowXaml;
-        private Version _version;
+        bool _allowCategoryEditing = true;
+        string _category;
+        string _comment;
+        string _dataList;
+        string _dataTags;
+        string _displayName = string.Empty;
+        IServer _environment;
+        string _helpLink;
+        bool _isDatabaseService;
+        bool _isDebugMode;
+        bool _isResourceService;
+        string _resourceName;
+        ResourceType _resourceType;
+        string _tags;
+        string _unitTestTargetWorkflowService;
+        StringBuilder _workflowXaml;
+        Version _version;
         bool _isPluginService;
         bool _isWorkflowSaved;
         Guid _id;

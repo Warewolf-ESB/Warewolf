@@ -14,7 +14,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class ServiceTestModelJObjectResultBuilder
+    static class ServiceTestModelJObjectResultBuilder
     {
         public static JObject BuildTestResultJSONForWebRequest(this IServiceTestModelTO result)
         {

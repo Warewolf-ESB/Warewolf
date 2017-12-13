@@ -24,9 +24,9 @@ namespace Dev2.Converters.Graph.DataTable
 
             if (data is System.Data.DataTable tmp)
             {
-                string tblName = tmp.TableName;
+                var tblName = tmp.TableName;
 
-                DataColumnCollection cols = tmp.Columns;
+                var cols = tmp.Columns;
 
                 var result = new List<IPath>();
 
@@ -34,7 +34,7 @@ namespace Dev2.Converters.Graph.DataTable
                 foreach (DataColumn col in cols)
 
                 {
-                    string colName = col.ColumnName;
+                    var colName = col.ColumnName;
                     result.Add(new DataTablePath(tblName, colName));
                 }
 
@@ -52,7 +52,7 @@ namespace Dev2.Converters.Graph.DataTable
         /// <param name="tmp">The temporary.</param>
         /// <param name="totalCols">The total cols.</param>
         /// <param name="result">The result.</param>
-        private void BuildSampleData(System.Data.DataTable tmp, int totalCols, ref List<IPath> result)
+        void BuildSampleData(System.Data.DataTable tmp, int totalCols, ref List<IPath> result)
         {
             int totalRows = tmp.Rows.Count - 1;
             int rowCnt = 0;
@@ -62,7 +62,7 @@ namespace Dev2.Converters.Graph.DataTable
             {
                 for (int i = 0; i < totalCols; i++)
                 {
-                    string itemData = row.ItemArray[i].ToString();
+                    var itemData = row.ItemArray[i].ToString();
                     result[i].SampleData += itemData;
                     if (rowCnt < totalRows)
                     {

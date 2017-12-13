@@ -12,7 +12,8 @@ Scenario: Switch Case Arm Autoconnectors
 	And I Open Switch Tool Large View
 	And I Click Switch Dialog Cancel Button
 	And I Drag Toolbox Comment Onto Switch Right Arm On DesignSurface
-	And I Click Switch Dialog Cancel Button
+	And I Enter Text Into Switch Dialog
+	And I Click Switch Dialog Done Button
 	Then two autoconnectors exist on the design surface
 
 Scenario: Switch Case Arm Autoconnectors Press Escape

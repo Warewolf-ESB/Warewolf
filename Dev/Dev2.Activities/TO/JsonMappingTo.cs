@@ -109,23 +109,23 @@ namespace Dev2.TO
 
 		#endregion
 
-		public override IRuleSet GetRuleSet(string propertyName, string datalist)
-		{
-			RuleSet ruleSet = new RuleSet();
-			if (String.IsNullOrEmpty( SourceName))
-			{
-				return ruleSet;
-			}
-			if(propertyName == "SourceName")
-			{
-				ruleSet.Add(new IsValidJsonCreateMappingSourceExpression(() => SourceName));
-			}
-			if(propertyName == "DestinationName")
-			{
-				ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(()=>DestinationName));
-				ruleSet.Add(new ShouldNotBeVariableRule(()=>DestinationName));
-			}
-			return ruleSet;
-		}
-	}
+        public override IRuleSet GetRuleSet(string propertyName, string datalist)
+        {
+            var ruleSet = new RuleSet();
+            if (String.IsNullOrEmpty( SourceName))
+            {
+                return ruleSet;
+            }
+            if(propertyName == "SourceName")
+            {
+                ruleSet.Add(new IsValidJsonCreateMappingSourceExpression(() => SourceName));
+            }
+            if(propertyName == "DestinationName")
+            {
+                ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(()=>DestinationName));
+                ruleSet.Add(new ShouldNotBeVariableRule(()=>DestinationName));
+            }
+            return ruleSet;
+        }
+    }
 }

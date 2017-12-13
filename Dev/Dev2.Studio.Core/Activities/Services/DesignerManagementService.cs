@@ -57,7 +57,7 @@ namespace Dev2.Studio.Core.Activities.Services
         #region Class Members
 
         readonly IContextualResourceModel _rootModel;
-        private bool _disposed;
+        bool _disposed;
 
         #endregion Class Members
 
