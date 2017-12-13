@@ -35,6 +35,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
         public DotNetActionRegion()
         {
             ToolRegionName = "DotNetActionRegion";
+            Errors = new List<string>();
+            IsEnabled = true;
         }
 
         IPluginAction Method
