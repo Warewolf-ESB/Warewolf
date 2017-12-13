@@ -74,7 +74,7 @@ namespace Dev2.Dialogs
         {
             environmentViewModel.Connect();
 
-            await environmentViewModel.LoadDialog("");
+            await environmentViewModel.LoadDialogAsync("");
             switch (_activityType)
             {
                 case enDsfActivityType.Workflow:

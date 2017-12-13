@@ -389,7 +389,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryCompare_SplitSeconds_Equal_Expected_Zero_SplitSeconds()
         {
             _input2 = "2011/06/05 08:20:30:123 AM";
-            _outputType = "Split Secs";
+            _outputType = "Milliseconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
             IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out string result, out string error);
@@ -400,7 +400,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryCompare_SplitSeconds_One_Short_Expected_Zero_SplitSeconds()
         {
             _input2 = "2011/06/05 08:20:30:122 AM";
-            _outputType = "Split Secs";
+            _outputType = "Milliseconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
             IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out string result, out string error);
@@ -412,7 +412,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         public void TryCompare_SplitSeconds_One_Over_Expected_One_SplitSeconds()
         {
             _input2 = "2011/06/05 08:20:30:124 AM";
-            _outputType = "Split Secs";
+            _outputType = "Milliseconds";
             IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
             IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out string result, out string error);

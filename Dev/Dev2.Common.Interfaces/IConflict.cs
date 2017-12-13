@@ -14,8 +14,10 @@ namespace Dev2.Common.Interfaces
 {
     public interface IConflict
     {
+        bool IsEmptyItemSelected { get; set; }
         bool HasConflict { get; set; }
         bool IsChecked { get; set; }
+        bool IsMergeExpanderEnabled { get; set; }
         Guid UniqueId { get; set; }
     }
 
@@ -29,6 +31,7 @@ namespace Dev2.Common.Interfaces
         bool IsChecked { get; set; }
         string Key { get; set; }
         event Action<IArmConnectorConflict, bool, string, string, string> OnChecked;
+        void DisableEvents();
     }
 
     public interface IArmConnectorConflict : IConflict, IEquatable<IArmConnectorConflict>
@@ -36,6 +39,5 @@ namespace Dev2.Common.Interfaces
         IMergeArmConnectorConflict CurrentArmConnector { get; set; }
         IMergeArmConnectorConflict DifferentArmConnector { get; set; }
         string Key { get; set; }
-        bool IsMergeExpanderEnabled { get; set; }
     }
 }

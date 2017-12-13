@@ -162,8 +162,8 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\HelpText.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>HelpText.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>HelpText1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Languages\ToolboxSearchTags.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>

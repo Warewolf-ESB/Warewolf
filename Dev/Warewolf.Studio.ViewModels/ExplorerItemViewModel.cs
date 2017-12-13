@@ -107,9 +107,9 @@ namespace Warewolf.Studio.ViewModels
 
         public Action<IExplorerItemViewModel> SelectAction { get; set; }
         string _resourceName;
-        private bool _isVisible;
+        bool _isVisible;
         bool _isRenaming;
-        private readonly IExplorerRepository _explorerRepository;
+        readonly IExplorerRepository _explorerRepository;
         bool _canRename;
         bool _canExecute;
         bool _canEdit;
@@ -127,7 +127,7 @@ namespace Warewolf.Studio.ViewModels
 #pragma warning disable S1450 // Private fields only used as local variables in methods should become local variables
         string _filter;
 #pragma warning restore S1450 // Private fields only used as local variables in methods should become local variables
-        private bool _isSelected;
+        bool _isSelected;
         bool _canShowVersions;
         readonly IShellViewModel _shellViewModel;
         bool _canShowDependencies;
@@ -214,7 +214,7 @@ namespace Warewolf.Studio.ViewModels
             CanMerge = false;
         }
 
-        private void SetupCommands()
+        void SetupCommands()
         {
             RollbackCommand = new DelegateCommand(o =>
                     {
@@ -367,12 +367,12 @@ namespace Warewolf.Studio.ViewModels
             DeleteVersionCommand = new DelegateCommand(o => DeleteVersion());
         }
 
-        private void DuplicateResource()
+        void DuplicateResource()
         {
             _explorerItemViewModelCommandController.DuplicateResource(this);
         }
 
-        private void CreateTest()
+        void CreateTest()
         {
             _explorerItemViewModelCommandController.CreateTest(ResourceId);
         }
@@ -400,7 +400,7 @@ namespace Warewolf.Studio.ViewModels
 
         public int ChildrenCount => GetChildrenCount();
 
-        private int GetChildrenCount()
+        int GetChildrenCount()
         {
             var total = 0;
             foreach (var explorerItemModel in Children)
@@ -475,7 +475,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetContextMenuVisibility()
+        void SetContextMenuVisibility()
         {
             IsNewFolderVisible = _isFolder;
             IsCreateTestVisible = _isService;
@@ -623,6 +623,17 @@ namespace Warewolf.Studio.ViewModels
 
         public void SetPermissions(Permissions explorerItemPermissions) => SetPermissions(explorerItemPermissions, false);
 
+        public void SetIsResourceChecked(bool? resourceChecked)
+        {
+            _isResource = resourceChecked;
+            UpdateFolderItems(resourceChecked);
+        }
+
+        public void AfterResourceChecked()
+        {
+            OnPropertyChanged(() => IsResourceChecked);
+        }
+
         public void SetPermissions(Permissions explorerItemPermissions, bool isDeploy)
         {
             SetPermission(explorerItemPermissions, isDeploy);
@@ -664,7 +675,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetExecutePermissions(bool isDeploy)
+        void SetExecutePermissions(bool isDeploy)
         {
             CanExecute = IsService && !isDeploy;
             CanViewApisJson = true;
@@ -676,7 +687,7 @@ namespace Warewolf.Studio.ViewModels
             CanDebugBrowser = true;
         }
 
-        private void SetViewPermissions(bool isDeploy)
+        void SetViewPermissions(bool isDeploy)
         {
             CanView = !isDeploy;
             CanShowDependencies = true;
@@ -687,7 +698,7 @@ namespace Warewolf.Studio.ViewModels
             CanMerge = true;
         }
 
-        private void SetNonePermissions()
+        void SetNonePermissions()
         {
             CanRename = false;
             CanContribute = false;
@@ -714,7 +725,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowVersions = false;
         }
 
-        private void SetAdministratorPermissions(bool isDeploy)
+        void SetAdministratorPermissions(bool isDeploy)
         {
             CanRename = true;
             CanEdit = !isDeploy;
@@ -741,7 +752,7 @@ namespace Warewolf.Studio.ViewModels
             CanCreateTest = true;
         }
 
-        private void SetContributePermissions(bool isDeploy)
+        void SetContributePermissions(bool isDeploy)
         {
             CanEdit = !isDeploy;
             CanRename = true;
@@ -830,7 +841,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ValidateIfFolder(string newName)
+        void ValidateIfFolder(string newName)
         {
             if (IsNewFolder)
             {
@@ -857,7 +868,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void RenameExistingResource(string newName)
+        void RenameExistingResource(string newName)
         {
             var oldName = _resourceName;
             try
@@ -873,7 +884,7 @@ namespace Warewolf.Studio.ViewModels
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception, "Warewolf Error");
+                Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
 
                 _popupController.Show(Resources.Languages.Core.FailedToRenameResource,
                     Resources.Languages.Core.FailedToRenameResourceHeader, MessageBoxButton.OK, MessageBoxImage.Error, "", false, true,
@@ -883,7 +894,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string RemoveInvalidCharacters(string name)
+        string RemoveInvalidCharacters(string name)
         {
             var nameToFix = name.TrimStart(' ').TrimEnd(' ');
             if (string.IsNullOrEmpty(nameToFix) || IsDuplicateName(name))
@@ -893,7 +904,7 @@ namespace Warewolf.Studio.ViewModels
             return Regex.Replace(nameToFix, @"[^a-zA-Z0-9._\s-]", "");
         }
 
-        private bool IsDuplicateName(string requestedServiceName)
+        bool IsDuplicateName(string requestedServiceName)
         {
             var hasDuplicate = Children.Any(model => model.ResourceName.ToLower(CultureInfo.InvariantCulture) == requestedServiceName.ToLower(CultureInfo.InvariantCulture) && model.ResourceType == "Folder");
             return hasDuplicate;
@@ -1051,7 +1062,7 @@ namespace Warewolf.Studio.ViewModels
                 }
                 if (IsFolder && ChildrenCount >= 1)
                 {
-                    UpdateFolderItems(value, isResourceChecked);
+                    UpdateFolderItems(value);
                 }
                 else
                 {
@@ -1064,13 +1075,18 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateFolderItems(bool? value, bool? isResourceChecked)
+        void UpdateFolderItems(bool? isResourceChecked)
         {
             _isResource = isResourceChecked.HasValue && isResourceChecked.Value;
-            Task.Run(() =>
+
+            if (Children.Any())
             {
-                AsList().Where(o => (o.IsFolder && o.ChildrenCount >= 1) || !o.IsFolder).Apply(a => a.IsResourceChecked = value);
-            });
+                var isChecked = _isResource;
+                Children.Apply(a => a.SetIsResourceChecked(isChecked));
+            }
+            OnPropertyChanged(() => IsResourceChecked);
+            OnPropertyChanged(() => Children);
+
         }
 
         public bool IsResourceCheckedEnabled
@@ -1468,7 +1484,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private VersionViewModel CreateNewVersion(IVersionInfo a)
+        VersionViewModel CreateNewVersion(IVersionInfo a)
         {
             return new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
             {
@@ -1492,7 +1508,7 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        private void UpdateResourceVersions()
+        void UpdateResourceVersions()
         {
             IsExpanded = true;
             foreach (var child in Children)
@@ -1599,7 +1615,7 @@ namespace Warewolf.Studio.ViewModels
             return true;
         }
 
-        private void UpdateResourcePaths(IExplorerTreeItem destination)
+        void UpdateResourcePaths(IExplorerTreeItem destination)
         {
             if (destination.IsFolder)
             {
@@ -1628,7 +1644,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateChildrenPath(string resourcePath)
+        void UpdateChildrenPath(string resourcePath)
         {
             foreach (var explorerItemViewModel in Children)
             {
@@ -1714,7 +1730,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Children);
         }
 
-        private void ValidateIsVisible(string filter)
+        void ValidateIsVisible(string filter)
         {
             IsVisible = ResourceName.ToLowerInvariant().Contains(filter.ToLowerInvariant());
 
@@ -1724,7 +1740,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ValidateFolderExpand(string filter)
+        void ValidateFolderExpand(string filter)
         {
             if (!string.IsNullOrEmpty(filter))
             {

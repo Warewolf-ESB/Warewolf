@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Dev2.Activities.Designers2.Core;
@@ -13,19 +23,19 @@ namespace Dev2.ViewModels.Merge
 {
     public class MergeToolModel : BindableBase, IMergeToolModel
     {
-        private ImageSource _mergeIcon;
-        private string _mergeDescription;
-        private bool _isMergeChecked;
-        private bool _isMergeEnabled;
-        private bool _isMergeVisible;
-        private ObservableCollection<IMergeToolModel> _children;
-        private string _parentDescription;
-        private bool _hasParent;
-        private Guid _uniqueId;
-        private FlowNode _flowNode;
-        private IMergeToolModel _parent;
-        private string _nodeArmDescription;
-        private bool _processEvents;
+        ImageSource _mergeIcon;
+        string _mergeDescription;
+        bool _isMergeChecked;
+        bool _isMergeEnabled;
+        bool _isMergeVisible;
+        ObservableCollection<IMergeToolModel> _children;
+        string _parentDescription;
+        bool _hasParent;
+        Guid _uniqueId;
+        FlowNode _flowNode;
+        IMergeToolModel _parent;
+        string _nodeArmDescription;
+        bool _processEvents;
 
         public MergeToolModel()
         {
@@ -168,6 +178,7 @@ namespace Dev2.ViewModels.Merge
 
         public void DisableEvents()
         {
+            IsMergeEnabled = false;
             IsMergeChecked = false;
             _processEvents = false;
         }

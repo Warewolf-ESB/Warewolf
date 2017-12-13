@@ -16,13 +16,13 @@ namespace Warewolf.Studio.ViewModels
 {
     public class MergeServiceViewModel : ExplorerViewModelBase, IMergeServiceViewModel
     {
-        private readonly IMergeView _view;
+        readonly IMergeView _view;
         readonly IShellViewModel _shellViewModel;
-        private IExplorerItemViewModel _selectedResource;
-        private string _resourceToMerge;
-        private IExplorerItemViewModel _selectMergeItem;
-        private IConnectControlViewModel _mergeConnectControlViewModel;
-        private ObservableCollection<IExplorerItemViewModel> _mergeResourceVersions;
+        IExplorerItemViewModel _selectedResource;
+        string _resourceToMerge;
+        IExplorerItemViewModel _selectMergeItem;
+        IConnectControlViewModel _mergeConnectControlViewModel;
+        ObservableCollection<IExplorerItemViewModel> _mergeResourceVersions;
 
         public MergeServiceViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IExplorerItemViewModel selectedResource, IMergeView mergeView, IServer selectedServer)
         {
@@ -50,22 +50,22 @@ namespace Warewolf.Studio.ViewModels
             ShowConnectControl = true;
             MergeConnectControlViewModel.CanEditServer = false;
             MergeConnectControlViewModel.CanCreateServer = false;
-            MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server); };
+            MergeConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(server).ConfigureAwait(false); };
             MergeConnectControlViewModel.ServerDisconnected += ServerDisconnected;
 
             ShowConnectControl = false;
             IsRefreshing = false;
-            RefreshCommand = new DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
+            RefreshCommand = new DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId).ConfigureAwait(false));
             CancelCommand = new DelegateCommand(Cancel);
             MergeCommand = new DelegateCommand(Merge, CanMerge);
 
             MergeConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
             {
-                await MergeExplorerViewModelSelectedEnvironmentChanged(sender);
+                await MergeExplorerViewModelSelectedEnvironmentChangedAsync(sender).ConfigureAwait(false);
             };
         }
 
-        private void LoadVersions(IServer server)
+        void LoadVersions(IServer server)
         {
             MergeResourceVersions = new ObservableCollection<IExplorerItemViewModel>();
             var versionInfos = server.ExplorerRepository.GetVersions(_selectedResource.ResourceId);
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels
                     return;
                 }
             }
-            
+
             var children =
                 new ObservableCollection<IExplorerItemViewModel>(
                     versionInfos.Select(
@@ -116,21 +116,21 @@ namespace Warewolf.Studio.ViewModels
             get => _mergeResourceVersions;
             set
             {
-                _mergeResourceVersions = value; 
+                _mergeResourceVersions = value;
                 OnPropertyChanged(() => MergeResourceVersions);
             }
         }
 
-        private bool CanMerge() => SelectedMergeItem != null && SelectedMergeItem.ResourceId == SelectedResource.ResourceId;
+        bool CanMerge() => SelectedMergeItem != null && SelectedMergeItem.ResourceId == SelectedResource.ResourceId;
 
-        private void Merge()
+        void Merge()
         {
             _view?.RequestClose();
             ViewResult = MessageBoxResult.OK;
             MergeConnectControlViewModel = null;
         }
 
-        private void Cancel()
+        void Cancel()
         {
             _view?.RequestClose();
             ViewResult = MessageBoxResult.Cancel;
@@ -141,10 +141,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override ObservableCollection<IEnvironmentViewModel> Environments
         {
-            get
-            {
-                return new ObservableCollection<IEnvironmentViewModel>(_environments.Where(a => a.IsVisible));
-            }
+            get => new ObservableCollection<IEnvironmentViewModel>(_environments.Where(a => a.IsVisible));
             set
             {
                 _environments = value;
@@ -163,25 +160,25 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        async Task MergeExplorerViewModelSelectedEnvironmentChanged(object sender)
+        async Task MergeExplorerViewModelSelectedEnvironmentChangedAsync(object sender)
         {
             var connectControlViewModel = sender as ConnectControlViewModel;
             var selectedConnection = connectControlViewModel?.SelectedConnection;
             if (selectedConnection != null && selectedConnection.IsConnected && _environments.Any(p => p.ResourceId != selectedConnection.EnvironmentID))
             {
-                await CreateNewEnvironment(selectedConnection);
+                await CreateNewEnvironmentAsync(selectedConnection).ConfigureAwait(false);
                 LoadVersions(selectedConnection);
             }
         }
 
-        async Task<bool> ServerConnected(IServer server)
+        async Task<bool> ServerConnectedAsync(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server);
+            var isCreated = await CreateNewEnvironmentAsync(server).ConfigureAwait(false);
             LoadVersions(server);
             return isCreated;
         }
 
-        private async Task<bool> CreateNewEnvironment(IServer server)
+        async Task<bool> CreateNewEnvironmentAsync(IServer server)
         {
             var isLoaded = false;
             if (server == null)
@@ -193,7 +190,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
                 _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load();
+                isLoaded = await environmentModel.LoadAsync().ConfigureAwait(false);
                 OnPropertyChanged(() => Environments);
             }
             return isLoaded;
@@ -209,7 +206,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
+        static IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
             return new EnvironmentViewModel(server, shellViewModel);
         }

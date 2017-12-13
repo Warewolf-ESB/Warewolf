@@ -24,6 +24,7 @@ namespace Dev2.ViewModels.Merge
         bool _hasNodeArmConflict;
         IEnumerator<IToolConflict> _conflictEnumerator;
         bool _isContainerTool;
+        bool _isEmptyItemSelected;
 
         public ToolConflict()
         {
@@ -85,6 +86,16 @@ namespace Dev2.ViewModels.Merge
             {
                 _isContainerTool = value;
                 OnPropertyChanged(() => IsContainerTool);
+            }
+        }
+
+        public bool IsEmptyItemSelected
+        {
+            get => _isEmptyItemSelected;
+            set
+            {
+                _isEmptyItemSelected = value;
+                OnPropertyChanged(() => IsEmptyItemSelected);
             }
         }
 

@@ -25,7 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DsfCalculateActivity_OnExecute")]
-        public void DsfCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
+        public void AggregateCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
         {
             TestStartNode = new FlowStep
             {
@@ -48,9 +48,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 result = ExecuteProcess();
                 GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
-                Assert.IsTrue(res.Second != 0);
+                Assert.IsTrue(res.Millisecond != 0);
             }
-            Assert.IsTrue(res.Second != 0);
+            Assert.IsTrue(res.Millisecond != 0);
         }
 
         [TestMethod]

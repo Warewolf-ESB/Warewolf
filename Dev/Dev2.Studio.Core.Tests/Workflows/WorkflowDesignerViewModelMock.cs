@@ -38,7 +38,7 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IPopupController>().Object,
                 new SynchronousAsyncWorker(),
                 createDesigner, false)
-        {            
+        {
             _wd = _moq.Object;
         }
 
@@ -51,7 +51,7 @@ namespace Dev2.Core.Tests.Workflows
             //_moq.SetupAllProperties();
             _wd = _moq.Object;
         }
-        public WorkflowDesignerViewModelMock(IWorkflowDesignerWrapper workflowDesignerWrapper, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, WorkflowDesigner workflowDesigner, bool createDesigner = false )
+        public WorkflowDesignerViewModelMock(IWorkflowDesignerWrapper workflowDesignerWrapper, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, WorkflowDesigner workflowDesigner, bool createDesigner = false)
            : base(workflowDesignerWrapper,
                eventAggregator,
                resource, workflowHelper,
@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests.Workflows
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 popupController, new SynchronousAsyncWorker(), createDesigner, false)
-        {            
+        {
             _wd = _moq.Object;
         }
 
@@ -196,6 +196,11 @@ namespace Dev2.Core.Tests.Workflows
         public void FireWorkflowChanged()
         {
             WorkflowChanged.Invoke();
+        }
+
+        public void SetIsPaste(bool pasteValue)
+        {
+            _isPaste = pasteValue;
         }
     }
 }

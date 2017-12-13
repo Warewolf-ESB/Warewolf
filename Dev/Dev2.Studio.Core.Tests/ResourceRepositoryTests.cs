@@ -50,10 +50,6 @@ using Moq;
 using Newtonsoft.Json;
 using Warewolf.Studio.ViewModels;
 
-
-
-
-
 namespace BusinessDesignStudio.Unit.Tests
 {
     /// <summary>
@@ -62,7 +58,6 @@ namespace BusinessDesignStudio.Unit.Tests
     [TestClass]
     public class ResourceRepositoryTests
     {
-
         #region Variables
 
         readonly Mock<IAuthorizationService> _authService = new Mock<IAuthorizationService>();
