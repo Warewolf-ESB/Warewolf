@@ -425,24 +425,7 @@ namespace Dev2.Studio.ViewModels
         {
             Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
-        }
-
-        public void Handle(DeleteFolderMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
-            if (ShowDeleteDialogForFolder(message.FolderName))
-            {
-                message.ActionToDoOnDelete?.Invoke();
-            }
-        }
-
-        public void Handle(ShowDependenciesMessage message)
-        {
-            Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
-            var model = message.ResourceModel;
-            var dependsOnMe = message.ShowDependentOnMe;
-            _worksurfaceContextManager.ShowDependencies(dependsOnMe, model, ActiveServer);
-        }
+        }      
 
         public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {

@@ -63,8 +63,7 @@ using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Factory;
-using Dev2.Studio.Interfaces;
+using Dev2.Factory;            
 
 namespace Dev2.Studio
 
