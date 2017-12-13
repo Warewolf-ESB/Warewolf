@@ -250,6 +250,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Parsing.Tests", "Warewolf.Parsing.Tests\Warewolf.Parsing.Tests.csproj", "{2A765154-2288-4FD3-A008-F0B7173F4074}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.COMIPC.Tests", "Warewolf.COMIPC.Tests\Warewolf.COMIPC.Tests.csproj", "{9BED6B93-8BFF-4331-9DD7-98ED81ABFABA}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D58AB24F-C45B-4DF1-9CDE-54AFF7995513} = {D58AB24F-C45B-4DF1-9CDE-54AFF7995513}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.UIBindingTests.ServiceTestView", "Warewolf.UIBindingTests.ServiceTestView\Warewolf.UIBindingTests.ServiceTestView.csproj", "{B1009DCB-5D4E-4846-8739-6944D0E0C956}"
 EndProject
