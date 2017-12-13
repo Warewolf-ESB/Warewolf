@@ -81,7 +81,6 @@ namespace Dev2
             
             if (startIdx >= 0)
             {
-                // remove beginning junk
                 startIdx += GlobalConstants.PayloadStart.Length;
                 workflowResult = workflowResult.Remove(0, startIdx);
 
@@ -97,11 +96,9 @@ namespace Dev2
             }
             else
             {
-                // handle services ;)
                 startIdx = result.IndexOf(GlobalConstants.AltPayloadStart, 0, false);
                 if (startIdx >= 0)
                 {
-                    // remove begging junk
                     startIdx += GlobalConstants.AltPayloadStart.Length;
                     workflowResult = workflowResult.Remove(0, startIdx);
 
@@ -117,7 +114,6 @@ namespace Dev2
                 }
                 else
                 {
-                    // send the entire thing ;)
                     res.Message.Append(workflowResult);
                 }
             }
