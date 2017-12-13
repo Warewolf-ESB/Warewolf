@@ -54,7 +54,7 @@ namespace Dev2.Core.Tests.Settings
         [TestInitialize]
         public void SetupForTest()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var shell = new Mock<IShellViewModel>();
             var lcl = new Mock<IServer>();
             lcl.Setup(a => a.DisplayName).Returns("Localhost");

@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         public void SqlBulkInsertDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
-            AppSettings.LocalHost = "http://localhost:1245";
+            AppUsageStats.LocalHost = "http://localhost:1245";
             var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();

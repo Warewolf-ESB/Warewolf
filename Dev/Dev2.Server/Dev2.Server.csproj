@@ -344,11 +344,7 @@
     <None Include="Dockerfile">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="CommandLineParameters.cs" />
     <Compile Include="ServerLifecycleManager.cs" />
-    <Compile Include="WindowsServiceManager.cs">
-      <SubType>Component</SubType>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Dev2.Activities\Dev2.Activities.csproj">
