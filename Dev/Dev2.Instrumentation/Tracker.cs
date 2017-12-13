@@ -75,7 +75,7 @@ namespace Dev2.Instrumentation
         public static void TrackEvent(TrackerEventGroup eventGroup, string customText, string eventValue)
         {
 #if ! DEBUG
-            if (AppSettings.CollectUsageStats)
+            if (AppUsageStats.CollectUsageStats)
             {
                 Perform(() => TBApp.EventTrackTxt(eventGroup.ToString(), customText, eventValue, null));
             }
@@ -85,7 +85,7 @@ namespace Dev2.Instrumentation
         public static void TrackException(string className, string methodName, Exception ex)
         {
 #if !DEBUG
-            if (AppSettings.CollectUsageStats)
+            if (AppUsageStats.CollectUsageStats)
             {
                 var idx = className.LastIndexOf('.');
                 var newClassName = className.Substring(idx + 1);
