@@ -111,11 +111,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 return "Failed";
             }
-            string exceptionMsg = Resources.Languages.Core.ExceptionErrorLabel + exception.Message;
+            var exceptionMsg = Resources.Languages.Core.ExceptionErrorLabel + exception.Message;
 
             if (exception.InnerException != null)
             {
-                string innerExpceptionMsg = Resources.Languages.Core.InnerExceptionErrorLabel + exception.InnerException.Message;
+                var innerExpceptionMsg = Resources.Languages.Core.InnerExceptionErrorLabel + exception.InnerException.Message;
                 return exceptionMsg + Environment.NewLine + Environment.NewLine + innerExpceptionMsg;
             }
             return exceptionMsg;

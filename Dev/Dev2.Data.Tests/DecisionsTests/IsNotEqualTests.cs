@@ -23,7 +23,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotEqual();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "TestData";
             //------------Execute Test---------------------------
@@ -39,7 +39,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var endsWith = new IsNotEqual();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "No";
             //------------Execute Test---------------------------

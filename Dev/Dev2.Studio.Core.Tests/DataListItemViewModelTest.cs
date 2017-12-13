@@ -145,7 +145,7 @@ namespace Dev2.Core.Tests
         public void DataItemNameUpdate_ExpectedDataItemNameUpdated()
         {
             const string expected = "testItem";
-            string actual = _dataListItemModel.DisplayName;
+            var actual = _dataListItemModel.DisplayName;
             Assert.AreEqual(expected, actual);
         }
 

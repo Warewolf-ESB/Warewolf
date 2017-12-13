@@ -128,7 +128,6 @@ $JobSpecs["Explorer UI Tests"]					= "Warewolf.UI.Tests", "Explorer"
 $JobSpecs["File Tools UI Tests"]				= "Warewolf.UI.Tests", "File Tools"
 $JobSpecs["Hello World Mocking UI Tests"]		= "Warewolf.UI.Tests", "Hello World Mocking Tests"
 $JobSpecs["HTTP Tools UI Tests"]				= "Warewolf.UI.Tests", "HTTP Tools"
-$JobSpecs["Merge UI Tests"]						= "Warewolf.UI.Tests", "Merge"
 $JobSpecs["Plugin Sources UI Tests"]			= "Warewolf.UI.Tests", "Plugin Sources"
 $JobSpecs["Recordset Tools UI Tests"]			= "Warewolf.UI.Tests", "Recordset Tools"
 $JobSpecs["Resource Tools UI Tests"]			= "Warewolf.UI.Tests", "Resource Tools"
@@ -306,7 +305,8 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
                "$env:LOCALAPPDATA\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
                "$env:PROGRAMDATA\Warewolf\Workspaces",
-               "$env:PROGRAMDATA\Warewolf\Server Settings"
+               "$env:PROGRAMDATA\Warewolf\Server Settings",
+               "$env:PROGRAMDATA\Warewolf\VersionControl"
 
     [int]$ExitCode = 0
     foreach ($FileOrFolder in $ToClean) {
@@ -507,7 +507,7 @@ function Find-Warewolf-Server-Exe {
 		$ServerPath = "$TestsResultsPath\Server\" + $ServerExeName
 	}
     if ($ServerPath -eq "" -or !(Test-Path $ServerPath)) {
-        Write-Error -Message "Cannot find Warewolf Server.exe. Either compile Dev2.Server.csproj or use -ServerPath"
+        Write-Error -Message "Cannot find Warewolf Server.exe. Please provide a path to that file as a commandline parameter like this: -ServerPath"
         sleep 30
         exit 1
     } else {
@@ -533,7 +533,7 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    $Release = New-Object System.Management.Automation.Host.ChoiceDescription "&Release", `
 		    "Uses these resources for Warewolf releases."
 
-	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&UILoad", `
+	    $UILoad = New-Object System.Management.Automation.Host.ChoiceDescription "&Load", `
 		    "Uses these resources for Studio UI Load Testing."
 
 	    $options = [System.Management.Automation.Host.ChoiceDescription[]]($UITest, $ServerTest, $Release, $UILoad)
@@ -567,11 +567,19 @@ function Install-Server([string]$ServerPath,[string]$ResourcesType) {
 	    <ScopeEntry>$ServerBinDir\*.dll</ScopeEntry>
 	    <ScopeEntry>$ServerBinDir\*.exe</ScopeEntry>
     </Scope>
-    <AttributeFilters>
-        <AttributeFilterEntry>
-            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-        </AttributeFilterEntry>
-    </AttributeFilters>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
 
@@ -703,11 +711,19 @@ function Start-Studio {
     	<ScopeEntry>$StudioBinDir\*.dll</ScopeEntry>
     	<ScopeEntry>$StudioBinDir\*.exe</ScopeEntry>
     </Scope>
-    <AttributeFilters>
-        <AttributeFilterEntry>
-            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-        </AttributeFilterEntry>
-    </AttributeFilters>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
         $DotCoverRunnerXMLPath = "$TestsResultsPath\Studio DotCover Runner.xml"
@@ -1075,11 +1091,19 @@ if ($TotalNumberOfJobsToRun -gt 0) {
                 $DotCoverArgs += @"
 
     </Scope>
-    <AttributeFilters>
-        <AttributeFilterEntry>
-            <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
-        </AttributeFilterEntry>
-    </AttributeFilters>
+    <Filters>
+        <ExcludeFilters>
+            <FilterEntry>
+                <ModuleMask>*.tests</ModuleMask>
+                <ModuleMask>*.specs</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+        <AttributeFilters>
+            <AttributeFilterEntry>
+                <ClassMask>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</ClassMask>
+            </AttributeFilterEntry>
+        </AttributeFilters>
+    </Filters>
 </AnalyseParams>
 "@
                 $DotCoverRunnerXMLPath = "$TestsResultsPath\$JobName DotCover Runner.xml"
@@ -1110,7 +1134,7 @@ if ($TotalNumberOfJobsToRun -gt 0) {
             Move-Artifacts-To-TestResults $ApplyDotCover ($StartServer.IsPresent -or $StartStudio.IsPresent) $StartStudio.IsPresent
         }
     }
-    if ($ApplyDotCover) {
+    if ($ApplyDotCover -and $TotalNumberOfJobsToRun -gt 1) {
         Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$JobName' -MergeDotCoverSnapshotsInDirectory '$TestsResultsPath' -DotCoverPath '$DotCoverPath'")
     }
 }

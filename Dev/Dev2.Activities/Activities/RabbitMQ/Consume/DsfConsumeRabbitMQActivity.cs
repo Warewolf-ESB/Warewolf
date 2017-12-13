@@ -37,9 +37,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
     public class DsfConsumeRabbitMQActivity : DsfBaseActivity, IEquatable<DsfConsumeRabbitMQActivity>
     {
         internal List<string> _messages;
-        private string _result = "Success";
-        private ushort _prefetch;
-        private int _timeOut;
+        string _result = "Success";
+        ushort _prefetch;
+        int _timeOut;
         public bool IsObject { get; set; }
         [FindMissing]
         public string ObjectName { get; set; }
@@ -93,7 +93,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         }
 
         [NonSerialized]
-        private ConnectionFactory _connectionFactory;
+        ConnectionFactory _connectionFactory;
 
         internal ConnectionFactory ConnectionFactory
         {
@@ -307,9 +307,9 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 return new List<DebugItem>();
             }
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Requeue"), debugItem);
-            string value = ReQueue ? "True" : "False";
+            var value = ReQueue ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
             return _debugInputs;
@@ -324,7 +324,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 if (!IsObject)
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Response, "", dataList, update), debugItem);
                     _debugOutputs.Add(debugItem);
                 }
@@ -333,7 +333,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
             {
                 if (IsObject)
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(ObjectName, "", dataList, update), debugItem);
                     _debugOutputs.Add(debugItem);
                 }

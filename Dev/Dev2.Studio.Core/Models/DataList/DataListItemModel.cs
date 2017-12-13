@@ -21,19 +21,19 @@ namespace Dev2.Studio.Core.Models.DataList
     {
         #region Fields
 
-        private string _description;
-        private bool _hasError;
-        private string _errorMessage;
-        private bool _isEditable;
-        private bool _isVisible;
-        private bool _isSelected;
-        private bool _isUsed;
-        private bool _allowNotes;
-        private bool _isComplexObject;
-        private string _displayName;
-        private bool _isExpanded = true;
+        string _description;
+        bool _hasError;
+        string _errorMessage;
+        bool _isEditable;
+        bool _isVisible;
+        bool _isSelected;
+        bool _isUsed;
+        bool _allowNotes;
+        bool _isComplexObject;
+        string _displayName;
+        bool _isExpanded = true;
         protected enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
-        private string _name;
+        string _name;
 
         #endregion Fields
 
@@ -341,7 +341,7 @@ namespace Dev2.Studio.Core.Models.DataList
            NotifyIOPropertyChanged();
         }
 
-        private void NotifyIOPropertyChanged()
+        void NotifyIOPropertyChanged()
         {
             NotifyOfPropertyChange(() => Input);
             NotifyOfPropertyChange(() => Output);

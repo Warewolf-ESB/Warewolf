@@ -14,14 +14,14 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private List<string> _attachments;
-        private Mock<IFileChooserModel> _modelMock;
-        private Mock<IFileListing> _fileListingItemMock;
-        private bool _closeActionExecuted;
-        private string _fileListingItemName;
+        List<string> _attachments;
+        Mock<IFileChooserModel> _modelMock;
+        Mock<IFileListing> _fileListingItemMock;
+        bool _closeActionExecuted;
+        string _fileListingItemName;
 
-        private List<string> _changedProperties;
-        private FileChooser _target;
+        List<string> _changedProperties;
+        FileChooser _target;
 
         #endregion Fields
 

@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core
 
         #region Implementation of IVersionManager
 
-        private void ShowServerDisconnectedPopup()
+        void ShowServerDisconnectedPopup()
         {
             var controller = CustomContainer.Get<IPopupController>();
             controller?.Show(string.Format(ErrorResource.ServerDisconnected, _connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +

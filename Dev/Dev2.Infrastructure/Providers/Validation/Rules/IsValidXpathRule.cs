@@ -29,8 +29,8 @@ namespace Dev2.Providers.Validation.Rules
             var value = GetValue();
             bool isValid;
 
-            XmlDocument doc = new XmlDocument();
-            XPathNavigator nav = doc.CreateNavigator();
+            var doc = new XmlDocument();
+            var nav = doc.CreateNavigator();
             try
             {
                 nav.Compile(value);

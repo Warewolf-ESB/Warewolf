@@ -28,10 +28,10 @@ namespace Dev2.Runtime.Hosting
          
         }
 
-        private IEnumerable<IToolDescriptor> CreateTools(string path)
+        IEnumerable<IToolDescriptor> CreateTools(string path)
         {
             var assembly = Assembly.LoadFile(path);
-            Type basetype = typeof(IDev2Activity);
+            var basetype = typeof(IDev2Activity);
             var types = assembly.ExportedTypes.Where(basetype.IsAssignableFrom);
             return types.Select(CreateTool);
         }

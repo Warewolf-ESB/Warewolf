@@ -86,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
-            Dev2UnZipOperationTO zipTo =
+            var zipTo =
                        ActivityIOFactory.CreateUnzipTO(ColItr.FetchNextValue(_archPassItr),
                                                        Overwrite);
             return broker.UnZip(scrEndPoint, dstEndPoint, zipTo);

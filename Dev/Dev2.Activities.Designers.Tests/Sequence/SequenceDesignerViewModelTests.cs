@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -226,7 +226,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new System.Activities.Statements.Sequence());
+            var modelItem = ModelItemUtils.CreateModelItem(new System.Activities.Statements.Sequence());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -264,26 +264,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfPluginActivity());
-            //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SmallViewItem = modelItem;
-            //------------Assert Results-------------------------
-            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
-        public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfWebserviceActivity_ActivityNotAdded()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
-            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfWebserviceActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfPluginActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -302,7 +283,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfDatabaseActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfDatabaseActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------

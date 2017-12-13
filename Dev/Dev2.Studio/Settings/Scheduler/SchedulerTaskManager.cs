@@ -18,15 +18,15 @@ using Warewolf.Studio.ViewModels;
 
 namespace Dev2.Settings.Scheduler
 {
-    internal class SchedulerTaskManager
+    class SchedulerTaskManager
     {
-        private readonly SchedulerViewModel _schedulerViewModel;
-        private int _newTaskCounter = 1;
-        private IResourcePickerDialog _currentResourcePicker;
-        private TriggerEditDialog _triggerEditDialog;
+        readonly SchedulerViewModel _schedulerViewModel;
+        int _newTaskCounter = 1;
+        IResourcePickerDialog _currentResourcePicker;
+        TriggerEditDialog _triggerEditDialog;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
-        private readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
-        private EnvironmentViewModel _source;
+        readonly Task<IResourcePickerDialog> _resourcePickerDialogTask;
+        EnvironmentViewModel _source;
 
         internal SchedulerTaskManager(SchedulerViewModel schedulerViewModel, Task<IResourcePickerDialog> getResourcePicker)
         {
@@ -36,14 +36,14 @@ namespace Dev2.Settings.Scheduler
             SchedulerFactory = new ClientSchedulerFactory(new Dev2TaskService(taskServiceConvertorFactory), taskServiceConvertorFactory);
         }
 
-        private IResourcePickerDialog CreateResourcePickerDialog()
+        IResourcePickerDialog CreateResourcePickerDialog()
         {
             var res = new ResourcePickerDialog(enDsfActivityType.All, _source);
             ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source).ContinueWith(a => _currentResourcePicker = a.Result);
             return res;
         }
 
-        private Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
+        Task<IResourcePickerDialog> GetResourcePickerDialog => _resourcePickerDialogTask ?? ResourcePickerDialog.CreateAsync(enDsfActivityType.Workflow, _source);
 
         public IResourcePickerDialog CurrentResourcePickerDialog
         {
@@ -161,7 +161,7 @@ namespace Dev2.Settings.Scheduler
             return false;
         }
 
-        private bool ValidateSelectedTask()
+        bool ValidateSelectedTask()
         {
             if (!_schedulerViewModel.SelectedTask.IsDirty)
             {
@@ -200,7 +200,7 @@ namespace Dev2.Settings.Scheduler
             return true;
         }
 
-        private void ShowServerDisconnectedPopup()
+        void ShowServerDisconnectedPopup()
         {
             _schedulerViewModel.PopupController?.Show(string.Format(Core.ServerDisconnected, _schedulerViewModel.CurrentEnvironment.Connection.DisplayName.Replace("(Connected)", "")) + Environment.NewLine +
                              Core.ServerReconnectForActions, Core.ServerDisconnectedHeader, MessageBoxButton.OK,
@@ -223,7 +223,7 @@ namespace Dev2.Settings.Scheduler
 
             var dev2DailyTrigger = new Dev2DailyTrigger(new TaskServiceConvertorFactory(), new DailyTrigger());
             var scheduleTrigger = SchedulerFactory.CreateTrigger(TaskState.Ready, dev2DailyTrigger);
-            ScheduledResource scheduledResource = new ScheduledResource(Core.SchedulerNewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString());
+            var scheduledResource = new ScheduledResource(Core.SchedulerNewTaskName + _newTaskCounter, SchedulerStatus.Enabled, scheduleTrigger.Trigger.Instance.StartBoundary, scheduleTrigger, string.Empty, Guid.NewGuid().ToString());
             scheduledResource.OldName = scheduledResource.Name;
             var newres = _schedulerViewModel.ScheduledResourceModel.ScheduledResources[_schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : _schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count - 1];
             _schedulerViewModel.ScheduledResourceModel.ScheduledResources[_schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count == 1 ? 0 : _schedulerViewModel.ScheduledResourceModel.ScheduledResources.Count - 1] = scheduledResource;

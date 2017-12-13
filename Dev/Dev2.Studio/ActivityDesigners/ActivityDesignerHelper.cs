@@ -162,7 +162,6 @@ namespace Dev2.Studio.ActivityDesigners
                   { typeof(DsfODBCDatabaseActivity), typeof(ODBCDatabaseDesigner) },
                   { typeof(DsfPostgreSqlActivity), typeof(PostgreSqlDatabaseDesigner) },
                 {typeof(DsfExchangeEmailActivity),typeof(ExchangeEmailDesigner) },
-                { typeof(DsfDotNetDllActivity), typeof(Activities.Designers2.Net_DLL.DotNetDllDesigner) },
                 { typeof(DsfEnhancedDotNetDllActivity), typeof(Activities.Designers2.Net_Dll_Enhanced.DotNetDllDesigner) },
                 { typeof(DsfComDllActivity), typeof(ComDllDesigner) },
                 { typeof(DsfWebGetActivity), typeof(WebServiceGetDesigner) },
@@ -173,7 +172,6 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadDesigner) },
                  { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteDesigner) },
                  { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesigner) },
-                { typeof(DsfWebserviceActivity), typeof(ServiceDesigner) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesigner) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesigner) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesigner) },
@@ -191,7 +189,7 @@ namespace Dev2.Studio.ActivityDesigners
                 { typeof(DsfSelectAndApplyActivity), typeof(SelectAndApplyDesigner) },
                 { typeof(DsfConsumeRabbitMQActivity), typeof(RabbitMQConsumeDesigner) },
             };
-        private static Hashtable _hashTable;
+        static Hashtable _hashTable;
 
         public static Hashtable GetDesignerHashTable()
         {

@@ -24,10 +24,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class SQLServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()

@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.Services
 
         ExecuteMessage ToMsg(StringBuilder sb)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<ExecuteMessage>(sb);
         }
 
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializeObject = JsonConvert.SerializeObject(settings);
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            StringBuilder execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder(serializeObject) } }, null);
+            var execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Results-------------------------
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
             Assert.IsTrue(File.Exists(serverSecuritySettingsFile));

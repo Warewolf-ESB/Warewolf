@@ -25,7 +25,7 @@ Scenario: Create User Server Source
 	Then The result is "success"
 	And I delete serversource 
 
-Scenario: Create BadUser Server Source
+Scenario: Create Bad User Server Source
 	Given I create a server source as
 	| Address               | AuthenticationType |
 	| http://localhost:3142 | User               |

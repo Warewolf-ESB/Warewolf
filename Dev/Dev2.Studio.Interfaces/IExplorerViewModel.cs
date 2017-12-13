@@ -36,6 +36,6 @@ namespace Dev2.Studio.Interfaces
 
         Task RefreshEnvironment(Guid environmentId);
 
-	    Task RefreshSelectedEnvironment();
+	    Task RefreshSelectedEnvironmentAsync();
 	}
 }

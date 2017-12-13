@@ -24,20 +24,20 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class DbActionRegion : IDbActionToolRegion<IDbAction>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IDbSource> _source;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IDbSource> _source;
+        bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private IDbAction _selectedAction;
-        private readonly IDbServiceModel _model;
-        private ICollection<IDbAction> _actions;
-        private bool _isActionEnabled;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
-        private readonly IAsyncWorker _worker;
+        Action _sourceChangedAction;
+        IDbAction _selectedAction;
+        readonly IDbServiceModel _model;
+        ICollection<IDbAction> _actions;
+        bool _isActionEnabled;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
+        readonly IAsyncWorker _worker;
 
         public DbActionRegion()
         {
@@ -80,13 +80,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void LoadActions(IDbServiceModel model)
+        void LoadActions(IDbServiceModel model)
         {
             IsRefreshing = true;
             SelectedAction = null;
             IsActionEnabled = false;
             IsEnabled = false;
-            _worker.Start(() => model.GetActions(_source.SelectedSource), delegate(ICollection<IDbAction> actions)
+            _worker.Start(() => model.GetActions(_source.SelectedSource), delegate (ICollection<IDbAction> actions)
             {
                 Actions = actions;
                 IsRefreshing = false;
@@ -99,17 +99,17 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             });
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
-                
+
                 if (_source?.SelectedSource != null)
                 {
-                    LoadActions(_model);                   
+                    LoadActions(_model);
                 }
-                
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -124,12 +124,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void SetExecuteActionString(string value)
+        void SetExecuteActionString(string value)
         {
             _modelItem.SetProperty("ExecuteActionString", value);
         }
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void RestoreIfPrevious(IDbAction value)
+        void RestoreIfPrevious(IDbAction value)
         {
             if (IsAPreviousValue(value) && _selectedAction != null)
             {
@@ -316,7 +316,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #region Implementation of IActionToolRegion<IDbAction>
 
-        private void SetSelectedAction(IDbAction value)
+        void SetSelectedAction(IDbAction value)
         {
             _selectedAction = value;
             SavedAction = value;
@@ -328,13 +328,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
-        private void StorePreviousValues(string name)
+        void StorePreviousValues(string name)
         {
             _previousRegions.Remove(name);
             _previousRegions[name] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IDbAction value)
+        void RestorePreviousValues(IDbAction value)
         {
             var toRestore = _previousRegions[value.GetIdentifier()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -343,7 +343,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool IsAPreviousValue(IDbAction value)
+        bool IsAPreviousValue(IDbAction value)
         {
             return value != null && _previousRegions.Keys.Any(a => a == value.GetIdentifier());
         }

@@ -36,7 +36,7 @@ namespace Dev2.Data.Tests.Operations
             //------------Setup for test--------------------------
             const string Path = "sftp://sftp.theunlimited.co.za/text.txt";
             //------------Execute Test---------------------------
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(Path, string.Empty, null, true));
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(Path, string.Empty, null, true));
             //------------Assert Results-------------------------
             Assert.AreEqual(enActivityIOPathType.SFTP, scrEndPoint.IOPath.PathType);
         }
@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.Operations
             if (tempFileName != null)
             {
                 var tempFile = Path.Combine(tempPath, innerDir, innerDir, tempFileName);
-                string directoryName = Path.GetDirectoryName(tempFile);
+                var directoryName = Path.GetDirectoryName(tempFile);
                 if (directoryName != null)
                 {
                     Directory.CreateDirectory(directoryName);
@@ -76,7 +76,7 @@ namespace Dev2.Data.Tests.Operations
         {
             const string newFileName = "tempTextFile";
             var tempPath = Path.GetTempPath() + newFileName + ".txt";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, null, true, ""));
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, null, true, ""));
             var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker();
             var raw = activityOperationsBroker.PutRaw(scrEndPoint,
                 new Dev2PutRawOperationTO(WriteType.Overwrite, "Some content to write"));
@@ -87,7 +87,7 @@ namespace Dev2.Data.Tests.Operations
         public void Create_Should()
         {
             var tempPath = Path.GetTempPath() + "SomeName.zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, null, true, ""));
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempPath, string.Empty, null, true, ""));
             var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker();
             var create = activityOperationsBroker.Create(scrEndPoint, new Dev2CRUDOperationTO(false,false), false);
             Assert.AreEqual("Success", create);
@@ -98,7 +98,7 @@ namespace Dev2.Data.Tests.Operations
         {
             const string newFileName = "tempTextFile";
             var path = Path.GetTempPath() + newFileName + ".txt";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(
                 ActivityIOFactory.CreatePathFromString(path, string.Empty, null, true));
             var activityOperationsBroker = ActivityIOFactory.CreateOperationsBroker();
             var raw = activityOperationsBroker.PutRaw(scrEndPoint,

@@ -28,7 +28,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     [ToolDescriptorInfo("Utility-Comment", "Comment", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Comment")]
     public class DsfCommentActivity : DsfActivityAbstract<string>,IEquatable<DsfCommentActivity>
     {
-        private string _text;
+        string _text;
 
         public DsfCommentActivity()
         {
@@ -46,8 +46,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment dataList, int update)
         {
-            List<DebugItem> result = new List<DebugItem>();
-            DebugItem itemToAdd = new DebugItem();
+            var result = new List<DebugItem>();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { Type = DebugItemResultType.Value, Value = Text });
             result.Add(itemToAdd);
             return result;

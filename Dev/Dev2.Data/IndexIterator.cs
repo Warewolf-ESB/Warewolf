@@ -21,8 +21,8 @@ namespace Dev2.Data
     [Serializable]
     public class IndexIterator : IIndexIterator
     {
-        private int _curValue;
-        private IndexList _indexList;
+        int _curValue;
+        IndexList _indexList;
 
         public IndexList IndexList
         {
@@ -119,7 +119,7 @@ namespace Dev2.Data
     public class IndexListIndexIterator:IIndexIterator
     {
 
-        private readonly IList<int> _values;
+        readonly IList<int> _values;
         int _current;
 
         public IndexListIndexIterator(IList<int> values)

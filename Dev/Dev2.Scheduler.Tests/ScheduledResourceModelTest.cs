@@ -28,12 +28,12 @@ namespace Dev2.Scheduler.Test
     [TestClass]
     public class ScheduledResourceModelTest
     {
-        private Mock<IDev2TaskService> _mockService;
-        private string _folderId;
-        private string _agentPath;
-        private Mock<ITaskServiceConvertorFactory> _convertorFactory;
-        private Mock<ITaskFolder> _folder;
-        private Mock<ISecurityWrapper> _wrapper;
+        Mock<IDev2TaskService> _mockService;
+        string _folderId;
+        string _agentPath;
+        Mock<ITaskServiceConvertorFactory> _convertorFactory;
+        Mock<ITaskFolder> _folder;
+        Mock<ISecurityWrapper> _wrapper;
 
         [TestInitialize]
         public void Init()
@@ -99,7 +99,7 @@ securityWrapper
 
 
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -161,7 +161,7 @@ securityWrapper
 
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
                                                    @"c:\", _wrapper.Object, d => d.WorkflowName);
-            IScheduledResource a = model.ScheduledResources.First();
+            var a = model.ScheduledResources.First();
             Assert.AreEqual("bob", a.Name);
             Assert.AreEqual("a", a.WorkflowName);
         }
@@ -281,7 +281,7 @@ securityWrapper
             //var history = RunOutput(startTime, endTime, "Bob");
             var serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(content).First();
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(debugStates.StartTime, history.First().DebugOutput.First().StartTime);
             Assert.AreEqual(debugStates.EndTime, history.First().DebugOutput.First().EndTime);
@@ -325,7 +325,7 @@ securityWrapper
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
             //WE ONLY RETURN EXECUTED HISTORY
             Assert.AreEqual(0, history.Count);
         }
@@ -363,7 +363,7 @@ securityWrapper
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(ScheduleRunStatus.Error, history.Last().TaskHistoryOutput.Success);
@@ -402,7 +402,7 @@ securityWrapper
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(history.Last().DebugOutput.Count, 1);
@@ -559,7 +559,7 @@ securityWrapper
         }
 
 
-        private void SetupSingleTask()
+        void SetupSingleTask()
         {
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             var task1 = new Mock<IDev2Task>();
@@ -582,7 +582,7 @@ securityWrapper
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
 
-        private void SetupSingleTaskWithId()
+        void SetupSingleTaskWithId()
         {
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             var task1 = new Mock<IDev2Task>();
@@ -605,7 +605,7 @@ securityWrapper
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
 
-        private List<IResourceHistory> RunOutput(DateTime starTime, DateTime endTime, string username = null)
+        List<IResourceHistory> RunOutput(DateTime starTime, DateTime endTime, string username = null)
         {
             var esbMethod = new GetScheduledResourceHistory();
             var security = new Mock<ISecurityWrapper>();

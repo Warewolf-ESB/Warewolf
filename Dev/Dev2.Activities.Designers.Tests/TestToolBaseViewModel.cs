@@ -16,7 +16,7 @@ namespace Dev2.Activities.Designers.Tests
 
     class Region : IToolRegion
     {
-        private bool _isEnabled;
+        bool _isEnabled;
 
         #region Implementation of IToolRegion
 

@@ -24,10 +24,7 @@ namespace Dev2.Activities.Designers2.Sequence
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
 
         void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {

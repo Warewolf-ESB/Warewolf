@@ -14,11 +14,11 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
     {
         #region Fields
 
-        private Mock<IHelpDescriptor> _descriptorMock;
+        Mock<IHelpDescriptor> _descriptorMock;
 
-        private List<string> _changedProperties;
+        List<string> _changedProperties;
 
-        private HelpDescriptorViewModel _target;
+        HelpDescriptorViewModel _target;
 
         #endregion Fields
 
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Help.Tests
 
         #region Private helper methods
 
-        private void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _changedProperties.Add(e.PropertyName);
         }

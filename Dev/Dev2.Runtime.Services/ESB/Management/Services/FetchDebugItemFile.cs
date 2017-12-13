@@ -14,10 +14,8 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -45,9 +43,9 @@ namespace Dev2.Runtime.ESB.Management.Services
                     throw new InvalidDataContractException(string.Format(ErrorResource.PropertyMusHaveAValue, "DebugItemFilePath "));
                 }
 
-                string debugItemFilePath = tmp.ToString();
+                var debugItemFilePath = tmp.ToString();
 
-                if(File.Exists(debugItemFilePath))
+                if (File.Exists(debugItemFilePath))
                 {
                     Dev2Logger.Debug("DebugItemFilePath found", GlobalConstants.WarewolfDebug);
 
@@ -57,7 +55,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         result.Message.AppendLine(line);
                     }
 
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializer = new Dev2JsonSerializer();
                     return serializer.SerializeToBuilder(result);
                 }
                 Dev2Logger.Debug("DebugItemFilePath not found, throwing an exception", GlobalConstants.WarewolfDebug);
@@ -71,29 +69,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            var findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><DebugItemFilePath ColumnIODirection=\"Input\"></DebugItemFilePath><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><DebugItemFilePath ColumnIODirection=\"Input\"></DebugItemFilePath><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
-        }
-
-        public override string HandlesType()
-        {
-            return "FetchDebugItemFileService";
-        }
+        public override string HandlesType() => "FetchDebugItemFileService";
     }
 }

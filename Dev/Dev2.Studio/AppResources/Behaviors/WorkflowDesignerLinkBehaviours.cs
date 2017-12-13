@@ -78,22 +78,22 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Event Handlers
 
-        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             CleanUp();
             routedEventArgs.Handled = true;
         }
 
-        private void AssociatedObjectLoaded(object sender, RoutedEventArgs e)
+        void AssociatedObjectLoaded(object sender, RoutedEventArgs e)
         {
             _expandAllButton = AssociatedObject.FindNameAcrossNamescopes("expandAllButton") as ToggleButton;
             _collapseAllButton = AssociatedObject.FindNameAcrossNamescopes("collapseAllButton") as ToggleButton;
 
             if (_expandAllButton != null)
             {
-                Binding expandAllBinding = new Binding("IsChecked") 
-                { 
-                    Source = _expandAllButton 
+                var expandAllBinding = new Binding("IsChecked")
+                {
+                    Source = _expandAllButton
                 };
 
                 _expandAllButton.Command = ExpandAllCommand;
@@ -102,9 +102,9 @@ namespace Dev2.Studio.AppResources.Behaviors
 
             if (_collapseAllButton != null)
             {
-                Binding collapseAllBinding = new Binding("IsChecked") 
-                { 
-                    Source = _collapseAllButton 
+                var collapseAllBinding = new Binding("IsChecked")
+                {
+                    Source = _collapseAllButton
                 };
 
                 _collapseAllButton.Command = CollapseAllCommand;
@@ -116,7 +116,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Tear Down
 
-        private void CleanUp()
+        void CleanUp()
         {
             AssociatedObject.Loaded -= AssociatedObjectLoaded;
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;

@@ -14,11 +14,11 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
     {
         #region Fields
 
-        private Mock<IToolDescriptor> _toolMock;
+        Mock<IToolDescriptor> _toolMock;
 
-        private Mock<IWarewolfType> _warewolfTypeMock;
+        Mock<IWarewolfType> _warewolfTypeMock;
 
-        private ToolDescriptorViewModel _target;
+        ToolDescriptorViewModel _target;
 
         #endregion Fields
 

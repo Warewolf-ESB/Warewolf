@@ -56,9 +56,9 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         public void CanFormatDsfActivityFieldHandleSpecialCharsWithNoException()
         {
-            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+            var wdu = new WorkflowDesignerUtils();
 
-            IList<string> result = wdu.FormatDsfActivityField("! @ #$% ^&* ( ) +_{ }| [] \\: \"; \'<> ?, ./");
+            var result = wdu.FormatDsfActivityField("! @ #$% ^&* ( ) +_{ }| [] \\: \"; \'<> ?, ./");
 
             Assert.AreEqual(0, result.Count, "Strange behaviors parsing special chars, I got results when I should not?!");
         }
@@ -66,9 +66,9 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         public void CanFormatDsfActivityFieldHandleNormalParse()
         {
-            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+            var wdu = new WorkflowDesignerUtils();
 
-            IList<string> result = wdu.FormatDsfActivityField("[[MoIsNotUber]]");
+            var result = wdu.FormatDsfActivityField("[[MoIsNotUber]]");
 
             Assert.AreEqual(1, result.Count, "Strange behaviors parsing normal regions, I was expecting 1 result");
         }
@@ -76,9 +76,9 @@ namespace Dev2.Core.Tests.Utils
         [TestMethod]
         public void CanFormatDsfActivityFieldWithMissmatchedRegionBracesExpectedNotParsed()
         {
-            WorkflowDesignerUtils wdu = new WorkflowDesignerUtils();
+            var wdu = new WorkflowDesignerUtils();
 
-            IList<string> result = wdu.FormatDsfActivityField("[[MoIsNotUber([[invalid).field]]");
+            var result = wdu.FormatDsfActivityField("[[MoIsNotUber([[invalid).field]]");
 
             Assert.AreEqual(0, result.Count, "Format DsfActivity returned results when the region braces where missmatched");
         }

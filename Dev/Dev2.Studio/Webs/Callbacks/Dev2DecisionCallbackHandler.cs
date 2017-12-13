@@ -15,10 +15,6 @@ namespace Dev2.Webs.Callbacks
 {
     public class Dev2DecisionCallbackHandler : IPropertyEditorWizard
     {
-        public Window Owner { get; set; }
-
         public string ModelData { get; set; }
-
-        public ILayoutObjectViewModel SelectedLayoutObject => null;
     }
 }

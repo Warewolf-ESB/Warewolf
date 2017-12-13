@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         [TestMethod]
@@ -358,7 +358,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
         public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_AddsFilesToAttachments()
         {
-            List<string> selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
+            var selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
             //------------Setup for test--------------------------
             var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
 
@@ -395,7 +395,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
         public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_SelectedNewFilesToAttachments()
         {
-            List<string> selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
+            var selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
             //------------Setup for test--------------------------
             var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
 

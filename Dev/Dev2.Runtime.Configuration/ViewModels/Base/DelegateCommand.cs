@@ -16,7 +16,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
     public class DelegateCommand : ICommand
     {
         readonly Action<object> _action;
-        private readonly Predicate<object> _canExecute;
+        readonly Predicate<object> _canExecute;
 
         public DelegateCommand(Action<object> action, Predicate<object> canExecute)
         {

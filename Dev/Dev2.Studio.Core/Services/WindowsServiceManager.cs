@@ -12,7 +12,6 @@ using System;
 using System.ServiceProcess;
 using Dev2.Util;
 
-
 namespace Dev2.Studio.Core.Services
 {
     public class WindowsServiceManager : IWindowsServiceManager
@@ -25,7 +24,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppUsageStats.ServiceName);
             }
             catch(InvalidOperationException)
             {
@@ -41,7 +40,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppUsageStats.ServiceName);
                 result = controller.Status == ServiceControllerStatus.Running;
             }
             catch(InvalidOperationException)
@@ -58,8 +57,8 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
-                if(controller.Status != ServiceControllerStatus.Running)
+                var controller = new ServiceController(AppUsageStats.ServiceName);
+                if (controller.Status != ServiceControllerStatus.Running)
                 {
                     controller.Start();
                     controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(120));

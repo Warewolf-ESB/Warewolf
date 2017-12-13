@@ -15,7 +15,7 @@ namespace Dev2.DataList.Contract
 {
     public class DateTimeVerifyPart : IDataListVerifyPart
     {
-        private bool _isJson;
+        bool _isJson;
 
         public string DisplayValue { get; private set; }
 

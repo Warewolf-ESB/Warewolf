@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.DB;
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
-    internal class ServiceInputNameValueComparer : IEqualityComparer<IServiceInput>
+    class ServiceInputNameValueComparer : IEqualityComparer<IServiceInput>
     {
         public bool Equals(IServiceInput x, IServiceInput y)
         {

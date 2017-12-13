@@ -117,7 +117,7 @@ namespace Dev2.Activities
                 allErrors.MergeErrors(_errorsTo);
                 if (dataObject.IsDebugMode())
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment,update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -161,7 +161,7 @@ namespace Dev2.Activities
 
                         if (dataObject.IsDebugMode())
                         {
-                            DebugItem debugItem = new DebugItem();
+                            var debugItem = new DebugItem();
                             AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText) ? "100" : TimeOutText, "Time Out Seconds", dataObject.Environment, update), debugItem);
                             _debugInputs.Add(debugItem);
                         }
@@ -207,16 +207,16 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddHeaderDebug(IDSFDataObject dataObject, int update, string[] headers, List<Tuple<string, string>> headersEntries)
+        void AddHeaderDebug(IDSFDataObject dataObject, int update, string[] headers, List<Tuple<string, string>> headersEntries)
         {
-            foreach(var header in headers)
+            foreach (var header in headers)
             {
                 var headerSegments = header.Split(':');
                 headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
                     _debugInputs.Add(debugItem);
                 }

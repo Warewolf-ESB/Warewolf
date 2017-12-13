@@ -34,7 +34,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
     [Binding]
     public class SqlBulkInsertSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public SqlBulkInsertSteps(ScenarioContext scenarioContext)
         {
@@ -103,7 +103,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             scenarioContext.Add("activity", sqlBulkInsert);
         }
 
-        private void CreateIsolatedSQLTable(string tableNameUniqueNameGuid)
+        void CreateIsolatedSQLTable(string tableNameUniqueNameGuid)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "Warewolf.Tools.Specs.Toolbox.Database.SqlBulkInsert." + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + ".sql";
@@ -143,7 +143,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        private void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
+        void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
         {
             var dbSource = scenarioContext.Get<DbSource>("dbSource");
             using (var connection = new SqlConnection(dbSource.ConnectionString))
@@ -154,7 +154,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 {
                     cmd.ExecuteNonQuery();
                 }
-                q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
+                q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
@@ -170,10 +170,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             ClearCountColumn();
         }
 
-        private void ClearCountColumn()
+        void ClearCountColumn()
         {
             var dbSource = scenarioContext.Get<DbSource>("dbSource");
-            using(var connection = new SqlConnection(dbSource.ConnectionString))
+            using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
@@ -189,7 +189,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        private void AddTableToDataList(Table table)
+        void AddTableToDataList(Table table)
         {
             // build up DataTable
             foreach (TableRow row in table.Rows)
@@ -197,7 +197,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var i = 0;
                 foreach (string columnName in table.Header)
                 {
-                    string value = row[i] == "blank" ? "" : row[i];
+                    var value = row[i] == "blank" ? "" : row[i];
                     if (value.ToUpper() == "NULL")
                     {
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
@@ -210,7 +210,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                         var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
                         DataObject.Environment.AssignWithFrame(assignValue, 0);
                     }
-                   
+
                     i++;
                 }
                 DataObject.Environment.CommitAssign();
@@ -243,7 +243,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.BatchSize = batchSize;
             sqlBulkInsert.Timeout = timeout;
             sqlBulkInsert.Result = "[[result]]";
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -269,15 +269,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
 
 
-            List<DataRow> dataRows = t1.Rows.Cast<DataRow>().ToList();
-            List<TableRow> tableRows = table.Rows.ToList();
+            var dataRows = t1.Rows.Cast<DataRow>().ToList();
+            var tableRows = table.Rows.ToList();
 
-            using(var connection = new SqlConnection(dbSource.ConnectionString))
+            using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                string q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
+                var q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
 
-                using(var cmd = new SqlCommand(q1, connection))
+                using (var cmd = new SqlCommand(q1, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }

@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
 
             //---------------Execute Test ----------------------
-            ServiceLocator locator = new ServiceLocator();
+            var locator = new ServiceLocator();
             //---------------Test Result -----------------------
             Assert.IsNotNull(locator, "Cannot create new ServiceLocator object.");
         }
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void FindService_GivenNullServiceName_ShouldThrowExpection()
         {
             //---------------Set up test pack-------------------
-            ServiceLocator locator = new ServiceLocator();
+            var locator = new ServiceLocator();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
             //---------------Execute Test ----------------------
@@ -65,7 +65,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void FindService_GivenEmptyServiceName_ShouldThrowExpection()
         {
             //---------------Set up test pack-------------------
-            ServiceLocator locator = new ServiceLocator();
+            var locator = new ServiceLocator();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
             //---------------Execute Test ----------------------
@@ -222,7 +222,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void FindService_GivenNullserviceID_ShouldThrowExpection_serviceID()
         {
             //---------------Set up test pack-------------------
-            ServiceLocator locator = new ServiceLocator();
+            var locator = new ServiceLocator();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
             //---------------Execute Test ----------------------
@@ -275,7 +275,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
         public void FindSourceByName_GivenNullServicename_ShouldThrowExpection()
         {
             //---------------Set up test pack-------------------
-            ServiceLocator locator = new ServiceLocator();
+            var locator = new ServiceLocator();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(locator);
             //---------------Execute Test ----------------------

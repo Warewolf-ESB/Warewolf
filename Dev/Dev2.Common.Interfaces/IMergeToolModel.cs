@@ -38,7 +38,6 @@ namespace Dev2.Common.Interfaces
         string NodeArmDescription { get; set; }
 
         void DisableEvents();
-        void EnableEvents();
     }
     public delegate void ModelToolChanged(object sender, IMergeToolModel args);
 }

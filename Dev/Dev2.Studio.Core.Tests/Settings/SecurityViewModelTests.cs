@@ -37,7 +37,7 @@ namespace Dev2.Core.Tests.Settings
         public void setup()
         {
 
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             ServerRepository.Instance.ActiveServer = new Mock<IServer>().Object;
         }
 

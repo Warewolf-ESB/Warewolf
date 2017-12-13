@@ -10,7 +10,7 @@ namespace Dev2.Activities.SqlBulkInsert
     {
         #region Implementation of IDisposable
 
-        private bool disposedValue; // To detect redundant calls
+        bool disposedValue; // To detect redundant calls
 
         protected virtual void Dispose(bool disposing)
         {
@@ -26,7 +26,7 @@ namespace Dev2.Activities.SqlBulkInsert
 
         #endregion
 
-        private readonly MySqlBulkLoader _sbc;
+        readonly MySqlBulkLoader _sbc;
         public MySqlBulkCopyWrapper(MySqlBulkLoader copyTool)
         {
             _sbc = copyTool;           
@@ -64,7 +64,7 @@ namespace Dev2.Activities.SqlBulkInsert
 
             foreach (DataRow row in sourceTable.Rows)
             {
-                string[] items = row.ItemArray.Select(o => QuoteValue(o.ToString())).ToArray();
+                var items = row.ItemArray.Select(o => QuoteValue(o.ToString())).ToArray();
                 writer.WriteLine(String.Join(",", items));
             }
 
@@ -72,7 +72,7 @@ namespace Dev2.Activities.SqlBulkInsert
             writer.Close();
         }
 
-        private static string QuoteValue(string value)
+        static string QuoteValue(string value)
         {
             return value;
         }

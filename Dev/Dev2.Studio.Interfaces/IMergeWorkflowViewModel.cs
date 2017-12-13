@@ -8,7 +8,7 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IMergeWorkflowViewModel : IDisposable, INotifyPropertyChanged, IUpdatesHelp
     {
-        bool CanSave { get; set; }
+        bool CanSave { get; }
         bool IsDirty { get; }
         string DisplayName { get; set; }
         void Save();

@@ -36,27 +36,27 @@ namespace Warewolf.Studio.ViewModels
     {
         public IAsyncWorker AsyncWorker { get; set; }
         ISharepointServerSource _sharePointServiceSource;
-        private readonly IServer _environment;
-        private readonly ISharePointSourceModel _updateManager;
-        private string _serverName;
-        private bool _isWindows;
-        private bool _isUser;
-        private string _userName;
-        private string _password;
-        private string _testResult;
-        private IContextualResourceModel _resource;
-        private AuthenticationType _authenticationType;
-        private CancellationTokenSource _token;
-        private bool _testComplete;
-        private bool _isLoading;
-        private bool _testPassed;
-        private string _resourceName;
-        private bool _testing;
-        private string _headerText;
-        private string _testMessage;
-        private bool _testFailed;
-        private string _path;
-        private bool _isDisposed;
+        readonly IServer _environment;
+        readonly ISharePointSourceModel _updateManager;
+        string _serverName;
+        bool _isWindows;
+        bool _isUser;
+        string _userName;
+        string _password;
+        string _testResult;
+        IContextualResourceModel _resource;
+        AuthenticationType _authenticationType;
+        CancellationTokenSource _token;
+        bool _testComplete;
+        bool _isLoading;
+        bool _testPassed;
+        string _resourceName;
+        bool _testing;
+        string _headerText;
+        string _testMessage;
+        bool _testFailed;
+        string _path;
+        bool _isDisposed;
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)

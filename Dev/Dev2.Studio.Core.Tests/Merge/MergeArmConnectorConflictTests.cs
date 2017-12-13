@@ -141,7 +141,7 @@ namespace Dev2.Core.Tests.Merge
                     wasCalled = true;
                 }
             };
-            completeConflict.OnChecked += (a, b,c,d,e) => { onChecked = true; };
+            completeConflict.OnChecked += (a, b) => { onChecked = true; };
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.IsChecked = true;

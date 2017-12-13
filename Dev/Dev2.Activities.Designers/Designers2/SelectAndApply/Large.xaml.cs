@@ -37,9 +37,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             }
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

@@ -30,7 +30,7 @@ namespace Dev2.Studio.Views.ResourceManagement
     public partial class ResourceChangedDialog : IResourceChangedDialog
     {
         readonly Grid _blackoutGrid = new Grid();
-        private bool _openDependencyGraph;
+        bool _openDependencyGraph;
 
         public bool OpenDependencyGraph => _openDependencyGraph;
 
@@ -53,7 +53,7 @@ namespace Dev2.Studio.Views.ResourceManagement
             }
         }
 
-        private void Button3Click(object sender, RoutedEventArgs e)
+        void Button3Click(object sender, RoutedEventArgs e)
         {
             _openDependencyGraph = true;
             DialogResult = false;

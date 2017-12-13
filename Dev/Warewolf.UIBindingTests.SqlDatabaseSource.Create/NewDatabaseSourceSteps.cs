@@ -434,7 +434,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             CleanupResources();
         }
 
-        private static void CleanupResources()
+        static void CleanupResources()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel =

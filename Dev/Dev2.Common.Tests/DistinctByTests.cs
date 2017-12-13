@@ -23,7 +23,7 @@ namespace Dev2.Common.Tests
         public void Constructor_GivenPropertyName_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            List<Contact> contacts1 = new List<Contact>() {
+            var contacts1 = new List<Contact>() {
                                                                         new Contact(),
                                                                         new Contact()
                                                                         {
@@ -48,7 +48,7 @@ namespace Dev2.Common.Tests
         public void Constructor_GivenPropertyNullGuidValues_ShouldPassThrough()
         {
             //---------------Set up test pack-------------------
-            List<Contact> contacts1 = new List<Contact>() {
+            var contacts1 = new List<Contact>() {
                                                                         new Contact(),
                                                                         new Contact()
                                                                         {

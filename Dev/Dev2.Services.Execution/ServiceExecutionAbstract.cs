@@ -62,7 +62,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool HandlesOutputFormatting { get; }
+        bool HandlesOutputFormatting { get; }
         protected TSource Source { get; private set; }
         public string InstanceOutputDefintions { get; set; }
         public IDSFDataObject DataObj { get; set; }
@@ -80,7 +80,7 @@ namespace Dev2.Services.Execution
 
         public abstract void AfterExecution(ErrorResultTO errors);
 
-        private void CreateService(IResourceCatalog catalog)
+        void CreateService(IResourceCatalog catalog)
         {
             if (!GetService(catalog))
             {
@@ -90,7 +90,7 @@ namespace Dev2.Services.Execution
             GetSource(catalog);
         }
 
-        private void GetSource(IResourceCatalog catalog)
+        void GetSource(IResourceCatalog catalog)
         {
             Source = catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceID) ??
                      catalog.GetResource<TSource>(GlobalConstants.ServerWorkspaceID, Service.Source.ResourceName);
@@ -117,7 +117,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private bool GetService(IResourceCatalog catalog)
+        bool GetService(IResourceCatalog catalog)
         {
             Service = catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ResourceID) ??
                       catalog.GetResource<TService>(GlobalConstants.ServerWorkspaceID, DataObj.ServiceName);
@@ -200,7 +200,7 @@ namespace Dev2.Services.Execution
                         return;
                     }
                 }
-                ServiceMethod method = Service.Method;
+                var method = Service.Method;
                 var inputs = method.Parameters;
                 if (inputs.Count == 0)
                 {
@@ -228,7 +228,7 @@ namespace Dev2.Services.Execution
             }
         }
 
-        private void BuildParameterIterators(int update, IEnumerable<MethodParameter> inputs, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs)
+        void BuildParameterIterators(int update, IEnumerable<MethodParameter> inputs, IWarewolfListIterator itrCollection, ICollection<IWarewolfIterator> itrs)
         {
             if (string.IsNullOrEmpty(InstanceInputDefinitions))
             {
@@ -236,7 +236,7 @@ namespace Dev2.Services.Execution
                 {
                     foreach (var sai in Inputs)
                     {
-                        string val = sai.Name;
+                        var val = sai.Name;
                         string toInject = null;
 
                         if (val != null)
@@ -260,8 +260,8 @@ namespace Dev2.Services.Execution
             var inputDefs = DataListFactory.CreateInputParser().Parse(InstanceInputDefinitions);
             foreach (MethodParameter sai in inputs)
             {
-                string val = sai.Name;
-                string toInject = "NULL";
+                var val = sai.Name;
+                var toInject = "NULL";
 
                 if (val != null)
                 {
@@ -290,7 +290,7 @@ namespace Dev2.Services.Execution
 
         #region ExecuteService
 
-        private void ExecuteService(IWarewolfListIterator itrCollection,
+        void ExecuteService(IWarewolfListIterator itrCollection,
             IEnumerable<IWarewolfIterator> itrs, out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
@@ -300,7 +300,7 @@ namespace Dev2.Services.Execution
                 int pos = 0;
                 foreach (var itr in itrs)
                 {
-                    string injectVal = itrCollection.FetchNextValue(itr);
+                    var injectVal = itrCollection.FetchNextValue(itr);
                     var param = Inputs.ToList()[pos];
 
 
@@ -328,7 +328,7 @@ namespace Dev2.Services.Execution
         }
 
 
-        private void ExecuteService(out ErrorResultTO errors, int update, IOutputFormatter formater = null)
+        void ExecuteService(out ErrorResultTO errors, int update, IOutputFormatter formater = null)
         {
             errors = new ErrorResultTO();
             try
@@ -387,21 +387,21 @@ namespace Dev2.Services.Execution
 
         #region MergeResultIntoDataList
 
-        private void PushXmlIntoEnvironment(string input, int update)
+        void PushXmlIntoEnvironment(string input, int update)
         {
 
             if (input != string.Empty)
             {
                 try
                 {
-                    string toLoad = input.ToCleanXml(); // clean up the rubish ;)
-                    XmlDocument xDoc = new XmlDocument();
+                    var toLoad = input.ToCleanXml(); // clean up the rubish ;)
+                    var xDoc = new XmlDocument();
                     toLoad = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), toLoad);
                     xDoc.LoadXml(toLoad);
 
                     if (xDoc.DocumentElement != null)
                     {
-                        XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                        var children = xDoc.DocumentElement.ChildNodes;
 
                         IDictionary<string, int> indexCache = new Dictionary<string, int>();
 
@@ -412,7 +412,7 @@ namespace Dev2.Services.Execution
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);                    
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 }
             }
         }
@@ -480,7 +480,7 @@ namespace Dev2.Services.Execution
 
             if (string.IsNullOrEmpty(InstanceInputDefinitions))
             {
-                List<string> okay = new List<string>();
+                var okay = new List<string>();
                 int startindex = 0;
                 while (command.IndexOf("[[", startindex, StringComparison.Ordinal) != -1)
                 {
@@ -488,7 +488,7 @@ namespace Dev2.Services.Execution
                     int second = command.IndexOf("]]", first, StringComparison.Ordinal);
                     if (second != -1)
                     {
-                        string val = command.Substring(first, (second - first) + 2);
+                        var val = command.Substring(first, (second - first) + 2);
                         okay.Add(val);
 
                         var toInject = val;
@@ -525,7 +525,7 @@ namespace Dev2.Services.Execution
 
         #region GetOutputFormatter
 
-        private IOutputFormatter GetOutputFormatter(TService service)
+        IOutputFormatter GetOutputFormatter(TService service)
         {
             return OutputFormatterFactory.CreateOutputFormatter(service.OutputDescription, "root");
         }

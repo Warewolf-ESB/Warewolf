@@ -34,7 +34,7 @@ namespace Dev2.PerformanceCounters.Management
                 }
                 else
                 {
-                    PerformanceCounterCategory cat = new PerformanceCounterCategory(category);
+                    var cat = new PerformanceCounterCategory(category);
                     if (!counters.All(a => cat.CounterExists(a.Name)))
                     {
                         PerformanceCounterCategory.Delete(category);
@@ -54,16 +54,16 @@ namespace Dev2.PerformanceCounters.Management
 
 
 
-        private static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters, string category)
+        static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters, string category)
         {
-            CounterCreationDataCollection counterCreationDataCollection = new CounterCreationDataCollection();
-            foreach(var counterl in counters)
+            var counterCreationDataCollection = new CounterCreationDataCollection();
+            foreach (var counterl in counters)
             {
                 foreach (var counter in counterl.CreationData())
-                {   
+                {
                     counterCreationDataCollection.Add(counter);
                 }
-               
+
             }
             PerformanceCounterCategory.Create(category, "Warewolf Performance Counters", PerformanceCounterCategoryType.MultiInstance, counterCreationDataCollection);
         }

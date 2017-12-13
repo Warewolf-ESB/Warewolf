@@ -12,8 +12,8 @@ namespace Dev2.Studio.Core.Models.DataList
 {
     public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel, IEquatable<RecordSetItemModel>
     {
-        private ObservableCollection<IRecordSetFieldItemModel> _children;
-        private string _searchText;
+        ObservableCollection<IRecordSetFieldItemModel> _children;
+        string _searchText;
 
         public RecordSetItemModel(string displayname)
             : this(displayname, enDev2ColumnArgumentDirection.None, "", null, null, false, "", true, true, false, true)
@@ -123,11 +123,11 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        private void SetChildInputValues(bool value)
+        void SetChildInputValues(bool value)
         {
-            if(Children != null)
+            if (Children != null)
             {
-                foreach(var dataListItemModel in Children)
+                foreach (var dataListItemModel in Children)
                 {
                     var child = dataListItemModel;
                     if (!string.IsNullOrEmpty(child.DisplayName))
@@ -138,7 +138,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        private void SetChildOutputValues(bool value)
+        void SetChildOutputValues(bool value)
         {
             if (Children != null)
             {
@@ -157,7 +157,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public override string ValidateName(string name)
         {
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+            var parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
             {
                 name = DataListUtil.RemoveRecordsetBracketsFromValue(name);

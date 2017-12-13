@@ -128,7 +128,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -136,8 +136,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
             try
@@ -180,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
                         innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
-                        string chars = outerIteratorCollection.FetchNextValue(itrChar);
+                        var chars = outerIteratorCollection.FetchNextValue(itrChar);
                         while (innerIteratorCollection.HasMoreData())
                         {
                             if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
@@ -188,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var val = innerIteratorCollection.FetchNextValue(itrInField);
                                 if (val != null)
                                 {
-                                    IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
+                                    var returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
                                     completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
                                     var rule = new IsSingleValueRule(() => Result);
                                     var single = rule.Check();

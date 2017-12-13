@@ -40,19 +40,19 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
-        private string _serverLogMaxSize;
-        private string _studioLogMaxSize;
-        private string _selectedLoggingType;
-        private LogLevel _serverEventLogLevel;
-        private LogLevel _studioEventLogLevel;
-        private ProgressDialogViewModel _progressDialogViewModel;
-        private string _serverLogFile;
-        private IServer _currentEnvironment;
-        private LogLevel _serverFileLogLevel;
-        private LogLevel _studioFileLogLevel;
-        private LogSettingsViewModel _item;
+        string _serverLogMaxSize;
+        string _studioLogMaxSize;
+        string _selectedLoggingType;
+        LogLevel _serverEventLogLevel;
+        LogLevel _studioEventLogLevel;
+        ProgressDialogViewModel _progressDialogViewModel;
+        string _serverLogFile;
+        IServer _currentEnvironment;
+        LogLevel _serverFileLogLevel;
+        LogLevel _studioFileLogLevel;
+        LogSettingsViewModel _item;
 
-        
+
         public LogSettingsViewModel()
         {
 
@@ -91,25 +91,26 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials };
-            var dialog = new ProgressDialog();
-            _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
+            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
             {
-                dialog.Show();
-            }, delegate
-            {
-                dialog.Close();
-            });
-            _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
-            _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
-            dialog.DataContext = _progressDialogViewModel;
-            _progressDialogViewModel.Show();
-            client.DownloadProgressChanged += DownloadProgressChanged;
-            client.DownloadFileCompleted += DownloadFileCompleted;
-            var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
-            _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
-            client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-
+                var dialog = new ProgressDialog();
+                _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
+                {
+                    dialog.Show();
+                }, delegate
+                {
+                    dialog.Close();
+                });
+                _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
+                _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
+                dialog.DataContext = _progressDialogViewModel;
+                _progressDialogViewModel.Show();
+                client.DownloadProgressChanged += DownloadProgressChanged;
+                client.DownloadFileCompleted += DownloadFileCompleted;
+                var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
+                _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
+                client.DownloadFileAsync(managementServiceUri, _serverLogFile);
+            }
         }
 
         [ExcludeFromCodeCoverage]
@@ -182,7 +183,7 @@ namespace Dev2.Settings.Logging
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
-            LogSettingsViewModel clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
+            var clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
             return clone;
         }
 
@@ -304,7 +305,7 @@ namespace Dev2.Settings.Logging
 
         #endregion
 
-        private bool Equals(LogSettingsViewModel other)
+        bool Equals(LogSettingsViewModel other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -314,7 +315,7 @@ namespace Dev2.Settings.Logging
             return EqualsSeq(other);
         }
 
-        private bool EqualsSeq(LogSettingsViewModel other)
+        bool EqualsSeq(LogSettingsViewModel other)
         {
             var equalsSeq = string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
                             string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&

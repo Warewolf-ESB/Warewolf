@@ -104,7 +104,7 @@ namespace Dev2.Activities
             return null;
         }
 
-        private Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
+        Dev2Decision ParseDecision(IExecutionEnvironment env, Dev2Decision decision, bool errorIfNull)
         {
             var col1 = env.EvalAsList(decision.Col1, 0, errorIfNull);
             var col2 = env.EvalAsList(decision.Col2 ?? "", 0, errorIfNull);
@@ -112,7 +112,7 @@ namespace Dev2.Activities
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
-        private IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
+        IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
         {
             InitializeDebug(dataObject);
 
@@ -217,7 +217,7 @@ namespace Dev2.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             try
             {
                 var activity = ExecuteDecision(dataObject);
@@ -253,14 +253,14 @@ namespace Dev2.Activities
 
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
-            List<IDebugItem> result = new List<IDebugItem>();
+            var result = new List<IDebugItem>();
 
             var allErrors = new ErrorResultTO();
 
             try
             {
-                Dev2DecisionStack dds = Conditions;
-                string userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
+                var dds = Conditions;
+                var userModel = dds.GenerateUserFriendlyModel(env, dds.Mode, out ErrorResultTO error);
                 allErrors.MergeErrors(error);
 
                 foreach (Dev2Decision dev2Decision in dds.TheStack)
@@ -321,8 +321,8 @@ namespace Dev2.Activities
         List<DebugItem> GetDebugOutputs(string theResult)
         {
             var result = new List<DebugItem>();
-            string resultString = theResult;
-            DebugItem itemToAdd = new DebugItem();
+            var resultString = theResult;
+            var itemToAdd = new DebugItem();
             var dds = Conditions;
 
             try
@@ -344,7 +344,7 @@ namespace Dev2.Activities
             return result;
         }
 
-        private static string GetResultString(string theResult, Dev2DecisionStack dds)
+        static string GetResultString(string theResult, Dev2DecisionStack dds)
         {
             var resultString = theResult;
             if (theResult == "True")
@@ -478,11 +478,11 @@ namespace Dev2.Activities
 
     public class TestMockDecisionStep : DsfActivityAbstract<string>
     {
-        private readonly DsfDecision _dsfDecision;
+        readonly DsfDecision _dsfDecision;
 
 
-        public TestMockDecisionStep() : base("Mock Decision")
-        {
+        public TestMockDecisionStep():base("Mock Decision")
+        {            
         }
 
         public TestMockDecisionStep(DsfDecision dsfDecision)

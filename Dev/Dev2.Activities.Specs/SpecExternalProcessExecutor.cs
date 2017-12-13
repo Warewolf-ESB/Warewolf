@@ -6,7 +6,7 @@ using Dev2.Common;
 
 namespace Dev2.Activities.Specs
 {
-    internal class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
+    class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
     {
         #region Implementation of IExternalProcessExecutor
 

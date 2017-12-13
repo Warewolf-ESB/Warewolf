@@ -22,8 +22,8 @@ namespace Dev2.Data.ServiceModel
 {
     public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ
     {
-        private const int DefaultPort = 5672;
-        private const string DefaultVirtualHost = "/";
+        const int DefaultPort = 5672;
+        const string DefaultVirtualHost = "/";
 
         #region Properties
 

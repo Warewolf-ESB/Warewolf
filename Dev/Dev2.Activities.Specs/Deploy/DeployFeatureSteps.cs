@@ -17,9 +17,9 @@ namespace Dev2.Activities.Specs.Deploy
     [Binding]
     public sealed class DeployFeatureSteps
     {
-        private static ScenarioContext _scenarioContext;
-        private readonly CommonSteps _commonSteps;
-        private Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
+        static ScenarioContext _scenarioContext;
+        readonly CommonSteps _commonSteps;
+        Guid _resourceId = Guid.Parse("fbc83b75-194a-4b10-b50c-b548dd20b408");
 
         public DeployFeatureSteps(ScenarioContext scenarioContext)
         {
@@ -31,7 +31,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void RollBack()
         {
             var formattableString = $"http://tst-ci-remote:3142";
-            AppSettings.LocalHost = $"http://{Environment.MachineName}:3142";
+            AppUsageStats.LocalHost = $"http://{Environment.MachineName}:3142";
             IServer remoteServer = new Server(new Guid(), new ServerProxy(new Uri(formattableString)))
             {
                 Name = "tst-ci-remote"
@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Deploy
         public void GivenISelectResourceFromSourceServer(string p0)
         {
             var loaclHost = ScenarioContext.Current.Get<IServer>("sourceServer");
-            IContextualResourceModel loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            var loadContextualResourceModel = loaclHost.ResourceRepository.LoadContextualResourceModel(_resourceId);
             Assert.IsNotNull(loadContextualResourceModel, p0 + "does not exist on the local machine " + Environment.MachineName);
             ScenarioContext.Current.Add("localResource", loadContextualResourceModel);
         }
