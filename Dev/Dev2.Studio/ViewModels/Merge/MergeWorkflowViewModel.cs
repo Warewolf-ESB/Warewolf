@@ -232,11 +232,25 @@ namespace Dev2.ViewModels.Merge
                 {
                     UpdateNextToolState(nextConflict);
                 }
+                if (conflict is IArmConnectorConflict nextArmConflict)
+                {
+                    UpdateNextArmState(nextArmConflict);
+                }
                 GetMatchingConflictParent();
             }
             catch (Exception ex)
             {
                 Dev2Logger.Error(ex, ex.Message);
+            }
+        }
+        static void UpdateNextArmState(IArmConnectorConflict nextArmConflict)
+        {
+            nextArmConflict.IsMergeExpanderEnabled = nextArmConflict.HasConflict;
+            if (!nextArmConflict.HasConflict)
+            {
+                nextArmConflict.CurrentArmConnector.IsChecked = true;
+                nextArmConflict.CurrentArmConnector.IsArmSelectionAllowed = false;
+                nextArmConflict.DifferentArmConnector.IsArmSelectionAllowed = false;
             }
         }
 
