@@ -196,7 +196,7 @@ namespace Dev2.Studio
         {
             if (e.Args.Any(p => p.Contains("-merge")))
             {
-                mergeFactory.OpenMergeWindow(_shellViewModel, "", e);
+                mergeFactory.OpenMergeWindow(_shellViewModel, e);
             }
             else
             {
@@ -288,8 +288,6 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IJsonObjectsView>(() => new JsonObjectsView());
             CustomContainer.RegisterInstancePerRequestType<IChooseDLLView>(() => new ChooseDLLView());
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
