@@ -179,7 +179,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPutRegionClone
+            return new WebPutInputRegion
             {
                 Headers = headers2,
                 QueryString = QueryString,
@@ -190,7 +190,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebPutRegionClone region)
+            if (toRestore is WebPutInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;

@@ -133,7 +133,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPostInputRegionClone
+            return new WebPostInputRegion
             {
                 Headers = headers2,
                 PostData = PostData,
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebPostInputRegionClone region)
+            if (toRestore is WebPostInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 PostData = region.PostData;

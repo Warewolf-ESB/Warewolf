@@ -296,13 +296,9 @@
     <Compile Include="Designers2\Core\Source\WcfSourceRegion.cs" />
     <Compile Include="Designers2\Core\Source\WebSourceRegion.cs" />
     <Compile Include="Designers2\Core\WebGetInputRegion.cs" />
-    <Compile Include="Designers2\Core\WebGetInputRegionClone.cs" />
     <Compile Include="Designers2\Core\WebPostInputRegion.cs" />
     <Compile Include="Designers2\Core\Web\Delete\WebDeleteInputRegion.cs" />
-    <Compile Include="Designers2\Core\Web\Delete\WebDeleteRegionClone.cs" />
-    <Compile Include="Designers2\Core\WebPostInputRegionClone.cs" />
     <Compile Include="Designers2\Core\Web\Put\WebPutInputRegion.cs" />
-    <Compile Include="Designers2\Core\Web\Put\WebPutRegionClone.cs" />
     <Compile Include="Designers2\CountRecordsNullHandler\Large.xaml.cs">
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
