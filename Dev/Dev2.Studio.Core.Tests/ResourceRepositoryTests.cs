@@ -89,7 +89,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
         void Setup()
         {
-            AppSettings.LocalHost = "http://myserver:3142/";
+            AppUsageStats.LocalHost = "http://myserver:3142/";
             _authService.Setup(s => s.GetResourcePermissions(It.IsAny<Guid>())).Returns(Permissions.Administrator);
 
             _resourceModel.Setup(res => res.ResourceName).Returns("Resource");
@@ -238,7 +238,7 @@ namespace BusinessDesignStudio.Unit.Tests
         [TestMethod]
         public void ForceLoadSuccessfullLoadExpectIsLoadedTrue()
         {
-            AppSettings.LocalHost = "https://localhost:3242/";
+            AppUsageStats.LocalHost = "https://localhost:3242/";
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
 

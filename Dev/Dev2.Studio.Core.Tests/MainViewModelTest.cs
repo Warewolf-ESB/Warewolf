@@ -59,22 +59,16 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.ViewModels;
 
-//using System.Windows.Media.Imaging;
-
 
 namespace Dev2.Core.Tests
 {
-    /// <summary>
-    ///     This is a result class for MainViewModelTest and is intended
-    ///     to contain all MainViewModelTest Unit Tests
-    /// </summary>
     [TestClass]
     public class MainViewModelTest : MainViewModelBase
     {
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var svr = new Mock<IServer>();
             svr.Setup(a => a.DisplayName).Returns("Localhost");
             svr.Setup(a => a.Name).Returns("Localhost");
