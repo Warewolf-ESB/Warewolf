@@ -1,10 +1,13 @@
 ﻿using Dev2.Common.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Studio.Interfaces;
 using Dev2.ViewModels.Merge;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 using System;
 using System.Activities.Statements;
 using System.Windows;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
 
 namespace Dev2.Core.Tests.Merge
 {
@@ -21,8 +24,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
-           
-        }        
+        }
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -31,7 +33,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "MergeDescription")
@@ -54,7 +56,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "NodeArmDescription")
@@ -68,7 +70,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(null, model.MergeDescription);
             model.NodeArmDescription = "NodeArmDescription";
             Assert.IsTrue(wasCalled);
-
         }
 
         [TestMethod]
@@ -78,7 +79,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "FlowNode")
@@ -92,7 +93,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(null, model.MergeDescription);
             model.FlowNode = new FlowStep();
             Assert.IsTrue(wasCalled);
-
         }
 
         [TestMethod]
@@ -100,15 +100,16 @@ namespace Dev2.Core.Tests.Merge
         public void DisableEvents_VerifySets()
         {
             //------------Setup for test--------------------------
-            var model = new MergeToolModel();
-            model.IsMergeChecked = true;
+            var model = new MergeToolModel
+            {
+                IsMergeChecked = true
+            };
             //------------Execute Test---------------------------
             model.DisableEvents();
             //------------Assert Results-------------------------
             Assert.IsFalse(model.IsMergeChecked);
-
-
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_ParentDescription_DefaultConstruction()
@@ -116,7 +117,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "ParentDescription")
@@ -139,7 +140,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "MergeIcon")
@@ -161,9 +162,13 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
-            var model = new MergeToolModel();
-            bool wasCalled = false;
-            bool eventCalled = false;
+            var model = new MergeToolModel
+            {
+                Container = new ToolConflict()
+            };
+            model.Container.HasConflict = true;
+            var wasCalled = false;
+            var eventCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsMergeChecked")
@@ -171,7 +176,7 @@ namespace Dev2.Core.Tests.Merge
                     wasCalled = true;
                 }
             };
-            model.SomethingModelToolChanged += (a, b) => 
+            model.SomethingModelToolChanged += (a, b) =>
             {
                 eventCalled = true;
             };
@@ -184,7 +189,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsTrue(eventCalled);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_HasParent_DefaultConstruction()
@@ -192,7 +196,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "HasParent")
@@ -200,7 +204,7 @@ namespace Dev2.Core.Tests.Merge
                     wasCalled = true;
                 }
             };
-         
+
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
@@ -216,7 +220,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsMergeEnabled")
@@ -224,7 +228,7 @@ namespace Dev2.Core.Tests.Merge
                     wasCalled = true;
                 }
             };
-            
+
             //------------Assert Results-------------------------
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
@@ -233,7 +237,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsTrue(wasCalled);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_IsMergeVisible_DefaultConstruction()
@@ -241,7 +244,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsMergeVisible")
@@ -258,7 +261,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsTrue(wasCalled);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_Parent_DefaultConstruction()
@@ -266,7 +268,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "Parent")
@@ -282,7 +284,7 @@ namespace Dev2.Core.Tests.Merge
             model.Parent = new MergeToolModel();
             Assert.IsTrue(wasCalled);
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_UniqueId_DefaultConstruction()
@@ -290,7 +292,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "UniqueId")
@@ -306,7 +308,7 @@ namespace Dev2.Core.Tests.Merge
             model.UniqueId =new System.Guid();
             Assert.IsTrue(wasCalled);
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_NodeLocation_DefaultConstruction()
@@ -314,7 +316,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "NodeLocation")
@@ -327,7 +329,7 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsNotNull(model);
             Assert.IsNotNull(model.Children);
             Assert.IsFalse(model.IsMergeVisible);
-            System.Windows.Point point = new System.Windows.Point();
+            var point = new Point();
             model.NodeLocation = point;
             Assert.IsFalse(wasCalled);
             Assert.IsNull(model.ModelItem);
@@ -340,7 +342,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "FlowNode")
@@ -358,7 +360,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.IsNotNull(model.ModelItem);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void MergeToolModel_ActivityDesignerViewModel_DefaultConstruction()
@@ -366,7 +367,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var model = new MergeToolModel();
-            bool wasCalled = false;
+            var wasCalled = false;
             model.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "ActivityDesignerViewModel")
@@ -398,7 +399,6 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreEqual(default(IMergeToolModel), model.Parent);
             Assert.AreEqual(default(IToolConflict), model.Container);
             Assert.AreEqual(default(bool), model.IsMergeEnabled);
-            Assert.AreEqual(default(bool), model.IsMergeEnabled);
             Assert.AreEqual(default(string), model.NodeArmDescription);
             //------------Assert Results-------------------------
             model.IsTrueArm = true;
@@ -407,7 +407,7 @@ namespace Dev2.Core.Tests.Merge
             model.UniqueId = Guid.NewGuid();
             model.Parent = new MergeToolModel();
             model.Container = new ToolConflict();
-            model.IsMergeEnabled = true;
+            model.Container.HasConflict = true;
             model.IsMergeEnabled = true;
             model.NodeArmDescription = "";
             Assert.AreNotEqual(default(bool), model.IsTrueArm);
@@ -417,30 +417,78 @@ namespace Dev2.Core.Tests.Merge
             Assert.AreNotEqual(default(IMergeToolModel), model.Parent);
             Assert.AreNotEqual(default(IToolConflict), model.Container);
             Assert.AreNotEqual(default(bool), model.IsMergeEnabled);
-            Assert.AreNotEqual(default(bool), model.IsMergeEnabled);
             Assert.AreNotEqual(default(string), model.NodeArmDescription);
-
         }
 
         [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void EnableEvents_processEvents_Tests()
+        public void RemovePreviousActivity_Given_MergeToolModel_verifyCall()
         {
-            //------------Setup for test--------------------------
-            var model = new MergeToolModel();
-            //------------Execute Test---------------------------
-            var initValue=typeof(MergeToolModel).GetField("_processEvents", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(model);
-            var boolValueInit=(bool)initValue;
-            Assert.IsTrue(boolValueInit);
-            //------------Assert Results-------------------------
-            model.DisableEvents();
-            initValue = typeof(MergeToolModel).GetField("_processEvents", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(model);
-            boolValueInit = (bool)initValue;
-            Assert.IsFalse(boolValueInit);
-            model.EnableEvents();
-            initValue = typeof(MergeToolModel).GetField("_processEvents", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(model);
-            boolValueInit = (bool)initValue;
-            Assert.IsTrue(boolValueInit);
+            //---------------Set up test pack-------------------
+            var id = Guid.NewGuid();
+            var mergeToolModel = new MergeToolModel
+            {
+                UniqueId = id,
+                IsMergeChecked = true,
+                Container = new ToolConflict { IsChecked = true }
+            };
+            object sender = mergeToolModel;
+            IMergeToolModel args = new MergeToolModel();
+            args.Container = new ToolConflict
+            {
+                UniqueId = id,
+                IsChecked = true,
+                CurrentViewModel = mergeToolModel,
+                DiffViewModel = args
+            };
+            mergeToolModel.Container = args.Container;
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            wfDesignerVm.Setup(p => p.RemoveItem(It.IsAny<IMergeToolModel>()));
+
+            mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
+
+            var methodToRun = typeof(MergeToolModel).GetMethod("RemovePreviousActivity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodToRun);
+            //---------------Execute Test ----------------------
+            var aaaa = methodToRun.Invoke(mergeToolModel, new object[] { });
+            //---------------Test Result -----------------------
+            wfDesignerVm.Verify(p => p.RemoveItem(It.IsAny<IMergeToolModel>()), Times.Exactly(1));
+        }
+
+        [TestMethod]
+        public void AddActivity_Given_MergeToolModel_verifyCall()
+        {
+            //---------------Set up test pack-------------------
+            var id = Guid.NewGuid();
+            var mergeToolModel = new MergeToolModel
+            {
+                UniqueId = id,
+                IsMergeChecked = true,
+                ModelItem = ModelItemUtils.CreateModelItem(new DsfMultiAssignActivity()),
+                Container = new ToolConflict { IsChecked = true }
+            };
+            object sender = mergeToolModel;
+            IMergeToolModel args = new MergeToolModel();
+            args.Container = new ToolConflict
+            {
+                UniqueId = id,
+                IsChecked = true,
+                CurrentViewModel = mergeToolModel,
+                DiffViewModel = args
+            };
+            mergeToolModel.Container = args.Container;
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
+            wfDesignerVm.Setup(p => p.AddItem(It.IsAny<IMergeToolModel>()));
+
+            mergeToolModel.WorkflowDesignerViewModel = wfDesignerVm.Object;
+
+            var methodToRun = typeof(MergeToolModel).GetMethod("AddActivity", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+            //---------------Assert Precondition----------------
+            Assert.IsNotNull(methodToRun);
+            //---------------Execute Test ----------------------
+            var aaaa = methodToRun.Invoke(mergeToolModel, new object[] { });
+            //---------------Test Result -----------------------
+            wfDesignerVm.Verify(p => p.AddItem(It.IsAny<IMergeToolModel>()), Times.Exactly(1));
         }
     }
 }

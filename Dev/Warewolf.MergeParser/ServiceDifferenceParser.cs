@@ -53,7 +53,7 @@ namespace Warewolf.MergeParser
             var diffTree = BuildTree(difference, loadworkflowFromServer);
             var completeList = currentTree.Concat(diffTree);
             var groupedItems = completeList.GroupBy(a => a.UniqueId);
-            foreach(var item in groupedItems)
+            foreach (var item in groupedItems)
             {
                 var itemList = item.ToList();
                 var hasConflict = false;
@@ -62,7 +62,7 @@ namespace Warewolf.MergeParser
                     var item1 = itemList[0];
                     var item2 = itemList[1];
                     hasConflict = !item1.Equals(item2);
-                }                
+                }
             }
             return (currentTree, diffTree);
         }
@@ -160,13 +160,6 @@ namespace Warewolf.MergeParser
         {
             return _flowNodes;
         }
-
-        public bool NodeHasConflict(string uniqueId)
-        {
-            var hasConflict = _conflicts.SingleOrDefault(p => p.Key.Equals(uniqueId));
-            return hasConflict.Value;
-        }
-        List<KeyValuePair<string, bool>> _conflicts;
 
         public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)
         {
