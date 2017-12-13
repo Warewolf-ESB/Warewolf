@@ -223,8 +223,8 @@ namespace Warewolf.MergeParser.Tests
             var devActivityCurr = tupleCurrent.Activity;
             Assert.IsNotNull(devActivityDiff);
             Assert.IsNotNull(devActivityCurr);
-            Assert.AreEqual(calculateUniqueId, devActivityCurr.UniqueID);
-            Assert.AreEqual(calculateUniqueId, devActivityDiff.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, devActivityCurr.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, devActivityDiff.UniqueID);
 
             //difference chart
             var tupleDifference1 = conflicts.diffTree[1];
@@ -238,8 +238,8 @@ namespace Warewolf.MergeParser.Tests
             var devActivityCurr1 = tupleCurrent1.Activity;
             Assert.IsNotNull(devActivityDiff1);
             Assert.IsNotNull(devActivityCurr1);
-            Assert.AreEqual(randomActivityUniqueId, devActivityDiff1.UniqueID);
-            Assert.AreEqual(randomActivityUniqueId, devActivityCurr1.UniqueID);
+            Assert.AreEqual(calculateUniqueId, devActivityDiff1.UniqueID);
+            Assert.AreEqual(calculateUniqueId, devActivityCurr1.UniqueID);
         }
 
         [TestMethod]
@@ -320,49 +320,45 @@ namespace Warewolf.MergeParser.Tests
 
             Assert.IsTrue(conflicts.diffTree.Any(d => d.IsInConflict));
             Assert.AreEqual(calculateUniqueId, conflicts.diffTree[2].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.diffTree[1].UniqueId);
+            Assert.AreEqual(baseConvertId, conflicts.diffTree[1].UniqueId);
 
-            Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[2].UniqueId);
-            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[1].UniqueId);
+            Assert.IsFalse(conflicts.currentTree.Any(d => d.IsInConflict));
+            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[1].UniqueId);
+            Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
 
             //First Node chart
             var tupleDifference = conflicts.diffTree[0];
             var tupleCurrent = conflicts.currentTree[0];
-            Assert.IsNull(tupleDifference);
+            Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
             var devActivityDiff = tupleDifference.Activity;
             var devActivityCurr = tupleCurrent.Activity;
-            Assert.IsNull(devActivityCurr);
+            Assert.IsNotNull(devActivityCurr);
             Assert.IsNotNull(devActivityDiff);
-            Assert.AreEqual(baseConvertId, devActivityDiff.UniqueID);
-            Assert.AreEqual(baseConvertId, devActivityCurr.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, devActivityDiff.UniqueID);
+            Assert.AreEqual(randomActivityUniqueId, devActivityCurr.UniqueID);
 
             //Second chart
             var tupleDifference1 = conflicts.diffTree[1];
             var tupleCurrent1 = conflicts.currentTree[1];
-            Assert.IsNull(tupleDifference1);
+            Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
             var devActivityDiff1 = tupleDifference1.Activity;
             var devActivityCurr1 = tupleCurrent1.Activity;
             Assert.IsNotNull(devActivityDiff1);
             Assert.IsNotNull(devActivityCurr1);
-            Assert.AreEqual(randomActivityUniqueId, devActivityDiff1.UniqueID);
-            Assert.AreEqual(randomActivityUniqueId, devActivityCurr1.UniqueID);
+            Assert.AreEqual(baseConvertId, devActivityDiff1.UniqueID);
+            Assert.AreEqual(calculateUniqueId, devActivityCurr1.UniqueID);
 
             //Third node
             //difference chart
             var tupleDifference2 = conflicts.diffTree[2];
-            var tupleCurrent2 = conflicts.currentTree[2];
 
             var devActivityDiff2 = tupleDifference2.Activity;
-            var devActivityCurr2 = tupleCurrent2.Activity;
             Assert.IsNotNull(devActivityDiff2);
-            Assert.IsNotNull(devActivityCurr2);
             Assert.AreEqual(calculateUniqueId, devActivityDiff2.UniqueID);
-            Assert.AreEqual(calculateUniqueId, devActivityCurr2.UniqueID);
         }
 
         [TestMethod]
@@ -433,13 +429,13 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(randomActivityUniqueId, conflicts.diffTree[0].UniqueId);
 
             Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(calculateUniqueId, conflicts.currentTree[1].UniqueId);
+            Assert.AreEqual(baseConvertId, conflicts.currentTree[1].UniqueId);
             Assert.AreEqual(randomActivityUniqueId, conflicts.currentTree[0].UniqueId);
 
             //First Node chart
             var tupleDifference = conflicts.diffTree[0];
             var tupleCurrent = conflicts.currentTree[0];
-            Assert.IsNull(tupleDifference);
+            Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
             var devActivityDiff = tupleDifference.Activity;
@@ -452,14 +448,14 @@ namespace Warewolf.MergeParser.Tests
             //Second chart
             var tupleDifference1 = conflicts.diffTree[1];
             var tupleCurrent1 = conflicts.currentTree[1];
-            Assert.IsNull(tupleDifference1);
+            Assert.IsNotNull(tupleDifference1);
             Assert.IsNotNull(tupleCurrent1);
 
             var devActivityDiff1 = tupleDifference1.Activity;
             var devActivityCurr1 = tupleCurrent1.Activity;
             Assert.IsNotNull(devActivityDiff1);
             Assert.IsNotNull(devActivityCurr1);
-            Assert.AreEqual(baseConvertId, devActivityDiff1.UniqueID);
+            Assert.AreEqual(calculateUniqueId, devActivityDiff1.UniqueID);
             Assert.AreEqual(baseConvertId, devActivityCurr1.UniqueID);
         }
 
@@ -642,15 +638,15 @@ namespace Warewolf.MergeParser.Tests
             Assert.AreEqual(2, count);
 
             Assert.IsTrue(conflicts.diffTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(assignId, conflicts.diffTree[1].UniqueId);
+            Assert.AreEqual(assignId, conflicts.diffTree[0].UniqueId);
 
             Assert.IsTrue(conflicts.currentTree.Any(d => d.IsInConflict));
-            Assert.AreEqual(assignId, conflicts.currentTree[1].UniqueId);
+            Assert.AreEqual(assignId, conflicts.currentTree[0].UniqueId);
 
             //First Node chart
             var tupleDifference = conflicts.diffTree[0];
             var tupleCurrent = conflicts.currentTree[0];
-            Assert.IsNull(tupleDifference);
+            Assert.IsNotNull(tupleDifference);
             Assert.IsNotNull(tupleCurrent);
 
             var devActivityDiff = tupleDifference.Activity;
