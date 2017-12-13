@@ -39,9 +39,9 @@ namespace Dev2.Activities
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a=>!(String.IsNullOrEmpty(a.Name)&&String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
+            var headerString = string.Join(" ", head.Select(a => a.Name+" : "+a.Value));
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("","URL"), debugItem);
             AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
@@ -95,14 +95,14 @@ namespace Dev2.Activities
             return result;
         }
 
-        private WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
+        WebClient CreateClient(IEnumerable<NameValue> head, string query, WebSource source)
         {
             var webclient = new WebClient();
-            foreach(var nameValue in head)
+            foreach (var nameValue in head)
             {
-                if(!String.IsNullOrEmpty( nameValue.Name) && !String.IsNullOrEmpty( nameValue.Value))
+                if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
                 {
-                    webclient.Headers.Add(nameValue.Name,nameValue.Value);
+                    webclient.Headers.Add(nameValue.Name, nameValue.Value);
                 }
             }
 
@@ -110,7 +110,7 @@ namespace Dev2.Activities
             {
                 webclient.Credentials = new NetworkCredential(source.UserName, source.Password);
             }
-          
+
             webclient.Headers.Add("user-agent", GlobalConstants.UserAgentString);
             webclient.BaseAddress = source.Address + query;
             return webclient;
@@ -118,7 +118,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        
+
         public DsfWebGetActivity()
         {
             Type = "GET Web Method";

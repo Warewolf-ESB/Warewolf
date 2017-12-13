@@ -32,11 +32,11 @@ namespace Dev2.Activities.Designers2.Core.QuickVariableInput
 {
     public class QuickVariableInputViewModel : DependencyObject, IClosable, IValidator, IErrorsSource
     {
-        private const string splitTypeIndex = "Index";
-        private const string splitTypeChars = "Chars";
-        private const string splitTypeNewLine = "New Line";
-        private const string splitTypeSpace = "Space";
-        private const string splitTypeTab = "Tab";
+        const string splitTypeIndex = "Index";
+        const string splitTypeChars = "Chars";
+        const string splitTypeNewLine = "New Line";
+        const string splitTypeSpace = "Space";
+        const string splitTypeTab = "Tab";
 
         readonly Action<IEnumerable<string>, bool> _addToCollection;
 

@@ -27,7 +27,7 @@ namespace Dev2.Runtime.Compiler.CompileRules
         /// <returns></returns>
         public IEnumerable<IServiceCompileRule> FetchRulesFor(ServerCompileMessageType typeOf)
         {
-            IList<IServiceCompileRule> rules = FindAll();
+            var rules = FindAll();
 
             return rules?.Where(c => c.HandlesType() == typeOf);
         }

@@ -10,15 +10,15 @@ namespace Warewolf.Studio.ViewModels
 {
     public class MessageBoxViewModel : Screen
     {
-        private MessageBoxButton _buttons = MessageBoxButton.OK;
-        private string _message;
-        private string _title;
+        MessageBoxButton _buttons = MessageBoxButton.OK;
+        string _message;
+        string _title;
         FontAwesomeIcon _icon;
         bool _isError;
         bool _isInfo;
         bool _isQuestion;
-        private List<string> _urlsFound;
-        private bool _isDuplicatesVisible;
+        List<string> _urlsFound;
+        bool _isDuplicatesVisible;
 
         public MessageBoxViewModel(string message, string title, MessageBoxButton buttons, FontAwesomeIcon icon, bool isDependenciesButtonVisible,
             bool isError, bool isInfo, bool isQuestion, List<string> urlsFound, bool isDeleteAnywayButtonVisible, bool applyToAll)

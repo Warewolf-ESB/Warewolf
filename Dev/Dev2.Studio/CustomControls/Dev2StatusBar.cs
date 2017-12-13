@@ -20,9 +20,9 @@ namespace Dev2.Studio.CustomControls
     public class Dev2StatusBar : TextBox
     {
 
-        private const string PART_Label = "StatusBarLabel";
+        const string PART_Label = "StatusBarLabel";
 
-        private Label _label;
+        Label _label;
 
         public Label StatusBarLabel => _label;
 

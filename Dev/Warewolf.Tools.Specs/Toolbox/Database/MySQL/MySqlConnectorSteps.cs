@@ -24,11 +24,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
     [Binding]
     public sealed class MySqlConnectorSteps
     {
-        private DbSourceDefinition _sqlSource;
-        private DbSourceDefinition _anotherSqlSource;
-        private DbAction _someAction;
-        private Mock<IServiceOutputMapping> _outputMapping;
-        
+        DbSourceDefinition _sqlSource;
+        DbSourceDefinition _anotherSqlSource;
+        DbAction _someAction;
+        Mock<IServiceOutputMapping> _outputMapping;
+
         [Given(@"I drag in mysql connector tool")]
         public void GivenIDragInMysqlConnectorTool()
         {
@@ -86,21 +86,21 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 
         #region Private Methods
 
-        private DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
+        DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
         {
             return ScenarioContext.Current.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
         }
-        private Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
+        Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
         {
             return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
         }
 
-        private MySqlDatabaseDesignerViewModel GetViewModel()
+        MySqlDatabaseDesignerViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<MySqlDatabaseDesignerViewModel>("viewModel");
         }
 
-        private Mock<IDbServiceModel> GetServiceModel()
+        Mock<IDbServiceModel> GetServiceModel()
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
@@ -152,14 +152,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsNull(viewModel.ActionRegion.SelectedAction);            
         }
 
-        private void SetupActions(IDbSource selectedSource)
+        void SetupActions(IDbSource selectedSource)
         {
             if (selectedSource != null)
             {
                 _someAction = new DbAction
                 {
                     Name = "someAction",
-                    Inputs = new List<IServiceInput> {new ServiceInput("SomeInput", "")}
+                    Inputs = new List<IServiceInput> { new ServiceInput("SomeInput", "") }
                 };
                 var serviceModel = GetServiceModel();
                 serviceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _someAction });
@@ -245,7 +245,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             }
         }
 
-        private void SetupOutpuRegions()
+        void SetupOutpuRegions()
         {
             GetViewModel().OutputsRegion.Outputs = new IServiceOutputMapping[]
             {
@@ -264,7 +264,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsTrue(ClickOk());
         }
 
-        private bool ClickOk()
+        bool ClickOk()
         {
             return GetViewModel().ManageServiceInputViewModel.OkSelected = true;
         }
@@ -338,10 +338,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetupActions(selectedSource);
         }
 
-        private static IDbSource SetupSelectedSource(MySqlDatabaseDesignerViewModel mysqlDesignerViewModel)
+        static IDbSource SetupSelectedSource(MySqlDatabaseDesignerViewModel mysqlDesignerViewModel)
         {
             return mysqlDesignerViewModel.SourceRegion.SelectedSource =
-                mysqlDesignerViewModel.SourceRegion.Sources.FirstOrDefault(p=>p.Name == "DemoSqlsource");
+                mysqlDesignerViewModel.SourceRegion.Sources.FirstOrDefault(p => p.Name == "DemoSqlsource");
         }
 
         [Given(@"Source is enabled and set to ""(.*)"" on mysql connector tool")]

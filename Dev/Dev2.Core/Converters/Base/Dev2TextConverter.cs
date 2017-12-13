@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters
 {
-    internal class Dev2TextConverter : IBaseConverter
+    class Dev2TextConverter : IBaseConverter
     {
         public string ConvertToBase(byte[] payload)
         {

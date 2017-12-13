@@ -30,13 +30,13 @@ namespace Warewolf.Studio.ViewModels
             Server = server;
             ExternalProcessExecutor = externalProcessExecutor;
 
-            Uri conUri = new Uri(Resources.Languages.Core.ContributorsUrl);
+            var conUri = new Uri(Resources.Languages.Core.ContributorsUrl);
             ContributorsUrl = conUri;
-            Uri comUri = new Uri(Resources.Languages.Core.CommunityUrl);
+            var comUri = new Uri(Resources.Languages.Core.CommunityUrl);
             CommunityUrl = comUri;
-            Uri expUri = new Uri(Resources.Languages.HelpText.ExpertHelpUrl);
+            var expUri = new Uri(Resources.Languages.HelpText.ExpertHelpUrl);
             ExpertHelpUrl = expUri;
-            Uri warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
+            var warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;
             WarewolfCopyright = Resources.Languages.Core.WarewolfCopyright;
 

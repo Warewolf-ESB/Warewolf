@@ -62,7 +62,7 @@ namespace Dev2.Security
                 };
                 Dev2Logger.Debug("Getting Permissions from Server", "Warewolf Debug");
 
-                SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID).ConfigureAwait(true);
+                var securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID).ConfigureAwait(true);
                 List<WindowsGroupPermission> newPermissions = null;
                 if (securitySettingsTo != null)
                 {

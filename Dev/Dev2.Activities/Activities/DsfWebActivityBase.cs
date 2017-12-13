@@ -20,8 +20,8 @@ namespace Dev2.Activities
 {
     public class DsfWebActivityBase : DsfActivity,IEquatable<DsfWebActivityBase>
     {
-        private readonly WebRequestMethod _method;
-        private const string UserAgent = "User-Agent";
+        readonly WebRequestMethod _method;
+        const string UserAgent = "User-Agent";
 
         protected DsfWebActivityBase(WebRequestDataDto webRequestDataDto)
         {
@@ -45,9 +45,9 @@ namespace Dev2.Activities
             var head = Headers.Select(a => new NameValue(ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Name, update)), ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(a.Value, update)))).Where(a => !(String.IsNullOrEmpty(a.Name) && String.IsNullOrEmpty(a.Value)));
             var query = ExecutionEnvironment.WarewolfEvalResultToString(env.Eval(QueryString, update));
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
+            var headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "URL"), debugItem);
             AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
@@ -74,7 +74,7 @@ namespace Dev2.Activities
 
             if (head != null)
             {
-                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                var nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
                 foreach (var nameValue in nameValues)
                 {
                     httpClient.DefaultRequestHeaders.Add(nameValue.Name, nameValue.Value);

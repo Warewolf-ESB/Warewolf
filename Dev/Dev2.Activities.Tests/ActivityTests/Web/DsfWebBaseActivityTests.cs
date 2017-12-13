@@ -23,8 +23,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
 
     public class DsfWebBaseActivityTests
     {
-        private const string userAgent1 = "Mozilla/4.0";
-        private const string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
+        const string userAgent1 = "Mozilla/4.0";
+        const string userAgent2 = "(compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)";
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(dsfWebActivity);
         }
 
-        private static TestDsfWebBaseActivity CreateWebDeleteActivityFromBase()
+        static TestDsfWebBaseActivity CreateWebDeleteActivityFromBase()
         {
             return
                 new TestDsfWebBaseActivity(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete,
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(httpClient);
 
 
-            AuthenticationHeaderValue webClientCredentials = httpClient.DefaultRequestHeaders.Authorization;
+            var webClientCredentials = httpClient.DefaultRequestHeaders.Authorization;
             Assert.IsNotNull(webClientCredentials);
             //Assert.AreEqual(webClientCredentials.Parameter, networkCredentialFromWebSource.UserName);
             //Assert.AreEqual(webClientCredentials.Password, networkCredentialFromWebSource.Password);
@@ -206,7 +206,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             //---------------Test Result -----------------------
             var actualHeaderCount = httpClient.DefaultRequestHeaders.Count();
             Assert.AreEqual(3, actualHeaderCount);
-            IEnumerable<string> allContentValues = httpClient.DefaultRequestHeaders.Single(pair => pair.Key == "Content").Value;
+            var allContentValues = httpClient.DefaultRequestHeaders.Single(pair => pair.Key == "Content").Value;
             Assert.AreEqual("text/json", allContentValues.ToList()[0]);
         }
 
@@ -254,7 +254,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(debugInputs);
             Assert.AreEqual(3, debugInputs.Count);
         }
-        private static WebSource CreateTestWebSource()
+        static WebSource CreateTestWebSource()
         {
             return new WebSource
             {
@@ -265,7 +265,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             };
         }
 
-        private static WebSource CreateWebSourceWithAnonymousAuthentication()
+        static WebSource CreateWebSourceWithAnonymousAuthentication()
         {
             return new WebSource()
             {

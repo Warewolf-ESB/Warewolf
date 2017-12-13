@@ -17,8 +17,8 @@ namespace Dev2.Tests
     {
         public static ModelItem CreateModelItem(object objectToMakeModelItem)
         {
-            EditingContext ec = new EditingContext();
-            ModelTreeManager mtm = new ModelTreeManager(ec);
+            var ec = new EditingContext();
+            var mtm = new ModelTreeManager(ec);
 
             mtm.Load(objectToMakeModelItem);
 

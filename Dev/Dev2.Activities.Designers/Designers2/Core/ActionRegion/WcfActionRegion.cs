@@ -18,19 +18,19 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class WcfActionRegion : IActionToolRegion<IWcfAction>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IWcfServerSource> _source;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IWcfServerSource> _source;
+        bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private IWcfAction _selectedAction;
-        private readonly IWcfServiceModel _model;
-        private ICollection<IWcfAction> _actions;
-        private bool _isActionEnabled;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
+        Action _sourceChangedAction;
+        IWcfAction _selectedAction;
+        readonly IWcfServiceModel _model;
+        ICollection<IWcfAction> _actions;
+        bool _isActionEnabled;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
 
         public WcfActionRegion()
         {
@@ -79,13 +79,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                
+
                 if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
@@ -94,7 +94,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                 }
                 IsRefreshing = false;
-                
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
@@ -158,7 +158,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void RestoreIfPrevious(IWcfAction value)
+        void RestoreIfPrevious(IWcfAction value)
         {
             if (IsAPreviousValue(value) && _selectedAction != null)
             {
@@ -292,7 +292,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #region Implementation of IActionToolRegion<IWcfAction>
 
-        private void SetSelectedAction(IWcfAction value)
+        void SetSelectedAction(IWcfAction value)
         {
             _selectedAction = value;
             SavedAction = value;
@@ -303,13 +303,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
-        private void StorePreviousValues(string actionName)
+        void StorePreviousValues(string actionName)
         {
             _previousRegions.Remove(actionName);
             _previousRegions[actionName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IWcfAction value)
+        void RestorePreviousValues(IWcfAction value)
         {
             var toRestore = _previousRegions[value.GetHashCodeBySource()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -318,7 +318,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool IsAPreviousValue(IWcfAction value)
+        bool IsAPreviousValue(IWcfAction value)
         {
             return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
         }
@@ -367,7 +367,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
     public class WcfActionMemento : IActionToolRegion<IWcfAction>
     {
-        private IWcfAction _selectedAction;
+        IWcfAction _selectedAction;
 
         #region Implementation of INotifyPropertyChanged
 

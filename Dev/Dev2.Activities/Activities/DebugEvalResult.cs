@@ -16,9 +16,9 @@ namespace Dev2.Activities
     public class DebugEvalResult : DebugOutputBase
     {
         string _inputVariable;
-        private readonly string _operand;
+        readonly string _operand;
         CommonFunctions.WarewolfEvalResult _evalResult;
-        private readonly bool _isCalculate;
+        readonly bool _isCalculate;
 
         public DebugEvalResult(string inputVariable, string label, IExecutionEnvironment environment, int update, string operand)
             : this(inputVariable, label, environment, update, operand, false, false, false)
@@ -81,7 +81,7 @@ namespace Dev2.Activities
 
         }
 
-        private void RegularItem(IExecutionEnvironment environment, int update, bool isCalculate)
+        void RegularItem(IExecutionEnvironment environment, int update, bool isCalculate)
         {
             var evalToExpression = environment.EvalToExpression(_inputVariable, update);
             if (DataListUtil.IsEvaluated(evalToExpression))
@@ -105,7 +105,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void DataMergeItem(IExecutionEnvironment environment, int update)
+        void DataMergeItem(IExecutionEnvironment environment, int update)
         {
             var evalForDataMerge = environment.EvalForDataMerge(_inputVariable, update);
             var innerIterator = new WarewolfListIterator();
@@ -120,7 +120,7 @@ namespace Dev2.Activities
             while (innerIterator.HasMoreData())
             {
                 var stringToUse = "";
-                
+
                 foreach (var warewolfIterator in innerListOfIters)
                 {
                     stringToUse += warewolfIterator.GetNextValue();
@@ -143,7 +143,7 @@ namespace Dev2.Activities
                 }
             }
         }
-        
+
         public override string LabelText { get; }
         public bool MockSelected { get; }
 

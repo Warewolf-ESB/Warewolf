@@ -119,11 +119,11 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSecureConfigFileExists
 
-        private void EnsureSecureConfigFileExists()
+        void EnsureSecureConfigFileExists()
         {
             ConfigurationManager.RefreshSection(SectionName);
             // We need to check both the live and development paths ;)
-            if(!File.Exists(FileName))
+            if (!File.Exists(FileName))
             {
                 Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
                 var newSettings = new NameValueCollection();

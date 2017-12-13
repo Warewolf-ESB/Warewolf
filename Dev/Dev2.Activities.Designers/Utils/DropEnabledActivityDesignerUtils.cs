@@ -86,7 +86,7 @@ namespace Dev2.Activities.Utils
             return true;
         }
 
-        private bool ValidateDecision(object objectData, ModelItem data, bool dropEnabled)
+        bool ValidateDecision(object objectData, ModelItem data, bool dropEnabled)
         {
             var stringValue = objectData as string;
             if ((data != null && data.ItemType.Name == "FlowDecision") || (stringValue != null && stringValue.Contains("Decision")))
@@ -101,7 +101,7 @@ namespace Dev2.Activities.Utils
             return dropEnabled;
         }
 
-        private bool ValidateSwitch(object objectData, ModelItem data, bool dropEnabled)
+        bool ValidateSwitch(object objectData, ModelItem data, bool dropEnabled)
         {
             var stringValue = objectData as string;
             if ((data != null && data.ItemType.Name == "FlowSwitch`1") || (stringValue != null && stringValue.Contains("Switch")))
@@ -117,7 +117,7 @@ namespace Dev2.Activities.Utils
             return dropEnabled;
         }
 
-        private bool ValidateSelectAndApply(object objectData, ModelItem data, bool dropEnabled)
+        bool ValidateSelectAndApply(object objectData, ModelItem data, bool dropEnabled)
         {
             var stringValue = objectData as string;
             if ((data != null && data.ItemType.Name == "DsfSelectAndApplyActivity") || (stringValue != null && stringValue.Contains("SelectAndApply")))
@@ -135,7 +135,7 @@ namespace Dev2.Activities.Utils
 
         #endregion
 
-        private void ShowErrorMessage(string errorMessage, string header)
+        void ShowErrorMessage(string errorMessage, string header)
         {
             var a = new PopupMessage
             {

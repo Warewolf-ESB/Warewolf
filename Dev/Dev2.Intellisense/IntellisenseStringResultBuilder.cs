@@ -23,7 +23,7 @@ namespace Dev2.Intellisense
             }
             catch (Exception)
             {
-                string diff = originalCaret >= editorText.Length - 1 ? editorText : editorText.Substring(0, originalCaret + 1);
+                var diff = originalCaret >= editorText.Length - 1 ? editorText : editorText.Substring(0, originalCaret + 1);
                 int ignore = originalCaret - Math.Max(diff.LastIndexOf("[[", StringComparison.Ordinal), diff.LastIndexOf("]]", StringComparison.Ordinal) + 1);
                 var len = originalCaret - ignore;
                 var delimchar = "";

@@ -17,7 +17,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 {
     public class ThumbResizeBehavior : Behavior<Thumb>
     {
-        private const int ChangeThreshold = 1;
+        const int ChangeThreshold = 1;
 
         public double MinWidthOffset { get; set; }
 
@@ -71,14 +71,14 @@ namespace Dev2.Studio.AppResources.Behaviors
 
         #region Event Handlers
 
-        private void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
+        void AssociatedObjectOnUnloaded(object sender, RoutedEventArgs routedEventArgs)
         {
             AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
             AssociatedObject.DragDelta -= AssociatedObjectOnDragDelta;
             routedEventArgs.Handled = true;
         }
 
-        private void AssociatedObjectOnDragDelta(object sender, DragDeltaEventArgs e)
+        void AssociatedObjectOnDragDelta(object sender, DragDeltaEventArgs e)
         {
             if (TargetElement == null)
             {

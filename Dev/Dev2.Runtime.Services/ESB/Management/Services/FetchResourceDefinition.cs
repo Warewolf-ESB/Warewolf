@@ -12,28 +12,20 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-using Dev2.Common.Utils;
-using Dev2.Util;
-using System.Text.RegularExpressions;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces;
 using Dev2.Runtime.Interfaces;
 using System.Diagnostics.CodeAnalysis;
+using Dev2.Communication;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Fetch a service body definition
-    /// </summary>
     public class FetchResourceDefinition : IEsbManagementEndpoint
     {
-        private IResourceDefinationCleaner resourceDefinationCleaner;
+        private IResourceDefinationCleaner _resourceDefinationCleaner;
         private IResourceCatalog _resourceCatalog;
         public IResourceCatalog ResourceCat
         {
@@ -51,11 +43,11 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             private get
             {
-                return resourceDefinationCleaner ?? new ResourceDefinationCleaner();
+                return _resourceDefinationCleaner ?? new ResourceDefinationCleaner();
             }
             set
             {
-                resourceDefinationCleaner = value;
+                _resourceDefinationCleaner = value;
             }
         }
 
@@ -85,6 +77,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 string serviceId = null;
@@ -118,27 +111,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-
-
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
             return Cleaner.DecryptAllPasswords(stringBuilder);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var serviceAction = new ServiceAction { Name = HandlesType(), SourceMethod = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService };
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var serviceEntry = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            serviceEntry.Actions.Add(serviceAction);
-
-            return serviceEntry;
-        }
-
-        public string HandlesType()
-        {
-            return @"FetchResourceDefinitionService";
-        }
+        public string HandlesType() => @"FetchResourceDefinitionService";
 
     }
 }

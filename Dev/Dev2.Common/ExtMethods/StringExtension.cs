@@ -18,20 +18,20 @@ namespace Dev2.Common.ExtMethods
 {
     public static class StringExtension
     {
-        private static readonly Regex IsAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
-        private static readonly Regex IsAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
+        static readonly Regex IsAlphaRegex = new Regex("^[a-zA-Z ]*$", RegexOptions.Compiled);
+        static readonly Regex IsAlphaNumericRegex = new Regex("^[0-9a-zA-Z]*$", RegexOptions.Compiled);
 
-        private static readonly Regex IsEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b",
+        static readonly Regex IsEmailRegex = new Regex(@"\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b",
             RegexOptions.Compiled | RegexOptions.IgnoreCase);
 
-        private static readonly Regex IsBinaryField = new Regex("^[01]+$");
-        private static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
-        private static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
+        static readonly Regex IsBinaryField = new Regex("^[01]+$");
+        static readonly Regex IsHex1 = new Regex(@"\A\b[0-9a-fA-F]+\b\Z");
+        static readonly Regex IsHex2 = new Regex(@"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
         public static Regex IsValidCategoryname { get => isValidCategoryname; set => isValidCategoryname = value; }
-        private static Regex isValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
+        static Regex isValidCategoryname = new Regex(@"[\\/?%*:|""<>\.]+$");
         public static Regex IsValidResourcename { get => isValidResourcename; set => isValidResourcename = value; }
-        private static Regex isValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
+        static Regex isValidResourcename = new Regex(@"[^a-zA-Z0-9._\s-]+");
 
         public static bool ContainsUnicodeCharacter(this string input)
         {
@@ -90,14 +90,14 @@ namespace Dev2.Common.ExtMethods
                 return false;
             }
 
-            string evalString = payload;
+            var evalString = payload;
 
             if (payload[0] == '-')
             {
                 evalString = payload.Substring(1, payload.Length - 1);
             }
 
-            NumberFormatInfo current = CultureInfo.CurrentCulture.NumberFormat;
+            var current = CultureInfo.CurrentCulture.NumberFormat;
             if (evalString.Any(c => !char.IsDigit(c)
                                     && c != current.NumberDecimalSeparator[0]))
             {
@@ -160,7 +160,7 @@ namespace Dev2.Common.ExtMethods
         
         public static string ReverseString(this string s)
         {
-            char[] arr = s.ToCharArray();
+            var arr = s.ToCharArray();
             Array.Reverse(arr);
             return new string(arr);
         }

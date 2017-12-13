@@ -44,22 +44,12 @@ namespace Dev2.Common.Common
         public static void Copy(string sourceDirName, string destDirName, bool copySubDirs)
         {
             var dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
+            var dirs = dir.GetDirectories();
 
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(string.Format(ErrorResource.SourceDirectoryDoesNotExist, sourceDirName));
-            }
-
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            FileInfo[] files = dir.GetFiles();
+            var files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                string temppath = Path.Combine(destDirName, file.Name);
+                var temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, false);
             }
 
@@ -67,7 +57,7 @@ namespace Dev2.Common.Common
             {
                 foreach (DirectoryInfo subdir in dirs)
                 {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    var temppath = Path.Combine(destDirName, subdir.Name);
                     Copy(subdir.FullName, temppath, true);
                 }
             }
@@ -85,7 +75,7 @@ namespace Dev2.Common.Common
             }
         }
 
-        private static void DeleteFileSystemInfo(FileSystemInfo fsi)
+        static void DeleteFileSystemInfo(FileSystemInfo fsi)
         {
             CheckIfDeleteIsValid(fsi);
             fsi.Attributes = FileAttributes.Normal;
@@ -100,7 +90,7 @@ namespace Dev2.Common.Common
             fsi.Delete();
         }
 
-        private static void CheckIfDeleteIsValid(FileSystemInfo fsi)
+        static void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
             if (fsi.FullName.ToLower() == @"C:\".ToLower())
             {

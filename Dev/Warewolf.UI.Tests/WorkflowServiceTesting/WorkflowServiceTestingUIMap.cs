@@ -53,14 +53,6 @@ namespace Warewolf.UI.Tests.WorkflowServiceTesting.WorkflowServiceTestingUIMapCl
                     "r typing that in.");
         }
 
-        [When(@"I Enter Text Into Workflow Tests Row1 Value Textbox As CodedUITest")]
-        public void Enter_Text_Into_Workflow_Tests_Row1_Value_Textbox_As_CodedUITest()
-        {
-            Keyboard.SendKeys(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox, "User", ModifierKeys.None);
-            Assert.AreEqual("User", MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.WorkSurfaceContext.ServiceTestView.TestInputsTable.Row1.Cell.IntellisenseComboBox.Textbox.Text, "Workflow tests row 1 value textbox text does not equal User after typing that in." +
-                    "");
-        }
-
         [When(@"I Select User From RunTestAs")]
         public void Select_User_From_RunTestAs()
         {

@@ -13,8 +13,8 @@ namespace Dev2.Runtime.ServiceModel
     {
         public IHubProxy CreateHubProxy(Connection connection)
         {
-            IPrincipal serverUser = Common.Utilities.OrginalExecutingUser;
-            IPrincipal principle = serverUser;
+            var serverUser = Common.Utilities.OrginalExecutingUser;
+            var principle = serverUser;
 
             var identity = principle.Identity as WindowsIdentity;
             WindowsImpersonationContext context = null;

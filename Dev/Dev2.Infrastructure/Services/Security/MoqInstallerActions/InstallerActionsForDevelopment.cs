@@ -17,9 +17,9 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         public void ExecuteMoqInstallerActions()
         {
-            IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+            var wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
 
-            if(!wso.DoesWarewolfGroupExist())
+            if (!wso.DoesWarewolfGroupExist())
             {
                 wso.AddWarewolfGroup();
             }            
@@ -30,9 +30,9 @@ namespace Dev2.Services.Security.MoqInstallerActions
 
         #region Private Actions
 
-        private void AddAdministratorsToWarewolfGroup()
+        void AddAdministratorsToWarewolfGroup()
         {
-            IWarewolfSecurityOperations wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
+            var wso = MoqInstallerActionFactory.CreateSecurityOperationsObject();
             wso.AddAdministratorsGroupToWarewolf();
         }
 

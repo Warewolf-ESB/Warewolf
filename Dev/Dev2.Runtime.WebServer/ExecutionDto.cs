@@ -12,7 +12,7 @@ using Dev2.Web;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal class ExecutionDto
+    class ExecutionDto
     {
         public WebRequestTO WebRequestTO { get; set; }
         public string ServiceName { get; set; }
@@ -27,7 +27,7 @@ namespace Dev2.Runtime.WebServer
         public ErrorResultTO ErrorResultTO { get; set; }
     }
 
-    internal static class ExecutionDtoExtentions
+    static class ExecutionDtoExtentions
     {
         public static IResponseWriter CreateResponseWriter(this ExecutionDto dto)
         {
@@ -133,7 +133,7 @@ namespace Dev2.Runtime.WebServer
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
-        private static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
+        static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
         {
             string executePayload;
             if (dataObject.ReturnType == EmitionTypes.XML)

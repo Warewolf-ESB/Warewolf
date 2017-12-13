@@ -11,13 +11,13 @@ namespace Dev2.Core.Tests.ModelTests
     {
         #region Test Fields
 
-        private IScalarItemModel _scalarItemModel;
+        IScalarItemModel _scalarItemModel;
 
         #endregion Test Fields
 
         #region Private Test Methods
 
-        private void TestScalarItemModelSet(string name, bool populateAllFields = false)
+        void TestScalarItemModelSet(string name, bool populateAllFields = false)
         {
             if (populateAllFields)
             {

@@ -92,7 +92,7 @@ namespace Dev2.Activities.Sharepoint
         }
 
         readonly SharepointUtils _sharepointUtils;
-        private int _indexCounter;
+        int _indexCounter;
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {

@@ -22,12 +22,12 @@ namespace Dev2.Runtime.Hosting
     {
         readonly IDictionary<Guid, IList<ICompileMessageTO>> _messageRepo = new Dictionary<Guid, IList<ICompileMessageTO>>();
         static Subject<IList<ICompileMessageTO>> _allMessages = new Subject<IList<ICompileMessageTO>>();
-        private static readonly object Lock = new object();
-        private static readonly Timer PersistTimer = new Timer(1000 * 5);
-        
+        static readonly object Lock = new object();
+        static readonly Timer PersistTimer = new Timer(1000 * 5);
+
         public string PersistencePath { get; private set; }
 
-        private static CompileMessageRepo _instance;
+        static CompileMessageRepo _instance;
         public static CompileMessageRepo Instance => _instance ?? (_instance = new CompileMessageRepo());
 
         public CompileMessageRepo()

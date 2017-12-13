@@ -19,9 +19,6 @@ namespace Dev2.Activities.Designers2.Script_Javascript
             InitializeComponent();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return null;
-        }
+        protected override IInputElement GetInitialFocusElement() => null;
     }
 }

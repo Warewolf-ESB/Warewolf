@@ -63,8 +63,7 @@ using Dev2.Activities;
 using Microsoft.VisualBasic.ApplicationServices;
 using Dev2.Studio.Core.Interfaces;
 using Dev2.Studio.Core;
-using Dev2.Factory;
-using Dev2.Studio.Interfaces;
+using Dev2.Factory;            
 
 namespace Dev2.Studio
 
@@ -97,13 +96,13 @@ namespace Dev2.Studio
 
             try
             {
-                AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
+                AppUsageStats.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
                 InitializeComponent();
             }
             catch (Exception e)
             {
                 Dev2Logger.Error(e.Message, e, "Warewolf Error");
-                AppSettings.LocalHost = "http://localhost:3142";
+                AppUsageStats.LocalHost = "http://localhost:3142";
             }
         }
 
@@ -146,10 +145,10 @@ namespace Dev2.Studio
 #endif
         }
 
-        private static ISplashView _splashView;
+        static ISplashView _splashView;
 
-        private ManualResetEvent _resetSplashCreated;
-        private Thread _splashThread;
+        ManualResetEvent _resetSplashCreated;
+        Thread _splashThread;
         private readonly IMergeFactory mergeFactory;
         protected void InitializeShell(System.Windows.StartupEventArgs e)
         {
@@ -251,7 +250,7 @@ namespace Dev2.Studio
             workflowDesigner = null;
         }
 
-        private async void CheckForDuplicateResources()
+        async void CheckForDuplicateResources()
         {
             var server = ServerRepository.Instance.Source;
             var loadExplorerDuplicates = await server.LoadExplorerDuplicates();
@@ -263,7 +262,7 @@ namespace Dev2.Studio
             }
         }
 
-        private void ShowSplash()
+        void ShowSplash()
         {
             // Create the window 
             var repository = ServerRepository.Instance;
@@ -301,7 +300,6 @@ namespace Dev2.Studio
             // Show it 
             SplashView.Show(false);
 
-            // Now that the window is created, allow the rest of the startup to run 
             _resetSplashCreated?.Set();
             splashViewModel.ShowServerVersion();
             Dispatcher.Run();
@@ -371,7 +369,7 @@ namespace Dev2.Studio
 
         public static ISplashView SplashView { get => _splashView; set => _splashView = value; }
 
-        private void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
+        void OnApplicationDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
             Tracker.TrackException(GetType().Name, "OnApplicationDispatcherUnhandledException", e.Exception);
             if (_appExceptionHandler != null)

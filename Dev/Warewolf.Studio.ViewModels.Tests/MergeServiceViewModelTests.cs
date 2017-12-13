@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure.Events;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.ConnectionHelpers;
+using Warewolf.Studio.ViewModels;
 using Dev2.Core.Tests.Environments;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

@@ -170,7 +170,6 @@ namespace Dev2
                 { typeof(DsfDropBoxDownloadActivity), typeof(DropBoxDownloadViewModel) },
                  { typeof(DsfDropBoxDeleteActivity), typeof(DropBoxDeleteViewModel) },
                  { typeof(DsfDropboxFileListActivity), typeof(DropBoxFileListDesignerViewModel) },
-                { typeof(DsfWebserviceActivity), typeof(ServiceDesignerViewModel) },
                 { typeof(DsfPluginActivity), typeof(ServiceDesignerViewModel) },
                 { typeof(DsfCreateJsonActivity), typeof(CreateJsonDesignerViewModel) },
                 { typeof(SharepointReadListActivity), typeof(SharepointListReadDesignerViewModel) },

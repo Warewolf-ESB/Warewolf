@@ -1760,42 +1760,6 @@
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
-                                <!-- NOTES BUTTON -->
-                                <!--<fa:ImageAwesome Foreground="{StaticResource SearchBoxButtonForegroundEmpty }" 
-                                                 x:Name="AddNoteDisabled" 
-                                                 Visibility="Visible" 
-                                                 Icon="FileText" 
-                                                 Grid.Column="2"
-                                                 Width="14" 
-                                                 Height="14" 
-                                                 Margin="0,0,3,0"
-                                                 VerticalAlignment="Center"/>
-                                <Button Command="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=AddNoteCommand}"
-                                        CommandParameter="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}"
-                                        x:Name="AddNoteButton"
-                                        Grid.Column="2"
-                                        Margin="0,-1,0,0"
-                                        VerticalAlignment="Center"
-                                        Visibility="Hidden">
-                                    <Button.Template>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="*"/>
-                                                </Grid.RowDefinitions>
-                                                <fa:ImageAwesome x:Name="AddNote" Visibility="Visible" Icon="FileText" Width="14" Height="14" HorizontalAlignment="Left"/>
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="False">
-                                                    <Setter TargetName="AddNote" Property="Foreground" Value="{StaticResource SearchBoxButtonForeground}"/>
-                                                </Trigger>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter  TargetName="AddNote" Property="Foreground" Value="{StaticResource ClearSearchButtonHoverBorderBrush}"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Button.Template>
-                                </Button>-->
                             </Grid>
                         </Border>
                     </Grid>
@@ -1804,10 +1768,6 @@
                             <Setter Property="Background" Value="{StaticResource TextBoxBackgroundBrush}"/>
                             <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}"/>
                         </Trigger>
-                        <!--<Trigger Property="AllowNotes" Value="False">
-                            <Setter Property="Visibility" TargetName="AddNoteDisabled" Value="Hidden" />
-                            <Setter Property="Visibility" TargetName="AddNoteButton" Value="Visible" />
-                        </Trigger>-->
                         <Trigger Property="IsUsed" Value="False">
                             <Setter Property="Visibility" TargetName="DeleteDisabled" Value="Hidden" />
                             <Setter Property="Visibility" TargetName="DeleteButton" Value="Visible" />
@@ -1828,14 +1788,6 @@
                         <Trigger Property="IsFocused" Value="False">
                             <Setter Property="BorderBrush" TargetName="PART_DeleteIconBorder" Value="{StaticResource TextBoxBorderBrush}"/>
                         </Trigger>
-                        <!--<MultiTrigger>
-                            <MultiTrigger.Conditions>
-                                <Condition Property="IsFocused" Value="True"/>
-                                <Condition Property="AllowNotes" Value="True"/>
-                            </MultiTrigger.Conditions>
-                            <Setter Property="Visibility" TargetName="AddNoteDisabled" Value="Visible" />
-                            <Setter Property="Visibility" TargetName="AddNoteButton" Value="Hidden" />
-                        </MultiTrigger>-->
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsFocused" Value="True"/>

@@ -147,12 +147,12 @@ namespace Dev2.Activities.PathOperations
                     MoveRemainingIterators();
                     continue;
                 }
-                IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
-                IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+                var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(src);
+                var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
                 try
                 {
-                    IActivityOperationsBroker broker = GetOperationBroker();
+                    var broker = GetOperationBroker();
                     var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
 

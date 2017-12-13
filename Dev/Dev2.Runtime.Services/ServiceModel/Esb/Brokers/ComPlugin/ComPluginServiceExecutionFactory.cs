@@ -21,9 +21,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin
     {
         #region Private Methods
 
-        private static ComPluginRuntimeHandler CreateInvokeAppDomain()
+        static ComPluginRuntimeHandler CreateInvokeAppDomain()
         {
-            ComPluginRuntimeHandler isolated = new ComPluginRuntimeHandler();
+            var isolated = new ComPluginRuntimeHandler();
             return isolated;
         }
 

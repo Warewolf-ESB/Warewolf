@@ -21,9 +21,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     public class XPathDTO : ValidatedObject, IDev2TOFn, IEquatable<XPathDTO>
     {
-        private string _outputVariable;
-        private string _xPath;
-        private int _indexNum;
+        string _outputVariable;
+        string _xPath;
+        int _indexNum;
         bool _isOutputVariableFocused;
         bool _isXpathVariableFocused;
 
@@ -145,9 +145,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             switch(propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1");
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1",new VariableUtils());
                     ruleSet.Add(outputExprRule);
-                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
+                    ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
 
                     if(!string.IsNullOrEmpty(XPath))
                     {

@@ -78,16 +78,16 @@ namespace System.Activities.Core.Presentation
             base.OnDrop(e);
         }
 
-        private void CheckAnimate(DragEventArgs e, string storyboardResourceName)
+        void CheckAnimate(DragEventArgs e, string storyboardResourceName)
         {
-            if(e.Handled)
+            if (e.Handled)
             {
                 return;
             }
 
             if (Context != null && !Context.Items.GetValue<ReadOnlyState>().IsReadOnly)
             {
-                if(DragDropHelper.AllowDrop(e.Data, Context, AllowedItemType))
+                if (DragDropHelper.AllowDrop(e.Data, Context, AllowedItemType))
                 {
                     BeginStoryboard((Storyboard)Resources[storyboardResourceName]);
                     return;

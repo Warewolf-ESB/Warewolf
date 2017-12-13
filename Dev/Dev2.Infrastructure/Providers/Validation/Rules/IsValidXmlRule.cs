@@ -28,7 +28,7 @@ namespace Dev2.Providers.Validation.Rules
             var value = GetValue();
             bool isValid;
 
-            XmlDocument doc = new XmlDocument();
+            var doc = new XmlDocument();
             try
             {
                 doc.LoadXml(value);

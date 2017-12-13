@@ -55,16 +55,16 @@ namespace Dev2.Tests.Activities.FindMissingStrategyTest
         {
             var expectedOnError = new List<string> { "[[ErrorVar]]", "http://ServerName:77/Services/LogErrors?Error=[[ErrorMsg]]" };
 
-            DsfActivity activity = new DsfActivity();
+            var activity = new DsfActivity();
             activity.InputMapping = @"<Inputs><Input Name=""reg"" Source=""NUD2347"" DefaultValue=""NUD2347""><Validator Type=""Required"" /></Input><Input Name=""asdfsad"" Source=""registration223"" DefaultValue=""w3rt24324""><Validator Type=""Required"" /></Input><Input Name=""number"" Source=""[[number]]"" /></Inputs>";
             activity.OutputMapping = @"<Outputs><Output Name=""vehicleVin"" MapsTo=""VIN"" Value="""" /><Output Name=""vehicleColor"" MapsTo=""VehicleColor"" Value="""" /><Output Name=""speed"" MapsTo=""speed"" Value="""" Recordset=""Fines"" /><Output Name=""date"" MapsTo=""date"" Value=""Fines.Date"" Recordset=""Fines"" /><Output Name=""location"" MapsTo=""location"" Value="""" Recordset=""Fines"" /></Outputs>";
             activity.OnErrorVariable = expectedOnError[0];
             activity.OnErrorWorkflow = expectedOnError[1];
 
-            Dev2FindMissingStrategyFactory fac = new Dev2FindMissingStrategyFactory();
-            IFindMissingStrategy strategy = fac.CreateFindMissingStrategy(enFindMissingType.DsfActivity);
-            List<string> actual = strategy.GetActivityFields(activity);
-            List<string> expected = new List<string> { "NUD2347", "registration223", "[[number]]", "Fines.Date", expectedOnError[0], expectedOnError[1] };
+            var fac = new Dev2FindMissingStrategyFactory();
+            var strategy = fac.CreateFindMissingStrategy(enFindMissingType.DsfActivity);
+            var actual = strategy.GetActivityFields(activity);
+            var expected = new List<string> { "NUD2347", "registration223", "[[number]]", "Fines.Date", expectedOnError[0], expectedOnError[1] };
             CollectionAssert.AreEqual(expected, actual);
         }
     }

@@ -18,7 +18,7 @@ namespace Dev2.Common
 {
     public class Dev2TokenizerBuilder
     {
-        private readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
+        readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
         public string ToTokenize { get; set; }
 
         public bool ReverseOrder { get; set; }

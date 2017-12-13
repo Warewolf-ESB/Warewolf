@@ -13,7 +13,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Delete
     [TestClass]
     public class DropBoxDeleteTests
     {
-        private Mock<IDropBoxDelete> CreateDropboxDeleteMock()
+        Mock<IDropBoxDelete> CreateDropboxDeleteMock()
         {
             var mock = new Mock<IDropBoxDelete>();
             var fileMetadata = new DropboxDeleteSuccessResult(new FileMetadata());

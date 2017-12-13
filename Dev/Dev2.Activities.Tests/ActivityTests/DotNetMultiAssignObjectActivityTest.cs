@@ -384,7 +384,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         }
 
-        private void SetupArguments(string currentDL, string testData, ObservableCollection<AssignObjectDTO> fieldCollection, string outputMapping = null)
+        void SetupArguments(string currentDL, string testData, ObservableCollection<AssignObjectDTO> fieldCollection, string outputMapping = null)
         {
             if (outputMapping == null)
             {

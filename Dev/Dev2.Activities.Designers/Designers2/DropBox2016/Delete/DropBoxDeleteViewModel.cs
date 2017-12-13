@@ -23,12 +23,12 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
 {
     public class DropBoxDeleteViewModel : FileActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private ObservableCollection<DropBoxSource> _sources;
-        private readonly IDropboxSourceManager _sourceManager;
-        private string _deletePath;
-        private string _result;
+        ObservableCollection<DropBoxSource> _sources;
+        readonly IDropboxSourceManager _sourceManager;
+        string _deletePath;
+        string _result;
 
-    
+
         public DropBoxDeleteViewModel(ModelItem modelItem)
            : this(modelItem, new DropboxSourceManager())
         {
@@ -125,7 +125,7 @@ namespace Dev2.Activities.Designers2.DropBox2016.Delete
             }
         }
 
-        private void EditDropBoxSource()
+        void EditDropBoxSource()
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;

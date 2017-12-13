@@ -24,18 +24,18 @@ namespace Dev2.Common.Utils
         
         public static string TransformAllMatches(string initial, List<StringTransform> transforms)
         {
-            StringBuilder result = new StringBuilder(initial);
+            var result = new StringBuilder(initial);
             foreach (StringTransform transform in transforms)
             {
-                Regex regex = transform.SearchRegex;
-                int[] groupNumbers = transform.GroupNumbers;
-                MatchCollection matches = regex.Matches(initial);
+                var regex = transform.SearchRegex;
+                var groupNumbers = transform.GroupNumbers;
+                var matches = regex.Matches(initial);
                 if (matches.Count == 0)
                 {
                     continue;
                 }
 
-                StringBuilder encrypted = new StringBuilder();
+                var encrypted = new StringBuilder();
                 foreach (Match match in matches)
                 {
                     result.Remove(match.Index, match.Length);
@@ -43,7 +43,7 @@ namespace Dev2.Common.Utils
                     encrypted.Append(match.Value);
                     foreach (int groupNumber in groupNumbers)
                     {
-                        Group group = match.Groups[groupNumber];
+                        var group = match.Groups[groupNumber];
                         int indexInMatch = group.Index - match.Index;
                         encrypted.Remove(indexInMatch, group.Length);
                         encrypted.Insert(indexInMatch, transform.TransformFunction(group.Value));

@@ -16,7 +16,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteTest : IEsbManagementEndpoint
     {
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
 
                 TestCatalog.DeleteTest(resourceId,testName.ToString());
-                CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = false };
+                var message = new CompressedExecuteMessage { HasError = false };
                 return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
@@ -85,8 +85,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService { Name = HandlesType() };
+            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;
