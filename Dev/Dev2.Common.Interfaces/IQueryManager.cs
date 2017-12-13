@@ -44,12 +44,10 @@ namespace Dev2.Common.Interfaces
         IList<IFileListing> FetchFiles();
         IList<IFileListing> FetchFiles(IFileListing file);
         IList<Guid> FetchDependenciesOnList(IEnumerable<Guid> values);
-        List<IWindowsGroupPermission> FetchPermissions();
 
         IEnumerable<IRabbitMQServiceSourceDefinition> FetchRabbitMQServiceSources();
         IList<IWcfServerSource> FetchWcfSources();
         IList<IWcfAction> WcfActions(IWcfServerSource source);
-        Task<List<IFileResource>> FetchResourceFileTree();
 
         Task<List<string>> LoadDuplicates();
     }

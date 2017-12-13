@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dsfObject.Setup(o => o.Environment).Returns(env.Object);
 
             //---------------Execute Test ----------------------
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             var executionEnvironment = manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dsfObject.Object, "", 0, true, errors);
             //---------------Test Result -----------------------
             dsfObject.Verify(o => o.PopEnvironment(), Times.Once);
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dsfObject.Setup(o => o.Environment).Returns(env.Object);
             dsfObject.Setup(o => o.Environment).Returns(env.Object);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             var executionEnvironment = manager.UpdatePreviousEnvironmentWithSubExecutionResultUsingOutputMappings(dsfObject.Object, "", 0, false, errors);
             //---------------Test Result -----------------------
             dsfObject.Verify(o => o.PopEnvironment(), Times.Once);

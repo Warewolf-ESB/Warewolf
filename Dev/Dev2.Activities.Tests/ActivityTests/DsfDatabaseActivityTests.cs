@@ -57,8 +57,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         {
             
-            ErrorResultTO errors = new ErrorResultTO();
-            
+            var errors = new ErrorResultTO();
+
 
             var dataObj = new Mock<IDSFDataObject>();
 

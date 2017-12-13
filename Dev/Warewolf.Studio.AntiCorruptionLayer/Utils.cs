@@ -15,7 +15,7 @@ namespace Warewolf.Studio.AntiCorruptionLayer
             return versionResource.FileVersion;
         }
 
-        private static FileVersionInfo GetFileVersionInfo()
+        static FileVersionInfo GetFileVersionInfo()
         {
             var asm = Assembly.GetExecutingAssembly();
             var fileName = asm.Location;

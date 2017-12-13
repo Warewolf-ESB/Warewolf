@@ -142,13 +142,13 @@ namespace Dev2.Activities.Designers2.Core
 
         static Image CreateImage(string sourceUri)
         {
-            Image image = new Image
+            var image = new Image
             {
                 Height = 14,
                 Width = 14
             };
 
-            if(Application.Current != null)
+            if (Application.Current != null)
             {
                 Brush brush = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
 

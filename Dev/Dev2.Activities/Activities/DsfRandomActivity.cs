@@ -90,7 +90,7 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -98,8 +98,8 @@ namespace Dev2.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
 
             var env = dataObject.Environment;
@@ -114,15 +114,15 @@ namespace Dev2.Activities
                         AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType, update);
                     }
 
-                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
+                    var lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
                     var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
                     var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
-                    WarewolfListIterator colItr = new WarewolfListIterator();
+                    var colItr = new WarewolfListIterator();
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
                     colItr.AddVariableToIterateOn(toItr);
 
-                    Dev2Random dev2Random = new Dev2Random();
+                    var dev2Random = new Dev2Random();
                     var counter = 1;
                     while (colItr.HasMoreData())
                     {
@@ -130,9 +130,9 @@ namespace Dev2.Activities
                         double fromNum = -1.0;
                         double toNum = -1.0;
 
-                        string fromValue = colItr.FetchNextValue(fromItr);
-                        string toValue = colItr.FetchNextValue(toItr);
-                        string lengthValue = colItr.FetchNextValue(lengthItr);
+                        var fromValue = colItr.FetchNextValue(fromItr);
+                        var toValue = colItr.FetchNextValue(toItr);
+                        var lengthValue = colItr.FetchNextValue(lengthItr);
 
                         if (RandomType != enRandomType.Guid)
                         {
@@ -174,7 +174,7 @@ namespace Dev2.Activities
                                 #endregion
                             }
                         }
-                        string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
+                        var value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
 
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
@@ -260,7 +260,7 @@ namespace Dev2.Activities
 
         #region Private Methods
 
-        private double GetFromValue(string fromValue, out ErrorResultTO errors)
+        double GetFromValue(string fromValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             if (string.IsNullOrEmpty(fromValue))
@@ -276,7 +276,7 @@ namespace Dev2.Activities
             return fromNum;
         }
 
-        private double GetToValue(string toValue, out ErrorResultTO errors)
+        double GetToValue(string toValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             if (string.IsNullOrEmpty(toValue))
@@ -292,7 +292,7 @@ namespace Dev2.Activities
             return toNum;
         }
 
-        private int GetLengthValue(string lengthValue, out ErrorResultTO errors)
+        int GetLengthValue(string lengthValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             if (string.IsNullOrEmpty(lengthValue))
@@ -316,7 +316,7 @@ namespace Dev2.Activities
             return lengthNum;
         }
 
-        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType, int update)
+        void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType, int update)
         {
             AddDebugInputItem(new DebugItemStaticDataParams(randomType.GetDescription(), "Random"));
 

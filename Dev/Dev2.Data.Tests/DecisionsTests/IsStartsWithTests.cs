@@ -15,7 +15,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var startsWith = new IsStartsWith();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "Test";
             //------------Execute Test---------------------------
@@ -30,7 +30,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var startsWith = new IsStartsWith();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "No";
             //------------Execute Test---------------------------

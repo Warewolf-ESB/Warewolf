@@ -33,7 +33,7 @@ namespace Dev2.Runtime.Hosting
             var version = GetVersionFromXML(sourceVersion);
             return version.CompareTo(UpgradesFrom) < 0 || version.CompareTo(new Version()) ==0 && UpgradesFrom.CompareTo(version)==0 ;
         }
-        private Version GetVersionFromXML(XElement resource)
+        Version GetVersionFromXML(XElement resource)
         {
             if (resource.Attribute("ServerVersion") == null)
             {

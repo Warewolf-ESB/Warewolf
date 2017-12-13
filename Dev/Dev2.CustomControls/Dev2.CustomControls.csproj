@@ -101,24 +101,20 @@
     <Compile Include="Converters\EmptyStringToBoolConverter.cs" />
     <Compile Include="Converters\EmptyStringToVisibilityConverter.cs" />
     <Compile Include="Converters\MathFunction.cs" />
-    <Compile Include="Behavior\ControlEnterToTabBehavior.cs" />
     <Compile Include="CircularProgressBar.xaml.cs">
       <DependentUpon>CircularProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="Behavior\ActualSizeBindingBehavior.cs" />
-    <Compile Include="Converters\DoubleToMarginLeftConverter.cs" />
     <Compile Include="Converters\FilterStringToBoolConvert.cs" />
     <Compile Include="Converters\IsValidDateTimeConverter.cs" />
     <Compile Include="Converters\MultipleBoolToEnabledConverter.cs" />
     <Compile Include="Converters\RowToIndexConverter.cs" />
     <Compile Include="Converters\StringToTimespanConverter.cs" />
-    <Compile Include="FilterTextBox.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Trigger\DelayTextChangedEventTrigger.cs" />
     <Compile Include="Utils\WatermarkSential.cs" />
     <Compile Include="WatermarkAdorner.cs" />
     <Compile Include="WatermarkTextBox.cs" />

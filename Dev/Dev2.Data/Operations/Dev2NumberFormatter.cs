@@ -25,7 +25,7 @@ namespace Dev2.Data.Operations
 
         
         const string _decimalSeperator = ".";
-        private static readonly IFunctionEvaluator _functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
+        static readonly IFunctionEvaluator _functionEvaluator = MathOpsFactory.CreateFunctionEvaluator();
 
 
         #endregion Class Members
@@ -38,7 +38,7 @@ namespace Dev2.Data.Operations
         /// <param name="formatNumberTO">The information on how to format the number.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentNullException">formatNumberTO</exception>
-        
+
         public string Format(IFormatNumberTO formatNumberTO)
 
         {
@@ -57,7 +57,7 @@ namespace Dev2.Data.Operations
                 throw new InvalidOperationException(string.Format(ErrorResource.RoundingDecimalPlaceBetween, "-14", "14"));
             }
 
-            string result = Round(formatNumberTO);
+            var result = Round(formatNumberTO);
             result = AdjustDecimalPlaces(result, formatNumberTO.AdjustDecimalPlaces, formatNumberTO.DecimalPlacesToShow);
             return result;
         }
@@ -66,22 +66,22 @@ namespace Dev2.Data.Operations
 
         #region Private Methods
 
-        
-        private string BuildRoundingExpression(IFormatNumberTO formatNumberTO)
+
+        string BuildRoundingExpression(IFormatNumberTO formatNumberTO)
 
         {
             string expression;
 
-            enRoundingType roundingType = formatNumberTO.GetRoundingTypeEnum();
-            if(roundingType == enRoundingType.Normal)
+            var roundingType = formatNumberTO.GetRoundingTypeEnum();
+            if (roundingType == enRoundingType.Normal)
             {
                 expression = "round({0}, {1})";
             }
-            else if(roundingType == enRoundingType.Up)
+            else if (roundingType == enRoundingType.Up)
             {
                 expression = "roundup({0}, {1})";
             }
-            else if(roundingType == enRoundingType.Down)
+            else if (roundingType == enRoundingType.Down)
             {
                 expression = "rounddown({0}, {1})";
             }
@@ -95,8 +95,8 @@ namespace Dev2.Data.Operations
             return expression;
         }
 
-        
-        private string Round(IFormatNumberTO formatNumberTO)
+
+        string Round(IFormatNumberTO formatNumberTO)
 
         {
             _functionEvaluator.TryEvaluateFunction(BuildRoundingExpression(formatNumberTO), out string result, out string error);
@@ -109,7 +109,7 @@ namespace Dev2.Data.Operations
             return result;
         }
 
-        private decimal Parse(string numberString)
+        decimal Parse(string numberString)
         {
             if (!numberString.IsNumeric(out decimal number))
             {
@@ -125,24 +125,24 @@ namespace Dev2.Data.Operations
         /// <param name="numberString">The string containing the number to adjust.</param>
         /// <param name="adjustDecimalPlaces">if set to <c>true</c> decimal places are adjusted.</param>
         /// <param name="decimalPlacesToShow">The decimal places to show.</param>
-        private string AdjustDecimalPlaces(string numberString, bool adjustDecimalPlaces, int decimalPlacesToShow)
+        string AdjustDecimalPlaces(string numberString, bool adjustDecimalPlaces, int decimalPlacesToShow)
         {
-            decimal number = Parse(numberString);
+            var number = Parse(numberString);
 
-            if(!adjustDecimalPlaces)
+            if (!adjustDecimalPlaces)
             {
                 return FormatNumber(number, false, decimalPlacesToShow);
             }
 
-            decimal modifier = (decimal)Math.Pow(10, Math.Abs(decimalPlacesToShow));
-            decimal integral = Math.Truncate(number);
+            var modifier = (decimal)Math.Pow(10, Math.Abs(decimalPlacesToShow));
+            var integral = Math.Truncate(number);
             decimal adjustedNumber;
 
-            if(decimalPlacesToShow >= 0)
+            if (decimalPlacesToShow >= 0)
             {
-                decimal decimals = number - integral;
+                var decimals = number - integral;
 
-                decimal newDecimals = Math.Truncate(decimals * modifier) / modifier;
+                var newDecimals = Math.Truncate(decimals * modifier) / modifier;
                 adjustedNumber = integral + newDecimals;
             }
             else
@@ -159,13 +159,13 @@ namespace Dev2.Data.Operations
         /// <param name="number">The number.</param>
         /// <param name="adjustDecimalPlaces">if set to <c>true</c> decimal places as adjusted].</param>
         /// <param name="decimalPlacesToShow">The number decimal places to show.</param>
-        private string FormatNumber(decimal number, bool adjustDecimalPlaces, int decimalPlacesToShow)
+        string FormatNumber(decimal number, bool adjustDecimalPlaces, int decimalPlacesToShow)
         {
-            string format = "0";
+            var format = "0";
 
-            if(adjustDecimalPlaces)
+            if (adjustDecimalPlaces)
             {
-                if(decimalPlacesToShow > 0)
+                if (decimalPlacesToShow > 0)
                 {
                     //
                     // Output a specific number of decimal places in thenumber
@@ -175,7 +175,7 @@ namespace Dev2.Data.Operations
                 else
                 {
                     decimalPlacesToShow *= -1;
-                    string multiplier = "1";
+                    var multiplier = "1";
                     multiplier = multiplier.PadRight(decimalPlacesToShow + 1, char.Parse("0"));
                     var numbers = number.ToString(CultureInfo.InvariantCulture).Split('.');
                     return (Math.Truncate(decimal.Parse(numbers[0]) * int.Parse(multiplier)) / int.Parse(multiplier)).ToString(CultureInfo.InvariantCulture);

@@ -65,11 +65,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
         }
-    
-        private Mock<IConnectControlViewModel> _sourceConnectControl;
-        private Mock<IConnectControlViewModel> _destConnectControl;
-        private Mock<IDeployDestinationExplorerViewModel> _deployDestinationExplorerViewModel;
-        private Mock<IDeploySourceExplorerViewModel> _deploySourceExplorerViewModel;
+
+        Mock<IConnectControlViewModel> _sourceConnectControl;
+        Mock<IConnectControlViewModel> _destConnectControl;
+        Mock<IDeployDestinationExplorerViewModel> _deployDestinationExplorerViewModel;
+        Mock<IDeploySourceExplorerViewModel> _deploySourceExplorerViewModel;
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
@@ -96,7 +96,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             CustomContainer.Register(shell.Object);
-            Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
+            var tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
 
@@ -124,7 +124,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             shell.Setup(model => model.ExplorerViewModel).Returns(new Mock<IExplorerViewModel>().Object);
             shell.Setup(model => model.ExplorerViewModel.ConnectControlViewModel).Returns(new Mock<IConnectControlViewModel>().Object);
             CustomContainer.Register<IShellViewModel>(shell.Object);
-            Task<IExplorerItem> tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
+            var tsk = new Task<IExplorerItem>(() => new ServerExplorerItem());
             server.Setup(a => a.LoadExplorer(false)).Returns(tsk);
             shell.Setup(a => a.LocalhostServer).Returns(server.Object);
 
@@ -321,7 +321,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(sourceExplorerItem.First().CanDeploy);
         }
 
-        private static AsyncObservableCollection<IExplorerItemViewModel> SetDestinationExplorerItemViewModels(Guid resourceId, Mock<IServer> otherServer, Mock<IShellViewModel> shellViewModel, Mock<IServer> localhost)
+        static AsyncObservableCollection<IExplorerItemViewModel> SetDestinationExplorerItemViewModels(Guid resourceId, Mock<IServer> otherServer, Mock<IShellViewModel> shellViewModel, Mock<IServer> localhost)
         {
             var destExplorerItemMock = new Mock<IExplorerTreeItem>();
             var destItemViewModel = new ExplorerItemViewModel(otherServer.Object, destExplorerItemMock.Object, null, shellViewModel.Object, null);
@@ -334,7 +334,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Setup
 
-        private void SetupDeployViewModelMock()
+        void SetupDeployViewModelMock()
         {
             _sourceConnectControl = new Mock<IConnectControlViewModel>();
             _destConnectControl = new Mock<IConnectControlViewModel>();

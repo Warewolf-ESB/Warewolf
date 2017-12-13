@@ -21,9 +21,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
     {
         #region Class Members
 
-        private const string _nodeSeperatorSymbol = ".";
-        private const string _attributeSeperatorSymbol = ":";
-        private const string _enumerableSymbol = "()";
+        const string _nodeSeperatorSymbol = ".";
+        const string _attributeSeperatorSymbol = ":";
+        const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
@@ -63,7 +63,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
             foreach (string segment in ActualPath.Split(NodeSeperatorSymbol.ToCharArray()))
             {
-                string[] nestedSegments = segment.Split(AttributeSeperatorSymbol.ToCharArray());
+                var nestedSegments = segment.Split(AttributeSeperatorSymbol.ToCharArray());
 
                 if (nestedSegments.Length >= 1)
                 {

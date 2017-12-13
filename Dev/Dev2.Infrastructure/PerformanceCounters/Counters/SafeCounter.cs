@@ -8,7 +8,7 @@ namespace Dev2.PerformanceCounters.Counters
 {
     public class SafeCounter:IPerformanceCounter
     {
-        private readonly IPerformanceCounter _counter;
+        readonly IPerformanceCounter _counter;
 
         #region Implementation of IPerformanceCounter
 

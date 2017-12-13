@@ -263,7 +263,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployConflict(int conflictCount)
         {
-            string correctDesc = String.Empty;
+            var correctDesc = String.Empty;
             Buttons = MessageBoxButton.OKCancel;
             Header = "Deploy Conflicts";
             if (conflictCount == 1)

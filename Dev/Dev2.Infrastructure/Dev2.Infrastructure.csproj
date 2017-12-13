@@ -111,11 +111,10 @@
     <Compile Include="Communication\PermissionsModifiedMemo.cs" />
     <Compile Include="Communication\Receipt.cs" />
     <Compile Include="Communication\ResultsCache.cs" />
+    <Compile Include="IVariableUtils.cs" />
     <Compile Include="ObservableObject.cs" />
     <Compile Include="Communication\Envelope.cs" />
     <Compile Include="Communication\Dev2JsonSerializer.cs" />
-    <Compile Include="Impersonator.cs" />
-    <Compile Include="Collections\ConcurrentDictionarySafe.cs" />
     <Compile Include="ObservablePair.cs" />
     <Compile Include="Collections\ObservableReadOnlyList.cs" />
     <Compile Include="PerformanceCounters\Counters\SafeCounter.cs" />
@@ -141,6 +140,7 @@
     <Compile Include="Providers\Validation\Rules\ComposableRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoDuplicateEntriesRule.cs" />
     <Compile Include="Providers\Validation\Rules\HasNoIndexsInRecordsetsRule.cs" />
+    <Compile Include="Providers\Validation\Rules\IsValidExpressionRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXmlRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsValidXpathRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsRequiredWhenOtherIsNotEmptyRule.cs" />
@@ -156,7 +156,6 @@
     <Compile Include="Providers\Validation\Rules\IsStringEmptyRule.cs" />
     <Compile Include="Providers\Validation\Rules\IsNullRule.cs" />
     <Compile Include="Providers\Validation\Rules\ScalarsNotAllowedRule.cs" />
-    <Compile Include="ResourceDefinationCleaner.cs" />
     <Compile Include="ServerCompileMessageType.cs" />
     <Compile Include="Services\DesignValidationService.cs" />
     <Compile Include="Services\IDesignValidationService.cs" />
@@ -167,6 +166,7 @@
     <Compile Include="Services\ISubscriptionService.cs" />
     <Compile Include="Communication\DesignValidationMemo.cs" />
     <Compile Include="DisposableObject.cs" />
+    <Compile Include="Services\ResourceDefinationCleaner.cs" />
     <Compile Include="Services\Security\AuthorizationHelpers.cs" />
     <Compile Include="Services\Security\AuthorizationServiceBase.cs" />
     <Compile Include="Services\Security\IAuthorizationRequest.cs" />
@@ -183,7 +183,6 @@
     <Compile Include="Services\Security\WebServerRequestType.cs" />
     <Compile Include="Services\Security\WindowsGroupPermission.cs" />
     <Compile Include="Services\Security\WindowsGroupPermissionComparer.cs" />
-    <Compile Include="Services\Security\WindowsGroupPermissionEqualityComparer.cs" />
     <Compile Include="Services\SubscriptionService.cs" />
     <Compile Include="Shared Models\CompileMessageList.cs" />
     <Compile Include="Shared Models\CompileMessageTO.cs" />
@@ -217,6 +216,10 @@
     <ProjectReference Include="..\Dev2.Common\Dev2.Common.csproj">
       <Project>{84405fdf-0ff8-49a2-8925-8a4aeba8104a}</Project>
       <Name>Dev2.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Dev2.Data.Interfaces\Dev2.Data.Interfaces.csproj">
+      <Project>{D7189600-3C18-4D35-97A4-8095DE1A4504}</Project>
+      <Name>Dev2.Data.Interfaces</Name>
     </ProjectReference>
     <ProjectReference Include="..\Dev2.Diagnostics\Dev2.Diagnostics.csproj">
       <Project>{a7d9da27-f023-4588-aa64-ac2de44c0b82}</Project>

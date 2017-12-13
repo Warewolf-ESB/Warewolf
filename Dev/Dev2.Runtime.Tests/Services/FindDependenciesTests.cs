@@ -132,7 +132,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             var execMsg = ConvertToMsg(msg);
             Assert.IsNotNull(execMsg);
-            XElement xe = execMsg.Message.ToXElement();
+            var xe = execMsg.Message.ToXElement();
             Assert.IsNotNull(xe);
             var graphElement = xe.AncestorsAndSelf("graph").FirstOrDefault();
             Assert.IsNotNull(graphElement);
@@ -195,7 +195,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             var execMsg = ConvertToMsg(msg);
             Assert.IsNotNull(execMsg);
-            XElement xe = execMsg.Message.ToXElement();
+            var xe = execMsg.Message.ToXElement();
             Assert.IsNotNull(xe);
             var graphElement = xe.AncestorsAndSelf("graph").FirstOrDefault();
             Assert.IsNotNull(graphElement);
@@ -250,7 +250,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             var execMsg = ConvertToMsg(msg);
             Assert.IsNotNull(execMsg);
-            XElement xe = execMsg.Message.ToXElement();
+            var xe = execMsg.Message.ToXElement();
             Assert.IsNotNull(xe);
             var graphElement = xe.AncestorsAndSelf("graph").FirstOrDefault();
             Assert.IsNotNull(graphElement);

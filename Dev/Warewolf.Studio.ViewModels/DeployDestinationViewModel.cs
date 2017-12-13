@@ -1,31 +1,31 @@
 using System;
 using System.Linq;
-using System.Threading.Tasks;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
+using System.Threading.Tasks;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class DeployDestinationViewModel : ExplorerViewModel, IDeployDestinationExplorerViewModel
     {
         bool _isLoading;
-        private bool _deployTests;
-        private Version _serverVersion;
+        bool _deployTests;
+        Version _serverVersion;
         public IDeployStatsViewerViewModel StatsArea { private get; set; }
 
         public DeployDestinationViewModel(IShellViewModel shellViewModel, IEventAggregator aggregator)
             : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(sender, server).ConfigureAwait(true); };
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(true); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
             ValidateEnvironments(shellViewModel);
         }
 
-        private void ValidateEnvironments(IShellViewModel shellViewModel)
+        void ValidateEnvironments(IShellViewModel shellViewModel)
         {
             foreach (var env in shellViewModel?.ExplorerViewModel?.Environments)
             {
@@ -37,7 +37,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void ServerDisconnected(object sender, IServer server)
+        void ServerDisconnected(object sender, IServer server)
         {
             if (SelectedEnvironment != null)
             {
@@ -45,9 +45,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
+        async Task<IEnvironmentViewModel> ServerConnectedAsync(object sender, IServer server)
         {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true).ConfigureAwait(true);
+            var environmentViewModel = await CreateEnvironmentViewModelAsync(sender, server.EnvironmentID, true).ConfigureAwait(true);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
@@ -61,10 +61,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -92,10 +89,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool DeployTests
         {
-            get
-            {
-                return _deployTests;
-            }
+            get => _deployTests;
             set
             {
                 _deployTests = value;

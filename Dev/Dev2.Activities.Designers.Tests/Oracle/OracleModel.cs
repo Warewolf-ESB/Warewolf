@@ -15,10 +15,10 @@ namespace Dev2.Activities.Designers.Tests.Oracle
     public class OracleModel : IDbServiceModel
     {
 #pragma warning disable 649
-        private IStudioUpdateManager _updateRepository;
+        IStudioUpdateManager _updateRepository;
 #pragma warning restore 649
 #pragma warning disable 169
-        private IQueryManager _queryProxy;
+        IQueryManager _queryProxy;
 #pragma warning restore 169
 
         public ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers.Tests.Oracle
             {
                 return null;
             }
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("a");
             dt.Columns.Add("b");
             dt.Columns.Add("c");

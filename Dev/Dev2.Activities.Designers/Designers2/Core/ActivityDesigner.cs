@@ -59,18 +59,18 @@ namespace Dev2.Activities.Designers2.Core
             PreviewKeyDown += OnPreviewKeyDown;
         }
 
-        private void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
+        void OnPreviewKeyDown(object sender, KeyEventArgs keyEventArgs)
         {
             if (keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control)
             {
-                if (keyEventArgs.OriginalSource.GetType() != typeof (TextBox))
+                if (keyEventArgs.OriginalSource.GetType() != typeof(TextBox))
                 {
                     keyEventArgs.Handled = true;
                 }
             }
 
-            if (keyEventArgs.OriginalSource.GetType() == typeof (ComboBox) ||
-                keyEventArgs.OriginalSource.GetType() == typeof (ComboBoxItem))
+            if (keyEventArgs.OriginalSource.GetType() == typeof(ComboBox) ||
+                keyEventArgs.OriginalSource.GetType() == typeof(ComboBoxItem))
             {
                 if ((keyEventArgs.Key == Key.Z && Keyboard.Modifiers == ModifierKeys.Control) || keyEventArgs.Key == Key.Delete)
                 {
@@ -120,9 +120,9 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private bool UpdateContentEnabled()
+        bool UpdateContentEnabled()
         {
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
@@ -145,7 +145,7 @@ namespace Dev2.Activities.Designers2.Core
             }
             return false;
         }
-        
+
         protected override void OnPreviewMouseDoubleClick(MouseButtonEventArgs e)
         {
             ToggleView(e);
@@ -236,7 +236,7 @@ namespace Dev2.Activities.Designers2.Core
             base.OnMouseEnter(e);
         }
 
-        private void SetInitialiFocus()
+        void SetInitialiFocus()
         {
             if (!_isInitialFocusDone)
             {
@@ -374,7 +374,7 @@ namespace Dev2.Activities.Designers2.Core
 
         protected override void OnContextMenuOpening(ContextMenuEventArgs e)
         {
-            DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
+            var parentContentPane = FindDependencyParent.FindParent<DesignerView>(this);
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {

@@ -13,7 +13,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isDate = new IsDate();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Yersteday";            
             //------------Execute Test---------------------------
             bool result = isDate.Invoke(cols);
@@ -28,7 +28,7 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new IsDate();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "01/12/2000";
             //------------Execute Test---------------------------
             bool result = notStartsWith.Invoke(cols);

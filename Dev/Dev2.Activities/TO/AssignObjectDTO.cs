@@ -21,11 +21,11 @@ namespace Dev2.TO
 
     public class AssignObjectDTO : ValidatedObject, IDev2TOFn, IEquatable<AssignObjectDTO>
     {
-        private string _fieldName;
-        private string _fieldValue;
-        private int _indexNumber;
-        private bool _isFieldNameFocused;
-        private bool _isFieldValueFocused;
+        string _fieldName;
+        string _fieldValue;
+        int _indexNumber;
+        bool _isFieldNameFocused;
+        bool _isFieldValueFocused;
 
         public AssignObjectDTO()
             : this("[[Variable]]", "Expression", 0)
@@ -153,7 +153,7 @@ namespace Dev2.TO
             return ruleSet;
         }
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
 
             OnPropertyChanged("CanRemove");

@@ -82,10 +82,10 @@ using Moq;
                 var getVersions = new GetVersions();
                 var serializer = new Dev2JsonSerializer();
                 //------------Execute Test---------------------------
-                StringBuilder jsonResult = getVersions.Execute(null, null);
-                IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
-                //------------Assert Results-------------------------
-                Assert.AreEqual(ExecStatus.Fail, result.Status);
+                var jsonResult = getVersions.Execute(null, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Fail, result.Status);
             }
 
             [TestMethod]
@@ -96,8 +96,8 @@ using Moq;
                 //------------Setup for test--------------------------
                 var getVersions = new GetVersions();
                 var resourceId = Guid.NewGuid();
-                ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
-                var repo = new Mock<IServerVersionRepository>();
+                var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var repo = new Mock<IServerVersionRepository>();
                 var ws = new Mock<IWorkspace>();
                 repo.Setup(a => a.GetVersions(resourceId)).Returns(new List<IExplorerItem> {item});
                 var serializer = new Dev2JsonSerializer();

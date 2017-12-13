@@ -45,7 +45,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void IsEqualToTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             const bool expected = false; // TODO: Initialize to an appropriate value
             bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.Eq(value, comparisonValue);
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void IsGreaterThanTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             const bool expected = false; // TODO: Initialize to an appropriate value
             bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrTh(value, comparisonValue);
@@ -71,7 +71,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void IsGreaterThanOrEqualToTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             bool expected = false; // TODO: Initialize to an appropriate value
             bool actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.GrThEq(value, comparisonValue);
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void IsLessThanTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             const bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void IsLessThanOrEqualToTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
@@ -115,7 +115,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void IsNotEqualToTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             object comparisonValue = null; // TODO: Initialize to an appropriate value
             bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void ValueIsDateTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.ValueIsDate(value);
@@ -144,7 +144,7 @@ namespace Dev2.Tests.Activities.Utils
         [TestMethod]
         public void ValueIsNumberTest()
         {
-            string value = string.Empty; // TODO: Initialize to an appropriate value
+            var value = string.Empty; // TODO: Initialize to an appropriate value
             bool expected = false; // TODO: Initialize to an appropriate value
             bool actual;
             actual = Unlimited.Applications.BusinessDesignStudio.Activities.Util.ValueIsNumber(value);

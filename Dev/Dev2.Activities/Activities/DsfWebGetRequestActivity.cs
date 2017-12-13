@@ -106,7 +106,7 @@ namespace Dev2.Activities
                 allErrors.MergeErrors(_errorsTo);
                 if(dataObject.IsDebugMode())
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment, update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -133,7 +133,7 @@ namespace Dev2.Activities
 
                         if(dataObject.IsDebugMode())
                         {
-                            DebugItem debugItem = new DebugItem();
+                            var debugItem = new DebugItem();
                             AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
                             _debugInputs.Add(debugItem);
                         }

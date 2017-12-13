@@ -35,7 +35,7 @@ namespace Warewolf.Studio.ViewModels
             InitializeViewModel();
         }
 
-        private void InitializeViewModel()
+        void InitializeViewModel()
         {
             CanSelectWindows = false;
             AuthenticationType = AuthenticationType.User;

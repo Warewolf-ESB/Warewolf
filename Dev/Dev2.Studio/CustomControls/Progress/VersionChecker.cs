@@ -147,7 +147,7 @@ namespace Dev2.Studio.Core.Helpers
         #endregion
     }
 
-    internal class InstallerResources
+    class InstallerResources
     {
         protected InstallerResources()
         {

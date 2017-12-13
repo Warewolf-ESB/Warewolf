@@ -31,7 +31,7 @@ namespace Dev2.Core.Tests.ConverterTests
 
             var activityDtos = new List<ActivityDTO> { new ActivityDTO("name", "value", 0), new ActivityDTO("name1", "value1", 1), new ActivityDTO("name2", "value2", 2) };
 
-            DsfMultiAssignActivity multiAssign = new DsfMultiAssignActivity();
+            var multiAssign = new DsfMultiAssignActivity();
             multiAssign.FieldsCollection = activityDtos;
 
             dynamic modelItem = ModelItemUtils.CreateModelItem(multiAssign);
@@ -59,9 +59,9 @@ namespace Dev2.Core.Tests.ConverterTests
 
             var activityDtos = new List<ActivityDTO> { new ActivityDTO("name", "value", 0), new ActivityDTO("name1", "value1", 1), new ActivityDTO("name2", "value2", 2) };
 
-            DsfMultiAssignActivity multiAssign = new DsfMultiAssignActivity();
+            var multiAssign = new DsfMultiAssignActivity();
             multiAssign.FieldsCollection = activityDtos;
-            ModelItem modelItemThatdoesntExist = ModelItemUtils.CreateModelItem(new ActivityDTO("thing", "stuff", 8));
+            var modelItemThatdoesntExist = ModelItemUtils.CreateModelItem(new ActivityDTO("thing", "stuff", 8));
 
             dynamic modelItem = ModelItemUtils.CreateModelItem(multiAssign);
 

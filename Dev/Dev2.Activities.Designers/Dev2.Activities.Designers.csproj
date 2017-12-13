@@ -183,9 +183,6 @@
       <Link>Run Tests.ps1</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="Adorners\AdornerToggleButton.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="AttachedProperties\PasswordBoxAssistant.cs" />
     <Compile Include="Designers2\.Net Dll Enhanced\DotNetDllDesigner.xaml.cs">
       <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
@@ -205,16 +202,6 @@
       <DependentUpon>Large.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\ComDLL\Small.xaml.cs">
-      <DependentUpon>Small.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\.Net DLL\DotNetDllViewModel.cs" />
-    <Compile Include="Designers2\.Net DLL\DotNetDllDesigner.xaml.cs">
-      <DependentUpon>DotNetDllDesigner.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\.Net DLL\Large.xaml.cs">
-      <DependentUpon>Large.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Designers2\.Net DLL\Small.xaml.cs">
       <DependentUpon>Small.xaml</DependentUpon>
     </Compile>
     <Compile Include="Designers2\AggregateCalculate\AggregateCalculate.xaml.cs">
@@ -290,7 +277,6 @@
     <Compile Include="Designers2\Core\ConstructorRegion\DotNetConstructorRegion.cs" />
     <Compile Include="Designers2\Core\CustomToolWithRegionBase.cs" />
     <Compile Include="Designers2\Core\CEventHelper.cs" />
-    <Compile Include="Designers2\Core\DotNetActionsWidthConverter.cs" />
     <Compile Include="Designers2\Core\DropboxSourceManager.cs" />
     <Compile Include="Designers2\Core\ErrorRegion.cs" />
     <Compile Include="Designers2\Core\Extensions\ActivityDesignerViewModelExtensions.cs" />
@@ -562,7 +548,6 @@
     <Compile Include="Designers2\Core\ActivityDesignerButton.cs" />
     <Compile Include="Designers2\Core\Converters\NegateBooleanConverter.cs" />
     <Compile Include="Designers2\Core\Errors\ErrorsSetter.cs" />
-    <Compile Include="Designers2\Core\Help\HelpSetter.cs" />
     <Compile Include="Designers2\Core\Help\IHelpSource.cs" />
     <Compile Include="Designers2\Core\IClosable.cs" />
     <Compile Include="Designers2\Core\IsItemDragged.cs" />
@@ -1307,18 +1292,6 @@
     <Page Include="Designers2\ComDLL\Small.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Designers2\.Net DLL\DotNetDllDesigner.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\.Net DLL\Large.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Designers2\.Net DLL\Small.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Designers2\AggregateCalculate\AggregateCalculate.xaml">
       <SubType>Designer</SubType>

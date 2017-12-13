@@ -1,14 +1,12 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces;
-using System.Text;
-using Dev2.Studio.Core.Interfaces;
+using System.Text;                      
 using System.Windows;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using System.Collections.Generic;
-using System;
-using Dev2.ViewModels.Merge;
+using System;                  
 using Warewolf.MergeParser;
 using Dev2.Activities;
 using Dev2.Communication;
@@ -18,6 +16,8 @@ using Dev2.Common;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.Studio.Interfaces.DataList;
+using Dev2.Studio.Core.Interfaces;
+using Dev2.ViewModels.Merge;
 
 namespace Dev2.Core.Tests
 {

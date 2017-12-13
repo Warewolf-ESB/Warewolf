@@ -42,7 +42,7 @@ namespace Dev2
             FileHelper.MigrateTempData(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData));
         }
 
-        private void AddRegionTypes()
+        void AddRegionTypes()
         {
             CustomContainer.AddToLoadedTypes(typeof(ManagePluginServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageComPluginServiceModel));
@@ -51,17 +51,6 @@ namespace Dev2
             CustomContainer.AddToLoadedTypes(typeof(ManageWcfServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ExchangeServiceModel));
             CustomContainer.AddToLoadedTypes(typeof(ManageRabbitMQSourceModel));
-        }
-
-        protected override IEnumerable<Assembly> SelectAssemblies()
-        {
-            var assemblies = base.SelectAssemblies().ToList();
-            assemblies.AddRange(new[]
-                {
-                    Assembly.GetAssembly(typeof (Bootstrapper)),
-                    Assembly.GetAssembly(typeof (DebugWriter))
-                });
-            return assemblies.Distinct();
         }
 
         #region Fields
@@ -129,8 +118,8 @@ namespace Dev2
         #endregion Public Methods
 
         #region Private Methods
-        
-        private bool CheckWindowsService()
+
+        bool CheckWindowsService()
         {
 #if DEBUG
             return true;
@@ -160,11 +149,11 @@ namespace Dev2
 #endif
         }
 
-        private void CheckPath()
+        void CheckPath()
         {
             var sysUri = new Uri(AppDomain.CurrentDomain.BaseDirectory);
 
-            if(IsLocal(sysUri))
+            if (IsLocal(sysUri))
             {
                 return;
             }
@@ -175,15 +164,15 @@ namespace Dev2
                 Description =
                         $@"The Design Studio could not be launched from a network location.
                         {Environment.NewLine}Please install the application on your local machine",
-                    Buttons = MessageBoxButton.OK
-                };
+                Buttons = MessageBoxButton.OK
+            };
 
             popup.Show();
 
             Application.Current.Shutdown();
         }
 
-        private bool IsLocal(Uri sysUri)
+        bool IsLocal(Uri sysUri)
         {
             if (IsUnc(sysUri))
             {
@@ -193,8 +182,8 @@ namespace Dev2
             if (!IsUnc(sysUri))
             {
                 var currentLocation = new DriveInfo(sysUri.AbsolutePath);
-                DriveInfo[] drives = DriveInfo.GetDrives();
-                IEnumerable<DriveInfo> info = drives.Where(c => c.DriveType == DriveType.Network);
+                var drives = DriveInfo.GetDrives();
+                var info = drives.Where(c => c.DriveType == DriveType.Network);
                 if (info.Any(c => c.RootDirectory.Name == currentLocation.RootDirectory.Name))
                 {
                     return false;
@@ -208,11 +197,11 @@ namespace Dev2
             return true;
         }
 
-        private static bool IsUnc(Uri sysUri)
+        static bool IsUnc(Uri sysUri)
         {
             return sysUri.IsUnc;
         }
 
-#endregion Private Methods
+        #endregion Private Methods
     }
 }

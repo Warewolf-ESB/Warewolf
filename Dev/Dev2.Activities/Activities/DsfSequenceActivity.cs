@@ -32,9 +32,9 @@ namespace Dev2.Activities
     [ToolDescriptorInfo("ControlFlow-Sequence", "Sequence", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Sequence")]
     public class DsfSequenceActivity : DsfActivityAbstract<string>,IEquatable<DsfSequenceActivity>
     {
-        private readonly Sequence _innerSequence = new Sequence();
+        readonly Sequence _innerSequence = new Sequence();
         string _previousParentID;
-        private Guid _originalUniqueID;
+        Guid _originalUniqueID;
 
         public DsfSequenceActivity()
         {
@@ -163,7 +163,7 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             dataObject.ForEachNestingLevel++;
             InitializeDebug(dataObject);
             if (dataObject.IsDebugMode())
@@ -244,9 +244,9 @@ namespace Dev2.Activities
             }
         }
 
-        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
-            ObservableCollection<TestRunResult> resultList = new ObservableCollection<TestRunResult>();
+            var resultList = new ObservableCollection<TestRunResult>();
             foreach (var testStep in serviceTestStep.Children)
             {
                 if (testStep.Result != null)
@@ -264,7 +264,7 @@ namespace Dev2.Activities
                 testRunResult.RunTestResult = RunResult.TestInvalid;
 
                 var testRunResults = resultList.Where(runResult => runResult.RunTestResult == RunResult.TestInvalid).ToList();
-                if (testRunResults.Count>0)
+                if (testRunResults.Count > 0)
                 {
                     testRunResult.Message = string.Join(Environment.NewLine, testRunResults.Select(result => result.Message));
                     testRunResult.RunTestResult = RunResult.TestInvalid;
@@ -300,7 +300,7 @@ namespace Dev2.Activities
 
         #endregion
 
-        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps, Guid childId)
+        void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps, Guid childId)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, childId.ToString());
             

@@ -70,7 +70,7 @@ namespace Dev2.Activities.Sharepoint
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -133,8 +133,8 @@ namespace Dev2.Activities.Sharepoint
                     {
                         if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
-                            string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
                             var newPath = CopyFile(sharepointSource, serverPath, localPath);
 
@@ -142,7 +142,7 @@ namespace Dev2.Activities.Sharepoint
 
                             foreach (var file in newPath)
                             {
-                                string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                     indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                 outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
                                 indexToUpsertTo++;
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Sharepoint
                     {
                         var newPath = CopyFile(sharepointSource, serverPath, localPath);
 
-                        string xmlList = string.Join(",", newPath.Select(c => c));
+                        var xmlList = string.Join(",", newPath.Select(c => c));
                         outputs.Add(DataListFactory.CreateOutputTO(Result));
                         outputs.Last().OutputStrings.Add(xmlList);
                     }
@@ -180,7 +180,7 @@ namespace Dev2.Activities.Sharepoint
             return outputs;
         }
 
-        private void ValidateRequest()
+        void ValidateRequest()
         {
             if (SharepointServerResourceId == Guid.Empty)
             {

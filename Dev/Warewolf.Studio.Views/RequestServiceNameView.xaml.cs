@@ -63,7 +63,7 @@ namespace Warewolf.Studio.Views
 
         public string GetValidationMessage()
         {
-            BindingExpression be = ErrorMessageTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            var be = ErrorMessageTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return ErrorMessageTextBlock.Text;
         }
@@ -73,7 +73,7 @@ namespace Warewolf.Studio.Views
             CancelButton.Command.Execute(null);
         }
 
-        private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
             {
@@ -81,7 +81,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
+        void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -105,9 +105,9 @@ namespace Warewolf.Studio.Views
 
         RequestServiceNameViewModel RequestServiceNameViewModel => DataContext as RequestServiceNameViewModel;
 
-        private bool IsRenaming { get; set; }
+        bool IsRenaming { get; set; }
 
-        private void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -115,7 +115,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
+        void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -124,15 +124,15 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void RequestServiceNameView_PreviewKeyDown(object sender, KeyEventArgs e)
+        void RequestServiceNameView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
             {
                 HandleRenameResource(e);
             }
         }
-        
-        private void HandleRenameResource(KeyEventArgs e)
+
+        void HandleRenameResource(KeyEventArgs e)
         {
             var explorerItemViewModelRename = RequestServiceNameViewModel?.ExplorerItemViewModelRename();
             if (explorerItemViewModelRename != null)

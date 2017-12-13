@@ -9,8 +9,8 @@ namespace Gma.DataStructures.StringSearch
 {
     public class ConcurrentTrieNode<TValue> : TrieNodeBase<TValue>
     {
-        private readonly ConcurrentDictionary<char, ConcurrentTrieNode<TValue>> m_Children;
-        private readonly ConcurrentQueue<TValue> m_Values;
+        readonly ConcurrentDictionary<char, ConcurrentTrieNode<TValue>> m_Children;
+        readonly ConcurrentQueue<TValue> m_Values;
 
         public ConcurrentTrieNode()
         {

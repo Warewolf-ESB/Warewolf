@@ -26,7 +26,7 @@ namespace Warewolf.Storage
 {
     public class ExecutionEnvironment : IExecutionEnvironment
     {
-        private DataStorage.WarewolfEnvironment _env;
+        DataStorage.WarewolfEnvironment _env;
 
         public ExecutionEnvironment()
         {
@@ -339,7 +339,7 @@ namespace Warewolf.Storage
             if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
                 var x = warewolfAtomListresult.Item;
-                StringBuilder res = new StringBuilder();
+                var res = new StringBuilder();
                 for (int index = 0; index < x.Count; index++)
                 {
                     var warewolfAtom = x[index];
@@ -655,7 +655,7 @@ namespace Warewolf.Storage
             return indexMap.Where(s => !s.Contains(@"(*)")).ToList();
         }
 
-        private void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
+        void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
         {
             var jsonIdentifierExpression = var;
             if (jsonIdentifierExpression != null)

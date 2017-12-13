@@ -61,7 +61,7 @@ namespace Dev2.Activities
             SystemInformationCollection = new List<GatherSystemInformationTO>();
         }
 
-        private void CleanArgs()
+        void CleanArgs()
         {
             var count = 0;
             while (count < SystemInformationCollection.Count)
@@ -148,7 +148,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void HandleNoErrorsFound(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, GatherSystemInformationTO item)
+        void HandleNoErrorsFound(IDSFDataObject dataObject, int update, ErrorResultTO allErrors, GatherSystemInformationTO item)
         {
             var val = GetCorrectSystemInformation(item.EnTypeOfSystemInformation);
             var expression = item.Result;
@@ -167,12 +167,12 @@ namespace Dev2.Activities
             }
         }
 
-        private void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
+        void HandleErrors(IDSFDataObject dataObject, int update, ErrorResultTO allErrors)
         {
             var hasErrors = allErrors.HasErrors();
             if (hasErrors)
             {
-                DisplayAndWriteError("DsfExecuteCommandLineActivity", allErrors);
+                DisplayAndWriteError(nameof(DsfDotNetGatherSystemInformationActivity), allErrors);
                 foreach (var error in allErrors.FetchErrors())
                 {
                     dataObject.Environment.AddError(error);
@@ -330,7 +330,7 @@ namespace Dev2.Activities
             return _debugOutputs;
         }
 
-        private void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void InsertToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
             var mic = modelProperty?.Collection;
@@ -356,7 +356,7 @@ namespace Dev2.Activities
             }
         }
 
-        private static void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
+        void AddToCollection(IEnumerable<string> listToAdd, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties["SystemInformationCollection"];
             var mic = modelProperty?.Collection;
@@ -375,7 +375,7 @@ namespace Dev2.Activities
             CleanUpCollection(mic, modelItem, startIndex);
         }
 
-        private static void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
+        void CleanUpCollection(ModelItemCollection mic, ModelItem modelItem, int startIndex)
         {
             if (startIndex < mic.Count)
             {
@@ -389,7 +389,7 @@ namespace Dev2.Activities
             }
         }
 
-        private static string CreateDisplayName(ModelItem modelItem, int count)
+        string CreateDisplayName(ModelItem modelItem, int count)
         {
             var modelProperty = modelItem.Properties["DisplayName"];
             if (modelProperty != null)

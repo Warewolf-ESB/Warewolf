@@ -19,19 +19,19 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class DatabaseSourceRegion : ISourceToolRegion<IDbSource>
     {
-        private IDbSource _selectedSource;
-        private ICollection<IDbSource> _sources;
-        private readonly ModelItem _modelItem;
+        IDbSource _selectedSource;
+        ICollection<IDbSource> _sources;
+        readonly ModelItem _modelItem;
 
-        private Guid _sourceId;
-        private Action _sourceChangedAction;
-        private double _labelWidth;
-        private string _sourcesHelpText;
-        private string _editSourceHelpText;
-        private string _newSourceHelpText;
-        private string _newSourceToolText;
-        private string _editSourceToolText;
-        private string _sourcesToolText;
+        Guid _sourceId;
+        Action _sourceChangedAction;
+        double _labelWidth;
+        string _sourcesHelpText;
+        string _editSourceHelpText;
+        string _newSourceHelpText;
+        string _newSourceToolText;
+        string _editSourceToolText;
+        string _sourcesToolText;
 
         public DatabaseSourceRegion(IDbServiceModel model, ModelItem modelItem,enSourceType type)
         {
@@ -233,7 +233,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetSelectedSource(IDbSource value)
+        void SetSelectedSource(IDbSource value)
         {
             if (value != null)
             {

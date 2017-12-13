@@ -40,8 +40,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     {
         #region Class Members
 
-        
-        private static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
+
+        static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
 
 
 
@@ -142,7 +142,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var binaryDataListItem = colItr.FetchNextValue(expressionIterator);
                     var val = binaryDataListItem;
                     {
-                        FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
+                        var formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                         result = _numberFormatter.Format(formatNumberTo);
                     }
 
@@ -188,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddDebugInputItems(IDSFDataObject dataObject, int update, string expression, string roundingDecimalPlaces, string decimalPlacesToShow)
+        void AddDebugInputItems(IDSFDataObject dataObject, int update, string expression, string roundingDecimalPlaces, string decimalPlacesToShow)
         {
             if (dataObject.IsDebugMode())
             {
@@ -211,9 +211,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             if (environment != null)
             {
                 AddDebugItem(new DebugEvalResult(expression, labelText, environment, update), itemToAdd);

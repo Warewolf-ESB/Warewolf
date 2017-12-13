@@ -20,7 +20,7 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
     public partial class DataGridQuickVariableInputView : IDisposable
     {
         // Track whether Dispose has been called.
-        private bool _disposed;
+        bool _disposed;
 
         public DataGridQuickVariableInputView()
         {
@@ -89,8 +89,8 @@ namespace Dev2.Studio.Views.UserInterfaceBuilder
         {
             if(SplitTypeCbx.SelectedValue != null)
             {
-                string val = SplitTypeCbx.SelectedValue.ToString();
-                if(val == "Index" || val == "Chars")
+                var val = SplitTypeCbx.SelectedValue.ToString();
+                if (val == "Index" || val == "Chars")
                 {
                     SplitTokenTxt.IsEnabled = true;
                 }

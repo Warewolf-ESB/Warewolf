@@ -11,10 +11,10 @@ namespace Dev2.Studio.AppResources.Comparers
     public class WorkSurfaceKeyEqualityComparerWithContextKey : IEqualityComparer<WorkSurfaceKey>
     {
 
-        private static readonly Lazy<WorkSurfaceKeyEqualityComparerWithContextKey> _current
+        static readonly Lazy<WorkSurfaceKeyEqualityComparerWithContextKey> _current
             = new Lazy<WorkSurfaceKeyEqualityComparerWithContextKey>(() => new WorkSurfaceKeyEqualityComparerWithContextKey());
 
-        private WorkSurfaceKeyEqualityComparerWithContextKey()
+        WorkSurfaceKeyEqualityComparerWithContextKey()
         {
 
         }

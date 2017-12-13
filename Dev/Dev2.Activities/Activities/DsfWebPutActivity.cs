@@ -35,7 +35,7 @@ namespace Dev2.Activities
                 return _debugInputs;
             }
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
 
             AddDebugItem(new DebugItemStaticDataParams("", "Put Data"), debugItem);
             AddDebugItem(new DebugEvalResult(PutData, "", env, update), debugItem);
@@ -79,7 +79,7 @@ namespace Dev2.Activities
 
             if (head != null)
             {
-                IEnumerable<NameValue> nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
+                var nameValues = head.Where(nameValue => !String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value));
                 foreach (var nameValue in nameValues)
                 {
                     httpClient.DefaultRequestHeaders.TryAddWithoutValidation(nameValue.Name, nameValue.Value);

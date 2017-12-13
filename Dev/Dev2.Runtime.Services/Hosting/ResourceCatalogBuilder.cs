@@ -33,7 +33,7 @@ namespace Dev2.Runtime.Hosting
     /// Transfer FileStream and ResourcePath together
     /// </summary>
 
-    internal class ResourceBuilderTO
+    class ResourceBuilderTO
 
     {
         internal string FilePath;
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.Hosting
                     foreach (var file in files)
                     {
 
-                        FileAttributes fa = File.GetAttributes(file);
+                        var fa = File.GetAttributes(file);
 
                         if ((fa & FileAttributes.ReadOnly) == FileAttributes.ReadOnly)
                         {
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.Hosting
                         Dev2Logger.Error("Resource [ " + currentItem.FilePath + " ] caused " + e.Message, GlobalConstants.WarewolfError);
                     }
 
-                    StringBuilder result = xml?.ToStringBuilder();
+                    var result = xml?.ToStringBuilder();
 
                     var isValid = result != null && HostSecurityProvider.Instance.VerifyXml(result);
                     var typeName = xml.AttributeSafe("Type");
@@ -216,7 +216,7 @@ namespace Dev2.Runtime.Hosting
                                 try
                                 {
 
-                                    StringBuilder updateXml = a.ToStringBuilder();
+                                    var updateXml = a.ToStringBuilder();
                                     var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                                     signedXml.WriteToFile(currentItem.FilePath, Encoding.UTF8, fileManager);
                                     tx.Complete();
@@ -244,7 +244,7 @@ namespace Dev2.Runtime.Hosting
 
                             xml = resource.UpgradeXml(xml, resource);
 
-                            StringBuilder updateXml = xml.ToStringBuilder();
+                            var updateXml = xml.ToStringBuilder();
                             var signedXml = HostSecurityProvider.Instance.SignXml(updateXml);
                             var fileManager = new TxFileManager();
                             using (TransactionScope tx = new TransactionScope())
@@ -355,7 +355,7 @@ namespace Dev2.Runtime.Hosting
             }
         }
 
-        private void CreateDupResource(IResource resource, string filePath)
+        void CreateDupResource(IResource resource, string filePath)
         {
 
             {

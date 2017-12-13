@@ -27,7 +27,7 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
         public void FindRecsetOptions_FindAll_GetAllRecsetOptions_RightNumberOfOptionsAndCorrectOrder()
         {
             //------------Setup for test--------------------------
-            ObservableCollection<string> expected = GlobalConstants.FindRecordsOperations.ToObservableCollection();
+            var expected = GlobalConstants.FindRecordsOperations.ToObservableCollection();
             expected.Remove("There is No Error");
             expected.Remove("There is An Error");
             //------------Execute Test---------------------------

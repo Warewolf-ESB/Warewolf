@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class DateTimeFormatForwardLookupsForDotNet : IDateTimeFormatForwardLookupsForDotNet
+    class DateTimeFormatForwardLookupsForDotNet : IDateTimeFormatForwardLookupsForDotNet
     {
         internal DateTimeFormatForwardLookupsForDotNet()
         {

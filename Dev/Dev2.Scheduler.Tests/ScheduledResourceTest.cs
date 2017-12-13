@@ -25,8 +25,8 @@ namespace Dev2.Scheduler.Test
         public void ScheduledResource_Constructor()
         {
 
-            IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
-            ScheduledResource res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory", Guid.NewGuid().ToString());
+            var trigger = new Mock<IScheduleTrigger>().Object;
+            var res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory", Guid.NewGuid().ToString());
             Assert.AreEqual("bob", res.Name);
             Assert.AreEqual(SchedulerStatus.Enabled, res.Status);
             Assert.AreEqual(DateTime.MaxValue, res.NextRunDate);
@@ -41,7 +41,7 @@ namespace Dev2.Scheduler.Test
         public void ScheduledResource_Properties()
         {
 
-            IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
+            var trigger = new Mock<IScheduleTrigger>().Object;
             var id = Guid.NewGuid().ToString();
             var res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory", id);
             res.Password = "PWD";

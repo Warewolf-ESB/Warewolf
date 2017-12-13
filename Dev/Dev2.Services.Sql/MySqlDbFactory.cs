@@ -9,7 +9,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class MySqlDbFactory : IDbFactory
+    class MySqlDbFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 
@@ -51,7 +51,7 @@ namespace Dev2.Services.Sql
 
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet();
+            var ds = new DataSet();
             reader.Fill(ds);
             return ds.Tables[0];
         }

@@ -12,9 +12,7 @@ namespace Dev2.ViewModels
 {
     public class DeployWorksurfaceViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
-        readonly IPopupController _popupController;
-
-        public DeployWorksurfaceViewModel() : base(new EventAggregator())
+        public DeployWorksurfaceViewModel():base(new EventAggregator())
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var dest = new DeployDestinationViewModel(mainViewModel, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>());
@@ -30,23 +28,6 @@ namespace Dev2.ViewModels
                 {
                     OnPropertyChanged("DisplayName");
                 }
-                ViewModelUtils.RaiseCanExecuteChanged(mainViewModel?.SaveCommand);
-            };
-        }
-
-        public DeployWorksurfaceViewModel(IEventAggregator eventPublisher, SingleExplorerDeployViewModel vm, IPopupController popupController,IView view)
-            : base(eventPublisher)
-        {
-            ViewModel = vm;
-            View = view;
-            _popupController = popupController;
-            ViewModel.PropertyChanged += (sender, args) =>
-            {
-                if(args.PropertyName == "Header")
-                {
-                    OnPropertyChanged("DisplayName");
-                }
-                var mainViewModel = CustomContainer.Get<IShellViewModel>();
                 ViewModelUtils.RaiseCanExecuteChanged(mainViewModel?.SaveCommand);
             };
         }
@@ -71,32 +52,18 @@ namespace Dev2.ViewModels
                 base.OnViewLoaded(loadedView);
             }
         }
-    
-        public string ResourceType => "DeployViewer";
 
-        #region Implementation of IHelpSource
+        public string ResourceType => "DeployViewer";
 
         public string HelpText { get; set; }
         public SingleExplorerDeployViewModel ViewModel { get; set; }
         public IView View { get; set; }
 
-        #endregion
-
-        #region Implementation of IStudioTab
-
         public bool IsDirty => false;
 
-        public void CloseView()
-        {
-        }
+        public void CloseView() { }
 
-        public bool DoDeactivate(bool showMessage)
-        {
-
-            return true;
-        }
-
-        #endregion
+        public bool DoDeactivate(bool showMessage) => true;
 
         public override bool HasVariables => false;
         public override bool HasDebugOutput => false;

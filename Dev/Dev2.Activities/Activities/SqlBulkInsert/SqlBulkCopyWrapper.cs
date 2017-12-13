@@ -18,7 +18,7 @@ namespace Dev2.Activities.SqlBulkInsert
     {
         #region Implementation of IDisposable
 
-        private readonly SqlBulkCopy _sbc;
+        readonly SqlBulkCopy _sbc;
         public SqlBulkCopyWrapper(SqlBulkCopy copyTool)
         {
             _sbc = copyTool;

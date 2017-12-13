@@ -15,14 +15,14 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 {
     public class GetWorker : IWorker
     {
-        private string _url { get; set; }
-        private static string dataToCompareTo { get; set; }
+        string _url { get; set; }
+        static string dataToCompareTo { get; set; }
 
         public bool WasHTTPS { get; set; }
 
         public void DoWork()
         {
-            AsynchronousRequest async = new AsynchronousRequest();
+            var async = new AsynchronousRequest();
             async.ScanSite(_url);
             dataToCompareTo = async.GetResponseData();
             WasHTTPS = async.WasHTTPS;
@@ -40,7 +40,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         public HttpWebResponse GetResponse()
         {
-            AsynchronousRequest async = new AsynchronousRequest();
+            var async = new AsynchronousRequest();
             async.ScanResponse(_url);
             return async.GetResponse();
         }

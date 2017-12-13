@@ -4,7 +4,7 @@ namespace Warewolf.Studio.Core
 {
     public static class CustomMenuIcons
     {
-        private enum MenuIcons
+        enum MenuIcons
         {
             Unknown,
             WorkflowService,
@@ -35,7 +35,7 @@ namespace Warewolf.Studio.Core
             MergeConflicts
         }
 
-        private static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
+        static readonly Dictionary<MenuIcons, string> MenuIconsDictionary = new Dictionary<MenuIcons, string>
         {
             {MenuIcons.WorkflowService, "Explorer-WorkflowService"},
             {MenuIcons.DbService, "Database"},
@@ -45,7 +45,6 @@ namespace Warewolf.Studio.Core
             {MenuIcons.Spacer, "Explorer-Spacer"},
             {MenuIcons.View, "Explorer-Permission-Disbled"},
             {MenuIcons.Execute, "Explorer-Run-Disabled"},
-
             {MenuIcons.WebSource, "WebMethodsSource"},
             {MenuIcons.PluginSource, "DotNetDllSource"},
             {MenuIcons.EmailSource, "EmailSourceImageLogo"},
@@ -62,23 +61,11 @@ namespace Warewolf.Studio.Core
             {MenuIcons.MergeConflicts, "Source-Merge-Logo"}
         };
 
-        public static string Server => MenuIconsDictionary[MenuIcons.Server];
-
         public static string ServerSource => MenuIconsDictionary[MenuIcons.ServerSource];
 
         public static string WorkflowService => MenuIconsDictionary[MenuIcons.WorkflowService];
 
-        public static string DbService => MenuIconsDictionary[MenuIcons.DbService];
-
-        public static string PluginService => MenuIconsDictionary[MenuIcons.PluginService];
-
-        public static string WebService => MenuIconsDictionary[MenuIcons.WebService];
-
         public static string Folder => MenuIconsDictionary[MenuIcons.Folder];
-
-        public static string Spacer => MenuIconsDictionary[MenuIcons.Spacer];
-
-        public static string Execute => MenuIconsDictionary[MenuIcons.Execute];
 
         public static string View => MenuIconsDictionary[MenuIcons.View];
 
@@ -86,11 +73,7 @@ namespace Warewolf.Studio.Core
 
         public static string MySqlSource => MenuIconsDictionary[MenuIcons.MySqlSource];
 
-        public static string PostgreSqlSource => MenuIconsDictionary[MenuIcons.PostgreSqlSource];
-
         public static string OracleSource => MenuIconsDictionary[MenuIcons.OracleSource];
-
-        public static string OdbcSource => MenuIconsDictionary[MenuIcons.OdbcSource];
 
         public static string PluginSource => MenuIconsDictionary[MenuIcons.PluginSource];
 
@@ -101,8 +84,6 @@ namespace Warewolf.Studio.Core
         public static string RabbitMqSource => MenuIconsDictionary[MenuIcons.RabbitMqSource];
 
         public static string WebSource => MenuIconsDictionary[MenuIcons.WebSource];
-
-        public static string StartPage => MenuIconsDictionary[MenuIcons.StartPage];
 
         public static string MergeConflicts => MenuIconsDictionary[MenuIcons.MergeConflicts];
     }

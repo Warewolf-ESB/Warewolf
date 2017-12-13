@@ -26,7 +26,7 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class ClearLogsTest
     {
-        private static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
+        static readonly Guid _workspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
         readonly static object SyncRoot = new object();
 
         static string _testDir;
@@ -103,8 +103,8 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         public void ClearLogExecuteWithValidPathAndLockedExpectedReturnsError()
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            lock(SyncRoot)
+            var serializer = new Dev2JsonSerializer();
+            lock (SyncRoot)
             {
                 //setup
                 var fileName1 = Guid.NewGuid().ToString() + "_Test.log";
@@ -175,7 +175,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #region Helpers
 
-        private Mock<IWorkspace> GetWorkspace()
+        Mock<IWorkspace> GetWorkspace()
         {
             var mock = new Mock<IWorkspace>();
             mock.Setup(w => w.ID).Returns(_workspaceID);

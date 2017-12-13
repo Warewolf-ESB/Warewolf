@@ -97,7 +97,7 @@ namespace Dev2.Studio.Core
 
         public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
-            IGraph graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
+            var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
             if (graph.Nodes.Count > 1)
             {
@@ -133,7 +133,7 @@ namespace Dev2.Studio.Core
             };
         }
 
-        private IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
+        IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
         {
             return new DeletedFileMetadata
             {
@@ -144,7 +144,7 @@ namespace Dev2.Studio.Core
                 DeleteAnyway = deleteAnyway
             };
         }
-        
+
         public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
             return VersionManager.GetVersion(versionInfo, resourceId);

@@ -17,9 +17,9 @@ namespace Dev2.Data.Util
 {
     public static class XmlHelper
     {
-        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
-        private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
-        private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",
+        static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
+        static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
+        static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",
                                                          "<Dev2XMLResult>", "</Dev2XMLResult>",
                                                          "<WebXMLConfiguration>", "</WebXMLConfiguration>",
                                                          "<ActivityInput>", "</ActivityInput>",
@@ -30,7 +30,7 @@ namespace Dev2.Data.Util
 
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
-            string trimedData = data.Trim();
+            var trimedData = data.Trim();
             bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
@@ -81,8 +81,8 @@ namespace Dev2.Data.Util
 
         public static string ToCleanXml(this string payload)
         {
-            string result = payload;
-            string[] veryNaughtyTags = NaughtyTags;
+            var result = payload;
+            var veryNaughtyTags = NaughtyTags;
 
             if (!string.IsNullOrEmpty(payload))
             {
@@ -119,15 +119,15 @@ namespace Dev2.Data.Util
 
             return result;
         }
-        
-        private static string CleanupNaughtyTags(string[] toRemove, string payload)
+
+        static string CleanupNaughtyTags(string[] toRemove, string payload)
         {
             bool foundOpen = false;
-            string result = payload;
+            var result = payload;
 
             for (int i = 0; i < toRemove.Length; i++)
             {
-                string myTag = toRemove[i];
+                var myTag = toRemove[i];
                 if (myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
                 {
                     foundOpen = true;
@@ -145,8 +145,8 @@ namespace Dev2.Data.Util
                                 int end = result.IndexOf(myTag, StringComparison.Ordinal);
                                 if (start < end && start >= 0)
                                 {
-                                    string canidate = result.Substring(start, end - start + myTag.Length);
-                                    string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
+                                    var canidate = result.Substring(start, end - start + myTag.Length);
+                                    var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
                                     result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
                                 }
                             }
