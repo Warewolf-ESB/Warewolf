@@ -3,6 +3,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Dev2.Tests.Runtime.Util;
 using System.Diagnostics;                
 using System.Threading;
+using Dev2.Core.Tests;
+using Dev2.Studio.Core.Factories;
+using System.Globalization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.StringTokenizer.Interfaces;
 using Dev2.Data;
@@ -169,6 +172,32 @@ namespace Dev2.Integration.Tests
 
             _dataListViewModel.RecsetCollection.Add(carRecordset);
             _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("Country", "name of Country"));
+        }
+
+        [TestMethod]
+        [TestCategory("Load Tests")]
+        public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
+        {
+            //Initialize
+            DataListViewModelTests.Setup();
+            for (var i = 2500; i > 0; i--)
+            {
+                DataListViewModelTests._dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
+            }
+            var timeBefore = DateTime.Now;
+
+            //Execute
+            DataListViewModelTests._dataListViewModel.SortCommand.Execute(null);
+
+            var endTime = DateTime.Now.Subtract(timeBefore);
+            //Assert
+            Assert.AreEqual("Country", DataListViewModelTests._dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar1000", DataListViewModelTests._dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar1750", DataListViewModelTests._dataListViewModel.ScalarCollection[1750].DisplayName, "Sort datalist with large list failed");
+            Assert.AreEqual("testVar2500", DataListViewModelTests._dataListViewModel.ScalarCollection[2500].DisplayName, "Sort datalist with large list failed");
+            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 2500 variables. Took {endTime}");
+
+            DataListViewModelTests.SortCleanup();
         }
     }
 }
