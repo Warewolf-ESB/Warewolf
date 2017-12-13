@@ -70,7 +70,10 @@ namespace Dev2.Activities.Designers.Tests.Core
         public void TestClone()
         {
             var id = Guid.NewGuid();
-            var act = new DsfWebPutActivity(){ SourceId = id };
+            var act = new DsfWebPutActivity
+            {
+                SourceId = id
+            };
             var src = new Mock<IWebServiceSource>();
 
             var mod = new Mock<IWebServiceModel>();

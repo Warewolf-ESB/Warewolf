@@ -133,7 +133,7 @@ namespace Dev2.Activities.Designers2.Core
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPostInputRegion
+            return new WebPostInputRegion(_modelItem, _source)
             {
                 Headers = headers2,
                 PostData = PostData,
