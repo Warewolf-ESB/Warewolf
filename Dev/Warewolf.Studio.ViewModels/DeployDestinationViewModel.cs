@@ -3,6 +3,7 @@ using System.Linq;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 using Microsoft.Practices.Prism.PubSubEvents;
+using System.Threading.Tasks;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -17,6 +18,7 @@ namespace Warewolf.Studio.ViewModels
             : base(shellViewModel, aggregator,false)
         {
             ConnectControlViewModel = new ConnectControlViewModel(shellViewModel.LocalhostServer, aggregator, shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
+            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnectedAsync(sender, server).ConfigureAwait(true); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             SelectedEnvironment = _environments.FirstOrDefault();
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
@@ -41,6 +43,20 @@ namespace Warewolf.Studio.ViewModels
             {
                 ServerStateChanged?.Invoke(this, SelectedEnvironment.Server);
             }
+        }
+
+        async Task<IEnvironmentViewModel> ServerConnectedAsync(object sender, IServer server)
+        {
+            var environmentViewModel = await CreateEnvironmentViewModelAsync(sender, server.EnvironmentID, true).ConfigureAwait(true);
+            environmentViewModel?.Server?.GetServerVersion();
+            environmentViewModel?.Server?.GetMinSupportedVersion();
+            SelectedEnvironment = environmentViewModel;
+            StatsArea?.ReCalculate();
+            if (environmentViewModel != null)
+            {
+                AfterLoad(environmentViewModel.ResourceId);
+            }
+            return environmentViewModel;
         }
 
         public override bool IsLoading

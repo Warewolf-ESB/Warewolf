@@ -71,18 +71,18 @@ namespace Dev2.Studio.Core
         #endregion
 
         #region CTOR
-        
+
         public ServerRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppUsageStats.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
-        
+
         protected ServerRepository(IServer source)
         {
             Source = source ?? throw new ArgumentNullException(nameof(source));
             Environments = new List<IServer> { Source };
         }
-        
+
         public ServerRepository(IServerRepository serverRepository)
         {
 #pragma warning disable S3010 // For testing

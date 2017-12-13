@@ -69,7 +69,7 @@
       <Visible>False</Visible>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Compile Include="AppSettings.cs" />
+    <Compile Include="AppUsageStats.cs" />
     <Compile Include="ExtensionMethods\StringExtensions.cs" />
     <Compile Include="JsonNetValueSystem.cs" />
     <Compile Include="jsonpath.cs" />

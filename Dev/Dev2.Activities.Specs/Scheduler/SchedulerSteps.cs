@@ -85,7 +85,7 @@ namespace Dev2.Activities.Specs.Scheduler
         [Given(@"""(.*)"" has a Schedule of")]
         public void GivenHasAScheduleOf(string scheduleName, Table table)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var mockServer = new Mock<IServer>();
             var mockshell = new Mock<IShellViewModel>();
             mockshell.Setup(a => a.ActiveServer).Returns(mockServer.Object);

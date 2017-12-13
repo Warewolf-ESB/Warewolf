@@ -90,13 +90,13 @@ namespace Dev2.Studio
 
             try
             {
-                AppSettings.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
+                AppUsageStats.LocalHost = ConfigurationManager.AppSettings["LocalHostServer"];
                 InitializeComponent();
             }
             catch(Exception e)
             {
                 Dev2Logger.Error(e.Message,e, "Warewolf Error");
-                AppSettings.LocalHost = "http://localhost:3142";
+                AppUsageStats.LocalHost = "http://localhost:3142";
             }
         }
 
