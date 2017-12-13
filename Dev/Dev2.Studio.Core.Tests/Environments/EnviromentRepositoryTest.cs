@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Environments
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             SetupMef();
         }
 
@@ -1120,12 +1120,12 @@ namespace Dev2.Core.Tests.Environments
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateEnvironment_GivenLocalHostIsEmpty_ShouldUseMachineName()
         {
-
-            AppSettings.LocalHost = "";
+            AppUsageStats.LocalHost = "";
             var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();

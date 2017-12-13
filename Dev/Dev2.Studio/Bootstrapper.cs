@@ -72,7 +72,6 @@ namespace Dev2
             var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
             conn.Connect(Guid.NewGuid());
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
-            
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
