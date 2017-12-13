@@ -26,9 +26,6 @@ using Moq;
 
 namespace Dev2.Core.Tests.Settings
 {
-    /// <summary>
-    /// Summary description for PerfCounterViewModelTests
-    /// </summary>
     [TestClass]
     public class PerfCounterViewModelTests
     {
@@ -39,7 +36,7 @@ namespace Dev2.Core.Tests.Settings
         public void Setup()
         {
 
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             _mockEnvironment = new Mock<IServer>();
             _mockConnection = new Mock<IEnvironmentConnection>();
             _mockConnection.Setup(connection => connection.ID).Returns(Guid.Empty);

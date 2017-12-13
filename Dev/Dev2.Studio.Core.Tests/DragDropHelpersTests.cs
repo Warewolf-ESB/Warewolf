@@ -99,7 +99,7 @@ namespace Dev2.Core.Tests
             var explorerTooltips = new Mock<IExplorerTooltips>();
             CustomContainer.Register(explorerTooltips.Object);
             //------------Setup for test--------------------------
-            AppSettings.LocalHost = "http://localhost";
+            AppUsageStats.LocalHost = "http://localhost";
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object);
             data.IsService = true;
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
@@ -116,13 +116,14 @@ namespace Dev2.Core.Tests
             //------------Assert Results-------------------------
             Assert.IsTrue(canDoDrop);
         }
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DragDropHelpers_PreventDrop")]
         public void DragDropHelpers_PreventDrop_LocalResourceOnRemoteDesignSurface_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            AppSettings.LocalHost = "http://localhost";
+            AppUsageStats.LocalHost = "http://localhost";
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object);
             data.ResourceType = "WorkflowService";
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
@@ -148,7 +149,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_EmptyService_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            AppSettings.LocalHost = "http://localhost";
+            AppUsageStats.LocalHost = "http://localhost";
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object, a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object) { ResourceType = "WorkflowService" };
             var dataContext = new Mock<IWorkflowDesignerViewModel>();
 
@@ -185,7 +186,7 @@ namespace Dev2.Core.Tests
         public void DragDropHelpers_PreventDrop_DropResourceOntoItself_ReturnsFalse()
         {
             //------------Setup for test--------------------------
-            AppSettings.LocalHost = "http://localhost";
+            AppUsageStats.LocalHost = "http://localhost";
             var resourceId = Guid.NewGuid();
             var data = new ExplorerItemViewModel(new Mock<IServer>().Object, new Mock<IExplorerTreeItem>().Object,
                 a => { }, new Mock<IShellViewModel>().Object, new Mock<IPopupController>().Object)
