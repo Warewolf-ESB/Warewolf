@@ -179,12 +179,13 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebPutInputRegion
+            return new WebPutInputRegion(_modelItem, _source)
             {
                 Headers = headers2,
                 QueryString = QueryString,
                 RequestUrl = RequestUrl,
-                IsEnabled = IsEnabled
+                IsEnabled = IsEnabled,
+                PutData = PutData
             } as IToolRegion;
         }
 
@@ -266,7 +267,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Put
         {
             get
             {
-                return _modelItem.GetProperty<string>("PutData") ?? string.Empty;
+                return _modelItem?.GetProperty<string>("PutData") ?? string.Empty;
             }
             set
             {
