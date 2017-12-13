@@ -3,7 +3,6 @@ using Dev2.Studio.Core;
 using Dev2.Util;
 using System;
 using System.Collections.Generic;
-using Dev2.Common.ExtMethods;
 using Dev2.Data.ServiceModel;
 using Dev2.Network;
 using Dev2.Studio.Core.Models;
@@ -11,6 +10,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using System.Linq;
+using System.IO;
 
 namespace Dev2.Activities.Specs.Deploy
 {
@@ -25,6 +25,17 @@ namespace Dev2.Activities.Specs.Deploy
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException("scenarioContext");
             _commonSteps = new CommonSteps(_scenarioContext);
+        }
+
+        [AfterScenario("Deploy")]
+        public void Cleanup()
+        {
+            var remoteServer = ScenarioContext.Current.Get<IServer>("destinationServer");
+            var contextualResourceModel = remoteServer.ResourceRepository.LoadContextualResourceModel(_resourceId);
+            if (contextualResourceModel != null && contextualResourceModel.Count > 0)
+            {
+            }
+            File.Move(@"\\tst-ci-remote\c$\ProgramData\Warewolf\Resources\OriginalWorkFlowName", @"\\tst-ci-remote\c$\ProgramData\Warewolf\Resources\RenamedWorkFlowToDeploy");
         }
 
         [BeforeScenario("Deploy")]
