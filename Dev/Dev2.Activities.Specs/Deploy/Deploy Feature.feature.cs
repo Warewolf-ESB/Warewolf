@@ -72,28 +72,26 @@ namespace Dev2.Activities.Specs.Deploy
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Deploy a renamed resource to localhost")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Deploy Feature")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("Deploy")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.IgnoreAttribute()]
         public virtual void DeployARenamedResourceToLocalhost()
         {
-            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy a renamed resource to localhost", new string[] {
-                        "ignore"});
-#line 8
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Deploy a renamed resource to localhost", ((string[])(null)));
+#line 7
 this.ScenarioSetup(scenarioInfo);
-#line 9
+#line 8
 testRunner.Given("I am Connected to remote server \"tst-ci-remote\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 9
+testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
 #line 10
-testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 11
 testRunner.And("the destination resource is \"RenamedWorkFlowToDeploy\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 12
+#line 11
 testRunner.And("I select resource \"OriginalWorkFlowName\" from source server", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 13
+#line 12
 testRunner.And("And the localhost resource is \"OriginalWorkFlowName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 14
+#line 13
 testRunner.When("I Deploy resource to remote", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
-#line 15
+#line 14
 testRunner.And("I reload the destination resources", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
-#line 16
+#line 15
 testRunner.Then("the destination resource is \"OriginalWorkFlowName\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
 #line hidden
             this.ScenarioCleanup();
