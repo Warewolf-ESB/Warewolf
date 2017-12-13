@@ -69,8 +69,7 @@ namespace WarewolfCOMIPC.Test
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [DeploymentItem("Dev2.Runtime.Tests.dll")]
-        [DeploymentItem("Warewolf.COMIPC.exe")]
-        [DeploymentItem("Warewolf.COMIPC.pdb")]
+        [DeploymentItem("Warewolf.COMIPC.exe"),DeploymentItem("Warewolf.COMIPC.pdb")]
         public void ExecuteSpecifiedMethod_GivenConnection_ReturnSuccess()
         {
             //---------------Set up test pack-------------------
