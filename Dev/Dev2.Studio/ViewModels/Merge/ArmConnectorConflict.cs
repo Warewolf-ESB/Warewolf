@@ -34,7 +34,7 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         public bool IsMergeExpanderEnabled
         {
-            get => _isMergeExpanderEnabled;
+            get => _isMergeExpanderEnabled && HasConflict;
             set
             {
                 _isMergeExpanderEnabled = value;

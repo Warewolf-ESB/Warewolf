@@ -21,6 +21,7 @@ namespace Dev2.Common.Interfaces
         IToolConflict Parent { get; set; }
         bool IsMergeExpanded { get; set; }
         bool IsContainerTool { get; set; }
+        bool IsStartNode { get; set; }
         IToolConflict GetNextConflict();
         LinkedListNode<IToolConflict> Find(IToolConflict itemToFind);
         bool All(Func<IToolConflict, bool> check);

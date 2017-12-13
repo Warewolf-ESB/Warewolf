@@ -11,6 +11,7 @@
 using System;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
+using Dev2.Studio.Interfaces;
 
 namespace Dev2.ViewModels.Merge
 {
@@ -24,7 +25,9 @@ namespace Dev2.ViewModels.Merge
         bool _isChecked;
         bool _isArmSelectionAllowed;
 
-        public event Action<IArmConnectorConflict,bool, string,string,string> OnChecked;
+        public event Action<IArmConnectorConflict, bool> OnChecked;
+
+        public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
 
         public bool IsChecked
         {
@@ -32,14 +35,18 @@ namespace Dev2.ViewModels.Merge
             set
             {
                 _isChecked = value;
+                if (_isChecked)
+                {
+                    WorkflowDesignerViewModel?.LinkTools(SourceUniqueId, DestinationUniqueId, Key);
+                    OnChecked?.Invoke(Container, _isChecked);
+                }
                 OnPropertyChanged(() => IsChecked);
-                OnChecked?.Invoke(Container,_isChecked, SourceUniqueId,DestinationUniqueId,Key);
             }
         }
 
         public bool IsArmSelectionAllowed
         {
-            get => _isArmSelectionAllowed;
+            get => _isArmSelectionAllowed && Container.HasConflict;
             set
             {
                 _isArmSelectionAllowed = value;

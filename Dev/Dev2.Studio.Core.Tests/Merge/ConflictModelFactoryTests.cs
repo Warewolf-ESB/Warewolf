@@ -64,7 +64,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsVariablesChecked")
@@ -87,7 +87,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ConflictModelFactory();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsWorkflowNameChecked")
@@ -114,13 +114,14 @@ namespace Dev2.Core.Tests.Merge
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfMultiAssignActivity();
-            var assignStep = new FlowStep()
+            var assignStep = new FlowStep
             {
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -141,19 +142,20 @@ namespace Dev2.Core.Tests.Merge
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfMultiAssignActivity();
-            var assignStep = new FlowStep()
+            var assignStep = new FlowStep
             {
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
             var assignExample = XML.XmlResource.Fetch("Utility - Assign");
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
-            Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            StringBuilder assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
+            var jsonSerializer = new Dev2JsonSerializer();
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -172,20 +174,21 @@ namespace Dev2.Core.Tests.Merge
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
             var value = new DsfMultiAssignActivity();
-            var assignStep = new FlowStep()
+            var assignStep = new FlowStep
             {
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
             var assignExample = XML.XmlResource.Fetch("AssignOutput");
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
-            Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
-            StringBuilder assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
+            var jsonSerializer = new Dev2JsonSerializer();
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var assignExampleBuilder = new StringBuilder(assignExample.ToString(System.Xml.Linq.SaveOptions.DisableFormatting));
             currentResourceModel.Setup(resModel => resModel.WorkflowXaml).Returns(assignExampleBuilder);
             currentResourceModel.Setup(resModel => resModel.DisplayName).Returns("Hello World");
             currentResourceModel.Setup(resModel => resModel.DataList).Returns("");
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             completeConflict.GetDataList(currentResourceModel.Object);
@@ -203,17 +206,17 @@ namespace Dev2.Core.Tests.Merge
             CustomContainer.Register(adapter.Object);
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
-            var dev2DecisionStack = new Dev2DecisionStack()
+            var dev2DecisionStack = new Dev2DecisionStack
             {
-                TheStack = new List<Dev2Decision>() { },
+                TheStack = new List<Dev2Decision>(),
                 TrueArmText = "a",
                 FalseArmText = "a",
                 DisplayText = "a",
                 Mode = Dev2DecisionMode.AND
             };
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serialize = serializer.Serialize(dev2DecisionStack);
-            var condition = new DsfFlowDecisionActivity()
+            var condition = new DsfFlowDecisionActivity
             {
                 ExpressionText = serialize
             };
@@ -221,13 +224,14 @@ namespace Dev2.Core.Tests.Merge
             {
                 Conditions = dev2DecisionStack
             };
-            var assignStep = new FlowStep()
+            var assignStep = new FlowStep
             {
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -254,19 +258,18 @@ namespace Dev2.Core.Tests.Merge
             CustomContainer.Register(adapter.Object);
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
-            var value = new DsfActivity()
-            {
-            };
-            var assignStep = new FlowStep()
+            var value = new DsfActivity();
+            var assignStep = new FlowStep
             {
                 Action = value
             };
-            Mock<IContextualResourceModel> currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
+            var currentResourceModel = Dev2MockFactory.SetupResourceModelMock();
             node.Setup(p => p.Activity).Returns(value);
             contextualResource.Setup(p => p.Environment.ResourceRepository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(currentResourceModel.Object);
             //------------Execute Test---------------------------
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
 
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -289,36 +292,37 @@ namespace Dev2.Core.Tests.Merge
             CustomContainer.Register(adapter.Object);
             var node = new Mock<IConflictTreeNode>();
             var contextualResource = new Mock<IContextualResourceModel>();
-            var dev2DecisionStack = new Dev2DecisionStack()
+            var dev2DecisionStack = new Dev2DecisionStack
             {
-                TheStack = new List<Dev2Decision>() { },
+                TheStack = new List<Dev2Decision>(),
                 TrueArmText = "a",
                 FalseArmText = "a",
                 DisplayText = "a",
                 Mode = Dev2DecisionMode.AND
             };
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serialize = serializer.Serialize(dev2DecisionStack);
-            var condition = new DsfFlowSwitchActivity()
+            var condition = new DsfFlowSwitchActivity
             {
                 ExpressionText = serialize
             };
             var value = new DsfSwitch(condition)
             {
                 Switch = "bbb",
-                Switches = new Dictionary<string, IDev2Activity>()
+                Switches = new Dictionary<string, IDev2Activity>
                 {
                     {"a", new DsfCalculateActivity() },
-                    {"b", new DsfCalculateActivity() },
+                    {"b", new DsfCalculateActivity() }
                 }
             };
-            var assignStep = new FlowStep()
+            var assignStep = new FlowStep
             {
                 Action = value
             };
             node.Setup(p => p.Activity).Returns(value);
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict);
             Assert.IsNotNull(completeConflict.Children);
@@ -343,11 +347,11 @@ namespace Dev2.Core.Tests.Merge
             var contextualResource = new Mock<IContextualResourceModel>();
 
             node.Setup(p => p.Activity).Returns(new DsfCalculateActivity());
+            var wfDesignerVm = new Mock<IWorkflowDesignerViewModel>();
             //------------Execute Test---------------------------
-            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object);
+            var completeConflict = new ConflictModelFactory(contextualResource.Object, node.Object, wfDesignerVm.Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(completeConflict.Model);
-
         }
     }
 }
