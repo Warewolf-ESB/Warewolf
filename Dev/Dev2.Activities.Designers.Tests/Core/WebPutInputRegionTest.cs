@@ -91,7 +91,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("WebInputRegion_RestoreFromPrevios")]
-        public void WebInputRegion_RestoreFromPrevios_Restore_ExpectValuesChanged()
+        public void WebPutInputRegion_RestoreFromPrevios_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
@@ -102,7 +102,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPutActivity()));
             var region = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebPutRegionClone();
+            var regionToRestore = new WebPutInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
             regionToRestore.IsEnabled = true;
             regionToRestore.QueryString = "blob";
             regionToRestore.Headers = new ObservableCollection<INameValue>{new NameValue("a","b")};

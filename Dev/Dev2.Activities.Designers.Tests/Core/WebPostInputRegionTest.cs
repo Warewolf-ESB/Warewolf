@@ -64,8 +64,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WebInputRegion_RestoreFromPrevios")]
-        public void WebInputRegion_RestoreFromPrevios_Restore_ExpectValuesChanged()
+        [TestCategory("WebInputRegion_RestoreFromPrevious")]
+        public void WebPostInputRegion_RestoreFromPrevious_Restore_ExpectValuesChanged()
         {
             //------------Setup for test--------------------------
             var id = Guid.NewGuid();
@@ -75,12 +75,10 @@ namespace Dev2.Activities.Designers.Tests.Core
             mod.Setup(a => a.RetrieveSources()).Returns(new List<IWebServiceSource>());
             var srcreg = new WebSourceRegion(mod.Object, ModelItemUtils.CreateModelItem(new DsfWebPostActivity()));
             var region = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
-            var regionToRestore = new WebPostInputRegionClone
-            {
-                IsEnabled = true,
-                QueryString = "blob",
-                Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") }
-            };
+            var regionToRestore = new WebPostInputRegion(ModelItemUtils.CreateModelItem(act), srcreg);
+            regionToRestore.IsEnabled = true;
+            regionToRestore.QueryString = "blob";
+            regionToRestore.Headers = new ObservableCollection<INameValue> { new NameValue("a", "b") };
             //------------Execute Test---------------------------
             region.RestoreRegion(regionToRestore as IToolRegion);
             //------------Assert Results-------------------------
@@ -92,7 +90,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
-        [TestCategory("WebInputRegion_RestoreFromPrevios")]
+        [TestCategory("WebInputRegion_RestoreFromPrevious")]
         public void WebInputRegion_SrcChanged_UpdateValues()
         {
             //------------Setup for test--------------------------

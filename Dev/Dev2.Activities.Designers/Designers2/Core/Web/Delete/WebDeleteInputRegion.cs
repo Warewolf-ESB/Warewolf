@@ -174,7 +174,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
             {
                 headers2.Add(new NameValue(nameValue.Name, nameValue.Value));
             }
-            return new WebDeleteRegionClone()
+            return new WebDeleteInputRegion()
             {
                 Headers = headers2,
                 QueryString = QueryString,
@@ -185,7 +185,7 @@ namespace Dev2.Activities.Designers2.Core.Web.Delete
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            if (toRestore is WebDeleteRegionClone region)
+            if (toRestore is WebDeleteInputRegion region)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
