@@ -3078,7 +3078,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return;
             }
 
-            //var step = model.ModelItem?.GetCurrentValue();
             var step = model.FlowNode;
             switch (step)
             {
@@ -3143,7 +3142,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         ModelItem GetItemFromNodeCollection(string uniqueId) => GetDecisionFromNodeCollection(uniqueId) ?? GetSwitchFromNodeCollection(uniqueId) ?? GetRegularActivityFromNodeCollection(uniqueId);
-
 
         bool SetNextForSwitch(string sourceUniqueId, string destinationUniqueId, string key)
         {
@@ -3257,7 +3255,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         private ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> _allNodes;
         IServiceDifferenceParser _parser = CustomContainer.Get<IServiceDifferenceParser>();
-        private bool _isPaste;
+        protected bool _isPaste;
 
         public void AddItem(IMergeToolModel model)
         {
@@ -3314,9 +3312,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         private void SetShapeLocation(ModelItem modelItem, Point location)
         {
             var service = _workflowDesignerHelper.GetService<ViewStateService>(_wd);
-            //ViewStateService service = _wd.Context.Services.GetService<ViewStateService>();
-            //var modelItem = ModelItemUtils.CreateModelItem(flowNode);
-
             service.RemoveViewState(modelItem, "ShapeLocation");
             service.StoreViewState(modelItem, "ShapeLocation", location);
         }

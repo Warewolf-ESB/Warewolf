@@ -92,5 +92,11 @@ namespace Dev2.ViewModels.Merge
             hashCode = (hashCode * 397) ^ (DestinationUniqueId != null ? DestinationUniqueId.GetHashCode() : 0);
             return hashCode;
         }
+
+        public void DisableEvents()
+        {
+            IsArmSelectionAllowed = false;
+            IsChecked = false;
+        }
     }
 }
