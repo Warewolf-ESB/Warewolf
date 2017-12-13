@@ -197,7 +197,7 @@ namespace Dev2.Studio
         {
             if (e.Args.Any(p => p.Contains("-merge")))
             {
-                mergeFactory.OpenMergeWindow(_shellViewModel, "", e);
+                mergeFactory.OpenMergeWindow(_shellViewModel, e);
             }
             else
             {

@@ -5,6 +5,6 @@ namespace Dev2.Factory
 {
     public interface IMergeFactory
     {
-        void OpenMergeWindow(IShellViewModel shellViewModel, string item, WarwolfStartupEventArgs args);
+        void OpenMergeWindow(IShellViewModel shellViewModel, WarwolfStartupEventArgs args);
     }
 }
