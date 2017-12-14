@@ -47,7 +47,7 @@ namespace Dev2.Activities.Specs.Permissions
             var securitySpecsUser = GetSecuritySpecsUser();
             var securitySpecsPassword = GetSecuritySpecsPassword();
             var userGroup = GetUserGroup();
-            AppSettings.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
+            AppUsageStats.LocalHost = $"http://{Environment.MachineName.ToLowerInvariant()}:3142";
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             while (!environmentModel.IsConnected)
@@ -66,7 +66,7 @@ namespace Dev2.Activities.Specs.Permissions
             environmentModel.Disconnect();
             FeatureContext.Current.Add("environment", environmentModel);
 
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, securitySpecsPassword)) { Name = "Other Connection" };
             try
             {
                 reconnectModel.Connect();
@@ -209,7 +209,7 @@ namespace Dev2.Activities.Specs.Permissions
         {
             var securitySpecsUser = GetSecuritySpecsUser();
 
-            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppSettings.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
+            var reconnectModel = new Server(Guid.NewGuid(), new ServerProxy(AppUsageStats.LocalHost, securitySpecsUser, GetSecuritySpecsPassword())) { Name = "Other Connection" };
             try
             {
                 
@@ -352,7 +352,7 @@ namespace Dev2.Activities.Specs.Permissions
         [Given(@"I have a server ""(.*)""")]
         public void GivenIHaveAServer(string serverName)
         {
-            AppSettings.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
+            AppUsageStats.LocalHost = string.Format("http://{0}:3142", Environment.MachineName.ToLowerInvariant());
             var environmentModel = ServerRepository.Instance.Source;
             scenarioContext.Add("environment", environmentModel);
         }
