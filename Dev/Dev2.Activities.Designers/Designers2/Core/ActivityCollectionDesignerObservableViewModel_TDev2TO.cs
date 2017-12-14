@@ -232,7 +232,7 @@ namespace Dev2.Activities.Designers2.Core
         public ObservableCollection<IDev2TOFn> Collection
         {
             get => _collection;
-            protected set => _collection = value;
+            set => _collection = value;
         }
 
         void AddDto(int indexNumber, string initializeWith = "")
