@@ -48,7 +48,7 @@ namespace Dev2.Providers.Validation.Rules
 
         public override IActionableErrorInfo Check()
         {
-            return _check();
+            return _check?.Invoke();
         }
     }
 }

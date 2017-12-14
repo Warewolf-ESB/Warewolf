@@ -962,7 +962,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     var actual = item as DebugStateTreeViewItemViewModel;
                     if (actual.Content.StateType != StateType.End)
                     {
-                        processItem(item);
+                        processItem?.Invoke(item);
                         IterateItems(item.Children, processItem);
                     }
 

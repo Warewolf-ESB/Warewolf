@@ -343,7 +343,7 @@ namespace Dev2.Activities.Designers2.Core
             startIndex = Math.Max(startIndex, 0);
             for (var i = startIndex; i < Collection.Count; i++)
             {
-                processModelItem(Collection[i]);
+                processModelItem?.Invoke(Collection[i]);
             }
         }
 

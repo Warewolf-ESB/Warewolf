@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "2012/11/28 02:12:41 AM";
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
@@ -73,11 +73,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyDateRecordSet().Date]]");
 
-            IDSFDataObject result = ExecuteProcess();
-            DateTime firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
-            string firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
-            DateTime secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
-            string secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var result = ExecuteProcess();
+            var firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
+            var firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
+            var secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
             GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out IList<string> actual, out string error);
             // remove test datalist ;)
             var firstResult = actual[2];
@@ -100,7 +100,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 327
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             // remove test datalist ;)
@@ -116,7 +116,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
 
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -128,9 +128,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
+            var actualdt = DateTime.Parse(actual, CultureInfo.InvariantCulture);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             if (actual == "0")
             {
@@ -177,7 +177,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL, currDL, "", "", "FFFF", "Seconds", 10, "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             if (actual == "0")
             {
@@ -231,7 +231,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var allCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
             foreach (var culture in allCultures)
             {
-                List<string> cultures = new List<string>();
+                var cultures = new List<string>();
                 foreach (var format in culture.DateTimeFormat.GetAllDateTimePatterns())
                 {
                     cultures.Add(format);
@@ -251,7 +251,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                  , 10
                                  , "[[MyTestResult]]");
 
-                    IDSFDataObject result = ExecuteProcess();
+                    var result = ExecuteProcess();
                     var a = now.ToString(item);
                     GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
                     total++;
@@ -263,8 +263,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                         var asDate = DateTime.ParseExact(actual, item, culture, DateTimeStyles.AdjustToUniversal);
 
 
-                        LocalDate localDate = new LocalDate(now.Year, now.Month, now.Day);
-                        LocalDate localDate1 = new LocalDate(asDate.Year, asDate.Month, asDate.Day);
+                        var localDate = new LocalDate(now.Year, now.Month, now.Day);
+                        var localDate1 = new LocalDate(asDate.Year, asDate.Month, asDate.Day);
                         var period = Period.Between(localDate, localDate1);
 
                         Assert.IsTrue(hasErrors);

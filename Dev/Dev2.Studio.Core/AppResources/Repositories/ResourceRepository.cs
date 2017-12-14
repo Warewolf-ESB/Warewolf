@@ -557,7 +557,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         ExecuteMessage SaveResource(IServer targetEnvironment, StringBuilder resourceDefinition, Guid workspaceId, string savePath)
         {
-            var comsController = GetCommunicationController("SaveResourceService");
+            var comsController = GetCommunicationController?.Invoke("SaveResourceService");
             var message = new CompressedExecuteMessage();
             message.SetMessage(resourceDefinition.ToString());
             var ser = new Dev2JsonSerializer();
@@ -571,7 +571,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public TestSaveResult SaveTests(IResourceModel resource, List<IServiceTestModelTO> tests)
         {
-            var comsController = GetCommunicationController("SaveTests");
+            var comsController = GetCommunicationController?.Invoke("SaveTests");
             var serializer = new Dev2JsonSerializer();
             var message = new CompressedExecuteMessage();
             message.SetMessage(serializer.Serialize(tests));
@@ -610,7 +610,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public void ReloadResourceTests()
         {
-            var comsController = GetCommunicationController("ReloadTestsService");
+            var comsController = GetCommunicationController?.Invoke("ReloadTestsService");
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             var serializer = new Dev2JsonSerializer();
             var message = executeCommand.GetDecompressedMessage();
@@ -625,7 +625,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         {
             var serializer = new Dev2JsonSerializer();
             var serializeToBuilder = serializer.SerializeToBuilder(ignoreList);
-            var comsController = GetCommunicationController("DeleteAllTestsService");
+            var comsController = GetCommunicationController?.Invoke("DeleteAllTestsService");
             comsController.AddPayloadArgument("excludeList", serializeToBuilder);
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             var message = executeCommand.GetDecompressedMessage();
@@ -637,7 +637,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public List<IServiceTestModelTO> LoadResourceTests(Guid resourceId)
         {
-            var comsController = GetCommunicationController("FetchTests");
+            var comsController = GetCommunicationController?.Invoke("FetchTests");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             var serializer = new Dev2JsonSerializer();
@@ -657,7 +657,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
 
         public List<IServiceTestModelTO> LoadResourceTestsForDeploy(Guid resourceId)
         {
-            var comsController = GetCommunicationController("FetchTestsForDeploy");
+            var comsController = GetCommunicationController?.Invoke("FetchTestsForDeploy");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
             var executeCommand = comsController.ExecuteCommand<CompressedExecuteMessage>(_server.Connection, GlobalConstants.ServerWorkspaceID);
             var serializer = new Dev2JsonSerializer();
@@ -676,7 +676,7 @@ namespace Dev2.Studio.Core.AppResources.Repositories
         }
         public void DeleteResourceTest(Guid resourceId, string testName)
         {
-            var comsController = GetCommunicationController("DeleteTest");
+            var comsController = GetCommunicationController?.Invoke("DeleteTest");
             comsController.AddPayloadArgument("resourceID", resourceId.ToString());
             comsController.AddPayloadArgument("testName", testName);
             if (string.IsNullOrEmpty(testName))

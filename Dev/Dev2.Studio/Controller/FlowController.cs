@@ -135,7 +135,7 @@ namespace Dev2.Studio.Controller
                     ActivityHelper.SetDisplayName(args.ModelItem, resultSwitch); // MUST use args.ModelItem otherwise it won't be visible!
                     return expr;
                 }
-                catch
+                catch (Exception ex)
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Controller
                     var ds = JsonConvert.DeserializeObject<Dev2Switch>(_callBackHandler.ModelData);
                     ActivityHelper.SetSwitchKeyProperty(ds, args.ModelItem);
                 }
-                catch
+                catch (Exception ex)
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,
@@ -286,7 +286,7 @@ namespace Dev2.Studio.Controller
                         }
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     PopupController.Show(GlobalConstants.SwitchWizardErrorString,
                                           GlobalConstants.SwitchWizardErrorHeading, MessageBoxButton.OK,

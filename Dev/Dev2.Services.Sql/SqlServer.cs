@@ -188,17 +188,17 @@ namespace Dev2.Services.Sql
 
                         if (IsStoredProcedure(row, procedureTypeColumn))
                         {
-                            procedureProcessor(sqlCommand, parameters, helpText, fullProcedureName);
+                            procedureProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
                         }
                         else if (IsFunction(row, procedureTypeColumn))
                         {
-                            functionProcessor(sqlCommand, parameters, helpText, fullProcedureName);
+                            functionProcessor?.Invoke(sqlCommand, parameters, helpText, fullProcedureName);
                         }
                         else
                         {
                             if (IsTableValueFunction(row, procedureTypeColumn))
                             {
-                                functionProcessor(sqlCommand, parameters, helpText,
+                                functionProcessor?.Invoke(sqlCommand, parameters, helpText,
                                     CreateTVFCommand(fullProcedureName, parameters));
                             }
                         }

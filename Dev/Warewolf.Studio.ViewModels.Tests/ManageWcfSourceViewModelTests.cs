@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                                                 .Callback<Func<IWcfServerSource>, Action<IWcfServerSource>>((func, action) =>
                                                 {
                                                     var wcfSource = func.Invoke();
-                                                    action(wcfSource);
+                                                    action?.Invoke(wcfSource);
                                                 });
             var manageWcfSourceViewModel = new ManageWcfSourceViewModel(updateManager.Object, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), sourceModel, asyncWorker.Object, new Mock<IServer>().Object);
             return manageWcfSourceViewModel;

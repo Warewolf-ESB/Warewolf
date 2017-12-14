@@ -204,7 +204,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             var completeConflict = new ToolConflict();
-            ToolConflict value = new ToolConflict();
+            var value = new ToolConflict();
             completeConflict.Children.AddFirst(value);
             //------------Execute Test---------------------------
             var result = completeConflict.GetNextConflict();
@@ -219,8 +219,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             var completeConflict = new ToolConflict();
-            ToolConflict value = new ToolConflict();
-            ToolConflict value1 = new ToolConflict();
+            var value = new ToolConflict();
+            var value1 = new ToolConflict();
             completeConflict.Children.AddFirst(value);
             value.Children.AddFirst(value1);
             //------------Execute Test---------------------------

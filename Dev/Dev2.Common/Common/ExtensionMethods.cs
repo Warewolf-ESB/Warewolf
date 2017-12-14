@@ -104,7 +104,7 @@ namespace Dev2.Common.Common
                     return XElement.Load(result);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 using (Stream result = sb.EncodeStream(Encoding.Unicode))
                 {
@@ -132,7 +132,7 @@ namespace Dev2.Common.Common
                 result.Position = 0;
                 return result;
             }
-            catch
+            catch (Exception ex)
             {
                 var result = sb.EncodeStream(Encoding.Unicode);
                 XElement.Load(result);
@@ -379,12 +379,7 @@ namespace Dev2.Common.Common
             var child = elem.Element(name);
             return child?.ToString() ?? string.Empty;
         }
-        /// <summary>
-        /// https://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs,cfaa9abd8b214ecb
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable"></param>
-        /// <returns></returns>
+
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
@@ -418,7 +413,7 @@ namespace Dev2.Common.Common
         public static bool IsValidJson(this string strInput)
         {
             var trimmedInput = strInput.Trim();
-            if (trimmedInput.StartsWith("{") && trimmedInput.EndsWith("}") || trimmedInput.StartsWith("[") && trimmedInput.EndsWith("]"))
+            if (trimmedInput.StartsWith("{") && trimmedInput.EndsWith("}") || trimmedInput.StartsWith("[") && trimmedInput.EndsWith("]", StringComparison.CurrentCulture))
             {
                 try
                 {

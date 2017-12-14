@@ -50,7 +50,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                     
                 }
             });
@@ -75,7 +75,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                   
                 }
             }, cancellationTokenSource.Token);
@@ -123,7 +123,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                    
                 }
             });
@@ -157,7 +157,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                   
                 }
             }, cancellationTokenSource.Token);

@@ -60,7 +60,7 @@ namespace Dev2.Core.Tests
             dataListViewModel1.ComplexObjectCollection.Clear();
             dataListViewModel.ComplexObjectCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
             carRecordset.Input = true;
@@ -97,7 +97,7 @@ namespace Dev2.Core.Tests
             dataListViewModel1.ComplexObjectCollection.Clear();
             dataListViewModel.ComplexObjectCollection.Clear();
 
-            IRecordSetItemModel carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
+            var carRecordset = DataListItemModelFactory.CreateRecordSetItemModel("Car", "A recordset of information about a car");
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Make", "Make of vehicle", carRecordset));
             carRecordset.Children.Add(DataListItemModelFactory.CreateRecordSetFieldItemModel("Model", "Model of vehicle", carRecordset));
             carRecordset.Input = true;
