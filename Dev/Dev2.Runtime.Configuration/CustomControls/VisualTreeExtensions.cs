@@ -36,8 +36,8 @@ namespace System.Windows.Controls
         {
             Debug.Assert(parent != null, ErrorResource.ParentCannotBeNull);
 
-            int childCount = VisualTreeHelper.GetChildrenCount(parent);
-            for(int counter = 0; counter < childCount; counter++)
+            var childCount = VisualTreeHelper.GetChildrenCount(parent);
+            for (int counter = 0; counter < childCount; counter++)
             {
                 yield return VisualTreeHelper.GetChild(parent, counter);
             }

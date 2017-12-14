@@ -278,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             //Create a DateTimeTO using the DateTimeConverterFactory and send through the properties of this activity.DONE
-            int tmpTimeAmount = 0;
+            var tmpTimeAmount = 0;
             if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
                 if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
@@ -389,7 +389,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (DateTime != null ? DateTime.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputFormat != null ? OutputFormat.GetHashCode() : 0);

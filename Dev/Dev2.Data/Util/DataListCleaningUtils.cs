@@ -33,7 +33,7 @@ namespace Dev2.DataList.Contract
                     {
                         if(makePart.Child != null)
                         {
-                            int indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);
+                            var indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);
                             var tmpresult = makePart.Payload.Insert(indexOfBracket + 1, DataListUtil.AddBracketsToValueIfNotExist(makePart.Child.Payload));
                             allRegions.Add(string.Concat("[[", tmpresult, "]]"));
                         }

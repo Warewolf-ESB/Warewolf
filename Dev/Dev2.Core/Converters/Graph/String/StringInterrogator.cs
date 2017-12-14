@@ -89,7 +89,7 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         bool IsXml(string data)
         {
-            bool result = true;
+            var result = true;
 
             try
             {
@@ -108,7 +108,7 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         bool IsJson(string data)
         {
-            bool result = true;
+            var result = true;
 
             try
             {

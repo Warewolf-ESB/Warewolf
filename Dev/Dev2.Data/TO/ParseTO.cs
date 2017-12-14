@@ -39,7 +39,7 @@ namespace Dev2.Data.TO
         public bool IsRecordSet {
 
             get {
-                bool result = Payload != null && Payload.Contains("(");
+                var result = Payload != null && Payload.Contains("(");
 
                 return result;
             }

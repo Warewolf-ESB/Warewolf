@@ -709,7 +709,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SourceString != null ? SourceString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _indexCounter;
                 hashCode = (hashCode * 397) ^ (_resultsCollection != null ? _resultsCollection.GetHashCode() : 0);

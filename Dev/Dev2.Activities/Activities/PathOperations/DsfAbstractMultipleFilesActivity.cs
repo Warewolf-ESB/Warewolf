@@ -309,7 +309,7 @@ namespace Dev2.Activities.PathOperations
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (DestinationPassword != null ? DestinationPassword.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);

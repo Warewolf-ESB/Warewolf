@@ -105,7 +105,7 @@ namespace Dev2.Activities
             var errors = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
             var parser = new XPathParser();
-            int i = 0;
+            var i = 0;
 
             InitializeDebug(dataObject);
             try
@@ -511,7 +511,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ResultsCollection != null ? ResultsCollection.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SourceString != null ? SourceString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _isDebugMode.GetHashCode();

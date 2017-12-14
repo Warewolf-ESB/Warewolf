@@ -180,7 +180,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);

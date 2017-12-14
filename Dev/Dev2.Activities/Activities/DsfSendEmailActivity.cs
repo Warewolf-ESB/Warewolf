@@ -198,7 +198,7 @@ namespace Dev2.Activities
             _dataObject = dataObject;
 
             var allErrors = new ErrorResultTO();
-            int indexToUpsertTo = 0;
+            var indexToUpsertTo = 0;
 
             InitializeDebug(dataObject);
             try
@@ -584,7 +584,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_emailSender != null ? _emailSender.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_dataObject != null ? _dataObject.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_password != null ? _password.GetHashCode() : 0);

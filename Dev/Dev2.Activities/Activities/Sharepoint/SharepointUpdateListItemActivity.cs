@@ -277,7 +277,7 @@ namespace Dev2.Activities.Sharepoint
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_sharepointUtils != null ? _sharepointUtils.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _indexCounter;
                 hashCode = (hashCode * 397) ^ (FilterCriteria != null ? FilterCriteria.GetHashCode() : 0);

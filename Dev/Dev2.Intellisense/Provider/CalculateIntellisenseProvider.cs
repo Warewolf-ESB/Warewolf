@@ -159,9 +159,9 @@ namespace Dev2.Studio.InterfaceImplementors
             if(value != null)
             {
                 var text = (string)value;
-                bool allowUserCalculateMode = (string)parameter == "True";
+                var allowUserCalculateMode = (string)parameter == "True";
 
-                if(allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0)
                 {
                     if(text.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
                     {
@@ -183,9 +183,9 @@ namespace Dev2.Studio.InterfaceImplementors
             if(value != null)
             {
                 var text = (string)value;
-                bool allowUserCalculateMode = (string)parameter == "True";
+                var allowUserCalculateMode = (string)parameter == "True";
 
-                if(allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0)
                 {
                     if(text[0] == '=')
                     {

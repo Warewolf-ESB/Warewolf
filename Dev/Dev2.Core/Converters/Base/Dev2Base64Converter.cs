@@ -18,7 +18,7 @@ namespace Dev2.Converters
     {
         public bool IsType(string payload)
         {
-            bool result = false;
+            var result = false;
             try
             {
                 

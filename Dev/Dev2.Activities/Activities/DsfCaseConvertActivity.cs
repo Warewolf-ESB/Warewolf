@@ -234,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
                     if (listOfValidRows.Count > 0)
                     {
-                        int startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
+                        var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
                         foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
@@ -259,7 +259,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (mic != null)
                 {
-                    int startIndex = 0;
+                    var startIndex = 0;
                     var firstRowConvertType = ConvertCollection[0].ConvertType;
                     mic.Clear();
                     foreach (string s in listToAdd)

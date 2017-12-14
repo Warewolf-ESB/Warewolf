@@ -26,7 +26,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
-            bool result = isError.Invoke(cols);
+            var result = isError.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -41,7 +41,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "";
             //------------Execute Test---------------------------
-            bool result = isError.Invoke(cols);
+            var result = isError.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

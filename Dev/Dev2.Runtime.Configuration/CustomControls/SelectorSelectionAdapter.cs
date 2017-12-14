@@ -123,7 +123,7 @@ namespace System.Windows.Controls
         {
             if(SelectorControl != null)
             {
-                int index = SelectorControl.SelectedIndex;
+                var index = SelectorControl.SelectedIndex;
                 if (index >= 0)
                 {
                     SelectorControl.SelectedIndex--;

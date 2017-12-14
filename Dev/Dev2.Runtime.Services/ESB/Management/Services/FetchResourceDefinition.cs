@@ -81,7 +81,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 string serviceId = null;
-                bool prepairForDeployment = false;
+                var prepairForDeployment = false;
                 values.TryGetValue(@"ResourceID", out StringBuilder tmp);
 
                 if (tmp != null)

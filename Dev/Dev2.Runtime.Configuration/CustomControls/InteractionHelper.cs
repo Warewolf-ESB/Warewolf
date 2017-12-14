@@ -118,7 +118,7 @@ namespace System.Windows.Controls
 
         void OnIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            bool enabled = (bool)e.NewValue;
+            var enabled = (bool)e.NewValue;
             if (!enabled)
             {
                 IsPressed = false;

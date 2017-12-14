@@ -249,7 +249,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedResourcePath = "ResourcePath";
             var expectedHeader = expectedResourceName + " *";
             var expectedHostName = "HostName";
-            int expectedPort = 1234;
+            var expectedPort = 1234;
             var expectedUserName = "UserName";
             var expectedPassword = "Password";
             var expectedVirtualHost = "VirtualHost";
@@ -511,7 +511,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedHostName = "HostName";
-            int expectedPort = 1234;
+            var expectedPort = 1234;
             var expectedUserName = "UserName";
             var expectedPassword = "Password";
             var expectedVirtualHost = "VirtualHost";
@@ -544,7 +544,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             //arrange
             var expectedHostName = "HostName";
-            int expectedPort = 1234;
+            var expectedPort = 1234;
             var expectedUserName = "UserName";
             var expectedPassword = "Password";
             var expectedVirtualHost = "VirtualHost";
@@ -579,7 +579,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var expectedResourcePath = "ResourcePath";
             var expectedHeader = expectedResourceName + " *";
             var expectedHostName = "HostName";
-            int expectedPort = 1234;
+            var expectedPort = 1234;
             var expectedUserName = "UserName";
             var expectedPassword = "Password";
             var expectedVirtualHost = "VirtualHost";

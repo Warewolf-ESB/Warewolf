@@ -102,7 +102,7 @@ namespace Dev2.Tests
         {
             const double MoreThanMaxInt = (double)int.MaxValue + 1;
             const double LessThanMaxDouble = double.MaxValue - 1;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MoreThanMaxInt, LessThanMaxDouble));
+            var result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MoreThanMaxInt, LessThanMaxDouble));
             Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MoreThanMaxInt, "Dev2Random generated a number below the specified range");
         }
@@ -112,7 +112,7 @@ namespace Dev2.Tests
         {
             const double LessThanMinInt = (double)int.MinValue - 1;
             const double LessThanMaxDouble = double.MaxValue - 1;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, LessThanMinInt, LessThanMaxDouble));
+            var result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, LessThanMinInt, LessThanMaxDouble));
             Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= LessThanMinInt, "Dev2Random generated a number below the specified range");
         }
@@ -144,7 +144,7 @@ namespace Dev2.Tests
         {
             const double MinDouble = 0d;
             const double MaxDouble = double.MaxValue;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
+            var result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
             Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
         }

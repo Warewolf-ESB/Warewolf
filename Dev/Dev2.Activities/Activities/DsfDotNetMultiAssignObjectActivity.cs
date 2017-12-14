@@ -94,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!errors.HasErrors())
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (AssignObjectDTO t in FieldsCollection)
                     {
                         try

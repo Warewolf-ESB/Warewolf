@@ -92,7 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!errors.HasErrors())
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (ActivityDTO t in FieldsCollection)
                     {
                         try

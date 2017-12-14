@@ -447,7 +447,7 @@ namespace Dev2.Core.Tests.Environments
             var c1 = CreateMockConnection();
             var e1 = new Server(Guid.NewGuid(), c1.Object);
             var source = new Mock<IServer>();
-            bool _eventFired = false;
+            var _eventFired = false;
             var repo = new TestServerRespository(source.Object);
             repo.ItemAdded += (sender, args) =>
             {

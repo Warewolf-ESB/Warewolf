@@ -76,11 +76,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
             var fetchErrors = result.Environment.FetchErrors();
-            bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
+            var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
             var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
@@ -542,7 +542,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             var inputFile = new FileInfo(inputFilePath);
             var outputFile = new FileInfo(outputFilePath);
-            double compressionTimesValue = double.Parse(compressionTimes);
+            var compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
                 Math.Round(inputFile.Length / (double)outputFile.Length, 1));

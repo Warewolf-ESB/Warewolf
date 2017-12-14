@@ -34,9 +34,9 @@ namespace Dev2.Data.Binary_Objects
 
         public int GetMaxIndex()
         {
-            int result = -1;
+            var result = -1;
 
-            if(Indexes != null)
+            if (Indexes != null)
             {
                 result = Indexes.Max();
             }
@@ -46,8 +46,8 @@ namespace Dev2.Data.Binary_Objects
 
         public int Count()
         {
-            int result = -1;
-            if(Indexes != null)
+            var result = -1;
+            if (Indexes != null)
             {
                 result = Indexes.Count;
             }

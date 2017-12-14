@@ -45,8 +45,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestCategory("OutputsRegion_Ctor")]
         public void ManageWebServiceInputViewModel_TestAction()
         {
-            bool called = false;
-            bool calledOk = false;
+            var called = false;
+            var calledOk = false;
 
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity()

@@ -582,7 +582,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             {
                 var output = dc.OutputColumn;
                 var inputColumn = dc.InputColumn;
-                bool identityChecked = false;
+                var identityChecked = false;
 
 
                 if (output.IsAutoIncrement)

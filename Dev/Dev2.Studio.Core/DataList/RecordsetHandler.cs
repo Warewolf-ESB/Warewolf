@@ -28,7 +28,7 @@ namespace Dev2.Studio.Core.DataList
         public void AddRecordsetNamesIfMissing()
         {
             var recsetNum = _vm.RecsetCollection?.Count ?? 0;
-            int recsetCount = 0;
+            var recsetCount = 0;
 
             while (recsetCount < recsetNum)
             {
@@ -37,8 +37,8 @@ namespace Dev2.Studio.Core.DataList
                 if (!string.IsNullOrWhiteSpace(recset?.DisplayName))
                 {
                     FixNamingForRecset(recset);
-                    int childrenNum = recset.Children.Count;
-                    int childrenCount = 0;
+                    var childrenNum = recset.Children.Count;
+                    var childrenCount = 0;
 
                     while (childrenCount < childrenNum)
                     {
@@ -50,7 +50,7 @@ namespace Dev2.Studio.Core.DataList
 
                         if (!string.IsNullOrWhiteSpace(child?.DisplayName))
                         {
-                            int indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
+                            var indexOfDot = child.DisplayName.IndexOf(".", StringComparison.Ordinal);
                             if (indexOfDot > -1)
                             {
                                 var recsetName = child.DisplayName.Substring(0, indexOfDot + 1);

@@ -253,7 +253,7 @@ namespace Dev2.Util
                     return;
                 }
 
-                int i = expr.IndexOf(';');
+                var i = expr.IndexOf(';');
                 var atom = i >= 0 ? expr.Substring(0, i) : expr;
                 var tail = i >= 0 ? expr.Substring(i + 1) : string.Empty;
 
@@ -363,11 +363,11 @@ namespace Dev2.Util
                     return;
                 }
 
-                int length = list.Count;
+                var length = list.Count;
                 var parts = loc.Split(Colon);
-                int start = ParseInt(parts[0]);
-                int end = ParseInt(parts[1], list.Count);
-                int step = parts.Length > 2 ? ParseInt(parts[2], 1) : 1;
+                var start = ParseInt(parts[0]);
+                var end = ParseInt(parts[1], list.Count);
+                var step = parts.Length > 2 ? ParseInt(parts[2], 1) : 1;
                 start = start < 0 ? Math.Max(0, start + length) : Math.Min(length, start);
                 end = end < 0 ? Math.Max(0, end + length) : Math.Min(length, end);
                 for (int i = start; i < end; i += step)
@@ -409,7 +409,7 @@ namespace Dev2.Util
             {
                 Debug.Assert(match != null);
 
-                int index = _subx.Add(match.Groups[1].Value);
+                var index = _subx.Add(match.Groups[1].Value);
                 return "[#" + index.ToString(CultureInfo.InvariantCulture) + "]";
             }
 
@@ -417,7 +417,7 @@ namespace Dev2.Util
             {
                 Debug.Assert(match != null);
 
-                int index = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
+                var index = int.Parse(match.Groups[1].Value, CultureInfo.InvariantCulture);
                 return (string)_subx[index];
             }
         }

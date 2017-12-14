@@ -240,7 +240,7 @@ namespace Dev2.Activities.Scripting
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) ScriptType;

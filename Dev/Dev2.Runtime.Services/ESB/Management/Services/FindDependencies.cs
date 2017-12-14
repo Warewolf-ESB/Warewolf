@@ -47,7 +47,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
                 string resourceId = null;
                 string dependsOnMeString = null;
-                bool dependsOnMe = false;
+                var dependsOnMe = false;
                 values.TryGetValue("ResourceId", out StringBuilder tmp);
                 if (tmp != null)
                 {

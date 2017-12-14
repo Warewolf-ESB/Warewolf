@@ -158,7 +158,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_AssignWithFrame_Basic_ExpectAssignWithFrameReplaced()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a,  int b) =>
             {
@@ -177,7 +177,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_AssignWithFrame_ExpectNoReplacement_IfNoAlias()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a, int b) =>
             {
@@ -241,7 +241,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_EvalRecordSetIndexes_Basic_ExpectAssignWithFrameReplaced()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a, int b) =>
             {
@@ -260,7 +260,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_EvalRecordSetIndexes()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a, int b) =>
             {

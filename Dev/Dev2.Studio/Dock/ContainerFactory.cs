@@ -565,7 +565,7 @@ namespace Dev2.Studio.Dock
                     OnItemRemovedImpl(container, oldItem);
                 }
 
-                int index = 0;
+                var index = 0;
                 foreach (object item in _currentView)
                 {
 

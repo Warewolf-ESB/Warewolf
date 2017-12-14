@@ -37,10 +37,10 @@ namespace Dev2.Runtime.ServiceModel.Utils
             
             var rsFields = new List<RecordsetField>(theService.Recordset.Fields);
             #pragma warning disable 219
-            int recordsetIndex = 0;
-            #pragma warning restore 219
+            var recordsetIndex = 0;
+#pragma warning restore 219
 
-            foreach(var path in outputsToMap)
+            foreach (var path in outputsToMap)
             {
                 // Remove bogus names and dots
                 var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace("DocumentElement","");
@@ -91,7 +91,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
 
             var rsFields = new List<RecordsetField>(theService.Recordset.Fields);
 #pragma warning disable 219
-            int recordsetIndex = 0;
+            var recordsetIndex = 0;
 #pragma warning restore 219
 
             foreach (var path in outputsToMap)

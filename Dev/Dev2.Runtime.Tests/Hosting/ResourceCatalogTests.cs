@@ -2169,7 +2169,7 @@ namespace Dev2.Tests.Runtime.Hosting
             lock (SyncRoot)
             {
                 var result = new List<IResource>();
-                int count = 0;
+                var count = 0;
                 foreach (var resourceName in resourceNames)
                 {
                     var xml = XmlResource.Fetch(resourceName);

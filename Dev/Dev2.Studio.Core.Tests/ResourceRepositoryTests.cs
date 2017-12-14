@@ -193,7 +193,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
@@ -225,7 +225,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.Load();
-            int resources = _repo.All().Count;
+            var resources = _repo.All().Count;
             //Assert
             Assert.IsTrue(resources.Equals(1));
         }
@@ -239,7 +239,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var conn = SetupConnection();
 
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                     {
@@ -282,7 +282,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
@@ -320,7 +320,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
@@ -352,7 +352,7 @@ namespace BusinessDesignStudio.Unit.Tests
             resourceModel.Setup(model => model.ToServiceDefinition()).Returns(new StringBuilder("SomeXaml"));
             _repo.Save(resourceModel.Object);
             _repo.ForceLoad();
-            int resources = _repo.All().Count;
+            var resources = _repo.All().Count;
             //Assert
             Assert.IsTrue(resources.Equals(2));
             var resource = _repo.All().First();
@@ -387,7 +387,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var resourceData = BuildResourceObjectFromGuids(new[] { _resourceGuid }, "Server");
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {
@@ -472,7 +472,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _repo.Save(model.Object);
             //Assert
             var set = _repo.All();
-            int cnt = set.Count;
+            var cnt = set.Count;
 
             var setArray = set.ToArray();
             Assert.IsTrue(cnt == 1 && setArray[0].ResourceName == "NewName");
@@ -589,7 +589,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "Unsaved" };
             mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
-            int exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
             ResourceRepository.DeleteResourceFromWorkspace(myItem);
             Assert.AreEqual(exp, mockEnvironmentModel.Object.ResourceRepository.All().Count);
             var retMsg = JsonConvert.DeserializeObject<ExecuteMessage>(retVal.ToString());
@@ -826,7 +826,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource" };
             mockEnvironmentModel.Object.ResourceRepository.Add(myItem);
-            int exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var exp = mockEnvironmentModel.Object.ResourceRepository.All().Count;
             ResourceRepository.DeleteResourceFromWorkspace(myItem);
             Assert.AreEqual(exp, mockEnvironmentModel.Object.ResourceRepository.All().Count);
             var retMsg = JsonConvert.DeserializeObject<ExecuteMessage>(retVal.ToString());
@@ -893,7 +893,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource", Category = string.Empty };
             ResourceRepository.Add(myItem);
-            int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
             Assert.AreEqual(expectedCount - 1, mockEnvironmentModel.Object.ResourceRepository.All().Count);
@@ -927,7 +927,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "TestResource", Category = string.Empty };
 
             ResourceRepository.Add(myItem);
-            int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
 
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
@@ -961,7 +961,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "Unsaved 10" };
 
             ResourceRepository.Add(myItem);
-            int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
 
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
@@ -996,7 +996,7 @@ namespace BusinessDesignStudio.Unit.Tests
             var myItem = new ResourceModel(mockEnvironmentModel.Object) { ResourceName = "my resource", Category = "Unassigned" };
 
             ResourceRepository.Add(myItem);
-            int expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
+            var expectedCount = mockEnvironmentModel.Object.ResourceRepository.All().Count;
 
             mockEnvironmentModel.Object.ResourceRepository.DeleteResource(myItem);
 
@@ -1055,7 +1055,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             _repo.Save(_resourceModel.Object);
             _repo.Load();
-            int resources = _repo.All().Count(res => res.ResourceName == "Resource");
+            var resources = _repo.All().Count(res => res.ResourceName == "Resource");
             //Assert
             Assert.IsTrue(resources == 1);
 
@@ -1081,7 +1081,7 @@ namespace BusinessDesignStudio.Unit.Tests
             _environmentModel.Setup(e => e.Connection).Returns(conn.Object);
             _repo.Save(_resourceModel.Object);
             _repo.Load();
-            int resources = _repo.All().Count(res => res.ResourceName == "Resource");
+            var resources = _repo.All().Count(res => res.ResourceName == "Resource");
             //Assert
             Assert.IsTrue(resources == 1);
 
@@ -1810,7 +1810,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommandAsync(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
         {
@@ -1878,7 +1878,7 @@ namespace BusinessDesignStudio.Unit.Tests
 
             var msg = new ExecuteMessage();
             var payload = JsonConvert.SerializeObject(msg);
-            int callCnt = 0;
+            var callCnt = 0;
             conn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(() =>
                 {

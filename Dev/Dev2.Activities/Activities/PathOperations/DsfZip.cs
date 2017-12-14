@@ -217,7 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (CompressionRatio != null ? CompressionRatio.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ArchivePassword != null ? ArchivePassword.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ArchiveName != null ? ArchiveName.GetHashCode() : 0);

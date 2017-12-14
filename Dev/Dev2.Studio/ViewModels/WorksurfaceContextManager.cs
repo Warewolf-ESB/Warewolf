@@ -1402,7 +1402,7 @@ namespace Dev2.Studio.ViewModels
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e) => CloseWorkSurfaceContext(context, e, false);
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
         {
-            bool remove = true;
+            var remove = true;
             if (context != null)
             {
                 if (!context.DeleteRequested)

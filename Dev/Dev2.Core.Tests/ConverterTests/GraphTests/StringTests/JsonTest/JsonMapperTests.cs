@@ -88,7 +88,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.JsonTest
             var json = GivenPrimitiveRecordset();
             var paths = jsonMapper.Map(json);
 
-            bool condition = paths.Any(p => p.ActualPath == JsonPath.EnumerableSymbol + JsonPath.SeperatorSymbol);
+            var condition = paths.Any(p => p.ActualPath == JsonPath.EnumerableSymbol + JsonPath.SeperatorSymbol);
             Assert.IsTrue(condition);
         }
 

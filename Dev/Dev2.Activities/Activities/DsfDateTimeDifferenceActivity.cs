@@ -158,7 +158,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(ifItr);
-                int indexToUpsertTo = 1;
+                var indexToUpsertTo = 1;
                 while (colItr.HasMoreData())
                 {
                     IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
@@ -354,7 +354,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Input1 != null ? Input1.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Input2 != null ? Input2.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);

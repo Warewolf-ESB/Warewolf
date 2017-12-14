@@ -272,7 +272,7 @@ namespace Dev2.Data.PathOperations
                 using (src)
                 {
                     var payload = src.ToByteArray();
-                    int writeLen = payload.Length;
+                    var writeLen = payload.Length;
                     requestStream.Write(payload, 0, writeLen);
                 }
             }
@@ -447,7 +447,7 @@ namespace Dev2.Data.PathOperations
 
         public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
-            bool result = false;
+            var result = false;
             bool ok;
             if (args.Overwrite)
             {
@@ -615,7 +615,7 @@ namespace Dev2.Data.PathOperations
             {
                 var path = pathStack[0];
                 pathStack.RemoveAt(0);
-                bool addBack = true;
+                var addBack = true;
                 var pathFromString = ActivityIOFactory.CreatePathFromString(path, user, pass, privateKeyFile);
                 IList<IActivityIOPath> allFiles = ListFilesInDirectory(pathFromString).GroupBy(a => a.Path).Select(g => g.First()).ToList();
                 var allDirs = ListFoldersInDirectory(pathFromString);
@@ -738,7 +738,7 @@ namespace Dev2.Data.PathOperations
             var parts = GetParts(payload);
             foreach (string p in parts)
             {
-                int idx = p.LastIndexOf(@" ", StringComparison.Ordinal);
+                var idx = p.LastIndexOf(@" ", StringComparison.Ordinal);
                 if (idx > 0)
                 {
                     var part = p.Substring(idx + 1).Trim();

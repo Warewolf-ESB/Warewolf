@@ -274,7 +274,7 @@ namespace Dev2.Activities.DateAndTime
 
         IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
-            int tmpTimeAmount = 0;
+            var tmpTimeAmount = 0;
             if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
                 if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))

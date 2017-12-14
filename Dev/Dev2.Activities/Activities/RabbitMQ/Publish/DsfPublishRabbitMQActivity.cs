@@ -152,7 +152,7 @@ namespace Dev2.Activities.RabbitMQ.Publish
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ RabbitMQSourceResourceId.GetHashCode();
                 hashCode = (hashCode * 397) ^ (QueueName != null ? QueueName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
