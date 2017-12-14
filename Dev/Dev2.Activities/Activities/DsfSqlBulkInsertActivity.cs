@@ -127,7 +127,7 @@ namespace Dev2.Activities
 
             var errorResultTo = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            bool addExceptionToErrorList = true;
+            var addExceptionToErrorList = true;
             InitializeDebug(dataObject);
             try
             {
@@ -796,7 +796,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InputMappings != null ? InputMappings.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Database != null ? Database.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (TableName != null ? TableName.GetHashCode() : 0);

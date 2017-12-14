@@ -131,13 +131,13 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
+            var result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
 
         public bool CanAdd()
         {
-            bool result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
+            var result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
             return result;
         }
 

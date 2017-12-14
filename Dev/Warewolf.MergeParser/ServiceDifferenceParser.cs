@@ -102,6 +102,12 @@ namespace Warewolf.MergeParser
             {
                 return new List<ConflictTreeNode>();
             }
+            var nodes = BuildNoteItems(wd, modelService, flowchartDiff);
+            return nodes;
+        }
+
+        List<ConflictTreeNode> BuildNoteItems(WorkflowDesigner wd, ModelService modelService, Flowchart flowchartDiff)
+        {
             var idsLocations = GetIdLocations(wd, modelService);
             var nodes = new List<ConflictTreeNode>();
             var startNode = ModelItemUtils.CreateModelItem(flowchartDiff.StartNode);
@@ -113,6 +119,7 @@ namespace Warewolf.MergeParser
                 nodes.Add(startConflictNode);
                 BuildItems(idsLocations, nodes, start, startConflictNode);
             }
+
             return nodes;
         }
 
@@ -154,11 +161,6 @@ namespace Warewolf.MergeParser
                 }
                 nextNodes = newNextNodes;
             }
-        }
-
-        public ConcurrentDictionary<string, (ModelItem leftItem, ModelItem rightItem)> GetAllNodes()
-        {
-            return _flowNodes;
         }
 
         public (List<ConflictTreeNode> currentTree, List<ConflictTreeNode> diffTree) GetDifferences(IContextualResourceModel current, IContextualResourceModel difference, bool loadworkflowFromServer = true)

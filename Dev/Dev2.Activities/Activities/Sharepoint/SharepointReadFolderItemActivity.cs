@@ -153,7 +153,7 @@ namespace Dev2.Activities.Sharepoint
                             if (IsFoldersSelected)
                             {
                                 var folders = GetSharePointFolders(sharepointSource, path);
-                                int indexToUpsertTo = 1;
+                                var indexToUpsertTo = 1;
 
                                 foreach (var folder in folders)
                                 {
@@ -166,7 +166,7 @@ namespace Dev2.Activities.Sharepoint
                             if (IsFilesSelected)
                             {
                                 var files = GetSharePointFiles(sharepointSource, path);
-                                int indexToUpsertTo = 1;
+                                var indexToUpsertTo = 1;
 
                                 foreach (var file in files)
                                 {
@@ -183,7 +183,7 @@ namespace Dev2.Activities.Sharepoint
                                 folderAndPathList.AddRange(GetSharePointFiles(sharepointSource, path));
                                 folderAndPathList.AddRange(GetSharePointFolders(sharepointSource, path));
 
-                                int indexToUpsertTo = 1;
+                                var indexToUpsertTo = 1;
 
                                 foreach (var fileAndfolder in folderAndPathList)
                                 {
@@ -332,7 +332,7 @@ namespace Dev2.Activities.Sharepoint
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();

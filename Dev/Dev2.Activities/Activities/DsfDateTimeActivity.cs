@@ -110,7 +110,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -122,7 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             // Process if no errors
             try
@@ -215,19 +215,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         while(colItr.HasMoreData())
                         {
-                            IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                            var transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
                                 colItr.FetchNextValue(ifItr),
                                 colItr.FetchNextValue(ofItr),
                                 TimeModifierType,
                                 colItr.FetchNextValue(tmaItr)
                                 );
 
-                            IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
+                            var format = DateTimeConverterFactory.CreateFormatter();
                             string result;
                             string error;
                             if(format.TryFormat(transObj, out result, out error))
                             {
-                                string expression = Result;
+                                var expression = Result;
                                 dataObject.Environment.Assign(expression, result, update);
                             }
                             else
@@ -278,7 +278,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             //Create a DateTimeTO using the DateTimeConverterFactory and send through the properties of this activity.DONE
-            int tmpTimeAmount = 0;
+            var tmpTimeAmount = 0;
             if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
                 if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
@@ -389,7 +389,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (DateTime != null ? DateTime.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputFormat != null ? OutputFormat.GetHashCode() : 0);

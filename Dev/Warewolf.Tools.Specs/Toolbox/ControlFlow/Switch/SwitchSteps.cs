@@ -52,8 +52,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             var sw = new FlowSwitch<string>();
             sw.Expression = flowSwitch;
             var multiAssign = new DsfMultiAssignActivity();
-            int row = 1;
-            foreach(var variable in variableList)
+            var row = 1;
+            foreach (var variable in variableList)
             {
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;

@@ -117,7 +117,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool CanSelect()
         {
-            bool isMatched = false;
+            var isMatched = false;
 
             var explorerItemModel = SingleEnvironmentExplorerViewModel.SelectedItem;
 

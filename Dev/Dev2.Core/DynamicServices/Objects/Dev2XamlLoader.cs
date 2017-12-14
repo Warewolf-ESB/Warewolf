@@ -51,7 +51,7 @@ namespace Dev2.DynamicServices.Objects
             // End Mods
 
 
-            int generation = 0;
+            var generation = 0;
 
             using (xamlStream = xamlDefinition.EncodeForXmlDocument())
             {

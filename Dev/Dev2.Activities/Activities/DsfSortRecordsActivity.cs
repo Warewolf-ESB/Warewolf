@@ -83,8 +83,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
-                if(dataObject.IsDebugMode())
+                var descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(SortField, "Sort Field", dataObject.Environment, update);
                 }
@@ -255,7 +255,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SortField != null ? SortField.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SelectedSort != null ? SelectedSort.GetHashCode() : 0);
                 return hashCode;

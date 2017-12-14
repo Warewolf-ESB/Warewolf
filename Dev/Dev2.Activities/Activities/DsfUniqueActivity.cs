@@ -163,8 +163,8 @@ namespace Dev2.Activities
         {
             if(dataObject.IsDebugMode())
             {
-                int i = 1;
-                foreach(var field in toresultfields)
+                var i = 1;
+                foreach (var field in toresultfields)
                 {
                     
                     if(!string.IsNullOrEmpty(field))
@@ -313,7 +313,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InFields != null ? InFields.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ResultFields != null ? ResultFields.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);

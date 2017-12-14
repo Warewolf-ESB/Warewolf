@@ -35,7 +35,7 @@ namespace Dev2.Integration.Tests.Helpers
         public static string ReturnFragment(string reponseData)
         {
             const string FragmentName = "Dev2System.Fragment";
-            int datastart = reponseData.IndexOf("<" + FragmentName + ">", 0, StringComparison.Ordinal) + ("<" + FragmentName + ">").Length;
+            var datastart = reponseData.IndexOf("<" + FragmentName + ">", 0, StringComparison.Ordinal) + ("<" + FragmentName + ">").Length;
             var decodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">", StringComparison.Ordinal) - datastart);
             var fragment = decodedFragment.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
             return fragment;
@@ -177,11 +177,11 @@ namespace Dev2.Integration.Tests.Helpers
         {
             var result = string.Empty;
 
-            int start = canidate.IndexOf(startStr, StringComparison.Ordinal);
-            if(start >= 0)
+            var start = canidate.IndexOf(startStr, StringComparison.Ordinal);
+            if (start >= 0)
             {
-                int end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
-                if(end > start)
+                var end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
+                if (end > start)
                 {
                     result = canidate.Substring(start, end + endStr.Length - start);
                 }

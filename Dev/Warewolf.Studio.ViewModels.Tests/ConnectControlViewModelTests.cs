@@ -503,7 +503,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentRepository = new ServerRepository(repo);
             Assert.IsNotNull(environmentRepository);
 
-            bool passed = false;
+            var passed = false;
             mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))
                 .Callback((Guid id1,Guid id2,  IServer a) =>
                 {
@@ -776,7 +776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentRepository = new ServerRepository(repo);
             Assert.IsNotNull(environmentRepository);
 
-            bool passed = false;
+            var passed = false;
             mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))
                 .Callback((Guid id1, Guid id2, IServer a) =>
                 {

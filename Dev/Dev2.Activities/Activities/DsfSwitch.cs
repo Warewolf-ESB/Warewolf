@@ -282,7 +282,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Switch != null ? Switch.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 return hashCode;
@@ -335,7 +335,7 @@ namespace Dev2.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
-            bool hasResult = false;
+            var hasResult = false;
             if (dataObject.IsDebugMode())
             {
                 InitializeDebug(dataObject);

@@ -292,7 +292,7 @@ namespace Dev2.Runtime.Hosting
                     directory.CreateIfNotExists(folderName);
                     var parts = _filePath.GetFileName(pathForVersion).Split('_');
                     var name = string.Format("{0}_{1}_{2}", parts[1], parts[2], parts[3]);
-                    string destination = _filePath.Combine(folderName, name);
+                    var destination = _filePath.Combine(folderName, name);
                     if (!_file.Exists(destination))
                     {
                         _file.Move(pathForVersion, destination);

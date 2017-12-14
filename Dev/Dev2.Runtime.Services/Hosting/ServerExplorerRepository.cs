@@ -267,7 +267,7 @@ namespace Dev2.Runtime.Hosting
         public IExplorerItem Find(IExplorerItem item, Func<IExplorerItem, bool> predicate)
         {
 
-            if (predicate(item))
+            if (predicate?.Invoke(item) ?? default(bool))
             {
                 return item;
             }
@@ -296,7 +296,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return DeleteFolder(itemToDelete, workSpaceId);
             }
-            ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
+            var result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
             TestCatalog.DeleteAllTests(itemToDelete.ResourceId);
             if (result.Status == ExecStatus.Success)
             {

@@ -137,7 +137,7 @@ namespace Dev2.Activities.Sharepoint
 
                             var newPath = MoveFile(sharepointSource, serverPath, localPath);
 
-                            int indexToUpsertTo = 1;
+                            var indexToUpsertTo = 1;
 
                             foreach (var file in newPath)
                             {
@@ -244,7 +244,7 @@ namespace Dev2.Activities.Sharepoint
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServerInputPathFrom != null ? ServerInputPathFrom.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ServerInputPathTo != null ? ServerInputPathTo.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();

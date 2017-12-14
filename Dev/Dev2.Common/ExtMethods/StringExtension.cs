@@ -50,7 +50,7 @@ namespace Dev2.Common.ExtMethods
                 return false;
             }
 
-            bool result = IsAlphaRegex.IsMatch(payload);
+            var result = IsAlphaRegex.IsMatch(payload);
 
             return result;
         }
@@ -121,7 +121,7 @@ namespace Dev2.Common.ExtMethods
                 return false;
             }
 
-            bool result = IsEmailRegex.IsMatch(payload);
+            var result = IsEmailRegex.IsMatch(payload);
 
             return result;
         }
@@ -133,7 +133,7 @@ namespace Dev2.Common.ExtMethods
         
         public static bool IsBase64(this string payload)
         {
-            bool result = false;
+            var result = false;
             try
             {                
                 Convert.FromBase64String(payload);                
@@ -149,7 +149,7 @@ namespace Dev2.Common.ExtMethods
         
         public static bool IsHex(this string payload)
         {
-            bool result = IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload);
+            var result = IsHex1.IsMatch(payload) || IsHex2.IsMatch(payload);
 
             if (payload.Length % 2 != 0)
             {

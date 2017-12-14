@@ -138,7 +138,7 @@ namespace Dev2.Activities
                     var headersEntries = new List<Tuple<string, string>>();
 
                     AddHeaderDebug(dataObject, update, headers, headersEntries);
-                    bool timeoutSecondsError = false;
+                    var timeoutSecondsError = false;
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
                         if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText, update)), out int timeoutval))
@@ -335,7 +335,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ TimeoutSeconds;
                 hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (TimeOutText != null ? TimeOutText.GetHashCode() : 0);

@@ -10,6 +10,7 @@
 
 using Caliburn.Micro;
 using Dev2;
+using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Infrastructure;
@@ -29,7 +30,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
@@ -332,7 +332,7 @@ namespace Warewolf.Studio.ViewModels
             var id = Guid.NewGuid();
             var name = GetChildNameFromChildren();
 
-            var child = new ExplorerItemViewModel(Server, this, a => { SelectAction(a); }, _shellViewModel, _controller)
+            var child = new ExplorerItemViewModel(Server, this, a => { SelectAction?.Invoke(a); }, _shellViewModel, _controller)
             {
                 ResourceId = id,
                 ResourceType = "Folder",
@@ -1017,7 +1017,7 @@ namespace Warewolf.Studio.ViewModels
 
         public void Filter(Func<IExplorerItemViewModel, bool> filter)
         {
-            Children.Apply(a => a.IsVisible = filter(a));
+            Children.Apply(a => a.IsVisible = filter?.Invoke(a) ?? default(bool));
             foreach (var explorerItemViewModel in _children)
             {
                 explorerItemViewModel.Filter(filter);
@@ -1123,7 +1123,7 @@ namespace Warewolf.Studio.ViewModels
 
         ExplorerItemViewModel CreateExplorerItem(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IExplorerItem explorerItem)
         {
-            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction?.Invoke(a); }, _shellViewModel, _controller)
             {
                 ResourceName = explorerItem.DisplayName,
                 ResourceId = explorerItem.ResourceId,
@@ -1152,7 +1152,7 @@ namespace Warewolf.Studio.ViewModels
 
         public ExplorerItemViewModel CreateExplorerItemFromResource(IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy, IContextualResourceModel explorerItem)
         {
-            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction(a); }, _shellViewModel, _controller)
+            var itemCreated = new ExplorerItemViewModel(server, parent, a => { SelectAction?.Invoke(a); }, _shellViewModel, _controller)
             {
                 ResourceName = explorerItem.ResourceName,
                 ResourceId = explorerItem.ID,

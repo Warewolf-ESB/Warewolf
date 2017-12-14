@@ -285,7 +285,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);

@@ -54,8 +54,8 @@ namespace Dev2.Converters.Graph.DataTable
         /// <param name="result">The result.</param>
         void BuildSampleData(System.Data.DataTable tmp, int totalCols, ref List<IPath> result)
         {
-            int totalRows = tmp.Rows.Count - 1;
-            int rowCnt = 0;
+            var totalRows = tmp.Rows.Count - 1;
+            var rowCnt = 0;
             // now set sample data ;)
 
             foreach (DataRow row in tmp.Rows)

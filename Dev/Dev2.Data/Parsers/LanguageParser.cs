@@ -66,7 +66,7 @@ namespace Dev2.DataList.Contract
                     }
 
                     // is it evaluated?
-                    bool isEvaluated = false;
+                    var isEvaluated = false;
                     var mapsTo = tmp.Attributes[_mapsToAttribute].Value;
 
                     if (tmp.Attributes["IsObject"] == null || !bool.TryParse(tmp.Attributes["IsObject"].Value, out bool isObject))
@@ -121,13 +121,13 @@ namespace Dev2.DataList.Contract
                     }
 
                     // extract isRequired
-                    bool isRequired = false;
+                    var isRequired = false;
 
                     var nl = tmp.ChildNodes;
                     if (nl.Count > 0)
                     {
-                        int pos = 0;
-                        while(pos < nl.Count && !isRequired)
+                        var pos = 0;
+                        while (pos < nl.Count && !isRequired)
                         {
                             if(nl[pos].Name == _validateTag)
                             {
@@ -142,7 +142,7 @@ namespace Dev2.DataList.Contract
                     }
 
                     // extract EmptyToNull
-                    bool emptyToNull = false;
+                    var emptyToNull = false;
                     XmlNode emptyNode = tmp.Attributes[_emptyToNullAttribute];
                     if(emptyNode != null)
                     {

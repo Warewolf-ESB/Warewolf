@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "something";
             //------------Execute Test---------------------------
-            bool result = isEmail.Invoke(cols);
+            var result = isEmail.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -31,7 +31,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "soumething@something.com";
             //------------Execute Test---------------------------
-            bool result = isEmail.Invoke(cols);
+            var result = isEmail.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }

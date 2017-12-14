@@ -113,7 +113,7 @@ namespace Dev2.Studio.Factory
             {
                 OutputText = CreateStringValue(e, null, true).ToString(),
                 StackTrace = e.StackTrace,
-                OutputPath = GetUniqueOutputPath(".txt"),
+                OutputPath = GetUniqueOutputPath?.Invoke(".txt"),
                 DisplayName = isCritical == ErrorSeverity.Critical ? StringResources.CritErrorTitle : StringResources.ErrorTitle
             };
             vm.GetStudioLogFile();

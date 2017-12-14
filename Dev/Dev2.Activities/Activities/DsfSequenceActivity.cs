@@ -326,7 +326,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_innerSequence != null ? _innerSequence.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_previousParentID != null ? _previousParentID.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();

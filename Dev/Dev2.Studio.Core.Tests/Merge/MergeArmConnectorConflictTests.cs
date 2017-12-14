@@ -17,7 +17,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new MergeArmConnectorConflict("a", "a", "a", "a", new ArmConnectorConflict());
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsArmSelectionAllowed")
@@ -132,8 +132,8 @@ namespace Dev2.Core.Tests.Merge
             var container = new Mock<IArmConnectorConflict>();
             //------------Execute Test---------------------------
             var completeConflict = new MergeArmConnectorConflict(container.Object);
-            bool wasCalled = false;
-            bool onChecked = false;
+            var wasCalled = false;
+            var onChecked = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsChecked")

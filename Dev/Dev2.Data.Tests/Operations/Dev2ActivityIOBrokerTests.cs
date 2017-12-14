@@ -539,7 +539,7 @@ namespace Dev2.Data.Tests.Operations
             src.Setup(point => point.IOPath.PathType).Returns(enActivityIOPathType.FileSystem);
             var privateObject = new PrivateObject(activityOperationsBroker);
             var path = "";
-            bool result = false;
+            var result = false;
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             try

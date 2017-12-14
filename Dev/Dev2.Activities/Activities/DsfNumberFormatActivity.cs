@@ -330,7 +330,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Expression != null ? Expression.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (RoundingType != null ? RoundingType.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (RoundingDecimalPlaces != null ? RoundingDecimalPlaces.GetHashCode() : 0);

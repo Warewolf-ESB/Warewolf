@@ -677,7 +677,7 @@ namespace Dev2.Settings.Scheduler
 
         void SetupServer(IServer tmpEnv)
         {
-            CurrentEnvironment = ToEnvironmentModel(tmpEnv);
+            CurrentEnvironment = ToEnvironmentModel?.Invoke(tmpEnv);
 
             if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected && tmpEnv.Permissions.Any(a => a.Administrator))
             {

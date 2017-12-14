@@ -133,8 +133,8 @@ namespace Dev2.Data.TO
                 result.Append("\"errors\": [ ");
             }
 
-            int errCnt = 0;
-            foreach(StringBuilder e in _errorList)
+            var errCnt = 0;
+            foreach (StringBuilder e in _errorList)
             {
                 var formattedMsg = FormatErrorMessage(e.ToString());
                 if(asXml)

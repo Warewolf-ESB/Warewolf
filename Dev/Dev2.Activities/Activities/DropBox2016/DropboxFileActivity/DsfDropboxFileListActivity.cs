@@ -231,7 +231,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Files != null ? Files.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ IncludeMediaInfo.GetHashCode();

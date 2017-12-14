@@ -23,7 +23,7 @@ namespace Unlimited.Framework.Converters.Graph
             {
                 var returnNode = this;
 
-                int count = 0;
+                var count = 0;
                 while (count < complexKey.Count && returnNode != null)
                 {
                     returnNode.TryGetValue(complexKey[count], out returnNode);

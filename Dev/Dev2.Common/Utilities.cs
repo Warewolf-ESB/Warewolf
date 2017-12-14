@@ -37,7 +37,7 @@ namespace Dev2.Common
         {
             if (userPrinciple == null)
             {
-                actionToBePerformed();
+                actionToBePerformed?.Invoke();
             }
             else
             {
@@ -56,7 +56,7 @@ namespace Dev2.Common
                 }
                 try
                 {
-                    actionToBePerformed();
+                    actionToBePerformed?.Invoke();
                 }
                 catch (Exception)
                 {
@@ -66,7 +66,7 @@ namespace Dev2.Common
                     {
                         impersonationContext = identity.Impersonate();
                     }
-                    actionToBePerformed();
+                    actionToBePerformed?.Invoke();
                 }
                 finally
                 {

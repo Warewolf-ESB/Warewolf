@@ -126,9 +126,9 @@ namespace Dev2.Activities
                     var counter = 1;
                     while (colItr.HasMoreData())
                     {
-                        int lengthNum = -1;
-                        double fromNum = -1.0;
-                        double toNum = -1.0;
+                        var lengthNum = -1;
+                        var fromNum = -1.0;
+                        var toNum = -1.0;
 
                         var fromValue = colItr.FetchNextValue(fromItr);
                         var toValue = colItr.FetchNextValue(toItr);
@@ -398,7 +398,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Length != null ? Length.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) RandomType;
                 hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);

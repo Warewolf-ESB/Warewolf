@@ -96,7 +96,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
             if(tableRows.Count == 1)
             {
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -145,7 +145,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -179,7 +179,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.FindRecordIndexMultiple
 
         int GetRowCount()
         {
-            bool rowAdded = scenarioContext.TryGetValue("row", out int row);
+            var rowAdded = scenarioContext.TryGetValue("row", out int row);
             if (rowAdded)
             {
                 scenarioContext.Add("row", row);

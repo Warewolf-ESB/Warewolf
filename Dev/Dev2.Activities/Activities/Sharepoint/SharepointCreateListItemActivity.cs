@@ -93,7 +93,7 @@ namespace Dev2.Activities.Sharepoint
             var allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+                var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Sharepoint
                                 if (sharepointFieldTo != null)
                                 {
                                     object value = warewolfIterator.Value.GetNextValue();
-                                    value = _sharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
+                                    value = SharepointUtils.CastWarewolfValueToCorrectType(value, sharepointFieldTo.Type);
                                     listItem[sharepointFieldTo.InternalName] = value;
                                 }
                             }
@@ -180,7 +180,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env, int update)
         {
-            var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+            var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
                 var debugItem = new DebugItem();
@@ -243,7 +243,7 @@ namespace Dev2.Activities.Sharepoint
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();

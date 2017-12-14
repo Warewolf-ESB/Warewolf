@@ -44,8 +44,8 @@ namespace Dev2.Data.Binary_Objects
 
         public bool HasMore()
         {
-            int canidate = _curValue;
-            while(IndexList.Gaps.Contains(canidate))
+            var canidate = _curValue;
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate--;
             }
@@ -56,15 +56,15 @@ namespace Dev2.Data.Binary_Objects
         public int FetchNextIndex()
         {
 
-            int canidate = _curValue;
+            var canidate = _curValue;
             // assign a new curValue
 
-            while(IndexList.Gaps.Contains(canidate))
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate--;
             }
 
-            int result = canidate;
+            var result = canidate;
 
             _curValue = canidate - 1; // save next value ;)
 

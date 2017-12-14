@@ -94,7 +94,7 @@ namespace Dev2.ScheduleExecutor
         {
             var postUrl = $"http://localhost:3142/services/{workflowName}";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
-            int len = postUrl.Split('?').Length;
+            var len = postUrl.Split('?').Length;
             if (len == 1)
             {
                 var result = string.Empty;
@@ -166,7 +166,7 @@ namespace Dev2.ScheduleExecutor
                 Log("Error", $"userServerSettings.config does not exist in {Directory.GetCurrentDirectory()}");
             }
 
-            string postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
+            var postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
             var result = string.Empty;
 
@@ -398,7 +398,7 @@ namespace Dev2.ScheduleExecutor
 
         static void SetupForLogging()
         {
-            bool hasSchedulerLogDirectory = Directory.Exists(SchedulerLogDirectory);
+            var hasSchedulerLogDirectory = Directory.Exists(SchedulerLogDirectory);
             if (hasSchedulerLogDirectory)
             {
                 var directoryInfo = new DirectoryInfo(SchedulerLogDirectory);

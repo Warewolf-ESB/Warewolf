@@ -221,7 +221,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = ScenarioContext.Current.Get<ODBCDatabaseDesignerViewModel>("ViewModel");
-            int rowNum = 0;
+            var rowNum = 0;
             foreach (var row in table.Rows)
             {
                 var inputValue = row["Input"];
@@ -306,7 +306,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test ODBC Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel<ODBCDatabaseDesignerViewModel>();
             foreach (var row in table.Rows)
             {

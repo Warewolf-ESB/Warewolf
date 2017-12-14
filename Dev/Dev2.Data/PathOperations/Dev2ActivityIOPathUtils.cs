@@ -38,7 +38,7 @@ namespace Dev2.PathOperations
 
             if (!IsDirectory(path))
             {
-                char spliter = '/';
+                var spliter = '/';
 
                 var tmp = path.Split(spliter);
 
@@ -97,7 +97,7 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public static bool IsStarWildCard(string path)
         {
-            bool result = false;
+            var result = false;
 
             var uri = new Uri(path);
 
@@ -118,9 +118,9 @@ namespace Dev2.PathOperations
         /// <returns></returns>
         public static bool IsDirectory(string path)
         {
-            bool result = false;
+            var result = false;
 
-            if(path.Contains(@"ftp://") || path.Contains(@"ftps://") || path.Contains(@"sftp://"))
+            if (path.Contains(@"ftp://") || path.Contains(@"ftps://") || path.Contains(@"sftp://"))
             {
                 var ftpUri = new Uri(path);
                 var isFile = ftpUri.LocalPath.Contains(@".");
@@ -133,9 +133,9 @@ namespace Dev2.PathOperations
             }
             else
             {
-                int idx = path.LastIndexOf(@"\\", StringComparison.Ordinal);
+                var idx = path.LastIndexOf(@"\\", StringComparison.Ordinal);
 
-                if(idx > 0)
+                if (idx > 0)
                 {
                     if(!path.Substring(idx).Contains(@"."))
                     {
@@ -171,9 +171,9 @@ namespace Dev2.PathOperations
 
             var vals = Enum.GetValues(typeof(enActivityIOPathType));
 
-            int pos = 0;
+            var pos = 0;
 
-            while(pos < vals.Length && result == enActivityIOPathType.Invalid)
+            while (pos < vals.Length && result == enActivityIOPathType.Invalid)
             {
                 var toCheck = vals.GetValue(pos) + @":";
                 var checkPath = path.ToUpper();

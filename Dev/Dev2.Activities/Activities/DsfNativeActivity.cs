@@ -191,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.Environment.HasErrors() && !(this is DsfFlowDecisionActivity))
             {
-                string errorString = "";
+                var errorString = "";
                 if (dataObject.Environment.AllErrors.Count > 0)
                 {
                     errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last());
@@ -328,7 +328,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, DateTime? endTime, bool decision)
         {
-            bool clearErrors = false;
+            var clearErrors = false;
             try
             {
                 Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
@@ -408,7 +408,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         bool DispatchForAfterState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? endTime, Guid remoteID)
         {
-            bool hasError = dataObject.Environment.Errors.Any();
+            var hasError = dataObject.Environment.Errors.Any();
             var clearErrors = hasError;
             var errorMessage = string.Empty;
             if (hasError)
@@ -863,7 +863,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
                     var actMsg = string.Format(msg, val2, variable, variableValue, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
-                    if (testResult.Message.EndsWith(Environment.NewLine))
+                    if (testResult.Message.EndsWith(Environment.NewLine, StringComparison.CurrentCulture))
                     {
                         testResult.Message = testResult.Message.Replace(Environment.NewLine, "").Replace("\r", "");
                     }

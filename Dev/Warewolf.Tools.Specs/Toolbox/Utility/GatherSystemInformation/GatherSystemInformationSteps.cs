@@ -62,7 +62,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         public void GivenIHaveAVariableAndISelected(string variable, string informationType)
         {
 
-            bool isRowAdded = scenarioContext.TryGetValue("row", out int row);
+            var isRowAdded = scenarioContext.TryGetValue("row", out int row);
             if (isRowAdded)
             {
                 scenarioContext.Add("row", row);

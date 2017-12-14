@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core
         /// <param name="menu">The <see cref="T:System.Windows.Controls.ContextMenu"/> that is loaded.</param>
         protected override void OnContextMenuLoaded(ContextMenu menu)
         {
-            int indexOfOpenItem = -1;
+            var indexOfOpenItem = -1;
             foreach (var menuItem in menu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
             {
                 indexOfOpenItem = menu.Items.IndexOf(menuItem);
@@ -389,7 +389,7 @@ namespace Dev2.Activities.Designers2.Core
                     if (ViewModel != null && ViewModel.HasLargeView)
                     {
                         var header = "Collapse Large View";
-                        FontAwesomeIcon fontAwesomeIcon = FontAwesomeIcon.Compress;
+                        var fontAwesomeIcon = FontAwesomeIcon.Compress;
                         if (ViewModel.ShowSmall)
                         {
                             fontAwesomeIcon = FontAwesomeIcon.Expand;

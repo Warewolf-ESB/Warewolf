@@ -51,7 +51,7 @@ namespace Dev2.Activities.WcfEndPoint
             {
                 while (itrCollection.HasMoreData())
                 {
-                    int pos = 0;
+                    var pos = 0;
                     foreach (var itr in itrs)
                     {
                         var injectVal = itrCollection.FetchNextValue(itr);
@@ -107,7 +107,7 @@ namespace Dev2.Activities.WcfEndPoint
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Source != null ? Source.GetHashCode() : 0);

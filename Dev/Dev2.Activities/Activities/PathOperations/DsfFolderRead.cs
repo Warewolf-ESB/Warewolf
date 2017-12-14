@@ -103,7 +103,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
                             var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
-                            int indexToUpsertTo = 1;
+                            var indexToUpsertTo = 1;
                             if (listOfDir != null)
                             {
                                 foreach (IActivityIOPath pa in listOfDir)
@@ -276,7 +276,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
                 hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();

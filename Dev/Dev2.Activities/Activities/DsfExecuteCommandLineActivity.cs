@@ -506,7 +506,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (CommandFileName != null ? CommandFileName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (CommandResult != null ? CommandResult.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_process != null ? _process.GetHashCode() : 0);

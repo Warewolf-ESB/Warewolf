@@ -61,7 +61,7 @@ namespace Dev2.Activities.Designers2.CaseConvert
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("StringToConvert", _getDatalistString()).ValidateRules("'StringToConvert'", () => mi.SetProperty("IsStringToConvertFocused", true)))
+            foreach (var error in dto.GetRuleSet("StringToConvert", _getDatalistString?.Invoke()).ValidateRules("'StringToConvert'", () => mi.SetProperty("IsStringToConvertFocused", true)))
             {
                 yield return error;
             }

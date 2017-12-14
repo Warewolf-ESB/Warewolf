@@ -152,7 +152,7 @@ namespace Dev2.Activities.PathOperations
 
                 try
                 {
-                    var broker = GetOperationBroker();
+                    var broker = GetOperationBroker?.Invoke();
                     var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
 
@@ -309,7 +309,7 @@ namespace Dev2.Activities.PathOperations
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (DestinationPassword != null ? DestinationPassword.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);

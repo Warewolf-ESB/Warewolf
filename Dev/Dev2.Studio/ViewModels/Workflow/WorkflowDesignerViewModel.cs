@@ -1739,7 +1739,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 _wd.ModelChanged += WdOnModelChanged;
                 _wd.View.Focus();
 
-                int indexOfOpenItem = -1;
+                var indexOfOpenItem = -1;
                 if (_wd.ContextMenu?.Items != null)
                 {
                     foreach (var menuItem in _wd.ContextMenu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))

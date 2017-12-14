@@ -819,7 +819,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Inputs != null ? Inputs.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Outputs != null ? Outputs.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ServiceUri != null ? ServiceUri.GetHashCode() : 0);

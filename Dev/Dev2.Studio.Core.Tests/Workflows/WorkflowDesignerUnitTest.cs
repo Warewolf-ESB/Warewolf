@@ -2413,7 +2413,7 @@ namespace Dev2.Core.Tests.Workflows
 
             var dataObject = new Mock<IDataObject>();
 
-            bool handled = wd.SetApplyForDrop(dataObject.Object);
+            var handled = wd.SetApplyForDrop(dataObject.Object);
             wd.Dispose();
 
             //Assert Unique ID has changed

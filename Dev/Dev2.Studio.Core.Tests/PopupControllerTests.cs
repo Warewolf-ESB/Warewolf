@@ -123,7 +123,7 @@ namespace Dev2.Core.Tests
             };
             
             //------------Execute Test---------------------------
-            int conflictCount = 1;
+            var conflictCount = 1;
 
             popupController.ShowDeployConflict(conflictCount);
 
@@ -253,7 +253,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            int conflictCount = 2;
+            var conflictCount = 2;
 
             popupController.ShowDeployConflict(conflictCount);
 
