@@ -13,10 +13,11 @@ namespace Warewolf.UI.Tests.WcfSource.WcfSourceUIMapClasses
     [Binding]
     public partial class WcfSourceUIMap
     {
-        public void Enter_TextIntoAddress_On_WCFServiceTab()
+        public void Enter_TextIntoAddress_On_WCFServiceTab(string text)
         {
-            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Text = "test";
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.WCFEndpointURLEdit.Text = text;
         }
+
         public void Click_WCFServiceSource_TestConnectionButton()
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WCFServiceSourceTab.WorkSurfaceContext.TestConnectionButton);
