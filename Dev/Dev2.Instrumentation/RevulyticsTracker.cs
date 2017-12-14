@@ -42,10 +42,10 @@ namespace Dev2.Instrumentation
         {
             SdkFilePath = Path.GetDirectoryName(Assembly.GetAssembly(typeof(RUISDK)).Location);
             ConfigFilePath = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-            ProductId = AppSettings.ProductID;
-            AppName = AppSettings.AppName;
-            ProductUrl = AppSettings.ProductUrl;
-            AesHexKey = AppSettings.AesHexKey;
+            ProductId = AppUsageStats.ProductID;
+            AppName = AppUsageStats.AppName;
+            ProductUrl = AppUsageStats.ProductUrl;
+            AesHexKey = AppUsageStats.AesHexKey;
         }
 
         public void EnableAppplicationTracker(string productVersion, string username)
@@ -104,7 +104,7 @@ namespace Dev2.Instrumentation
 
         public void TrackEvent(string category, string eventName)
         {
-            if (AppSettings.CollectUsageStats && RuiSdk != null)
+            if (AppUsageStats.CollectUsageStats && RuiSdk != null)
             {
                 var result = RuiSdk.TrackEvent(category, eventName, Username);
                 LogErrorResult(result);
@@ -113,7 +113,7 @@ namespace Dev2.Instrumentation
 
         public void TrackCustomEvent(string eventCategory, string eventName, string customValues)
         {
-            if (AppSettings.CollectUsageStats && RuiSdk != null)
+            if (AppUsageStats.CollectUsageStats && RuiSdk != null)
             {
                 var result = RuiSdk.TrackEventText(eventCategory, eventName, customValues, Username);
                 LogErrorResult(result);
