@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests.Workflows
             var eventAggregator = new Mock<IEventAggregator>();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<UpdateResourceMessage>())).Verifiable();
             eventAggregator.Setup(aggregator => aggregator.Publish(It.IsAny<AddWorkSurfaceMessage>())).Verifiable();
-            Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
+            var _moq = new Mock<WorkflowDesigner>();
             var modelService = new Mock<ModelService>();
             var viewStateService = new Mock<ViewStateService>();
             var chart = new Flowchart();

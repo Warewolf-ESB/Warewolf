@@ -54,7 +54,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IRabbitMQServiceSourceDefinition>, Action<IRabbitMQServiceSourceDefinition>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _manageRabbitMQSourceViewModelWithRabbitMQServiceSourceDefinition = new ManageRabbitMQSourceViewModel(_rabbitMQSourceModel.Object, _rabbitMQServiceSourceDefinition.Object, _asyncWorkerMock.Object);
         }

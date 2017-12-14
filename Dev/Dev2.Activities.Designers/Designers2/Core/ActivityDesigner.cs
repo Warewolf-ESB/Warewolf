@@ -389,7 +389,7 @@ namespace Dev2.Activities.Designers2.Core
                     if (ViewModel != null && ViewModel.HasLargeView)
                     {
                         var header = "Collapse Large View";
-                        FontAwesomeIcon fontAwesomeIcon = FontAwesomeIcon.Compress;
+                        var fontAwesomeIcon = FontAwesomeIcon.Compress;
                         if (ViewModel.ShowSmall)
                         {
                             fontAwesomeIcon = FontAwesomeIcon.Expand;

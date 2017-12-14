@@ -293,7 +293,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>
                                                         current.Replace(previewInput.Key, previewInput.Value));
-                result = WebInvoke("GET", url, headersEntries);
+                result = WebInvoke?.Invoke("GET", url, headersEntries);
                 return result;
             }
             catch (Exception ex)

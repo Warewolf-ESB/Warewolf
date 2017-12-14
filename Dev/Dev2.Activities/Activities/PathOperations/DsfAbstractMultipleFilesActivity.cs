@@ -152,7 +152,7 @@ namespace Dev2.Activities.PathOperations
 
                 try
                 {
-                    var broker = GetOperationBroker();
+                    var broker = GetOperationBroker?.Invoke();
                     var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
 

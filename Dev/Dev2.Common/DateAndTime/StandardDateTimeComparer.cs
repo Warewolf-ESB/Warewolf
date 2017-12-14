@@ -20,7 +20,7 @@ namespace Dev2.Common.DateAndTime
         {
             result = "";
             error = "";
-            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
+            var dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
             var parsedCorreclty = DateTime.TryParseExact(dateTimeDiffTo.Input1, dateTimeDiffTo.InputFormat, CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsedDate);
             if (parsedCorreclty)
             {

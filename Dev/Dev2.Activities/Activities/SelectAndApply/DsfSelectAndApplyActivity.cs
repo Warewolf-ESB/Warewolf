@@ -340,7 +340,7 @@ namespace Dev2.Activities.SelectAndApply
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            ActivityFuncComparer activityFuncComparer = new ActivityFuncComparer();
+            var activityFuncComparer = new ActivityFuncComparer();
             return base.Equals(other) 
                 && string.Equals(_previousParentId, other._previousParentId)
                 && Equals(_originalUniqueID,other._originalUniqueID)

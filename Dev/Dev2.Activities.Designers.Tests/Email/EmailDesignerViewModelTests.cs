@@ -524,7 +524,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 .Callback((string method, string url, string data, List<Tuple<string, string>> headers, Action<string> asyncCallback) =>
                 {
                     postData = data;
-                    asyncCallback(new Dev2JsonSerializer().Serialize(result));
+                    asyncCallback?.Invoke(new Dev2JsonSerializer().Serialize(result));
                 }).Returns(string.Empty)
                 .Verifiable();
 

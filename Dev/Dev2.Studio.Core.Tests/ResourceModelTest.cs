@@ -572,7 +572,7 @@ namespace Dev2.Core.Tests
             var serviceElement = XElement.Parse(serviceDefinition.ToString());
             Assert.IsNotNull(serviceElement);
 
-            verify(serviceElement);
+            verify?.Invoke(serviceElement);
         }
 
         [TestMethod]

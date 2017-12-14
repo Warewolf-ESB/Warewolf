@@ -701,7 +701,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var explorerItemMockSelectAction = new Mock<IExplorerItemViewModel>();
             environmentViewModelMock.Setup(
                 it => it.SelectItem(It.IsAny<Guid>(), It.IsAny<Action<IExplorerItemViewModel>>()))
-                .Callback<Guid, Action<IExplorerItemViewModel>>((id, act) => act(explorerItemMock.Object));
+                .Callback<Guid, Action<IExplorerItemViewModel>>((id, act) => act?.Invoke(explorerItemMock.Object));
             environmentViewModelMock.SetupSet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>())
                 .Callback<Action<IExplorerItemViewModel>>(a => propAction = a);
              _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };
@@ -729,7 +729,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var explorerItemMockSelectAction = new Mock<IExplorerItemViewModel>();
             environmentViewModelMock.Setup(
                 it => it.SelectItem(It.IsAny<string>(), It.IsAny<Action<IExplorerItemViewModel>>()))
-                .Callback<string, Action<IExplorerItemViewModel>>((id, act) => act(explorerItemMock.Object));
+                .Callback<string, Action<IExplorerItemViewModel>>((id, act) => act?.Invoke(explorerItemMock.Object));
             environmentViewModelMock.SetupSet(it => it.SelectAction = It.IsAny<Action<IExplorerItemViewModel>>())
                 .Callback<Action<IExplorerItemViewModel>>(a => propAction = a);
             _target.Environments = new ObservableCollection<IEnvironmentViewModel>() { environmentViewModelMock.Object };

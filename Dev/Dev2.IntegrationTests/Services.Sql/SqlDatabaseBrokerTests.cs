@@ -254,7 +254,7 @@ namespace Dev2.Integration.Tests.Services.Sql
             {
                 if (impersonator.Impersonate(userName, domain, password))
                 {
-                    action();
+                    action?.Invoke();
                     result = true;
                 }
             }

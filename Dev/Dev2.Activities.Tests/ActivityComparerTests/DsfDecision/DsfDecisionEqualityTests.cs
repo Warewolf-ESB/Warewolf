@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         public void UniqueIDSame_EmptyAssigns_IsEqual()
         {
             //---------------Set up test pack-------------------
-            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity();
+            var decisionActivity = new DsfFlowDecisionActivity();
             var decision = new Dev2.Activities.DsfDecision(decisionActivity);
             var decision1 = new Dev2.Activities.DsfDecision(decisionActivity);
             //---------------Assert Precondition----------------
@@ -46,8 +46,8 @@ namespace Dev2.Tests.Activities.ActivityComparerTests.DsfDecision
         public void UniqueIDDifferent_EmptyAssigns_IsEqual()
         {
             //---------------Set up test pack-------------------
-            DsfFlowDecisionActivity decisionActivity = new DsfFlowDecisionActivity();
-            DsfFlowDecisionActivity decisionActivity1 = new DsfFlowDecisionActivity();
+            var decisionActivity = new DsfFlowDecisionActivity();
+            var decisionActivity1 = new DsfFlowDecisionActivity();
             var decision = new Dev2.Activities.DsfDecision(decisionActivity);
             var decision1 = new Dev2.Activities.DsfDecision(decisionActivity1);
             //---------------Assert Precondition----------------

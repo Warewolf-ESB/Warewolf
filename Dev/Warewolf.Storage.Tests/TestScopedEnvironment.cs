@@ -745,7 +745,7 @@ namespace Warewolf.Storage.Tests
                   
                    return replaced;
                }));
-           envAction(env);
+            envAction?.Invoke(env);
         }
 
         void SetupReplacementFunctionDoesNotOccur(ScopedEnvironment env, Action<ScopedEnvironment> envAction)
@@ -761,7 +761,7 @@ namespace Warewolf.Storage.Tests
                     Assert.AreEqual(replaced, val);
                     return replaced;
                 }));
-            envAction(env);
+            envAction?.Invoke(env);
 
         }
     }
