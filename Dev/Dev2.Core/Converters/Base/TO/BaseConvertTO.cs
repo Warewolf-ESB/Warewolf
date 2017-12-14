@@ -10,14 +10,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Util;
-using Dev2.Common;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Validation;
 
