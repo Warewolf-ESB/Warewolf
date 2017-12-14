@@ -54,8 +54,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
             scenarioContext.TryGetValue("mergeCollection", out List<Tuple<string, string, string, string, string>> mergeCollection);
 
-            int row = 1;
-            foreach(var variable in mergeCollection)
+            var row = 1;
+            foreach (var variable in mergeCollection)
             {
                 dataMerge.MergeCollection.Add(new DataMergeDTO(variable.Item1, variable.Item2, variable.Item3, row,
                                                                 variable.Item4, variable.Item5));
@@ -115,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();

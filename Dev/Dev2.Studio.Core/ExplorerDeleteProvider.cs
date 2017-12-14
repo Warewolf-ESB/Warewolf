@@ -49,7 +49,7 @@ namespace Dev2.Studio.Core
                                 IsDeleted = true,
                                 ShowDependencies = false
                             };
-                            bool showDependenciesApplyToAll = false;
+                            var showDependenciesApplyToAll = false;
                             foreach (IExplorerItemViewModel itemViewModel in explorerItemViewModels)
                             {
                                 if (itemViewModel.ResourceType != "Folder")

@@ -62,8 +62,7 @@ namespace Warewolf.Studio.Views
                 {
                     if (e.Data.GetDataPresent(typeof(ExplorerItemViewModel)))
                     {
-                        var explorerItemViewModel = e.Data.GetData(typeof(ExplorerItemViewModel)) as ExplorerItemViewModel;
-                        if (explorerItemViewModel == null)
+                        if (!(e.Data.GetData(typeof(ExplorerItemViewModel)) is ExplorerItemViewModel explorerItemViewModel))
                         {
                             e.Handled = true;
                             return;
@@ -153,17 +152,14 @@ namespace Warewolf.Studio.Views
             var treeViewItem = FindAncestor<TreeViewItem>((DependencyObject)e.OriginalSource);
             var dropOntoItem = treeViewItem?.DataContext as ExplorerItemViewModel;
             var treeView = sender as TreeView;
-            var itemToMove = treeView?.SelectedItem as ExplorerItemViewModel;
-            if (itemToMove == null)
+            if (!(treeView?.SelectedItem is ExplorerItemViewModel itemToMove))
             {
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
             else if (dropOntoItem == null || !dropOntoItem.IsFolder)
             {
-                var environmentViewModel = treeViewItem?.DataContext as EnvironmentViewModel;
-
-                if (environmentViewModel == null)
+                if (!(treeViewItem?.DataContext is EnvironmentViewModel environmentViewModel))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -287,9 +283,7 @@ namespace Warewolf.Studio.Views
             {
                 treeViewItem.Focus();
 
-                var explorerItemViewModel = treeViewItem.DataContext as ExplorerItemViewModel;
-
-                if (explorerItemViewModel == null || !explorerItemViewModel.CanDrag)
+                if (!(treeViewItem.DataContext is ExplorerItemViewModel explorerItemViewModel) || !explorerItemViewModel.CanDrag)
                 {
                     _canDrag = false;
                 }
@@ -325,6 +319,16 @@ namespace Warewolf.Studio.Views
                     singleEnvironmentExplorerViewModel.SelectedItem = null;
                 }
             }
+            else if (treeView?.DataContext is MergeServiceViewModel mergeServiceViewModel)
+            {
+                if (item is IExplorerItemViewModel explorerItemViewModel)
+                {
+                    if (explorerItemViewModel.IsService)
+                    {
+                        mergeServiceViewModel.SelectedMergeItem = explorerItemViewModel;
+                    }
+                }
+            }
             else
             {
                 var explorerViewModel = DataContext as ExplorerViewModel;
@@ -345,7 +349,9 @@ namespace Warewolf.Studio.Views
                         SetActiveServer(environmentViewModel.Server);
                         if (explorerViewModel?.ConnectControlViewModel != null)
                         {
-                            explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                            {
+                                explorerViewModel.ConnectControlViewModel.SelectedConnection = environmentViewModel.Server;
+                            }
                         }
                     }
                 }
@@ -396,6 +402,13 @@ namespace Warewolf.Studio.Views
                 if (explorerItemViewModel.CanDeploy)
                 {
                     explorerItemViewModel.DeployCommand.Execute(null);
+                }
+            }
+            if (e.Key == Key.M && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                if (explorerItemViewModel.CanMerge)
+                {
+                    explorerItemViewModel.MergeCommand.Execute(null);
                 }
             }
             if (explorerItemViewModel.IsFolder)
@@ -469,7 +482,7 @@ namespace Warewolf.Studio.Views
 
         void ExplorerTree_OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ExplorerTree?.Items?.Refresh();
+            ExplorerTree?.Items.Refresh();
             ExplorerTree?.UpdateLayout();
         }
 
@@ -572,3 +585,5 @@ namespace Warewolf.Studio.Views
         }
     }
 }
+
+    

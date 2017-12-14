@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ServerEventLogLevel")
@@ -138,7 +138,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "StudioEventLogLevel")
@@ -162,7 +162,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ServerLogMaxSize")
@@ -186,7 +186,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ServerLogMaxSize")
@@ -210,7 +210,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "StudioLogMaxSize")
@@ -298,7 +298,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "StudioLogMaxSize")

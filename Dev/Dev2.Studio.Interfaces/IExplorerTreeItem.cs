@@ -52,6 +52,7 @@ namespace Dev2.Studio.Interfaces
         bool IsResourceVersion { get; set; }
         bool CanViewApisJson { get; set; }
         bool CanViewExecutionLogging { get; set; }
+        bool IsMergeVisible { get; set; }
 
         ICommand ViewApisJsonCommand { get; set; }
         ICommand ViewExecutionLoggingCommand { get; set; }

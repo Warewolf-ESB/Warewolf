@@ -42,7 +42,7 @@ namespace Dev2.Core.Tests
         
         public void Filter_Where_ContentIsNull_Expected_False()
         {
-            bool actual = _debugOutputFilterStrategy.Filter(null, "");
+            var actual = _debugOutputFilterStrategy.Filter(null, "");
 
             Assert.AreEqual(false, actual);
         }
@@ -50,7 +50,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Filter_Where_FilterTextIsNull_Expected_False()
         {
-            bool actual = _debugOutputFilterStrategy.Filter("", null);
+            var actual = _debugOutputFilterStrategy.Filter("", null);
 
             Assert.AreEqual(false, actual);
         }
@@ -58,7 +58,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Filter_Where_ContentIsString_And_FilterTextContainsMatch_Expected_True()
         {
-            bool actual = _debugOutputFilterStrategy.Filter("cake", "ak");
+            var actual = _debugOutputFilterStrategy.Filter("cake", "ak");
 
             Assert.AreEqual(true, actual);
         }
@@ -66,7 +66,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void Filter_Where_ContentIsString_And_FilterTextDoesntContainMatch_Expected_false()
         {
-            bool actual = _debugOutputFilterStrategy.Filter("cake", "123");
+            var actual = _debugOutputFilterStrategy.Filter("cake", "123");
 
             Assert.AreEqual(false, actual);
         }
@@ -76,7 +76,7 @@ namespace Dev2.Core.Tests
         {
             var debugState = new DebugState();
 
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "cake");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "cake");
 
             Assert.AreEqual(false, actual);
         }
@@ -86,7 +86,7 @@ namespace Dev2.Core.Tests
         {
             var debugState = new DebugState { ActivityType = ActivityType.Workflow };
 
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "work");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "work");
 
             Assert.AreEqual(true, actual);
         }
@@ -96,7 +96,7 @@ namespace Dev2.Core.Tests
         {
             var debugState = new DebugState { DisplayName = "Cake" };
 
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
             Assert.AreEqual(true, actual);
         }
@@ -106,7 +106,7 @@ namespace Dev2.Core.Tests
         {
             var debugState = new DebugState { ActivityType = ActivityType.Step, DisplayName = "Cake" };
 
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
             Assert.AreEqual(true, actual);
         }
@@ -115,7 +115,7 @@ namespace Dev2.Core.Tests
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsWorkflow_And_FilterTextMatchesServer_Expected_True()
         {
             var debugState = new DebugState { ActivityType = ActivityType.Workflow, DisplayName = "Cake" };
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
             Assert.AreEqual(true, actual);
         }
@@ -124,7 +124,7 @@ namespace Dev2.Core.Tests
         public void Filter_Where_ContentIsDebugState_And_FilterTextMatchesVersion_Expected_True()
         {
             var debugState = new DebugState { DisplayName = "Cake" };
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "ak");
 
             Assert.AreEqual(true, actual);
         }
@@ -134,7 +134,7 @@ namespace Dev2.Core.Tests
         {
             var debugState = new DebugState { ActivityType = ActivityType.Step, StartTime = new DateTime(2012, 01, 02, 1, 2, 3), EndTime = new DateTime(2012, 01, 02, 2, 2, 3) };
 
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "01:");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "01:");
 
             Assert.AreEqual(true, actual);
         }
@@ -143,7 +143,7 @@ namespace Dev2.Core.Tests
         public void Filter_Where_ContentIsDebugState_And_ActivityTypeIsWorkflow_And_FilterTextMatchesStartTime_Expected_True()
         {
             var debugState = new DebugState { ActivityType = ActivityType.Workflow, StateType = StateType.Before, StartTime = new DateTime(2012, 01, 02, 1, 2, 3) };
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "2012");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "2012");
 
             Assert.AreEqual(true, actual);
         }
@@ -153,7 +153,7 @@ namespace Dev2.Core.Tests
         {
             var debugState = new DebugState { ActivityType = ActivityType.Workflow, StateType = StateType.After, EndTime = new DateTime(2012, 01, 02, 2, 2, 3) };
 
-            bool actual = _debugOutputFilterStrategy.Filter(debugState, "2012");
+            var actual = _debugOutputFilterStrategy.Filter(debugState, "2012");
 
             Assert.AreEqual(true, actual);
         }

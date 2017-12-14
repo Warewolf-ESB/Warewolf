@@ -2131,6 +2131,22 @@ namespace Warewolf.UI.Tests
                 return this.mHideVersionHistoryMenuItem;
             }
         }
+        
+        public WpfMenuItem Merge
+        {
+            get
+            {
+                if ((this.mMerge == null))
+                {
+                    this.mMerge = new WpfMenuItem(this);
+                    #region Search Criteria
+                    this.mMerge.SearchProperties[WpfMenuItem.PropertyNames.AutomationId] = "MergeItem";
+                    this.mMerge.WindowTitles.Add("Warewolf (DEV2\\PIETER.TERBLANCHE)");
+                    #endregion
+                }
+                return this.mMerge;
+            }
+        }
         #endregion
         
         #region Fields
@@ -2187,6 +2203,8 @@ namespace Warewolf.UI.Tests
         private SourcesMenuItem mSourcesMenuItem;
         
         private WpfMenuItem mHideVersionHistoryMenuItem;
+        
+        private WpfMenuItem mMerge;
         #endregion
     }
     

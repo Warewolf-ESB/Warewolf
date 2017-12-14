@@ -2725,6 +2725,105 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Merge the Service.
+        /// </summary>
+        public static string MergeButtonTooltip {
+            get {
+                return ResourceManager.GetString("MergeButtonTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Tool connection conflict.
+        /// </summary>
+        public static string MergeCurrentArmRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Tool conflict.
+        /// </summary>
+        public static string MergeCurrentConflictRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentConflictRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Variable conflict.
+        /// </summary>
+        public static string MergeCurrentVariablesRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentVariablesRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the current Workflow name conflict.
+        /// </summary>
+        public static string MergeCurrentWorkflowNameRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeCurrentWorkflowNameRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Tool connection conflict.
+        /// </summary>
+        public static string MergeDifferenceArmRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceArmRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Tool conflict.
+        /// </summary>
+        public static string MergeDifferenceConflictRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceConflictRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Variable conflict.
+        /// </summary>
+        public static string MergeDifferenceVariablesRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceVariablesRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the difference Workflow name conflict.
+        /// </summary>
+        public static string MergeDifferenceWorkflowNameRBTooltip {
+            get {
+                return ResourceManager.GetString("MergeDifferenceWorkflowNameRBTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No conflicts found.
+        /// </summary>
+        public static string MergeNoConflictTooltip {
+            get {
+                return ResourceManager.GetString("MergeNoConflictTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select the version you want to merge with.
+        /// </summary>
+        public static string MergeSelectionViewLabelTooltip {
+            get {
+                return ResourceManager.GetString("MergeSelectionViewLabelTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Any variable and/or data goes in here.
         ///Put the full path of the destination you are moving to here.
         ///You can use File System, URI, SFTP, FTP or FTPS format..
@@ -5531,6 +5630,15 @@ namespace Warewolf.Studio.Resources.Languages {
         public static string ViewJsonObjectTooltip {
             get {
                 return ResourceManager.GetString("ViewJsonObjectTooltip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Select between two resources to merge.
+        /// </summary>
+        public static string ViewMergeTooltip {
+            get {
+                return ResourceManager.GetString("ViewMergeTooltip", resourceCulture);
             }
         }
         

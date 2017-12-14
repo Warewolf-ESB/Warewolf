@@ -915,7 +915,7 @@ namespace Dev2.PathOperations
 
                 if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                 {
-                    return performAfterValidation();
+                    return performAfterValidation?.Invoke();
                 }
                 if (!TransferDirectoryContents(src, dst, args))
                 {
@@ -948,7 +948,7 @@ namespace Dev2.PathOperations
                 throw new Exception(ErrorResource.DestinationDirectoryExist);
             }
 
-            return performAfterValidation();
+            return performAfterValidation?.Invoke();
         }
 
         string ValidateZipSourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
@@ -992,7 +992,7 @@ namespace Dev2.PathOperations
             {
                 throw new Exception(string.Format(ErrorResource.RecursiveDirectoryCreateFailed, dst.IOPath.Path));
             }
-            return performAfterValidation();
+            return performAfterValidation?.Invoke();
         }
         #endregion
     }

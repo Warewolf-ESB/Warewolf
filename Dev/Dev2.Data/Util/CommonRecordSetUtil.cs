@@ -99,10 +99,10 @@ namespace Dev2.Data.Util
         {
             var result = string.Empty;
 
-            int start = rs.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var start = rs.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             if (start > 0)
             {
-                int end = rs.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
+                var end = rs.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
                 if (end < 0)
                 {
                     end = rs.Length;
@@ -147,8 +147,8 @@ namespace Dev2.Data.Util
         public string ExtractFieldNameOnlyFromValue(string value)
         {
             var result = string.Empty;
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            int closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
+            var dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
+            var closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
             if (dotIdx > 0)
             {
                 result = value.Substring(dotIdx + 1, closeIdx - dotIdx - 1);
@@ -161,7 +161,7 @@ namespace Dev2.Data.Util
         {
             var result = string.Empty;
             value = DataListUtil.StripBracketsFromValue(value);
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
+            var dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
             if (dotIdx > 0)
             {
                 result = value.Substring(dotIdx + 1);
@@ -180,7 +180,7 @@ namespace Dev2.Data.Util
             value = DataListUtil.StripBracketsFromValue(value);
             var result = string.Empty;
 
-            int openBracket = value.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var openBracket = value.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             if (openBracket > 0)
             {
                 result = value.Substring(0, openBracket);
@@ -196,7 +196,7 @@ namespace Dev2.Data.Util
 
         public bool IsValueRecordset(string value)
         {
-            bool result = false;
+            var result = false;
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -249,7 +249,7 @@ namespace Dev2.Data.Util
             if (search.Contains(DataListUtil.RecordsetIndexOpeningBracket))
             {
                 isRs = true;
-                int pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                var pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                 search = search.Substring(0, search.Length - (search.Length - pos));
             }
             return search;
@@ -361,7 +361,7 @@ namespace Dev2.Data.Util
             if (payload.Child != null)
             {
                 var indx = payload.Child.Payload;
-                int end = indx.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
+                var end = indx.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
                 if (end > 0)
                 {
                     // malformed index -- correct it

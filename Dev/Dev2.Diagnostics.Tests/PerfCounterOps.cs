@@ -377,10 +377,10 @@ Then you'll see, that it is not the spoon that bends, it is only yourself. ");
         [TestCategory("WarewolfErrorCounter_TestOps")]
         public void WarewolfErrorCounterResource_SafeCounterSwallowsExceptions()
         {
-            bool incremented = false;
-            bool decremented = false;
-            bool incrementedBy = false;
-            bool setup = true;
+            var incremented = false;
+            var decremented = false;
+            var incrementedBy = false;
+            var setup = true;
             var guid = Guid.NewGuid();
             var inner = new Mock<IResourcePerformanceCounter>();
             inner.Setup(a => a.Decrement()).Callback(() => decremented = true).Throws(new AccessViolationException());

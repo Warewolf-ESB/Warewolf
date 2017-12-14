@@ -72,7 +72,7 @@ namespace Dev2.Security
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {
-            bool x =IsAuthorized(_environmentConnection.Principal, context, resource);
+            var x =IsAuthorized(_environmentConnection.Principal, context, resource);
             return x;
         }
 

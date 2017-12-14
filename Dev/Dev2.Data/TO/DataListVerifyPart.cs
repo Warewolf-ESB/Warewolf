@@ -55,7 +55,7 @@ namespace Dev2.DataList.Contract
             {
                 if(recordset.Contains("[") && recordset.Contains("]"))
                 {
-                    int start = recordset.IndexOf("(", StringComparison.Ordinal);
+                    var start = recordset.IndexOf("(", StringComparison.Ordinal);
                     Recordset = start != -1 ? recordset.Substring(0, start) : recordset.Replace("[", "").Replace("]", "");
                 }
             }

@@ -10,7 +10,7 @@ using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
 {
-    public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel
+    public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel, IEquatable<RecordSetItemModel>
     {
         ObservableCollection<IRecordSetFieldItemModel> _children;
         string _searchText;
@@ -200,5 +200,32 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         #endregion
+
+        public bool Equals(RecordSetItemModel other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(Input, other.Input) && Equals(Output, other.Output)
+                && Equals(_children, other._children);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RecordSetItemModel) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_children != null ? _children.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_searchText != null ? _searchText.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

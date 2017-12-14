@@ -116,7 +116,7 @@ namespace ActivityUnitTests.ActivityTests
                          , "Seconds"
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             Assert.AreEqual("0", actual);

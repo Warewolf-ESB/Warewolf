@@ -60,7 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DisplayName_GivenIsNew_ShouldSetJavascript()
+        public void Equals_Given_GivenIsNew_ShouldSetJavascript()
         {
             //---------------Set up test pack-------------------
             var act = new DsfPythonActivity();

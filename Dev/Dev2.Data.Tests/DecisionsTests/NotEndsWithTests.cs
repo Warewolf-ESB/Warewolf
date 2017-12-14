@@ -32,7 +32,7 @@ namespace Dev2.Data.Tests.DecisionsTests
 
             //------------Execute Test---------------------------
 
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.DecisionsTests
 
             //------------Execute Test---------------------------
 
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);

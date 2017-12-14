@@ -22,7 +22,7 @@ namespace Warewolf.UI.Tests
         [TestCategory("Explorer")]
         public void Search_ExplorerFolder()
         {
-            ExplorerUIMap.Filter_Explorer("Examples");
+            ExplorerUIMap.Filter_Explorer("Acceptance Testing Resources");
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists);
             Assert.IsFalse(UIMap.ControlExistsNow(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem), "Second Item exists in the Explorer Exists");
         }

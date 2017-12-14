@@ -55,7 +55,7 @@ namespace Dev2.Data
             {
                 xDoc.LoadXml(toLoad);
             }
-            catch
+            catch (Exception ex)
             {
                 // Append new root tags ;)
                 toLoad = "<root>" + toLoad + "</root>";
@@ -107,7 +107,7 @@ namespace Dev2.Data
                             if (recSet != null && shapeRecSet != null)
                             {
                                 // fetch recordset index
-                                int idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1; // recset index
+                                var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1; // recset index
                                 // process recordset
                                 var scalars = shapeRecSet.Columns[1];
                                 var colToIoDirection = scalars.ToDictionary(scalar1 => scalar1.Name, scalar1 => scalar1.IODirection);

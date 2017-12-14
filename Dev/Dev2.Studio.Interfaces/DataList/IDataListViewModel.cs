@@ -17,7 +17,7 @@ using Dev2.Data.Interfaces;
 
 namespace Dev2.Studio.Interfaces.DataList
 {
-    public interface IDataListViewModel : IScreen, IChild, IDisposable
+    public interface IDataListViewModel : IScreen, IChild, IDisposable, IEquatable<IDataListViewModel>
     {
         IResourceModel Resource { get; }
         IRelayCommand FindUnusedAndMissingCommand { get; }
@@ -32,7 +32,14 @@ namespace Dev2.Studio.Interfaces.DataList
         bool IsSorting { get; set; }
         ISuggestionProvider Provider { get; set; }
         ObservableCollection<IComplexObjectItemModel> ComplexObjectCollection { get; }
-        
+        bool ViewSortDelete { get; set; }
+
+        /// <summary>
+        /// Removes the data list item.
+        /// </summary>
+        /// <param name="itemToRemove">The item to remove.</param>
+        /// <author>Massimo.Guerrera</author>
+        /// <date>2/21/2013</date>
         void RemoveDataListItem(IDataListItemModel itemToRemove);
         
         void SetIsUsedDataListItems(IList<IDataListVerifyPart> parts, bool isUsed);

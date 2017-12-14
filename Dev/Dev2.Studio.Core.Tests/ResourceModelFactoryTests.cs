@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests
             var environmentModel = new Mock<IServer>();
 
             //------------Execute Test---------------------------
-            var resourceModel = createResourceModel(environmentModel.Object);
+            var resourceModel = createResourceModel?.Invoke(environmentModel.Object);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Permissions.Contribute, resourceModel.UserPermissions);
@@ -131,7 +131,7 @@ namespace Dev2.Core.Tests
             var environmentModel = new Mock<IServer>();
 
             //------------Execute Test---------------------------
-            var resourceModel = createResourceModel(environmentModel.Object);
+            var resourceModel = createResourceModel?.Invoke(environmentModel.Object);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(resourceType, resourceModel.ResourceType);

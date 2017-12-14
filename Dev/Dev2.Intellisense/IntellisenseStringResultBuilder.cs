@@ -24,7 +24,7 @@ namespace Dev2.Intellisense
             catch (Exception)
             {
                 var diff = originalCaret >= editorText.Length - 1 ? editorText : editorText.Substring(0, originalCaret + 1);
-                int ignore = originalCaret - Math.Max(diff.LastIndexOf("[[", StringComparison.Ordinal), diff.LastIndexOf("]]", StringComparison.Ordinal) + 1);
+                var ignore = originalCaret - Math.Max(diff.LastIndexOf("[[", StringComparison.Ordinal), diff.LastIndexOf("]]", StringComparison.Ordinal) + 1);
                 var len = originalCaret - ignore;
                 var delimchar = "";
                 var lastIndexOfAny = diff.LastIndexOfAny(_tokenisers);

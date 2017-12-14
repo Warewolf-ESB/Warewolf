@@ -52,8 +52,8 @@ namespace Dev2.Data.Binary_Objects
 
         public int GetMaxIndex()
         {
-            int result = MaxValue;
-            while(Gaps.Contains(result) && result >= 1)
+            var result = MaxValue;
+            while (Gaps.Contains(result) && result >= 1)
             {
                 result--;
             }
@@ -71,7 +71,7 @@ namespace Dev2.Data.Binary_Objects
             }
 
             // Travis.Frisinger - Count bug change
-            int result = MaxValue - Gaps.Count;
+            var result = MaxValue - Gaps.Count;
 
             return result;
         }

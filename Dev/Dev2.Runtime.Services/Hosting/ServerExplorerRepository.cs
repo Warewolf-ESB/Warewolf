@@ -58,7 +58,7 @@ namespace Dev2.Runtime.Hosting
                 TestCatalog = Runtime.TestCatalog.Instance,
                 ExplorerItemFactory = new ExplorerItemFactory(ResourceCatalog.Instance, new DirectoryWrapper(), ServerAuthorizationService.Instance),
                 Directory = new DirectoryWrapper(),
-                VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new PathWrapper())
+                VersionRepository = new ServerVersionRepository(new VersionStrategy(), ResourceCatalog.Instance, new DirectoryWrapper(), EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID), new FileWrapper(), new FilePathWrapper())
 
             };
 
@@ -267,7 +267,7 @@ namespace Dev2.Runtime.Hosting
         public IExplorerItem Find(IExplorerItem item, Func<IExplorerItem, bool> predicate)
         {
 
-            if (predicate(item))
+            if (predicate?.Invoke(item) ?? default(bool))
             {
                 return item;
             }
@@ -296,7 +296,7 @@ namespace Dev2.Runtime.Hosting
             {
                 return DeleteFolder(itemToDelete, workSpaceId);
             }
-            ResourceCatalogResult result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
+            var result = ResourceCatalogue.DeleteResource(workSpaceId, itemToDelete.ResourceId, itemToDelete.ResourceType);
             TestCatalog.DeleteAllTests(itemToDelete.ResourceId);
             if (result.Status == ExecStatus.Success)
             {
@@ -507,8 +507,8 @@ namespace Dev2.Runtime.Hosting
                 newResourcePath = itemToMove.ResourcePath.Replace(itemToMove.ResourcePath, newPath);
             }
             var resource = ResourceCatalogue.GetResource(workSpaceId, itemToMove.ResourceId);
-            var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.xml";
-            var destination = $"{DirectoryStructureFromPath(newResourcePath) + "\\" + resource.ResourceName + ".xml"}";
+            var source = $"{DirectoryStructureFromPath(resource.GetResourcePath(GlobalConstants.ServerWorkspaceID))}.bite";
+            var destination = $"{DirectoryStructureFromPath(newResourcePath)+"\\"+resource.ResourceName+".bite"}";
             if (_file.Exists(source))
             {
                 _file.Move(source, destination);

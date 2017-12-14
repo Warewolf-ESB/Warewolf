@@ -32,7 +32,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var path = new PocoPath("EnumerableData().NestedData.Name", "EnumerableData.NestedData.Name");
 
             const int expected = 3;
-            int actual = path.GetSegements().Count();
+            var actual = path.GetSegements().Count();
 
             Assert.AreEqual(expected, actual);
         }
@@ -66,7 +66,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var segment = path.CreatePathSegment(propertyInfo.Name,propertyInfo.PropertyType.IsEnumerable());
 
             const bool expected = true;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -82,7 +82,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var segment = path.CreatePathSegment(propertyInfo.Name, propertyInfo.PropertyType.IsEnumerable());
 
             const bool expected = false;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -97,7 +97,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var segment = path.CreatePathSegment("EnumerableData()");
 
             const bool expected = true;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -112,7 +112,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var segment = path.CreatePathSegment("Name");
 
             const bool expected = false;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }

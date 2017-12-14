@@ -66,7 +66,7 @@ namespace Dev2.Diagnostics.Logging
             }
 
             //only log if included in the settings
-            bool shouldlog = LoggingSettings.LogAll || _workflowsToLog.ContainsKey(resourceID);
+            var shouldlog = LoggingSettings.LogAll || _workflowsToLog.ContainsKey(resourceID);
             return shouldlog;
         }
  // wf debug logging

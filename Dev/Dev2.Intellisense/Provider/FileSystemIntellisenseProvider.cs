@@ -45,7 +45,7 @@ namespace Dev2.Intellisense.Provider
             VerifyArgument.IsNotNull("Context",context);
            
             var inputText = context.InputText ?? string.Empty;
-            int caretPosition = context.CaretPosition;  
+            var caretPosition = context.CaretPosition;
 
             if (caretPosition < 0 || caretPosition>inputText.Length)
             {
@@ -55,7 +55,7 @@ namespace Dev2.Intellisense.Provider
             var regions = inputText.Split(' '); // we can safely do this because the default provider handles the language features
 
             var sum = 0;
-            int items = 0;
+            var items = 0;
             var regionsText = regions.Select(a => new { a, a.Length }).TakeWhile(a =>
             {
                 sum = sum + a.Length;
@@ -67,7 +67,7 @@ namespace Dev2.Intellisense.Provider
             var prefix = regionsText.Aggregate("", (a, b) => a + " " + b).TrimStart(' '); // fold back together
             context.CaretPositionOnPopup = prefix.Length;
             context.CaretPosition = prefix.Length;
-            int i = 0;
+            var i = 0;
             var inner = regions.SkipWhile(a =>
                 {
                     i = i + 1;
@@ -126,9 +126,9 @@ namespace Dev2.Intellisense.Provider
         /// </summary>
         bool InLiteralRegion(string inputText, int caretPosition)
         {
-            bool inLiteralResionRegion = false;
+            var inLiteralResionRegion = false;
 
-            if(caretPosition <= inputText.Length)
+            if (caretPosition <= inputText.Length)
             {
                 inputText = inputText.Replace("\\\\", "##");
                 inputText = inputText.Replace("\\'", "##");
