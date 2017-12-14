@@ -352,7 +352,7 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
 
-            bool canAdd = true;
+            var canAdd = true;
             var parent = ModelItemCollection.Parent;
             if (parent != null)
             {

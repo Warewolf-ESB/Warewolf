@@ -125,7 +125,7 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DeletePath != null ? DeletePath.GetHashCode() : 0);
                 return hashCode;

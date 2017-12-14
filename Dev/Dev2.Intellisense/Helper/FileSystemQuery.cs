@@ -107,7 +107,7 @@ namespace Dev2.Intellisense.Helper
 
         public List<string> GetAllFilesAndFolders(string searchPath, List<string> queryCollection, char directorySeparatorChar)
         {
-            bool bQueryUncShares = false;
+            var bQueryUncShares = false;
             var sFileServer = string.Empty;
             if (String.IsNullOrEmpty(searchPath))
             {
@@ -136,7 +136,7 @@ namespace Dev2.Intellisense.Helper
         {
             var fileServer = searchPath.Substring(2, searchPath.Length - 3);
             var c = searchPath[searchPath.Length - 1];
-            bool bQueryUncShares =false;
+            var bQueryUncShares =false;
             if (searchPath[0] == SlashC && searchPath[1] == SlashC && c == SlashC && !fileServer.Contains("\\"))
             {
                 bQueryUncShares = true;
@@ -204,7 +204,7 @@ namespace Dev2.Intellisense.Helper
         {
             VerifyArgument.IsNotNull("Directory",dir);
 
-            int lastIndexOfDirSepChar = searchPath.LastIndexOf(directorySeparatorChar);
+            var lastIndexOfDirSepChar = searchPath.LastIndexOf(directorySeparatorChar);
             var queryCollection = new List<string>(); 
             if(lastIndexOfDirSepChar > 0)
             {

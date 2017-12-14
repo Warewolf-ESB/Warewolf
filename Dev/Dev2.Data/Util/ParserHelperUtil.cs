@@ -221,7 +221,7 @@ namespace Dev2.Data.Util
 
         public void ProcessResults(IList<IIntellisenseResult> realResults, IIntellisenseResult intellisenseResult)
         {
-            bool addToFinal = true;
+            var addToFinal = true;
 
             realResults
                 .ToList()
@@ -270,11 +270,11 @@ namespace Dev2.Data.Util
 
         public bool IsValidIndex(IParseTO to)
         {
-            bool result = false;
+            var result = false;
             var raw = to.Payload;
-            int start = raw.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
-            int end = raw.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
-            
+            var start = raw.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var end = raw.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
+
             if (end - start == 1 || (start > 0 && end < 0 && (raw.Length - 1 == start)))
             {
                 result = true;
@@ -310,7 +310,7 @@ namespace Dev2.Data.Util
             IDataListVerifyPart pTo;
             if (isRs)
             {
-                int start = part.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                var start = part.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                 var rs = part;
                 if (start >= 0)
                 {

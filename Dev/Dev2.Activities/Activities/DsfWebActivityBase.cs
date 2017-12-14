@@ -128,7 +128,7 @@ namespace Dev2.Activities
                 if (_method == WebRequestMethod.Delete)
                 {
                     taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                    bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
+                    var ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
                     return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
                 }
                 if (_method == WebRequestMethod.Post)
@@ -178,7 +178,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (int) _method;
                 hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);

@@ -867,7 +867,7 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
             var returnDate = dateTimeResult.ToDateTime();
 
             var myCal = CultureInfo.InvariantCulture.Calendar;
-            int weekOfYear = myCal.GetWeekOfYear(returnDate, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
+            var weekOfYear = myCal.GetWeekOfYear(returnDate, CalendarWeekRule.FirstFullWeek, DayOfWeek.Monday);
             if (weekOfYear == 20)
             {
                 Assert.IsTrue(true);

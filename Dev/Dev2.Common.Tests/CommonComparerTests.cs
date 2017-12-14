@@ -25,7 +25,7 @@ namespace Dev2.Common.Tests
             };
 
             //Add returns true if an element is added, false if it's already there.
-            bool addSamePersonAgain = characters.Add(new Person { FirstName = "Elmer", LastName = "Pickle" });
+            var addSamePersonAgain = characters.Add(new Person { FirstName = "Elmer", LastName = "Pickle" });
             Assert.IsFalse(addSamePersonAgain);
 
         }
@@ -64,7 +64,7 @@ namespace Dev2.Common.Tests
             var comparer = EqualityFactory.GetComparer<string>((s1, s2) => String.Compare(s1, s2, StringComparison.Ordinal));
             IEqualityComparer<string> otherComparer = comparer as IEqualityComparer<string>;
             Assert.IsNotNull(otherComparer);
-            int result = otherComparer.GetHashCode("Test");
+            var result = otherComparer.GetHashCode("Test");
             Assert.AreEqual("Test".GetHashCode(), result);
 
         }

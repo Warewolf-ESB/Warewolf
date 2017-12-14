@@ -298,9 +298,9 @@ namespace Dev2.Scheduler
 
         ScheduleRunStatus GetRunStatus(int eventId, string debugHistoryPath, string key)
         {
-            bool debugExists = DebugHistoryExists(debugHistoryPath, key);
-            bool debugHasErrors = DebugHasErrors(debugHistoryPath, key);
-            bool winSuccess = eventId < 103;
+            var debugExists = DebugHistoryExists(debugHistoryPath, key);
+            var debugHasErrors = DebugHasErrors(debugHistoryPath, key);
+            var winSuccess = eventId < 103;
             if (debugExists && !debugHasErrors && winSuccess)
             {
                 return ScheduleRunStatus.Success;

@@ -24,7 +24,7 @@ namespace Dev2
     
         public static bool IsDate(this string payload)
         {
-            bool result = false;
+            var result = false;
 
             if (string.IsNullOrEmpty(payload))
             {
@@ -60,7 +60,7 @@ namespace Dev2
                 "yyyy.dd.mm"
             };
             var d = new Dev2DateTimeParser();
-            int count = 0;
+            var count = 0;
             while (!result && count < acceptedDateFormats.Count)
             {
                 result = d.TryParseDateTime(payload, acceptedDateFormats[count], out IDateTimeResultTO to, out string errorMsg);
@@ -72,7 +72,7 @@ namespace Dev2
 
         public static bool IsXml(this string payload)
         {
-            bool result = false;
+            var result = false;
 
 
             if (IsXml(payload, out bool isFragment))
@@ -128,7 +128,7 @@ namespace Dev2
         static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             var trimedData = data.Trim();
-            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;

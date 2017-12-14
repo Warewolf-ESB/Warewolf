@@ -132,7 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputValues(dataObject, toSearch, ref allErrors, update);
                 }
 
-                bool hasEvaled = false;
+                var hasEvaled = false;
                 foreach (var searchvar in toSearch)
                 {
                     Func<DataStorage.WarewolfAtom, bool> func = null;
@@ -546,7 +546,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (FieldsToSearch != null ? FieldsToSearch.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);

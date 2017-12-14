@@ -35,8 +35,8 @@ namespace Dev2.Common.DateAndTime
 
                     if (returnedFunc != null)
                     {
-                        double tmpAmount = returnedFunc.Invoke(_input1, _input2);
-                        long wholeValue = Convert.ToInt64(Math.Floor(tmpAmount));
+                        var tmpAmount = returnedFunc.Invoke(_input1, _input2);
+                        var wholeValue = Convert.ToInt64(Math.Floor(tmpAmount));
                         result = wholeValue.ToString(CultureInfo.InvariantCulture);
                     }
                 }

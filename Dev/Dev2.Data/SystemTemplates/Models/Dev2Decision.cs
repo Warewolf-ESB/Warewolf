@@ -45,7 +45,7 @@ namespace Dev2.Data.SystemTemplates.Models
         {
             get
             {
-                int cnt = 0;
+                var cnt = 0;
 
                 if (!string.IsNullOrEmpty(Col1))
                 {

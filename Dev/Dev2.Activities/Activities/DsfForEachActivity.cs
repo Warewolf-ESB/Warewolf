@@ -384,8 +384,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while (itr?.HasMore() ?? false)
                 {
                     operationalData = exePayload;
-                    int idx = exePayload.IndexIterator.FetchNextIndex();
-                    int innerupdate = 0;
+                    var idx = exePayload.IndexIterator.FetchNextIndex();
+                    var innerupdate = 0;
                     if (exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
                         innerupdate = idx;
@@ -554,7 +554,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ForEachElementName != null ? ForEachElementName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _previousInputsIndex;

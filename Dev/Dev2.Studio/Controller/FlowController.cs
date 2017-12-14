@@ -312,8 +312,8 @@ namespace Dev2.Studio.Controller
                 var tmp = value?.ExpressionText;
                 if (!string.IsNullOrEmpty(tmp))
                 {
-                    int start = tmp.IndexOf("(", StringComparison.Ordinal);
-                    int end = tmp.IndexOf(",", StringComparison.Ordinal);
+                    var start = tmp.IndexOf("(", StringComparison.Ordinal);
+                    var end = tmp.IndexOf(",", StringComparison.Ordinal);
 
                     if (start < end && start >= 0)
                     {

@@ -126,7 +126,7 @@ namespace Dev2.Runtime.ESB.Execution
                 Dev2Logger.Error(iwe, DataObject.ExecutionID.ToString());
                 var msg = iwe.Message;
 
-                int start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
+                var start = msg.IndexOf("Flowchart ", StringComparison.Ordinal);
                 var errorMessage = start > 0 ? GlobalConstants.NoStartNodeError : iwe.Message;
                 DataObject.Environment.AddError(errorMessage);
                 wfappUtils.DispatchDebugState(DataObject, StateType.End, DataObject.Environment.HasErrors(), DataObject.Environment.FetchErrors(), out invokeErrors, DataObject.StartTime, false, true);

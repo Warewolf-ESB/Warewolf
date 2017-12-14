@@ -33,7 +33,7 @@ namespace Dev2.Common.Utils
 
                 if (stringToScrub.EndsWith("\""))
                 {
-                    int indexTORemoveFrom = stringToScrub.Length - 1;
+                    var indexTORemoveFrom = stringToScrub.Length - 1;
                     stringToScrub = stringToScrub.Remove(indexTORemoveFrom, 1);
                 }
             }

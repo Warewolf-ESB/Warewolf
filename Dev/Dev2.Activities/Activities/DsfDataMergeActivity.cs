@@ -127,7 +127,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 #region Create a iterator for each row in the data grid in the designer so that the right iteration happen on the data
 
-                int dictionaryKey = 0;
+                var dictionaryKey = 0;
                 foreach (DataMergeDTO row in MergeCollection)
                 {
                     allErrors.MergeErrors(errorResultTo);
@@ -197,7 +197,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     while (warewolfListIterator.HasMoreData())
                     {
-                        int pos = 0;
+                        var pos = 0;
                         foreach (var iterator in listOfIterators)
                         {
                             var val = warewolfListIterator.FetchNextValue(iterator.Value[0]);
@@ -302,7 +302,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void CleanArguments(IList<DataMergeDTO> args)
         {
-            int count = 0;
+            var count = 0;
             while (count < args.Count)
             {
                 if (args[count].IsEmpty())
@@ -329,7 +329,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (listOfValidRows.Count > 0)
                     {
                         var dataMergeDto = MergeCollection.Last(c => !c.CanRemove());
-                        int startIndex = MergeCollection.IndexOf(dataMergeDto) + 1;
+                        var startIndex = MergeCollection.IndexOf(dataMergeDto) + 1;
                         foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new DataMergeDTO(s, MergeCollection[startIndex - 1].MergeType, MergeCollection[startIndex - 1].At, startIndex + 1, MergeCollection[startIndex - 1].Padding, MergeCollection[startIndex - 1].Alignment));
@@ -354,7 +354,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (mic != null)
                 {
-                    int startIndex = 0;
+                    var startIndex = 0;
                     var firstRowMergeType = MergeCollection[0].MergeType;
                     var firstRowPadding = MergeCollection[0].Padding;
                     var firstRowAlignment = MergeCollection[0].Alignment;
@@ -525,7 +525,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (MergeCollection != null ? MergeCollection.GetHashCode() : 0);
                 return hashCode;

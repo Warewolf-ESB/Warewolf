@@ -166,7 +166,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
 
         Color GetPixel(BitmapSource bitmapImage)
         {
-            int nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
+            var nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
             var pixels = new byte[4];
             bitmapImage.CopyPixels(pixels, nStride, 0);
             return Color.FromArgb(pixels[0], pixels[1], pixels[2], pixels[3]);

@@ -70,7 +70,7 @@ namespace Dev2.Data.SystemTemplates.Models
         {
             var result = new StringBuilder("");
 
-            int cnt = 0;
+            var cnt = 0;
 
             errors = new ErrorResultTO();
             // build the output for decisions
@@ -107,10 +107,10 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string ExtractModelFromWorkflowPersistedData(string val)
         {
-            int start = val.IndexOf("(", StringComparison.Ordinal);
+            var start = val.IndexOf("(", StringComparison.Ordinal);
             if (start > 0)
             {
-                int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
+                var end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
 
                 if (end > start)
                 {

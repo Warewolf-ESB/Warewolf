@@ -36,8 +36,8 @@ namespace Dev2.Common
         {
             var result = new StringBuilder();
 
-            int start = startIdx;
-            int end = candidate.Length;
+            var start = startIdx;
+            var end = candidate.Length;
 
             if (isReversed)
             {

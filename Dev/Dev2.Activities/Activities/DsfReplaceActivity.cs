@@ -123,8 +123,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             IErrorResultTO errors;
             IErrorResultTO allErrors = new ErrorResultTO();
 
-            int replacementCount = 0;
-            int replacementTotal = 0;
+            var replacementCount = 0;
+            var replacementTotal = 0;
 
             InitializeDebug(dataObject);
             try
@@ -384,7 +384,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (FieldsToSearch != null ? FieldsToSearch.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Find != null ? Find.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ReplaceWith != null ? ReplaceWith.GetHashCode() : 0);

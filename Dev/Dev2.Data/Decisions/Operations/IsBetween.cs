@@ -32,9 +32,9 @@ namespace Dev2.Data.Decisions.Operations
             var dVal = new double[3];
             var dtVal = new DateTime[3];
 
-            int pos = 0;
-            bool isDateTimeCompare = false;
-            foreach(string c in cols)
+            var pos = 0;
+            var isDateTimeCompare = false;
+            foreach (string c in cols)
             {
                 if(!double.TryParse(c, out dVal[pos]))
                 {

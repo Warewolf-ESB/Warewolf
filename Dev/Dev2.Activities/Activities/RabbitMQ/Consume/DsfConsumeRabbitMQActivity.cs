@@ -175,7 +175,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
                             _prefetch = ushort.MaxValue;
                         }
                         Channel.BasicQos(0, _prefetch, Acknowledge);
-                        int msgCount = 0;
+                        var msgCount = 0;
                         if (ReQueue)
                         {
                             BasicGetResult response;
@@ -420,7 +420,7 @@ namespace Dev2.Activities.RabbitMQ.Consume
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_messages != null ? _messages.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _timeOut;

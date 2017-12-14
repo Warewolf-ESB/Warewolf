@@ -78,7 +78,7 @@ namespace Dev2.Runtime.WebServer
             resultsSummaryElement.AppendChild(countersElement);
             testRunElement.AppendChild(resultsSummaryElement);
             var testDefinitionsElement = TRXFile.CreateElement("TestDefinitions");
-            int testIDIndex = 0;
+            var testIDIndex = 0;
             foreach (var TestResult in TestResults.FindAll((result) => { return result != null; }))
             {
                 var unitTestDefinitionElement = TRXFile.CreateElement("UnitTest");

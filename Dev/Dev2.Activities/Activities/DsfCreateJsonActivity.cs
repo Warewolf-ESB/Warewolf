@@ -113,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebugMode())
                 {
-                    int j = 0;
+                    var j = 0;
 
                     foreach (JsonMappingTo a in JsonMappings.Where(to => !String.IsNullOrEmpty(to.SourceName)))
 
@@ -187,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                bool hasErrors = allErrors.HasErrors();
+                var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
@@ -269,7 +269,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (JsonMappings != null ? JsonMappings.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (JsonString != null ? JsonString.GetHashCode() : 0);
                 return hashCode;

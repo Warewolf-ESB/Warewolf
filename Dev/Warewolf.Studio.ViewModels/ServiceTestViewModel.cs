@@ -1749,7 +1749,7 @@ namespace Warewolf.Studio.ViewModels
 
         int GetNewTestNumber(string testName)
         {
-            int counter = 1;
+            var counter = 1;
             var fullName = testName + " " + counter;
 
             while (Contains(fullName))

@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MenuViewModel_ShowStartPage_Execute_Result()
         {
             //------------Setup for test--------------------------
-            bool call = false;
+            var call = false;
             var x = new DelegateCommand(() => { call = true; });
             _mainViewModelMock.Setup(a => a.ShowStartPageCommand).Returns(x);
             _target = new MenuViewModel(_mainViewModelMock.Object);

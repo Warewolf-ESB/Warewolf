@@ -309,7 +309,7 @@ namespace Warewolf.Studio.ViewModels
                 return;
             }
             var deployResponse = new List<IDeployResult>();
-            bool supportsDirectServerDeploy = GetServerInformation();
+            var supportsDirectServerDeploy = GetServerInformation();
             if (supportsDirectServerDeploy)
             {
                 var destConnection = CreateNewConnection(destEnv);

@@ -298,7 +298,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
 
             PreviewText = string.Empty;
-            int count = 1;
+            var count = 1;
             if (!Overwrite)
             {
                 count = _model.GetCollectionCount();
@@ -306,7 +306,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
             }
             IList<string> previewList = MakeDataListReady(Split());
-            int previewAmount = previewList.Count;
+            var previewAmount = previewList.Count;
             if (previewAmount > 3)
             {
                 for (int i = 0; i < 3; i++)
@@ -495,11 +495,11 @@ namespace Dev2.ViewModels.QuickVariableInput
 
             if (value.Contains("(") && value.Contains(")."))
             {
-                int startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
-                int endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
+                var startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
+                var endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
 
                 var tmp = value.Substring(startIndex, endIndex - startIndex);
-                int idxNum = 1;
+                var idxNum = 1;
                 if (tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
                 {
                     return false;

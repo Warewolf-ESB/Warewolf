@@ -128,7 +128,7 @@ namespace Dev2.Studio.InterfaceImplementors
         /// </summary>
         public static bool InLiteralRegion(string inputText, int caretPosition)
         {
-            bool inLiteralRegion = false;
+            var inLiteralRegion = false;
 
             var text = inputText;
             if (caretPosition <= text.Length)

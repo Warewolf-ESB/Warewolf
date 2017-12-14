@@ -50,7 +50,7 @@ namespace Dev2.Comparer
 
         public int GetHashCode(ISimpePlugin obj)
         {
-            int hashCode = base.GetHashCode();
+            var hashCode = base.GetHashCode();
             hashCode = (hashCode * 397) ^ ((int)obj?.GetHashCode());
             hashCode = (hashCode * 397) ^ (obj.Method?.GetHashCode() ?? 0);
             hashCode = (hashCode * 397) ^ (obj.Namespace?.GetHashCode() ?? 0);

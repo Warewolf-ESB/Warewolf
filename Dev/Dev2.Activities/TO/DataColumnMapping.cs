@@ -61,8 +61,8 @@ namespace Dev2.TO
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            bool outputColumnSame = OutputColumn == null && other.OutputColumn == null;
-            
+            var outputColumnSame = OutputColumn == null && other.OutputColumn == null;
+
             if (OutputColumn != null)
             {
                 outputColumnSame = OutputColumn.Equals(other.OutputColumn);

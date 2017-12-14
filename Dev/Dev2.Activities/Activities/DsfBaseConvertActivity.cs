@@ -386,7 +386,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_fac != null ? _fac.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ConvertCollection != null ? ConvertCollection.GetHashCode() : 0);
                 return hashCode;

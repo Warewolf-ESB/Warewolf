@@ -221,7 +221,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_children != null ? _children.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (_searchText != null ? _searchText.GetHashCode() : 0);
                 return hashCode;

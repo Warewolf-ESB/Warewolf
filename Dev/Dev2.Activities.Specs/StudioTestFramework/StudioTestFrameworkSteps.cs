@@ -463,7 +463,7 @@ namespace Dev2.Activities.Specs.TestFramework
                 var valueToSet = tableRow["Value"];
                 var varName = tableRow["Variable Name"];
                 var containsKey = tableRow.ContainsKey("EmptyIsNull");
-                bool isNull = false;
+                var isNull = false;
                 if (containsKey)
                 {
                     var emptyIsNull = tableRow["EmptyIsNull"];
@@ -2201,7 +2201,7 @@ namespace Dev2.Activities.Specs.TestFramework
         public void ThenIAddNewChildrenStepOutputsAs(Table table)
         {
             var serviceTest = GetTestFrameworkFromContext();
-            int count = 1;
+            var count = 1;
             foreach (var tableRow in table.Rows)
             {
                 var varName = tableRow["Variable Name"];

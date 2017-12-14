@@ -340,7 +340,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (InField != null ? InField.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Index != null ? Index.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Characters != null ? Characters.GetHashCode() : 0);

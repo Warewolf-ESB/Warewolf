@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
-            bool result = isXml.Invoke(cols);
+            var result = isXml.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -46,7 +46,7 @@ Procedure:
             var cols = new string[2];
             cols[0] = xmlFragment;
             //------------Execute Test---------------------------
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
             Assert.IsTrue(result);
         }
 

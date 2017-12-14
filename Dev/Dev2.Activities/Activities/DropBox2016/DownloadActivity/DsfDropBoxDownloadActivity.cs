@@ -204,7 +204,7 @@ namespace Dev2.Activities.DropBox2016.DownloadActivity
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ OverwriteFile.GetHashCode();

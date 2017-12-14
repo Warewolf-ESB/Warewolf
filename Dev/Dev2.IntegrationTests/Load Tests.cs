@@ -56,7 +56,7 @@ namespace Dev2.Integration.Tests
 
             IDev2Tokenizer dt = dtb.Generate();
 
-            int opCnt = 0;
+            var opCnt = 0;
             Stopwatch sw = new Stopwatch();
             sw.Start();
             while (dt.HasMoreOps() && opCnt < 100000)
@@ -66,8 +66,8 @@ namespace Dev2.Integration.Tests
             }
             sw.Stop();
 
-            long exeTime = sw.ElapsedMilliseconds;
-            
+            var exeTime = sw.ElapsedMilliseconds;
+
             Console.WriteLine(@"Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 100000 && exeTime < 1300, "Expecting it to take 1300 ms but it took " + exeTime + " ms.");
         }
@@ -83,7 +83,7 @@ namespace Dev2.Integration.Tests
 
             IDev2Tokenizer dt = dtb.Generate();
 
-            int opCnt = 0;
+            var opCnt = 0;
             Stopwatch sw = new Stopwatch();
             sw.Start();
             while (dt.HasMoreOps() && opCnt < 35000)
@@ -93,8 +93,8 @@ namespace Dev2.Integration.Tests
             }
             sw.Stop();
 
-            long exeTime = sw.ElapsedMilliseconds;
-            
+            var exeTime = sw.ElapsedMilliseconds;
+
             Console.WriteLine("Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 35000 && exeTime < 2500, "It took [ " + exeTime + " ]");
         }
@@ -103,7 +103,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void PulseTracker_Should()
         {
-            bool elapsed = false;
+            var elapsed = false;
             var pulseTracker = new PulseTracker(2000);
 
             Assert.AreEqual(2000, pulseTracker.Interval);

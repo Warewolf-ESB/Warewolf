@@ -52,11 +52,11 @@ namespace Dev2.Common.Common
         
         public static StringBuilder CleanEncodingHeaderForXmlSave(this StringBuilder sb)
         {
-            int removeStartIdx = sb.IndexOf("<?", 0, false);
+            var removeStartIdx = sb.IndexOf("<?", 0, false);
             if (removeStartIdx >= 0)
             {
-                int removeEndIdx = sb.IndexOf("?>", 0, false);
-                int len = removeEndIdx - removeStartIdx + 2;
+                var removeEndIdx = sb.IndexOf("?>", 0, false);
+                var len = removeEndIdx - removeStartIdx + 2;
                 var result = sb.Remove(removeStartIdx, len);
 
                 return result;
@@ -67,8 +67,8 @@ namespace Dev2.Common.Common
         
         public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding, IFileManager fileManager)
         {
-            int length = sb.Length;
-            int startIdx = 0;
+            var length = sb.Length;
+            var startIdx = 0;
             var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
             var cleanStringBuilder = sb.CleanEncodingHeaderForXmlSave();
 
@@ -143,8 +143,8 @@ namespace Dev2.Common.Common
 
         static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
-            int length = sb.Length;
-            int startIdx = 0;
+            var length = sb.Length;
+            var startIdx = 0;
             var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
             var ms = new MemoryStream(length);
             for (int i = 0; i < rounds; i++)
@@ -222,8 +222,8 @@ namespace Dev2.Common.Common
         
         public static int LastIndexOf(this StringBuilder sb, string value, bool ignoreCase)
         {
-            int result = -1;
-            int startIndex = -1;
+            var result = -1;
+            var startIndex = -1;
             while ((startIndex = IndexOf(sb, value, startIndex + 1, ignoreCase)) >= 0)
             {
                 result = startIndex;
@@ -239,8 +239,8 @@ namespace Dev2.Common.Common
             }
 
             int index;
-            int length = value.Length;
-            int maxSearchLength = sb.Length - length + 1;
+            var length = value.Length;
+            var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
@@ -336,16 +336,16 @@ namespace Dev2.Common.Common
         public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart,
             string searchTagEnd)
         {
-            int startIndex = sb.IndexOf(searchTagStart, 0, false);
+            var startIndex = sb.IndexOf(searchTagStart, 0, false);
             if (startIndex < 0)
             {
                 return string.Empty;
             }
 
-            int tagLength = searchTagStart.Length;
+            var tagLength = searchTagStart.Length;
             startIndex += tagLength;
-            int endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
-            int length = endIdx - startIndex;
+            var endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
+            var length = endIdx - startIndex;
 
             return sb.Substring(startIndex, length);
         }

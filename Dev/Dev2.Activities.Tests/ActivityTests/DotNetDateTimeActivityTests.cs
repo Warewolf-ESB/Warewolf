@@ -224,9 +224,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfDateTimeActivity_CurrentCulture_Called_ShouldPassAllDatesWithoutErrors()
         {
             //------------Setup for test--------------------------
-            int faiCount = 0;
-            int passCount = 0;
-            int total = 0;
+            var faiCount = 0;
+            var passCount = 0;
+            var total = 0;
             var n = @"C:\Users\nkosinathi.sangweni\Desktop\New Text Document.txt";
             var allCultures = CultureInfo.GetCultures(CultureTypes.AllCultures);
             foreach (var culture in allCultures)
