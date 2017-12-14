@@ -122,7 +122,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsCalcEvaluation(string expression, out string newExpression)
         {
-            bool result = false;
+            var result = false;
 
             newExpression = string.Empty;
 
@@ -170,7 +170,7 @@ namespace Dev2.Data.Util
             string[] nastyJunk = { "WebServerUrl", "Dev2WebServer", "PostData", "Service" };
 
             // Transfer System Tags
-            bool result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
+            var result = SysTags.Contains(tag) || nastyJunk.Contains(tag);
 
             if (!result && tag.StartsWith(GlobalConstants.SystemTagNamespaceSearch))
             {
@@ -308,7 +308,7 @@ namespace Dev2.Data.Util
         
         public static bool IsFullyEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
+            var result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0
                 && payload.IndexOf(ClosingSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
@@ -345,7 +345,7 @@ namespace Dev2.Data.Util
         /// </returns>
         public static bool IsEvaluated(string payload)
         {
-            bool result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
+            var result = payload != null && payload.IndexOf(OpeningSquareBrackets, StringComparison.Ordinal) >= 0;
 
             return result;
         }

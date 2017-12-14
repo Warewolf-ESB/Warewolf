@@ -191,7 +191,7 @@ namespace Dev2.TO
         {
             if (!_isInitializing)
             {
-                UpdateDisplayAction(this);
+                UpdateDisplayAction?.Invoke(this);
             }
         }
 
@@ -371,6 +371,7 @@ namespace Dev2.TO
 
         public static void UpdateMatchVisibility(DecisionTO to, string value, IList<IFindRecsetOptions> whereOptions)
         {
+
             var opt = whereOptions.FirstOrDefault(a => value.ToLower().StartsWith(a.HandlesType().ToLower()));
             if (opt != null)
             {

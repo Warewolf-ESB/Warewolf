@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers2.Core
         /// <param name="menu">The <see cref="T:System.Windows.Controls.ContextMenu"/> that is loaded.</param>
         protected override void OnContextMenuLoaded(ContextMenu menu)
         {
-            int indexOfOpenItem = -1;
+            var indexOfOpenItem = -1;
             foreach (var menuItem in menu.Items.Cast<object>().OfType<MenuItem>().Where(menuItem => (string)menuItem.Header == "_Open"))
             {
                 indexOfOpenItem = menu.Items.IndexOf(menuItem);
@@ -378,7 +378,7 @@ namespace Dev2.Activities.Designers2.Core
             var dataContext = parentContentPane?.DataContext;
             if (dataContext != null)
             {
-                if (dataContext.GetType().Name == "ServiceTestViewModel")
+                if (dataContext.GetType().Name == "ServiceTestViewModel" || dataContext.GetType().Name == "MergeWorkflowViewModel")
                 {
                     e.Handled = true;
                 }
@@ -388,12 +388,12 @@ namespace Dev2.Activities.Designers2.Core
 
                     if (ViewModel != null && ViewModel.HasLargeView)
                     {
-                        if (ViewModel.ShowLarge)
+                        var header = "Collapse Large View";
+                        var fontAwesomeIcon = FontAwesomeIcon.Compress;
+                        if (ViewModel.ShowSmall)
                         {
-                            var imageSource = ImageAwesome.CreateImageSource(FontAwesomeIcon.Compress, Brushes.Black);
-                            var icon = new Image { Source = imageSource, Height = 14, Width = 14 };
-                            _showCollapseLargeView.Header = "Collapse Large View";
-                            _showCollapseLargeView.Icon = icon;
+                            fontAwesomeIcon = FontAwesomeIcon.Expand;
+                            header = "Show Large View";
                         }
                         else
                         {

@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,13 +19,10 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
     {
-        #region Locals
-
         IWebActivity _activity;
 
         bool _isInitialLoad;
@@ -35,14 +32,6 @@ namespace Dev2.Studio.ViewModels.DataList
 
         IInputOutputViewModel _currentlySelectedOutput;
         IInputOutputViewModel _currentlySelectedInput;
-
-        #endregion Locals
-
-        #region Imports
-
-        #endregion Imports
-
-        #region Ctor
 
         public DataMappingViewModel(IWebActivity activity)
             : this(activity, null)
@@ -63,10 +52,6 @@ namespace Dev2.Studio.ViewModels.DataList
             Initialize(_activity);
         }
 
-        #endregion Ctor
-
-        #region Initialize
-
         internal void Initialize(IWebActivity activity)
         {
             Activity = activity;
@@ -86,7 +71,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
             ioBuilder.SetupActivityData(activity);
 
-            var mappingData = ioBuilder.Generate();            
+            var mappingData = ioBuilder.Generate();
             foreach(var ioViewModel in mappingData.Outputs)
             {
                 Outputs.Add(ioViewModel);
@@ -108,15 +93,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         }
 
-        #endregion Initialize
-
-        #region Bindings
         public string XmlOutput
         {
-            get
-            {
-                return _xmlOutput;
-            }
+            get => _xmlOutput;
             set
             {
                 _xmlOutput = value;
@@ -126,10 +105,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public IWebActivity Activity
         {
-            get
-            {
-                return _activity;
-            }
+            get => _activity;
             set
             {
                 _activity = value;
@@ -139,10 +115,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool IsInitialLoad
         {
-            get
-            {
-                return _isInitialLoad;
-            }
+            get => _isInitialLoad;
             set
             {
                 _isInitialLoad = value;
@@ -151,10 +124,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string ActivityName
         {
-            get
-            {
-                return _activityName;
-            }
+            get => _activityName;
             set
             {
                 _activityName = value;
@@ -162,17 +132,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ObservableCollection<IInputOutputViewModel> Outputs { get; private set; }
+        public ObservableCollection<IInputOutputViewModel> Outputs { get; set; }
 
-        public ObservableCollection<IInputOutputViewModel> Inputs { get; private set; }
-
-        #endregion Bindings
-
-        #region Final Output
-
-        #endregion Final Output
-
-        #region Work Around Till Refactor
+        public ObservableCollection<IInputOutputViewModel> Inputs { get; set; }
 
         public string GetInputString(IList<IInputOutputViewModel> inputData)
         {
@@ -204,39 +166,24 @@ namespace Dev2.Studio.ViewModels.DataList
             return outputString;
         }
 
-        #endregion Work Around Till Refactor
-
-        #region Get Current Output Item
-
         public IInputOutputViewModel CurrentlySelectedOutput
         {
-            get
-            {
-                return _currentlySelectedOutput;
-            }
+            get => _currentlySelectedOutput;
             set
             {
                 _currentlySelectedOutput = value;
                 OnPropertyChanged("CurrentlySelectedOutput");
             }
         }
-        #endregion Get Current Output Item
-
-        #region Get Current Input Item
 
         public IInputOutputViewModel CurrentlySelectedInput
         {
-            get
-            {
-                return _currentlySelectedInput;
-            }
+            get => _currentlySelectedInput;
             set
             {
                 _currentlySelectedInput = value;
                 OnPropertyChanged("CurrentlySelectedInput");
             }
         }
-        #endregion Get Current Input Item
-
     }
 }

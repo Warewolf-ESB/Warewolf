@@ -21,8 +21,10 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -43,7 +45,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("MicrosoftSQL", "SQL Bulk Insert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Bulk_Insert")]
-    public class DsfSqlBulkInsertActivity : DsfActivityAbstract<string>
+    public class DsfSqlBulkInsertActivity : DsfActivityAbstract<string>,IEquatable<DsfSqlBulkInsertActivity>
     {
         [NonSerialized]
         ISqlBulkInserter _sqlBulkInserter;
@@ -125,7 +127,7 @@ namespace Dev2.Activities
 
             var errorResultTo = new ErrorResultTO();
             var allErrors = new ErrorResultTO();
-            bool addExceptionToErrorList = true;
+            var addExceptionToErrorList = true;
             InitializeDebug(dataObject);
             try
             {
@@ -743,5 +745,72 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfSqlBulkInsertActivity other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(Database, other.Database);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(InputMappings, other.InputMappings, new DataColumnMappingComparer());
+            var isEqual = base.Equals(other);
+            isEqual &= collectionEquals;
+            isEqual &= isSourceEqual;
+            isEqual &= collectionEquals;
+            isEqual &= string.Equals(TableName, other.TableName);
+            isEqual &= string.Equals(Result, other.Result);
+            isEqual &= CheckConstraints == other.CheckConstraints;
+            isEqual &= FireTriggers == other.FireTriggers;
+            isEqual &= UseInternalTransaction == other.UseInternalTransaction;
+            isEqual &= KeepIdentity == other.KeepIdentity;
+            isEqual &= KeepTableLock == other.KeepTableLock;
+            isEqual &= string.Equals(Timeout, other.Timeout);
+            isEqual &= string.Equals(BatchSize, other.BatchSize);
+            isEqual &= IgnoreBlankRows == other.IgnoreBlankRows;
+            return isEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+            if (obj.GetType() != GetType())
+            {
+                return false;
+            }
+            return Equals((DsfSqlBulkInsertActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InputMappings != null ? InputMappings.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Database != null ? Database.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TableName != null ? TableName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CheckConstraints.GetHashCode();
+                hashCode = (hashCode * 397) ^ FireTriggers.GetHashCode();
+                hashCode = (hashCode * 397) ^ UseInternalTransaction.GetHashCode();
+                hashCode = (hashCode * 397) ^ KeepIdentity.GetHashCode();
+                hashCode = (hashCode * 397) ^ KeepTableLock.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Timeout != null ? Timeout.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (BatchSize != null ? BatchSize.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IgnoreBlankRows.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

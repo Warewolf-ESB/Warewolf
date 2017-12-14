@@ -60,18 +60,19 @@ namespace Dev2
         #endregion
 
         #region Overrides
-
+        ShellViewModel _mainViewModel;
         protected override void Configure()
         {
             CustomContainer.Register<IWindowManager>(new WindowManager());
             CustomContainer.Register<IPopupController>(new PopupController());
-            var mainViewModel = new ShellViewModel();
-            CustomContainer.Register<IShellViewModel>(mainViewModel);
-            CustomContainer.Register<IShellViewModel>(mainViewModel);
+            _mainViewModel = new ShellViewModel();
+            CustomContainer.Register<IShellViewModel>(_mainViewModel);
+            CustomContainer.Register<IShellViewModel>(_mainViewModel);
             CustomContainer.Register<IWindowsServiceManager>(new WindowsServiceManager());
-            var conn = new ServerProxy("http://localHost:3142",CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
+            var conn = new ServerProxy("http://localHost:3142", CredentialCache.DefaultNetworkCredentials, new AsyncWorker());
             conn.Connect(Guid.NewGuid());
             CustomContainer.Register<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(new Microsoft.Practices.Prism.PubSubEvents.EventAggregator());
+
             ClassRoutedEventHandlers.RegisterEvents();
         }
 
@@ -80,9 +81,10 @@ namespace Dev2
 
         protected override void OnExit(object sender, EventArgs e)
         {
-            if(_serverServiceStartedFromStudio)
+            if (_serverServiceStartedFromStudio)
             {
-                if (Application.Current is IApp app)
+                var app = Application.Current as IApp;
+                if (app != null)
                 {
                     app.ShouldRestart = true;
                 }
@@ -101,7 +103,7 @@ namespace Dev2
             {
                 Application.Shutdown();
             }
-            
+
         }
 
         #region Overrides of BootstrapperBase
@@ -126,16 +128,16 @@ namespace Dev2
             IPopupController popup = CustomContainer.Get<IPopupController>();
             ServerServiceConfiguration ssc = new ServerServiceConfiguration(windowsServiceManager, popup);
 
-            if(ssc.DoesServiceExist())
+            if (ssc.DoesServiceExist())
             {
-                if(ssc.IsServiceRunning())
+                if (ssc.IsServiceRunning())
                 {
                     return true;
                 }
 
-                if(ssc.PromptUserToStartService())
+                if (ssc.PromptUserToStartService())
                 {
-                    if(ssc.StartService())
+                    if (ssc.StartService())
                     {
                         _serverServiceStartedFromStudio = true;
                         return true;

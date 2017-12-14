@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
-            bool messagePublished = false;
+            var messagePublished = false;
             all.ItemAddedMessage = new Action<string>(serialisedItem =>
             {
                 messagePublished = true;
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
-            bool messagePublished = false;
+            var messagePublished = false;
             all.ItemAddedMessage = new Action<string>(serialisedItem =>
             {
                 messagePublished = true;

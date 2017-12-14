@@ -58,7 +58,7 @@ namespace Dev2.Common
 
         bool CanUseEnumerator()
         {
-            bool result = _ops != null && _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
+            var result = _ops != null && _ops?.Count(op => op.CanUseEnumerator(_isReversed)) == _ops.Count;
             return result;
         }
 

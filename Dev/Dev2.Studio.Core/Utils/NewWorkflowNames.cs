@@ -43,8 +43,8 @@ namespace Dev2.Studio.Core.Utils
         /// <param name="nameToRemove"></param>
         public bool Remove(string nameToRemove)
         {
-            bool result = false;
-            if(Contains(nameToRemove))
+            var result = false;
+            if (Contains(nameToRemove))
             {
                 _workflowNamesHashSet.Remove(nameToRemove);
                 result = true;
@@ -66,7 +66,7 @@ namespace Dev2.Studio.Core.Utils
         {
             var newWorkflowBaseName = StringResources.NewWorkflowBaseName;
 
-            int counter = 1;
+            var counter = 1;
             var fullName = StringResources.NewWorkflowBaseName + " " + counter;
 
             while (Contains(fullName))

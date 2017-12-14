@@ -51,8 +51,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataSplit
             var dataSplit = new DsfDataSplitActivity { SourceString = stringToSplit };
 
 
-            int row = 1;
-            foreach(var dto in splitCollection)
+            var row = 1;
+            foreach (var dto in splitCollection)
             {
                 dto.IndexNumber = row;
                 dataSplit.ResultsCollection.Add(dto);

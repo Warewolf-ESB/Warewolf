@@ -89,7 +89,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     throw;
                 }
-                catch
+                catch (Exception ex)
                 {
                     try
                     {
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         depAsm = _assemblyWrapper.Load(toLoad);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         var path = Path.GetDirectoryName(assemblyLocation);
                         if (path != null)

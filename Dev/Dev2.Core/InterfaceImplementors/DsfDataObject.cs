@@ -106,7 +106,7 @@ namespace Dev2.DynamicServices
                         DebugEnvironmentId = environmentId;
                     }
 
-                    bool isOnDemandSimulation = false;
+                    var isOnDemandSimulation = false;
                     var onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
                     if (!string.IsNullOrEmpty(onDemandSimulationString))
                     {

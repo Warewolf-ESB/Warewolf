@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -113,8 +113,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -158,16 +158,16 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 var ifItr = new WarewolfIterator(dataObject.Environment.Eval(InputFormat ?? string.Empty, update));
                 colItr.AddVariableToIterateOn(ifItr);
-                int indexToUpsertTo = 1;
+                var indexToUpsertTo = 1;
                 while (colItr.HasMoreData())
                 {
-                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
+                    var transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
                         colItr.FetchNextValue(input2Itr),
                         colItr.FetchNextValue(ifItr),
                         OutputType);
                     //Create a DateTimeComparer using the DateTimeConverterFactory
-                    IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-                    string expression = Result;
+                    var comparer = DateTimeConverterFactory.CreateComparer();
+                    var expression = Result;
 
                     if (comparer.TryCompare(transObj, out string result, out string error))
                     {
@@ -320,8 +320,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(Input1, Input2, InputFormat);
@@ -332,7 +330,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(Result);
         }
 
-        #endregion
+        public bool Equals(DsfDateTimeDifferenceActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Input1, other.Input1) 
+                && string.Equals(Input2, other.Input2) 
+                && string.Equals(InputFormat, other.InputFormat) 
+                && string.Equals(OutputType, other.OutputType) 
+                && string.Equals(Result, other.Result);
+        }
 
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDateTimeDifferenceActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Input1 != null ? Input1.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Input2 != null ? Input2.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputType != null ? OutputType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

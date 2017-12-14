@@ -172,7 +172,7 @@ namespace Dev2.Runtime.Security
         #region EnsureSSL
         public bool EnsureSsl(string certPath, IPEndPoint endPoint)
         {
-            bool result = false;
+            var result = false;
 
             if (!File.Exists(certPath))
             {

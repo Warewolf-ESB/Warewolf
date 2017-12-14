@@ -39,7 +39,7 @@ namespace Dev2.Studio.AppResources.Behaviors
                 return;
             }
 
-            bool value = Convert.ToBoolean(e.NewValue);
+            var value = Convert.ToBoolean(e.NewValue);
             if (value)
             {
                 windowCloseBehviour.AssociatedObject.Close();

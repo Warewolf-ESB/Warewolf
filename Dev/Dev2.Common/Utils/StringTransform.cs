@@ -44,7 +44,7 @@ namespace Dev2.Common.Utils
                     foreach (int groupNumber in groupNumbers)
                     {
                         var group = match.Groups[groupNumber];
-                        int indexInMatch = group.Index - match.Index;
+                        var indexInMatch = group.Index - match.Index;
                         encrypted.Remove(indexInMatch, group.Length);
                         encrypted.Insert(indexInMatch, transform.TransformFunction(group.Value));
                     }

@@ -178,7 +178,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             var instance = sanitised as T;
             var native = trig as U;
 
-            Assert.IsTrue(fun(instance, native));
+            Assert.IsTrue(fun?.Invoke(instance, native) ?? default(bool));
 
         }
 

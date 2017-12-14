@@ -1,10 +1,7 @@
-﻿using Dev2.Common;
-using Dev2.Data;
-using Dev2.Integration.Tests.Properties;
-using Dev2.Tests.Runtime.Util;
+﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Diagnostics;
+using Dev2.Tests.Runtime.Util;
+using System.Diagnostics;                
 using System.Threading;
 using Dev2.Core.Tests;
 using Dev2.Studio.Core.Factories;
@@ -42,13 +39,14 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Single_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+
 
             dtb.AddTokenOp("-", false);
 
             var dt = dtb.Generate();
 
-            int opCnt = 0;
+            var opCnt = 0;
             var sw = new Stopwatch();
             sw.Start();
             while (dt.HasMoreOps() && opCnt < 100000)
@@ -58,7 +56,7 @@ namespace Dev2.Integration.Tests
             }
             sw.Stop();
 
-            long exeTime = sw.ElapsedMilliseconds;
+            var exeTime = sw.ElapsedMilliseconds;
 
             Console.WriteLine(@"Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 100000 && exeTime < 1300, "Expecting it to take 1300 ms but it took " + exeTime + " ms.");
@@ -68,13 +66,14 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void Three_Token_Perfomance_Op()
         {
-            var dtb = new Dev2TokenizerBuilder { ToTokenize = TestStrings.tokenizerBase };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = Properties.TestStrings.tokenizerBase };
+
 
             dtb.AddTokenOp("AB-", false);
 
             var dt = dtb.Generate();
 
-            int opCnt = 0;
+            var opCnt = 0;
             var sw = new Stopwatch();
             sw.Start();
             while (dt.HasMoreOps() && opCnt < 35000)
@@ -84,7 +83,7 @@ namespace Dev2.Integration.Tests
             }
             sw.Stop();
 
-            long exeTime = sw.ElapsedMilliseconds;
+            var exeTime = sw.ElapsedMilliseconds;
 
             Console.WriteLine("Total Time : " + exeTime);
             Assert.IsTrue(opCnt == 35000 && exeTime < 2500, "It took [ " + exeTime + " ]");
@@ -94,7 +93,7 @@ namespace Dev2.Integration.Tests
         [TestCategory("Load Tests")]
         public void PulseTracker_Should()
         {
-            bool elapsed = false;
+            var elapsed = false;
             var pulseTracker = new PulseTracker(2000);
 
             Assert.AreEqual(2000, pulseTracker.Interval);

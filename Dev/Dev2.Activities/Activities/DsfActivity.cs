@@ -34,17 +34,12 @@ using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
-
-
-
-
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
-    public class DsfActivity : DsfActivityAbstract<bool>
+    public class DsfActivity : DsfActivityAbstract<bool>,IEquatable<DsfActivity>
     {
         #region Fields
         InArgument<string> _iconPath = string.Empty;
@@ -795,5 +790,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var inputsEqual = CommonEqualityOps.CollectionEquals(Inputs, other.Inputs, new ServiceInputComparer());
+            var outputsEqual = CommonEqualityOps.CollectionEquals(Outputs, other.Outputs, new ServiceOutputMappingComparer());
+            return base.Equals(other)
+                && inputsEqual
+                && outputsEqual
+                && string.Equals(ServiceUri, other.ServiceUri)
+                && string.Equals(ServiceName, other.ServiceName)
+                && string.Equals(Category, other.Category)
+                && RunWorkflowAsync == other.RunWorkflowAsync
+                && IsObject == other.IsObject;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Inputs != null ? Inputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Outputs != null ? Outputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ServiceUri != null ? ServiceUri.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ServiceName != null ? ServiceName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Category != null ? Category.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();                
+                hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

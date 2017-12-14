@@ -45,7 +45,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool HasMore()
         {
-            bool result = _curPos < IndexList.Count();
+            var result = _curPos < IndexList.Count();
             return result;
         }
 

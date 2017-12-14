@@ -2089,4 +2089,37 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   <data name="Tool_Python" xml:space="preserve">
     <value>Use the Script tool to execute Python code.</value>
   </data>
+  <data name="MergeCurrentWorkflowNameRBHelp" xml:space="preserve">
+    <value>Select the current Workflow name radio button to keep the current Workflow name changes.</value>
+  </data>
+  <data name="MergeDifferenceWorkflowNameRBHelp" xml:space="preserve">
+    <value>Select the difference Workflow name radio button to keep the difference Workflow name changes.</value>
+  </data>
+  <data name="MergeCurrentVariablesRBHelp" xml:space="preserve">
+    <value>Select the difference Tool radio button to keep the difference Tool changes.</value>
+  </data>
+  <data name="MergeDifferenceVariablesRBHelp" xml:space="preserve">
+    <value>Select the difference Variable radio button to keep the difference Variable changes.</value>
+  </data>
+  <data name="MergeCurrentConflictRBHelp" xml:space="preserve">
+    <value>Select the current Tool radio button to keep the current Tool changes.</value>
+  </data>
+  <data name="MergeDifferenceConflictRBHelp" xml:space="preserve">
+    <value>Select the difference Variable radio button to keep the difference Variable changes.</value>
+  </data>
+  <data name="MergeCurrentArmRBHelp" xml:space="preserve">
+    <value>Select the current Tool connection radio button to keep the current Tool connection changes.</value>
+  </data>
+  <data name="MergeDifferenceArmRBHelp" xml:space="preserve">
+    <value>Select the difference Tool connection radio button to keep the difference Tool connection changes.</value>
+  </data>
+  <data name="MergeWorkflowStartupHelp" xml:space="preserve">
+    <value>The Merge feature provides you with the options to select between conflicts related to the current state of your workflow and the version of your workflow selected to merge against. 
+
+A list of conflicts will be shown starting with the Workflow name, then the Variables, and then the Tools and Tool connected states. 
+
+If there are no conflicts, a green tick will be displayed. As each selection is made, the selected Tool will appear on the design surface to the right. Once a Tool connection conflict is selected, it will connect the relevant tools to each other. 
+
+The conflicts on the left will show your current workflow changes and the conflicts on the right will show the difference you want to merge with. Once all the selections are made, the changes can be saved which will close the Merge view and open the new workflow with the changes.</value>
+  </data>
 </root>

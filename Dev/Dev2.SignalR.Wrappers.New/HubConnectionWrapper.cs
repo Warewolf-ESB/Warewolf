@@ -66,7 +66,7 @@ namespace Dev2.SignalR.Wrappers.New
         {
             add
             {
-                _wrapped.StateChanged += change => value(new StateChangeWrapped(change));
+                _wrapped.StateChanged += change => value?.Invoke(new StateChangeWrapped(change));
             }
             remove
             {

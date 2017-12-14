@@ -89,6 +89,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsNotNull(connectControlViewModel);
         }
 
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void TestConnectControlViewModelExpectedProperties()
+        {
+            //act
+            var connectControlViewModel = new ConnectControlViewModel(null, _eventAggregatorMock.Object);
+            Assert.IsNotNull(connectControlViewModel);
+            Assert.IsTrue(connectControlViewModel.CanEditServer);
+            Assert.IsTrue(connectControlViewModel.CanCreateServer);
+        }
+
         #endregion Test construction
 
         #region Test commands
@@ -492,7 +503,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentRepository = new ServerRepository(repo);
             Assert.IsNotNull(environmentRepository);
 
-            bool passed = false;
+            var passed = false;
             mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))
                 .Callback((Guid id1,Guid id2,  IServer a) =>
                 {
@@ -765,7 +776,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var environmentRepository = new ServerRepository(repo);
             Assert.IsNotNull(environmentRepository);
 
-            bool passed = false;
+            var passed = false;
             mockShellViewModel.Setup(a => a.OpenResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<IServer>()))
                 .Callback((Guid id1, Guid id2, IServer a) =>
                 {

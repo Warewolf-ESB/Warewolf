@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests.Dialogs
         public void ProgressDialogViewModel_CancelCommand_CancelCommandExecuted_CallsCancelAction()
         {
             //------------Setup for test--------------------------
-            bool cancelActionCalled = false;
+            var cancelActionCalled = false;
             var vm = new ProgressDialogViewModel(() => { cancelActionCalled = true; }, () => { }, () => { });
             //------------Execute Test---------------------------
             vm.CancelCommand.Execute(null);

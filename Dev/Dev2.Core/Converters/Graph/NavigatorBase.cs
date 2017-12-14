@@ -50,7 +50,7 @@ namespace Dev2.Converters.Graph
             foreach (IPath path in paths)
             {
                 var IndexedPathSegmentTreeNode = rootIndexedValueTreeNode;
-                int pathSegmentCount = 0;
+                var pathSegmentCount = 0;
 
                 while (pathSegmentCount < indexedPathSegments[path].Count)
                 {

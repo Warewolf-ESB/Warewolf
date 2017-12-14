@@ -53,7 +53,7 @@ namespace Dev2.Common
             {                
                 if (_tokenParts.Length == 1)
                 {
-                    int pos = startIdx;
+                    var pos = startIdx;
                     while (pos < candidate.Length &&
                            (candidate[pos] != _tokenParts[0] || SkipDueToEscapeChar(candidate, pos)))
                     {
@@ -63,7 +63,7 @@ namespace Dev2.Common
                 }
                 else
                 {
-                    int pos = startIdx;                   
+                    var pos = startIdx;
                     while (pos < candidate.Length && !IsMultiTokenMatch(candidate, pos, false))
                     {                        
                         result.Append(candidate[pos]);
@@ -82,7 +82,7 @@ namespace Dev2.Common
                 // reverse order
                 if (_tokenParts.Length == 1)
                 {
-                    int pos = startIdx;
+                    var pos = startIdx;
                     if (pos > candidate.Length)
                     {
                         pos = candidate.Length - 1;
@@ -95,7 +95,7 @@ namespace Dev2.Common
                 }
                 else
                 {
-                    int pos = startIdx;
+                    var pos = startIdx;
                     while (pos >= 0 && !IsMultiTokenMatch(candidate, pos, true))
                     {
                         result.Insert(0, candidate[pos]);
@@ -146,7 +146,7 @@ namespace Dev2.Common
 
         public int OpLength()
         {
-            int result = _tokenParts.Length;
+            var result = _tokenParts.Length;
 
             if (_include)
             {
@@ -160,10 +160,10 @@ namespace Dev2.Common
 
         bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
         {
-            bool result = true;
+            var result = true;
 
-            int cnt = 0;
-            int canidateIdx = fromIndex;
+            var cnt = 0;
+            var canidateIdx = fromIndex;
 
             if (isReversed)
             {

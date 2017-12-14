@@ -164,7 +164,7 @@ namespace Dev2.Data.Parsers
                 if (payload.Contains(CdataStart))
                 {
                     payload = payload.Replace(CdataStart, "");
-                    int idx = payload.LastIndexOf(CdataEnd, StringComparison.Ordinal);
+                    var idx = payload.LastIndexOf(CdataEnd, StringComparison.Ordinal);
                     payload = payload.Substring(0, idx);
                 }
 
@@ -229,9 +229,9 @@ namespace Dev2.Data.Parsers
                 return new List<IParseTO>();
             }
 
-            char prev = '\0';
+            var prev = '\0';
             var region = new StringBuilder();
-            bool openRegion = false;
+            var openRegion = false;
             IParseTO currentNode = new ParseTO { Parent = null, HangingOpen = true };
             var root = currentNode;
             int i;
@@ -310,12 +310,12 @@ namespace Dev2.Data.Parsers
             {
                 var parts = tmp.ToString().Split('.');
                 var search = parts[0].ToLower();
-                bool isRs = search.Contains(DataListUtil.RecordsetIndexOpeningBracket);
+                var isRs = search.Contains(DataListUtil.RecordsetIndexOpeningBracket);
 
                 if (search.Contains(DataListUtil.RecordsetIndexOpeningBracket))
                 {
                     isRs = true;
-                    int pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                    var pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                     search = search.Substring(0, search.Length - (search.Length - pos));
                 }
 
@@ -356,7 +356,7 @@ namespace Dev2.Data.Parsers
                 .ForEach(r =>
                 {
 
-                    bool addToFinal = true;
+                    var addToFinal = true;
 
                     realResults
                         .ToList()
@@ -385,7 +385,7 @@ namespace Dev2.Data.Parsers
 
             if (payload.HangingOpen)
             {
-                bool hasIndex = false;
+                var hasIndex = false;
                 var openBraceIndex = search.LastIndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                 var closeBraceIndex = search.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
                 if (openBraceIndex != -1 && openBraceIndex < search.Length && closeBraceIndex > openBraceIndex)
@@ -529,7 +529,7 @@ namespace Dev2.Data.Parsers
                 var parts = tmpString.Split('.');
                 var search = parts[0].ToLower();
                 var rawSearch = search;
-                bool isRs = false;
+                var isRs = false;
 
                 search = RemoveRecordSetBraces(search, ref isRs);
                 if (AddFieldResult(payload, result, tmpString, parts, isRs))
@@ -589,7 +589,7 @@ namespace Dev2.Data.Parsers
 
             var display = parts[0];
             var partName = parts[0];
-            int start = display.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var start = display.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             if (start >= 0 && recordsetPart == null)
             {
                 display = display.Substring(0, start);
@@ -720,7 +720,7 @@ namespace Dev2.Data.Parsers
             }
             else
             {
-                int start = display.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                var start = display.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                 display = display.Substring(0, start);
                 display += "()";
                 part = IntellisenseFactory.CreateDataListValidationRecordsetPart(display, "");
@@ -797,8 +797,8 @@ namespace Dev2.Data.Parsers
 
         static bool ProcessForChild(IParseTO payload, IList<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result, string search, IDev2DataLanguageIntellisensePart t1)
         {
-            bool emptyOk = false;
-            bool isHangingChild = payload.Child != null && payload.Child.HangingOpen;
+            var emptyOk = false;
+            var isHangingChild = payload.Child != null && payload.Child.HangingOpen;
 
             if (!payload.IsLeaf && !isHangingChild)
             {
@@ -824,7 +824,7 @@ namespace Dev2.Data.Parsers
 
         static bool HandleScalarMatches(IParseTO payload, bool addCompleteParts, IList<IIntellisenseResult> result, string search, IDev2DataLanguageIntellisensePart t1, string match)
         {
-            bool emptyOk = false;
+            var emptyOk = false;
             if (search != match || (search == match && addCompleteParts))
             {
                 if (payload.Parent != null && payload.Parent.Payload.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal) >= 0)
@@ -883,7 +883,7 @@ namespace Dev2.Data.Parsers
 
         void ProcessForOnlyOpenRegion(IParseTO payload, IEnumerable<IDev2DataLanguageIntellisensePart> refParts, IList<IIntellisenseResult> result)
         {
-            bool addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
+            var addAll = !(payload.Parent != null && payload.Parent.IsRecordSet);
             refParts.ToList().ForEach(part =>
                 {
                     if (part.Children != null && part.Children.Count > 0 && addAll)

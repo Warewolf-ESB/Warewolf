@@ -48,11 +48,11 @@ namespace Dev2.Providers.Validation.Rules
         {
             var result = string.Empty;
 
-            int start = rs.IndexOf("(", StringComparison.Ordinal);
-            if(start > 0)
+            var start = rs.IndexOf("(", StringComparison.Ordinal);
+            if (start > 0)
             {
-                int end = rs.LastIndexOf(")", StringComparison.Ordinal);
-                if(end < 0)
+                var end = rs.LastIndexOf(")", StringComparison.Ordinal);
+                if (end < 0)
                 {
                     end = rs.Length;
                 }
