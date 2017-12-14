@@ -3014,6 +3014,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var parentNodeProperty = switchItem.Properties["Cases"];
                 var cases = parentNodeProperty?.Dictionary;
+                cases.Remove(key);
                 cases.Add(key, nodeItem);
                 parentNodeProperty.SetValue(cases);
             }
