@@ -24,8 +24,6 @@ namespace Dev2.Core.Tests.Workflows
 {
     public partial class WorkflowDesignerUnitTest
     {
-
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkflowDesignerViewModel_AddItem")]
