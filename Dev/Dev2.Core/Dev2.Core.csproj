@@ -144,8 +144,13 @@
     </None>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
     <Compile Include="Common\ConflictTreeNode.cs" />
+    <Compile Include="Common\ExtensionMethods.cs" />
+    <Compile Include="Common\IConflictTreeNode.cs" />
+    <Compile Include="Common\ResourceCriteria.cs" />
+    <Compile Include="Common\ResourceSingleCriteria.cs" />
     <Compile Include="Common\ValidatableObject.cs" />
     <Compile Include="Common\VariableUtils.cs" />
+    <Compile Include="Comparers\DataSourceShapeComparer.cs" />
     <Compile Include="Converters\Base\TO\CaseConvertTO.cs" />
     <Compile Include="DeletedFileMetadata.cs" />
     <Compile Include="Common\Dev2Random.cs" />
