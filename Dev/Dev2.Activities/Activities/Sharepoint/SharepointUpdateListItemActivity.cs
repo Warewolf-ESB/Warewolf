@@ -95,7 +95,7 @@ namespace Dev2.Activities.Sharepoint
             var allErrors = new ErrorResultTO();
             try
             {
-                var sharepointReadListTos = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+                var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
                 if (sharepointReadListTos.Any())
                 {
                     var sharepointSource = ResourceCatalog.GetResource<SharepointSource>(dataObject.WorkspaceID, SharepointServerResourceId);
@@ -179,7 +179,7 @@ namespace Dev2.Activities.Sharepoint
 
         void AddInputDebug(IExecutionEnvironment env, int update)
         {
-            var validItems = _sharepointUtils.GetValidReadListItems(ReadListItems).ToList();
+            var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
                 var debugItem = new DebugItem();
