@@ -135,8 +135,11 @@ namespace Dev2.Studio.ViewModels
         void AddWorkSurfaceContextImpl(IContextualResourceModel resourceModel, bool isLoadingWorkspace);
         void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
         void AddWorkSurface(IWorkSurfaceObject obj);
-        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt = false);
-        void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey = null);
+        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e);
+        void ViewTestsForService(IContextualResourceModel resourceModel);
+        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt);
+        void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null);
+        void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey);
         void ViewSelectedTestForService(IContextualResourceModel resourceModel, IServiceTestModel selectedServiceTest, ServiceTestViewModel testViewModel, IWorkSurfaceKey workSurfaceKey = null);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         void RunAllTestsForFolder(string ResourcePath);

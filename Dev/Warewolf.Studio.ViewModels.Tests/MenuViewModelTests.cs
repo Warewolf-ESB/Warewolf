@@ -17,18 +17,18 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IShellViewModel> _mainViewModelMock;
-        private AuthorizeCommand<string> _newCommand;
-        private Mock<ICommand> _deployCommandMock;
-        private AuthorizeCommand _saveCommand;
-        private AuthorizeCommand _openSearchCommand;
-        private AuthorizeCommand _openSchedulerCommand;
-        private AuthorizeCommand _openSettingsCommand;
-        private AuthorizeCommand _executeServiceCommand;
-        private Mock<ICommand> _startPageCommandMock;
-        private List<string> _changedProperties;
+        Mock<IShellViewModel> _mainViewModelMock;
+        AuthorizeCommand<string> _newCommand;
+        Mock<ICommand> _deployCommandMock;
+        AuthorizeCommand _saveCommand;
+        AuthorizeCommand _openSchedulerCommand;
+        AuthorizeCommand _openSearchCommand;
+        AuthorizeCommand _openSettingsCommand;
+        AuthorizeCommand _executeServiceCommand;
+        Mock<ICommand> _startPageCommandMock;
+        List<string> _changedProperties;
 
-        private MenuViewModel _target;
+        MenuViewModel _target;
 
         #endregion Fields
 
