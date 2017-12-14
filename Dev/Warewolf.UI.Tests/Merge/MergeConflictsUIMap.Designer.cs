@@ -41,24 +41,10 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMainWindow;
             }
         }
-        
-        public UIWarewolfDEV2SANELEMTWindow UIWarewolfDEV2SANELEMTWindow
-        {
-            get
-            {
-                if ((this.mUIWarewolfDEV2SANELEMTWindow == null))
-                {
-                    this.mUIWarewolfDEV2SANELEMTWindow = new UIWarewolfDEV2SANELEMTWindow();
-                }
-                return this.mUIWarewolfDEV2SANELEMTWindow;
-            }
-        }
         #endregion
         
         #region Fields
         private MainWindow mMainWindow;
-        
-        private UIWarewolfDEV2SANELEMTWindow mUIWarewolfDEV2SANELEMTWindow;
         #endregion
     }
     
@@ -5279,76 +5265,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         
         #region Fields
         private WpfEdit mDisplayNameTextBox;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWarewolfDEV2SANELEMTWindow : WpfWindow
-    {
-        
-        public UIWarewolfDEV2SANELEMTWindow()
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfWindow.PropertyNames.Name] = "Warewolf (DEV2\\SANELE.MTHEMBU)";
-            this.SearchProperties.Add(new PropertyExpression(WpfWindow.PropertyNames.ClassName, "HwndWrapper", PropertyExpressionOperator.Contains));
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public UIWorkflowItemPresenteCustom UIWorkflowItemPresenteCustom
-        {
-            get
-            {
-                if ((this.mUIWorkflowItemPresenteCustom == null))
-                {
-                    this.mUIWorkflowItemPresenteCustom = new UIWorkflowItemPresenteCustom(this);
-                }
-                return this.mUIWorkflowItemPresenteCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private UIWorkflowItemPresenteCustom mUIWorkflowItemPresenteCustom;
-        #endregion
-    }
-    
-    [GeneratedCode("Coded UITest Builder", "15.0.26208.0")]
-    public class UIWorkflowItemPresenteCustom : WpfCustom
-    {
-        
-        public UIWorkflowItemPresenteCustom(UITestControl searchLimitContainer) : 
-                base(searchLimitContainer)
-        {
-            #region Search Criteria
-            this.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.WorkflowItemPresenter";
-            this.SearchProperties[WpfControl.PropertyNames.AutomationId] = "WorkflowItemPresenter";
-            this.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-            #endregion
-        }
-        
-        #region Properties
-        public WpfCustom UIFlowchartCustom
-        {
-            get
-            {
-                if ((this.mUIFlowchartCustom == null))
-                {
-                    this.mUIFlowchartCustom = new WpfCustom(this);
-                    #region Search Criteria
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.ClassName] = "Uia.FlowchartDesigner";
-                    this.mUIFlowchartCustom.SearchProperties[WpfControl.PropertyNames.AutomationId] = "Merge3ToolsWorkflow(FlowchartDesigner)";
-                    this.mUIFlowchartCustom.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
-                    #endregion
-                }
-                return this.mUIFlowchartCustom;
-            }
-        }
-        #endregion
-        
-        #region Fields
-        private WpfCustom mUIFlowchartCustom;
         #endregion
     }
 }
