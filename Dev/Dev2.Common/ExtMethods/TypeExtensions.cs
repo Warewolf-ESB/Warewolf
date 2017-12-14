@@ -24,7 +24,8 @@ namespace Dev2.Common.ExtMethods
                 throw new ArgumentNullException("typeName");
             }
 
-            bool isArray = false, isNullable = false;
+            var isArray = false;
+            var isNullable = false;
 
             if (typeName.IndexOf("[]", StringComparison.Ordinal) != -1)
             {

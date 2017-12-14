@@ -146,6 +146,7 @@ $JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UI.Specs", "WebConnector"
 $JobSpecs["Web Sources UI Tests"]				= "Warewolf.UI.Tests", "Web Sources"
 $JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UI.Tests", "Workflow Mocking Tests"
 $JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UI.Tests", "Workflow Testing"
+$JobSpecs["Workflow Merging UI Tests"]			= "Warewolf.UI.Tests", "Merge"
 #UI Load Spec
 $JobSpecs["UI Load Spec"]						= "Warewolf.UI.Load.Specs"
 

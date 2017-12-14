@@ -61,12 +61,12 @@ namespace Dev2.Utilities
             if(val.IndexOf(GlobalConstants.InjectedSwitchDataFetch, StringComparison.Ordinal) >= 0)
             {
                 // Time to extract the data
-                int start = val.IndexOf("(", StringComparison.Ordinal);
-                if(start > 0)
+                var start = val.IndexOf("(", StringComparison.Ordinal);
+                if (start > 0)
                 {
-                    int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
+                    var end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
 
-                    if(end > start)
+                    if (end > start)
                     {
                         start += 2;
                         val = val.Substring(start, end - start);

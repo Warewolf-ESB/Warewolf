@@ -482,7 +482,7 @@ namespace Dev2.Activities.Designers.Tests.Decision
             viewModel.GetExpressionText();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ExpressionText);
-            StringAssert.Contains(viewModel.ExpressionText, "{\"TheStack\":[{\"Col1\":\"[[val]]\",\"Col2\":\"5\",\"Col3\":\"\",\"Cols1\":null,\"Cols2\":null,\"Cols3\":null,\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"\",\"FalseArmText\":\"\",\"DisplayText\":\"\"}");
+            StringAssert.Contains(viewModel.ExpressionText, "{\"TheStack\":[{\"Col1\":\"[[val]]\",\"Col2\":\"5\",\"Col3\":\"\",\"Cols1\":null,\"Cols2\":null,\"Cols3\":null,\"PopulatedColumnCount\":2,\"EvaluationFn\":\"IsEqual\"}],\"TotalDecisions\":1,\"ModelName\":\"Dev2DecisionStack\",\"Mode\":\"AND\",\"TrueArmText\":\"\",\"FalseArmText\":\"\",\"DisplayText\":\"\",\"Version\":null}");
         }
 
         [TestMethod]

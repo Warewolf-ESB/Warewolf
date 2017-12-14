@@ -131,7 +131,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IEnvironmentViewModel SelectedEnvironment { get; set; }
-        public IServer SelectedServer => SelectedEnvironment.Server;
+        public IServer SelectedServer => SelectedEnvironment?.Server;
 
         public virtual string SearchText
         {
@@ -154,7 +154,7 @@ namespace Warewolf.Studio.ViewModels
 
         public string RefreshToolTip => Resources.Languages.Tooltips.ExplorerRefreshToolTip;
 
-        public async void RefreshEnvironment(Guid environmentId)
+        public async Task RefreshEnvironment(Guid environmentId)
         {
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)

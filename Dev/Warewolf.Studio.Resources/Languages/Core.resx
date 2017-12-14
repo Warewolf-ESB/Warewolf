@@ -570,4 +570,10 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="HideVersionHistoryLabel" xml:space="preserve">
     <value>Hide Version History</value>
   </data>
+  <data name="MergeConflictsStartProcessText" xml:space="preserve">
+    <value>To start the Merge process, select a radio button below.</value>
+  </data>
+  <data name="MergeSelectionViewInformationLabel" xml:space="preserve">
+    <value>Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are nor sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select 'Show Version History' to view the previous versions.</value>
+  </data>
 </root>

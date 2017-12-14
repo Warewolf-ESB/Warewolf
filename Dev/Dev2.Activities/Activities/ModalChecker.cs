@@ -104,7 +104,7 @@ namespace Dev2.Activities
                 return 1;
             }
 
-            uint style = GetWindowLong(hWnd, GWL_EXSTYLE);
+            var style = GetWindowLong(hWnd, GWL_EXSTYLE);
             if ((style & WS_EX_DLGMODALFRAME) != 0)
             {
                 _waiting = true;

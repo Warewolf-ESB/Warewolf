@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "'";
             //------------Execute Test---------------------------
-            bool result = isAlphanumeric.Invoke(cols);
+            var result = isAlphanumeric.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -31,7 +31,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "TestData";
             //------------Execute Test---------------------------
-            bool result = isAlphanumeric.Invoke(cols);
+            var result = isAlphanumeric.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
             result = isAlphanumeric.Invoke(new[] { string.Empty});

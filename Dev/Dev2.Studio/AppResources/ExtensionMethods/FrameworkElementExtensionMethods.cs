@@ -35,7 +35,7 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
                 return null;
             }
 
-            int childCount = VisualTreeHelper.GetChildrenCount(dp);
+            var childCount = VisualTreeHelper.GetChildrenCount(dp);
             for (int i = 0; i < childCount; i++)
             {
                 var child = VisualTreeHelper.GetChild(dp, i);

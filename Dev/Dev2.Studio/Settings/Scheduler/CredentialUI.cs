@@ -55,8 +55,8 @@ namespace Dev2.Settings.Scheduler
             };
             credui.cbSize = Marshal.SizeOf(credui);
             uint authPackage = 0;
-            bool save = false;
-            int result = CredUIPromptForWindowsCredentials(ref credui,
+            var save = false;
+            var result = CredUIPromptForWindowsCredentials(ref credui,
                 0,
                 ref authPackage,
                 IntPtr.Zero,
@@ -70,9 +70,9 @@ namespace Dev2.Settings.Scheduler
             var passwordBuf = new StringBuilder(100);
             var domainBuf = new StringBuilder(100);
 
-            int maxUserName = 100;
-            int maxDomain = 100;
-            int maxPassword = 100;
+            var maxUserName = 100;
+            var maxDomain = 100;
+            var maxPassword = 100;
             if (result == 0)
             {
                 if (CredUnPackAuthenticationBuffer(0, outCredBuffer, outCredSize, usernameBuf, ref maxUserName,

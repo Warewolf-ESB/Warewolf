@@ -112,7 +112,7 @@ namespace Dev2.Activities.DateAndTime
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -123,7 +123,7 @@ namespace Dev2.Activities.DateAndTime
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             try
             {
@@ -149,14 +149,14 @@ namespace Dev2.Activities.DateAndTime
                     {
                         while (colItr.HasMoreData())
                         {
-                            IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                            var transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
                                 colItr.FetchNextValue(ifItr),
                                 colItr.FetchNextValue(ofItr),
                                 TimeModifierType,
                                 colItr.FetchNextValue(tmaItr)
                                 );
 
-                            IDateTimeFormatter format = DateTimeConverterFactory.CreateStandardFormatter();
+                            var format = DateTimeConverterFactory.CreateStandardFormatter();
                             string result;
                             string error;
                             if (format.TryFormat(transObj, out result, out error))
@@ -170,7 +170,7 @@ namespace Dev2.Activities.DateAndTime
                                     _debugInputs.Add(defaultDateTimeDebugItem);
                                 }
                                 AddDebugInfo(dataObject, update);
-                                string expression = Result;
+                                var expression = Result;
                                 dataObject.Environment.Assign(expression, result, update);
                             }
                             else
@@ -274,7 +274,7 @@ namespace Dev2.Activities.DateAndTime
 
         IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
-            int tmpTimeAmount = 0;
+            var tmpTimeAmount = 0;
             if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
                 if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))

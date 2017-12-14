@@ -33,7 +33,6 @@ using Dev2.ViewModels;
 using Dev2.Workspaces;
 using Infragistics.Windows.DockManager;
 
-
 namespace Dev2.Studio.Views
 {
     public partial class ShellView : IWin32Window
@@ -155,7 +154,7 @@ namespace Dev2.Studio.Views
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        
+
         public struct Minmaxinfo
         {
             public Point ptReserved;
@@ -193,6 +192,11 @@ namespace Dev2.Studio.Views
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {
                 ResetToStartupView();
+            }
+            if (e.Key == Key.Home && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                var shellViewModel = DataContext as ShellViewModel;
+                shellViewModel?.MergeCommand.Execute(null);
             }
             if (e.Key == Key.F1)
             {
@@ -405,7 +409,7 @@ namespace Dev2.Studio.Views
                     e.Cancel = true;
                 }
 
-                if (shellViewModel.IsDownloading())
+                if (ShellViewModel.IsDownloading())
                 {
                     e.Cancel = true;
                 }
@@ -755,11 +759,11 @@ namespace Dev2.Studio.Views
                 {
                     restoreIfMove = false;
 
-                    double percentHorizontal = e.GetPosition(this).X / ActualWidth;
-                    double targetHorizontal = RestoreBounds.Width * percentHorizontal;
+                    var percentHorizontal = e.GetPosition(this).X / ActualWidth;
+                    var targetHorizontal = RestoreBounds.Width * percentHorizontal;
 
-                    double percentVertical = e.GetPosition(this).Y / ActualHeight;
-                    double targetVertical = RestoreBounds.Height * percentVertical;
+                    var percentVertical = e.GetPosition(this).Y / ActualHeight;
+                    var targetVertical = RestoreBounds.Height * percentVertical;
 
                     WindowState = WindowState.Normal;
                     ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;

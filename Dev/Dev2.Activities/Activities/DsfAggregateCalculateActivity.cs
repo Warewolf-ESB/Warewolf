@@ -54,6 +54,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Override Abstract Methods
 
+        /// <inheritdoc />
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary> 
@@ -207,5 +208,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfAggregateCalculateActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Expression, other.Expression)
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfAggregateCalculateActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Expression != null ? Expression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

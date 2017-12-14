@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _executeServiceCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _startPageCommandMock = new Mock<ICommand>();
 
-            _mainViewModelMock.Setup(it => it.CheckForNewVersion()).ReturnsAsync(true);
+            _mainViewModelMock.Setup(it => it.CheckForNewVersionAsync()).ReturnsAsync(true);
             _mainViewModelMock.SetupGet(it => it.NewServiceCommand).Returns(_newCommand);
             _mainViewModelMock.SetupGet(it => it.DeployCommand).Returns(_deployCommandMock.Object);
             _mainViewModelMock.SetupGet(it => it.SaveCommand).Returns(_saveCommand);
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MenuViewModel_ShowStartPage_Execute_Result()
         {
             //------------Setup for test--------------------------
-            bool call = false;
+            var call = false;
             var x = new DelegateCommand(() => { call = true; });
             _mainViewModelMock.Setup(a => a.ShowStartPageCommand).Returns(x);
             _target = new MenuViewModel(_mainViewModelMock.Object);

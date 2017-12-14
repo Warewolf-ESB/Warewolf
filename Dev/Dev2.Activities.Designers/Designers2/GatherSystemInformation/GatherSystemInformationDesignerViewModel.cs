@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("Result", _getDatalistString()).ValidateRules("", () => mi.SetProperty("IsResultFocused", true)))
+            foreach (var error in dto.GetRuleSet("Result", _getDatalistString?.Invoke()).ValidateRules("", () => mi.SetProperty("IsResultFocused", true)))
             {
                 yield return error;
             }

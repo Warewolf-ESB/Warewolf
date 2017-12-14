@@ -39,6 +39,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();            
+            //if (Switches != null)
+            //{
+            //    foreach (var swt in Switches)
+            //    {
+            //        armConnectors.Add(($"{GetDisplayName()}: {swt.Key}->{swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
+            //    }
+            //}
+            //if (Default != null)
+            //{
+            //    foreach (var dft in Default)
+            //    {
+            //        armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+            //    }
+            //}
+            return armConnectors;
+        }
+
         #endregion
 
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)

@@ -520,6 +520,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestIsMergeVisible()
+        {
+            //assert
+            Assert.IsFalse(_target.IsMergeVisible);
+        }
+
+        [TestMethod]
         public void TestIsResourceUnchecked()
         {
             //arrange
@@ -617,7 +624,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.SetupGet(it => it.ResourcePath).Returns(resourcePath);
             child
                 .Setup(it => it.Apply(It.IsAny<Action<IExplorerItemViewModel>>()))
-                .Callback<Action<IExplorerItemViewModel>>(a => a(child.Object));
+                .Callback<Action<IExplorerItemViewModel>>(a => a?.Invoke(child.Object));
             _target.AddChild(child.Object);
 
             //act

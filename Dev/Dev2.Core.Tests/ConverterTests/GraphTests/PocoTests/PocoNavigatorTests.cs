@@ -502,7 +502,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var pocoNavigator = new PocoNavigator(testData);
             var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            int maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
+            var maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
 
             #region Complex Setup for Expected
 

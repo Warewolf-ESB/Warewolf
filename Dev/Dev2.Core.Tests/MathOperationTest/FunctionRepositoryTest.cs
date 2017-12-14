@@ -230,13 +230,13 @@ namespace Dev2.Tests.MathOperationTest
 
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
-            int beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
 
             ICollection<IFunction> functionList = new List<IFunction>();
 
             functionRepo.Save(functionList);
 
-            int afterEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var afterEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
             Assert.AreEqual(beforeEmptySave, afterEmptySave);
         }
 
@@ -251,7 +251,7 @@ namespace Dev2.Tests.MathOperationTest
 
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
-            int beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
             functionRepo.Save((ICollection<IFunction>)null);
             Assert.IsNotNull(beforeEmptySave);
         }
@@ -312,11 +312,11 @@ namespace Dev2.Tests.MathOperationTest
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
             var functionsToRemove = functionRepo.Find(c => c.FunctionName.Contains("s"));
-            int functionCountBeforeRemove = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var functionCountBeforeRemove = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
 
             functionRepo.Remove(functionsToRemove);
 
-            int functionCountAfterRemove = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var functionCountAfterRemove = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
 
             Assert.IsTrue(functionCountAfterRemove < functionCountBeforeRemove);
 
@@ -329,13 +329,13 @@ namespace Dev2.Tests.MathOperationTest
 
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
-            int beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
 
             ICollection<IFunction> functionList = new List<IFunction>();
 
             functionRepo.Remove(functionList);
 
-            int afterEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var afterEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
             Assert.AreEqual(beforeEmptySave, afterEmptySave);
         }
 
@@ -347,7 +347,7 @@ namespace Dev2.Tests.MathOperationTest
 
             // The function repository must be loaded in order to populate the function list
             functionRepo.Load();
-            int beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
+            var beforeEmptySave = functionRepo.Find(c => c.FunctionName != string.Empty).Count;
 
             functionRepo.Remove((ICollection<IFunction>)null);
             Assert.IsNotNull(beforeEmptySave);

@@ -11,13 +11,13 @@ namespace Dev2.Activities.Designers2.Core
             {
                 inputArea.IsEnabled = true;
                 outputArea.IsEnabled = false;
-                action(false);
+                action?.Invoke(false);
             }
             else
             {
                 inputArea.IsEnabled = false;
                 outputArea.IsEnabled = false;
-                action(true);
+                action?.Invoke(true);
             }
 
         }

@@ -15,13 +15,10 @@ namespace Dev2.Activities.DropBox2016
             _dropBoxSource = dropBoxSource;
         }
 
-        #region Implementation of IFilenameValidator
-
         public void Validate()
         {
             try
             {
-                
                 Path.GetFullPath(_dropBoxSource);
             }
             catch (ArgumentException)
@@ -41,7 +38,5 @@ namespace Dev2.Activities.DropBox2016
                 throw new SecurityException(ErrorResource.DropBoxCallerHasNoPermission);
             }
         }
-
-        #endregion
     }
 }

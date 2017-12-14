@@ -20,6 +20,7 @@ using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.Binary_Objects;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
@@ -40,7 +41,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Execution-ForEach", "ForEach", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_For Each")]
-    public class DsfForEachActivity : DsfActivityAbstract<bool>
+    public class DsfForEachActivity : DsfActivityAbstract<bool>,IEquatable<DsfForEachActivity>
     {
         string _previousParentId;
 
@@ -159,7 +160,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DataFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>(string.Format("explicitData_{0}", DateTime.Now.ToString("yyyyMMddhhmmss")))
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
 
             };
             DisplayName = "For Each";
@@ -383,8 +384,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 while (itr?.HasMore() ?? false)
                 {
                     operationalData = exePayload;
-                    int idx = exePayload.IndexIterator.FetchNextIndex();
-                    int innerupdate = 0;
+                    var idx = exePayload.IndexIterator.FetchNextIndex();
+                    var innerupdate = 0;
                     if (exePayload.ForEachType != enForEachType.NumOfExecution)
                     {
                         innerupdate = idx;
@@ -472,7 +473,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            if (!(DataFunc.Handler is IDev2ActivityIOMapping act))
+            {
+                return new List<IDev2Activity>();
+            }
+            var nextNodes = new List<IDev2Activity> { act  };           
+            return nextNodes;
+        }
+
+        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Type != StepType.Mock && step.Result?.RunTestResult != RunResult.TestPassed).ToList();
             if (nonPassingSteps != null && nonPassingSteps.Count == 0)
@@ -489,9 +500,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 testRunResult.RunTestResult = RunResult.TestFailed;
             }
-
-
-
         }
 
         void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
@@ -513,5 +521,56 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfForEachActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var activityFuncComparer = new ActivityFuncComparer();
+            var equals = activityFuncComparer.Equals(DataFunc, other.DataFunc);
+            return base.Equals(other)
+                && string.Equals(ForEachElementName, other.ForEachElementName)
+                && string.Equals(DisplayName, other.DisplayName)
+                && ForEachType == other.ForEachType 
+                && string.Equals(From, other.From)
+                && string.Equals(To, other.To) 
+                && string.Equals(Recordset, other.Recordset)
+                && string.Equals(CsvIndexes, other.CsvIndexes)
+                && string.Equals(NumOfExections, other.NumOfExections)
+                && Equals(test, other.test)
+                && @equals
+                && FailOnFirstError == other.FailOnFirstError 
+                && string.Equals(ElementName, other.ElementName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfForEachActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ForEachElementName != null ? ForEachElementName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _previousInputsIndex;
+                hashCode = (hashCode * 397) ^ _previousOutputsIndex;
+                hashCode = (hashCode * 397) ^ (int) ForEachType;
+                hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Recordset != null ? Recordset.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CsvIndexes != null ? CsvIndexes.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (NumOfExections != null ? NumOfExections.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DataFunc != null ? DataFunc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ FailOnFirstError.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ElementName != null ? ElementName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PreservedDataList != null ? PreservedDataList.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

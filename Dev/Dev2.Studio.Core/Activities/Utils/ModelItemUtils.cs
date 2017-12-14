@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -12,7 +12,14 @@ using System;
 using System.Activities;
 using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
-
+using System.Activities.Statements;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Media;
+using Dev2.Studio.Core.Interfaces;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Warewolf.Core;
 
 namespace Dev2.Studio.Core.Activities.Utils
 {
@@ -25,28 +32,23 @@ namespace Dev2.Studio.Core.Activities.Utils
 
         public static void SetProperty<T>(string propertyName, T value, ModelItem modelItem)
         {
-            if(propertyName != null)
+            if (propertyName != null)
             {
-                if(modelItem != null)
+                var modelProperty = modelItem?.Properties[propertyName];
+                if (modelProperty != null)
                 {
-                    var modelProperty = modelItem.Properties[propertyName];
-                    if(modelProperty != null)
+                    if (modelProperty.PropertyType == typeof(InArgument<T>))
                     {
-                        
-                        if(modelProperty.PropertyType == typeof(InArgument<T>))
-                        {
-                            modelProperty.SetValue(InArgument<T>.FromValue(value));
-                        }
-                        else
-                        {
-                            modelProperty.SetValue(value);
-                        }                        
+                        modelProperty.SetValue(InArgument<T>.FromValue(value));
+                    }
+                    else
+                    {
+                        modelProperty.SetValue(value);
                     }
                 }
             }
         }
 
-    
         public static ModelItem CreateModelItem(object parent, object objectToMakeModelItem)
         {
             var ec = new EditingContext();
@@ -55,7 +57,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             return mtm.CreateModelItem(CreateModelItem(parent), objectToMakeModelItem);
         }
 
-    
+
         public static ModelItem CreateModelItem()
         {
             return CreateModelItem(new object());
@@ -67,7 +69,7 @@ namespace Dev2.Studio.Core.Activities.Utils
             var mtm = new ModelTreeManager(ec);
 
             mtm.Load(objectToMakeModelItem);
-           
+
             return mtm.Root;
         }
 
@@ -75,9 +77,9 @@ namespace Dev2.Studio.Core.Activities.Utils
         {
             var modelProperty = modelItem.Properties[propertyName];
             object value = default(T);
-            if(modelProperty != null)
+            if (modelProperty != null)
             {
-                if(modelProperty.PropertyType == typeof(InArgument<T>))
+                if (modelProperty.PropertyType == typeof(InArgument<T>))
                 {
                     if (modelProperty.ComputedValue is InArgument<T> arg)
                     {
@@ -89,13 +91,10 @@ namespace Dev2.Studio.Core.Activities.Utils
                     value = modelProperty.ComputedValue;
                 }
 
-                if(value != null)
+                if (value != null && typeof(T) == typeof(Guid))
                 {
-                    if(typeof(T) == typeof(Guid))
-                    {
-                        Guid.TryParse(value.ToString(), out Guid guid);
-                        value = guid;
-                    }
+                    Guid.TryParse(value.ToString(), out Guid guid);
+                    value = guid;
                 }
             }
             return (T)value;
@@ -104,7 +103,7 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static object GetProperty(string propertyName, ModelItem modelItem)
         {
             var modelProperty = modelItem.Properties[propertyName];
-            return modelProperty != null ? modelProperty.ComputedValue : null;
+            return modelProperty?.ComputedValue;
         }
 
         public static object GetProperty(this ModelItem modelItem, string propertyName)
@@ -115,23 +114,62 @@ namespace Dev2.Studio.Core.Activities.Utils
         public static Guid GetUniqueID(ModelItem modelItem)
         {
             var instanceIDStr = GetProperty("UniqueID", modelItem) as string;
-            Guid.TryParse(instanceIDStr, out Guid instanceID);
+            Guid.TryParse(instanceIDStr, out var instanceID);
             return instanceID;
         }
 
         public static Guid TryGetResourceID(ModelItem modelItem)
         {
-            var resourceIDArg = modelItem.Properties["ResourceID"];
-            if(resourceIDArg != null && resourceIDArg.ComputedValue != null)
+            var resourceIdArg = modelItem.Properties["ResourceID"];
+            if (resourceIdArg != null && resourceIdArg.ComputedValue != null)
             {
-                if(resourceIDArg.ComputedValue is InArgument<Guid>)
+                if (resourceIdArg.ComputedValue is InArgument<Guid> argument)
                 {
-                    var resourceIDStr = (resourceIDArg.ComputedValue as InArgument<Guid>).Expression;
-                    return Guid.Parse(resourceIDStr.ToString());
+                    var resourceIdStr = argument.Expression;
+                    return Guid.Parse(resourceIdStr.ToString());
                 }
-                return (Guid)resourceIDArg.ComputedValue;
+                return (Guid)resourceIdArg.ComputedValue;
             }
             return Guid.Empty;
+        }
+
+        public static T GetCurrentValue<T>(this ModelItem modelItem) where T : class
+        {
+            var currentValue = modelItem.GetCurrentValue();
+            return currentValue as T;
+        }
+
+        public static ImageSource GetImageSourceForTool(this ModelItem modelItem)
+        {
+            var computedValue = modelItem.GetCurrentValue();
+            if (computedValue is FlowStep && modelItem.Content?.Value != null)
+            {
+                computedValue = modelItem.Content.Value.GetCurrentValue();
+            }
+
+            var type = computedValue.GetType();
+            var image = GetImageSourceForToolFromType(type);
+            return image;
+        }
+        public static ImageSource GetImageSourceForToolFromType(Type itemType)
+        {
+            var type = itemType;
+            if (type.Name == "DsfDecision" || type.Name == "FlowDecision")
+            {
+                type = typeof(DsfFlowDecisionActivity);
+            }
+            if (type.Name == "DsfSwitch")
+            {
+                type = typeof(DsfFlowSwitchActivity);
+            }
+            var currentApp = CustomContainer.Get<IApplicationAdaptor>();
+            var application = currentApp ?? new ApplicationAdaptor(Application.Current);
+            if (type.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            {
+                var desc = type.GetDescriptorFromAttribute();
+                return application?.TryFindResource(desc.Icon) as ImageSource;
+            }
+            return application?.TryFindResource("Explorer-WorkflowService") as ImageSource;
         }
     }
 }

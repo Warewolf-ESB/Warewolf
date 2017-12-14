@@ -13,6 +13,7 @@ using System.Activities.Presentation;
 using System.Activities.Presentation.Model;
 using System.Text;
 using System.Windows;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -28,6 +29,7 @@ namespace Dev2.Studio.Interfaces
         ModelItem SelectedItem { get; set; }
         bool WorkspaceSave { get; }
         Action WorkflowChanged { get; set; }
+        bool CanViewWorkflowLink { get; set; }
 
         void UpdateWorkflowLink(string newLink);
         bool NotifyItemSelected(object primarySelection);
@@ -36,6 +38,11 @@ namespace Dev2.Studio.Interfaces
         ModelItem GetModelItem(Guid workSurfaceMappingId, Guid parentID);
 
         string GetWorkflowInputs(string field);
+        void CreateBlankWorkflow();
+        void RemoveItem(IMergeToolModel model);
+        void AddItem(IMergeToolModel model);
+        void RemoveStartNodeConnection();
+        void LinkTools(string sourceUniqueId, string destionationUniqueId, string key);
         void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel);
     }
 }

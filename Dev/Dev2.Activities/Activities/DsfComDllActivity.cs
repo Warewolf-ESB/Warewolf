@@ -4,6 +4,7 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Interfaces;
@@ -14,11 +15,10 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 
-
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("DotNetDll", "Com DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-642DE4EA029E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Com_DLL")]
-    public class DsfComDllActivity : DsfMethodBasedActivity
+    public class DsfComDllActivity : DsfMethodBasedActivity,ISimpePlugin
     {
         internal string _result;
         public IPluginAction Method { get; set; }
@@ -34,14 +34,14 @@ namespace Dev2.Activities
 
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
-            errors = new ErrorResultTO();           
+            errors = new ErrorResultTO();
             if (Method == null)
             {
                 errors.AddError(ErrorResource.NoMethodSelected);
                 return;
             }
 
-                
+
             ExecuteService(update, out errors, Method, dataObject);
         }
 
@@ -51,14 +51,14 @@ namespace Dev2.Activities
             var itrs = new List<IWarewolfIterator>(5);
             IWarewolfListIterator itrCollection = new WarewolfListIterator();
             var source = ResourceCatalog.GetResource<ComPluginSource>(dataObject.WorkspaceID, SourceId);
-            var methodParameters = Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList()?? new List<MethodParameter>();
+            var methodParameters = Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
             BuildParameterIterators(update, methodParameters.ToList(), itrCollection, itrs, dataObject);
             var args = new ComPluginInvokeArgs
             {
                 ClsId = source.ClsId,
                 Is32Bit = source.Is32Bit,
                 Method = method.Method,
-                AssemblyName = Namespace?.AssemblyName,                
+                AssemblyName = Namespace?.AssemblyName,
                 Parameters = methodParameters
             };
 
@@ -72,7 +72,7 @@ namespace Dev2.Activities
                 {
                     while (itrCollection.HasMoreData())
                     {
-                        int pos = 0;
+                        var pos = 0;
                         foreach (var itr in itrs)
                         {
                             var injectVal = itrCollection.FetchNextValue(itr);
@@ -102,7 +102,7 @@ namespace Dev2.Activities
         {
             if (!IsObject)
             {
-                int i = 0;
+                var i = 0;
                 foreach (var serviceOutputMapping in Outputs)
                 {
                     OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
@@ -123,5 +123,34 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
+        public bool Equals(ISimpePlugin other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var comparer = new SimplePluginComparer();
+            var equals = comparer.Equals(this, other);
+            return base.Equals(other) && equals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ISimpePlugin)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Namespace != null ? Namespace.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

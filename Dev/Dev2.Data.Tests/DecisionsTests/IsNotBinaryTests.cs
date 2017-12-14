@@ -30,7 +30,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "101010";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -45,7 +45,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "aaa1";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }

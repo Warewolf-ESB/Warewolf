@@ -31,7 +31,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
    //[ToolDescriptorInfo("WebMethods", "Web Request", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml")]
-    public class DsfWebGetRequestActivity : DsfActivityAbstract<string>
+    public class DsfWebGetRequestActivity : DsfActivityAbstract<string>,IEquatable<DsfWebGetRequestActivity>
     {
         IWebRequestInvoker _webRequestInvoker;
 
@@ -103,7 +103,7 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                allErrors.MergeErrors(errorsTo);
+                allErrors.MergeErrors(_errorsTo);
                 if(dataObject.IsDebugMode())
                 {
                     var debugItem = new DebugItem();
@@ -140,7 +140,7 @@ namespace Dev2.Activities
                     }
 
                     var result = WebRequestInvoker.ExecuteRequest(Method, c, headersEntries);
-                    allErrors.MergeErrors(errorsTo);
+                    allErrors.MergeErrors(_errorsTo);
                     var expression = GetExpression(IndexToUpsertTo);
                     PushResultsToDataList(expression, result, dataObject, update);
                 }
@@ -261,5 +261,37 @@ namespace Dev2.Activities
 
         #endregion
         #endregion
+
+        public bool Equals(DsfWebGetRequestActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Method, other.Method) 
+                && string.Equals(Url, other.Url) 
+                && string.Equals(Headers, other.Headers) 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebGetRequestActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -118,18 +118,18 @@ public class SecurityWrapper : ISecurityWrapper
             system = new LSA_UNICODE_STRING[1];
             system[0] = InitLsaString(MachineName);
         }
-        uint ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
+        var ret = Win32Sec.LsaOpenPolicy(system, ref lsaAttr, (int)Access.POLICY_ALL_ACCESS, out lsaHandle);
         TestReturnValue(ret);
     }
 
     public bool IsWindowsAuthorised(string privilege, string userName)
     {
-        bool windowsAuthorised = false;
+        var windowsAuthorised = false;
 
         userName = CleanUser(userName);
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString(privilege);
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
+        var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var Accounts = new List<String>();
 
         if (ret == 0)
@@ -138,7 +138,7 @@ public class SecurityWrapper : ISecurityWrapper
             var myLsaus = new LSA_ENUMERATION_INFORMATION();
             for (ulong i = 0; i < count; i++)
             {
-                IntPtr itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
+                var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
 
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
@@ -179,7 +179,7 @@ public class SecurityWrapper : ISecurityWrapper
     {
         var privileges = new LSA_UNICODE_STRING[1];
         privileges[0] = InitLsaString("SeBatchLogonRight");
-        uint ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
+        var ret = Win32Sec.LsaEnumerateAccountsWithUserRight(lsaHandle, privileges, out LSA_HANDLE buffer, out ulong count);
         var accounts = new List<String>();
 
         if (ret == 0)
@@ -188,7 +188,7 @@ public class SecurityWrapper : ISecurityWrapper
             var myLsaus = new LSA_ENUMERATION_INFORMATION();
             for (ulong i = 0; i < count; i++)
             {
-                IntPtr itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
+                var itemAddr = new IntPtr(buffer.ToInt64() + (long)(i * (ulong)Marshal.SizeOf(myLsaus)));
 
                 LsaInfo[i] =
                     (LSA_ENUMERATION_INFORMATION)Marshal.PtrToStructure(itemAddr, myLsaus.GetType());
