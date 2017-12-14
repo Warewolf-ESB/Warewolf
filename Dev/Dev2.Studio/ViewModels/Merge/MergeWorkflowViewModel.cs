@@ -284,9 +284,16 @@ namespace Dev2.ViewModels.Merge
         void RemovePreviousToolArm(IConflict container)
         {
             var updateNextConflict = GetNextConlictToUpdate(container);
-            if (updateNextConflict != null && updateNextConflict is IArmConnectorConflict updateNextArmConflict)
+            if (updateNextConflict != null)
             {
-                ResetToolArmEvents(updateNextArmConflict);
+                if (updateNextConflict is IArmConnectorConflict updateNextArmConflict)
+                {
+                    ResetToolArmEvents(updateNextArmConflict);
+                }
+                else
+                {
+                    RemovePreviousToolArm(updateNextConflict);
+                }
             }
         }
 
@@ -309,11 +316,18 @@ namespace Dev2.ViewModels.Merge
                 var restOfItems = _conflicts.Skip(index).ToList();
                 foreach (var conf in restOfItems)
                 {
-                    if (conf is IArmConnectorConflict tool && tool.HasConflict)
+                    if (conf is IArmConnectorConflict tool)
                     {
-                        tool.CurrentArmConnector.DisableEvents();
-                        tool.DifferentArmConnector.DisableEvents();
-                        tool.IsChecked = false;
+                        if (tool.HasConflict)
+                        {
+                            tool.CurrentArmConnector.DisableEvents();
+                            tool.DifferentArmConnector.DisableEvents();
+                            tool.IsChecked = false;
+                        }
+                        else
+                        {
+                            tool.CurrentArmConnector.IsChecked = true;
+                        }
                     }
                 }
             }
