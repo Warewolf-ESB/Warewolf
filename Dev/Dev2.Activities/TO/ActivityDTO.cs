@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -20,11 +20,9 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 using Warewolf.Resource.Errors;
-
-
+using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
     /// <summary>
     /// Used for activties
@@ -66,19 +64,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-
         }
 
         [FindMissing]
         public string FieldName
         {
-            get
-            {
-                return _fieldName;
-            }
+            get => _fieldName;
             set
             {
                 if (_fieldName != value)
@@ -94,10 +87,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string FieldValue
         {
-            get
-            {
-                return _fieldValue;
-            }
+            get => _fieldValue;
             set
             {
                 if (_fieldValue != value)
@@ -112,10 +102,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNumber;
-            }
+            get => _indexNumber;
             set
             {
                 _indexNumber = value;
@@ -125,14 +112,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
+            var result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
 
-
         public bool CanAdd()
         {
-            bool result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
+            var result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
             return result;
         }
 
@@ -165,10 +151,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string ErrorMessage
         {
-            get
-            {
-                return _errorMessage;
-            }
+            get => _errorMessage;
             set
             {
                 _errorMessage = value;
@@ -186,10 +169,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
         public bool IsFieldNameFocused
         {
-            get
-            {
-                return _isFieldNameFocused;
-            }
+            get => _isFieldNameFocused;
             set
             {
                 OnPropertyChanged(ref _isFieldNameFocused, value);
@@ -198,10 +178,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsFieldValueFocused
         {
-            get
-            {
-                return _isFieldValueFocused;
-            }
+            get => _isFieldValueFocused;
             set
             {
                 OnPropertyChanged(ref _isFieldValueFocused, value);
@@ -230,8 +207,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsEmpty()
         {
-            return string.IsNullOrEmpty(FieldName)
-                   && string.IsNullOrEmpty(FieldValue);
+            return string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
         }
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
@@ -256,7 +232,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     ruleSet.Add(new ComposableRule<string>(new IsValidExpressionRule(() => FieldValue, datalist, "1", new VariableUtils())).Or(new IsValidCalculateRule(() => FieldValue)));
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized Property Name: " + propertyName);
+                    Dev2Logger.Info("No Rule Set for the Activity DTO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
+                    break;
             }
             return ruleSet;
         }

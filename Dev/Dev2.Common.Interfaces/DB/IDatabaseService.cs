@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 
 namespace Dev2.Common.Interfaces.DB
 {
-    public interface IDatabaseService:IEquatable<IDatabaseService>
+    public interface IDatabaseService
     {
         string Name { get; set; }
         string Path { get; set; }
