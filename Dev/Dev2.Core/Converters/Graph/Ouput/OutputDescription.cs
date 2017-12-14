@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
-using Dev2.Comparers;
 
 namespace Unlimited.Framework.Converters.Graph.Ouput
 {
