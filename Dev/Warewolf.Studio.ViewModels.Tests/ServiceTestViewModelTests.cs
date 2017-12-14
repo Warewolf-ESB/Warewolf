@@ -1523,8 +1523,8 @@ namespace Warewolf.Studio.ViewModels.Tests
 
 			var testFrameworkViewModel = new ServiceTestViewModel(resourceModelMock.Object, new SynchronousAsyncWorker(), new Mock<IEventAggregator>().Object, new Mock<IExternalProcessExecutor>().Object, new Mock<IWorkflowDesignerViewModel>().Object);
 
-			bool wasCalled = false;
-			testFrameworkViewModel.PropertyChanged += (sender, args) =>
+			var wasCalled = false;
+            testFrameworkViewModel.PropertyChanged += (sender, args) =>
 			{
 				if (args.PropertyName == "Tests")
 				{

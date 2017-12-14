@@ -19,8 +19,12 @@ namespace Dev2.Common
     {
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
         {
+            if(e is null)
+            {
+                return new List<T>();
+            }
             var second = e as IList<T> ?? e.ToList();
-            return second.SelectMany(c => f(c).Flatten(f)).Concat(second);
+            return second.SelectMany(c => f?.Invoke(c).Flatten(f)).Concat(second);
         }
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
@@ -33,7 +37,7 @@ namespace Dev2.Common
         {
             if (userPrinciple == null)
             {
-                actionToBePerformed();
+                actionToBePerformed?.Invoke();
             }
             else
             {
@@ -52,7 +56,7 @@ namespace Dev2.Common
                 }
                 try
                 {
-                    actionToBePerformed();
+                    actionToBePerformed?.Invoke();
                 }
                 catch (Exception)
                 {
@@ -62,7 +66,7 @@ namespace Dev2.Common
                     {
                         impersonationContext = identity.Impersonate();
                     }
-                    actionToBePerformed();
+                    actionToBePerformed?.Invoke();
                 }
                 finally
                 {

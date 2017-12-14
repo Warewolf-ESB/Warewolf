@@ -139,11 +139,11 @@ namespace Dev2.Activities.Designers2.DataSplit
             }
 
 
-            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString?.Invoke()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("At", GetDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            foreach(var error in dto.GetRuleSet("At", GetDatalistString?.Invoke()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;
             }
@@ -164,7 +164,7 @@ namespace Dev2.Activities.Designers2.DataSplit
                 case "SourceString":
                     if (!string.IsNullOrEmpty(SourceString) && !string.IsNullOrWhiteSpace(SourceString))
                     {
-                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1", new VariableUtils());
+                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString?.Invoke(), "1", new VariableUtils());
                         ruleSet.Add(inputExprRule);
                     }
                     else

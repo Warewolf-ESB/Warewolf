@@ -132,7 +132,7 @@ namespace Dev2.Tests {
 
             var result = string.Empty;
 
-            int cnt = 0;
+            var cnt = 0;
             while (dt.HasMoreOps()) {
                 result +=  dt.NextToken();
                 cnt++;
@@ -156,7 +156,7 @@ namespace Dev2.Tests {
 
             var result = string.Empty;
 
-            int cnt = 0;
+            var cnt = 0;
             while (dt.HasMoreOps())
             {
                 result += dt.NextToken();
@@ -316,7 +316,7 @@ namespace Dev2.Tests {
 
             var result = string.Empty;
 
-            int cnt = 0;
+            var cnt = 0;
             while (dt.HasMoreOps()) {
                 result += dt.NextToken();
                 cnt++;

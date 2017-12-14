@@ -96,7 +96,7 @@ namespace Dev2.Communication
             var gzBuffer = Convert.FromBase64String(compressedText);
             using (MemoryStream ms = new MemoryStream())
             {
-                int msgLength = BitConverter.ToInt32(gzBuffer, 0);
+                var msgLength = BitConverter.ToInt32(gzBuffer, 0);
                 ms.Write(gzBuffer, 4, gzBuffer.Length - 4);
 
                 var buffer = new byte[msgLength];

@@ -193,7 +193,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "GetDependenciesXml"));
             }
 
-            int nestingLevel = int.Parse(NestingLevel ?? "0");
+            var nestingLevel = int.Parse(NestingLevel ?? "0");
             var graphGenerator = _graphGenerator ?? new DependencyGraphGenerator();
             var graph = graphGenerator.BuildGraph(graphData.Message, ResourceModel.ResourceName, AvailableWidth, AvailableHeight, nestingLevel);
 

@@ -32,7 +32,7 @@ namespace Dev2.Providers.Validation.Rules
             var values = new List<string> { GetValue() };
             if(_otherValues != null)
             {
-                values.AddRange(_otherValues.Select(otherValue => otherValue()));
+                values.AddRange(_otherValues.Select(otherValue => otherValue?.Invoke()));
             }
 
             return values.Any(value => !string.IsNullOrEmpty(value)) ? null : new ActionableErrorInfo(DoError)

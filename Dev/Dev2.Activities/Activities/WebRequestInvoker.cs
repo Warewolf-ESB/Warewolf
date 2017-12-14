@@ -56,7 +56,7 @@ namespace Dev2.Activities
                         {
                             return webClient.DownloadString(uri);
                         }
-                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
@@ -64,7 +64,7 @@ namespace Dev2.Activities
                         {
                             return webClient.UploadString(uri, data);
                         }
-                        webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.UploadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.UploadStringAsync(uri, data);
                         break;
                     default:
@@ -102,7 +102,7 @@ namespace Dev2.Activities
                         {
                             return webClient.DownloadString(uri);
                         }
-                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
@@ -110,7 +110,7 @@ namespace Dev2.Activities
                         {
                             return webClient.UploadString(uri, data);
                         }
-                        webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.UploadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.UploadStringAsync(uri, data);
                         break;
                     default:

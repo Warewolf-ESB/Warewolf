@@ -43,7 +43,7 @@ namespace Dev2.MathOperations
             {
                 try
                 {
-                    CalculationValue value = _manager.CalculateFormula(expression);
+                    var value = _manager.CalculateFormula(expression);
                     if (value.IsError)
                     {
                         error = value.ToErrorValue().Message;

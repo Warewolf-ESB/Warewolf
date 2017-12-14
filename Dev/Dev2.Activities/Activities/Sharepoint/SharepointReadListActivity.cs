@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -25,7 +26,7 @@ using WarewolfParserInterop;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
-    public class SharepointReadListActivity : DsfActivityAbstract<string>
+    public class SharepointReadListActivity : DsfActivityAbstract<string>, IEquatable<SharepointReadListActivity>
     {
 
         public SharepointReadListActivity()
@@ -51,7 +52,7 @@ namespace Dev2.Activities.Sharepoint
         protected override void OnExecute(NativeActivityContext context)
         {
             var dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject,0);
+            ExecuteTool(dataObject, 0);
         }
 
 
@@ -131,10 +132,10 @@ namespace Dev2.Activities.Sharepoint
                                     try
                                     {
                                         var sharepointValue = listItem[fieldName.InternalName];
-                                        
+
                                         if (sharepointValue != null)
                                         {
-                                            var sharepointVal = GetSharepointValue(sharepointValue);                                            
+                                            var sharepointVal = GetSharepointValue(sharepointValue);
                                             listItemValue = sharepointVal.ToString();
                                         }
                                     }
@@ -325,5 +326,38 @@ namespace Dev2.Activities.Sharepoint
         }
 
 
+        public bool Equals(SharepointReadListActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other)
+                   && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer())
+                   && SharepointServerResourceId.Equals(other.SharepointServerResourceId)
+                   && string.Equals(SharepointList, other.SharepointList)
+                   && FilterCriteria.SequenceEqual(other.FilterCriteria, new SharepointSearchToComparer())
+                   && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointReadListActivity)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointList != null ? SharepointList.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FilterCriteria != null ? FilterCriteria.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RequireAllCriteriaToMatch.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

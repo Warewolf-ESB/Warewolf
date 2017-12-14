@@ -51,6 +51,7 @@ namespace Warewolf.Studio.ViewModels
         string _viewExecutionLoggingTooltip;
         string _serverVersionTooltip;
         string _deployResourceCheckboxTooltip;
+        private string _mergeTooltip;
 
         public void SetSourceTooltips(bool canCreateSource)
         {
@@ -410,6 +411,15 @@ namespace Warewolf.Studio.ViewModels
             {
                 _deployResourceCheckboxTooltip = value;
                 OnPropertyChanged(() => DeployResourceCheckboxTooltip);
+            }
+        }
+        public string MergeTooltip
+        {
+            get => _mergeTooltip;
+            set
+            {
+                _mergeTooltip = value;
+                OnPropertyChanged(() => MergeTooltip);
             }
         }
     }

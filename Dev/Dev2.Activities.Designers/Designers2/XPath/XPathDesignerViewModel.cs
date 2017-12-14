@@ -69,7 +69,7 @@ namespace Dev2.Activities.Designers2.XPath
                         ruleSet.Add(new IsValidXmlRule(() => SourceString));
                     }
 
-                    var outputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1", new VariableUtils());
+                    var outputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString?.Invoke(), "1", new VariableUtils());
                     ruleSet.Add(outputExprRule);
 
                     break;
@@ -87,11 +87,11 @@ namespace Dev2.Activities.Designers2.XPath
                 yield break;
             }
 
-            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString?.Invoke()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("XPath", GetDatalistString()).ValidateRules("'XPath'", () => mi.SetProperty("IsXpathVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("XPath", GetDatalistString?.Invoke()).ValidateRules("'XPath'", () => mi.SetProperty("IsXpathVariableFocused", true)))
             {
                 yield return error;
             }

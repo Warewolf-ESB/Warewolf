@@ -28,7 +28,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             cols[0] = "TestData";
             cols[1] = "TestData";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -44,7 +44,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             cols[0] = "TestData";
             cols[1] = "No";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

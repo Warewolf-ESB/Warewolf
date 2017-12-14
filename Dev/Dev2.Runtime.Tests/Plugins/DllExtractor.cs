@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.Plugins
                     return string.Empty;
                 }
 
-                int len = (int)stream.Length;
+                var len = (int)stream.Length;
                 var data = new byte[len];
                 stream.Read(data, 0, len);
 

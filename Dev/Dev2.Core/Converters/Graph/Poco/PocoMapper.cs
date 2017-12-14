@@ -158,7 +158,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 propertyStack.Reverse()
                     .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1, p.Item2), p.Item3))
                     .ToList();
-            bool recordsetEncountered = false;
+            var recordsetEncountered = false;
 
             for (int i = displayPathSegments.Count - 1; i >= 0; i--)
             {

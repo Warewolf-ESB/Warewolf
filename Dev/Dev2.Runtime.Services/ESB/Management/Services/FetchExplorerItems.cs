@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     reloadResourceCatalogueString = tmp.ToString();
                 }
-                bool reloadResourceCatalogue = false;
+                var reloadResourceCatalogue = false;
                 if (!string.IsNullOrEmpty(reloadResourceCatalogueString))
                 {
 

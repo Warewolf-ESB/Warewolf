@@ -20,7 +20,7 @@ namespace Dev2.Studio.Core.Services
 
         public bool Exists()
         {
-            bool result = true;
+            var result = true;
 
             try
             {

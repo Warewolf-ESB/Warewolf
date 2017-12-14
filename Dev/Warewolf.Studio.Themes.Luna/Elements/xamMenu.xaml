@@ -479,4 +479,9 @@
         <Setter Property="Width" Value="12"/>
         <Setter Property="Source" Value="{StaticResource Explorer-Permission-Menu}"/>
     </Style>
+    <Style TargetType="Image" x:Key="MergeIcon">
+        <Setter Property="Height" Value="12"/>
+        <Setter Property="Width" Value="12"/>
+        <Setter Property="Source" Value="{StaticResource Source-Merge-Logo}"/>
+    </Style>
 </ResourceDictionary>

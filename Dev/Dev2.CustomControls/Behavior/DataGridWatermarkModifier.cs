@@ -131,7 +131,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                     if (list[i] is ModelItem mi)
                     {
-                        int watermarkIndex = WatermarkIndexes.IndexOf(i);
+                        var watermarkIndex = WatermarkIndexes.IndexOf(i);
                         WatermarkSential.IsWatermarkBeingApplied = true;
                         var modelProperty = mi.Properties[WatermarkPropertyName];
                         modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");

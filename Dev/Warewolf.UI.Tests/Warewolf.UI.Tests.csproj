@@ -153,6 +153,27 @@
     <Compile Include="..\AssemblyCommonInfo.cs">
       <Link>Properties\AssemblyCommonInfo.cs</Link>
     </Compile>
+    <Compile Include="Merge\MergeAllToolsConflictsTest.cs" />
+    <Compile Include="Merge\MergeAssignConflictsTest.cs" />
+    <Compile Include="Merge\MergeDialogUIMap.cs">
+      <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Merge\MergeDialogUIMap.Designer.cs">
+      <DependentUpon>MergeDialogUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Merge\MergeConflictsTests.cs" />
+    <Compile Include="Merge\MergeVariableConflictsTest.cs" />
+    <Compile Include="Merge\MergeSwitchConflictsTest.cs" />
+    <Compile Include="Merge\MergeDecisionConflictsTest.cs" />
+    <Compile Include="Merge\MergeForeachConflictsTest.cs" />
+    <Compile Include="Merge\MergeSequenceConflictsTest.cs" />
+    <Compile Include="Merge\MergeSimpleToolsConflictsTests.cs" />
+    <Compile Include="Merge\MergeConflictsUIMap.cs">
+      <DependentUpon>MergeConflictsUIMap.uitest</DependentUpon>
+    </Compile>
+    <Compile Include="Merge\MergeConflictsUIMap.Designer.cs">
+      <DependentUpon>MergeConflictsUIMap.uitest</DependentUpon>
+    </Compile>
     <Compile Include="RabbitMQSource\RabbitMQSourceTests.cs" />
     <Compile Include="RabbitMQSource\RabbitMQSourceUIMap.cs">
       <DependentUpon>RabbitMQSourceUIMap.uitest</DependentUpon>
@@ -407,6 +428,8 @@
     <None Include="EmailSource\EmailSourceUIMap.uitest" />
     <None Include="ExchangeSource\ExchangeSourceUIMap.uitest" />
     <None Include="Explorer\ExplorerUIMap.uitest" />
+    <None Include="Merge\MergeDialogUIMap.uitest" />
+    <None Include="Merge\MergeConflictsUIMap.uitest" />
     <None Include="packages.config" />
     <None Include="RabbitMQSource\RabbitMQSourceUIMap.uitest" />
     <None Include="Scheduler\SchedulerUIMap.uitest" />
@@ -436,6 +459,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>

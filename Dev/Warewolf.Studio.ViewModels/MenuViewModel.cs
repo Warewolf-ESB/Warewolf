@@ -35,11 +35,7 @@ namespace Warewolf.Studio.ViewModels
 
         public MenuViewModel(IShellViewModel mainViewModel)
         {
-            if (mainViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(mainViewModel));
-            }
-            _viewModel = mainViewModel;
+            _viewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
             DeployCommand = _viewModel.DeployCommand;
@@ -226,7 +222,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if(mainViewModel != null)
             {
-                HasNewVersion = await mainViewModel.CheckForNewVersion().ConfigureAwait(true);
+                HasNewVersion = await mainViewModel.CheckForNewVersionAsync().ConfigureAwait(true);
             }
         }
 

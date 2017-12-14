@@ -189,7 +189,7 @@ namespace Dev2.Activities.Designers2.Core.ConstructorRegion
             else
             {
                 SetSelectedConstructor(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
 
                 OnSomethingChanged(this);
             }

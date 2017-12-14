@@ -38,7 +38,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void SaveCommandExecutedExpectedSaveCallbackInvokedWithCorrectData()
         {
-            bool callbackExecuted = false;
+            var callbackExecuted = false;
             var config = new Configuration.Settings.Configuration("localhost");
             var expected = config.ToXml().ToString();
             var actual = "";
@@ -85,7 +85,7 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [TestMethod]
         public void CancelCommandExecutedExpectedCancelCallbackInvoked()
         {
-            bool callbackExecuted = false;
+            var callbackExecuted = false;
             var config = new Configuration.Settings.Configuration("localhost");
 
             var mainViewModel = new MainViewModel(config.ToXml(), null, () =>
