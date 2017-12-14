@@ -487,7 +487,7 @@ namespace Dev2.Studio.Core
                         {
                             appServerUri = new Uri(tmp);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             continue;
                         }

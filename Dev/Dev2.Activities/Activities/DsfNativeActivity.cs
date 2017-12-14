@@ -19,6 +19,7 @@ using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Activities.SelectAndApply;
 using Dev2.Common;
+using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data.TO;
@@ -190,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.Environment.HasErrors() && !(this is DsfFlowDecisionActivity))
             {
-                string errorString = "";
+                var errorString = "";
                 if (dataObject.Environment.AllErrors.Count > 0)
                 {
                     errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last());

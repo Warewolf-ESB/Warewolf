@@ -1302,7 +1302,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return (T)exists.WorkSurfaceViewModel;
             }
-            catch
+            catch (Exception ex)
             {
                 return default(T);
             }

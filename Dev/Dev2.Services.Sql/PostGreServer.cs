@@ -61,7 +61,7 @@ namespace Dev2.Services.Sql
                             var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> outParameters);
                             var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
-                            procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
+                            procedureProcessor?.Invoke(command, parameters, outParameters, helpText, fullProcedureName);
                         }
                         catch (Exception)
                         {
@@ -187,7 +187,7 @@ namespace Dev2.Services.Sql
                             var parameters = GetProcedureParameters(command, fullProcedureName, out List<IDbDataParameter> isOut);
                             var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
 
-                            procedureProcessor(command, parameters, helpText, fullProcedureName);
+                            procedureProcessor?.Invoke(command, parameters, helpText, fullProcedureName);
                         }
                         catch (Exception)
                         {

@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
                         tx.Complete();
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Transaction.Current.Rollback();
                     }

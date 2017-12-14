@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -113,8 +113,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -161,13 +161,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 var indexToUpsertTo = 1;
                 while (colItr.HasMoreData())
                 {
-                    IDateTimeDiffTO transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
+                    var transObj = ConvertToDateTimeDiffTo(colItr.FetchNextValue(input1Itr),
                         colItr.FetchNextValue(input2Itr),
                         colItr.FetchNextValue(ifItr),
                         OutputType);
                     //Create a DateTimeComparer using the DateTimeConverterFactory
-                    IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-                    string expression = Result;
+                    var comparer = DateTimeConverterFactory.CreateComparer();
+                    var expression = Result;
 
                     if (comparer.TryCompare(transObj, out string result, out string error))
                     {

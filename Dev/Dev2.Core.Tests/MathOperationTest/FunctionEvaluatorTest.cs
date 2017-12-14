@@ -160,7 +160,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             var date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string expected = date.ToShortDateString();
+            var expected = date.ToShortDateString();
 
             var hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
 
@@ -180,9 +180,9 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void TryEvaluateFunction_DateFunction_Expected_EvaluationOfDateCorrect_DotnetFormat()
         {
-            DateTime date = new DateTime(2012, 2, 2);
+            var date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
             var eval = new FunctionEvaluator(Common.Interfaces.Diagnostics.Debug.FunctionEvaluatorOption.DotNetDateTimeFormat);
             var hasSucceeded = eval.TryEvaluateFunction(expression, out string actual, out string error);
 

@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers2.BaseConvert
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("FromExpression", _getDatalistString()).ValidateRules("'FromExpression'", () => mi.SetProperty("IsFromExpressionFocused", true)))
+            foreach (var error in dto.GetRuleSet("FromExpression", _getDatalistString?.Invoke()).ValidateRules("'FromExpression'", () => mi.SetProperty("IsFromExpressionFocused", true)))
             {
                 yield return error;
             }

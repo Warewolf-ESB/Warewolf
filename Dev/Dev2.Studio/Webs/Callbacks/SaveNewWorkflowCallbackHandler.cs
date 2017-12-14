@@ -43,7 +43,7 @@ namespace Dev2.Webs.Callbacks
                 string resName = jsonObj.resourceName;
                 bool loadingFromServer = jsonObj.resourceLoadingFromServer;
                 string originalPath = jsonObj.OriginalPath;
-                string resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
+                var resCat = HelperUtils.SanitizePath((string)jsonObj.resourcePath, resName);
                 if (_resourceModel != null)
                 {
                     EventPublisher.Publish(new SaveUnsavedWorkflowMessage(_resourceModel, resName, resCat, AddToTabManager, loadingFromServer, originalPath));

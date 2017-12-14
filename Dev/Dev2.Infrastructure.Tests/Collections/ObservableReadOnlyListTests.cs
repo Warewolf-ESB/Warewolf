@@ -184,7 +184,7 @@ namespace Dev2.Infrastructure.Tests.Collections
             {
                 try
                 {
-                    action(observableReadOnlyList);
+                    action?.Invoke(observableReadOnlyList);
 
                     exceptionMessage = null;
                 }

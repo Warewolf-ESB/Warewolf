@@ -506,14 +506,14 @@ namespace Dev2.Network
             if (wait)
             {
                 HubConnection.Start().Wait(MillisecondsTimeout);
-                callback(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                              ? ConnectResult.Success
                              : ConnectResult.ConnectFailed);
             }
             else
             {
                 HubConnection.Start();
-                AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
+                AsyncWorker.Start(() => Thread.Sleep(MillisecondsTimeout), () => callback?.Invoke(HubConnection.State == (ConnectionStateWrapped)ConnectionState.Connected
                                      ? ConnectResult.Success
                                      : ConnectResult.ConnectFailed));
             }

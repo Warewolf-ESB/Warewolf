@@ -10,7 +10,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void GetEqualityComparer_GivenEquals_GetHashCode()
         {
-            IEqualityComparer<Person> personComparer = EqualityFactory.GetEqualityComparer<Person>(
+            var personComparer = EqualityFactory.GetEqualityComparer<Person>(
                                                                                     (p1, p2) => p1.FirstName == p2.FirstName && p1.LastName == p2.LastName,
                                                                                     p => string.Concat(p.FirstName, p.LastName).ToLowerInvariant().GetHashCode());
             var characters = new HashSet<Person>(personComparer)
@@ -33,7 +33,7 @@ namespace Dev2.Common.Tests
         [TestMethod]
         public void GetComparer_StringComparer()
         {
-            List<string> characterNames = new List<string>
+            var characterNames = new List<string>
             {
                 "Bette",
                 "Elmer",
@@ -62,7 +62,7 @@ namespace Dev2.Common.Tests
         public void GetComparer_isEquality()
         {
             var comparer = EqualityFactory.GetComparer<string>((s1, s2) => String.Compare(s1, s2, StringComparison.Ordinal));
-            IEqualityComparer<string> otherComparer = comparer as IEqualityComparer<string>;
+            var otherComparer = comparer as IEqualityComparer<string>;
             Assert.IsNotNull(otherComparer);
             var result = otherComparer.GetHashCode("Test");
             Assert.AreEqual("Test".GetHashCode(), result);

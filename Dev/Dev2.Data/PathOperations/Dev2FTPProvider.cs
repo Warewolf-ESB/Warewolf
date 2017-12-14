@@ -742,7 +742,7 @@ namespace Dev2.Data.PathOperations
                 if (idx > 0)
                 {
                     var part = p.Substring(idx + 1).Trim();
-                    if (matchFunc(p))
+                    if (matchFunc?.Invoke(p) ?? default(bool))
                     {
                         if (!basePath.EndsWith(@"/"))
                         {
@@ -753,7 +753,7 @@ namespace Dev2.Data.PathOperations
                 }
                 else
                 {
-                    if (matchFunc(p))
+                    if (matchFunc?.Invoke(p) ?? default(bool))
                     {
                         result.Add(p);
                     }

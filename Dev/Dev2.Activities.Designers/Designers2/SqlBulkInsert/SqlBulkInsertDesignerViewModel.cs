@@ -653,7 +653,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             switch (propertyName)
             {
                 case "InputColumn":
-                    ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString(), "1",new VariableUtils()));
+                    ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString?.Invoke(), "1",new VariableUtils()));
                     break;
                 default:
                     break;

@@ -26,10 +26,10 @@ namespace Dev2.Common.Common
         /// <returns></returns>
         public static IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions)
         {
-            DirectoryInfo dir = new DirectoryInfo(path);
+            var dir = new DirectoryInfo(path);
             if (extensions == null)
                 throw new ArgumentNullException("extensions");
-            List<string> _files = new List<string>();
+            var _files = new List<string>();
             foreach (string ext in extensions)
             {
                 var fyles = Directory.GetFiles(path, string.Format("*{0}", ext));

@@ -106,7 +106,7 @@ namespace Dev2
                 }
 
 
-                catch
+                catch (Exception ex)
                 {
                     return false;
                 }

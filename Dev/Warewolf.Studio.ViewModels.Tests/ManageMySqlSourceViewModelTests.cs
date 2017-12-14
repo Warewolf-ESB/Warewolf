@@ -70,11 +70,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         try
                         {
-                            success(progress());
+                            success?.Invoke(progress?.Invoke());
                         }
                         catch (Exception ex)
                         {
-                            fail(ex);
+                            fail?.Invoke(ex);
                         }
                     });
             _updateManagerMock.Setup(model => model.FetchDbSource(It.IsAny<Guid>()))
@@ -86,7 +86,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IDbSource>, Action<IDbSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _targetAsyncWorker = new ManageMySqlSourceViewModel(_asyncWorkerMock.Object);
             _changedPropertiesAsyncWorker = new List<string>();
@@ -683,7 +683,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     .Callback<Func<IList<string>>, Action<IList<string>>, CancellationTokenSource, Action<Exception>>(
                         (a1, a2, t, ae) =>
                         {
-                            a2(expectedDatabaseNames);
+                            a2?.Invoke(expectedDatabaseNames);
                         });
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
 
@@ -715,7 +715,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     .Callback<Func<IList<string>>, Action<IList<string>>, CancellationTokenSource, Action<Exception>>(
                         (a1, a2, t, ae) =>
                         {
-                            ae(null);
+                            ae?.Invoke(null);
                         });
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
 
@@ -747,7 +747,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     .Callback<Func<IList<string>>, Action<IList<string>>, CancellationTokenSource, Action<Exception>>(
                         (a1, a2, t, ae) =>
                         {
-                            ae(new Exception(expectedExceptionMessage));
+                            ae?.Invoke(new Exception(expectedExceptionMessage));
                         });
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
 

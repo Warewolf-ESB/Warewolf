@@ -1447,7 +1447,7 @@ namespace System.Windows.Controls
         {
             if (view != null && view.Count > 0)
             {
-                return view.FirstOrDefault(o => predicate(searchText, FormatValue(o)));
+                return view.FirstOrDefault(o => predicate?.Invoke(searchText, FormatValue(o)) ?? default(bool));
             }
 
             return null;
@@ -1486,7 +1486,7 @@ namespace System.Windows.Controls
                 var inResults = !(stringFiltering || objectFiltering);
                 if (!inResults)
                 {
-                    inResults = stringFiltering ? TextFilter(text, FormatValue(item)) : ItemFilter(text, item);
+                    inResults = stringFiltering ? TextFilter?.Invoke(text, FormatValue(item)) ?? default(bool) : ItemFilter?.Invoke(text, item) ?? default(bool);
                 }
 
                 if (viewCount > viewIndex && inResults && _view[viewIndex] == item)

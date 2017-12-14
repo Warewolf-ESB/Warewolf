@@ -457,7 +457,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             //------------Setup for test--------------------------
             SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
             var comms = new Mock<ICommunicationControllerFactory>();
-            var env = new Mock<IEnvironmentConnection>();            
+            var env = new Mock<IEnvironmentConnection>();
             var controller = new Mock<ICommunicationController>();
             env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
             env.Setup(a => a.DisplayName).Returns("localhost");

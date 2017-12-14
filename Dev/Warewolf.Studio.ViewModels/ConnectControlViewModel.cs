@@ -199,7 +199,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (!IsConnecting && server1.EnvironmentID == Guid.Empty)
                     {
-                        ServerHasDisconnected(this, server1);
+                        ServerHasDisconnected?.Invoke(this, server1);
                     }
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
@@ -397,7 +397,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => connection.IsConnected);
                     if (ServerConnected != null && connected && connection.IsConnected)
                     {
-                        ServerConnected(this, connection);
+                        ServerConnected?.Invoke(this, connection);
                         if (ShouldUpdateActiveEnvironment)
                         {
                             SetActiveServer(connection);
