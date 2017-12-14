@@ -1038,7 +1038,6 @@ namespace Dev2.Studio.ViewModels
             if (environmentModel != null)
             {
                 var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
                 if (contextualResourceModel != null)
                 {
@@ -1062,7 +1061,7 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-        public void RunAllTests(Guid resourceId)
+        public void RunAllTests(string ResourcePath, Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
             var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);

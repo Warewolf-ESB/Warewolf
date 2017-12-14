@@ -51,7 +51,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox x:Name="txtSearchInput" Text="{Binding SearchInput}" customcontrols:WatermarkTextBox.Watermark="Search"/>
+            <TextBox x:Name="txtSearchInput" Text="{Binding SearchInput}" />
             <Button x:Name="btnSearchInput" 
                     Grid.Column="1" 
                     Margin="{StaticResource ControlBorderLeft}" 

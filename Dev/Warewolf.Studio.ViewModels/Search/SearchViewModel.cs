@@ -65,7 +65,7 @@ namespace Dev2.ViewModels.Search
 
         private async Task<IEnvironmentViewModel> ServerConnected(object sender, IServer server)
         {
-            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID, true);
+            var environmentViewModel = await CreateEnvironmentViewModel(sender, server.EnvironmentID);
             environmentViewModel?.Server?.GetServerVersion();
             environmentViewModel?.Server?.GetMinSupportedVersion();
             SelectedEnvironment = environmentViewModel;
