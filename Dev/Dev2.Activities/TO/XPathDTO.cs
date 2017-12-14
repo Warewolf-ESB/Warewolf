@@ -1,13 +1,14 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Data.Util;
@@ -48,18 +49,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
         }
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNum;
-            }
+            get => _indexNum;
             set
             {
                 _indexNum = value;
@@ -70,13 +66,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string OutputVariable
         {
-            get
-            {
-                return _outputVariable;
-            }
+            get => _outputVariable;
             set
             {
-                if(_outputVariable != value)
+                if (_outputVariable != value)
                 {
                     _outputVariable = value;
                     OnPropertyChanged(ref _outputVariable, value);
@@ -88,13 +81,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string XPath
         {
-            get
-            {
-                return _xPath;
-            }
+            get => _xPath;
             set
             {
-                if(_xPath != value)
+                if (_xPath != value)
                 {
                     _xPath = value;
                     OnPropertyChanged(ref _xPath, value);
@@ -104,7 +94,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath))
+            if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(XPath))
             {
                 return true;
             }
@@ -137,37 +127,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             var ruleSet = new RuleSet();
 
-            if(IsEmpty())
+            if (IsEmpty())
             {
                 return ruleSet;
             }
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "OutputVariable":
-                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable,datalist, "1",new VariableUtils());
+                    var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "1", new VariableUtils());
                     ruleSet.Add(outputExprRule);
                     ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
 
-                    if(!string.IsNullOrEmpty(XPath))
+                    if (!string.IsNullOrEmpty(XPath))
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => OutputVariable));
                     }
                     break;
 
                 case "XPath":
-                    if(!string.IsNullOrEmpty(OutputVariable))
+                    if (!string.IsNullOrEmpty(OutputVariable))
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => XPath));
 
-                        if(!string.IsNullOrEmpty(XPath) && !DataListUtil.IsEvaluated(XPath))
+                        if (!string.IsNullOrEmpty(XPath) && !DataListUtil.IsEvaluated(XPath))
                         {
                             ruleSet.Add(new IsValidXpathRule(() => XPath));
                         }
                     }
                     break;
                 default:
-                    throw new ArgumentException("Unrecognized property name: " + propertyName);
+                    Dev2Logger.Info("No Rule Set for the XPath DTO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
+                    break;
             }
             return ruleSet;
         }

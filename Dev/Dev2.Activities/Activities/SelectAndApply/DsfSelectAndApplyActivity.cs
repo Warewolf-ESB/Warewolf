@@ -340,7 +340,7 @@ namespace Dev2.Activities.SelectAndApply
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            ActivityFuncComparer activityFuncComparer = new ActivityFuncComparer();
+            var activityFuncComparer = new ActivityFuncComparer();
             return base.Equals(other) 
                 && string.Equals(_previousParentId, other._previousParentId)
                 && Equals(_originalUniqueID,other._originalUniqueID)
@@ -362,7 +362,7 @@ namespace Dev2.Activities.SelectAndApply
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_previousParentId != null ? _previousParentId.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_childUniqueID != null ? _childUniqueID.GetHashCode() : 0);

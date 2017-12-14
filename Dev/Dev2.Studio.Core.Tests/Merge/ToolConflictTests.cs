@@ -56,7 +56,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ToolConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "HasConflict")
@@ -79,7 +79,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ToolConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "HasNodeArmConflict")
@@ -101,7 +101,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ToolConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsMergeExpanderEnabled")
@@ -124,7 +124,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ToolConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a,b)=> 
             {
                 if(b.PropertyName == "IsMergeExpanded")
@@ -204,7 +204,7 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             var completeConflict = new ToolConflict();
-            ToolConflict value = new ToolConflict();
+            var value = new ToolConflict();
             completeConflict.Children.AddFirst(value);
             //------------Execute Test---------------------------
             var result = completeConflict.GetNextConflict();
@@ -219,8 +219,8 @@ namespace Dev2.Core.Tests.Merge
         {
             //------------Setup for test--------------------------
             var completeConflict = new ToolConflict();
-            ToolConflict value = new ToolConflict();
-            ToolConflict value1 = new ToolConflict();
+            var value = new ToolConflict();
+            var value1 = new ToolConflict();
             completeConflict.Children.AddFirst(value);
             value.Children.AddFirst(value1);
             //------------Execute Test---------------------------
@@ -293,7 +293,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ToolConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "UniqueId")

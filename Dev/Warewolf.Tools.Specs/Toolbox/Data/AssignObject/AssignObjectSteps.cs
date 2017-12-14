@@ -258,7 +258,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             var data = new XElement("root");
 
             
-            int row = 0;
+            var row = 0;
             scenarioContext.TryGetValue("variableList", out dynamic variableList);
 
             if (variableList != null)
@@ -281,7 +281,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 }
             }
 
-            bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+            var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)

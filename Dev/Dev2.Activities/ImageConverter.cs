@@ -33,8 +33,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 return image;
             }
-            catch {
-                return new BitmapImage(); 
+            catch (Exception ex)
+            {
+                return new BitmapImage();
             }
 
 

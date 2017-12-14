@@ -1,13 +1,9 @@
 ﻿using System;
-using System.IO;
 using Dev2.Activities.DropBox2016;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
-
-
-
     public static class Files
     {
         public static readonly string PathEmpty = String.Empty;
@@ -15,16 +11,13 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         public static readonly string PathEmptyExcpl = "";
         public static readonly string PathInvalid = "::G";
         public static readonly string PathValid = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
-        public static readonly string PathInValidWithColon = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)+"\\:.txt";
+        public static readonly string PathInValidWithColon = Environment.GetFolderPath(Environment.SpecialFolder.Desktop) + "\\:.txt";
         public static readonly string PathToolLong = @"c:\fffffffffffffffffffffffffffffffffff\gfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgf\ggggggggggggggggg\fffffffffffffff\ggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggfffffffffffffffffffffffffffffffffff\gfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgfgf\ggggggggggggggggg\fffffffffffffff\gggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggggg";
     }
 
-
-    
     [TestClass]
     public class DropboxSoureFileValidatorShould
     {
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void Construct_GivenFilePath_ShouldNotBeNull()
@@ -40,7 +33,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
-        public void validate_GivenEmpty_ShouldThrowArgumentNull()
+        public void Validate_GivenEmpty_ShouldThrowArgumentNull()
         {
             //---------------Set up test pack-------------------
             var dropboxSoureFileValidator = new DropboxSoureFileValidator(Files.PathEmpty);
@@ -49,12 +42,12 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             dropboxSoureFileValidator.Validate();
             //---------------Test Result -----------------------
             Assert.Fail("Exception not thrown");
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
-        public void validate_GivenNull_ShouldThrowArgumentNull()
+        public void Validate_GivenNull_ShouldThrowArgumentNull()
         {
             //---------------Set up test pack-------------------
             var dropboxSoureFileValidator = new DropboxSoureFileValidator(Files.PathNull);
@@ -64,11 +57,11 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.Fail("Exception not thrown");
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentException))]
-        public void validate_GivenEmptyExcplicit_ShouldThrowArgumentNull()
+        public void Validate_GivenEmptyExcplicit_ShouldThrowArgumentNull()
         {
             //---------------Set up test pack-------------------
             var dropboxSoureFileValidator = new DropboxSoureFileValidator(Files.PathEmptyExcpl);
@@ -78,11 +71,11 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.Fail("Exception not thrown");
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NotSupportedException))]
-        public void validate_GivenInvalid_ShouldThrowNotSupportedException()
+        public void Validate_GivenInvalid_ShouldThrowNotSupportedException()
         {
             //---------------Set up test pack-------------------
             var dropboxSoureFileValidator = new DropboxSoureFileValidator(Files.PathInvalid);
@@ -92,12 +85,10 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             //---------------Test Result -----------------------
             Assert.Fail("Exception not thrown");
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [Ignore]//This exception is not thrown on the new framework 4.7
-        [ExpectedException(typeof(PathTooLongException))]
-        public void validate_GivenTooLong_ShouldThrowPathTooLongException()
+        public void Validate_GivenTooLong_ShouldThrowPathTooLongException()
         {
             //---------------Set up test pack-------------------
             var dropboxSoureFileValidator = new DropboxSoureFileValidator(Files.PathToolLong);
@@ -105,13 +96,13 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
             //---------------Execute Test ----------------------
             dropboxSoureFileValidator.Validate();
             //---------------Test Result -----------------------
-            Assert.Fail("Exception not thrown");
-        }  
-        
+            // EXPECTED NO EXCEPTION THROWN ON .NET FRAMEWORK 4.7
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(NotSupportedException))]
-        public void validate_GivenPathInValidWithColon_ShouldThrowPathTooLongException()
+        public void Validate_GivenPathInValidWithColon_ShouldThrowPathTooLongException()
         {
             //---------------Set up test pack-------------------
             var dropboxSoureFileValidator = new DropboxSoureFileValidator(Files.PathInValidWithColon);

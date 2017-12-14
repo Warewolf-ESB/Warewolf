@@ -314,7 +314,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Username != null ? Username.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (PrivateKeyFile != null ? PrivateKeyFile.GetHashCode() : 0);

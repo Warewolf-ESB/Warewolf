@@ -12,7 +12,6 @@ namespace Warewolf.UI.Tests.OracleSource
 
         [TestMethod]
         [TestCategory("Database Sources")]
-        // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Open_OracleSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source

@@ -102,8 +102,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             var indexOf = path.ActualPath.LastIndexOf("()", StringComparison.InvariantCultureIgnoreCase);
             if(indexOf != -1)
             {
-                int length = path.ActualPath.Length;
-                if(indexOf + 2 == length) // This means we have a primitive array as property
+                var length = path.ActualPath.Length;
+                if (indexOf + 2 == length) // This means we have a primitive array as property
                 {
                     var upperRecsetName = path.ActualPath.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
                     if(upperRecsetName == -1)

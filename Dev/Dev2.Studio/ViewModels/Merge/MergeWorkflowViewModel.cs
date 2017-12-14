@@ -33,8 +33,8 @@ namespace Dev2.ViewModels.Merge
         readonly List<IConflict> _conflicts;
 
         public MergeWorkflowViewModel(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadworkflowFromServer)
-        : this(CustomContainer.Get<IServiceDifferenceParser>())
         {
+            _serviceDifferenceParser = CustomContainer.Get<IServiceDifferenceParser>();
             UpdateHelpDescriptor(Warewolf.Studio.Resources.Languages.HelpText.MergeWorkflowStartupHelp);
 
             WorkflowDesignerViewModel = new WorkflowDesignerViewModel(currentResourceModel, false);
@@ -257,9 +257,10 @@ namespace Dev2.ViewModels.Merge
         void ResetToolEvents(IMergeToolModel args)
         {
             var index = _conflicts.IndexOf(args.Container);
-            if (index != -1 && index + 1 < _conflicts.Count)
+            var count = index + 1;
+            if (index != -1 && count < _conflicts.Count)
             {
-                var restOfItems = _conflicts.Skip(index + 1).ToList();
+                var restOfItems = _conflicts.Skip(count).ToList();
                 foreach (var conf in restOfItems)
                 {
                     if (conf is IToolConflict tool && tool.HasConflict)
@@ -479,12 +480,12 @@ namespace Dev2.ViewModels.Merge
         void AddDiffArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
         {
             var armConnectors = treeItem.Activity.ArmConnectors();
-            foreach (var connector in armConnectors)
+            foreach (var (Description, Key, SourceUniqueId, DestinationUniqueId) in armConnectors)
             {
-                var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key);
+                var foundConnector = armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == Key);
                 if (foundConnector != null)
                 {
-                    var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, foundConnector)
+                    var mergeArmConnectorConflict = new MergeArmConnectorConflict(Description, SourceUniqueId, DestinationUniqueId, Key, foundConnector)
                     {
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     };
@@ -498,10 +499,10 @@ namespace Dev2.ViewModels.Merge
                     var armConnector = new ArmConnectorConflict
                     {
                         UniqueId = id,
-                        Key = connector.Key,
+                        Key = Key,
                         HasConflict = true
                     };
-                    var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector)
+                    var mergeArmConnectorConflict = new MergeArmConnectorConflict(Description, SourceUniqueId, DestinationUniqueId, Key, armConnector)
                     {
                         WorkflowDesignerViewModel = WorkflowDesignerViewModel
                     };
@@ -518,15 +519,15 @@ namespace Dev2.ViewModels.Merge
         void AddArmConnectors(List<IArmConnectorConflict> armConnectorConflicts, ConflictTreeNode treeItem, Guid id)
         {
             var armConnectors = treeItem.Activity.ArmConnectors();
-            foreach (var connector in armConnectors)
+            foreach (var (Description, Key, SourceUniqueId, DestinationUniqueId) in armConnectors)
             {
                 var armConnector = new ArmConnectorConflict
                 {
                     UniqueId = id,
-                    Key = connector.Key,
+                    Key = Key,
                     HasConflict = true
                 };
-                var mergeArmConnectorConflict = new MergeArmConnectorConflict(connector.Description, connector.SourceUniqueId, connector.DestinationUniqueId, connector.Key, armConnector)
+                var mergeArmConnectorConflict = new MergeArmConnectorConflict(Description, SourceUniqueId, DestinationUniqueId, Key, armConnector)
                 {
                     WorkflowDesignerViewModel = WorkflowDesignerViewModel
                 };
@@ -535,7 +536,7 @@ namespace Dev2.ViewModels.Merge
                 armConnector.CurrentArmConnector.OnChecked += ArmCheck;
                 armConnector.DifferentArmConnector.OnChecked += ArmCheck;
                 armConnector.HasConflict = true;
-                if (armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == connector.Key) == null)
+                if (armConnectorConflicts.FirstOrDefault(s => s.UniqueId == id && s.Key == Key) == null)
                 {
                     armConnectorConflicts.Add(armConnector);
                 }
@@ -563,11 +564,6 @@ namespace Dev2.ViewModels.Merge
                 IsMergeVisible = false,
                 UniqueId = uniqueId
             };
-        }
-
-        public MergeWorkflowViewModel(IServiceDifferenceParser serviceDifferenceParser)
-        {
-            _serviceDifferenceParser = serviceDifferenceParser;
         }
 
         bool All(Func<IConflict, bool> check)

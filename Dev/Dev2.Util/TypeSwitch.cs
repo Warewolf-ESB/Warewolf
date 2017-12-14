@@ -51,7 +51,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             return new CaseInfo
             {
-                Action = x => action(),
+                Action = x => action?.Invoke(),
                 Target = typeof (T)
             };
         }
@@ -60,7 +60,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             return new CaseInfo
             {
-                Action = x => action((T) x),
+                Action = x => action?.Invoke((T)x),
                 Target = typeof (T)
             };
         }
@@ -69,7 +69,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             return new CaseInfo
             {
-                Action = x => action(),
+                Action = x => action?.Invoke(),
                 IsDefault = true
             };
         }

@@ -153,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual);
+            var actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");

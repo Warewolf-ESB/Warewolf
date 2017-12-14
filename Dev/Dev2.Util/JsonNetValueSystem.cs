@@ -26,7 +26,7 @@ namespace Dev2.Util
 
             if (value is JArray)
             {
-                int index = ParseInt(member, -1);
+                var index = ParseInt(member, -1);
                 return index >= 0 && index < (value as JArray).Count;
             }
             return false;
@@ -41,7 +41,7 @@ namespace Dev2.Util
             }
             if (value is JArray)
             {
-                int index = ParseInt(member, -1);
+                var index = ParseInt(member, -1);
                 return (value as JArray)[index];
             }
             return null;

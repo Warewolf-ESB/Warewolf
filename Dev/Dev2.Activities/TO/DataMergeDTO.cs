@@ -168,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanAdd()
         {
-            bool result = true;
+            var result = true;
             if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
             {
                 if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))

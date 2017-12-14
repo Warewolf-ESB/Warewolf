@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
         {
-            bool eventRaised = false;
+            var eventRaised = false;
             IntellisenseTextBox sender = null;
             EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                               new RoutedEventHandler((s, e) =>
@@ -127,7 +127,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var preserveClipboard = System.Windows.Clipboard.GetText();
             try
             {
-                bool eventRaised = false;
+                var eventRaised = false;
                 EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                                   new RoutedEventHandler((s, e) =>
                                                   {

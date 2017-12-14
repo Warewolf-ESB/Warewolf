@@ -21,8 +21,8 @@ namespace Dev2
     {
         public StringBuilder GetResourceDefinition( bool prepairForDeployment, Guid resourceId, StringBuilder contents)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            ExecuteMessage res = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
+            var res = new ExecuteMessage();
             try
             {
                 if (!contents.IsNullOrEmpty())
@@ -55,7 +55,7 @@ namespace Dev2
 
             if (!res.Message.IsNullOrEmpty())
             {
-                Dev2XamlCleaner dev2XamlCleaner = new Dev2XamlCleaner();
+                var dev2XamlCleaner = new Dev2XamlCleaner();
                 res.Message = dev2XamlCleaner.StripNaughtyNamespaces(res.Message);
             }
             if (prepairForDeployment)
@@ -81,7 +81,6 @@ namespace Dev2
             
             if (startIdx >= 0)
             {
-                // remove beginning junk
                 startIdx += GlobalConstants.PayloadStart.Length;
                 workflowResult = workflowResult.Remove(0, startIdx);
 
@@ -97,11 +96,9 @@ namespace Dev2
             }
             else
             {
-                // handle services ;)
                 startIdx = result.IndexOf(GlobalConstants.AltPayloadStart, 0, false);
                 if (startIdx >= 0)
                 {
-                    // remove begging junk
                     startIdx += GlobalConstants.AltPayloadStart.Length;
                     workflowResult = workflowResult.Remove(0, startIdx);
 
@@ -117,7 +114,6 @@ namespace Dev2
                 }
                 else
                 {
-                    // send the entire thing ;)
                     res.Message.Append(workflowResult);
                 }
             }
@@ -125,7 +121,7 @@ namespace Dev2
 
         public StringBuilder DecryptAllPasswords(StringBuilder stringBuilder)
         {
-            Dictionary<string, StringTransform> replacements = new Dictionary<string, StringTransform>
+            var replacements = new Dictionary<string, StringTransform>
                                                                {
                                                                    {
                                                                        "Source", new StringTransform
@@ -160,8 +156,8 @@ namespace Dev2
                                                                               }
                                                                    }
                                                                };
-            string xml = stringBuilder.ToString();
-            StringBuilder output = new StringBuilder();
+            var xml = stringBuilder.ToString();
+            var output = new StringBuilder();
 
             xml = StringTransform.TransformAllMatches(xml, replacements.Values.ToList());
             output.Append(xml);

@@ -200,7 +200,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (FromPath != null ? FromPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);

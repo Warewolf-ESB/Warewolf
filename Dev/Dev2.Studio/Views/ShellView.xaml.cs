@@ -759,11 +759,11 @@ namespace Dev2.Studio.Views
                 {
                     restoreIfMove = false;
 
-                    double percentHorizontal = e.GetPosition(this).X / ActualWidth;
-                    double targetHorizontal = RestoreBounds.Width * percentHorizontal;
+                    var percentHorizontal = e.GetPosition(this).X / ActualWidth;
+                    var targetHorizontal = RestoreBounds.Width * percentHorizontal;
 
-                    double percentVertical = e.GetPosition(this).Y / ActualHeight;
-                    double targetVertical = RestoreBounds.Height * percentVertical;
+                    var percentVertical = e.GetPosition(this).Y / ActualHeight;
+                    var targetVertical = RestoreBounds.Height * percentVertical;
 
                     WindowState = WindowState.Normal;
                     ResizeMode = WindowState == WindowState.Normal ? ResizeMode.CanResize : ResizeMode.CanMinimize;

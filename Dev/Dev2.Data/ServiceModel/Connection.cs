@@ -160,7 +160,7 @@ namespace Dev2.Data.ServiceModel
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Address != null ? Address.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (int) AuthenticationType;
                 hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);

@@ -98,7 +98,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
                 var rs = table.Header.ToArray()[0];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();

@@ -287,7 +287,7 @@ namespace Dev2.Activities.Specs.Composition
                                                             }, new List<IResourcePerformanceCounter>());
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
             }
-            catch
+            catch (Exception ex)
             {
                 Assert.Fail("failed to delete existing counters");
             }
@@ -1306,7 +1306,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             IDebugState outputState;
             if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
             {
@@ -1359,7 +1359,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
             if (toolSpecificDebug.Count > 1)
             {
@@ -3082,9 +3082,9 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
         public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
         {
-            int e1 = Convert.ToInt32(_scenarioContext[executionLabelFirst]),
-                e2 = Convert.ToInt32(_scenarioContext[executionLabelSecond]),
-                d = maxDeltaMilliseconds;
+            var e1 = Convert.ToInt32(_scenarioContext[executionLabelFirst]);
+            var e2 = Convert.ToInt32(_scenarioContext[executionLabelSecond]);
+            var d = maxDeltaMilliseconds;
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), $"async logging should not add more than {d} milliseconds to the execution");
         }
 

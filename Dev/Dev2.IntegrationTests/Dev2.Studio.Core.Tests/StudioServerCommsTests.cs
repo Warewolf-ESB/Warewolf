@@ -57,7 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             Thread.Sleep(100);
             conn.Connect(Guid.Empty);
             Thread.Sleep(500);
-            bool afterReconnection = conn.IsConnected;
+            var afterReconnection = conn.IsConnected;
 
             Assert.IsTrue(afterReconnection);
 

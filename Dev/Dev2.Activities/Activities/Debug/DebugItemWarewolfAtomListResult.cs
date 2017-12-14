@@ -116,7 +116,7 @@ namespace Dev2.Activities.Debug
         void AtomListResultNoLabel(List<IDebugItemResult> results)
         {
             string groupName = null;
-            int grpIdx = 0;
+            var grpIdx = 0;
             foreach (var item in _warewolfAtomListresult.Item)
             {
                 var displayExpression = _variable;
@@ -154,7 +154,7 @@ namespace Dev2.Activities.Debug
 
                     if (indexForRecset > 0)
                     {
-                        int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                        var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                         var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                         grpIdx++;
                         groupName = @group;
@@ -247,7 +247,7 @@ namespace Dev2.Activities.Debug
         {
             var recSetResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             string groupName = null;
-            int grpIdx = 0;
+            var grpIdx = 0;
             if (recSetResult != null)
             {
                 foreach (var item in recSetResult.Item)
@@ -276,7 +276,7 @@ namespace Dev2.Activities.Debug
 
                         if (indexForRecset > 0)
                         {
-                            int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                            var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
                             var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                             grpIdx++;
                             groupName = @group;
@@ -319,7 +319,7 @@ namespace Dev2.Activities.Debug
             if (!string.IsNullOrEmpty(_leftLabel))
             {
                 string groupName = null;
-                int grpIdx = 0;
+                var grpIdx = 0;
                 if (_warewolfAtomListresult != null)
                 {
                     foreach (var atomItem in _warewolfAtomListresult.Item)
@@ -396,7 +396,7 @@ namespace Dev2.Activities.Debug
 
                 if (indexForRecset > 0)
                 {
-                    int indexOfOpenningBracket = expr.IndexOf("(", StringComparison.Ordinal) + 1;
+                    var indexOfOpenningBracket = expr.IndexOf("(", StringComparison.Ordinal) + 1;
                     var group = expr.Substring(0, indexOfOpenningBracket) + "*" + expr.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                     grpIdx++;
                     groupName = @group;

@@ -247,7 +247,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (RecordsetName != null ? RecordsetName.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ TreatNullAsZero.GetHashCode();

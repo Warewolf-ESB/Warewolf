@@ -460,7 +460,7 @@ namespace Dev2.Activities
 
                                 if (debugState.AssertResultList != null)
                                 {
-                                    bool addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+                                    var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
 
                                     if (addItem)
                                     {
@@ -671,7 +671,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Namespace != null ? Namespace.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Constructor != null ? Constructor.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (MethodsToRun != null ? MethodsToRun.GetHashCode() : 0);

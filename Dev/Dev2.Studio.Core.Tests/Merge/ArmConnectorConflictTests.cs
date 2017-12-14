@@ -17,7 +17,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ArmConnectorConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "IsMergeExpanderEnabled")
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ArmConnectorConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "HasConflict")
@@ -154,7 +154,7 @@ namespace Dev2.Core.Tests.Merge
             //------------Setup for test--------------------------
             //------------Execute Test---------------------------
             var completeConflict = new ArmConnectorConflict();
-            bool wasCalled = false;
+            var wasCalled = false;
             completeConflict.PropertyChanged += (a, b) =>
             {
                 if (b.PropertyName == "UniqueId")

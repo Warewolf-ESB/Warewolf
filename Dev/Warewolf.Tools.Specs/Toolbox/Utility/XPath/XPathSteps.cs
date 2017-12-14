@@ -56,8 +56,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
 
             scenarioContext.TryGetValue("xpathDtos", out List<Tuple<string, string>> xpathDtos);
 
-            int row = 1;
-            foreach(var variable in xpathDtos)
+            var row = 1;
+            foreach (var variable in xpathDtos)
             {
                 xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;

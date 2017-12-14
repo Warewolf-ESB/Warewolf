@@ -23,6 +23,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Warewolf.Exchange.Email.Wrapper;
 
 namespace Dev2.Activities.Exchange
 {
@@ -117,7 +118,7 @@ namespace Dev2.Activities.Exchange
             _dataObject = dataObject;
 
             var allErrors = new ErrorResultTO();
-            int indexToUpsertTo = 0;
+            var indexToUpsertTo = 0;
 
             InitializeDebug(dataObject);
             try
@@ -355,7 +356,7 @@ namespace Dev2.Activities.Exchange
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (SavedSource != null ? SavedSource.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Cc != null ? Cc.GetHashCode() : 0);

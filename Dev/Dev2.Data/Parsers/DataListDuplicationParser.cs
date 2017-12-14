@@ -21,7 +21,7 @@ namespace Dev2.DataList.Contract
         {
             if(PartToVerify != null)
             {
-                int hashCode = PartToVerify.DisplayValue.GetHashCode();
+                var hashCode = PartToVerify.DisplayValue.GetHashCode();
                 return hashCode;
             }
 

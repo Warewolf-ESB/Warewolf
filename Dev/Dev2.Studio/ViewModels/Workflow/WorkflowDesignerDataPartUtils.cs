@@ -57,7 +57,7 @@ namespace Dev2.ViewModels.Workflow
                 if (fieldList.Length > 1 && !String.IsNullOrEmpty(fieldList[0]))
                 {
                     // If it's a RecordSet Containing a field
-                    bool recAdded = false;
+                    var recAdded = false;
 
                     foreach (var item in fieldList)
                     {

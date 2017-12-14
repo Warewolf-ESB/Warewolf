@@ -651,7 +651,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            bool stepCompare = true;
+            var stepCompare = true;
             for (int i = 0; i < _testSteps.Count; i++)
             {
                 stepCompare &= TestSteps[i].Type == other.TestSteps[i].Type;
@@ -682,7 +682,7 @@ namespace Warewolf.Studio.ViewModels
 
         static bool StepChildrenCompare(ObservableCollection<IServiceTestStep> stepChildren, ObservableCollection<IServiceTestStep> otherStepChildren)
         {
-            bool stepCompare = true;
+            var stepCompare = true;
             for (int c = 0; c < stepChildren.Count; c++)
             {
                 stepCompare &= stepChildren[c].Type == otherStepChildren[c].Type;
@@ -716,7 +716,7 @@ namespace Warewolf.Studio.ViewModels
 
         static bool StepOutputsCompare(ObservableCollection<IServiceTestOutput> stepOutputs, ObservableCollection<IServiceTestOutput> otherStepOutputs)
         {
-            bool stepCompare = true;
+            var stepCompare = true;
             for (int c = 0; c < stepOutputs.Count; c++)
             {
                 stepCompare &= stepOutputs[c].AssertOp == otherStepOutputs[c].AssertOp;
@@ -742,7 +742,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            bool inputCompare = true;
+            var inputCompare = true;
             for (int i = 0; i < _inputs.Count; i++)
             {
                 inputCompare &= Inputs[i].Value == other.Inputs[i].Value;
@@ -766,7 +766,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 return false;
             }
-            bool outputCompare = true;
+            var outputCompare = true;
             for (int i = 0; i < _outputs.Count; i++)
             {
                 outputCompare &= _outputs[i].Value == other._outputs[i].Value;
@@ -784,7 +784,7 @@ namespace Warewolf.Studio.ViewModels
 
         bool EqualsSeq(ServiceTestModel other)
         {
-            bool equalsSeq = string.Equals(_testName, other._testName);
+            var equalsSeq = string.Equals(_testName, other._testName);
             equalsSeq &= string.Equals(_userName, other._userName);
             equalsSeq &= string.Equals(_password, other._password);
             equalsSeq &= _noErrorExpected == other._noErrorExpected;

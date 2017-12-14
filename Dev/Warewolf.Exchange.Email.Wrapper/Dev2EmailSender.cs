@@ -18,7 +18,7 @@ using System.Linq;
 using Dev2.Data.TO;
 using Warewolf.Resource.Errors;
 
-namespace Dev2.Common
+namespace Warewolf.Exchange.Email.Wrapper
 {
     public class Dev2EmailSender : IDev2EmailSender
     {

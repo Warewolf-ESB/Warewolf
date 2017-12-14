@@ -269,7 +269,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ Append.GetHashCode();
                 hashCode = (hashCode * 397) ^ (FileContents != null ? FileContents.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (OutputPath != null ? OutputPath.GetHashCode() : 0);

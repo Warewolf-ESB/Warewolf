@@ -117,7 +117,7 @@ namespace Dev2.Studio.Views.Workflow
                                     vm.SetXmlData();
                                     ShowDataInOutputWindow(vm.XmlData);
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
                                     vm.ShowInvalidDataPopupMessage();
                                 }
@@ -130,7 +130,7 @@ namespace Dev2.Studio.Views.Workflow
                                     vm.SetXmlData();
                                     ShowDataInOutputWindow(vm.XmlData);
                                 }
-                                catch
+                                catch (Exception ex)
                                 {
                                     vm.ShowInvalidDataPopupMessage();
                                 }
@@ -161,7 +161,7 @@ namespace Dev2.Studio.Views.Workflow
                                     {
                                         xml.LoadXml(_editor.Text);
                                     }
-                                    catch
+                                    catch (Exception ex)
                                     {
                                         vm.ShowInvalidDataPopupMessage();
                                     }
@@ -200,7 +200,7 @@ namespace Dev2.Studio.Views.Workflow
                             vm.SetWorkflowInputData();
                             _currentTab = InputTab.Grid;
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             vm.IsInError = true;
                         }
@@ -379,7 +379,7 @@ namespace Dev2.Studio.Views.Workflow
                             vm.XmlData = _editor.Text;
                             vm.SetWorkflowInputData();
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             vm.IsInError = true;
                         }

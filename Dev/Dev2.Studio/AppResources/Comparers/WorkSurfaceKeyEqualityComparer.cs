@@ -34,7 +34,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         public bool Equals(WorkSurfaceKey x, WorkSurfaceKey y)
         {
-            bool res = false;
+            var res = false;
             if (x.EnvironmentID != null && y.EnvironmentID != null)
             {
                 if (x.ResourceID == y.ResourceID

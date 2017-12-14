@@ -352,7 +352,7 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
 
-            bool canAdd = true;
+            var canAdd = true;
             var parent = ModelItemCollection.Parent;
             if (parent != null)
             {
@@ -418,7 +418,7 @@ namespace Dev2.Activities.Designers2.Core
                 startIndex = Math.Max(startIndex, 0);
                 for (var i = startIndex; i < ModelItemCollection.Count; i++)
                 {
-                    processModelItem(ModelItemCollection[i]);
+                    processModelItem?.Invoke(ModelItemCollection[i]);
                 }
             }
         }

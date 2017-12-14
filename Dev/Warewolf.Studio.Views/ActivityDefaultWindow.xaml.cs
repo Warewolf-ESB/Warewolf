@@ -38,7 +38,7 @@ namespace Warewolf.Studio.Views
 
         void DoneButton_OnClick(object sender, RoutedEventArgs e)
         {
-            bool valid = true;
+            var valid = true;
             var content = ControlContentPresenter.Content as ActivityDesignerTemplate;
 
             if (content == null)

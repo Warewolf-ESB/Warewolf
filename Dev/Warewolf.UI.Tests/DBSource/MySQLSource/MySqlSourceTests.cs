@@ -13,7 +13,6 @@ namespace Warewolf.UI.Tests
 
         [TestMethod]
         [TestCategory("Database Sources")]
-        // ReSharper disable once InconsistentNaming
         public void Create_Save_And_Edit_MySQLSource_From_ExplorerContextMenu_UITests()
         {
             //Create Source

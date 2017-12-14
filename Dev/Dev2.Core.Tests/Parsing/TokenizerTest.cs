@@ -173,9 +173,9 @@ namespace Unlimited.UnitTest.Framework.Parsing
             var builder = new SyntaxTreeBuilder();
             builder.RegisterGrammer(grammer = new TestGrammer(3));
             builder.Build("5");
-            int present = 0;
+            var present = 0;
 
-            for(int i = 0; i < grammer.Tokenizer.Handlers.Count; i++)
+            for (int i = 0; i < grammer.Tokenizer.Handlers.Count; i++)
             {
                 if (grammer.Tokenizer.Handlers[i] is UnaryTokenizationHandler<Token, TokenKind>)
                 {

@@ -466,7 +466,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();                
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Conditions != null ? Conditions.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ And.GetHashCode();
@@ -524,7 +524,7 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
             }
-            bool hasResult = false;
+            var hasResult = false;
             if (NameOfArmToReturn == falseArmText)
             {
                 NextNodes = _dsfDecision.FalseArm;

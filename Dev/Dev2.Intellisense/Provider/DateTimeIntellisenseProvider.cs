@@ -36,7 +36,7 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             Optional = false;
             IntellisenseProviderType = IntellisenseProviderType.NonDefault;
-            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
+            var dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
             _intellisenseResults = dateTimeParser.DateTimeFormatParts.Select(p => 
                 {
                     var intellisenseResult = IntellisenseFactory.CreateDateTimeResult(IntellisenseFactory.CreateDateTimePart(p.Value, p.Description));
@@ -128,7 +128,7 @@ namespace Dev2.Studio.InterfaceImplementors
         /// </summary>
         public static bool InLiteralRegion(string inputText, int caretPosition)
         {
-            bool inLiteralRegion = false;
+            var inLiteralRegion = false;
 
             var text = inputText;
             if (caretPosition <= text.Length)

@@ -701,7 +701,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
-            bool called = false;
+            var called = false;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b,c) => { called = true; });
             var mockResourceModel = new Mock<IContextualResourceModel>();
@@ -741,7 +741,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
-            bool called = false;
+            var called = false;
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);

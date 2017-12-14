@@ -80,7 +80,7 @@ namespace Dev2.Settings
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
 
             ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
-            CurrentEnvironment= ToEnvironmentModel(server);
+            CurrentEnvironment= ToEnvironmentModel?.Invoke(server);
             LoadSettings();
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = StringResources.SettingsTitle + " - " + Server.DisplayName;

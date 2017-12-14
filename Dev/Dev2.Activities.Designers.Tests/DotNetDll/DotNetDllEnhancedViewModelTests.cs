@@ -687,7 +687,7 @@ namespace Dev2.Activities.Designers.Tests.DotNetDll
             Assert.IsTrue(modelItem.ItemType == typeof(DsfEnhancedDotNetDllActivity));
             Assert.IsNotNull(dotNetDllEnhancedViewModel.DeleteActionCommand);
             Assert.IsTrue(dotNetDllEnhancedViewModel.DeleteActionCommand.CanExecute(null));
-            bool wasCalled = false;
+            var wasCalled = false;
             dotNetDllEnhancedViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "MethodsToRunList")

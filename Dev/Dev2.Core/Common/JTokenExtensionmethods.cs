@@ -31,7 +31,7 @@ namespace Dev2
 
         public static bool IsEnumerableOfPrimitives(this JToken property)
         {
-            bool returnValue = false;
+            var returnValue = false;
 
             if (property is JArray array && array.Count > 0)
             {

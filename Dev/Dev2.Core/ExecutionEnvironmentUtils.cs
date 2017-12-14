@@ -125,7 +125,7 @@ namespace Dev2
                             var direction = (enDev2ColumnArgumentDirection)Enum.Parse(typeof(enDev2ColumnArgumentDirection), p.Value.ToString(), true);
                             if (direction == enDev2ColumnArgumentDirection.Both || direction == requestedIODirection)
                             {
-                                int i = 0;
+                                var i = 0;
                                 foreach (var warewolfAtom in dataItem.Value)
                                 {
                                     jObjForArray.Add(dataItem.Key, warewolfAtom.ToString());

@@ -349,7 +349,7 @@ namespace Dev2.Services.Sql
                     var parameternames = parameterName.Split(',');
                     foreach (var parameter in parameternames)
                     {
-                        bool isout = false;
+                        var isout = false;
                         const ParameterDirection direction = ParameterDirection.Input;
                         if (parameter.Contains("OUT "))
                         {

@@ -133,7 +133,7 @@ namespace Dev2.Activities.Sharepoint
 
                             var newPath = UpdloadFile(sharepointSource, serverPath, localPath);
 
-                            int indexToUpsertTo = 1;
+                            var indexToUpsertTo = 1;
 
                             foreach (var file in newPath)
                             {
@@ -240,7 +240,7 @@ namespace Dev2.Activities.Sharepoint
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (LocalInputPath != null ? LocalInputPath.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);

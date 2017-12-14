@@ -42,7 +42,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();

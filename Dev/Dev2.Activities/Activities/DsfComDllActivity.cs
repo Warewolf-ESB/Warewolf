@@ -72,7 +72,7 @@ namespace Dev2.Activities
                 {
                     while (itrCollection.HasMoreData())
                     {
-                        int pos = 0;
+                        var pos = 0;
                         foreach (var itr in itrs)
                         {
                             var injectVal = itrCollection.FetchNextValue(itr);
@@ -102,7 +102,7 @@ namespace Dev2.Activities
         {
             if (!IsObject)
             {
-                int i = 0;
+                var i = 0;
                 foreach (var serviceOutputMapping in Outputs)
                 {
                     OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
@@ -144,7 +144,7 @@ namespace Dev2.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (_result != null ? _result.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Namespace != null ? Namespace.GetHashCode() : 0);

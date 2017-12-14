@@ -1692,7 +1692,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var child = new Mock<IExplorerItemViewModel>().Object;
             _target.Children.Add(child);
-            bool wasCalled = false;
+            var wasCalled = false;
             _target.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Children")
@@ -1717,7 +1717,7 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             _target.Children.Clear();
 
-            bool wasCalled = false;
+            var wasCalled = false;
             _target.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "Children")
@@ -1854,7 +1854,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //arrange
             var child = new Mock<IExplorerItemViewModel>();
             child.Setup(model => model.IsVisible).Returns(true);
-            bool actionRun = false;
+            var actionRun = false;
             _target.AddChild(child.Object);
             Action<IExplorerItemViewModel> action = a => actionRun = ReferenceEquals(_target, a);
             //act

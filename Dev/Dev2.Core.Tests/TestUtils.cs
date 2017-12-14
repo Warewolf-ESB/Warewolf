@@ -29,7 +29,7 @@ namespace Dev2.Tests
                     wasCalled = true;
                 }
             };
-            setter();
+            setter?.Invoke();
             return wasCalled;
         }
 

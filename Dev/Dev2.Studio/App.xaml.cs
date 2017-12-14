@@ -290,8 +290,6 @@ namespace Dev2.Studio
             CustomContainer.RegisterInstancePerRequestType<IFileChooserView>(() => new FileChooserView());
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
-            CustomContainer.Register<IActivityParser>(new ActivityParser());
-            CustomContainer.Register<IServiceDifferenceParser>(new ServiceDifferenceParser());
 
             var splashViewModel = new SplashViewModel(server, new ExternalProcessExecutor());
 
