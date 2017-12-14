@@ -492,7 +492,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var ser = new Dev2JsonSerializer();
             controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
             //------------Execute Test---------------------------
-            var res = action(queryManagerProxy);
+            var res = action?.Invoke(queryManagerProxy) ?? default(T);
             //------------Assert Results-------------------------
 
             foreach (var tuple in args)
@@ -500,7 +500,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
 
                 controller.Verify(a => a.AddPayloadArgument(tuple.Item1, It.IsAny<StringBuilder>()));
             }
-            resultAction(res);
+            resultAction?.Invoke(res);
         }
 
         public void RunTest<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
@@ -518,7 +518,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var ser = new Dev2JsonSerializer();
             controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
             //------------Execute Test---------------------------
-            var res = action(queryManagerProxy);
+            var res = action?.Invoke(queryManagerProxy) ?? default(T);
             //------------Assert Results-------------------------
 
             foreach (var tuple in args)
@@ -526,7 +526,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
 
                 controller.Verify(a => a.AddPayloadArgument(tuple.Item1, It.IsAny<StringBuilder>()));
             }
-            resultAction(res);
+            resultAction?.Invoke(res);
         }
 
         public void RunTestStringArgs<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
@@ -544,7 +544,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var ser = new Dev2JsonSerializer();
             controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
             //------------Execute Test---------------------------
-            var res = action(queryManagerProxy);
+            var res = action?.Invoke(queryManagerProxy) ?? default(T);
             //------------Assert Results-------------------------
 
             foreach (var tuple in args)
@@ -552,7 +552,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
 
                 controller.Verify(a => a.AddPayloadArgument(tuple.Item1, It.IsAny<string>()));
             }
-            resultAction(res);
+            resultAction?.Invoke(res);
         }
 
     }

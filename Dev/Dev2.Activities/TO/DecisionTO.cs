@@ -191,7 +191,7 @@ namespace Dev2.TO
         {
             if (!_isInitializing)
             {
-                UpdateDisplayAction(this);
+                UpdateDisplayAction?.Invoke(this);
             }
         }
 

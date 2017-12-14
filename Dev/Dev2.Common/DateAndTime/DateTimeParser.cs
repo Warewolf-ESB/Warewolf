@@ -227,7 +227,7 @@ namespace Dev2.Common.DateAndTime
             result = new DateTimeResultTO();
             error = "";
             var originalInputFormat = inputFormat;
-            string originalData = data;
+            var originalData = data;
             var culturesTried = 0;
             const int MaxAttempts = 8;
             if (string.IsNullOrWhiteSpace(data))
@@ -247,7 +247,7 @@ namespace Dev2.Common.DateAndTime
             }
             while (culturesTried <= MaxAttempts)
             {
-                char[] dateTimeArray = originalData.ToArray();
+                var dateTimeArray = originalData.ToArray();
                 var position = 0;
 
 
@@ -262,7 +262,7 @@ namespace Dev2.Common.DateAndTime
                     var count = 0;
                     while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
-                        IDateTimeFormatPartTO formatPart = formatParts[count];
+                        var formatPart = formatParts[count];
 
                         if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
                             out int resultLength, out error))
@@ -320,7 +320,7 @@ namespace Dev2.Common.DateAndTime
 
         string MatchInputFormatToCulture(ref string error, int culturesTried)
         {
-            string inputFormat = "";
+            var inputFormat = "";
             switch (culturesTried)
             {
                 case 0:
@@ -369,9 +369,9 @@ namespace Dev2.Common.DateAndTime
                     break;
 
                 case 7:
-                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                    string finalPattern = shortPattern + " " + longPattern;
+                    var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                    var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                    var finalPattern = shortPattern + " " + longPattern;
                     if (finalPattern.Contains("ss"))
                     {
                         finalPattern =

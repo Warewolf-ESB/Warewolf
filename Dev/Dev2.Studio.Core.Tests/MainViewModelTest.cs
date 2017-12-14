@@ -1941,7 +1941,7 @@ namespace Dev2.Core.Tests
             Assert.IsTrue(ShellViewModel.ActiveServer.CanStudioExecute);
             var treeItem = new Mock<IExplorerTreeItem>();
             var popUpController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
-            Action<IExplorerItemViewModel> action = new Action<IExplorerItemViewModel>(p => { });
+            var action = new Action<IExplorerItemViewModel>(p => { });
             var currentItem = new Mock<IContextualResourceModel>();
             currentItem.Setup(p => p.Environment).Returns(new Mock<IServer>().Object);
             var difItem = new Mock<IContextualResourceModel>();
@@ -1959,7 +1959,7 @@ namespace Dev2.Core.Tests
             var source = new ExplorerItemViewModel(server.Object, treeItem.Object, action, ShellViewModel, popUpController.Object);
             var contextManager = new Mock<IWorksurfaceContextManager>();
             contextManager.Setup(p => p.ViewMergeConflictsService(currentItem.Object, difItem.Object, It.IsAny<bool>(), It.IsAny<IWorkSurfaceKey>()));
-            PrivateObject privateObject = new PrivateObject(ShellViewModel);
+            var privateObject = new PrivateObject(ShellViewModel);
             var currentSurfaceManager = (IWorksurfaceContextManager)privateObject.GetField("_worksurfaceContextManager");
             privateObject.SetField("_worksurfaceContextManager", contextManager.Object);
             ShellViewModel.OpenMergeConflictsView(source, viewModel.Object.ActiveServer.EnvironmentID, serverDef.Object);

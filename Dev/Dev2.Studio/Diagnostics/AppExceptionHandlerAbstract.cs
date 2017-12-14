@@ -55,7 +55,7 @@ namespace Dev2.Studio.Diagnostics
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 ShutdownApp();
                 return false;

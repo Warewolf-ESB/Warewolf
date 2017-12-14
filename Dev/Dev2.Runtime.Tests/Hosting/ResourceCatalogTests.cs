@@ -3285,7 +3285,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var path = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(path);
             const string resourceName = "testingExtension";
-            Guid resourceId = Guid.Parse("aff19795-fafc-43bb-b6a9-c7c88b3cd93c");
+            var resourceId = Guid.Parse("aff19795-fafc-43bb-b6a9-c7c88b3cd93c");
             SaveResources(path, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var resourceCount = rc.GetResourceCount(workspaceID);
@@ -3304,7 +3304,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
-            PrivateObject privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new PrivateObject(rcBuilder);
             var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
             var results = privateObject.Invoke("IsWarewolfResource", xml);
             //------------Assert Precondition-----------------            
@@ -3321,7 +3321,7 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //------------Setup for test--------------------------
             var rcBuilder = new ResourceCatalogBuilder();
-            PrivateObject privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new PrivateObject(rcBuilder);
             var workspaceID = GlobalConstants.ServerWorkspaceID;
             var path = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(path);
@@ -3343,7 +3343,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var sourcesPath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
             var rcBuilder = new ResourceCatalogBuilder();
-            PrivateObject privateObject = new PrivateObject(rcBuilder);
+            var privateObject = new PrivateObject(rcBuilder);
             var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
             var filePath = sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml";
             var filePathToUpdate = new List<string> { sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml" };

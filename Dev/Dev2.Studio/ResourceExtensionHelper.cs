@@ -17,7 +17,7 @@ namespace Dev2.Studio
         public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, IShellViewModel shellViewModel, IFile file, IFilePath path, IServerRepository serverRepository)
         {
             IContextualResourceModel resourceModel = null;
-            IServerRepository serverRepo = serverRepository;
+            var serverRepo = serverRepository;
             IResource resource = null;
             var saveResource = popupController.ShowResourcesNotInCorrectPath();
             if (saveResource == MessageBoxResult.OK)

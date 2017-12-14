@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.WebServer.Controllers
             ProcessRequestHandlerType = typeof(TRequestHandler);
             ProcessRequestVariables = requestVariables;
             var result = base.ProcessRequest<TRequestHandler>(requestVariables);
-            _verifyProcessRequestInvoked();
+            _verifyProcessRequestInvoked?.Invoke();
             return result;
         }
 

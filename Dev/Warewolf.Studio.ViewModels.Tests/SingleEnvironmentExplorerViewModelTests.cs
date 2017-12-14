@@ -31,7 +31,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _explorerItemViewModelMock.SetupGet(it => it.ResourceType).Returns("Folder");
             _environmentViewModelMock = new Mock<IEnvironmentViewModel>();
             _environmentViewModelMock.Setup(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()))
-                .Callback<Func<IExplorerItemViewModel, bool>>(arg => arg(_explorerItemViewModelMock.Object));
+                .Callback<Func<IExplorerItemViewModel, bool>>(arg => arg?.Invoke(_explorerItemViewModelMock.Object) ?? default(bool));
             _target = new SingleEnvironmentExplorerViewModel(_environmentViewModelMock.Object, _selectedId, _filterByType);
         }
 

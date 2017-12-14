@@ -170,7 +170,7 @@ namespace Dev2.Data.Util
 
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
                     return intellisenseResult;
                 }

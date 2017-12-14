@@ -220,7 +220,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     methodToRun = type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
                 }
 
-                var methodsActionResult = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                var methodsActionResult = invokeMethodsAction?.Invoke(methodToRun, instance, valuedTypeList, type);
                 var knownBinder = new KnownTypesBinder();
                 knownBinder.KnownTypes.Add(type);
                 knownBinder.KnownTypes.Add(methodsActionResult?.GetType());

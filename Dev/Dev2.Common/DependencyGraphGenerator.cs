@@ -121,7 +121,7 @@ namespace Dev2.Common
 
                 return graph;
             }
-            catch
+            catch (Exception ex)
             {
                 return new Graph(ErrorResource.DependencyInormationMalformed);
             }

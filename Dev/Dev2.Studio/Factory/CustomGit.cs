@@ -53,12 +53,12 @@ namespace Dev2.Factory
         {
             try
             {
-                ProcessStartInfo procStartInfo = new ProcessStartInfo(exe, command);
+                var procStartInfo = new ProcessStartInfo(exe, command);
                 procStartInfo.RedirectStandardOutput = true;
                 procStartInfo.UseShellExecute = false;
                 procStartInfo.CreateNoWindow = true;
-                Process proc = processExecutor.Start(procStartInfo);
-                string result = proc.StandardOutput.ReadToEnd();
+                var proc = processExecutor.Start(procStartInfo);
+                var result = proc.StandardOutput.ReadToEnd();
                 return result;
             }
             catch (Exception)
@@ -85,7 +85,7 @@ namespace Dev2.Factory
                 };
 
                 procf.Start();
-                string gitLocation = procf.StandardOutput.ReadLine();
+                var gitLocation = procf.StandardOutput.ReadLine();
                 var correctPath = gitLocation.Split(Environment.NewLine.ToCharArray())
                     .FirstOrDefault(p => p.EndsWith(@"bin\git.exe", StringComparison.InvariantCultureIgnoreCase) || p.EndsWith(@"git.exe", StringComparison.InvariantCultureIgnoreCase));
                 return correctPath;

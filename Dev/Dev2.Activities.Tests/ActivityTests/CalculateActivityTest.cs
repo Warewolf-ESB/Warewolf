@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             GetScalarValueFromEnvironment(result.Environment, "result", out string entry, out string error);
 
-            DateTime res = DateTime.Parse(entry);
+            var res = DateTime.Parse(entry);
 
             if (res.Second == 0)
             {

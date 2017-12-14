@@ -49,7 +49,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show()
         {
-            var dev2MessageBoxViewModel = ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
+            var dev2MessageBoxViewModel = ShowDev2MessageBox?.Invoke(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
             DeleteAnyway = dev2MessageBoxViewModel.IsDeleteAnywaySelected;
             ApplyToAll = dev2MessageBoxViewModel.ApplyToAll;
             return dev2MessageBoxViewModel.Result;

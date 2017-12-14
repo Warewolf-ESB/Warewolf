@@ -677,7 +677,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
-            catch
+            catch (Exception ex)
             {
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
@@ -705,7 +705,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
-            catch
+            catch (Exception ex)
             {
 
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
@@ -941,7 +941,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         converter.ConvertFrom(actualValue);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Assert.Fail("Value is not expected type");
                     }

@@ -198,7 +198,7 @@ namespace Dev2.Tests.Runtime.WF
             var debugState = new DebugState { StateType = StateType.Start };
             debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
-            mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
+            mock.Setup(func => func?.Invoke()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
@@ -237,7 +237,7 @@ namespace Dev2.Tests.Runtime.WF
             var debugState = new DebugState { StateType = StateType.Start };
             debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
-            mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
+            mock.Setup(func => func?.Invoke()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
@@ -279,7 +279,7 @@ namespace Dev2.Tests.Runtime.WF
             var debugState = new DebugState { StateType = StateType.Start };
             debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
-            mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
+            mock.Setup(func => func?.Invoke()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);

@@ -314,7 +314,7 @@ namespace Dev2.Util
                     var list = (IList)value;
                     for (int i = 0; i < list.Count; i++)
                     {
-                        callback(i, loc, expr, value, path);
+                        callback?.Invoke(i, loc, expr, value, path);
                     }
                 }
                 else
@@ -323,7 +323,7 @@ namespace Dev2.Util
                     {
                         foreach (string key in _system.GetMembers(value))
                         {
-                            callback(key, loc, expr, value, path);
+                            callback?.Invoke(key, loc, expr, value, path);
                         }
                     }
                 }

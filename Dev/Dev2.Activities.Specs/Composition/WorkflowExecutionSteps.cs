@@ -287,7 +287,7 @@ namespace Dev2.Activities.Specs.Composition
                                                             }, new List<IResourcePerformanceCounter>());
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
             }
-            catch
+            catch (Exception ex)
             {
                 Assert.Fail("failed to delete existing counters");
             }

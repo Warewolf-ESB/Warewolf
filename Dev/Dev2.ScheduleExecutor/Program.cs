@@ -166,7 +166,7 @@ namespace Dev2.ScheduleExecutor
                 Log("Error", $"userServerSettings.config does not exist in {Directory.GetCurrentDirectory()}");
             }
 
-            string postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
+            var postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
             var result = string.Empty;
 
