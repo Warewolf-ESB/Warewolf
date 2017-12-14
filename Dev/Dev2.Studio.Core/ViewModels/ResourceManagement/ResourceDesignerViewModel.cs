@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -13,21 +13,13 @@ using System.Text;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
-using Warewolf.Resource.Errors;
-
 
 namespace Dev2.Studio.Core.ViewModels
 {
     public class ResourceDesignerViewModel : SimpleBaseViewModel, IDisposable, IDesignerViewModel
     {
-        #region Class Members
-
         readonly IServer _server;
         IContextualResourceModel _contexttualResourceModel;
-
-        #endregion Class Members
-
-        #region Ctor
 
         public ResourceDesignerViewModel(IContextualResourceModel model, IServer server)
         {
@@ -35,45 +27,34 @@ namespace Dev2.Studio.Core.ViewModels
             _server = server;
         }
 
-        #endregion
-
-        #region Properties
-
         public IServer Server => _server;
 
         public StringBuilder ServiceDefinition
         {
             get
             {
-                if(_contexttualResourceModel.WorkflowXaml == null || _contexttualResourceModel.WorkflowXaml.Length == 0)
+                if (_contexttualResourceModel.WorkflowXaml == null || _contexttualResourceModel.WorkflowXaml.Length == 0)
                 {
                     _contexttualResourceModel.WorkflowXaml = DefaultDefinition();
                 }
-
                 return _contexttualResourceModel.WorkflowXaml;
             }
             set
             {
                 _contexttualResourceModel.WorkflowXaml = value;
                 NotifyOfPropertyChange(() => ServiceDefinition);
-                if(ResourceModel != null)
+                if (ResourceModel != null)
                 {
                     ResourceModel.WorkflowXaml = ServiceDefinition;
                 }
             }
-
         }
 
         public IContextualResourceModel ResourceModel
         {
-
-            get { return _contexttualResourceModel; }
+            get => _contexttualResourceModel;
             set { _contexttualResourceModel = value; }
         }
-
-        #endregion
-
-        #region Methods
 
         StringBuilder DefaultDefinition()
         {
@@ -100,7 +81,7 @@ namespace Dev2.Studio.Core.ViewModels
                 sb.Append("</Service>");
             }
             if (_contexttualResourceModel.ResourceType == ResourceType.Source)
-            { 
+            {
                 sb.Append($"<Source Name=\"{_contexttualResourceModel.ResourceName}\" Type=\"\" ConnectionString=\"\" AssemblyName=\"\" AssemblyLocation=\"\" Uri=\"\" /> ");
             }
 
@@ -111,7 +92,5 @@ namespace Dev2.Studio.Core.ViewModels
         {
             GC.SuppressFinalize(this);
         }
-
-        #endregion Methods
     }
 }
