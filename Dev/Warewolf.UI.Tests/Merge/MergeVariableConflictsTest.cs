@@ -11,19 +11,11 @@ namespace Warewolf.UI.Tests.Merge
     public class MergeVariableConflictsTest
     {
         public const string MergeVariables = "MergeVariables";
-
-        [TestMethod]
-        [TestCategory("Merge")]
-        public void RightClick_On_MergeVariables_Has_Merge_Option()
-        {
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeVariables);
-        }
-
+        
         [TestMethod]
         [TestCategory("Merge")]
         public void Open_MergeVariables_Has_Variable_Conflicts()
         {
-            ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.Exists);
@@ -34,7 +26,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Open_MergeVariables_Current_Has_5TH_Variable()
         {
-            ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.Exists);

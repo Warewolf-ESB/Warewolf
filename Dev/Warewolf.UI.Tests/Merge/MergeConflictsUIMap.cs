@@ -21,7 +21,6 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         public void OpenMerge_For_Workflow(string workflow)
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(workflow);
-            ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
         }       
