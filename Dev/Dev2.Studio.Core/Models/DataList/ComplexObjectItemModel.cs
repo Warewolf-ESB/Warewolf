@@ -36,14 +36,14 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         //public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, OptomizedObservableCollection<IComplexObjectItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded) 
-        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent = null, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", OptomizedObservableCollection<IComplexObjectItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
+        public ComplexObjectItemModel(string displayname, IComplexObjectItemModel parent, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, OptomizedObservableCollection<IComplexObjectItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded)
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {
             Children = children;
             Parent = parent;
             if (parent == null)
             {
-                if (!Name.StartsWith("@"))
+                if (!Name.StartsWith("@", StringComparison.CurrentCulture))
                 {
                     Name = "@" + DisplayName;
                 }
@@ -98,7 +98,7 @@ namespace Dev2.Studio.Core.Models.DataList
         {
             get
             {
-                return _isArray || DisplayName.EndsWith("()");
+                return _isArray || DisplayName.EndsWith("()", StringComparison.CurrentCulture);
             }
             set
             {
@@ -237,7 +237,7 @@ namespace Dev2.Studio.Core.Models.DataList
         public override string ValidateName(string name)
         {
             var nameToCheck = name.Replace("@", "");
-            var isArray = name.EndsWith("()");
+            var isArray = name.EndsWith("()", StringComparison.CurrentCulture);
             var parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(nameToCheck))
             {
@@ -272,13 +272,7 @@ namespace Dev2.Studio.Core.Models.DataList
         #endregion
 
         #region Overrides of DataListItemModel
-
-        /// <summary>
-        /// Returns a <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// A <see cref="T:System.String"/> that represents the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override string ToString()
         {
             return DisplayName;
