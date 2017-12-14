@@ -29,7 +29,6 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
