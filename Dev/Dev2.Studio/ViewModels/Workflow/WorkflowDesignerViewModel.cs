@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -54,7 +54,6 @@ using Dev2.Diagnostics;
 using Dev2.Dialogs;
 using Dev2.Factories;
 using Dev2.Factory;
-using Dev2.Interfaces;
 using Dev2.Messages;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
@@ -86,7 +85,6 @@ using Dev2.Workspaces;
 using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Studio.ViewModels;
-using Dev2.Activities;
 using System.Collections.Concurrent;
 using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
@@ -128,7 +126,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         MethodInfo _virtualizedContainerServicePopulateAllMethod;
 
         readonly StudioSubscriptionService<DebugSelectionChangedEventArgs> _debugSelectionChangedService = new StudioSubscriptionService<DebugSelectionChangedEventArgs>();
-        
+
         /// <summary>
         /// Constructor
         /// </summary>
@@ -301,25 +299,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanCopyUrl
         {
-            get { return _canCopyUrl; }
+            get => _canCopyUrl;
             set
             {
                 _canCopyUrl = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    CopyUrlTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    CopyUrlTooltip = _canCopyUrl ? Warewolf.Studio.Resources.Languages.Tooltips.CopyUrlToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                CopyUrlTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canCopyUrl ? Warewolf.Studio.Resources.Languages.Tooltips.CopyUrlToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanCopyUrl");
             }
         }
 
         public string CopyUrlTooltip
         {
-            get { return _copyUrlTooltip; }
+            get => _copyUrlTooltip;
             set
             {
                 _copyUrlTooltip = value;
@@ -329,25 +320,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanViewSwagger
         {
-            get { return _canViewSwagger; }
+            get => _canViewSwagger;
             set
             {
                 _canViewSwagger = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    ViewSwaggerTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    ViewSwaggerTooltip = _canViewSwagger ? Warewolf.Studio.Resources.Languages.Tooltips.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                ViewSwaggerTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canViewSwagger ? Warewolf.Studio.Resources.Languages.Tooltips.ViewSwaggerToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanViewSwagger");
             }
         }
 
         public string ViewSwaggerTooltip
         {
-            get { return _viewSwaggerTooltip; }
+            get => _viewSwaggerTooltip;
             set
             {
                 _viewSwaggerTooltip = value;
@@ -357,25 +341,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanShowDependencies
         {
-            get { return _canShowDependencies; }
+            get => _canShowDependencies;
             set
             {
                 _canShowDependencies = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    ShowDependenciesTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    ShowDependenciesTooltip = _canShowDependencies ? Warewolf.Studio.Resources.Languages.Tooltips.DependenciesToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                ShowDependenciesTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canShowDependencies ? Warewolf.Studio.Resources.Languages.Tooltips.DependenciesToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanShowDependencies");
             }
         }
 
         public string ShowDependenciesTooltip
         {
-            get { return _showDependenciesTooltip; }
+            get => _showDependenciesTooltip;
             set
             {
                 _showDependenciesTooltip = value;
@@ -389,14 +366,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             set
             {
                 _canDeploy = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    DeployTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    DeployTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.DeployToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DeployTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.DeployToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanDeploy");
             }
         }
@@ -407,19 +377,12 @@ namespace Dev2.Studio.ViewModels.Workflow
             set
             {
                 _canMerge = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    MergeTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    MergeTooltip = _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.ViewMergeTooltip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                MergeTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canDeploy ? Warewolf.Studio.Resources.Languages.Tooltips.ViewMergeTooltip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanMerge");
             }
         }
 
-        private ICollection<IVersionInfo> GetVersionHistory()
+        ICollection<IVersionInfo> GetVersionHistory()
         {
             var versionInfos = Server?.ExplorerRepository?.GetVersions(ResourceModel.ID);
             if (versionInfos?.Count <= 0)
@@ -432,7 +395,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public string DeployTooltip
         {
-            get { return _deployTooltip; }
+            get => _deployTooltip;
             set
             {
                 _deployTooltip = value;
@@ -452,25 +415,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDuplicate
         {
-            get { return _canDuplicate; }
+            get => _canDuplicate;
             set
             {
                 _canDuplicate = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    DuplicateTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    DuplicateTooltip = _canDuplicate ? Warewolf.Studio.Resources.Languages.Tooltips.DuplicateToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DuplicateTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canDuplicate ? Warewolf.Studio.Resources.Languages.Tooltips.DuplicateToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanDuplicate");
             }
         }
 
         public string DuplicateTooltip
         {
-            get { return _duplicateTooltip; }
+            get => _duplicateTooltip;
             set
             {
                 _duplicateTooltip = value;
@@ -480,25 +436,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanRunAllTests
         {
-            get { return _canRunAllTests; }
+            get => _canRunAllTests;
             set
             {
                 _canRunAllTests = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    RunAllTestsTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    RunAllTestsTooltip = _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                RunAllTestsTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canRunAllTests ? Warewolf.Studio.Resources.Languages.Tooltips.RunAllTestsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanRunAllTests");
             }
         }
 
         public string RunAllTestsTooltip
         {
-            get { return _runAllTestsTooltip; }
+            get => _runAllTestsTooltip;
             set
             {
                 _runAllTestsTooltip = value;
@@ -508,25 +457,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanCreateTest
         {
-            get { return _canCreateTest; }
+            get => _canCreateTest;
             set
             {
                 _canCreateTest = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    CreateTestTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    CreateTestTooltip = _canCreateTest ? Warewolf.Studio.Resources.Languages.Tooltips.TestEditorToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                CreateTestTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canCreateTest ? Warewolf.Studio.Resources.Languages.Tooltips.TestEditorToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanCreateTest");
             }
         }
 
         public string CreateTestTooltip
         {
-            get { return _createTestTooltip; }
+            get => _createTestTooltip;
             set
             {
                 _createTestTooltip = value;
@@ -536,25 +478,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanCreateSchedule
         {
-            get { return _canCreateSchedule; }
+            get => _canCreateSchedule;
             set
             {
                 _canCreateSchedule = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    ScheduleTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    ScheduleTooltip = _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Tooltips.ScheduleToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                ScheduleTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canCreateSchedule ? Warewolf.Studio.Resources.Languages.Tooltips.ScheduleToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanCreateSchedule");
             }
         }
 
         public string ScheduleTooltip
         {
-            get { return _scheduleTooltip; }
+            get => _scheduleTooltip;
             set
             {
                 _scheduleTooltip = value;
@@ -564,25 +499,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDebugBrowser
         {
-            get { return _debugBrowser; }
+            get => _debugBrowser;
             set
             {
                 _debugBrowser = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    DebugBrowserTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    DebugBrowserTooltip = _debugBrowser ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DebugBrowserTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _debugBrowser ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugBrowserToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanDebugBrowser");
             }
         }
 
         public string DebugBrowserTooltip
         {
-            get { return _debugBrowserTooltip; }
+            get => _debugBrowserTooltip;
             set
             {
                 _debugBrowserTooltip = value;
@@ -592,25 +520,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDebugStudio
         {
-            get { return _canDebugStudio; }
+            get => _canDebugStudio;
             set
             {
                 _canDebugStudio = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    DebugStudioTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    DebugStudioTooltip = _canDebugStudio ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DebugStudioTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canDebugStudio ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugStudioToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanDebugStudio");
             }
         }
 
         public string DebugStudioTooltip
         {
-            get { return _debugStudioTooltip; }
+            get => _debugStudioTooltip;
             set
             {
                 _debugStudioTooltip = value;
@@ -620,25 +541,18 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public bool CanDebugInputs
         {
-            get { return _canDebugInputs; }
+            get => _canDebugInputs;
             set
             {
                 _canDebugInputs = value;
-                if (ResourceModel.IsNewWorkflow)
-                {
-                    DebugInputsTooltip = Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip;
-                }
-                else
-                {
-                    DebugInputsTooltip = _canDebugInputs ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
-                }
+                DebugInputsTooltip = ResourceModel.IsNewWorkflow ? Warewolf.Studio.Resources.Languages.Tooltips.DisabledToolTip : _canDebugInputs ? Warewolf.Studio.Resources.Languages.Tooltips.StartNodeDebugInputsToolTip : Warewolf.Studio.Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged("CanDebugInputs");
             }
         }
 
         public string DebugInputsTooltip
         {
-            get { return _debugInputsTooltip; }
+            get => _debugInputsTooltip;
             set
             {
                 _debugInputsTooltip = value;
@@ -650,7 +564,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (!string.IsNullOrEmpty(contextualResourceModel.DataList))
             {
-
                 _originalDataList = contextualResourceModel.DataList.Replace("<DataList>", "").Replace("</DataList>", "").Replace(Environment.NewLine, "").Trim();
 
             }
@@ -666,19 +579,13 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         public DebugOutputViewModel DebugOutputViewModel
         {
-            get
-            {
-                return _debugOutputViewModel;
-            }
+            get => _debugOutputViewModel;
             set { _debugOutputViewModel = value; }
-        }        
+        }
 
         public IDataListViewModel DataListViewModel
         {
-            get
-            {
-                return _dataListViewModel;
-            }
+            get => _dataListViewModel;
             set
             {
                 if (_dataListViewModel == value)
@@ -790,7 +697,6 @@ namespace Dev2.Studio.ViewModels.Workflow
         public StringBuilder DesignerText => ServiceDefinition;
 
         public StringBuilder ServiceDefinition { get { return _workflowHelper.SerializeWorkflow(_modelService); } set { } }
-        
 
         public ICommand CollapseAllCommand
         {
@@ -1052,7 +958,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                         if (mvm?.ActiveItem != null)
                         {
                             var environmentViewModel = mvm.ExplorerViewModel.Environments.FirstOrDefault(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
-                            var explorerItem = environmentViewModel?.Children?.Flatten(model => model.Children).Where(model => model.IsVersion == false).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
+                            var explorerItem = environmentViewModel?.Children?.Flatten(model => model.Children).Where(model => !model.IsVersion).FirstOrDefault(c => c.ResourceId == mvm.ActiveItem.ContextualResourceModel.ID);
 
                             if (explorerItem != null)
                             {
@@ -1064,7 +970,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
+        static IExplorerItemViewModel GetSelected(ShellViewModel mvm)
         {
             IExplorerItemViewModel explorerItem = null;
             var environmentViewModels = mvm.ExplorerViewModel.Environments.Where(a => a.ResourceId == mvm.ActiveServer.EnvironmentID);
@@ -1129,12 +1035,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         /// </summary>
         /// <param name="addedItem"></param>
         /// <returns></returns>
-
-
-
         protected ModelItem PerformAddItems(ModelItem addedItem)
-
-
         {
             var mi = addedItem;
             var computedValue = mi.Content?.ComputedValue;
@@ -1374,7 +1275,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 e.GetPosition(freePormPanel);
             }
         }
-        
+
         IList<IDataListVerifyPart> BuildWorkflowFields()
         {
             var dataPartVerifyDuplicates = new DataListVerifyPartDuplicationParser();
@@ -1514,7 +1415,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         static IEnumerable<string> GetParsedRegions(string getCol, IDataListViewModel datalistModel)
         {
-            // Travis.Frisinger - 25.01.2013 
+            // Travis.Frisinger - 25.01.2013
             // We now need to parse this data for regions ;)
 
             var parser = DataListFactory.CreateLanguageParser();
@@ -1571,7 +1472,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             SelectedItem = primarySelection;
         }
 
-        public Action<ModelItem> ItemSelectedAction { get; set; }        
+        public Action<ModelItem> ItemSelectedAction { get; set; }
 
         /// <summary>
         ///     Handels the list of strings to be added to the data list without a pop up message
@@ -1766,7 +1667,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void SetHashTable()
+        void SetHashTable()
         {
             _wd.PropertyInspectorFontAndColorData = XamlServices.Save(ActivityDesignerHelper.GetDesignerHashTable());
         }
@@ -2245,7 +2146,6 @@ namespace Dev2.Studio.ViewModels.Workflow
             AddMissingWithNoPopUpAndFindUnusedDataListItemsImpl(false);
         }
 
-
         public static bool ValidatResourceModel(string dataList)
         {
             try
@@ -2261,7 +2161,6 @@ namespace Dev2.Studio.ViewModels.Workflow
                 return false;
             }
             return true;
-
         }
 
         /// <summary>
@@ -2322,7 +2221,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             var workflowFields = BuildWorkflowFields();
             DataListViewModel?.UpdateDataListItems(ResourceModel, workflowFields);
         }
-        
+
         [ExcludeFromCodeCoverage]
         void ViewPreviewMouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -2377,8 +2276,6 @@ namespace Dev2.Studio.ViewModels.Workflow
 
             return false;
         }
-
-
 
         [ExcludeFromCodeCoverage]
         bool HandleDoubleClick(MouseButtonState leftButtonState, int clickCount, DependencyObject dp, DesignerView designerView)
@@ -2619,9 +2516,9 @@ namespace Dev2.Studio.ViewModels.Workflow
         ModelItem _selectedItem;
         IEnumerable<ModelItem> _modelItems;
         IEnumerable<ModelItem> _activityCollection;
-        private ICommand _mergeCommand;
-        private bool _canMerge;
-        private string _mergeTooltip;
+        ICommand _mergeCommand;
+        bool _canMerge;
+        string _mergeTooltip;
 
         /// <summary>
         /// Models the service model changed.
@@ -2786,7 +2683,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 }).Start();
             }
         }
-        
+
         protected override void OnDispose()
         {
             if (_wd != null)
@@ -2868,10 +2765,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         protected List<ModelItem> SelectedDebugItems => _selectedDebugItems;
         public ModelItem SelectedItem
         {
-            get
-            {
-                return _selectedItem;
-            }
+            get => _selectedItem;
             set
             {
                 _selectedItem = value;
@@ -3114,7 +3008,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             return false;
         }
 
-        private static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem)
+        static void UpdateSwithArm(string key, ModelItem switchItem, FlowNode nodeItem)
         {
             if (key != "Default")
             {
@@ -3259,7 +3153,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             }
         }
 
-        private void SetShapeLocation(ModelItem modelItem, Point location)
+        void SetShapeLocation(ModelItem modelItem, Point location)
         {
             var service = _workflowDesignerHelper.GetService<ViewStateService>(_wd);
             service.RemoveViewState(modelItem, "ShapeLocation");
@@ -3298,6 +3192,5 @@ namespace Dev2.Studio.ViewModels.Workflow
         }
 
         public System.Action WorkflowChanged { get; set; }
-
     }
 }
