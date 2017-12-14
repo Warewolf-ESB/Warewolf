@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         [TestMethod]

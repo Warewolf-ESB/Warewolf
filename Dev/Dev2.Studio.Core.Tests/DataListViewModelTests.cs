@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
         void Setup()
