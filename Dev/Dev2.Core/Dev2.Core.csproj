@@ -143,6 +143,7 @@
       <Visible>False</Visible>
     </None>
     <Compile Include="Calculate\SyntaxTreeBuilderHelper.cs" />
+    <Compile Include="Common\ConflictTreeNode.cs" />
     <Compile Include="Common\ValidatableObject.cs" />
     <Compile Include="Common\VariableUtils.cs" />
     <Compile Include="Converters\Base\TO\CaseConvertTO.cs" />
