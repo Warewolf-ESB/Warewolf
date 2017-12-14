@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         [TestMethod]

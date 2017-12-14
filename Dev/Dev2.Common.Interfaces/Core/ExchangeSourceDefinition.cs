@@ -1,4 +1,14 @@
-﻿using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using System;
 
@@ -7,21 +17,6 @@ namespace Dev2.Common.Interfaces.Core
 {
     public class ExchangeSourceDefinition : IExchangeSource, IEquatable<ExchangeSourceDefinition>
     {
-        public ExchangeSourceDefinition(IExchange db)
-        {
-            AutoDiscoverUrl = db.AutoDiscoverUrl;
-            Id = db.ResourceID;
-            Password = db.Password;
-            UserName = db.UserName;
-            Path = "";
-            Timeout = db.Timeout;
-            ResourceName = db.ResourceName;
-        }
-
-        public ExchangeSourceDefinition()
-        {
-        }
-
         public Guid ResourceID { get; set; }
         public string AutoDiscoverUrl { get; set; }
         public string UserName { get; set; }

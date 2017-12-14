@@ -767,7 +767,7 @@ namespace Warewolf.UI.Tests.WorkflowTab.WorkflowTabUIMapClasses
         }
 
         [When(@"I Drag Toolbox ODBC Dtatbase Onto DesignSurface")]
-        public void Drag_Toolbox_ODBC_Dtatbase_Onto_DesignSurface()
+        public void Drag_Toolbox_ODBC_Connector_Onto_DesignSurface()
         {
             UIMap.MainStudioWindow.DockManager.SplitPaneLeft.ToolBox.SearchTextBox.Text = "ODBC";
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.EnsureClickable(new Point(306, 130));

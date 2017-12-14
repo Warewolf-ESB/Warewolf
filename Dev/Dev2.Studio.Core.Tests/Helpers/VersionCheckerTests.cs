@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 using Dev2.Studio.Core;
+using System.ComponentModel;
 
 namespace Dev2.Core.Tests.Helpers
 {
@@ -53,13 +54,27 @@ namespace Dev2.Core.Tests.Helpers
             //------------Setup for test--------------------------
             
             new VersionChecker(new WarewolfWebClient(new WebClient()), null);
-            
+
 
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
         }
-        
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("VersionChecker_Ctor")]
+        public void WarewolfWebClient_AddRemove_EventHandlers()
+        {
+            using (var warewolfWebClient =
+                        new WarewolfWebClient(new WebClient()))
+            {
+                warewolfWebClient.DownloadProgressChanged += new Mock<DownloadProgressChangedEventHandler>().Object;
+                warewolfWebClient.DownloadProgressChanged -= new Mock<DownloadProgressChangedEventHandler>().Object;
+                warewolfWebClient.DownloadFileCompleted += new Mock<AsyncCompletedEventHandler>().Object;
+                warewolfWebClient.DownloadFileCompleted -= new Mock<AsyncCompletedEventHandler>().Object;
+            }
+        }
     }
 }
 
