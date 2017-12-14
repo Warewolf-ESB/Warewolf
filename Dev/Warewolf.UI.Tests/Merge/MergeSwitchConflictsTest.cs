@@ -10,19 +10,11 @@ namespace Warewolf.UI.Tests.Merge
     public class MergeSwitchConflictsTest
     {
         public const string MergeSwitch = "MergeSwitch";
-
-        [TestMethod]
-        [TestCategory("Merge")]
-        public void RightClick_On_Merge_With_Switch_Has_Merge_Option()
-        {
-            Assert.IsTrue(UIMap.MainStudioWindow.ExplorerContextMenu.Merge.Exists, "Merge option does not show after Right cliking " + MergeSwitch);
-        }
-
+        
         [TestMethod]
         [TestCategory("Merge")]
         public void Click_On_Merge_With_Switch_Has_Decision_And_Children()
         {
-            ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem.Exists);
@@ -33,7 +25,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Click_On_MergeSwitch_With_Difference_Between_Decision_Add_Decision_On_Design_Surface()
         {
-            ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.DesignerView.ScrollViewerPane.ActivityBuilder.WorkflowItemPresenter.Flowchart.Difference_Switch.Exists, "Switch from difference was not added to the design surface After checking Radio Button");
@@ -43,7 +34,6 @@ namespace Warewolf.UI.Tests.Merge
         [TestCategory("Merge")]
         public void Adding_Assigns_And_Assign_Connector_Has_Assign_On_Th_Design_Surface()
         {
-            ExplorerUIMap.Click_Merge_From_Context_Menu();
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem4.MergeItemExpander.MergeButton.ThirdAssign_Current.Enabled);
