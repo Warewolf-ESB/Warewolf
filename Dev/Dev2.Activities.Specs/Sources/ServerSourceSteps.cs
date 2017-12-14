@@ -23,7 +23,7 @@ namespace Dev2.Activities.Specs.Sources
         public ServerSourceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
         }

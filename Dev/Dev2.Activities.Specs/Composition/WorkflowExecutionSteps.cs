@@ -97,7 +97,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             _scenarioContext = scenarioContext ?? throw new ArgumentNullException(nameof(scenarioContext));
             _commonSteps = new CommonSteps(_scenarioContext);
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
         const int EnvironmentConnectionTimeout = 3000;
@@ -191,7 +191,7 @@ namespace Dev2.Activities.Specs.Composition
         [Given(@"I have server a ""(.*)"" with workflow ""(.*)""")]
         public void GivenIHaveAWorkflowOnServer(string serverName, string workflow)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.ResourceRepository.ForceLoad();

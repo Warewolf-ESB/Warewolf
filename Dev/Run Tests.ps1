@@ -305,7 +305,8 @@ function Cleanup-ServerStudio([bool]$Force=$true) {
     $ToClean = "$env:LOCALAPPDATA\Warewolf\DebugData\PersistSettings.dat",
                "$env:LOCALAPPDATA\Warewolf\UserInterfaceLayouts\WorkspaceLayout.xml",
                "$env:PROGRAMDATA\Warewolf\Workspaces",
-               "$env:PROGRAMDATA\Warewolf\Server Settings"
+               "$env:PROGRAMDATA\Warewolf\Server Settings",
+               "$env:PROGRAMDATA\Warewolf\VersionControl"
 
     [int]$ExitCode = 0
     foreach ($FileOrFolder in $ToClean) {
