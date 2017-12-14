@@ -45,7 +45,7 @@ namespace Unlimited.Framework.Converters.Graph.Ouput
 
         public bool Equals(IOutputDescription other)
         {
-            var collectionEquals = DataSourceShapes.Equals(other.DataSourceShapes);
+            var collectionEquals = CommonEqualityOps.CollectionEquals(DataSourceShapes, other.DataSourceShapes, new DataSourceShapeComparer());
             return Format == other.Format && collectionEquals;
         }
 
