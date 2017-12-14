@@ -73,9 +73,9 @@ namespace Dev2.ViewModels.Merge
                 var current = MemberwiseClone();
                 _isMergeChecked = value;
 
-                RemovePreviousActivity();
                 if (_isMergeChecked)
                 {
+                    RemovePreviousActivity();
                     AddActivity();
                     SomethingModelToolChanged?.Invoke(current, this);
                 }
@@ -87,11 +87,11 @@ namespace Dev2.ViewModels.Merge
         {
             if (Container?.CurrentViewModel == this)
             {
-                WorkflowDesignerViewModel?.RemoveItem(Container.CurrentViewModel);
+                WorkflowDesignerViewModel?.RemoveItem(Container.DiffViewModel);
             }
             if (Container?.DiffViewModel == this)
             {
-                WorkflowDesignerViewModel?.RemoveItem(Container.DiffViewModel);
+                WorkflowDesignerViewModel?.RemoveItem(Container.CurrentViewModel);
             }
         }
 
