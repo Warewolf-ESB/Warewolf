@@ -198,7 +198,7 @@ namespace Dev2.Tests.Runtime.WF
             var debugState = new DebugState { StateType = StateType.Start };
             debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
-            mock.Setup(func => func?.Invoke()).Returns(() => debugDispatcher.Object);
+            mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
@@ -224,8 +224,8 @@ namespace Dev2.Tests.Runtime.WF
 
             }
             //---------------Test Result -----------------------
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DispatchDebugState_GivenValidParamsAndIntergoateInputs_ShouldWriteUsingDebugDispactcher()
@@ -237,7 +237,7 @@ namespace Dev2.Tests.Runtime.WF
             var debugState = new DebugState { StateType = StateType.Start };
             debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
-            mock.Setup(func => func?.Invoke()).Returns(() => debugDispatcher.Object);
+            mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
@@ -268,18 +268,18 @@ namespace Dev2.Tests.Runtime.WF
             {
                 DataList = new StringBuilder()
             });
-      
+
             IResource dropBoxSource = new DropBoxSource() { AppKey = "Key", AccessToken = "token" };
             dropBoxSource.DataList = new StringBuilder("<DataList></DataList>");
             catLog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dropBoxSource);
-          
+
             var wfApplicationUtils = new WfApplicationUtils();
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();
             var debugState = new DebugState { StateType = StateType.Start };
             debugDispatcher.Setup(dispatcher => dispatcher.Write(debugState, It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>()));
             var mock = new Mock<Func<IDebugDispatcher>>();
-            mock.Setup(func => func?.Invoke()).Returns(() => debugDispatcher.Object);
+            mock.Setup(func => func()).Returns(() => debugDispatcher.Object);
             var mockObj = new Mock<IDSFDataObject>();
             mockObj.Setup(o => o.Environment).Returns(envMock.Object);
             mockObj.Setup(o => o.IsDebugMode()).Returns(true);
