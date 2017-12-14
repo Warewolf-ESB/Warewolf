@@ -7,8 +7,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
-{
-    
+{    
     class ODBCFactory : IDbFactory
     {
         #region Implementation of IDbFactory
@@ -32,10 +31,7 @@ namespace Dev2.Services.Sql
             };
         }
 
-        public DataTable GetSchema(IDbConnection connection, string collectionName)
-        {
-            return GetOdbcServerSchema(connection);
-        }
+        public DataTable GetSchema(IDbConnection connection, string collectionName) => GetOdbcServerSchema(connection);
 
         DataTable GetOdbcServerSchema(IDbConnection connection)
         {

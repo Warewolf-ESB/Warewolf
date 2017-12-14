@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -15,14 +15,11 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-using System;
+using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-
 {
-    
     public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
-    
     {
         public const string SplitTypeIndex = "Index";
         public const string SplitTypeChars = "Chars";
@@ -73,10 +70,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            
         }
 
         public bool EnableAt { get => _enableAt; set => OnPropertyChanged(ref _enableAt, value); }
@@ -97,7 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string OutputVariable
         {
-            get { return _outputVariable; }
+            get => _outputVariable;
             set
             {
                 OnPropertyChanged(ref _outputVariable, value);
@@ -109,10 +104,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public string SplitType
         {
-            get { return _splitType; }
+            get => _splitType;
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     OnPropertyChanged(ref _splitType, value);
                     RaiseCanAddRemoveChanged();
@@ -123,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string At
         {
-            get { return _at; }
+            get => _at;
             set
             {
                 OnPropertyChanged(ref _at, value);
@@ -135,29 +130,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanRemove()
         {
-            if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
+            if (SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
-                if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
+                if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
                     return true;
                 }
                 return false;
             }
-
             return false;
         }
 
         public bool CanAdd()
         {
-            bool result = true;
-            if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
+            if (SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
-                if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
+                if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
-                    result = false;
+                    return false;
                 }
+                return true;
             }
-            return result;
+            return true;
         }
 
         public void ClearRow()
@@ -181,12 +175,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
-            if(IsEmpty())
+            if (IsEmpty())
             {
                 return ruleSet;
             }
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "OutputVariable":
                     if (!string.IsNullOrEmpty(OutputVariable))
@@ -197,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     break;
                 case "At":
-                    switch(SplitType)
+                    switch (SplitType)
                     {
                         case SplitTypeIndex:
                             var atIndexExprRule = new IsValidExpressionRule(() => At, datalist, "1", new VariableUtils());
@@ -210,7 +204,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;
                         default:
-                            throw new ArgumentException("Unrecognized split type: " + SplitType);
+                            Dev2Logger.Info("No Rule Set for the Data Split DTO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
+                            break;
                     }
                     break;
                 default:
