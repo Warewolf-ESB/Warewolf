@@ -25,6 +25,8 @@ namespace Dev2.ViewModels.Merge
         bool _isChecked;
         bool _isArmSelectionAllowed;
 
+        public string Grouping => SourceUniqueId + Key ?? "";
+
         public event Action<IArmConnectorConflict, bool> OnChecked;
 
         public IWorkflowDesignerViewModel WorkflowDesignerViewModel { get; set; }
