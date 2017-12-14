@@ -19,7 +19,6 @@ using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
-using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
@@ -819,7 +818,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             unchecked
             {
-                int hashCode = base.GetHashCode();
+                var hashCode = base.GetHashCode();
                 hashCode = (hashCode * 397) ^ (Inputs != null ? Inputs.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (Outputs != null ? Outputs.GetHashCode() : 0);
                 hashCode = (hashCode * 397) ^ (ServiceUri != null ? ServiceUri.GetHashCode() : 0);
