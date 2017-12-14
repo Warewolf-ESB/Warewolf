@@ -726,7 +726,7 @@
                                                                  IsChecked="{Binding IsChecked}" 
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
-                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
+                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
                                                                  ToolTip="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}"
                                                                  AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
                                                         <RadioButton.Style>
@@ -787,7 +787,7 @@
                                                     <RadioButton x:Name="DifferenceNodeArmRB" 
                                                                  IsChecked="{Binding IsChecked}" 
                                                                  HorizontalAlignment="Left"
-                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
+                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
                                                                  ToolTip="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}"
                                                                  Margin="5,0,5,0"
                                                                  Style="{StaticResource MergeRadioButtonStyle}"
