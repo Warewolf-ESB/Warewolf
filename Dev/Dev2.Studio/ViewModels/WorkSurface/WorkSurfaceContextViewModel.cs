@@ -38,6 +38,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 using Warewolf.Studio.ViewModels;
+using Dev2.ViewModels;
 using Dev2.Instrumentation;
 using Warewolf.Studio.Resources.Languages;
 
@@ -110,6 +111,10 @@ namespace Dev2.Studio.ViewModels.WorkSurface
                 {
                     return workflowDesignerViewModel.DataListViewModel;
                 }
+                if(WorkSurfaceViewModel is MergeViewModel mergeViewModel)
+                {
+                    return mergeViewModel.DataListViewModel;
+                }
                 return _dataListViewModel;
             }
             set
@@ -126,10 +131,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public IWorkSurfaceViewModel WorkSurfaceViewModel
         {
-            get
-            {
-                return _workSurfaceViewModel;
-            }
+            get => _workSurfaceViewModel;
             set
             {
                 if (_workSurfaceViewModel == value)
@@ -266,11 +268,8 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         public IContextualResourceModel ContextualResourceModel
         {
-            get
-            {
-                return _contextualResourceModel;
-            }
-            private set
+            get => _contextualResourceModel;
+            set
             {
                 _contextualResourceModel = value;
                 OnContextualResourceModelChanged();
@@ -552,10 +551,7 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             WorkSurfaceViewModel?.NotifyOfPropertyChange("DisplayName");
             if (!isLocalSave)
             {
-                if (DebugOutputViewModel != null)
-                {
-                    ViewModelUtils.RaiseCanExecuteChanged(DebugOutputViewModel.AddNewTestCommand);
-                }
+                ViewModelUtils.RaiseCanExecuteChanged(DebugOutputViewModel?.AddNewTestCommand);
             }
             return saveResult;
         }
@@ -626,17 +622,20 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
             var explorerViewModel = mainViewModel?.ExplorerViewModel;
-            var environmentViewModel =
-                explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.EnvironmentID);
-            var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(
-                model => model.ResourceId == resource.ID);
-            if (explorerItemViewModel != null && explorerItemViewModel.GetType() == typeof(VersionViewModel))
+            var environmentViewModel = explorerViewModel?.Environments?.FirstOrDefault(model => model.ResourceId == resource.Environment.EnvironmentID);
+            var explorerItemViewModel = environmentViewModel?.Children?.Flatten(model => model.Children).FirstOrDefault(model => model.ResourceId == resource.ID);
+            if (explorerItemViewModel != null)
             {
-                if (explorerItemViewModel.Parent != null)
+                explorerItemViewModel.IsMergeVisible = true;
+                if (explorerItemViewModel.GetType() == typeof(VersionViewModel))
                 {
-                    explorerItemViewModel.Parent.AreVersionsVisible = true;
+                    if (explorerItemViewModel.Parent != null)
+                    {
+                        explorerItemViewModel.Parent.AreVersionsVisible = true;
+                    }
                 }
             }
+            mainViewModel?.UpdateExplorerWorkflowChanges(resource.ID);
         }
 
         void DisplaySaveResult(ExecuteMessage result, IContextualResourceModel resource)

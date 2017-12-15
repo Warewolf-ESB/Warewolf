@@ -121,7 +121,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _destView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             _sourceView.Setup(model => model.ConnectControlViewModel).Returns(connectControl.Object);
             var singleExplorerDeployViewModel = new SingleExplorerDeployViewModel(_destView.Object, _sourceView.Object, new List<IExplorerTreeItem>(), _statsView.Object, _shellVm.Object, popupController.Object);
-            bool wasCalled = false;
+            var wasCalled = false;
             singleExplorerDeployViewModel.Destination.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsConnected")

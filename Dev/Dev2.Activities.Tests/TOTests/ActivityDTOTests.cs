@@ -290,7 +290,7 @@ namespace Dev2.Tests.Activities.TOTests
             //------------Setup for test--------------------------
             var activityDTO = new ActivityDTO();
             //------------Execute Test---------------------------
-            bool isValid = activityDTO.Validate("FieldName", new RuleSet());
+            var isValid = activityDTO.Validate("FieldName", new RuleSet());
             //------------Assert Results-------------------------
             Assert.IsTrue(isValid);
         }
@@ -305,7 +305,7 @@ namespace Dev2.Tests.Activities.TOTests
             var ruleSet = new RuleSet();
             ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
-            bool isValid = activityDTO.Validate("FieldName", ruleSet);
+            var isValid = activityDTO.Validate("FieldName", ruleSet);
             //------------Assert Results-------------------------
             Assert.IsFalse(isValid);
         }
@@ -320,7 +320,7 @@ namespace Dev2.Tests.Activities.TOTests
             var ruleSet = new RuleSet();
             ruleSet.Add(new IsNullRule(() => activityDTO.FieldName));
             //------------Execute Test---------------------------
-            bool isValid = activityDTO.Validate("FieldName", ruleSet);
+            var isValid = activityDTO.Validate("FieldName", ruleSet);
             //------------Assert Results-------------------------
             Assert.IsTrue(isValid);
         }

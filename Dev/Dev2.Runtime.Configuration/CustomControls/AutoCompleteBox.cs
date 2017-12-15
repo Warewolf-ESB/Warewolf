@@ -90,7 +90,7 @@ namespace System.Windows.Controls
         [SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly", Justification = "MinimumPrefixLength is the name of the actual dependency property.")]
         static void OnMinimumPrefixLengthPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            int newValue = (int)e.NewValue;
+            var newValue = (int)e.NewValue;
 
             if (newValue < 0 && newValue != -1)
             {
@@ -128,7 +128,7 @@ namespace System.Windows.Controls
                 return;
             }
 
-            int newValue = (int)e.NewValue;
+            var newValue = (int)e.NewValue;
             if (newValue < 0)
             {
                 if (source != null)
@@ -304,7 +304,7 @@ namespace System.Windows.Controls
                 return;
             }
 
-            double newValue = (double)e.NewValue;
+            var newValue = (double)e.NewValue;
 
             if (newValue < 0)
             {
@@ -347,8 +347,8 @@ namespace System.Windows.Controls
                 return;
             }
 
-            bool oldValue = (bool)e.OldValue;
-            bool newValue = (bool)e.NewValue;
+            var oldValue = (bool)e.OldValue;
+            var newValue = (bool)e.NewValue;
             if (source != null)
             {
                 if (newValue)
@@ -911,7 +911,7 @@ namespace System.Windows.Controls
 
         void ClosingDropDown(bool oldValue)
         {
-            bool delayedClosingVisual = false;
+            var delayedClosingVisual = false;
             if (DropDownPopup != null)
             {
                 delayedClosingVisual = DropDownPopup.UsesClosingVisualState;
@@ -1076,7 +1076,7 @@ namespace System.Windows.Controls
 
         void ControlIsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            bool isEnabled = (bool)e.NewValue;
+            var isEnabled = (bool)e.NewValue;
             if (!isEnabled)
             {
                 IsDropDownOpen = false;
@@ -1324,7 +1324,7 @@ namespace System.Windows.Controls
                 return;
             }
 
-            bool populateReady = newText.Length >= MinimumPrefixLength && MinimumPrefixLength >= 0;
+            var populateReady = newText.Length >= MinimumPrefixLength && MinimumPrefixLength >= 0;
             _userCalledPopulate = populateReady && userInitiated;
 
             newText = newText.Replace("\r\n", "\n");
@@ -1375,8 +1375,8 @@ namespace System.Windows.Controls
                 SelectionAdapter.ItemsSource = _view;
             }
 
-            bool isDropDownOpen = _userCalledPopulate && _view.Count > 0;
-            if(isDropDownOpen != IsDropDownOpen)
+            var isDropDownOpen = _userCalledPopulate && _view.Count > 0;
+            if (isDropDownOpen != IsDropDownOpen)
             {
                 _ignorePropertyChange = true;
                 IsDropDownOpen = isDropDownOpen;
@@ -1402,8 +1402,8 @@ namespace System.Windows.Controls
             {
                 if (IsTextCompletionEnabled && TextBox != null && userInitiated)
                 {
-                    int currentLength = TextBox.Text.Length;
-                    int selectionStart = TextBox.SelectionStart;
+                    var currentLength = TextBox.Text.Length;
+                    var selectionStart = TextBox.SelectionStart;
                     if (selectionStart == text.Length && selectionStart > _textSelectionStart)
                     {
                         var top = FilterMode == AutoCompleteFilterMode.StartsWith || FilterMode == AutoCompleteFilterMode.StartsWithCaseSensitive
@@ -1413,7 +1413,7 @@ namespace System.Windows.Controls
                         {
                             newSelectedItem = top;
                             var topString = FormatValue(top, true);
-                            int minLength = Math.Min(topString.Length, Text.Length);
+                            var minLength = Math.Min(topString.Length, Text.Length);
                             if (AutoCompleteSearch.Equals(Text.Substring(0, minLength), topString.Substring(0, minLength)))
                             {
                                 UpdateTextValue(topString);
@@ -1447,7 +1447,7 @@ namespace System.Windows.Controls
         {
             if (view != null && view.Count > 0)
             {
-                return view.FirstOrDefault(o => predicate(searchText, FormatValue(o)));
+                return view.FirstOrDefault(o => predicate?.Invoke(searchText, FormatValue(o)) ?? default(bool));
             }
 
             return null;
@@ -1475,18 +1475,18 @@ namespace System.Windows.Controls
             }
 
             var text = Text ?? string.Empty;
-            bool stringFiltering = TextFilter != null;
-            bool objectFiltering = FilterMode == AutoCompleteFilterMode.Custom && TextFilter == null;
+            var stringFiltering = TextFilter != null;
+            var objectFiltering = FilterMode == AutoCompleteFilterMode.Custom && TextFilter == null;
 
-            int viewIndex = 0;
-            int viewCount = _view.Count;
+            var viewIndex = 0;
+            var viewCount = _view.Count;
             var items = _items;
             foreach (object item in items)
             {
-                bool inResults = !(stringFiltering || objectFiltering);
+                var inResults = !(stringFiltering || objectFiltering);
                 if (!inResults)
                 {
-                    inResults = stringFiltering ? TextFilter(text, FormatValue(item)) : ItemFilter(text, item);
+                    inResults = stringFiltering ? TextFilter?.Invoke(text, FormatValue(item)) ?? default(bool) : ItemFilter?.Invoke(text, item) ?? default(bool);
                 }
 
                 if (viewCount > viewIndex && inResults && _view[viewIndex] == item)

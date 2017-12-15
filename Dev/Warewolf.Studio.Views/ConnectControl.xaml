@@ -27,7 +27,6 @@
             <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
         <ig:XamComboEditor x:Name="TheServerComboBox"
-                           Margin="{StaticResource ControlBorderRight}"
                            Grid.Row="0"
                            Grid.Column="0"
                            ItemsSource="{Binding Servers}"
@@ -49,40 +48,42 @@
                 Grid.Column="1"
                 x:Name="EditButton"
                 Content="..."
+                Margin="{StaticResource ControlBorderLeft}"
+                Visibility="{Binding CanEditServer, Converter={StaticResource BoolToVisibilityConverterPositive}}"
                 ToolTip="{Binding Path=EditConnectionToolTip}"
                 Command="{Binding EditConnectionCommand}" >
             <i:Interaction.Behaviors>
                 <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlViewEditHelp}" DataContext="{Binding}" />
             </i:Interaction.Behaviors>
         </Button>
-        <Button AutomationProperties.AutomationId="{Binding NewServerButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
-                Grid.Column="2"
-                x:Name="NewServerButton"
-                Content="{x:Static languages:Core.New}" 
-                Width="Auto"
-                Style="{StaticResource ButtonOrangeStyle}" 
-                Margin="{StaticResource ControlBorderLeft}"
-                ToolTip="{Binding Path=NewConnectionToolTip}"
-                Command="{Binding NewConnectionCommand}"
-                Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
-            <i:Interaction.Behaviors>
-                <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
-            </i:Interaction.Behaviors>
-        </Button>
-        <customControls:CircularProgressBar Grid.Column="2" 
-                                            Height="22" 
-                                            Width="22"
-                                            Margin="3,0,2,0"
-                                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                                            Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterPositive}}"
-                                            AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
-        <customControls:CircularProgressBar Grid.Column="2" 
-                                            Height="22" 
-                                            Width="22" 
-                                            Margin="3,0,2,0"
-                                            IsVisibleChanged="UIElement_OnIsVisibleChanged"
-                                            VerticalAlignment="Center" HorizontalAlignment="Center"
-                                            Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisConverter}}"
-                                            AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+        <StackPanel Grid.Column="2" Visibility="{Binding CanCreateServer, Converter={StaticResource BoolToVisibilityConverterPositive}}">
+            <Button AutomationProperties.AutomationId="{Binding NewServerButtonAutomationID, Mode=TwoWay, ElementName=ConnectUserControl}"
+                    x:Name="NewServerButton"
+                    Content="{x:Static languages:Core.New}" 
+                    Width="Auto"
+                    Style="{StaticResource ButtonOrangeStyle}" 
+                    Margin="{StaticResource ControlBorderLeft}"
+                    ToolTip="{Binding Path=NewConnectionToolTip}"
+                    Command="{Binding NewConnectionCommand}"
+                    Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterNegative}}">
+                <i:Interaction.Behaviors>
+                    <core:HelpSetter Text="{x:Static languages:HelpText.ConnectControlNewConnectionHelp}" DataContext="{Binding}" />
+                </i:Interaction.Behaviors>
+            </Button>
+            <customControls:CircularProgressBar Height="22" 
+                                                Width="22"
+                                                Margin="3,0,2,0"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Visibility="{Binding IsConnecting, Converter={StaticResource BoolToVisibilityConverterPositive}}"
+                                                AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+            <customControls:CircularProgressBar Height="22" 
+                                                Width="22" 
+                                                Margin="3,0,2,0"
+                                                IsVisibleChanged="UIElement_OnIsVisibleChanged"
+                                                VerticalAlignment="Center" HorizontalAlignment="Center"
+                                                Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisConverter}}"
+                                                AutomationProperties.AutomationId="UI_IndicatorConnecting_AutoID" />
+        </StackPanel>
+        
     </Grid>
 </UserControl>

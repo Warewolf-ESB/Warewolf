@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -63,6 +63,13 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Data.ServiceModel;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
+using System.IO;
+using Dev2.Webs;
+using Dev2.Common.Wrappers;
+using Dev2.Common.Interfaces.Wrappers;
+using Dev2.Common.Interfaces.Data;
+using Dev2.Runtime.ServiceModel.Data;
+using Dev2.Common.Common;
 using Dev2.Instrumentation;
 
 namespace Dev2.Studio.ViewModels
@@ -77,53 +84,51 @@ namespace Dev2.Studio.ViewModels
                                         IHandle<NewTestFromDebugMessage>,
                                         IShellViewModel
     {
-
         WorkSurfaceContextViewModel _previousActive;
         bool _disposed;
-
-        AuthorizeCommand<string> _newServiceCommand;
-        AuthorizeCommand<string> _newPluginSourceCommand;
-        AuthorizeCommand<string> _newSqlServerSourceCommand;
-        AuthorizeCommand<string> _newMySqlSourceCommand;
-        AuthorizeCommand<string> _newPostgreSqlSourceCommand;
-        AuthorizeCommand<string> _newOracleSourceCommand;
-        AuthorizeCommand<string> _newOdbcSourceCommand;
-        AuthorizeCommand<string> _newWebSourceCommand;
-        AuthorizeCommand<string> _newServerSourceCommand;
-        AuthorizeCommand<string> _newEmailSourceCommand;
-        AuthorizeCommand<string> _newExchangeSourceCommand;
-        AuthorizeCommand<string> _newRabbitMQSourceCommand;
-        AuthorizeCommand<string> _newSharepointSourceCommand;
-        AuthorizeCommand<string> _newDropboxSourceCommand;
-        AuthorizeCommand<string> _newWcfSourceCommand;
-        ICommand _deployCommand;
-        ICommand _exitCommand;
-        AuthorizeCommand _settingsCommand;
-        AuthorizeCommand _schedulerCommand;
-        ICommand _showCommunityPageCommand;
+        private AuthorizeCommand<string> _newServiceCommand;
+        private AuthorizeCommand<string> _newPluginSourceCommand;
+        private AuthorizeCommand<string> _newSqlServerSourceCommand;
+        private AuthorizeCommand<string> _newMySqlSourceCommand;
+        private AuthorizeCommand<string> _newPostgreSqlSourceCommand;
+        private AuthorizeCommand<string> _newOracleSourceCommand;
+        private AuthorizeCommand<string> _newOdbcSourceCommand;
+        private AuthorizeCommand<string> _newWebSourceCommand;
+        private AuthorizeCommand<string> _newServerSourceCommand;
+        private AuthorizeCommand<string> _newEmailSourceCommand;
+        private AuthorizeCommand<string> _newExchangeSourceCommand;
+        private AuthorizeCommand<string> _newRabbitMQSourceCommand;
+        private AuthorizeCommand<string> _newSharepointSourceCommand;
+        private AuthorizeCommand<string> _newDropboxSourceCommand;
+        private AuthorizeCommand<string> _newWcfSourceCommand;
+        private ICommand _deployCommand;
+        private ICommand _mergeCommand;
+        private ICommand _exitCommand;
+        private AuthorizeCommand _settingsCommand;
+        private AuthorizeCommand _schedulerCommand;
+        private ICommand _showCommunityPageCommand;
         readonly IAsyncWorker _asyncWorker;
-        readonly IViewFactory _factory;
-        ICommand _showStartPageCommand;
+        private readonly IViewFactory _factory;
+        private IFile _file;
+        private Common.Interfaces.Wrappers.IFilePath _filePath;
+        private ICommand _showStartPageCommand;
+        IContextualResourceModel _contextualResourceModel;
         bool _canDebug = true;
         bool _menuExpanded;
         IApplicationTracker _applicationTracker;
         public IPopupController PopupProvider { get; set; }
-
         IServerRepository ServerRepository { get; }
-
-
         public bool CloseCurrent { get; private set; }
 
         public IExplorerViewModel ExplorerViewModel
         {
-            get { return _explorerViewModel; }
+            get => _explorerViewModel;
             set
             {
                 if (_explorerViewModel == value)
                 {
                     return;
                 }
-
                 _explorerViewModel = value;
                 NotifyOfPropertyChange(() => ExplorerViewModel);
             }
@@ -133,7 +138,7 @@ namespace Dev2.Studio.ViewModels
 
         public IServer ActiveServer
         {
-            get { return _activeServer; }
+            get => _activeServer;
             set
             {
                 if (!Equals(value, _activeServer))
@@ -166,6 +171,35 @@ namespace Dev2.Studio.ViewModels
                     ExplorerViewModel.SelectedEnvironment = environmentViewModel;
                 }
             }
+        }
+
+        internal async Task<bool> LoadWorkflowAsync(string e)
+        {
+            _contextualResourceModel = null;
+            if (!File.Exists(e)) { return false; }
+            ActiveServer.ResourceRepository.Load();
+            var fileName = string.Empty;
+            fileName = Path.GetFileNameWithoutExtension(e);
+            var singleResource = ActiveServer.ResourceRepository.FindSingle(p => p.ResourceName == fileName);
+            var serverRepo = CustomContainer.Get<IServerRepository>();
+            if (singleResource == null)
+            {
+                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
+                if (_contextualResourceModel != null)
+                {
+                    var ctResourceModel = _contextualResourceModel;
+                    OpenResource(_contextualResourceModel.ID, ActiveServer.EnvironmentID, ActiveServer);
+                    if (ctResourceModel.ResourceType == ResourceType.WorkflowService || ctResourceModel.ResourceType == ResourceType.Service)
+                    {
+                        SaveDialogHelper.ShowNewWorkflowSaveDialog(ctResourceModel, false, e);
+                    }
+                }
+            }
+            else
+            {
+                OpenResource(singleResource.ID, ActiveServer.EnvironmentID, ActiveServer);
+            }
+            return true;
         }
 
         public IBrowserPopupController BrowserPopupController { get; }
@@ -211,247 +245,115 @@ namespace Dev2.Studio.ViewModels
                 return ActiveItem.SaveCommand;
             }
         }
-
         public IAuthorizeCommand DebugCommand
         {
-            get
-            {
-                if (ActiveItem == null)
-                {
-                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
-                }
-                return ActiveItem.DebugCommand;
-            }
+            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.DebugCommand;
         }
-
         public IAuthorizeCommand QuickDebugCommand
         {
-            get
-            {
-                if (ActiveItem == null)
-                {
-                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
-                }
-                return ActiveItem.QuickDebugCommand;
-            }
+            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickDebugCommand;
         }
-
         public IAuthorizeCommand QuickViewInBrowserCommand
         {
-            get
-            {
-                if (ActiveItem == null)
-                {
-                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
-                }
-                return ActiveItem.QuickViewInBrowserCommand;
-            }
+            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.QuickViewInBrowserCommand;
         }
         public IAuthorizeCommand ViewInBrowserCommand
         {
-            get
-            {
-                if (ActiveItem == null)
-                {
-                    return new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false);
-                }
-                return ActiveItem.ViewInBrowserCommand;
-            }
+            get => ActiveItem == null ? new AuthorizeCommand(AuthorizationContext.None, p => { }, param => false) : ActiveItem.ViewInBrowserCommand;
         }
-
         public ICommand ShowStartPageCommand
         {
-            get
-            {
-                return _showStartPageCommand ?? (_showStartPageCommand = new DelegateCommand(param => ShowStartPage()));
-            }
+            get => _showStartPageCommand ?? (_showStartPageCommand = new DelegateCommand(param => ShowStartPageAsync()));
         }
-
         public ICommand ShowCommunityPageCommand
         {
-            get { return _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage())); }
+            get => _showCommunityPageCommand ?? (_showCommunityPageCommand = new DelegateCommand(param => ShowCommunityPage()));
         }
-
         public IAuthorizeCommand SettingsCommand
         {
-            get
-            {
-                return _settingsCommand ?? (_settingsCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
-            }
+            get => _settingsCommand ?? (_settingsCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSettingsWorkSurface(), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand SchedulerCommand
         {
-            get
-            {
-                return _schedulerCommand ?? (_schedulerCommand =
-                    new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
-            }
+            get => _schedulerCommand ?? (_schedulerCommand = new AuthorizeCommand(AuthorizationContext.Administrator, param => _worksurfaceContextManager.AddSchedulerWorkSurface(), param => IsActiveServerConnected()));
         }
-
-
-
-
         public IAuthorizeCommand<string> NewServiceCommand
         {
-            get
-            {
-                return _newServiceCommand ?? (_newServiceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
-            }
+            get => _newServiceCommand ?? (_newServiceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewService(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewPluginSourceCommand
         {
-            get
-            {
-                return _newPluginSourceCommand ?? (_newPluginSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newPluginSourceCommand ?? (_newPluginSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPluginSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewSqlServerSourceCommand
         {
-            get
-            {
-                return _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newSqlServerSourceCommand ?? (_newSqlServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSqlServerSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewMySqlSourceCommand
         {
-            get
-            {
-                return _newMySqlSourceCommand ?? (_newMySqlSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newMySqlSourceCommand ?? (_newMySqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewMySqlSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewPostgreSqlSourceCommand
         {
-            get
-            {
-                return _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newPostgreSqlSourceCommand ?? (_newPostgreSqlSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewPostgreSqlSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewOracleSourceCommand
         {
-            get
-            {
-                return _newOracleSourceCommand ?? (_newOracleSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newOracleSourceCommand ?? (_newOracleSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOracleSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewOdbcSourceCommand
         {
-            get
-            {
-                return _newOdbcSourceCommand ?? (_newOdbcSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newOdbcSourceCommand ?? (_newOdbcSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewOdbcSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewWebSourceCommand
         {
-            get
-            {
-                return _newWebSourceCommand ?? (_newWebSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newWebSourceCommand ?? (_newWebSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWebSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewServerSourceCommand
         {
-            get
-            {
-                return _newServerSourceCommand ?? (_newServerSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newServerSourceCommand ?? (_newServerSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewServerSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewEmailSourceCommand
         {
-            get
-            {
-                return _newEmailSourceCommand ?? (_newEmailSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newEmailSourceCommand ?? (_newEmailSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewEmailSource(@""), param => IsActiveServerConnected()));
         }
-
-
         public IAuthorizeCommand<string> NewExchangeSourceCommand
         {
-            get
-            {
-                return _newExchangeSourceCommand ?? (_newExchangeSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newExchangeSourceCommand ?? (_newExchangeSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewExchangeSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewRabbitMQSourceCommand
         {
-            get
-            {
-                return _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newRabbitMQSourceCommand ?? (_newRabbitMQSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewRabbitMQSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewSharepointSourceCommand
         {
-            get
-            {
-                return _newSharepointSourceCommand ?? (_newSharepointSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newSharepointSourceCommand ?? (_newSharepointSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewSharepointSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewDropboxSourceCommand
         {
-            get
-            {
-                return _newDropboxSourceCommand ?? (_newDropboxSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newDropboxSourceCommand ?? (_newDropboxSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewDropboxSource(@""), param => IsActiveServerConnected()));
         }
-
         public IAuthorizeCommand<string> NewWcfSourceCommand
         {
-            get
-            {
-                return _newWcfSourceCommand ?? (_newWcfSourceCommand =
-                    new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
-            }
+            get => _newWcfSourceCommand ?? (_newWcfSourceCommand = new AuthorizeCommand<string>(AuthorizationContext.Contribute, param => NewWcfSource(@""), param => IsActiveServerConnected()));
         }
-
         public ICommand ExitCommand
         {
-            get
-            {
-                return _exitCommand ??
-                       (_exitCommand =
-                        new RelayCommand(param =>
-                                         Application.Current.Shutdown(), param => true));
-            }
+            get => _exitCommand ?? (_exitCommand = new RelayCommand(param => Application.Current.Shutdown(), param => true));
         }
-
         public ICommand DeployCommand
         {
-            get
-            {
-                return _deployCommand ??
-                       (_deployCommand = new RelayCommand(param => AddDeploySurface(new List<IExplorerTreeItem>())));
-            }
+            get => _deployCommand ?? (_deployCommand = new RelayCommand(param => AddDeploySurface(new List<IExplorerTreeItem>())));
         }
-
-
-
-
+        public ICommand MergeCommand
+        {
+            get => _mergeCommand ?? (_mergeCommand = new RelayCommand(param =>
+            {
+                // OPEN WINDOW TO SELECT RESOURCE TO MERGE WITH
+                var resourceId = Guid.Parse("ea916fa6-76ca-4243-841c-74fa18dd8c14");
+                OpenMergeConflictsView(ActiveItem as IExplorerItemViewModel, resourceId, ActiveServer);
+            }));
+        }
         public IVersionChecker Version { get; }
 
         [ExcludeFromCodeCoverage]
@@ -465,6 +367,8 @@ namespace Dev2.Studio.ViewModels
             IPopupController popupController = null, IExplorerViewModel explorer = null)
             : base(eventPublisher)
         {
+            _file = new FileWrapper();
+            _filePath = new FilePathWrapper();
             Version = versionChecker ?? throw new ArgumentNullException(nameof(versionChecker));
             VerifyArgument.IsNotNull(@"asyncWorker", asyncWorker);
             _asyncWorker = asyncWorker;
@@ -483,9 +387,8 @@ namespace Dev2.Studio.ViewModels
 
             ExplorerViewModel = explorer ?? new ExplorerViewModel(this, CustomContainer.Get<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>(), true);
 
-
             AddWorkspaceItems();
-            ShowStartPage();
+            ShowStartPageAsync();
             DisplayName = @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant();
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
 
@@ -502,15 +405,14 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(SaveAllOpenTabsMessage message)
         {
-            Dev2Logger.Debug(message.GetType().Name, "Warewolf Debug");
+            Dev2Logger.Debug(message.GetType().Name, GlobalConstants.WarewolfDebug);
             PersistTabs();
         }
-
 
         public void Handle(AddWorkSurfaceMessage message)
         {
             IsNewWorkflowSaved = true;
-            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
+            Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
             _worksurfaceContextManager.AddWorkSurface(message.WorkSurfaceObject);
             if (message.ShowDebugWindowOnLoad)
             {
@@ -525,40 +427,35 @@ namespace Dev2.Studio.ViewModels
 
         public void Handle(DeleteResourcesMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
+            Dev2Logger.Info(message.GetType().Name, GlobalConstants.WarewolfInfo);
             DeleteResources(message.ResourceModels, message.FolderName, message.ShowDialog, message.ActionToDoOnDelete);
-        }
-        
+        }      
+
         public void ShowDependencies(Guid resourceId, IServer server, bool isSource)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
-            if (environmentModel != null)
+            if (environmentModel == null) { return; }
+            if (!isSource)
             {
-                if (!isSource)
+                environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
+            }
+            if (server.IsConnected)
+            {
+                ResourceModel contextualResourceModel;
+                if (isSource)
                 {
-                    environmentModel.ResourceRepository.LoadResourceFromWorkspace(resourceId, Guid.Empty);
+                    var resource = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId) as IResourceModel;
+                    contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
+                    contextualResourceModel.Update(resource);
                 }
-
-                if (server.IsConnected)
+                else
                 {
-                    if (isSource)
-                    {
-                        var resource = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                        var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
-                        contextualResourceModel.Update(resource);
-                        contextualResourceModel.ID = resourceId;
-                        _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
-                    }
-                    else
-                    {
-                        var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
-                        var contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
-                        contextualResourceModel.Update(resource);
-                        contextualResourceModel.ID = resourceId;
-                        _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
-                    }
-
+                    var resource = environmentModel.ResourceRepository.FindSingle(model => model.ID == resourceId, true);
+                    contextualResourceModel = new ResourceModel(environmentModel, EventPublisher);
+                    contextualResourceModel.Update(resource);
                 }
+                contextualResourceModel.ID = resourceId;
+                _worksurfaceContextManager.ShowDependencies(true, contextualResourceModel, server);
             }
         }
 
@@ -584,11 +481,9 @@ namespace Dev2.Studio.ViewModels
         public void ShowAboutBox()
         {
             var splashViewModel = new SplashViewModel(ActiveServer, new ExternalProcessExecutor());
-
             var splashPage = new SplashPage { DataContext = splashViewModel };
             ISplashView splashView = splashPage;
             splashViewModel.ShowServerVersion();
-            // Show it 
             splashView.Show(true);
         }
 
@@ -663,11 +558,83 @@ namespace Dev2.Studio.ViewModels
             ExplorerViewModel.IsRefreshing = refresh;
         }
 
+        public void OpenMergeDialogView(IExplorerItemViewModel currentResource)
+        {
+            var mergeServiceViewModel = new MergeServiceViewModel(this, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), currentResource, new MergeSelectionView(), ActiveServer);
+            var result = mergeServiceViewModel.ShowMergeDialog();
+            if (result == MessageBoxResult.OK)
+            {
+                var selectedMergeItem = mergeServiceViewModel.SelectedMergeItem;
+                var server = selectedMergeItem?.Server;
+                if (selectedMergeItem is VersionViewModel differentResource)
+                {
+                    var resourceVersion = differentResource.VersionInfo.ToContextualResourceModel(server, differentResource.ResourceId);
+                    var resourceModel = ActiveServer?.ResourceRepository.LoadContextualResourceModel(differentResource.ResourceId);
+
+                    var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                    if (resourceModel != null && resourceVersion != null)
+                    {
+                        resourceVersion.ResourceName = resourceModel.ResourceName;
+                        workSurfaceKey.EnvironmentID = resourceModel.Environment.EnvironmentID;
+                        workSurfaceKey.ResourceID = resourceModel.ID;
+                        workSurfaceKey.ServerID = resourceModel.ServerID;
+                        _worksurfaceContextManager.ViewMergeConflictsService(resourceModel, resourceVersion, false, workSurfaceKey);
+                    }
+                }
+                else
+                {
+                    if (selectedMergeItem != null)
+                    {
+                        OpenMergeConflictsView(currentResource, selectedMergeItem.ResourceId, server);
+                    }
+                }
+            }
+        }
+
+        public void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server)
+        {
+            if (currentResource is ExplorerItemViewModel normalExplorer)
+            {
+                switch (normalExplorer)
+                {
+                    case ExplorerItemViewModel b:
+                        if (b.Server != null)
+                        {
+                            var currentResourceModel = b.Server.ResourceRepository.LoadContextualResourceModel(currentResource.ResourceId);
+                            var differenceResourceModel = server.ResourceRepository.LoadContextualResourceModel(differenceResourceId);
+                            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+                            if (currentResourceModel != null && differenceResourceModel != null)
+                            {
+                                workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                                workSurfaceKey.ResourceID = currentResourceModel.ID;
+                                workSurfaceKey.ServerID = currentResourceModel.ServerID;
+                                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, true, workSurfaceKey);
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
+        public void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer)
+        {
+            var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts);
+            if (currentResourceModel != null && differenceResourceModel != null)
+            {
+                workSurfaceKey.EnvironmentID = currentResourceModel.Environment.EnvironmentID;
+                workSurfaceKey.ResourceID = currentResourceModel.ID;
+                workSurfaceKey.ServerID = currentResourceModel.ServerID;
+
+                _worksurfaceContextManager.ViewMergeConflictsService(currentResourceModel, differenceResourceModel, loadFromServer, workSurfaceKey);
+            }
+        }
+
         public void OpenCurrentVersion(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
             var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
-
             if (contextualResourceModel != null)
             {
                 _worksurfaceContextManager.AddWorkSurfaceContext(contextualResourceModel);
@@ -678,342 +645,251 @@ namespace Dev2.Studio.ViewModels
         {
             var environmentModel = ServerRepository.Get(environmentId);
             environmentModel?.ResourceRepository?.UpdateServer(activeServer);
-            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
-
-            if (contextualResourceModel != null)
+            if (_contextualResourceModel == null)
             {
-                var workSurfaceKey = new WorkSurfaceKey { EnvironmentID = environmentId, ResourceID = resourceId, ServerID = contextualResourceModel.ServerID };
-                switch (contextualResourceModel.ServerResourceType)
+                _contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            }
+            if (_contextualResourceModel != null)
+            {
+                var workSurfaceKey = new WorkSurfaceKey { EnvironmentID = environmentId, ResourceID = resourceId, ServerID = _contextualResourceModel.ServerID };
+                switch (_contextualResourceModel.ServerResourceType)
                 {
                     case "SqlDatabase":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.SqlServerSource;
-                        ProcessDBSource(ProcessSQLDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.SqlServerSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessSQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.SqlServerSource)), workSurfaceKey);
                         break;
                     case "ODBC":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OdbcSource;
-                        ProcessDBSource(ProcessODBCDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.OdbcSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessODBCDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.OdbcSource)), workSurfaceKey);
                         break;
                     case "Oracle":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OracleSource;
-                        ProcessDBSource(ProcessOracleDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.OracleSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessOracleDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.OracleSource)), workSurfaceKey);
                         break;
                     case "PostgreSQL":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.PostgreSqlSource;
-                        ProcessDBSource(ProcessPostgreSQLDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.PostgreSqlSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessPostgreSQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.PostgreSqlSource)), workSurfaceKey);
                         break;
                     case "MySqlDatabase":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.MySqlSource;
-                        ProcessDBSource(ProcessMySQLDBSource(CreateDbSource(contextualResourceModel, WorkSurfaceContext.MySqlSource)), workSurfaceKey);
+                        ProcessDBSource(ProcessMySQLDBSource(CreateDbSource(_contextualResourceModel, WorkSurfaceContext.MySqlSource)), workSurfaceKey);
                         break;
                     case "EmailSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.EmailSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessEmailSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessEmailSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "WebSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.EmailSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWebSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWebSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "ComPluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ComPluginSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessComPluginSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessComPluginSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "ExchangeSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Exchange;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessExchangeSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessExchangeSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "OauthSource":
                     case "DropBoxSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.OAuthSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessDropBoxSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessDropBoxSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "Server":
                     case "Dev2Server":
                     case "ServerSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.ServerSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessServerSource(contextualResourceModel, workSurfaceKey, environmentModel, activeServer));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessServerSource(_contextualResourceModel, workSurfaceKey, environmentModel, activeServer));
                         break;
                     case "SharepointServerSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.SharepointServerSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessSharepointServerSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessSharepointServerSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "RabbitMQSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.RabbitMQSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessRabbitMQSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessRabbitMQSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "WcfSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.WcfSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWcfSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessWcfSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     case "PluginSource":
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.PluginSource;
-                        _worksurfaceContextManager.DisplayResourceWizard(ProcessPluginSource(contextualResourceModel, workSurfaceKey));
+                        _worksurfaceContextManager.DisplayResourceWizard(ProcessPluginSource(_contextualResourceModel, workSurfaceKey));
                         break;
                     default:
                         workSurfaceKey.WorkSurfaceContext = WorkSurfaceContext.Workflow;
-                        _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
+                        _worksurfaceContextManager.DisplayResourceWizard(_contextualResourceModel);
                         break;
                 }
+                _contextualResourceModel = null;
             }
         }
 
         WorkSurfaceContextViewModel ProcessPluginSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-
-            var def = new PluginSourceDefinition
-            {
-                Id = contextualResourceModel.ID,
-                Path = contextualResourceModel.GetSavePath()
-            };
+            var def = new PluginSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
 
             var pluginSourceViewModel = new ManagePluginSourceViewModel(
                 new ManagePluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.Name),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def,
-                AsyncWorker);
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
             var vm = new SourceViewModel<IPluginSource>(EventPublisher, pluginSourceViewModel, PopupProvider, new ManagePluginSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessWcfSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-
-            var def = new WcfServiceSourceDefinition
-            {
-                Id = contextualResourceModel.ID,
-                Path = contextualResourceModel.GetSavePath()
-            };
+            var def = new WcfServiceSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
 
             var wcfSourceViewModel = new ManageWcfSourceViewModel(
                 new ManageWcfSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def,
-                AsyncWorker,
-                ActiveServer);
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, ActiveServer);
             var vm = new SourceViewModel<IWcfServerSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageWcfSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessRabbitMQSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var def = new RabbitMQServiceSourceDefinition
-            {
-                ResourceID = contextualResourceModel.ID,
-                ResourcePath = contextualResourceModel.GetSavePath()
-            };
+            var def = new RabbitMQServiceSourceDefinition { ResourceID = contextualResourceModel.ID, ResourcePath = contextualResourceModel.GetSavePath() };
 
             var viewModel = new ManageRabbitMQSourceViewModel(
-                new ManageRabbitMQSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this),
-                def,
-                AsyncWorker);
+                new ManageRabbitMQSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, this), def, AsyncWorker);
             var vm = new SourceViewModel<IRabbitMQServiceSourceDefinition>(EventPublisher, viewModel, PopupProvider, new ManageRabbitMQSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessSharepointServerSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var def = new SharePointServiceSourceDefinition
-            {
-                Id = contextualResourceModel.ID,
-                Path = contextualResourceModel.GetSavePath()
-            };
+            var def = new SharePointServiceSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
 
             var viewModel = new SharepointServerSourceViewModel(
                 new SharepointServerSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def,
-                AsyncWorker,
-                null);
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, null);
             var vm = new SourceViewModel<ISharepointServerSource>(EventPublisher, viewModel, PopupProvider, new SharepointServerSource(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessServerSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey, IServer server, IServer activeServer)
         {
-
-            var selectedServer = new ServerSource
-            {
-                ID = contextualResourceModel.ID,
-                ResourcePath = contextualResourceModel.GetSavePath()
-            };
+            var selectedServer = new ServerSource { ID = contextualResourceModel.ID, ResourcePath = contextualResourceModel.GetSavePath() };
 
             var viewModel = new ManageNewServerViewModel(
                 new ManageNewServerSourceModel(activeServer.UpdateRepository, activeServer.QueryProxy, server.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                selectedServer,
-                AsyncWorker,
-                new ExternalProcessExecutor());
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), selectedServer, AsyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IServerSource>(EventPublisher, viewModel, PopupProvider, new ManageServerControl(), server);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessDropBoxSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var db = new DropBoxSource
-            {
-                ResourceID = contextualResourceModel.ID,
-                ResourcePath = contextualResourceModel.GetSavePath()
-            };
+            var db = new DropBoxSource { ResourceID = contextualResourceModel.ID, ResourcePath = contextualResourceModel.GetSavePath() };
 
             var oauthSourceViewModel = new ManageOAuthSourceViewModel(
-                new ManageOAuthSourceModel(ActiveServer.UpdateRepository,
-                ActiveServer.QueryProxy, ""),
-                db,
-                AsyncWorker);
+                new ManageOAuthSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ""), db, AsyncWorker);
             var vm = new SourceViewModel<IOAuthSource>(EventPublisher, oauthSourceViewModel, PopupProvider, new ManageOAuthSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessExchangeSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var def = new ExchangeSourceDefinition
-            {
-                ResourceID = contextualResourceModel.ID,
-                Path = contextualResourceModel.GetSavePath()
-            };
+            var def = new ExchangeSourceDefinition { ResourceID = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
 
             var emailSourceViewModel = new ManageExchangeSourceViewModel(
                 new ManageExchangeSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def,
-                AsyncWorker);
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
             var vm = new SourceViewModel<IExchangeSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageExchangeSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessComPluginSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var def = new ComPluginSourceDefinition
-            {
-                Id = contextualResourceModel.ID,
-                ResourcePath = contextualResourceModel.GetSavePath()
-            };
+            var def = new ComPluginSourceDefinition { Id = contextualResourceModel.ID, ResourcePath = contextualResourceModel.GetSavePath() };
 
             var wcfSourceViewModel = new ManageComPluginSourceViewModel(
                 new ManageComPluginSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def,
-                AsyncWorker);
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
             var vm = new SourceViewModel<IComPluginSource>(EventPublisher, wcfSourceViewModel, PopupProvider, new ManageComPluginSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessWebSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var def = new WebServiceSourceDefinition
-            {
-                Id = contextualResourceModel.ID,
-                Path = contextualResourceModel.GetSavePath()
-            };
+            var def = new WebServiceSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
+
             var viewModel = new ManageWebserviceSourceViewModel(
                 new ManageWebServiceSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def,
-                AsyncWorker,
-                new ExternalProcessExecutor());
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker, new ExternalProcessExecutor());
             var vm = new SourceViewModel<IWebServiceSource>(EventPublisher, viewModel, PopupProvider, new ManageWebserviceSourceControl(), ActiveServer);
 
-            var key = workSurfaceKey;
-            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         WorkSurfaceContextViewModel ProcessEmailSource(IContextualResourceModel contextualResourceModel, WorkSurfaceKey workSurfaceKey)
         {
-            var def = new EmailServiceSourceDefinition
-            {
-                Id = contextualResourceModel.ID,
-                Path = contextualResourceModel.GetSavePath()
-            };
+            var def = new EmailServiceSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath() };
 
             var emailSourceViewModel = new ManageEmailSourceViewModel(
                 new ManageEmailSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
-                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(),
-                def, AsyncWorker);
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
             var vm = new SourceViewModel<IEmailServiceSource>(EventPublisher, emailSourceViewModel, PopupProvider, new ManageEmailSourceControl(), ActiveServer);
-            var key = workSurfaceKey;
-            var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(key, vm);
+
+            var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(workSurfaceKey, vm);
             return workSurfaceContextViewModel;
         }
 
         ManageMySqlSourceViewModel ProcessMySQLDBSource(IDbSource def)
         {
             return new ManageMySqlSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
-                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                , def
-                , AsyncWorker);
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
         }
 
         ManagePostgreSqlSourceViewModel ProcessPostgreSQLDBSource(IDbSource def)
         {
             return new ManagePostgreSqlSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
-                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                , def
-                , AsyncWorker);
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
         }
 
         ManageOracleSourceViewModel ProcessOracleDBSource(IDbSource def)
         {
             return new ManageOracleSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
-                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                , def
-                , AsyncWorker);
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
         }
 
         ManageOdbcSourceViewModel ProcessODBCDBSource(IDbSource def)
         {
             return new ManageOdbcSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository
-                , ActiveServer.QueryProxy, ActiveServer.DisplayName)
-                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                , def
-                , AsyncWorker);
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
         }
 
         ManageSqlServerSourceViewModel ProcessSQLDBSource(IDbSource def)
         {
             return new ManageSqlServerSourceViewModel(
-                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName)
-                , new Microsoft.Practices.Prism.PubSubEvents.EventAggregator()
-                , def
-                , AsyncWorker);
+                new ManageDatabaseSourceModel(ActiveServer.UpdateRepository, ActiveServer.QueryProxy, ActiveServer.DisplayName),
+                new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), def, AsyncWorker);
         }
 
-        IDbSource CreateDbSource(IContextualResourceModel contextualResourceModel, WorkSurfaceContext workSurfaceContext)
+        private static IDbSource CreateDbSource(IContextualResourceModel contextualResourceModel, WorkSurfaceContext workSurfaceContext)
         {
             var def = new DbSourceDefinition { Id = contextualResourceModel.ID, Path = contextualResourceModel.GetSavePath(), Type = ToenSourceType(workSurfaceContext) };
             return def;
@@ -1029,10 +905,9 @@ namespace Dev2.Studio.ViewModels
             }
             var workSurfaceContextViewModel = _worksurfaceContextManager.EditResource(key, vm);
             _worksurfaceContextManager.DisplayResourceWizard(workSurfaceContextViewModel);
-
         }
 
-        enSourceType ToenSourceType(WorkSurfaceContext sqlServerSource)
+        private static enSourceType ToenSourceType(WorkSurfaceContext sqlServerSource)
         {
             switch (sqlServerSource)
             {
@@ -1059,15 +934,11 @@ namespace Dev2.Studio.ViewModels
         void GetCopyUrlLink(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
-            if (environmentModel != null)
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.Json, false);
+            if (workflowUri != null)
             {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-
-                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.Json, false);
-                if (workflowUri != null)
-                {
-                    Clipboard.SetText(workflowUri.ToString());
-                }
+                Clipboard.SetText(workflowUri.ToString());
             }
         }
 
@@ -1079,22 +950,17 @@ namespace Dev2.Studio.ViewModels
         void ViewSwagger(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
-            if (environmentModel != null)
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.API);
+            if (workflowUri != null)
             {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-
-                var workflowUri = WebServer.GetWorkflowUri(contextualResourceModel, "", UrlType.API);
-                if (workflowUri != null)
-                {
-                    BrowserPopupController.ShowPopup(workflowUri.ToString());
-                }
+                BrowserPopupController.ShowPopup(workflowUri.ToString());
             }
         }
 
         public void ViewApisJson(string resourcePath, Uri webServerUri)
         {
             var relativeUrl = "";
-
             if (!string.IsNullOrWhiteSpace(resourcePath))
             {
                 relativeUrl = "/secure/" + resourcePath + "/apis.json";
@@ -1103,43 +969,35 @@ namespace Dev2.Studio.ViewModels
             {
                 relativeUrl += "/secure/apis.json";
             }
-
             Uri.TryCreate(webServerUri, relativeUrl, out Uri url);
-
             BrowserPopupController.ShowPopup(url.ToString());
         }
 
         public void CreateNewSchedule(Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
-            if (environmentModel != null)
-            {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
-                _worksurfaceContextManager.CreateNewScheduleWorkSurface(contextualResourceModel);
-            }
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            _worksurfaceContextManager.CreateNewScheduleWorkSurface(contextualResourceModel);
         }
 
         public void CreateTest(Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
-            if (environmentModel != null)
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            if (contextualResourceModel != null)
             {
-                var contextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(resourceId);
                 var workSurfaceKey = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.ServiceTestsViewer);
-                if (contextualResourceModel != null)
-                {
-                    workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.EnvironmentID;
-                    workSurfaceKey.ResourceID = contextualResourceModel.ID;
-                    workSurfaceKey.ServerID = contextualResourceModel.ServerID;
-                    _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
-                }
+                workSurfaceKey.EnvironmentID = contextualResourceModel.Environment.EnvironmentID;
+                workSurfaceKey.ResourceID = contextualResourceModel.ID;
+                workSurfaceKey.ServerID = contextualResourceModel.ServerID;
+                _worksurfaceContextManager.ViewTestsForService(contextualResourceModel, workSurfaceKey);
             }
         }
 
         public void RunAllTests(string ResourcePath, Guid resourceId)
         {
             var environmentModel = ServerRepository.Get(ActiveServer.EnvironmentID);
-            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
 
             if (contextualResourceModel != null)
             {
@@ -1147,7 +1005,7 @@ namespace Dev2.Studio.ViewModels
             }
             else
             {
-                string resourcePath = environmentModel?.Connection.WebServerUri + "secure/" + ResourcePath;
+                var resourcePath = environmentModel?.Connection.WebServerUri + "secure/" + ResourcePath;
                 if (resourcePath != null)
                 {
                     _worksurfaceContextManager.RunAllTestsForFolder(resourcePath);
@@ -1165,15 +1023,34 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
+        public void CloseResourceMergeView(Guid resourceId, Guid serverId, Guid environmentId)
+        {
+            var key = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.MergeConflicts, resourceId, serverId, environmentId);
+            var mergeViewModelForResource = FindWorkSurfaceContextViewModel(key);
+            if (mergeViewModelForResource != null)
+            {
+                DeactivateItem(mergeViewModelForResource, true);
+            }
+        }
+
         WorkSurfaceContextViewModel FindWorkSurfaceContextViewModel(WorkSurfaceKey key)
         {
             return Items.FirstOrDefault(c => WorkSurfaceKeyEqualityComparerWithContextKey.Current.Equals(key, c.WorkSurfaceKey));
         }
 
+        public void CloseResource(IContextualResourceModel contextualResourceModel, Guid environmentId)
+        {
+            var environmentModel = ServerRepository.Get(environmentId);
+            Close(contextualResourceModel);
+        }
         public void CloseResource(Guid resourceId, Guid environmentId)
         {
             var environmentModel = ServerRepository.Get(environmentId);
-            var contextualResourceModel = environmentModel?.ResourceRepository.LoadContextualResourceModel(resourceId);
+            var contextualResourceModel = environmentModel?.ResourceRepository?.LoadContextualResourceModel(resourceId);
+            Close(contextualResourceModel);
+        }
+        private void Close(IContextualResourceModel contextualResourceModel)
+        {
             if (contextualResourceModel != null)
             {
                 var wfscvm = _worksurfaceContextManager.FindWorkSurfaceContextViewModel(contextualResourceModel);
@@ -1184,11 +1061,8 @@ namespace Dev2.Studio.ViewModels
         public async void OpenResourceAsync(Guid resourceId, IServer server)
         {
             var environmentModel = ServerRepository.Get(server.EnvironmentID);
-            if (environmentModel != null && environmentModel.ResourceRepository != null)
-            {
-                var contextualResourceModel = await environmentModel.ResourceRepository.LoadContextualResourceModelAsync(resourceId);
-                _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
-            }
+            var contextualResourceModel = await environmentModel?.ResourceRepository?.LoadContextualResourceModelAsync(resourceId);
+            _worksurfaceContextManager.DisplayResourceWizard(contextualResourceModel);
         }
 
         public void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests)
@@ -1196,7 +1070,7 @@ namespace Dev2.Studio.ViewModels
             var environmentModel = ServerRepository.Get(destinationEnvironmentId);
             var sourceEnvironmentModel = ServerRepository.Get(sourceEnvironmentId);
             var dto = new DeployDto { ResourceModels = resources.Select(a => sourceEnvironmentModel.ResourceRepository.LoadContextualResourceModel(a) as IResourceModel).ToList(), DeployTests = deployTests };
-            environmentModel.ResourceRepository.DeployResources(sourceEnvironmentModel, environmentModel, dto);
+            environmentModel?.ResourceRepository?.DeployResources(sourceEnvironmentModel, environmentModel, dto);
             ServerAuthorizationService.Instance.GetResourcePermissions(dto.ResourceModels.First().ID);
             ExplorerViewModel.RefreshEnvironment(destinationEnvironmentId);
         }
@@ -1420,16 +1294,13 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.OpenVersion(resourceId, versionInfo);
         }
 
-        public async void ShowStartPage()
+        public async void ShowStartPageAsync()
         {
             var workSurfaceContextViewModel = Items.FirstOrDefault(c => c.WorkSurfaceViewModel.DisplayName == "Start Page" && c.WorkSurfaceViewModel.GetType() == typeof(HelpViewModel));
             if (workSurfaceContextViewModel == null)
             {
                 var helpViewModel = _worksurfaceContextManager.ActivateOrCreateUniqueWorkSurface<HelpViewModel>(WorkSurfaceContext.StartPage);
-                if (helpViewModel != null)
-                {
-                    await helpViewModel.LoadBrowserUri(Version.CommunityPageUri);
-                }
+                await helpViewModel?.LoadBrowserUri(Version.CommunityPageUri);
             }
             else
             {
@@ -1445,11 +1316,9 @@ namespace Dev2.Studio.ViewModels
         public bool IsActiveServerConnected()
         {
             if (ActiveServer == null)
-
             {
                 return false;
             }
-
             var isActiveServerConnected = ActiveServer != null && ActiveServer.IsConnected && ActiveServer.CanStudioExecute && ShouldUpdateActiveState;
             if (ActiveServer.IsConnected && ShouldUpdateActiveState)
             {
@@ -1462,7 +1331,6 @@ namespace Dev2.Studio.ViewModels
             {
                 ToolboxViewModel.IsVisible = isActiveServerConnected;
             }
-
             return isActiveServerConnected;
         }
 
@@ -1489,7 +1357,6 @@ namespace Dev2.Studio.ViewModels
             base.Dispose(disposing);
         }
 
-
         protected override void ChangeActiveItem(WorkSurfaceContextViewModel newItem, bool closePrevious)
         {
             base.ChangeActiveItem(newItem, closePrevious);
@@ -1508,7 +1375,7 @@ namespace Dev2.Studio.ViewModels
                 return;
             }
 
-            bool success = true;
+            var success = true;
             if (close)
             {
                 success = _worksurfaceContextManager.CloseWorkSurfaceContext(item, null, DontPrompt);
@@ -1531,7 +1398,6 @@ namespace Dev2.Studio.ViewModels
             }
         }
 
-
         // Process saving tabs and such when exiting ;)
         protected override void OnDeactivate(bool close)
         {
@@ -1539,7 +1405,6 @@ namespace Dev2.Studio.ViewModels
             {
                 PersistTabs();
             }
-
             base.OnDeactivate(close);
         }
 
@@ -1581,7 +1446,7 @@ namespace Dev2.Studio.ViewModels
 
         void SaveAll(object obj)
         {
-            ContinueShutDown = true;
+            _continueShutDown = true;
             for (int index = Items.Count - 1; index >= 0; index--)
             {
                 var workSurfaceContextViewModel = Items[index];
@@ -1594,18 +1459,18 @@ namespace Dev2.Studio.ViewModels
                 DeactivateItem(workSurfaceContextViewModel, true);
                 if (!CloseCurrent)
                 {
-                    ContinueShutDown = false;
+                    _continueShutDown = false;
                     break;
                 }
             }
         }
 
-        public bool ContinueShutDown;
+        public bool _continueShutDown;
 
         public void ResetMainView()
         {
             var shellView = ShellView.GetInstance();
-            shellView.ResetToStartupView();
+            shellView?.ResetToStartupView();
         }
 
         public void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json)
@@ -1622,12 +1487,12 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-
             SetActiveServer(item.Environment);
-
         }
 
+#pragma warning disable IDE1006 // Naming Styles
         public Action<WorkSurfaceContextViewModel> ActiveItemChanged;
+#pragma warning restore IDE1006 // Naming Styles
 
         bool ConfirmDeleteAfterDependencies(ICollection<IContextualResourceModel> models)
         {
@@ -1657,7 +1522,7 @@ namespace Dev2.Studio.ViewModels
 
         bool ConfirmDelete(ICollection<IContextualResourceModel> models, string folderName)
         {
-            bool confirmDeleteAfterDependencies = ConfirmDeleteAfterDependencies(models);
+            var confirmDeleteAfterDependencies = ConfirmDeleteAfterDependencies(models);
             if (confirmDeleteAfterDependencies)
             {
                 if (models.Count > 1)
@@ -1716,21 +1581,16 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-
             foreach (var contextualModel in models)
             {
                 if (contextualModel == null)
                 {
                     continue;
                 }
-
                 _worksurfaceContextManager.DeleteContext(contextualModel);
-
                 actionToDoOnDelete?.Invoke();
             }
         }
-
-
 
         public double MenuPanelWidth { get; set; }
 
@@ -1747,22 +1607,16 @@ namespace Dev2.Studio.ViewModels
             {
                 return;
             }
-
             var workspaceItemsToRemove = new HashSet<IWorkspaceItem>();
-
             for (int i = 0; i < _getWorkspaceItemRepository().WorkspaceItems.Count; i++)
-
             {
-                //
-                // Get the environment for the workspace item
-                //
                 var item = _getWorkspaceItemRepository().WorkspaceItems[i];
-                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}", "Warewolf Info");
+                Dev2Logger.Info($"Start Proccessing WorkspaceItem: {item.ServiceName}", GlobalConstants.WarewolfInfo);
                 var environment = ServerRepository.All().Where(env => env.IsConnected).TakeWhile(env => env.Connection != null).FirstOrDefault(env => env.EnvironmentID == item.EnvironmentID);
 
                 if (environment?.ResourceRepository == null)
                 {
-                    Dev2Logger.Info(@"Environment Not Found", "Warewolf Info");
+                    Dev2Logger.Info(@"Environment Not Found", GlobalConstants.WarewolfInfo);
                     if (environment != null && item.EnvironmentID == environment.EnvironmentID)
                     {
                         workspaceItemsToRemove.Add(item);
@@ -1770,7 +1624,7 @@ namespace Dev2.Studio.ViewModels
                 }
                 if (environment != null)
                 {
-                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}", "Warewolf Info");
+                    Dev2Logger.Info($"Proccessing WorkspaceItem: {item.ServiceName} for Environment: {environment.DisplayName}", GlobalConstants.WarewolfInfo);
                     if (environment.ResourceRepository != null)
                     {
                         environment.ResourceRepository.LoadResourceFromWorkspace(item.ID, item.WorkspaceID);
@@ -1790,7 +1644,7 @@ namespace Dev2.Studio.ViewModels
                         }
                         else
                         {
-                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", "Warewolf Info");
+                            Dev2Logger.Info($"Got Resource Model: {resource.DisplayName} ", GlobalConstants.WarewolfInfo);
                             var fetchResourceDefinition = environment.ResourceRepository.FetchResourceDefinition(environment, item.WorkspaceID, resource.ID, false);
                             resource.WorkflowXaml = fetchResourceDefinition.Message;
                             resource.IsWorkflowSaved = item.IsWorkflowSaved;
@@ -1821,9 +1675,6 @@ namespace Dev2.Studio.ViewModels
             _worksurfaceContextManager.AddWorkSurfaceContext(resourceModel);
         }
 
-        /// <summary>
-        ///     Saves all open tabs locally and writes the open tabs the to collection of workspace items
-        /// </summary>
         public void PersistTabs(bool isStudioShutdown = false)
         {
             if (isStudioShutdown)
@@ -1875,7 +1726,7 @@ namespace Dev2.Studio.ViewModels
             {
                 closeStudio = true;
                 SaveAllCommand.Execute(null);
-                if (!ContinueShutDown)
+                if (!_continueShutDown)
                 {
                     closeStudio = false;
                 }
@@ -1891,129 +1742,126 @@ namespace Dev2.Studio.ViewModels
             foreach (WorkSurfaceContextViewModel workSurfaceContextViewModel in workSurfaceContextViewModels)
             {
                 var vm = workSurfaceContextViewModel.WorkSurfaceViewModel;
-                if (vm != null)
+                if (vm == null || vm.WorkSurfaceContext == WorkSurfaceContext.Help)
                 {
-                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Help)
+                    continue;
+                }
+                if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
+                {
+                    if (vm is WorkflowDesignerViewModel workflowDesignerViewModel)
                     {
-                        continue;
-                    }
-                    if (vm.WorkSurfaceContext == WorkSurfaceContext.Workflow)
-                    {
-                        if (vm is WorkflowDesignerViewModel workflowDesignerViewModel)
-                        {
-                            if (workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
-                        }
-                    }
-                    else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
-                    {
-                        if (vm is SettingsViewModel settingsViewModel && settingsViewModel.IsDirty)
+                        if (workflowDesignerViewModel.ResourceModel is IContextualResourceModel resourceModel && !resourceModel.IsWorkflowSaved)
                         {
                             closeStudio = CallSaveDialog(closeStudio);
                             break;
                         }
                     }
-                    else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                }
+                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Settings)
+                {
+                    if (vm is SettingsViewModel settingsViewModel && settingsViewModel.IsDirty)
                     {
-                        var schedulerViewModel = vm as SchedulerViewModel;
-                        if (schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
+                }
+                else if (vm.WorkSurfaceContext == WorkSurfaceContext.Scheduler)
+                {
+                    var schedulerViewModel = vm as SchedulerViewModel;
+                    if (schedulerViewModel?.SelectedTask != null && schedulerViewModel.SelectedTask.IsDirty)
+                    {
+                        closeStudio = CallSaveDialog(closeStudio);
+                        break;
+                    }
+                }
+                else if (vm.GetType().Name == "SourceViewModel`1")
+                {
+                    if (vm is SourceViewModel<IServerSource> serverSourceModel)
+                    {
+                        if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
                         {
                             closeStudio = CallSaveDialog(closeStudio);
                             break;
                         }
                     }
-                    else if (vm.GetType().Name == "SourceViewModel`1")
+                    if (vm is SourceViewModel<IPluginSource> pluginSourceModel)
                     {
-                        if (vm is SourceViewModel<IServerSource> serverSourceModel)
+                        if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
                         {
-                            if (serverSourceModel.IsDirty || serverSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IPluginSource> pluginSourceModel)
+                    }
+                    if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel)
+                    {
+                        if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
                         {
-                            if (pluginSourceModel.IsDirty || pluginSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IWcfServerSource> wcfServerSourceModel)
+                    }
+                    if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel)
+                    {
+                        if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
                         {
-                            if (wcfServerSourceModel.IsDirty || wcfServerSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IRabbitMQServiceSourceDefinition> rabbitMqServiceSourceModel)
+                    }
+                    if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel)
+                    {
+                        if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
                         {
-                            if (rabbitMqServiceSourceModel.IsDirty || rabbitMqServiceSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<ISharepointServerSource> sharepointServerSourceModel)
+                    }
+                    if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel)
+                    {
+                        if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
                         {
-                            if (sharepointServerSourceModel.IsDirty || sharepointServerSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IOAuthSource> oAuthSourceModel)
+                    }
+                    if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel)
+                    {
+                        if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
                         {
-                            if (oAuthSourceModel.IsDirty || oAuthSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IExchangeSource> exchangeSourceModel)
+                    }
+                    if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel)
+                    {
+                        if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
                         {
-                            if (exchangeSourceModel.IsDirty || exchangeSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IComPluginSource> comPluginSourceModel)
+                    }
+                    if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel)
+                    {
+                        if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
                         {
-                            if (comPluginSourceModel.IsDirty || comPluginSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IWebServiceSource> webServiceSourceModel)
+                    }
+                    if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel)
+                    {
+                        if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
                         {
-                            if (webServiceSourceModel.IsDirty || webServiceSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
-                        if (vm is SourceViewModel<IEmailServiceSource> emailServiceSourceModel)
+                    }
+                    if (vm is SourceViewModel<IDbSource> dbSourceModel)
+                    {
+                        if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
                         {
-                            if (emailServiceSourceModel.IsDirty || emailServiceSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
-                        }
-                        if (vm is SourceViewModel<IDbSource> dbSourceModel)
-                        {
-                            if (dbSourceModel.IsDirty || dbSourceModel.ViewModel.HasChanged)
-                            {
-                                closeStudio = CallSaveDialog(closeStudio);
-                                break;
-                            }
+                            closeStudio = CallSaveDialog(closeStudio);
+                            break;
                         }
                     }
                 }
@@ -2028,10 +1876,7 @@ namespace Dev2.Studio.ViewModels
 
         public IWorksurfaceContextManager WorksurfaceContextManager
         {
-            get
-            {
-                return _worksurfaceContextManager;
-            }
+            get => _worksurfaceContextManager;
             set
             {
                 _worksurfaceContextManager = value;
@@ -2044,12 +1889,12 @@ namespace Dev2.Studio.ViewModels
             return workflowDesignerViewModel;
         }
 
-        public bool IsDownloading()
+        public static bool IsDownloading()
         {
             return false;
         }
 
-        public async Task<bool> CheckForNewVersion()
+        public async Task<bool> CheckForNewVersionAsync()
         {
             var hasNewVersion = await Version.GetNewerVersionAsync();
             return hasNewVersion;
@@ -2060,13 +1905,9 @@ namespace Dev2.Studio.ViewModels
             BrowserPopupController.ShowPopup(Warewolf.Studio.Resources.Languages.Core.WarewolfLatestDownloadUrl);
         }
 
-
         public bool MenuExpanded
         {
-            get
-            {
-                return _menuExpanded;
-            }
+            get => _menuExpanded;
             set
             {
                 _menuExpanded = value;
@@ -2075,53 +1916,28 @@ namespace Dev2.Studio.ViewModels
         }
         public IMenuViewModel MenuViewModel => _menuViewModel ?? (_menuViewModel = new MenuViewModel(this));
 
-        public IToolboxViewModel ToolboxViewModel
-        {
-            get
-            {
-                var toolboxViewModel = CustomContainer.Get<IToolboxViewModel>();
-                return toolboxViewModel;
-            }
-        }
-        public IHelpWindowViewModel HelpViewModel
-        {
-            get
-            {
-                var helpViewModel = CustomContainer.Get<IHelpWindowViewModel>();
-                return helpViewModel;
-            }
-        }
+        public IToolboxViewModel ToolboxViewModel => CustomContainer.Get<IToolboxViewModel>();
+
+        public IHelpWindowViewModel HelpViewModel => CustomContainer.Get<IHelpWindowViewModel>();
 
         public WorkSurfaceContextViewModel PreviousActive
         {
+            get => _previousActive;
             set
             {
                 _previousActive = value;
-            }
-            get
-            {
-                return _previousActive;
             }
         }
         public IAsyncWorker AsyncWorker => _asyncWorker;
         public bool CanDebug
         {
+            get => _canDebug;
             set
             {
                 _canDebug = value;
             }
-            get
-            {
-                return _canDebug;
-            }
         }
-        public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository
-        {
-            get
-            {
-                return _getWorkspaceItemRepository;
-            }
-        }
+        public Func<IWorkspaceItemRepository> GETWorkspaceItemRepository => _getWorkspaceItemRepository;
 
         public void Handle(FileChooserMessage message)
         {
@@ -2140,5 +1956,16 @@ namespace Dev2.Studio.ViewModels
                 message.SelectedFiles = fileChooser.GetAttachments();
             }
         }
+
+        public void UpdateExplorerWorkflowChanges(Guid resourceId)
+        {
+            var resource = ActiveServer.ResourceRepository.FindSingle(c => c.ID == resourceId, true) as IContextualResourceModel;
+            var key = WorkSurfaceKeyFactory.CreateKey(resource);
+            var currentContext = FindWorkSurfaceContextViewModel(key);
+            var vm = currentContext?.WorkSurfaceViewModel as WorkflowDesignerViewModel;
+            vm.CanMerge = true;
+        }
+
+        public IResource CreateResourceFromStreamContent(string resourceContent) => new Resource(resourceContent.ToStringBuilder().ToXElement());
     }
 }

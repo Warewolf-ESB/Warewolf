@@ -118,7 +118,7 @@ namespace Dev2.DataList.Contract
 
         bool IsValidChildNode(XmlNode tmpNode)
         {
-            bool result = false;
+            var result = false;
 
             if (tmpNode.HasChildNodes)
             {

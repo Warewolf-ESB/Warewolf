@@ -27,12 +27,12 @@ namespace Dev2.Data.Decisions.Operations
             var dVal = new double[3];
             var dtVal = new DateTime[3];
 
-            int pos = 0;
-            bool anyDoubles = false;
+            var pos = 0;
+            var anyDoubles = false;
 
             foreach (string c in cols)
             {
-                bool isDouble = double.TryParse(c, out dVal[pos]);
+                var isDouble = double.TryParse(c, out dVal[pos]);
                 anyDoubles = anyDoubles || isDouble;
                 if (!anyDoubles)
                 {

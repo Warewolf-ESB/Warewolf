@@ -143,7 +143,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {//------------Setup for test--------------------------
             const string startingData = "{ \"message\" : \"Howzit, Samantha\"}";
             //------------Execute Test---------------------------
-            bool result = DataListUtil.IsJson(startingData);
+            var result = DataListUtil.IsJson(startingData);
             //------------Assert Results-------------------------
             Assert.IsTrue(result, "Else Valid JSON not detected as such");
         }
@@ -155,7 +155,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {//------------Setup for test--------------------------
             const string startingData = " { \"message\" : \"Howzit, Samantha\"} ";
             //------------Execute Test---------------------------
-            bool result = DataListUtil.IsJson(startingData);
+            var result = DataListUtil.IsJson(startingData);
             //------------Assert Results-------------------------
             Assert.IsTrue(result, "Else Valid JSON not detected as such");
         }
@@ -167,7 +167,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {//------------Setup for test--------------------------
             const string startingData = "<\"message\" : \"Howzit, Samantha\">";
             //------------Execute Test---------------------------
-            bool result = DataListUtil.IsJson(startingData);
+            var result = DataListUtil.IsJson(startingData);
             //------------Assert Results-------------------------
             Assert.IsFalse(result, "Invalid JSON not detected as such");
         }

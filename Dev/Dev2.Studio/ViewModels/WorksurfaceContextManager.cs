@@ -44,9 +44,8 @@ using Microsoft.Practices.Prism.Mvvm;
 using ServiceStack.Net30.Collections.Concurrent;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-
-
-
+using Dev2.ViewModels.Merge;
+using Dev2.Views.Merge;
 
 namespace Dev2.Studio.ViewModels
 {
@@ -137,8 +136,9 @@ namespace Dev2.Studio.ViewModels
         void AddAndActivateWorkSurface(WorkSurfaceContextViewModel context);
         void AddWorkSurface(IWorkSurfaceObject obj);
         bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e);
-        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt);
         void ViewTestsForService(IContextualResourceModel resourceModel);
+        bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt);
+        void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null);
         void ViewTestsForService(IContextualResourceModel resourceModel, IWorkSurfaceKey workSurfaceKey);
         void RunAllTestsForService(IContextualResourceModel resourceModel);
         void RunAllTestsForFolder(string ResourcePath);
@@ -323,7 +323,7 @@ namespace Dev2.Studio.ViewModels
             OpeningWorkflowsHelper.AddWorkflow(key);
             AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
-        
+
         public IWorkSurfaceKey TryGetOrCreateWorkSurfaceKey(IWorkSurfaceKey workSurfaceKey, WorkSurfaceContext workSurfaceContext, Guid resourceID)
         {
             if (workSurfaceKey == null)
@@ -334,6 +334,16 @@ namespace Dev2.Studio.ViewModels
                 workSurfaceKey.ServerID = ActiveServer.ServerID;
             }
             return workSurfaceKey;
+        }
+
+        public void ViewMergeConflictsService(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer, IWorkSurfaceKey workSurfaceKey = null)
+        {
+            var mergeViewModel = new MergeWorkflowViewModel(currentResourceModel, differenceResourceModel, loadFromServer);//if this is merge between two server versions then we pass false
+            var vm = new MergeViewModel(_shellViewModel.EventPublisher, mergeViewModel, _shellViewModel.PopupProvider, new MergeWorkflowView());
+            workSurfaceKey = TryGetOrCreateWorkSurfaceKey(workSurfaceKey, WorkSurfaceContext.MergeConflicts, currentResourceModel.ID);
+            var key = workSurfaceKey as WorkSurfaceKey;
+            var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(key, vm);
+            AddAndActivateWorkSurface(workSurfaceContextViewModel);
         }
 
         public void ViewTestsForService(IContextualResourceModel resourceModel) => ViewTestsForService(resourceModel, null);
@@ -724,7 +734,10 @@ namespace Dev2.Studio.ViewModels
 
             var tempResource = ResourceModelFactory.CreateResourceModel(activeEnvironment, @"WorkflowService",
                 newWorflowName);
-            tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\" + newWorflowName : resourcePath + @"\" + newWorflowName;
+            if (string.IsNullOrEmpty(tempResource.Category))
+            {
+                tempResource.Category = string.IsNullOrEmpty(resourcePath) ? @"Unassigned\" + newWorflowName : resourcePath + @"\" + newWorflowName;
+            }
             tempResource.ResourceName = newWorflowName;
             tempResource.DisplayName = newWorflowName;
             tempResource.IsNewWorkflow = true;
@@ -1295,7 +1308,7 @@ namespace Dev2.Studio.ViewModels
             {
                 return (T)exists.WorkSurfaceViewModel;
             }
-            catch
+            catch (Exception ex)
             {
                 return default(T);
             }
@@ -1395,7 +1408,7 @@ namespace Dev2.Studio.ViewModels
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e) => CloseWorkSurfaceContext(context, e, false);
         public bool CloseWorkSurfaceContext(WorkSurfaceContextViewModel context, PaneClosingEventArgs e, bool dontPrompt)
         {
-            bool remove = true;
+            var remove = true;
             if (context != null)
             {
                 if (!context.DeleteRequested)

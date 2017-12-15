@@ -104,7 +104,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
 
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -167,7 +167,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = true;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
 
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -202,7 +202,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -237,7 +237,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = true;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -305,7 +305,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             var selectedIndex = -1;
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -350,7 +350,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             var selectedIndex = -1;
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -482,7 +482,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -517,7 +517,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = true;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>

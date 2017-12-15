@@ -8,6 +8,7 @@ using Dropbox.Api;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Interfaces;
@@ -18,7 +19,7 @@ using Warewolf.Resource.Errors;
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
     [ToolDescriptorInfo("Dropbox", "Delete", ToolType.Native, "8AC94835-0A28-4166-A53A-D7B07730C135", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Delete")]
-    public class DsfDropBoxDeleteActivity : DsfBaseActivity, IDisposable
+    public class DsfDropBoxDeleteActivity : DsfBaseActivity, IDisposable, IEquatable<DsfDropBoxDeleteActivity>
     {
         DropboxClient _client;
         protected Exception Exception;
@@ -100,5 +101,35 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         }
 
         #endregion Overrides of DsfBaseActivity
+
+        public bool Equals(DsfDropBoxDeleteActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(DeletePath, other.DeletePath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((DsfDropBoxDeleteActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DeletePath != null ? DeletePath.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -84,8 +84,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
 
 
             var multiAssign = new DsfMultiAssignActivity();
-            int row = 1;
-            foreach(var variable in variableList)
+            var row = 1;
+            foreach (var variable in variableList)
             {
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
@@ -220,11 +220,11 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             }
             Dev2DataListDecisionHandler.Instance.AddEnvironment(result.DataListID, result.Environment);
 
-            bool actual = ExecuteDecisionStack(modelData, new List<string>
+            var actual = ExecuteDecisionStack(modelData, new List<string>
             {
                 result.DataListID.ToString()
             }, 0);
-            bool expected = Boolean.Parse(expectedRes);
+            var expected = Boolean.Parse(expectedRes);
             Assert.AreEqual(expected, actual);
         }
 
@@ -260,7 +260,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
                                 {
                                     try
                                     {
-                                        bool result = op.Invoke(dds.GetModelItem(i).FetchColsAsArray());
+                                        var result = op.Invoke(dds.GetModelItem(i).FetchColsAsArray());
 
                                         if (!result && dds.Mode == Dev2DecisionMode.AND)
                                         {
@@ -426,14 +426,14 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             {
                 throw new ArgumentNullException("effectedCols");
             }
-            int stackIndex = stack.TheStack.IndexOf(decision);
+            var stackIndex = stack.TheStack.IndexOf(decision);
             stack.TheStack.Remove(decision);
             errors = new ErrorResultTO();
             if (effectedCols[0])
             {
                 var data = env.EvalAsListOfStrings(decision.Col1, update);
 
-                int reStackIndex = stackIndex;
+                var reStackIndex = stackIndex;
 
                 foreach (var item in data)
                 {
@@ -446,7 +446,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             if (effectedCols[1])
             {
                 var data = env.EvalAsListOfStrings(decision.Col2, update);
-                int reStackIndex = stackIndex;
+                var reStackIndex = stackIndex;
 
                 foreach (var item in data)
                 {
@@ -472,7 +472,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Decision
             if (effectedCols[2])
             {
                 var data = env.EvalAsListOfStrings(decision.Col3, update);
-                int reStackIndex = stackIndex;
+                var reStackIndex = stackIndex;
 
                 foreach (var item in data)
                 {

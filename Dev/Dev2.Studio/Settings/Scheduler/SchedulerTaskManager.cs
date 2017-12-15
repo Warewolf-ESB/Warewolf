@@ -248,10 +248,10 @@ namespace Dev2.Settings.Scheduler
                     {
                         if (_schedulerViewModel.PopupController.ShowDeleteConfirmation(_schedulerViewModel.SelectedTask.Name) == MessageBoxResult.Yes)
                         {
-                            int index = _schedulerViewModel.ScheduledResourceModel.ScheduledResources
+                            var index = _schedulerViewModel.ScheduledResourceModel.ScheduledResources
                                 .ToList()
                                 .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
-                            int indexInFilteredList = _schedulerViewModel.TaskList
+                            var indexInFilteredList = _schedulerViewModel.TaskList
                                 .ToList()
                                 .FindIndex(resource => resource.ResourceId == _schedulerViewModel.SelectedTask.ResourceId);
                             if (index != -1)

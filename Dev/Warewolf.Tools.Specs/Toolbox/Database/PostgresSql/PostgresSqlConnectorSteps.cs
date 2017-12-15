@@ -105,7 +105,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void GivenIEnterAsTheInput(Table table)
         {
 
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel();
             viewModel.TestProcedure();
 

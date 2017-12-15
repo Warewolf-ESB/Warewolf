@@ -87,7 +87,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             var fileContents = broker.Get(sourceEndPoint);
 
-            bool does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
+            var does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
             Assert.IsTrue(does);
         }
 

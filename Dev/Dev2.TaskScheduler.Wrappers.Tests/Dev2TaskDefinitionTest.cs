@@ -193,7 +193,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         {
             var native = NativeTaskDefinition();
             var defn = Dev2TaskDefinition(native);
-            Assert.IsTrue(func(native, defn));
+            Assert.IsTrue(func?.Invoke(native, defn) ?? default(bool));
             return defn;
         }
 

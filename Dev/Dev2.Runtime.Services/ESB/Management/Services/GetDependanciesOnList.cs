@@ -35,8 +35,8 @@ namespace Dev2.Runtime.ESB.Management.Services
          
             var dependancyNames = new List<string>();
 
-                bool dependsOnMe = false;
-            var resourceIdsString = string.Empty;
+                var dependsOnMe = false;
+                var resourceIdsString = string.Empty;
                 var dependsOnMeString = string.Empty;
                 values.TryGetValue("ResourceIds", out StringBuilder tmp);
                 if (tmp != null)

@@ -17,9 +17,11 @@ using System.Linq;
 using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Convertors.Case;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
@@ -32,7 +34,7 @@ using Dev2.Activities.Factories.Case;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("Data-CaseConversion", "Case Convert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Case_Convert")]
-    public class DsfCaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfCaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfCaseConvertActivity>
     {
         public IList<ICaseConvertTO> ConvertCollection { get; set; }
 
@@ -232,7 +234,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var listOfValidRows = ConvertCollection.Where(c => !c.CanRemove()).ToList();
                     if (listOfValidRows.Count > 0)
                     {
-                        int startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
+                        var startIndex = ConvertCollection.IndexOf(listOfValidRows.Last()) + 1;
                         foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new CaseConvertTO(s, ConvertCollection[startIndex - 1].ConvertType, s, startIndex + 1));
@@ -257,7 +259,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (mic != null)
                 {
-                    int startIndex = 0;
+                    var startIndex = 0;
                     var firstRowConvertType = ConvertCollection[0].ConvertType;
                     mic.Clear();
                     foreach (string s in listToAdd)
@@ -404,6 +406,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<string> GetOutputs()
         {
             return ConvertCollection.Select(to => to.Result).ToList();
+        }
+
+        public bool Equals(DsfCaseConvertActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new CaseConvertToComparer());
+            
+            return base.Equals(other) && collectionEquals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfCaseConvertActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (ConvertCollection != null ? ConvertCollection.GetHashCode() : 0);
+            }
         }
     }
 }

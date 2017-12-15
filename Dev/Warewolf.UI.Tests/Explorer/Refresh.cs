@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Threading;
 using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -18,7 +17,7 @@ namespace Warewolf.UI.Tests
         public void RefreshExplorerAfterDeletingResourceFromDiskUITest()
         {
             var resourcesFolder = Environment.ExpandEnvironmentVariables("%programdata%") + @"\Warewolf\Resources\Acceptance Testing Resources";
-            var path = resourcesFolder + @"\" + WorkflowName + ".xml";
+            var path = resourcesFolder + @"\" + WorkflowName + ".bite";
             if (File.Exists(path))
             {
                 File.Delete(path);

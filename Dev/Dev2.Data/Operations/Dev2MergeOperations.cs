@@ -144,7 +144,7 @@ namespace Dev2.Data.Operations
             if (Int32.TryParse(at, out int indexToUse))
             {
                 var paddedString = string.Empty;
-                int difference = indexToUse - value.Length;
+                var difference = indexToUse - value.Length;
                 if (difference >= 0)
                 {
                     var padChar = string.IsNullOrEmpty(padding) || padding.Length < 1 ? ' ' : padding[0];

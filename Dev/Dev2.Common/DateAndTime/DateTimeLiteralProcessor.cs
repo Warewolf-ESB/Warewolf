@@ -153,7 +153,7 @@ namespace Dev2.Common.DateAndTime
             Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out string result,
             out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             error = "";
             result = "";
@@ -164,7 +164,7 @@ namespace Dev2.Common.DateAndTime
                 var lookupResults =
                     lookupLengths.Select(i => DateTimeParser.ForwardLookup(formatArray, startPosition, i)).ToList();
 
-                int count = 0;
+                var count = 0;
                 while (count < lookupResults.Count && nothingDied)
                 {
                     //

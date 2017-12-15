@@ -24,7 +24,12 @@ using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class ActivityDTO : ValidatedObject, IDev2TOFn
+    /// <summary>
+    /// Used for activties
+    /// </summary>
+
+    public class ActivityDTO : ValidatedObject, IDev2TOFn,  IEquatable<ActivityDTO>
+
     {
         string _fieldName;
         string _fieldValue;
@@ -231,6 +236,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
             return ruleSet;
+        }
+        
+        public bool Equals(ActivityDTO other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(FieldName, other.FieldName) 
+                && string.Equals(FieldValue, other.FieldValue) 
+                && IndexNumber == other.IndexNumber
+                && IsFieldNameFocused == other.IsFieldNameFocused
+                && IsFieldValueFocused == other.IsFieldValueFocused 
+                && string.Equals(ErrorMessage, other.ErrorMessage) 
+                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable)
+                && string.Equals(WatermarkTextValue, other.WatermarkTextValue) 
+                && Inserted == other.Inserted 
+                && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ActivityDTO) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (FieldName != null ? FieldName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldValue != null ? FieldValue.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IndexNumber;
+                hashCode = (hashCode * 397) ^ IsFieldNameFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFieldValueFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ErrorMessage != null ? ErrorMessage.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
-            bool result = isNotNull.Invoke(cols);
+            var result = isNotNull.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
             //------------Execute Test---------------------------
@@ -35,7 +35,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = null;
             //------------Execute Test---------------------------
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

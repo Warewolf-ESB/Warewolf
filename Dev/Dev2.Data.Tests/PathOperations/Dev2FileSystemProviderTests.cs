@@ -25,7 +25,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetOperation_NonExistingPath_FriendlyError()
         {
-            bool pass = false;
+            var pass = false;
             var testProvider = new Dev2FileSystemProvider();
             var path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try
@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetDirectoryOperation_NonExistingPath_FriendlyError()
         {
-            bool pass = false;
+            var pass = false;
             var testProvider = new Dev2FileSystemProvider();
             var path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try

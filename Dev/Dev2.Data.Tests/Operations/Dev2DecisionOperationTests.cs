@@ -338,7 +338,7 @@ namespace Dev2.Data.Tests.Operations
 
             //------------Execute Test---------------------------
 
-            bool result = notBetween.Invoke(cols);
+            var result = notBetween.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
@@ -358,7 +358,7 @@ namespace Dev2.Data.Tests.Operations
 
             //------------Execute Test---------------------------
 
-            bool result = notBetween.Invoke(cols);
+            var result = notBetween.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
@@ -502,7 +502,7 @@ namespace Dev2.Data.Tests.Operations
             cols[2] = (DateTime.Now + TimeSpan.FromMinutes(10)).ToString();
 
             //------------Execute Test---------------------------
-            bool result = notBetween.Invoke(cols);
+            var result = notBetween.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
@@ -521,7 +521,7 @@ namespace Dev2.Data.Tests.Operations
             cols[2] = "20.0";
 
             //------------Execute Test---------------------------
-            bool result = notBetween.Invoke(cols);
+            var result = notBetween.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);

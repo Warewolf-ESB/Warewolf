@@ -68,7 +68,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
+        private void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
         {
             _shellViewModel.OpenVersion(resourceId, versionInfo);
         }
@@ -214,6 +214,12 @@ namespace Warewolf.Studio.ViewModels
                 {
                     parent.AreVersionsVisible = true;
                 }
+                if (parentChildren.Count == 0)
+                {
+                    parent.AreVersionsVisible = false;
+                    parent.IsMergeVisible = false;
+                }
+                _shellViewModel.UpdateExplorerWorkflowChanges(explorerItemViewModel.ResourceId);
             }
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
@@ -288,6 +294,12 @@ namespace Warewolf.Studio.ViewModels
         public void ViewSwaggerCommand(Guid resourceId, IServer server)
         {
             _shellViewModel.ViewSwagger(resourceId, server);
+        }
+
+        public void MergeCommand(IExplorerItemViewModel explorerItemViewModel, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.OpenMergeDialogView(explorerItemViewModel);
         }
 
         public void CreateTest(Guid resourceId)

@@ -3,6 +3,8 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
@@ -24,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Upload File", ToolType.Native, "8226E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Upload_File")]
-    public class SharepointFileUploadActivity : DsfAbstractFileActivity
+    public class SharepointFileUploadActivity : DsfAbstractFileActivity,IEquatable<SharepointFileUploadActivity>
     {
         public SharepointFileUploadActivity() : base("SharePoint Upload File")
         {
@@ -131,7 +133,7 @@ namespace Dev2.Activities.Sharepoint
 
                             var newPath = UpdloadFile(sharepointSource, serverPath, localPath);
 
-                            int indexToUpsertTo = 1;
+                            var indexToUpsertTo = 1;
 
                             foreach (var file in newPath)
                             {
@@ -212,6 +214,39 @@ namespace Dev2.Activities.Sharepoint
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+
+        public bool Equals(SharepointFileUploadActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
+            return base.Equals(other)
+                && string.Equals(ServerInputPath, other.ServerInputPath) 
+                && string.Equals(LocalInputPath, other.LocalInputPath)
+                && isSourceEqual
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointFileUploadActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LocalInputPath != null ? LocalInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

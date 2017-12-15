@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "2";
             //------------Execute Test---------------------------
-            bool result = isBinary.Invoke(cols);
+            var result = isBinary.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
             result = isBinary.Invoke(new []{string.Empty});
@@ -34,7 +34,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "1";
             //------------Execute Test---------------------------
-            bool result = isBinary.Invoke(cols);
+            var result = isBinary.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }

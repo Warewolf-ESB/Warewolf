@@ -1720,7 +1720,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
-            bool wasSet = false;
+            var wasSet = false;
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
             viewModel.PropertyChanged += (sender, args) =>
             {

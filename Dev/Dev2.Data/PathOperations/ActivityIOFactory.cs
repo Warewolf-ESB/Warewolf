@@ -95,8 +95,8 @@ namespace Dev2.PathOperations
                 }
             }
             
-            int pos = 0;
-            while(pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
+            var pos = 0;
+            while (pos < _referenceCheckers.Count && !_referenceCheckers[pos].HandlesType(target.PathType))
             {
                 pos++;
             }

@@ -3,6 +3,8 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
@@ -24,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Delete File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Delete_File")]
-    public class SharepointDeleteFileActivity : DsfAbstractFileActivity
+    public class SharepointDeleteFileActivity : DsfAbstractFileActivity,IEquatable<SharepointDeleteFileActivity>
     {
         public SharepointDeleteFileActivity() : base("SharePoint Delete File")
         {
@@ -115,7 +117,7 @@ namespace Dev2.Activities.Sharepoint
 
                             var result = Delete(sharepointSource, serverPath);
 
-                            int indexToUpsertTo = 1;
+                            var indexToUpsertTo = 1;
 
                             foreach (var file in result)
                             {
@@ -196,6 +198,39 @@ namespace Dev2.Activities.Sharepoint
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+
+        public bool Equals(SharepointDeleteFileActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
+            return base.Equals(other) 
+                && string.Equals(ServerInputPath, other.ServerInputPath)
+                && string.Equals(DisplayName, other.DisplayName)
+                && isSourceEqual
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointDeleteFileActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

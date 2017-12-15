@@ -116,7 +116,7 @@ namespace Dev2.Studio.ViewModels.Administration
             }
             else
             {
-                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
+                var validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
 
                 if (validUri)
                 {

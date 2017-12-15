@@ -8,7 +8,7 @@ namespace Dev2.Data.Util
 
         public bool IsValueScalar(string value)
         {
-            bool result = false;
+            var result = false;
 
             if (!string.IsNullOrEmpty(value))
             {

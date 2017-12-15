@@ -13,7 +13,7 @@ using System.Data;
 
 namespace Dev2.Common.Interfaces.Infrastructure.SharedModels
 {
-    public interface IDbColumn
+    public interface IDbColumn: IEquatable<IDbColumn>
     {
         string ColumnName { get; set; }
         bool IsNullable { get; set; }

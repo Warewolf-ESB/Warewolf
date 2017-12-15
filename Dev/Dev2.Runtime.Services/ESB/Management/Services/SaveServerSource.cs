@@ -25,7 +25,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         static int GetSpecifiedIndexOf(string str, char ch, int index)
         {
-            int i = 0, o = 1;
+            var i = 0;
+            var o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
             {
                 if (o == index)
@@ -52,7 +53,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IServerSource src = serializer.Deserialize<ServerSource>(resourceDefinition);
                 var con = new Connection();
 
-                int portIndex = GetSpecifiedIndexOf(src.Address, ':', 2);
+                var portIndex = GetSpecifiedIndexOf(src.Address, ':', 2);
                 var port = src.Address.Substring(portIndex + 1);
 
                 con.Address = src.Address;

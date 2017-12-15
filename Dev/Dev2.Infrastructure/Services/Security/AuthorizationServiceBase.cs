@@ -178,7 +178,7 @@ namespace Dev2.Services.Security
         bool IsAuthorized(AuthorizationContext context,IPrincipal principal, Func<IEnumerable<WindowsGroupPermission>> getGroupPermissions)
         {
             var contextPermissions = context.ToPermissions();
-            var groupPermissions = getGroupPermissions();
+            var groupPermissions = getGroupPermissions?.Invoke();
             if (context == AuthorizationContext.Any)
             {
                 groupPermissions = _securityService.Permissions.Where(p => IsInRole(principal, p)).ToList();
