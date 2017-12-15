@@ -59,7 +59,7 @@ namespace Dev2.Data.ServiceModel.Helper
                 return true;
             }
 
-            return newMappings.Select(newMapping => oldMappings.FirstOrDefault(old => @equals(old, newMapping))).Any(oldMapping => oldMapping == null);
+            return newMappings.Select(newMapping => oldMappings.FirstOrDefault(old => @equals?.Invoke(old, newMapping) ?? default(bool))).Any(oldMapping => oldMapping == null);
         }
 
     }

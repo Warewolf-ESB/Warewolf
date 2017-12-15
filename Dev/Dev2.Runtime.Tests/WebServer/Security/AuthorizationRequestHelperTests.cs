@@ -90,14 +90,14 @@ namespace Dev2.Tests.Runtime.WebServer.Security
                 var expectedRequestType = (WebServerRequestType)Enum.Parse(typeof(WebServerRequestType), handlerPrefix + methodName, true);
 
                 var actionName = methodName;
-                Verify_RequestType(() => getAuthorizationRequest(actionName), expectedRequestType);
+                Verify_RequestType(() => getAuthorizationRequest?.Invoke(actionName), expectedRequestType);
             }
         }
 
         static void Verify_RequestType(Func<AuthorizationRequest> getAuthorizationRequest, WebServerRequestType expectedRequestType)
         {
             //------------Execute Test---------------------------
-            var authorizationRequest = getAuthorizationRequest();
+            var authorizationRequest = getAuthorizationRequest?.Invoke();
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(authorizationRequest);

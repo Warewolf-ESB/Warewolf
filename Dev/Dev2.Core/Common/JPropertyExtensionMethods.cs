@@ -21,7 +21,7 @@ namespace Dev2.Common
 
         public static bool IsEnumerableOfPrimitives(this JProperty property)
         {
-            bool returnValue = false;
+            var returnValue = false;
 
             if (property.Value is JArray array && array.Count > 0)
             {

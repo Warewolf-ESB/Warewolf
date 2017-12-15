@@ -133,7 +133,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var viewModel = new ForeachDesignerViewModel(modelItem);
             var dataObject = new DataObject();
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsFalse(multipleItemsToSequence);
         }
@@ -147,7 +147,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var modelItem = CreateModelItem();
             var viewModel = new ForeachDesignerViewModel(modelItem);
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(null);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(null);
             //------------Assert Results-------------------------
             Assert.IsFalse(multipleItemsToSequence);
         }
@@ -162,7 +162,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var viewModel = new ForeachDesignerViewModel(modelItem);
             var dataObject = new DataObject("Some format", new object());
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsFalse(multipleItemsToSequence);
         }
@@ -177,7 +177,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var viewModel = new ForeachDesignerViewModel(modelItem);
             var dataObject = new DataObject("ModelItemsFormat", new object());
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsFalse(multipleItemsToSequence);
         }
@@ -192,7 +192,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var viewModel = new ForeachDesignerViewModel(modelItem);
             var dataObject = new DataObject("ModelItemsFormat", new List<string> { "some string", "some string 2" });
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsFalse(multipleItemsToSequence);
         }
@@ -209,7 +209,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var gatherSystemInformationActivity = new DsfGatherSystemInformationActivity();
             var dataObject = new DataObject("ModelItemsFormat", new List<ModelItem> { ModelItemUtils.CreateModelItem("a string model item"), ModelItemUtils.CreateModelItem(gatherSystemInformationActivity), ModelItemUtils.CreateModelItem(assignActivity) });
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsTrue(multipleItemsToSequence);
             //            var dsfSequenceActivity = multipleItemsToSequence.GetCurrentValue() as DsfSequenceActivity;
@@ -230,7 +230,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var assignActivity = new DsfMultiAssignActivity();
             var dataObject = new DataObject("ModelItemsFormat", new List<ModelItem> { ModelItemUtils.CreateModelItem(assignActivity) });
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsFalse(multipleItemsToSequence);
         }
@@ -248,7 +248,7 @@ namespace Dev2.Activities.Designers.Tests.Foreach
             var numberFormatActivity = new DsfNumberFormatActivity();
             var dataObject = new DataObject("ModelItemsFormat", new List<ModelItem> { ModelItemUtils.CreateModelItem(gatherSystemInformationActivity), ModelItemUtils.CreateModelItem(assignActivity), ModelItemUtils.CreateModelItem(numberFormatActivity) });
             //------------Execute Test---------------------------
-            bool multipleItemsToSequence = viewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             //------------Assert Results-------------------------
             Assert.IsTrue(multipleItemsToSequence);
             //            var dsfSequenceActivity = multipleItemsToSequence.GetCurrentValue() as DsfSequenceActivity;

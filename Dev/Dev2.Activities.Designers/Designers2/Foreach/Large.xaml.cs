@@ -24,8 +24,6 @@ namespace Dev2.Activities.Designers2.Foreach
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        ForeachDesignerViewModel ViewModel => DataContext as ForeachDesignerViewModel;
-
         void DoDrop(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
@@ -39,14 +37,14 @@ namespace Dev2.Activities.Designers2.Foreach
                 }
                 else
                 {
-                    if (ViewModel.MultipleItemsToSequence(dataObject))
+                    if (ForeachDesignerViewModel.MultipleItemsToSequence(dataObject))
                     {
                         e.Effects = DragDropEffects.None;
                         e.Handled = true;
                     }
                 }
             }
-            bool multipleItemsToSequence = ViewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             if (multipleItemsToSequence)
             {
                 e.Effects = DragDropEffects.None;

@@ -131,7 +131,7 @@ namespace Dev2.Utilities
             return builder;
         }
 
-        static ActivityBuilder GetActivityBuilder(ModelService modelService)
+        public static ActivityBuilder GetActivityBuilder(ModelService modelService)
         {
             if (modelService?.Root == null)
             {

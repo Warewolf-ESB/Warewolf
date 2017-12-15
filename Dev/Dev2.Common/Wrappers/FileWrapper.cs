@@ -69,5 +69,10 @@ namespace Dev2.Common.Wrappers
         {
             File.SetAttributes(path, fileAttributes);
         }
+
+        public Stream OpenRead(string path)
+        {
+            return File.OpenRead(path);
+        }
     }
 }

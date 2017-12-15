@@ -266,7 +266,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void CalculateIntellisenseProvider_Dispose_IntellisenseResultIsNullified()
         {
             var calculateIntellisenseProvider = new CalculateIntellisenseProvider();
-            int countBeforeDispose = calculateIntellisenseProvider.IntellisenseResult.Count;
+            var countBeforeDispose = calculateIntellisenseProvider.IntellisenseResult.Count;
             calculateIntellisenseProvider.Dispose();
             Assert.AreEqual(175, countBeforeDispose);
             Assert.AreEqual(null, calculateIntellisenseProvider.IntellisenseResult);

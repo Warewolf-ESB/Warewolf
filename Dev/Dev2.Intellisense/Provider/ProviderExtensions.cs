@@ -20,19 +20,19 @@ namespace Dev2.Intellisense.Provider
         {
             VerifyArgument.IsNotNull("context",context);
             var searchString = string.Empty;
-            int foundMinimum = -1;
-            int foundLength = 0;
+            var foundMinimum = -1;
+            var foundLength = 0;
             var inputText = context.InputText ?? string.Empty;
-            int caretPosition = context.CaretPosition;
+            var caretPosition = context.CaretPosition;
 
-            int maxStringLength = Math.Min(caretPosition, inputText.Length);
-            
-            bool closedBraceFound = false;
-            int i = maxStringLength - 1;
-            while(i >= 0)
+            var maxStringLength = Math.Min(caretPosition, inputText.Length);
+
+            var closedBraceFound = false;
+            var i = maxStringLength - 1;
+            while (i >= 0)
             {
-                char currentChar = inputText[i];
-                if(currentChar == ')')
+                var currentChar = inputText[i];
+                if (currentChar == ')')
                 {
                     closedBraceFound = true;
                 }

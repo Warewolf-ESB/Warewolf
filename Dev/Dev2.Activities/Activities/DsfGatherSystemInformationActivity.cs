@@ -30,7 +30,7 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
@@ -77,7 +77,7 @@ namespace Dev2.Activities
 
         void CleanArgs()
         {
-            int count = 0;
+            var count = 0;
             while (count < SystemInformationCollection.Count)
             {
                 if (string.IsNullOrWhiteSpace(SystemInformationCollection[count].Result))
@@ -162,8 +162,8 @@ namespace Dev2.Activities
                 dataObject.Environment.CommitAssign();
                 if(dataObject.IsDebugMode() && !allErrors.HasErrors())
                 {
-                    int innerCount = 1;
-                    foreach(GatherSystemInformationTO item in SystemInformationCollection)
+                    var innerCount = 1;
+                    foreach (GatherSystemInformationTO item in SystemInformationCollection)
                     {
                         var itemToAdd = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("", "", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
@@ -194,8 +194,8 @@ namespace Dev2.Activities
                 {
                     if(hasErrors)
                     {
-                        int innerCount = 1;
-                        foreach(GatherSystemInformationTO item in SystemInformationCollection)
+                        var innerCount = 1;
+                        foreach (GatherSystemInformationTO item in SystemInformationCollection)
                         {
                             var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugItemStaticDataParams("", innerCount.ToString(CultureInfo.InvariantCulture)), itemToAdd);
@@ -366,7 +366,7 @@ namespace Dev2.Activities
                     if (listOfValidRows.Count > 0)
                     {
                         var gatherSystemInformationTo = SystemInformationCollection.Last(c => !c.CanRemove());
-                        int startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
+                        var startIndex = SystemInformationCollection.IndexOf(gatherSystemInformationTo) + 1;
                         foreach (string s in listToAdd)
                         {
                             mic.Insert(startIndex, new GatherSystemInformationTO(SystemInformationCollection[startIndex - 1].EnTypeOfSystemInformation, s, startIndex + 1));
@@ -391,7 +391,7 @@ namespace Dev2.Activities
 
                 if (mic != null)
                 {
-                    int startIndex = 0;
+                    var startIndex = 0;
                     const enTypeOfSystemInformationToGather EnTypeOfSystemInformation = enTypeOfSystemInformationToGather.FullDateTime;
                     mic.Clear();
                     foreach (string s in listToAdd)
@@ -459,6 +459,32 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfGatherSystemInformationActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other)
+                && CommonEqualityOps.CollectionEquals(SystemInformationCollection, other.SystemInformationCollection, new GatherSystemInformationTOComparer());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfGatherSystemInformationActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SystemInformationCollection != null ? SystemInformationCollection.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
 

@@ -38,6 +38,8 @@ namespace Warewolf.Studio.ViewModels
         readonly ObservableCollection<IServer> _existingServers;
         public IPopupController PopupController { get; set; }
         readonly IServerRepository _serverRepository;
+        bool _canEditServer;
+        bool _canCreateServer;
         private IApplicationTracker _applicationTracker;
 
         public ConnectControlViewModel(IServer server, IEventAggregator aggregator)
@@ -74,10 +76,32 @@ namespace Warewolf.Studio.ViewModels
                 Server.UpdateRepository.ServerSaved += UpdateRepositoryOnServerSaved;
             }
             ShouldUpdateActiveEnvironment = false;
+            CanEditServer = true;
+            CanCreateServer = true;
             _applicationTracker = CustomContainer.Get<IApplicationTracker>();
         }
 
         public bool ShouldUpdateActiveEnvironment { get; set; }
+
+        public bool CanEditServer
+        {
+            get => _canEditServer;
+            set
+            {
+                _canEditServer = value;
+                OnPropertyChanged(() => CanEditServer);
+            }
+        }
+
+        public bool CanCreateServer
+        {
+            get => _canCreateServer;
+            set
+            {
+                _canCreateServer = value;
+                OnPropertyChanged(() => CanEditServer);
+            }
+        }
 
         bool CanExecuteMethod()
         {
@@ -178,7 +202,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     if (!IsConnecting && server1.EnvironmentID == Guid.Empty)
                     {
-                        ServerHasDisconnected(this, server1);
+                        ServerHasDisconnected?.Invoke(this, server1);
                     }
                     IsConnected = false;
                     ServerDisconnected?.Invoke(this, SelectedConnection);
@@ -230,7 +254,6 @@ namespace Warewolf.Studio.ViewModels
                 isConnected = await ConnectAsync(_selectedConnection).ConfigureAwait(true);
                 IsConnected = _selectedConnection.IsConnected;
                 IsConnecting = false;
-                IsLoading = false;
                 SetActiveEnvironment();
             }
             return isConnected;
@@ -240,7 +263,6 @@ namespace Warewolf.Studio.ViewModels
         {
             try
             {
-                IsLoading = true;
                 IsConnecting = true;
                 var isConnected = await ConnectOrDisconnectAsync().ConfigureAwait(true);
                 if (_selectedConnection.IsConnected && isConnected)
@@ -390,7 +412,7 @@ namespace Warewolf.Studio.ViewModels
                     OnPropertyChanged(() => connection.IsConnected);
                     if (ServerConnected != null && connected && connection.IsConnected)
                     {
-                        ServerConnected(this, connection);
+                        ServerConnected?.Invoke(this, connection);
                         if (ShouldUpdateActiveEnvironment)
                         {
                             SetActiveServer(connection);

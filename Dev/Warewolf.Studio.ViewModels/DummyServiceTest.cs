@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
             NameForDisplay = "'";
             NeverRunString = "Never run";
             _isNewTest = true;
-            _newCommand = new DelegateCommand(() => createNewAction(false));
+            _newCommand = new DelegateCommand(() => createNewAction?.Invoke(false));
             TestSteps = new ObservableCollection<IServiceTestStep>();
         }
 

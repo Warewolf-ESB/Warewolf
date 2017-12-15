@@ -46,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
                     Action = baseConvert
                 };
 
-            int row = 1;
+            var row = 1;
 
             var baseCollection = scenarioContext.Get<List<Tuple<string, string, string>>>("baseCollection");
 

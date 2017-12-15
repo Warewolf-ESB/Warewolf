@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -42,11 +42,6 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Common.Common;
 
-
-
-
-
-
 namespace Dev2.Activities.Designers2.Service
 {
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
@@ -59,7 +54,7 @@ namespace Dev2.Activities.Designers2.Service
 
         [ExcludeFromCodeCoverage]
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, ServerRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
+            : this(modelItem, rootModel, CustomContainer.Get<IServerRepository>(), EventPublishers.Aggregator, new AsyncWorker())
         {
         }
 
@@ -179,10 +174,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -264,12 +256,11 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsFixed
         {
-            get { return (bool)GetValue(IsFixedProperty); }
+            get => (bool)GetValue(IsFixedProperty);
             set { SetValue(IsFixedProperty, value); }
         }
 
         public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
-
 
         public ICommand FixErrorsCommand { get; private set; }
 
@@ -281,10 +272,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public List<KeyValuePair<string, string>> Properties
         {
-            get
-            {
-                return _properties;
-            }
+            get => _properties;
             private set
             {
                 _properties = value;
@@ -301,7 +289,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsWorstErrorReadOnly
         {
-            get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
+            get => (bool)GetValue(IsWorstErrorReadOnlyProperty);
             set
             {
                 if (value)
@@ -336,7 +324,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsDeleted
         {
-            get { return (bool)GetValue(IsDeletedProperty); }
+            get => (bool)GetValue(IsDeletedProperty);
             set { if (!(bool)GetValue(IsDeletedProperty))
                 {
                     SetValue(IsDeletedProperty, value);
@@ -349,13 +337,13 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsEditable
         {
-            get { return (bool)GetValue(IsEditableProperty); }
+            get => (bool)GetValue(IsEditableProperty);
             set { SetValue(IsEditableProperty, value); }
         }
 
         public bool IsAsyncVisible
         {
-            get { return (bool)GetValue(IsAsyncVisibleProperty); }
+            get => (bool)GetValue(IsAsyncVisibleProperty);
             private set { SetValue(IsAsyncVisibleProperty, value); }
         }
 
@@ -364,10 +352,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool RunWorkflowAsync
         {
-            get
-            {
-                return GetProperty<bool>();
-            }
+            get => GetProperty<bool>();
             set
             {
                 _runWorkflowAsync = value;
@@ -378,7 +363,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool OutputMappingEnabled
         {
-            get { return (bool)GetValue(OutputMappingEnabledProperty); }
+            get => (bool)GetValue(OutputMappingEnabledProperty);
             private set { SetValue(OutputMappingEnabledProperty, value); }
         }
 
@@ -390,7 +375,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public string ImageSource
         {
-            get { return (string)GetValue(ImageSourceProperty); }
+            get => (string)GetValue(ImageSourceProperty);
             private set { SetValue(ImageSourceProperty, value); }
         }
 
@@ -399,7 +384,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool ShowParent
         {
-            get { return (bool)GetValue(ShowParentProperty); }
+            get => (bool)GetValue(ShowParentProperty);
             set { SetValue(ShowParentProperty, value); }
         }
 
@@ -421,7 +406,6 @@ namespace Dev2.Activities.Designers2.Service
         public string ServiceName => GetProperty<string>();
         string ActionName => GetProperty<string>();
 
-
         string FriendlySourceName
         {
             get
@@ -441,7 +425,7 @@ namespace Dev2.Activities.Designers2.Service
         public IDataMappingViewModel DataMappingViewModel => MappingManager.DataMappingViewModel;
 
         public string Type => GetProperty<string>();
-        
+
         Guid EnvironmentID => GetProperty<Guid>();
 
         public Guid ResourceID => GetProperty<Guid>();
@@ -451,7 +435,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public string ButtonDisplayValue
         {
-            get { return (string)GetValue(ButtonDisplayValueProperty); }
+            get => (string)GetValue(ButtonDisplayValueProperty);
             set { SetValue(ButtonDisplayValueProperty, value); }
         }
 
@@ -517,9 +501,7 @@ namespace Dev2.Activities.Designers2.Service
             return true;
         }
 
-        
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
-
         {
             _worker.Start(() => GetResourceModel(e.Model), () => MappingManager.CheckVersions(this));
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
@@ -589,7 +571,6 @@ namespace Dev2.Activities.Designers2.Service
                     }
                 }
             }
-
             return true;
         }
 
@@ -670,13 +651,11 @@ namespace Dev2.Activities.Designers2.Service
 
         void AddTitleBarEditToggle()
         {
-            
             var toggle = ActivityDesignerToggle.Create("ServicePropertyEdit", "Edit", "ServicePropertyEdit", "Edit", "ShowParentToggle",
                 autoReset: true,
                 target: this,
                 dp: ShowParentProperty
                 );
-            
             TitleBarToggles.Add(toggle);
         }
 
@@ -752,8 +731,3 @@ namespace Dev2.Activities.Designers2.Service
         }
     }
 }
-
-
-
-
-

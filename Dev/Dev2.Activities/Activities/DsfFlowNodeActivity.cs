@@ -22,7 +22,7 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity
+    public abstract class DsfFlowNodeActivity<TResult> : DsfActivityAbstract<TResult>, IFlowNodeActivity, IEquatable<DsfFlowNodeActivity<TResult>>
     {
         readonly CSharpValue<TResult> _expression;
         TResult _theResult;
@@ -126,27 +126,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         
         public override bool Equals(object obj)
         {
-            var act = obj as IDev2Activity;
-            if (obj is IFlowNodeActivity)
-            {
-                var flowNodeAct = this as IFlowNodeActivity;
-                if (act is IFlowNodeActivity other)
-                {
-                    return UniqueID == act.UniqueID && flowNodeAct.ExpressionText.Equals(other.ExpressionText);
-                }
-            }
-            return base.Equals(obj);
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFlowNodeActivity<TResult>) obj);
         }
 
         #region Overrides of Object
         
         public override int GetHashCode()
         {
-            return UniqueID.GetHashCode();
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_expression != null ? _expression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ EqualityComparer<TResult>.Default.GetHashCode(_theResult);
+                return hashCode;
+            }
         }
 
         #endregion
 
         #endregion
+
+        public bool Equals(DsfFlowNodeActivity<TResult> other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return base.Equals(other)
+                && Equals(ExpressionText, other.ExpressionText)
+                && EqualityComparer<TResult>.Default.Equals(_theResult, other._theResult); 
+        }
     }
 }
