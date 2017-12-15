@@ -19,19 +19,14 @@ namespace Dev2.Studio
             IContextualResourceModel resourceModel = null;
             var serverRepo = serverRepository;
             IResource resource = null;
+            if (filePath.Contains(EnvironmentVariables.VersionsPath))
+            {
+                return resourceModel;
+            }
             var saveResource = popupController.ShowResourcesNotInCorrectPath();
             if (saveResource == MessageBoxResult.OK)
             {
-                using (var stream = file.OpenRead(filePath))
-                {
-                    using (var streamReader = new StreamReader(stream))
-                    {
-                        var resourceContent = streamReader.ReadToEnd();
-                        var serviceXml = XDocument.Parse(resourceContent);
-                        resource = shellViewModel.CreateResourceFromStreamContent(resourceContent);
-                        resourceModel = ResourceModelFactory.CreateResourceModel(serverRepo.ActiveServer, resource, serviceXml);
-                    }
-                }
+                ReadFileContent(filePath, shellViewModel, file, out resourceModel, serverRepo, out resource);
                 if (resourceModel == null && (resource.ResourceType != "WorkflowService" || resource.ResourceType != "Workflow"))
                 {
                     var moveSource = popupController.ShowCanNotMoveResource() == MessageBoxResult.OK;
@@ -48,6 +43,20 @@ namespace Dev2.Studio
             else
             {
                 return resourceModel;
+            }
+        }
+
+        static void ReadFileContent(string filePath, IShellViewModel shellViewModel, IFile file, out IContextualResourceModel resourceModel, IServerRepository serverRepo, out IResource resource)
+        {
+            using (var stream = file.OpenRead(filePath))
+            {
+                using (var streamReader = new StreamReader(stream))
+                {
+                    var resourceContent = streamReader.ReadToEnd();
+                    var serviceXml = XDocument.Parse(resourceContent);
+                    resource = shellViewModel.CreateResourceFromStreamContent(resourceContent);
+                    resourceModel = ResourceModelFactory.CreateResourceModel(serverRepo.ActiveServer, resource, serviceXml);
+                }
             }
         }
     }
