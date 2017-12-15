@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dev2.Server", "Dev2.Server\Dev2.Server.csproj", "{87AEFD04-29F3-45B6-A7C6-4161F9190876}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -139,6 +139,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{
 		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
 		SonarQube\Warewolf-ESBCSharp.ruleset = SonarQube\Warewolf-ESBCSharp.ruleset
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Warewolf.Exchange.Email.Wrapper", "Warewolf.Exchange.Email.Wrapper\Warewolf.Exchange.Email.Wrapper.csproj", "{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -571,6 +573,14 @@ Global
 		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|x86.ActiveCfg = Release|Any CPU
 		{76467C57-4F15-4FD6-90BD-68443ADB838D}.Release|x86.Build.0 = Release|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Debug|x86.Build.0 = Debug|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|x86.ActiveCfg = Release|Any CPU
+		{B02E76F0-9B4B-41F6-8D3A-00E4564142B3}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
