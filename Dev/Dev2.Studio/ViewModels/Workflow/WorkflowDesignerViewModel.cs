@@ -90,6 +90,7 @@ using Dev2.ViewModels.Merge;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Communication;
 using System.IO;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Studio.ViewModels.Workflow
 {

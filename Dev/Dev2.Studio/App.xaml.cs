@@ -75,7 +75,7 @@ namespace Dev2.Studio
     /// <summary>
     /// Interaction logic for App.xaml
     /// </summary>
-    public partial class App : System.Windows.Application, IApp
+    public partial class App : Application, IApp
     {
         ShellViewModel _shellViewModel;
         //This is ignored because when starting the studio twice the second one crashes without this line
@@ -111,7 +111,7 @@ namespace Dev2.Studio
         }
 
         [PrincipalPermission(SecurityAction.Demand)]  // Principal must be authenticated
-        protected override void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(System.Windows.StartupEventArgs e)
         {      
             CustomContainer.Register<IApplicationTracker>(ApplicationTrackerFactory.GetApplicationTrackerProvider());
             //Create configuration for action tracker and start
@@ -120,7 +120,7 @@ namespace Dev2.Studio
             {
                 applicationTracker.EnableAppplicationTracker(VersionInfo.FetchVersionInfo(), @"Warewolf" + $" ({ClaimsPrincipal.Current.Identity.Name})".ToUpperInvariant());
             }            
-            ShutdownMode = ShutdownMode.OnMainWindowClose;
+            ShutdownMode = System.Windows.ShutdownMode.OnMainWindowClose;
             //CustomGitOps.SetCustomGitTool(new ExternalProcessExecutor());
             Task.Factory.StartNew(() =>
             {
