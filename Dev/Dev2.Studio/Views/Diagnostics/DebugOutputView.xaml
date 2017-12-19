@@ -662,9 +662,9 @@
                                                 <RowDefinition Height="Auto" />
                                             </Grid.RowDefinitions>
 
-                                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" Style="{StaticResource ErrorBorderStyle}" />
+                                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" HorizontalAlignment="Left" Style="{StaticResource ErrorBorderStyle}" />
                                             <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" HorizontalAlignment="Left" Style="{StaticResource NoErrorBorderStyle}" />
-                                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" Style="{StaticResource MockBorderStyle}" />
+                                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" HorizontalAlignment="Left" Style="{StaticResource MockBorderStyle}" />
 
                                             <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="2" >
                                                 <TextBlock Grid.Column="0" Text="{Binding Content.ActivityType, Converter={StaticResource EnumToStringConverter}}" Width="70"/>
