@@ -531,8 +531,9 @@ namespace Dev2
         /// <date>2013/03/13</date>
         static ResourceCatalog LoadResourceCatalog()
         {
-            ValidateResourceFolder();
+            
             MigrateOldResources();
+            ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
             MethodsToBeDepricated();
@@ -565,8 +566,8 @@ namespace Dev2
 
         static void MigrateOldResources()
         {
-            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources", "Resources");
-            if (Directory.GetFiles(EnvironmentVariables.ResourcePath).Length == 0 && Directory.GetDirectories(EnvironmentVariables.ResourcePath).Count(dir => { return !dir.EndsWith("Examples", StringComparison.CurrentCulture); })== 0 && Directory.Exists(serverBinResources))
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
             {
                 DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
                 DirectoryHelper.CleanUp(serverBinResources);
@@ -575,11 +576,9 @@ namespace Dev2
 
         static void MigrateOldTests()
         {
-            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources", "Tests");
+            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
             if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
             {
-                Directory.CreateDirectory(Path.Combine(EnvironmentVariables.TestPath));
-                Directory.CreateDirectory(Path.Combine(EnvironmentVariables.TestPath, "acb75027-ddeb-47d7-814e-a54c37247ec1"));
                 DirectoryHelper.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
                 DirectoryHelper.CleanUp(serverBinTests);
             }
@@ -591,12 +590,6 @@ namespace Dev2
             if (!Directory.Exists(folder))
             {
                 Directory.CreateDirectory(folder);
-                Directory.CreateDirectory(Path.Combine(folder, "Examples"));
-                Directory.CreateDirectory(Path.Combine(folder, "Examples", "Backup Example"));
-                Directory.CreateDirectory(Path.Combine(folder, "Examples", "Dice Roll Example"));
-                Directory.CreateDirectory(Path.Combine(folder, "Examples", "Testing"));
-                Directory.CreateDirectory(Path.Combine(folder, "Examples", "Dice Roll Example", "DB Services"));
-                Directory.CreateDirectory(Path.Combine(folder, "Examples", "Dice Roll Example", "Tests"));
             }
         }
 
