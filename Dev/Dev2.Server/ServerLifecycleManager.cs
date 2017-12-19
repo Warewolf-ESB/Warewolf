@@ -76,7 +76,7 @@ namespace Dev2
             if (Environment.UserInteractive)
             {
                 Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
-                using (_singleton = new ServerLifecycleManager())
+                using (_singleton = new ServerLifecycleManager(arguments))
                 {
                     _singleton.Run(true);
                 }
@@ -105,7 +105,7 @@ namespace Dev2
             protected override void OnStart(string[] args)
             {
                 Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
-                _singleton = new ServerLifecycleManager();
+                _singleton = new ServerLifecycleManager(null);
                 _singleton.Run(false);
             }
 
@@ -129,7 +129,7 @@ namespace Dev2
         IpcClient _ipcIpcClient;
 
 
-        ServerLifecycleManager()
+        ServerLifecycleManager(string[] arguments)
         {
             _pulseLogger = new PulseLogger(60000);
             _pulseLogger.Start();
@@ -213,6 +213,7 @@ namespace Dev2
             {
                 SetWorkingDirectory();
                 LoadHostSecurityProvider();
+                MigrateOldTests();
                 InitializeServer();
                 LoadSettingsProvider();
                 ConfigureLoggging();
@@ -530,6 +531,8 @@ namespace Dev2
         /// <date>2013/03/13</date>
         static ResourceCatalog LoadResourceCatalog()
         {
+            
+            MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
@@ -559,6 +562,26 @@ namespace Dev2
             catalog.LoadServerActivityCache();
             CustomContainer.Register<IExecutionManager>(new ExecutionManager());
             WriteLine("done.");
+        }
+
+        static void MigrateOldResources()
+        {
+            var serverBinResources = Path.Combine(EnvironmentVariables.ApplicationPath, "Resources");
+            if (!Directory.Exists(EnvironmentVariables.ResourcePath) && Directory.Exists(serverBinResources))
+            {
+                DirectoryHelper.Copy(serverBinResources, EnvironmentVariables.ResourcePath, true);
+                DirectoryHelper.CleanUp(serverBinResources);
+            }
+        }
+
+        static void MigrateOldTests()
+        {
+            var serverBinTests = Path.Combine(EnvironmentVariables.ApplicationPath, "Tests");
+            if (!Directory.Exists(EnvironmentVariables.TestPath) && Directory.Exists(serverBinTests))
+            {
+                DirectoryHelper.Copy(serverBinTests, EnvironmentVariables.TestPath, true);
+                DirectoryHelper.CleanUp(serverBinTests);
+            }
         }
 
         static void ValidateResourceFolder()
