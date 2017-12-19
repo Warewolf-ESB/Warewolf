@@ -258,7 +258,7 @@
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Background" Value="White" />
                 <Setter Property="Width" Value="4" />
-                <Setter Property="Margin" Value="0,3,10,0" />
+                <Setter Property="Margin" Value="-3,3,10,0" />
                 <Setter Property="CornerRadius" Value="2" />
             </Style.Setters>
             <Style.Triggers>
@@ -282,7 +282,7 @@
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Background" Value="White" />
                 <Setter Property="Width" Value="4" />
-                <Setter Property="Margin" Value="0,3,10,0" />
+                <Setter Property="Margin" Value="-3,3,10,0" />
                 <Setter Property="CornerRadius" Value="2" />
             </Style.Setters>
             <Style.Triggers>
@@ -304,7 +304,7 @@
                 <Setter Property="BorderThickness" Value="0" />
                 <Setter Property="Background" Value="White" />
                 <Setter Property="Width" Value="4" />
-                <Setter Property="Margin" Value="0,3,10,0" />
+                <Setter Property="Margin" Value="-3,3,10,0" />
                 <Setter Property="CornerRadius" Value="2" />
             </Style.Setters>
             <Style.Triggers>
@@ -663,7 +663,7 @@
                                             </Grid.RowDefinitions>
 
                                             <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" Style="{StaticResource ErrorBorderStyle}" />
-                                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" Style="{StaticResource NoErrorBorderStyle}" />
+                                            <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" HorizontalAlignment="Left" Style="{StaticResource NoErrorBorderStyle}" />
                                             <Border Grid.Row="0" Grid.Column="0" Grid.RowSpan="12" Style="{StaticResource MockBorderStyle}" />
 
                                             <StackPanel Grid.Row="0" Grid.Column="0" HorizontalAlignment="Stretch" Orientation="Horizontal" Grid.ColumnSpan="2" >
