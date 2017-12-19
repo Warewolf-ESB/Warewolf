@@ -1,4 +1,14 @@
-﻿using Dev2.Studio.Interfaces;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Search;
 using Microsoft.Practices.Prism.Mvvm;
 using System;
@@ -8,11 +18,11 @@ namespace Dev2.ViewModels.Search
 {
     public class SearchValue : BindableBase, ISearchValue
     {
-        private Guid _resourceId;
-        private string _name;
-        private string _path;
-        private string _type;
-        private string _match;
+        Guid _resourceId;
+        string _name;
+        string _path;
+        string _type;
+        string _match;
 
         public SearchValue(Guid resourceId, string name, string path, string type, string match, IEnvironmentViewModel selectedEnvironment)
         {
@@ -24,7 +34,7 @@ namespace Dev2.ViewModels.Search
             OpenResourceCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => OpenResource(selectedEnvironment));
         }
 
-        private void OpenResource(IEnvironmentViewModel selectedEnvironment)
+        void OpenResource(IEnvironmentViewModel selectedEnvironment)
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             if (shellViewModel != null)
@@ -46,12 +56,12 @@ namespace Dev2.ViewModels.Search
 
         public void Dispose()
         {
-            
+
         }
 
         public Guid ResourceId
         {
-            get { return _resourceId; }
+            get => _resourceId;
             set
             {
                 _resourceId = value;
@@ -60,7 +70,7 @@ namespace Dev2.ViewModels.Search
         }
         public string Name
         {
-            get { return _name; }
+            get => _name;
             set
             {
                 _name = value;
@@ -69,7 +79,7 @@ namespace Dev2.ViewModels.Search
         }
         public string Path
         {
-            get { return _path; }
+            get => _path;
             set
             {
                 _path = value;
@@ -78,7 +88,7 @@ namespace Dev2.ViewModels.Search
         }
         public string Type
         {
-            get { return _type; }
+            get => _type;
             set
             {
                 _type = value;
@@ -87,7 +97,7 @@ namespace Dev2.ViewModels.Search
         }
         public string Match
         {
-            get { return _match; }
+            get => _match;
             set
             {
                 _match = value;
