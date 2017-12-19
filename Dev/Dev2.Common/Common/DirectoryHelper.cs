@@ -43,6 +43,11 @@ namespace Dev2.Common.Common
 
         public static void Copy(string sourceDirName, string destDirName, bool copySubDirs)
         {
+            if (!Directory.Exists(destDirName))
+            {
+                Directory.CreateDirectory(destDirName);
+            }
+
             var dir = new DirectoryInfo(sourceDirName);
             var dirs = dir.GetDirectories();
 
