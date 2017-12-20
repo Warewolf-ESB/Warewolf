@@ -56,11 +56,13 @@ namespace Dev2.Activities.Specs.Merge
                 remoteServer.Connect();
                 remoteServer.ResourceRepository.ForceLoad();
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+                Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \'" + serverName + "\".");
                 _scenarioContext.Add(remoteResourceString, remoteResource);
             }
             else
             {
                 var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+                Assert.IsNotNull(localResource, "Resource \"" + resourceName + "\" not found.");
                 _scenarioContext.Add(localResourceString, localResource);
             }
         }
