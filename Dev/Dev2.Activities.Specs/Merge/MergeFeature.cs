@@ -76,6 +76,7 @@ namespace Dev2.Activities.Specs.Merge
                 remoteServer.Connect();
                 remoteServer.ResourceRepository.ForceLoad();
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+                Assert.IsNotNull(remoteResource, "Version \"" + versionNo + "\" does not exist for resource \"" + resourceName + "\" on remote server \"" + serverName + "\".");
                 var versions = remoteServer.ExplorerRepository.GetVersions(remoteResource.ID);
                 var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
                 var remoteResourceVersion = version.ToContextualResourceModel(remoteServer, remoteResource.ID);
@@ -84,6 +85,7 @@ namespace Dev2.Activities.Specs.Merge
             else
             {
                 var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
+                Assert.IsNotNull(remoteResource, "Version \"" + versionNo + "\" does not exist for resource \"" + resourceName + "\".");
                 var versions = localHost.ExplorerRepository.GetVersions(localResource.ID);
                 var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
                 var localResourceVersion = version.ToContextualResourceModel(localHost, localResource.ID);
