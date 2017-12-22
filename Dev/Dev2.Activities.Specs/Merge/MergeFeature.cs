@@ -85,7 +85,7 @@ namespace Dev2.Activities.Specs.Merge
             else
             {
                 var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-                Assert.IsNotNull(remoteResource, "Version \"" + versionNo + "\" does not exist for resource \"" + resourceName + "\".");
+                Assert.IsNotNull(localResource, "Version \"" + versionNo + "\" does not exist for resource \"" + resourceName + "\".");
                 var versions = localHost.ExplorerRepository.GetVersions(localResource.ID);
                 var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
                 var localResourceVersion = version.ToContextualResourceModel(localHost, localResource.ID);
