@@ -7,12 +7,12 @@ using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
 namespace Warewolf.UI.Tests.Merge
 {
     [CodedUITest]
-    public partial class MergeConflictsTests
+    public class MergeConflictsTests
     {
         public const string MergeAllConflicting = "MergeAllConflicting";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Select_All_Radio_Buttons_Enables_Save()
         {
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.MergeButton.KeepCurrentCheckbox.Selected = true;
