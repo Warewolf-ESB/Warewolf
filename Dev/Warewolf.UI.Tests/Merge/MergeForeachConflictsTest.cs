@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeForeach = "MergeForeach";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Foreach")]
         public void Click_On_Merge_With_Foreach_Has_Conflicts()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
@@ -21,7 +21,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Foreach")]
         public void Click_On_OrganizeCustomers_Current_Removes_OrganizeCustomers_From_Design_Surface()
         {
             ExplorerUIMap.Click_Merge_From_Context_Menu();
@@ -35,7 +35,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Foreach")]
         public void OpenMerge_For_Foreach_And_Select_Version_With_Deleted_Tools()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Foreach")]
         public void OpenMerge_For_Foreach_And_Select_Difference_Version()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
@@ -66,7 +66,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Foreach")]
         public void Click_On_Merge_With_Foreach_Difference_Foreach_Add_Foreach_On_Design_Surface()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
@@ -78,7 +78,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Foreach")]
         public void Expanding_Foreach_Has_Convert_Tool_Inside()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);

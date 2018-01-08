@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string Merge3ToolsWorkflow = "Merge3ToolsWorkflow";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge_For_MergeWithCopiedTool_Has_Two_Assign_Tools()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(MergeWithCopiedTool);
@@ -25,7 +25,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Selecting_Current_Assign_For_MergeWithCopiedTool_Enables_Connector_Conflicts()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(MergeWithCopiedTool);
@@ -38,7 +38,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Open_MergeLoopingConnector_Has_New_Connector_Conflict_Enabled()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(MergeLoopingConnector);
@@ -50,7 +50,7 @@ namespace Warewolf.UI.Tests.Merge
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem4.Exists);
         }
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge3ToolsWorkflow_Given_Current_Replace_Is_Selected_Difference_Connector_Is_Disabled()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(Merge3ToolsWorkflow);
@@ -63,7 +63,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Open_Merge3ToolsWorkflow_Has_Conflicts()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(Merge3ToolsWorkflow);
@@ -85,7 +85,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Selecting_Difference_For_Replace_Toll_Has_Replace_On_The_Design_Surface()
         {
             ExplorerUIMap.Open_Context_Menu_For_Service(Merge3ToolsWorkflow);
