@@ -1,5 +1,3 @@
-using Dev2.Common.Common;
-using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using System.IO;
 using System.Windows;
@@ -11,10 +9,10 @@ using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Studio
-{   
+{
     public static class ResourceExtensionHelper
     {
-        public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, string fileName, Common.Interfaces.Studio.Controller.IPopupController popupController, IShellViewModel shellViewModel, IFile file, IFilePath path, IServerRepository serverRepository)
+        public static async Task<IContextualResourceModel> HandleResourceNotInResourceFolderAsync(string filePath, Common.Interfaces.Studio.Controller.IPopupController popupController, IShellViewModel shellViewModel, IFile file, IFilePath path, IServerRepository serverRepository)
         {
             IContextualResourceModel resourceModel = null;
             var serverRepo = serverRepository;
@@ -40,10 +38,7 @@ namespace Dev2.Studio
                 }
                 return resourceModel;
             }
-            else
-            {
-                return resourceModel;
-            }
+            return resourceModel;
         }
 
         static void ReadFileContent(string filePath, IShellViewModel shellViewModel, IFile file, out IContextualResourceModel resourceModel, IServerRepository serverRepo, out IResource resource)
