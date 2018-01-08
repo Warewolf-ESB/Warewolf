@@ -20,7 +20,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
 
         }
-        
+
         public void ExecuteMock(IDSFDataObject dataObject, int update)
         {
             ExecuteTool(dataObject, update);
@@ -303,7 +303,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Result = "[[MyResult]]",
                 Switch = "[[Switch]]",
                 Switches = new Dictionary<string, IDev2Activity>(),
-                Default = new List<IDev2Activity>() { nextActivity.Object }
+                Default = new List<IDev2Activity> { nextActivity.Object }
             };
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(false);
@@ -343,7 +343,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 Result = "[[MyResult]]",
                 Switch = "[[Switch]]",
                 Switches = new Dictionary<string, IDev2Activity>(),
-                Default = new List<IDev2Activity>() { nextActivity.Object }
+                Default = new List<IDev2Activity> { nextActivity.Object }
             };
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.Setup(o => o.IsDebugMode()).Returns(true);
@@ -364,6 +364,44 @@ namespace Dev2.Tests.Activities.ActivityTests
             var contains = activity.NextNodes.Single();
             Assert.AreEqual(nextActivity.Object, contains);
             Assert.AreEqual("Default", activity.Result);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        public void ExecuteTool_GivenDefaultIsNull_ShouldShowError()
+        {
+            //---------------Set up test pack-------------------
+            //string displayName, IDebugDispatcher debugDispatcher, bool isAsync = false
+            var switchActivity = new DsfFlowSwitchActivity("MyName", new Mock<IDebugDispatcher>().Object, It.IsAny<bool>())
+            {
+                UniqueID = Guid.NewGuid().ToString(),
+                ExpressionText = ""
+            };
+            var nextActivity = new Mock<IDev2Activity>();
+            var activity = new DsfSwitchMock(switchActivity)
+            {
+                Result = "[[MyResult]]",
+                Switch = "[[Switch]]",
+                Switches = new Dictionary<string, IDev2Activity>(),
+                Default = null
+            };
+            var dataObject = new Mock<IDSFDataObject>();
+            dataObject.Setup(o => o.IsDebugMode()).Returns(true);
+            var executionEnvironment = new ExecutionEnvironment();
+            executionEnvironment.Assign("[[Switch]]", "NoMatch", 1);
+            dataObject.Setup(o => o.Environment).Returns(executionEnvironment);
+            //---------------Assert Precondition----------------
+            var getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            Assert.AreEqual(0, getDebugInputs.Count);
+            Assert.IsNull(activity.NextNodes);
+            //---------------Execute Test ----------------------
+            activity.ExecuteMock(dataObject.Object, 0);
+            //---------------Test Result -----------------------
+            getDebugInputs = activity.GetDebugInputs(new Mock<IExecutionEnvironment>().Object, 1);
+            Assert.AreEqual(1, getDebugInputs.Count);
+            Assert.IsNotNull(activity.NextNodes);
+            Assert.AreEqual(0, activity.NextNodes.Count());
+            Assert.AreEqual(1, executionEnvironment.AllErrors.Count);
         }
     }
 }

@@ -1,4 +1,14 @@
-﻿using System;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,7 +20,6 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
-using Dev2.Comparer;
 using Dev2.Common;
 using System.Activities.Statements;
 
@@ -31,7 +40,7 @@ namespace Dev2.Activities
             UniqueID = inner.UniqueID;
         }
 
-        public DsfSwitch() { }       
+        public DsfSwitch() { }
 
         public override List<string> GetOutputs()
         {
@@ -40,8 +49,8 @@ namespace Dev2.Activities
 
         public override FlowNode GetFlowNode()
         {
-            var swt = new FlowSwitch<string>();                        
-            return swt; 
+            var swt = new FlowSwitch<string>();
+            return swt;
         }
 
         public IFlowNodeActivity GetInnerNode()
@@ -79,7 +88,7 @@ namespace Dev2.Activities
 
         public override IEnumerable<IDev2Activity> GetNextNodes()
         {
-            var nextNodes = new List<IDev2Activity>();            
+            var nextNodes = new List<IDev2Activity>();
             foreach(var swt in Switches)
             {
                 var currentAct = swt.Value;
@@ -94,7 +103,7 @@ namespace Dev2.Activities
         public string Switch { get; set; }
 
         /// <summary>
-        /// When overridden runs the activity's execution logic 
+        /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
@@ -121,7 +130,6 @@ namespace Dev2.Activities
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
-
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -153,7 +161,11 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        if (Default != null)
+                        if (Default == null)
+                        {
+                            dataObject.Environment.Errors.Add("Failed: Switch must have a Default value.");
+                        }
+                        else
                         {
                             Result = "Default";
                             var activity = Default.FirstOrDefault();
@@ -253,9 +265,7 @@ namespace Dev2.Activities
                 return true;
             }
 
-            return base.Equals(other) 
-                && string.Equals(Switch, other.Switch) 
-                && string.Equals(Result, other.Result);
+            return base.Equals(other) && string.Equals(Switch, other.Switch) && string.Equals(Result, other.Result);
         }
 
         public override bool Equals(object obj)
