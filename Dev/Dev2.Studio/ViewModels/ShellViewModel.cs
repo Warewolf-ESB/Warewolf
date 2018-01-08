@@ -182,7 +182,7 @@ namespace Dev2.Studio.ViewModels
             var serverRepo = CustomContainer.Get<IServerRepository>();
             if (singleResource == null)
             {
-                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
+                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, PopupProvider, this, _file, _filePath, serverRepo);
                 if (_contextualResourceModel != null)
                 {
                     var ctResourceModel = _contextualResourceModel;
