@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
         public void Expand_Designer()
         {
             Mouse.StartDragging(MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.UIUI_GridSplitter_AutoIndicator, new Point(3, 395));
-            Mouse.StopDragging(MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem8.MergeItemExpander.MergeButton, new Point(370, 13));
+            Mouse.StopDragging(MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem7.MergeItemExpander.MergeButton, new Point(370, 13));
         }
 
         [Given(@"I have merge conflicts tab open for service ""(.*)""")]
