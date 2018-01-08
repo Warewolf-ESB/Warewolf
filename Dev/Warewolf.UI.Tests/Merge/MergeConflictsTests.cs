@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeForeach = "MergeForeach";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge All Tools Conflicts")]
         public void Select_All_Radio_Buttons_Enables_Save()
         {
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.DifferenceVariableRadioButton.Selected = true;

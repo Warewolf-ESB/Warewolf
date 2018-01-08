@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeDecision = "MergeDecision";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Decision Conflicts")]
         public void Click_On_Merge_With_Decision_Has_Conflicts()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -25,7 +25,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Decision Conflicts")]
         public void Click_On_Merge_With_Decision_And_Difference_Between_Decision_Add_Decision_And_Assigns_On_Design_Surface()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -36,7 +36,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Decision Conflicts")]
         public void Open_MergeDecisoion_Then_Select_Current_Variables_Auto_Adds_Non_Conflicting_Tools()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;

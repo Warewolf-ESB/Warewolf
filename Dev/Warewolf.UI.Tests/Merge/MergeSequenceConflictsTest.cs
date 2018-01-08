@@ -12,7 +12,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeSequence = "MergeSequence";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_For_Merge_With_Sequence_Has_Assign_OnDesign_Surface_Since_The_Are_No_Differences()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -23,7 +23,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_For_MergeSequence_Select_Current_Variables_Radio_Button()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -35,7 +35,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_For_MergeSequence_Merge_With_Sequence_Expand_OrganizeCustomerTool_Has_Split_Names_On_Current()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
@@ -52,7 +52,7 @@ namespace Warewolf.UI.Tests.Merge
 
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Sequence Conflicts")]
         public void Open_Merge_ForMergeSequence_Select_All_Radio_Buttons_On_Current_Adds_Tool_Onto_Design_Surface()
         {
             Mouse.Click(MergeDialogUIMap.MergeDialogWindow.MergeButton);
