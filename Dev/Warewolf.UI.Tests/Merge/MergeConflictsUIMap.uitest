@@ -1044,6 +1044,32 @@
                                                                 </UIObject>
                                                               </Descendants>
                                                             </UIObject>
+                                                            <UIObject ControlType="Text" Id="ConvertCase" FriendlyName="Convert Case To Title Case (2)" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                <PropertyCondition Name="Name">Convert Case To Title Case (2)</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
+                                                            <UIObject ControlType="Text" Id="Sequence" FriendlyName="Sequence" SpecialControlType="None">
+                                                              <TechnologyName>UIA</TechnologyName>
+                                                              <WindowTitles>
+                                                                <WindowTitle>Warewolf (DEV2\SANELE.MTHEMBU)</WindowTitle>
+                                                              </WindowTitles>
+                                                              <AndCondition>
+                                                                <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                                                                <PropertyCondition Name="ControlType">Text</PropertyCondition>
+                                                                <PropertyCondition Name="Name">Sequence</PropertyCondition>
+                                                              </AndCondition>
+                                                              <SupportLevel>0</SupportLevel>
+                                                              <Descendants />
+                                                            </UIObject>
                                                           </Descendants>
                                                         </UIObject>
                                                       </Descendants>
