@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeVariables = "MergeVariables";
         
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Variable Conflicts")]
         public void Open_MergeVariables_Has_Variable_Conflicts()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -23,7 +23,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Variable Conflicts")]
         public void Open_MergeVariables_Current_Has_5TH_Variable()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
