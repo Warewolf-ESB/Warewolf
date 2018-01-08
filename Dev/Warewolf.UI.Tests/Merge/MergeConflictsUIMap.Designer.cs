@@ -1899,12 +1899,50 @@ namespace Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses
                 return this.mMergeButton;
             }
         }
+        
+        public WpfText ConvertCase
+        {
+            get
+            {
+                if ((this.mConvertCase == null))
+                {
+                    this.mConvertCase = new WpfText(this);
+                    #region Search Criteria
+                    this.mConvertCase.SearchProperties[WpfText.PropertyNames.Name] = "Convert Case To Title Case (2)";
+                    this.mConvertCase.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mConvertCase.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mConvertCase;
+            }
+        }
+        
+        public WpfText Sequence
+        {
+            get
+            {
+                if ((this.mSequence == null))
+                {
+                    this.mSequence = new WpfText(this);
+                    #region Search Criteria
+                    this.mSequence.SearchProperties[WpfText.PropertyNames.Name] = "Sequence";
+                    this.mSequence.SearchConfigurations.Add(SearchConfiguration.ExpandWhileSearching);
+                    this.mSequence.WindowTitles.Add("Warewolf (DEV2\\SANELE.MTHEMBU)");
+                    #endregion
+                }
+                return this.mSequence;
+            }
+        }
         #endregion
         
         #region Fields
         private ChildrenConflictsTree mChildrenConflictsTree;
         
         private MergeButton2 mMergeButton;
+        
+        private WpfText mConvertCase;
+        
+        private WpfText mSequence;
         #endregion
     }
     
