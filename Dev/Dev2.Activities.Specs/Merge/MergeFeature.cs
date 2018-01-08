@@ -56,7 +56,7 @@ namespace Dev2.Activities.Specs.Merge
                 remoteServer.Connect();
                 remoteServer.ResourceRepository.ForceLoad();
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-                Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \'" + serverName + "\".");
+                Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
                 _scenarioContext.Add(remoteResourceString, remoteResource);
             }
             else
