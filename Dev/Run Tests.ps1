@@ -156,8 +156,8 @@ $JobSpecs["Workflow Merge with Sequence Tools Conflicting"]	= "Warewolf.UI.Tests
 $JobSpecs["Workflow Merge with Simple Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Simple Tools Conflicts"
 $JobSpecs["Workflow Merge with Switch Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Switch Conflicts"
 $JobSpecs["Workflow Merge with Variables Conflicting"]		= "Warewolf.UI.Tests", "Merge Variable Conflicts"
-#UI Load Spec
-$JobSpecs["UI Load Spec"]	= "Warewolf.UI.Load.Specs"
+#UI Load Specs
+$JobSpecs["UI Load Specs"] = "Warewolf.UI.Load.Specs"
 
 
 $UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
