@@ -163,7 +163,7 @@ namespace Dev2.Activities
                     {
                         if (Default == null)
                         {
-                            dataObject.Environment.Errors.Add("Failed: Switch must have a Default value.");
+                            dataObject.Environment.Errors.Add("Failed: Switch must have a Default arm connected.");
                         }
                         else
                         {
