@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -70,22 +70,22 @@ namespace Dev2.CustomControls.Behavior
             DetachEvents();
         }
 
-        private void DetachEvents()
+        void DetachEvents()
         {
             AssociatedObject.SizeChanged -= SizeChanged;
         }
 
-        private void AttachEvents()
+        void AttachEvents()
         {
             AssociatedObject.SizeChanged += SizeChanged;
         }
 
-        private void SizeChanged(object sender, SizeChangedEventArgs e)
+        void SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SetSize();
         }
 
-        private void SetSize()
+        void SetSize()
         {
             ActualHeight = AssociatedObject.ActualHeight - VerticalOffset;
             ActualWidth = AssociatedObject.ActualWidth - HorizontalOffset;

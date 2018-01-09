@@ -19,31 +19,30 @@ using System.Windows.Media;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWcfServiceInputViewModel : IManageWcfServiceInputViewModel
     {
-        private IGenerateOutputArea _generateOutputArea;
-        private IGenerateInputArea _generateInputArea;
-        private bool _isEnabled;
-        private bool _pasteResponseAvailable;
-        private IWcfEndPointViewModel _viewmodel;
-        private IWcfServiceModel _serviceModel;
-        private bool _isGenerateInputsEmptyRows;
-        private bool _okSelected;
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private IWcfService _model;
-        private bool _pasteResponseVisible;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
+        bool _isEnabled;
+        bool _pasteResponseAvailable;
+        readonly IWcfEndPointViewModel _viewmodel;
+        readonly IWcfServiceModel _serviceModel;
+        bool _isGenerateInputsEmptyRows;
+        bool _okSelected;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        IWcfService _model;
+        bool _pasteResponseVisible;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
 
         public ManageWcfServiceInputViewModel(IWcfEndPointViewModel model, IWcfServiceModel serviceModel)
         {
@@ -86,7 +85,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void ResetOutputsView()
+        void ResetOutputsView()
         {
             IsEnabled = false;
             _viewmodel.GenerateOutputsVisible = false;
@@ -175,13 +174,13 @@ namespace Dev2.Activities.Designers2.Core
                         throw new Exception(errorMessage);
                     }
                     Description = responseService.Description;
-                    // ReSharper disable MaximumChainedReferences
+                    
                     var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                     {
                         var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                         return serviceOutputMapping;
                     }).Cast<IServiceOutputMapping>().ToList();
-                    // ReSharper restore MaximumChainedReferences
+                    
                     _generateOutputArea.IsEnabled = true;
                     _generateOutputArea.Outputs = outputMapping;
                 }
@@ -382,9 +381,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-            }
         }
 
         public IOutputDescription Description { get; set; }
@@ -394,9 +390,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateInputArea;
-            }
-            set
-            {
             }
         }
 

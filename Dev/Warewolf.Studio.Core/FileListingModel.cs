@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,27 +15,32 @@ using System.Linq;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
-// ReSharper disable NonReadonlyMemberInGetHashCode
+
 
 namespace Warewolf.Studio.Core
 {
     public class FileListingModel : BindableBase, IFileListingModel,IEquatable<FileListingModel>
     {
-        private readonly IFileChooserModel _model;
-        private bool _isExpanded;
-        private bool _isVisible;
-        private readonly IFileListing _file;
-        private ObservableCollection<IFileListingModel> _children;
-        private string _filter;
-        private bool _progressVisibility;
-        private int _currentProgress;
+        readonly IFileChooserModel _model;
+        bool _isExpanded;
+        bool _isVisible;
+        readonly IFileListing _file;
+        ObservableCollection<IFileListingModel> _children;
+        string _filter;
+        bool _progressVisibility;
+        int _currentProgress;
         bool _isSelected;
         bool _isExpanderVisible;
         bool _isChecked;
-        Action _selectedAction;
-        private bool _useIsSelected;
+        readonly Action _selectedAction;
+        bool _useIsSelected;
 
-        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected, bool useIsSelected = false)
+        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected)
+            : this(model, file, selected,false)
+        {
+        }
+
+        public FileListingModel(IFileChooserModel model, IFileListing file, Action selected, bool useIsSelected)
         {
             _model = model;
             _selectedAction = selected;
@@ -56,7 +61,7 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        private bool UseIsSelected
+        bool UseIsSelected
         {
             get { return _useIsSelected; }
             set
@@ -133,8 +138,6 @@ namespace Warewolf.Studio.Core
             }
         }
 
-        public ICommand ExpandingCommand { get; set; }
-
         public string FullName { get; set; }
 
         ICollection<IFileListing> IFileListing.Children { get; set; }
@@ -209,7 +212,7 @@ namespace Warewolf.Studio.Core
 
         public bool Equals(FileListingModel other)
         {
-            // ReSharper disable once PossibleNullReferenceException
+            
             return string.Equals(Name, other.Name) && string.Equals(FullName, other.FullName) &&
                    IsDirectory == other.IsDirectory;
         }
@@ -272,7 +275,10 @@ namespace Warewolf.Studio.Core
         {
             var canAdd = UseIsSelected ? IsSelected : IsChecked;
             if (canAdd)
+            {
                 acc.Add(FullName);
+            }
+
             if (Children != null)
             {
                 foreach (var dllListingModel in Children)

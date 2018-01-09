@@ -23,7 +23,7 @@ namespace Dev2.Diagnostics.Test
                 {
                     PerformanceCounterCategory.Delete("Warewolf");
                 }
-                    // ReSharper disable once EmptyGeneralCatchClause
+                    
                 catch
                 {
 
@@ -33,7 +33,7 @@ namespace Dev2.Diagnostics.Test
             catch (Exception err)
             {
                 // ignored
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
 
@@ -41,7 +41,7 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         public void TestManagerLocater_ReturnsSameCounter()
         {
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+            var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                 {
                     new WarewolfCurrentExecutionsPerformanceCounter(),
                     new WarewolfNumberOfErrors(),    
@@ -64,7 +64,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("PerformanceCounterManager_CreateAndRetrieve")]
         public void PerformanceCounterManager_CreateAndRetrieve_CreateAndRetrieve_ExpectValid()
         {
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+            var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                 {
                     new WarewolfCurrentExecutionsPerformanceCounter(),
                     new WarewolfNumberOfErrors(),    
@@ -89,7 +89,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("PerformanceCounterManager_CreateAndRetrieve")]
         public void PerformanceCounterManager_CreateAndRetrieve_CreateUnknownCreatesEmpty()
         {
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+            var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                 {
                     new WarewolfCurrentExecutionsPerformanceCounter(),
                     new WarewolfNumberOfErrors(),    
@@ -110,7 +110,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("PerformanceCounterManager_CreateAndRetrieve")]
         public void PerformanceCounterManager_Remove_ExpectEmptyValidFromRetrieve()
         {
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
+            var register = new WarewolfPerformanceCounterRegister(new List<IPerformanceCounter>
                 {
                     new WarewolfCurrentExecutionsPerformanceCounter(),
                     new WarewolfNumberOfErrors(),    

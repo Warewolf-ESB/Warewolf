@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,15 +14,15 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Data.Util;
 using Dev2.Util;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Warewolf.Core
 {
     public class ServiceOutputMapping : ObservableObject,IServiceOutputMapping, IEquatable<ServiceOutputMapping>
     {
-        private string _mappedFrom;
-        private string _mappedTo;
-        private string _recordSetName;
+        string _mappedFrom;
+        string _mappedTo;
+        string _recordSetName;
 
         #region Equality members
 
@@ -144,13 +144,13 @@ namespace Warewolf.Core
             }
         }
 
-        private void UpdateMappedToValue(string newRecordsetName)
+        void UpdateMappedToValue(string newRecordsetName)
         {
-            if(!string.IsNullOrEmpty(_recordSetName) && !string.IsNullOrEmpty(_mappedTo) && DataListUtil.IsValueRecordsetWithFields(_mappedTo))
+            if (!string.IsNullOrEmpty(_recordSetName) && !string.IsNullOrEmpty(_mappedTo) && DataListUtil.IsValueRecordsetWithFields(_mappedTo))
             {
                 var recSetName = DataListUtil.ExtractRecordsetNameFromValue(_mappedTo);
                 var fieldName = DataListUtil.ExtractFieldNameOnlyFromValue(_mappedTo);
-                if(string.Equals(recSetName, _recordSetName, StringComparison.OrdinalIgnoreCase))
+                if (string.Equals(recSetName, _recordSetName, StringComparison.OrdinalIgnoreCase))
                 {
                     MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(newRecordsetName, fieldName, ""));
                 }
@@ -161,12 +161,12 @@ namespace Warewolf.Core
             }
             else
             {
-                if(string.IsNullOrEmpty(_recordSetName) && !string.IsNullOrEmpty(newRecordsetName) && !string.IsNullOrEmpty(_mappedTo) && !DataListUtil.IsValueRecordsetWithFields(_mappedTo))
+                if (string.IsNullOrEmpty(_recordSetName) && !string.IsNullOrEmpty(newRecordsetName) && !string.IsNullOrEmpty(_mappedTo) && !DataListUtil.IsValueRecordsetWithFields(_mappedTo))
                 {
                     var varName = DataListUtil.RemoveLanguageBrackets(_mappedTo);
                     MappedTo = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(newRecordsetName, varName, ""));
                 }
-            }    
+            }
         }
 
         #endregion

@@ -2,7 +2,7 @@
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //------------Execute Test---------------------------
             var manageRabbitMQSourceModel = new ManageRabbitMQSourceModel(updateManager.Object, queryManager.Object, shellViewModel.Object);
             //------------Assert Results-------------------------
-            PrivateObject p = new PrivateObject(manageRabbitMQSourceModel);
+            var p = new PrivateObject(manageRabbitMQSourceModel);
 
             Assert.IsNotNull(p.GetField("_updateManager"));
             Assert.IsNotNull(p.GetField("_queryManager"));
@@ -70,7 +70,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             manageRabbitMQSourceModel.EditSource(src.Object);
             //------------Assert Results-------------------------
 
-            shellViewModel.Verify(a => a.EditResource(src.Object,null), Times.Once);
+            shellViewModel.Verify(a => a.EditResource(src.Object), Times.Once);
         }
 
 

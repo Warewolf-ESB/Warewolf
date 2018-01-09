@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using Dev2.Common.Interfaces.Core.Graph;
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph
 {
     [Serializable]
@@ -21,8 +21,7 @@ namespace Unlimited.Framework.Converters.Graph
     {
         #region Constructor
 
-        // ReSharper disable once PublicConstructorInAbstractClass
-        public BasePath()
+        protected BasePath()
         {
             ActualPath = "";
             DisplayPath = "";

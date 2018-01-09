@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ using Dev2.TaskScheduler.Wrappers.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Scheduler.Test
 {
@@ -31,8 +31,8 @@ namespace Dev2.Scheduler.Test
         [TestCategory("ServerSchedulerFactory_Constructor")]
         public void ServerSchedulerFactory_Constructor()
         {
-            IDev2TaskService service = new Mock<IDev2TaskService>().Object;
-            ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
+            var service = new Mock<IDev2TaskService>().Object;
+            var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
             var dir = new Mock<IDirectoryHelper>();
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
             var factory = new ServerSchedulerFactory(service, cFactory, dir.Object, a => a.WorkflowName);
@@ -62,7 +62,7 @@ directory
                 Assert.AreEqual(expected, actual);
             }
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -87,7 +87,7 @@ directory
         {
 
             var service = new Mock<IDev2TaskService>();
-            ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
+            var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
             var dir = new Mock<IDirectoryHelper>();
             dir.Setup(a => a.CreateIfNotExists(It.IsAny<string>())).Verifiable();
             var factory = new ServerSchedulerFactory(service.Object, cFactory, dir.Object, a => a.WorkflowName);
@@ -103,10 +103,10 @@ directory
         [TestCategory("ServerSchedulerFactory_Model")]
         public void ServerSchedulerFactory_CreateModel()
         {
-            IDev2TaskService service = new Mock<IDev2TaskService>().Object;
-            ITaskServiceConvertorFactory cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
+            var service = new Mock<IDev2TaskService>().Object;
+            var cFactory = new Mock<ITaskServiceConvertorFactory>().Object;
             var factory = new ServerSchedulerFactory(service, cFactory, new DirectoryHelper(), a => a.WorkflowName);
-            ScheduledResourceModel model = (ScheduledResourceModel)factory.CreateModel("bob", new SecurityWrapper(ServerAuthorizationService.Instance));
+            var model = (ScheduledResourceModel)factory.CreateModel("bob", new SecurityWrapper(ServerAuthorizationService.Instance));
             Assert.AreEqual("bob", model.WarewolfFolderPath);
             Assert.IsTrue(model.WarewolfAgentPath.Contains(GlobalConstants.SchedulerAgentPath));
             Assert.IsTrue(model.DebugHistoryPath.Contains(GlobalConstants.SchedulerDebugPath));
@@ -123,9 +123,9 @@ directory
 
             var cFactory = new Mock<ITaskServiceConvertorFactory>();
             cFactory.Setup(f => f.CreateExecAction("notepad", null, null))
-                // ReSharper disable RedundantArgumentDefaultValue
+                
                 .Returns(new Dev2ExecAction(new TaskServiceConvertorFactory(), new ExecAction("notepad.exe", null, null)));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
             var mockTask = new Mock<IDev2TaskDefinition>();
             mockTask.Setup(a => a.AddAction(It.IsAny<IAction>()));
             mockTask.Setup(a => a.AddTrigger(It.IsAny<ITrigger>()));
@@ -188,9 +188,9 @@ directory
         [TestCategory("ServerSchedulerFactory_CreateMonthlyTrigger")]
         public void ServerSchedulerFactory_CreateMonthlyTrigger()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
+            
             CheckTriggerTypes(new MonthlyTrigger(1, MonthsOfTheYear.AllMonths));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
         }
 
         [TestMethod]
@@ -230,17 +230,17 @@ directory
         [TestCategory("ServerSchedulerFactory_CreateWeeklyTrigger")]
         public void ServerSchedulerFactory_CreateWeeklyTrigger()
         {
-            // ReSharper disable RedundantArgumentDefaultValue
+            
             CheckTriggerTypes(new WeeklyTrigger(DaysOfTheWeek.AllDays, 1));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
         }
 
 
-        private static void CheckTriggerTypes(Trigger t)
+        static void CheckTriggerTypes(Trigger t)
         {
             IDev2TaskService s = new Dev2TaskService(new TaskServiceConvertorFactory());
             ITaskServiceConvertorFactory fact = new TaskServiceConvertorFactory();
-            ServerSchedulerFactory schedulerFactory = new ServerSchedulerFactory(s, fact, new DirectoryHelper(), a => a.WorkflowName);
+            var schedulerFactory = new ServerSchedulerFactory(s, fact, new DirectoryHelper(), a => a.WorkflowName);
 
 
             var trig = schedulerFactory.CreateTrigger(t);

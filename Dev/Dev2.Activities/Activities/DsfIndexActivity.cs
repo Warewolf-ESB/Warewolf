@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,12 +32,12 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("Data-FindIndex", "Find Index", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Find_Index")]
-    public class DsfIndexActivity : DsfActivityAbstract<string>
+    public class DsfIndexActivity : DsfActivityAbstract<string>,IEquatable<DsfIndexActivity>
     {
 
         #region Properties
@@ -116,19 +116,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
 
-        // ReSharper disable RedundantOverridenMember
+        
         protected override void CacheMetadata(NativeActivityMetadata metadata)
         {
             base.CacheMetadata(metadata);
         }
-        // ReSharper restore RedundantOverridenMember
+        
 
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary>       
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -136,8 +136,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             IDev2IndexFinder indexFinder = new Dev2IndexFinder();
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
             try
@@ -180,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         var itrInField = new WarewolfIterator(dataObject.Environment.Eval(InField, update));
                         innerIteratorCollection.AddVariableToIterateOn(itrInField);
 
-                        string chars = outerIteratorCollection.FetchNextValue(itrChar);
+                        var chars = outerIteratorCollection.FetchNextValue(itrChar);
                         while (innerIteratorCollection.HasMoreData())
                         {
                             if (!string.IsNullOrEmpty(InField) && !string.IsNullOrEmpty(Characters))
@@ -188,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                 var val = innerIteratorCollection.FetchNextValue(itrInField);
                                 if (val != null)
                                 {
-                                    IEnumerable<int> returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
+                                    var returedData = indexFinder.FindIndex(val, Index, chars, Direction, MatchCase, StartIndex);
                                     completeResultList.AddRange(returedData.Select(value => value.ToString(CultureInfo.InvariantCulture)).ToList());
                                     var rule = new IsSingleValueRule(() => Result);
                                     var single = rule.Check();
@@ -217,7 +217,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFFindActivity", e);
+                Dev2Logger.Error("DSFFindActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -321,5 +321,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfIndexActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(InField, other.InField) && string.Equals(Index, other.Index) && string.Equals(Characters, other.Characters) && string.Equals(Direction, other.Direction) && string.Equals(Result, other.Result) && MatchCase == other.MatchCase && string.Equals(StartIndex, other.StartIndex);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfIndexActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InField != null ? InField.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Index != null ? Index.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Characters != null ? Characters.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Direction != null ? Direction.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ MatchCase.GetHashCode();
+                hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

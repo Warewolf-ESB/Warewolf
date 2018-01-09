@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,18 +18,23 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
+using Dev2.TO;
 
 namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 {
     [Binding]
     public class CaseConversionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CaseConversionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -44,7 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
                     Action = caseConvert
                 };
 
-            int row = 1;
+            var row = 1;
 
             var caseConversion = scenarioContext.Get<List<Tuple<string, string>>>("caseConversion");
             foreach(dynamic variable in caseConversion)
@@ -59,10 +64,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         [Given(@"I have a case convert variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveACaseConvertVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -81,10 +85,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         [Given(@"I convert a variable ""(.*)"" to ""(.*)""")]
         public void GivenIConvertAVariableTo(string variable, string toCase)
         {
-            List<Tuple<string, string>> caseConversion;
-            scenarioContext.TryGetValue("caseConversion", out caseConversion);
+            scenarioContext.TryGetValue("caseConversion", out List<Tuple<string, string>> caseConversion);
 
-            if(caseConversion == null)
+            if (caseConversion == null)
             {
                 caseConversion = new List<Tuple<string, string>>();
                 scenarioContext.Add("caseConversion", caseConversion);
@@ -97,24 +100,23 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         public void WhenTheCaseConversionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Given(@"I have a CaseConversion recordset")]
         public void GivenIHaveACaseConversionRecordset(Table table)
         {
-            List<TableRow> records = table.Rows.ToList();
+            var records = table.Rows.ToList();
 
-            if(records.Count == 0)
+            if (records.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -124,10 +126,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
 
             foreach(TableRow record in records)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -139,16 +140,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         [Then(@"the case convert result for this varibale ""(.*)"" will be")]
         public void ThenTheCaseConvertResultForThisVaribaleWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
-            string error;
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
-                                                                           out error);
+            var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                                                                           out string error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
             for(int i = 0; i < tableRows.Count; i++)
             {
@@ -159,11 +159,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.CaseConversion
         [Then(@"the sentence will be ""(.*)""")]
         public void ThenTheSentenceWillBe(string value)
         {
-            string error;
-            string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment( result.Environment,"[[var]]", out actualValue, out error);
+            GetScalarValueFromEnvironment( result.Environment,"[[var]]", out string actualValue, out string error);
             Assert.AreEqual(value, actualValue);
         }
     }

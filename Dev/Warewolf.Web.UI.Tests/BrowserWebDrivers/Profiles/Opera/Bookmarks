@@ -1,0 +1,269 @@
+{
+   "checksum": "99405bd5faa50f31c1cbd782662f4640",
+   "roots": {
+      "bookmark_bar": {
+         "children": [  ],
+         "date_added": "13147948284474609",
+         "date_modified": "0",
+         "id": "1",
+         "name": "Bookmarks bar",
+         "type": "folder"
+      },
+      "custom_root": {
+         "speedDial": {
+            "children": [ {
+               "children": [ {
+                  "date_added": "13147948292221151",
+                  "id": "20",
+                  "meta_info": {
+                     "custom_keywords": "[]",
+                     "guid": "AB51E2BF-EBAE-4157-B119-6C478CE725DC",
+                     "imageData": "http://redir.opera.com/speeddials/partner/facebook",
+                     "imageDataType": "2",
+                     "imageID": "5243A22ED78411B65CDA129005121CF941D086A621B144FBC0F990740924A7C8",
+                     "imageType": "2",
+                     "partner_id": "facebook",
+                     "partner_image_download_url": "http://redir.opera.com/speeddials/partner/facebook",
+                     "partner_url": "http://redir.opera.com/speeddials/partner/facebook",
+                     "redirect": "1"
+                  },
+                  "name": "Facebook",
+                  "type": "url",
+                  "url": "http://www.facebook.com/"
+               }, {
+                  "date_added": "13147948292222151",
+                  "id": "21",
+                  "meta_info": {
+                     "custom_keywords": "[\"online shopping\",\"South Africa\",\"auction\",\"auctions\",\"online auction\",\"bid\",\"buy\",\"sell\",\"classifieds\",\"arts\",\"collectibles\",\"auto\",\"cars\",\"boating\",\"cellular\",\"phone\",\"computers\",\"dine\",\"wine\",\"electronics\",\"photography\",\"game\",\"agriculture\",\"household\",\"office\",\"jewellery\",\"movies\",\"music\",\"entertainment\",\"property\",\"sport\",\"hobbies\",\"travel\",\"stamps\",\"coins\",\"bargain\",\"cheap\"]",
+                     "guid": "F527634D-33C0-46E6-823D-2EA7CD1ECB23",
+                     "imageData": "http://redir.opera.com/speeddials/partner/bidorbuy_za",
+                     "imageDataType": "2",
+                     "imageID": "60F5AF21CB1C589638CB8AEC2023A1C2C6003D70A4A9AAC5571A02EF50AB0A08",
+                     "imageType": "2",
+                     "partner_id": "bidorbuy_za",
+                     "partner_image_download_url": "http://redir.opera.com/speeddials/partner/bidorbuy_za",
+                     "partner_url": "http://redir.opera.com/speeddials/partner/bidorbuy_za",
+                     "redirect": "1"
+                  },
+                  "name": "bidorbuy",
+                  "type": "url",
+                  "url": "http://www.bidorbuy.co.za/"
+               }, {
+                  "date_added": "13147948292222151",
+                  "id": "22",
+                  "meta_info": {
+                     "custom_keywords": "[\"yahoo\",\"yahoo za\",\"yahoo home page\",\"yahoo homepage\",\"yahoo search\",\"yahoo mail\",\"yahoo messenger\",\"news\",\"finance\",\"sport\",\"entertainment\",\"games\"]",
+                     "guid": "13691FBB-8F65-4D77-9BDA-6B2CD7C00B20",
+                     "imageData": "http://redir.opera.com/speeddials/partner/yahoo_za",
+                     "imageDataType": "2",
+                     "imageID": "0E81F2EC9440D97E19A2F09F479E4E72174B44748E6210BB9DC8573D6FF4A041",
+                     "imageType": "2",
+                     "partner_id": "yahoo_za",
+                     "partner_image_download_url": "http://redir.opera.com/speeddials/partner/yahoo_za",
+                     "partner_url": "http://redir.opera.com/speeddials/partner/yahoo_za",
+                     "redirect": "1"
+                  },
+                  "name": "Yahoo!",
+                  "type": "url",
+                  "url": "http://za.yahoo.com/"
+               }, {
+                  "date_added": "13147948292222151",
+                  "id": "23",
+                  "meta_info": {
+                     "custom_keywords": "[\"video\",\"sharing\",\"camera phone\",\"video phone\",\"free\",\"upload\"]",
+                     "guid": "CAFEC238-B329-458A-B84D-74F9F6CCF4E8",
+                     "imageData": "http://redir.opera.com/speeddials/partner/youtube",
+                     "imageDataType": "2",
+                     "imageID": "45D0AA34B9346B9C1CD482F465D18E25EF796A0CE412B7CA7C86B0C2ACC9CBEE",
+                     "imageType": "2",
+                     "partner_id": "youtube",
+                     "partner_image_download_url": "http://redir.opera.com/speeddials/partner/youtube",
+                     "partner_url": "http://redir.opera.com/speeddials/partner/youtube",
+                     "redirect": "1"
+                  },
+                  "name": "YouTube",
+                  "type": "url",
+                  "url": "http://www.youtube.com/"
+               }, {
+                  "date_added": "13147948292223151",
+                  "id": "24",
+                  "meta_info": {
+                     "custom_keywords": "[]",
+                     "guid": "654804EE-20A6-461A-BEFF-40D8E4A4614E",
+                     "imageData": "http://redir.opera.com/speeddials/partner/travelstart_za",
+                     "imageDataType": "2",
+                     "imageID": "2B87412489781240E9A9341A8DD314C03A7871F1BA1CF2C9E11B8404EE3F5EEA",
+                     "imageType": "2",
+                     "partner_id": "travelstart_za",
+                     "partner_image_download_url": "http://redir.opera.com/speeddials/partner/travelstart_za",
+                     "partner_url": "http://redir.opera.com/speeddials/partner/travelstart_za",
+                     "redirect": "1"
+                  },
+                  "name": "TravelStart",
+                  "type": "url",
+                  "url": "http://www.travelstart.co.za/"
+               }, {
+                  "date_added": "13147948292223151",
+                  "id": "25",
+                  "meta_info": {
+                     "custom_keywords": "[]",
+                     "guid": "102EF1A3-6EB0-44ED-AABE-643C3526CA15",
+                     "imageData": "http://redir.opera.com/speeddials/partner/aliexpress_com_za",
+                     "imageDataType": "2",
+                     "imageID": "F885B4060044588AC297096E89EBFD7478D864B8DF37764E601EDCDCD0CF9F23",
+                     "imageType": "2",
+                     "partner_id": "aliexpress_com_za",
+                     "partner_image_download_url": "http://redir.opera.com/speeddials/partner/aliexpress_com_za",
+                     "partner_url": "http://redir.opera.com/speeddials/partner/aliexpress_com_za",
+                     "redirect": "1"
+                  },
+                  "name": "AliExpress",
+                  "type": "url",
+                  "url": "http://aliexpress.com/"
+               }, {
+                  "children": [ {
+                     "date_added": "13147948292223151",
+                     "id": "27",
+                     "meta_info": {
+                        "custom_keywords": "[\"Opera\",\"Opera Software\"]",
+                        "guid": "A724F2F7-489D-4F6A-934F-D632D12AA14E",
+                        "imageData": "http://redir.opera.com/speeddials/partner/product",
+                        "imageDataType": "2",
+                        "imageID": "399E9C81D7778AD2E47FD312A489293BC25D782C40E9BAFFA064599358DB4F69",
+                        "imageType": "2",
+                        "partner_id": "product",
+                        "partner_image_download_url": "http://redir.opera.com/speeddials/partner/product",
+                        "partner_url": "http://redir.opera.com/speeddials/partner/product",
+                        "redirect": "1"
+                     },
+                     "name": "Let's connect",
+                     "type": "url",
+                     "url": "http://www.opera.com/follow"
+                  }, {
+                     "date_added": "13147948292224151",
+                     "id": "28",
+                     "meta_info": {
+                        "custom_keywords": "[\"hotels\",\"hostel\",\"holidays\",\"отель\",\"гостиница\",\"hotel\",\"cestovní\",\"hotely\",\"cestovné\",\"szállás\",\"utazás\",\"hoteluri\",\"concediu\",\"хотели\",\"хотел\",\"ホテル\",\"旅行\",\"podróż\",\"hotele\",\"voyage\",\"hôtel\",\"hoteles\",\"viajes\",\"vacanze\",\"albergo\",\"hoteller\",\"ferie\",\"酒店\",\"放假\",\"liburan\",\"hostels\",\"ferienmobile\",\"pousada\",\"férias\",\"lodging\",\"accommodation\",\"special offers\",\"packages\",\"specials\",\"weekend breaks\",\"city breaks\",\"deals\",\"budget\",\"cheap\",\"discount\",\"savings\"]",
+                        "guid": "9DD867D5-9290-400E-8B3B-E1F174FC773C",
+                        "imageData": "http://redir.opera.com/speeddials/partner/booking_com",
+                        "imageDataType": "2",
+                        "imageID": "1C6E16D104AEC48B14F29257CD0B71EA3BCE56115F8F2FAD4B56758FDB623988",
+                        "imageType": "2",
+                        "partner_id": "booking_com",
+                        "partner_image_download_url": "http://redir.opera.com/speeddials/partner/booking_com",
+                        "partner_url": "http://redir.opera.com/speeddials/partner/booking_com",
+                        "redirect": "1"
+                     },
+                     "name": "Booking.com",
+                     "type": "url",
+                     "url": "http://www.booking.com/"
+                  }, {
+                     "date_added": "13147948292224151",
+                     "id": "29",
+                     "meta_info": {
+                        "custom_keywords": "[\"ananzi\",\"anna-log\",\"auctions\",\"brabys\",\"call-a-car\",\"car search\",\"careers\",\"company search\",\"credit check\",\"dating\",\"e-mail\",\"flowers\",\"forex\",\"health\",\"it news\",\"jewellery\",\"lotto\",\"motoring news\",\"movies\",\"music\",\"news\",\"personal finance\",\"property\",\"restaurants\",\"road maps\",\"shopping\",\"sms\",\"south africa\",\"sport\",\"startpage\",\"travel\",\"venues\",\"weather\",\"weddings\",\"women\"]",
+                        "guid": "9E3416A0-8A0D-48DD-A932-9ED751CF2CDB",
+                        "imageData": "http://redir.opera.com/speeddials/partner/ananzi",
+                        "imageDataType": "2",
+                        "imageID": "63CC7F792D67B70DBBE0B90877878935FDE16DABF739F40B81B573542BB1ADC3",
+                        "imageType": "2",
+                        "partner_id": "ananzi",
+                        "partner_image_download_url": "http://redir.opera.com/speeddials/partner/ananzi",
+                        "partner_url": "http://redir.opera.com/speeddials/partner/ananzi",
+                        "redirect": "1"
+                     },
+                     "name": "Ananzi",
+                     "type": "url",
+                     "url": "http://www.ananzi.co.za/"
+                  }, {
+                     "date_added": "13147948292224151",
+                     "id": "30",
+                     "meta_info": {
+                        "custom_keywords": "[\"Buy Online\",\"Shop Online\",\"Online Shopping\",\"Online Bookshop\",\"Online CD Store\",\"Online Music Store\",\"Online Game Store\",\"Buy Electronics\",\"Buy Electronics Online\",\"Buy iPhone\",\"Buy iPad\",\"Online Shop\",\"Buy Camera\",\"Buy Camera Online\",\"Online Toy Store\",\"Buy Toys\",\"Buy Online and Save\",\"Books\",\"Music\",\"Cds\",\"Boek\",\"Koop\",\"Games\",\"Pc Games\",\"Psp\",\"Ps2\",\"Playstation\",\"Ps3\",\"Xbox\",\"Bluray\",\"Blu-ray\",\"Dvds\",\"Videos\",\"Movies\",\"Digital Cameras\",\"Digital Camera\",\"Afrikaans\",\"Audio Book\",\"Fiction\",\"Text Books\",\"School Books\",\"SA Music\",\"Music Dvd\",\"ipod\",\"kalahari\",\"kalaharie.com\",\"kalahari.com\",\"calahari\",\"South African Music\",\"Notebooks\",\"Laptops\",\"Toys\"]",
+                        "guid": "812D6C62-AEA5-4C02-BC1F-95FF8F218365",
+                        "imageData": "http://redir.opera.com/speeddials/partner/kalahari",
+                        "imageDataType": "2",
+                        "imageID": "648DC71ECA38414F6A4720033A87144CE9EC9051044ECF9B24A212C838678133",
+                        "imageType": "2",
+                        "partner_id": "kalahari",
+                        "partner_image_download_url": "http://redir.opera.com/speeddials/partner/kalahari",
+                        "partner_url": "http://redir.opera.com/speeddials/partner/kalahari",
+                        "redirect": "1"
+                     },
+                     "name": "Kalahari",
+                     "type": "url",
+                     "url": "http://www.kalahari.com/"
+                  } ],
+                  "date_added": "13147948292223151",
+                  "date_modified": "13147948292224151",
+                  "id": "26",
+                  "meta_info": {
+                     "custom_keywords": "[]",
+                     "guid": "32166D6F-3AEE-4844-A23F-483DC55917A3",
+                     "partner_id": "",
+                     "partner_image_download_url": "",
+                     "partner_url": "",
+                     "redirect": "0"
+                  },
+                  "name": "",
+                  "type": "folder"
+               } ],
+               "date_added": "13147948286161609",
+               "date_modified": "13147948292223151",
+               "id": "8",
+               "meta_info": {
+                  "speed_dial_root_folder_guid": "a5a9f170-8ec7-4d80-af55-5c9d7f6dd296"
+               },
+               "name": "TEST-VS2017",
+               "type": "folder"
+            } ],
+            "date_added": "13147948286161609",
+            "date_modified": "0",
+            "id": "6",
+            "name": "Speed Dials",
+            "type": "folder"
+         },
+         "trash": {
+            "children": [  ],
+            "date_added": "13147948286161609",
+            "date_modified": "0",
+            "id": "7",
+            "name": "Trash",
+            "type": "folder"
+         },
+         "unsorted": {
+            "children": [  ],
+            "date_added": "13147948286161609",
+            "date_modified": "0",
+            "id": "4",
+            "name": "Unsorted bookmarks",
+            "type": "folder"
+         },
+         "userRoot": {
+            "children": [  ],
+            "date_added": "13147948286161609",
+            "date_modified": "0",
+            "id": "5",
+            "name": "All bookmarks",
+            "type": "folder"
+         }
+      },
+      "other": {
+         "children": [  ],
+         "date_added": "13147948284474609",
+         "date_modified": "0",
+         "id": "2",
+         "name": "Imported bookmarks",
+         "type": "folder"
+      },
+      "synced": {
+         "children": [  ],
+         "date_added": "13147948284474609",
+         "date_modified": "0",
+         "id": "3",
+         "name": "Mobile bookmarks",
+         "type": "folder"
+      }
+   },
+   "version": 1
+}

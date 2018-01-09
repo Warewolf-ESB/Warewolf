@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Runtime.Configuration.Tests.ViewModels
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class RelayCommandTests
     {
         [TestMethod]
@@ -24,9 +24,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [ExpectedException(typeof(ArgumentNullException))]
         public void RelayCommand_Constructor_ActionIsNull_ThrowsException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new RelayCommand(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -90,9 +90,9 @@ namespace Dev2.Runtime.Configuration.Tests.ViewModels
         [ExpectedException(typeof(ArgumentNullException))]
         public void RelayCommand_Constructor_ActionIsNull_ThrowsException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new RelayCommand<object>(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]

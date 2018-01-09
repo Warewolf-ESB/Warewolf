@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,10 +23,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.PubSubEvents;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable ValueParameterNotUsed
-// ReSharper disable UnusedMember.Global
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -34,13 +31,13 @@ namespace Warewolf.Studio.ViewModels
     {
         public IAsyncWorker AsyncWorker { get; set; }
         public IExternalProcessExecutor Executor { get; set; }
-        private AuthenticationType _authenticationType;
-        private string _hostName;
-        private string _userName;
-        private string _password;
-        private string _defaultQuery;
-        private string _testMessage;
-        private string _testDefault;
+        AuthenticationType _authenticationType;
+        string _hostName;
+        string _userName;
+        string _password;
+        string _defaultQuery;
+        string _testMessage;
+        string _testDefault;
         readonly IManageWebServiceSourceModel _updateManager;
         IWebServiceSource _webServiceSource;
         bool _testPassed;
@@ -51,7 +48,7 @@ namespace Warewolf.Studio.ViewModels
         CancellationTokenSource _token;
         readonly string _warewolfserverName;
         string _headerText;
-        private bool _isDisposed;
+        bool _isDisposed;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
         public ManageWebserviceSourceViewModel(IManageWebServiceSourceModel updateManager, IEventAggregator aggregator,IAsyncWorker asyncWorker,IExternalProcessExecutor executor)
             : base("WebSource")
@@ -114,7 +111,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _webServiceSource = source;
                 _webServiceSource.Path = webServiceSource.Path;
-                // ReSharper disable once VirtualMemberCallInContructor
+                
                 FromModel(_webServiceSource);
                 Item = ToSource();
                 SetupHeaderTextFromExisting();
@@ -173,7 +170,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(HostName))
             {
                 return false;
@@ -210,7 +210,7 @@ namespace Warewolf.Studio.ViewModels
             }
             set
             {
-                ResourceName = ResourceName;
+                ResourceName = value;
             }
         }
 
@@ -242,7 +242,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Item = src;
                     _webServiceSource = src;
                     SetupHeaderTextFromExisting();
@@ -321,6 +324,7 @@ namespace Warewolf.Studio.ViewModels
         IWebServiceSource ToSource()
         {
             if (_webServiceSource == null)
+            {
                 return new WebServiceSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
@@ -332,7 +336,7 @@ namespace Warewolf.Studio.ViewModels
                     Id = _webServiceSource?.Id ?? SelectedGuid
                 }
             ;
-            // ReSharper disable once RedundantIfElseBlock
+            }
             else
             {
                 _webServiceSource.AuthenticationType = AuthenticationType;
@@ -378,7 +382,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return _requestServiceNameViewModel.Result;
                     }
-                    // ReSharper disable once RedundantIfElseBlock
+                    
                     else
                     {
                         throw _requestServiceNameViewModel.Exception;
@@ -386,7 +390,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
+            set
+            {
+                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+                _requestServiceNameViewModel.Start();
+            }
         }
 
         public AuthenticationType AuthenticationType
@@ -575,29 +583,17 @@ namespace Warewolf.Studio.ViewModels
         protected override void OnDispose()
         {
             RequestServiceNameViewModel?.Dispose();
-            Dispose(true);
+            DisposeManageWebserviceSourceViewModel(true);
         }
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+
+        void DisposeManageWebserviceSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
                 if (disposing)
                 {
-                    // Dispose managed resources.
                     _token?.Dispose();
                 }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

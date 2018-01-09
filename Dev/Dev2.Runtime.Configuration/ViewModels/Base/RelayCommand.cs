@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows.Input;
 using Dev2.Common.Interfaces;
 
@@ -24,9 +23,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         {
             if(handlingMethod == null)
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException("HandingMethod");
-                // ReSharper restore NotResolvedInText
+                
             }
 
             _handlingMethod = handlingMethod;
@@ -84,7 +83,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
         public RelayCommand(Action<T> execute, Predicate<T> canExecute)
         {
             if(execute == null)
+            {
                 throw new ArgumentNullException("execute");
+            }
 
             _execute = execute;
             _canExecute = canExecute;
@@ -96,9 +97,9 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
 
         public bool CanExecute(object parameter)
         {
-            // ReSharper disable SimplifyConditionalTernaryExpression
+            
             return _canExecute?.Invoke((T)parameter) ?? true;
-            // ReSharper restore SimplifyConditionalTernaryExpression
+            
         }
 
         public event EventHandler CanExecuteChanged;
@@ -108,7 +109,7 @@ namespace Dev2.Runtime.Configuration.ViewModels.Base
             _execute((T)parameter);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public void RaiseCanExecuteChanged()
         {
             CanExecuteChanged?.Invoke(this, EventArgs.Empty);

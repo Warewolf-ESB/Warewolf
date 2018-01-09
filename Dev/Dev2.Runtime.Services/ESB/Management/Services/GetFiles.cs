@@ -1,43 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class GetFiles : IEsbManagementEndpoint
+    public class GetFiles : DefaultEsbManagementEndpoint, IGetFiles
     {
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            Dev2Logger.Info("Get Files");
-            StringBuilder currentFolder;
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
+            Dev2Logger.Info("Get Files", GlobalConstants.WarewolfInfo);
 
-            values.TryGetValue("fileListing", out currentFolder);
+            values.TryGetValue("fileListing", out StringBuilder currentFolder);
             if (currentFolder != null)
             {
                 var src = serializer.Deserialize(currentFolder.ToString(), typeof(IFileListing)) as IFileListing;
                 try
                 {
                     msg.HasError = false;
-                    msg.Message = serializer.SerializeToBuilder(GetFilesAndFolders(src));
+                    var filesAndFolders = GetFilesAndFolders(src);
+                    msg.Message = serializer.SerializeToBuilder(filesAndFolders);
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     msg.HasError = true;
                     msg.SetMessage(ex.Message);
                 }
@@ -51,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(msg);
         }
 
-        static List<IFileListing> GetFilesAndFolders(IFileListing src)
+        public List<IFileListing> GetFilesAndFolders(IFileListing src)
         {
             var completeList = new List<IFileListing>();
       
@@ -67,19 +62,21 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message);
+                    Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
                 }
 
             }
             else
             {
                 if(src.IsDirectory)
+                {
                     completeList = GetChildren(new DirectoryInfo(src.FullName));
+                }
             }
             return completeList;
         }
 
-        static IFileListing BuildFileListing(DriveInfo info)
+        public IFileListing BuildFileListing(DriveInfo info)
         {
 
             try
@@ -91,12 +88,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
             return null;
         }
 
-        static FileListing BuildFileListing(DirectoryInfo directory)
+        public FileListing BuildFileListing(DirectoryInfo directory)
         {
             var dllListing = BuildFileListing(directory as FileSystemInfo);
             try
@@ -106,12 +103,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e);
+                Dev2Logger.Error(ErrorResource.ErrorEnumeratingDirectory, e, GlobalConstants.WarewolfError);
             }
             return dllListing;
         }
 
-        static List<IFileListing> GetChildren(DirectoryInfo directory)
+        public List<IFileListing> GetChildren(DirectoryInfo directory)
         {
             var directories = directory.EnumerateDirectories();
             var childList = new List<IFileListing>();
@@ -134,45 +131,27 @@ namespace Dev2.Runtime.ESB.Management.Services
             return childList;
         }
 
-        static FileListing BuildFileListing(FileSystemInfo fileInfo)
+        public FileListing BuildFileListing(FileSystemInfo fileInfo)
         {
             var dllListing = new FileListing { Name = fileInfo.Name, FullName = fileInfo.FullName };
             return dllListing;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+        public override string HandlesType() => "GetFiles";
+    }
 
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
+    public interface IGetFiles
+    {
+        FileListing BuildFileListing(FileSystemInfo fileInfo);
 
-            return findDirectoryService;
-        }
+        IFileListing BuildFileListing(DriveInfo info);
 
-        public string HandlesType()
-        {
-            return "GetFiles";
-        }
+        FileListing BuildFileListing(DirectoryInfo directory);
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        List<IFileListing> GetChildren(DirectoryInfo directory);
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        List<IFileListing> GetFilesAndFolders(IFileListing src);
     }
 }

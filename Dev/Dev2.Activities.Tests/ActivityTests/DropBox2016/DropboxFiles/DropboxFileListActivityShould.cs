@@ -9,27 +9,26 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Interfaces;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable UseObjectOrCollectionInitializer
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropboxFileListActivityShould
     {
-        private static DsfDropboxFileListActivity CreateDropboxActivity()
+        static DsfDropboxFileListActivity CreateDropboxActivity()
         {
             return new DsfDropboxFileListActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
@@ -114,7 +113,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             Assert.IsNotNull(dropBoxDownloadActivityMock);
             //---------------Execute Test ----------------------
             var executionEnvironment = new Mock<IExecutionEnvironment>().Object;
-            // ReSharper disable once RedundantAssignment
+            
             var debugOutputs = dropBoxDownloadActivityMock.GetDebugOutputs(executionEnvironment, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(0, debugOutputs.Count);
@@ -156,7 +155,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
+            
             //---------------Test Result -----------------------
         }
 
@@ -454,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
+            
             //---------------Test Result -----------------------
         }
 
@@ -590,7 +589,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
             //---------------Execute Test ----------------------
             var mockExecutionEnv = new Mock<IExecutionEnvironment>();
-            List<DebugItem> debugInputs = dropboxFileListActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
+            var debugInputs = dropboxFileListActivityMock.GetDebugInputs(mockExecutionEnv.Object, 0);
             //---------------Test Result -----------------------
             Assert.AreEqual(4,debugInputs.Count());
         }
@@ -598,7 +597,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
     public class DsfDropboxFileListActivityMock : DsfDropboxFileListActivity
     {
-        private readonly IDropboxClientWrapper _clientWrapper;
+        readonly IDropboxClientWrapper _clientWrapper;
 
         public DsfDropboxFileListActivityMock(IDropboxClientWrapper clientWrapper)
             :base(clientWrapper)
@@ -608,7 +607,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.DropboxFiles
 
         public string PerformBaseExecution(Dictionary<string, string> evaluatedValues)
         {
-            // ReSharper disable once RedundantBaseQualifier
+            
             return base.PerformExecution(evaluatedValues)[0];
         }
 

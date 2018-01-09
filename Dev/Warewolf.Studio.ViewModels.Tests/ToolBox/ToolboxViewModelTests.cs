@@ -7,8 +7,8 @@ using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable PossibleUnintendedReferenceComparison
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 {
@@ -17,12 +17,12 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
     {
         #region Fields
 
-        private Mock<IToolboxModel> _localModelMock;
-        private Mock<IToolboxModel> _remoteModelMock;
+        Mock<IToolboxModel> _localModelMock;
+        Mock<IToolboxModel> _remoteModelMock;
 
-        private List<string> _changedProperties;
+        List<string> _changedProperties;
 
-        private ToolboxViewModel _target;
+        ToolboxViewModel _target;
 
         #endregion Fields
 
@@ -37,9 +37,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
             SetupViewModel();
         }
 
-        private void SetupViewModel()
+        void SetupViewModel()
         {
-           
+
             _target = new ToolboxViewModel(_localModelMock.Object, _remoteModelMock.Object);
 
             _changedProperties = new List<string>();
@@ -472,7 +472,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox.Tests
 
         #region Private helper methods
 
-        private void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _changedProperties.Add(e.PropertyName);
         }

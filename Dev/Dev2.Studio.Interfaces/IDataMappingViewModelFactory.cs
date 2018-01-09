@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,12 +11,10 @@
 using System.Collections.Specialized;
 
 namespace Dev2.Studio.Interfaces
-// ReSharper restore CheckNamespace
 {
     public interface IDataMappingViewModelFactory
     {
-        IDataMappingViewModel CreateModel(IWebActivity activity,
-                                          NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler =
-                                              null);
+        IDataMappingViewModel CreateModel(IWebActivity activity);
+        IDataMappingViewModel CreateModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler);
     }
 }

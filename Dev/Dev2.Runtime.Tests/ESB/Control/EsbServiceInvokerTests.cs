@@ -24,7 +24,7 @@ using Moq;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.Control
 {
@@ -77,10 +77,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.EnvironmentID).Verifiable();
             obj.SetupGet(o => o.ClientID).Verifiable();
 
-            ErrorResultTO errors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             errors.AddError("Error");
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             privateObject.Invoke("DispatchDebugErrors", errors, obj.Object, StateType.Start);
@@ -127,10 +127,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var locater = new Mock<IServiceLocator>();
             EsbExecuteRequest executeRequest = null;
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(default(DynamicService));
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -169,10 +169,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -214,10 +214,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.SetupGet(o => o.IsServiceTestExecution).Returns(true);
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dynamicService);
             locater.Setup(l => l.FindSourceByName(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -250,16 +250,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -271,58 +271,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.VerifyGet(o => o.ResourceID);
             var condition = executionContainer is InternalServiceContainer;
             Assert.IsTrue(condition);
-        }
-
-        [TestMethod]
-        [Owner("Nkosinathi Sangweni")]
-        public void GenerateInvokeContainer_GivenValidArgsAndIsLocalInvokeTrueCacheContainsWebServiceService_ShouldCorrectServiceInContainer()
-        {
-            //---------------Set up test pack-------------------
-            var newGuid = Guid.NewGuid();
-            var _cache = new ConcurrentDictionary<Guid, ServiceAction>();
-            _cache.TryAdd(newGuid, new ServiceAction
-            {
-                Name = "Name"
-                ,
-                ActionType = enActionType.InvokeWebService
-                ,
-                DataListSpecification = new StringBuilder("<DataList></DataList>")
-            });
-            //GenerateInvokeContainer(IDSFDataObject dataObject, String serviceName, bool isLocalInvoke, Guid masterDataListId = default(Guid))
-            var channel = new Mock<IEsbChannel>();
-            var workSpace = new Mock<IWorkspace>();
-            var obj = new Mock<IDSFDataObject>();
-            var locater = new Mock<IServiceLocator>();
-            obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
-            {
-                Args = new Dictionary<string, StringBuilder>(),
-                ServiceName = "SomeService"
-            };
-            locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
-
-            var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
-            privateObject.SetField("_serviceLocator", locater.Object);
-            privateObject.SetField("_cache", _cache);
-            //---------------Assert Precondition----------------
-            Assert.IsNotNull(invoker);
-            //---------------Execute Test ----------------------
-            try
-            {
-                var executionContainer = invoker.GenerateInvokeContainer(obj.Object, newGuid, true);
-                //---------------Test Result -----------------------
-                Assert.IsNotNull(executionContainer);
-                obj.VerifyGet(o => o.ResourceID);
-                var condition = executionContainer is WebServiceContainer;
-                Assert.IsTrue(condition);
-            }
-            catch (Exception e)
-            {
-                //Expected break for Web services, 
-                Assert.AreEqual("Root element is missing.", e.Message);
-            }
         }
 
         [TestMethod]
@@ -346,16 +294,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = newGuid, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -390,7 +338,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -410,10 +358,10 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 }
             });
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -447,17 +395,17 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var workSpace = new Mock<IWorkspace>();
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
 
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
@@ -473,7 +421,6 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DeploymentItem("Dev2.Core.resources.dll")]
         public void Invoke_GivenNullServiceNameAndEmptyId_ShouldAddErrors()
         {
             //---------------Set up test pack-------------------
@@ -482,23 +429,22 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             obj.Setup(o => o.Environment.HasErrors()).Returns(false);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
 
             locater.Setup(lo => lo.FindSourceByName("SourceName", It.IsAny<Guid>())).Returns(new Source());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -517,23 +463,22 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.Environment.HasErrors()).Returns(false);
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
 
             locater.Setup(lo => lo.FindService("Hello World", It.IsAny<Guid>())).Returns(new DynamicService());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(0, errorResultTO.FetchErrors().Count);
@@ -555,29 +500,28 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsServiceTestExecution).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
 
             locater.Setup(lo => lo.FindService("Hello World", valueFunction)).Returns((DynamicService)null);
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.IsNotNull(errorResultTO);
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
             StringAssert.Contains(errorResultTO.FetchErrors().Single(), ErrorResource.ServiceNotFound);
             locater.VerifyAll();
-            // ReSharper disable once RedundantNameQualifier
+            
             var toTypes = typeof(Dev2.Data.ServiceTestModelTO);
             var common = typeof(Dev2.Common.Interfaces.TestRunResult);
             var enumerable = toTypes.Assembly.ExportedTypes.Where(type => !type.IsInterface);
@@ -609,7 +553,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsServiceTestExecution).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -627,16 +571,15 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction
                 }
             });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
             //---------------Test Result -----------------------
             Assert.AreEqual(enActionType.Workflow, serviceAction.ActionType);
         }
@@ -655,7 +598,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsFromWebServer).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -673,17 +616,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction
                 }
             });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
 
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
 
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -704,7 +646,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             obj.Setup(o => o.ServiceName).Returns("Hello World");
             obj.Setup(o => o.IsFromWebServer).Returns(true);
             var locater = new Mock<IServiceLocator>();
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
@@ -722,17 +664,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
                     serviceAction, new ServiceAction()
                 }
             });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(invoker);
             //---------------Execute Test ----------------------
-            ErrorResultTO errorResultTO;
 
-            invoker.Invoke(obj.Object, out errorResultTO);
+            invoker.Invoke(obj.Object, out ErrorResultTO errorResultTO);
 
             //---------------Test Result -----------------------
             Assert.AreEqual(1, errorResultTO.FetchErrors().Count);
@@ -784,16 +725,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(serviceId);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService { ID = serviceId, Actions = { new ServiceAction { Name = "Name", ActionType = enActionType.InvokeManagementDynamicService } } });
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -837,16 +778,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Throws(new Exception("error"));
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -885,16 +826,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<string>(), It.IsAny<Guid>())).Returns(new DynamicService());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -936,16 +877,16 @@ namespace Dev2.Tests.Runtime.ESB.Control
             var obj = new Mock<IDSFDataObject>();
             var locater = new Mock<IServiceLocator>();
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
-            EsbExecuteRequest executeRequest = new EsbExecuteRequest
+            var executeRequest = new EsbExecuteRequest
             {
                 Args = new Dictionary<string, StringBuilder>(),
                 ServiceName = "SomeService"
             };
             locater.Setup(l => l.FindService(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(new DynamicService());
-            // ReSharper disable once ExpressionIsAlwaysNull
+            
 
             var invoker = new EsbServiceInvoker(channel.Object, workSpace.Object, executeRequest);
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             privateObject.SetField("_serviceLocator", locater.Object);
             privateObject.SetField("_cache", _cache);
             //---------------Assert Precondition----------------
@@ -1001,7 +942,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
 
             });
 
-            PrivateObject privateObject = new PrivateObject(invoker);
+            var privateObject = new PrivateObject(invoker);
             obj.SetupGet(o => o.ResourceID).Returns(newGuid);
             privateObject.SetField("_serviceLocator", locater.Object);
             //---------------Assert Precondition----------------
@@ -1011,8 +952,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
                 obj.Setup(o => o.Environment.HasErrors()).Returns(true).Verifiable(); ;
                 obj.Setup(o => o.RemoteInvoke).Verifiable();
                 obj.Setup(o => o.Environment.FetchErrors()).Returns("Error").Verifiable();
-                ErrorResultTO errors;
-                invoker.Invoke(obj.Object, out errors);
+                invoker.Invoke(obj.Object, out ErrorResultTO errors);
                 //weird expetion on execution when getting errors
                 Assert.AreEqual("Object reference not set to an instance of an object.", errors.FetchErrors().Single());
                 //---------------Test Result -----------------------

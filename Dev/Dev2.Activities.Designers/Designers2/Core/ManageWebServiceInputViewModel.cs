@@ -20,34 +20,31 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.Practices.Prism.Commands;
 using Newtonsoft.Json;
 using Warewolf.Core;
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class ManageWebServiceInputViewModel : IManageWebServiceInputViewModel
     {
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private bool _okSelected;
-        private IWebService _model;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        bool _okSelected;
+        IWebService _model;
         bool _pasteResponseVisible;
         bool _pasteResponseAvailable;
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
         bool _isEnabled;
-        IWebServiceBaseViewModel _viewmodel;
-        IWebServiceModel _serverModel;
+        readonly IWebServiceBaseViewModel _viewmodel;
+        readonly IWebServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
-        private IWebServiceHeaderBuilder _serviceHeaderBuilder;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
+        readonly IWebServiceHeaderBuilder _serviceHeaderBuilder;
 
         public ManageWebServiceInputViewModel(IWebServiceHeaderBuilder serviceHeaderBuilder)
         {
@@ -95,6 +92,18 @@ namespace Dev2.Activities.Designers2.Core
                 OnPropertyChanged();
             }
         }
+
+        public void BuidHeaders(string requestpayLoad)
+        {
+            try
+            {
+                _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), requestpayLoad);
+            }
+            catch (Exception)
+            {
+                // 
+            }
+        }
         public void ExecuteTest()
         {
             ViewErrors = new List<IActionableErrorInfo>();
@@ -103,6 +112,7 @@ namespace Dev2.Activities.Designers2.Core
             TestResults = null;
             IsTesting = true;
 
+           
             try
             {
                 var testResult = _serverModel.TestService(Model);
@@ -110,15 +120,7 @@ namespace Dev2.Activities.Designers2.Core
                 using (var responseService = serializer.Deserialize<WebService>(testResult))
                 {
                     TestResults = responseService.RequestResponse;
-                    try
-                    {
-                        _serviceHeaderBuilder.BuildHeader(_viewmodel.GetHeaderRegion(), TestResults);
-                    }
-                    catch (Exception)
-                    {
-                        // 
-                    }
-
+                    BuidHeaders(TestResults);
                     _recordsetList = responseService.Recordsets;
                     if (_recordsetList.Any(recordset => recordset.HasErrors))
                     {
@@ -128,13 +130,13 @@ namespace Dev2.Activities.Designers2.Core
 
                     Description = responseService.GetOutputDescription();
                 }
-                // ReSharper disable MaximumChainedReferences
+                
                 var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                 {
                     var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                     return serviceOutputMapping;
                 }).Cast<IServiceOutputMapping>().ToList();
-                // ReSharper restore MaximumChainedReferences
+                
                 _generateOutputArea.IsEnabled = true;
                 _generateOutputArea.Outputs = outputMapping;
 
@@ -243,10 +245,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateInputArea;
             }
-            set
-            {
-            }
         }
+
         public string TestResults
         {
             get
@@ -379,11 +379,8 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return Application.Current.TryFindResource("Explorer-WebService-White") as DrawingImage;
             }
-            set
-            {
-
-            }
         }
+
         public ICommand CloseCommand { get; private set; }
         public ICommand OkCommand { get; private set; }
         public Action CloseAction { get; set; }
@@ -410,9 +407,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateOutputArea;
-            }
-            set
-            {
             }
         }
         public IOutputDescription Description { get; set; }

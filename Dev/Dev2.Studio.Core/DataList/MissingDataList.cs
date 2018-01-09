@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,10 +17,10 @@ using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class MissingDataList : IMissingDataList
+    class MissingDataList : IMissingDataList
     {
         readonly ObservableCollection<IRecordSetItemModel> _recsetCollection;
-        private readonly ObservableCollection<IScalarItemModel> _scalarCollection;
+        readonly ObservableCollection<IScalarItemModel> _scalarCollection;
         public MissingDataList(ObservableCollection<IRecordSetItemModel> recsetCollection, ObservableCollection<IScalarItemModel> scalarCollection)
         {
             _recsetCollection = recsetCollection;
@@ -38,10 +38,15 @@ namespace Dev2.Studio.Core.DataList
                         dataListItem.IsEditable)
                     {
                         if (excludeUnusedItems && !dataListItem.IsUsed)
+                        {
                             continue;
+                        }
+
                         AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem);
                         foreach (var child in dataListItem.Children.Where(p => !string.IsNullOrEmpty(p.DisplayName)))
+                        {
                             AddMissingWorkFlowRecordsetPart(missingWorkflowParts, dataListItem, child);
+                        }
                     }
                     else
                     {
@@ -52,15 +57,19 @@ namespace Dev2.Studio.Core.DataList
                             select IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName, child.DisplayName, child.Description));
                     }
                 }
-                else if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 &&
-                         dataListItem.IsEditable)
+                else
                 {
-                    // skip it if unused and exclude is on ;)
-                    if (excludeUnusedItems && !dataListItem.IsUsed)
-                        continue;
-                    missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
-                            dataListItem.Description));
+                    if (partsToVerify.Count(part => part.Field == dataListItem.DisplayName && part.IsScalar) == 0 && dataListItem.IsEditable)
+                    {
+                        if (excludeUnusedItems && !dataListItem.IsUsed)
+                        {
+                            continue;
+                        }
+
+                        missingWorkflowParts.Add(
+                            IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName,
+                                dataListItem.Description));
+                    }
                 }
             }
             return missingWorkflowParts;
@@ -76,23 +85,15 @@ namespace Dev2.Studio.Core.DataList
                     select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
         }
 
-        private static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
+        static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
         IRecordSetItemModel dataListItem,
         IRecordSetFieldItemModel child = null)
         {
             if (dataListItem.IsEditable)
             {
-                if (child != null)
-                {
-                    missingWorkflowParts.Add(
-                        IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
-                            child.DisplayName, child.Description));
-                }
-                else
-                {
-                    missingWorkflowParts.Add(IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
+                missingWorkflowParts.Add(child != null ? IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
+                            child.DisplayName, child.Description) : IntellisenseFactory.CreateDataListValidationRecordsetPart(dataListItem.DisplayName,
                                     string.Empty, dataListItem.Description));
-                }
             }
         }
     }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,10 +17,10 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 {
     public class AsynchronousRequest : ILogger
     {
-        private RequestState state;
-        private WebRequest request;
+        RequestState state;
+        WebRequest request;
         public long totaltime = 0;
-        private string responseData;
+        string responseData;
         HttpWebResponse _response;
 
         public bool WasHTTPS { get; set; }
@@ -59,8 +59,8 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             state._requestData.Append(postData);
             request.ContentLength = Encoding.ASCII.GetBytes(state._requestData.ToString()).Length;
 
-            byte[] bytedata = Encoding.UTF8.GetBytes(state._requestData.ToString());
-            using(Stream postStream = request.GetRequestStream())
+            var bytedata = Encoding.UTF8.GetBytes(state._requestData.ToString());
+            using (Stream postStream = request.GetRequestStream())
             {
                 postStream.Write(bytedata, 0, bytedata.Length);
                 postStream.Close();
@@ -78,7 +78,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
             }
         }
 
-        private void MethodGet()
+        void MethodGet()
         {
             request.Method = "GET";
             request.Timeout = 300000; // wait up to five minutes ;) 
@@ -89,11 +89,11 @@ namespace Dev2.Integration.Tests.MEF.WebTester
                     return true;
                 };
 
-            using(var response = request.GetResponse() as HttpWebResponse)
+            using (var response = request.GetResponse() as HttpWebResponse)
             {
-                if(response != null)
+                if (response != null)
                 {
-                    using(StreamReader reader = new StreamReader(response.GetResponseStream()))
+                    using (StreamReader reader = new StreamReader(response.GetResponseStream()))
                     {
                         responseData = reader.ReadToEnd();
                     }
@@ -102,7 +102,7 @@ namespace Dev2.Integration.Tests.MEF.WebTester
 
         }
 
-        private void MethodGetResponse()
+        void MethodGetResponse()
         {
             request.Method = "GET";
             _response = request.GetResponse() as HttpWebResponse;

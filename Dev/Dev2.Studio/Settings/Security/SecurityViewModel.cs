@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -43,9 +43,9 @@ namespace Dev2.Settings.Security
         readonly IWin32Window _parentWindow;
         readonly IServer _environment;
         bool _isUpdatingHelpText;
-        private static IDomain _domain;
+        static IDomain _domain = new DomainWrapper();
 
-        // ReSharper disable once UnusedMember.Global
+
         public SecurityViewModel()
         {
             
@@ -71,9 +71,13 @@ namespace Dev2.Settings.Security
             return env;
         }
 
-        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment, Func<IResourcePickerDialog> createfunc = null)
+        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment)
+            : this(securitySettings, directoryObjectPicker, parentWindow, environment, null)
         {
+        }
 
+        public SecurityViewModel(SecuritySettingsTO securitySettings, DirectoryObjectPickerDialog directoryObjectPicker, IWin32Window parentWindow, IServer environment, Func<IResourcePickerDialog> createfunc)
+        {
             VerifyArgument.IsNotNull(@"directoryObjectPicker", directoryObjectPicker);
             VerifyArgument.IsNotNull(@"parentWindow", parentWindow);
             VerifyArgument.IsNotNull(@"environment", environment);
@@ -96,7 +100,6 @@ namespace Dev2.Settings.Security
             InitializeHelp();
 
             InitializePermissions(securitySettings?.WindowsGroupPermissions);
-            _domain = new DomainWrapper();
         }
 
         public ObservableCollection<WindowsGroupPermission> ServerPermissions
@@ -155,10 +158,10 @@ namespace Dev2.Settings.Security
 
         [JsonIgnore]
         public static readonly DependencyProperty IsResourceHelpVisibleProperty = DependencyProperty.Register(@"IsResourceHelpVisible", typeof(bool), typeof(SecurityViewModel), new PropertyMetadata(false, IsResourceHelpVisiblePropertyChanged));
-        private ObservableCollection<WindowsGroupPermission> _serverPermissions;
-        private ObservableCollection<WindowsGroupPermission> _resourcePermissions;
-        private ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
-        private ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
+        ObservableCollection<WindowsGroupPermission> _serverPermissions;
+        ObservableCollection<WindowsGroupPermission> _resourcePermissions;
+        ObservableCollection<WindowsGroupPermission> _itemResourcePermissions;
+        ObservableCollection<WindowsGroupPermission> _itemServerPermissions;
 
         static void IsResourceHelpVisiblePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs args)
         {
@@ -320,7 +323,7 @@ namespace Dev2.Settings.Security
                     };
                     popupController.Show(popupMessage);
                 }
-                Dev2Logger.Error(@"Error opening group picker: ", e);
+                Dev2Logger.Error(@"Error opening group picker: ", e, "Warewolf Error");
             }
             return DialogResult.Cancel;
         }
@@ -470,6 +473,8 @@ namespace Dev2.Settings.Security
                         IsServerHelpVisible = false;
                         HelpText = Warewolf.Studio.Resources.Languages.HelpText.SettingsSecurityResourceHelpResource;
                         break;
+                    default:
+                        break;
                 }
             }
             finally
@@ -516,11 +521,11 @@ namespace Dev2.Settings.Security
         [JsonIgnore]
         public Visibility Visibility => IsInDomain();
 
-        private static Visibility IsInDomain()
+        static Visibility IsInDomain()
         {
             try
             {
-                // ReSharper disable once UnusedVariable
+
                 var computerDomain = _domain.GetComputerDomain();
                 return Visibility.Visible;
             }
@@ -560,23 +565,23 @@ namespace Dev2.Settings.Security
             }
         }
 
-        private ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        ObservableCollection<WindowsGroupPermission> CloneResourcePermissions(ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(resourcePermissions, new JsonSerializerSettings { ContractResolver = resolver });
-            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            var clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
             return clone;
         }
 
-        private ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
+        ObservableCollection<WindowsGroupPermission> CloneServerPermissions(ObservableCollection<WindowsGroupPermission> serverPermissions)
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(serverPermissions, new JsonSerializerSettings { ContractResolver = resolver });
-            ObservableCollection<WindowsGroupPermission> clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
+            var clone = JsonConvert.DeserializeObject<ObservableCollection<WindowsGroupPermission>>(ser);
             return clone;
         }
 
-        private bool Equals(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        bool Equals(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             if (ReferenceEquals(null, serverPermissions))
             {
@@ -590,7 +595,7 @@ namespace Dev2.Settings.Security
             return EqualsSeq(serverPermissions, resourcePermissions);
         }
 
-        private bool EqualsSeq(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
+        bool EqualsSeq(ObservableCollection<WindowsGroupPermission> serverPermissions, ObservableCollection<WindowsGroupPermission> resourcePermissions)
         {
             var serverPermissionCompare = ServerPermissionsCompare(serverPermissions, true);
             var resourcePermissionCompare = ResourcePermissionsCompare(resourcePermissions, true);
@@ -599,7 +604,7 @@ namespace Dev2.Settings.Security
             return @equals;
         }
 
-        private bool ServerPermissionsCompare(ObservableCollection<WindowsGroupPermission> serverPermissions, bool serverPermissionCompare)
+        bool ServerPermissionsCompare(ObservableCollection<WindowsGroupPermission> serverPermissions, bool serverPermissionCompare)
         {
             if (_serverPermissions == null)
             {
@@ -615,42 +620,74 @@ namespace Dev2.Settings.Security
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].WindowsGroup != serverPermissions[i].WindowsGroup)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].DeployTo != serverPermissions[i].DeployTo)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].DeployFrom != serverPermissions[i].DeployFrom)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].Administrator != serverPermissions[i].Administrator)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].View != serverPermissions[i].View)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].Execute != serverPermissions[i].Execute)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].Contribute != serverPermissions[i].Contribute)
                 {
                     serverPermissionCompare = false;
                 }
-                if (!serverPermissionCompare) continue;
+                if (!serverPermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ServerPermissions[i].IsDeleted != serverPermissions[i].IsDeleted)
                 {
                     serverPermissionCompare = false;
@@ -659,7 +696,7 @@ namespace Dev2.Settings.Security
             return serverPermissionCompare;
         }
 
-        private bool ResourcePermissionsCompare(ObservableCollection<WindowsGroupPermission> resourcePermissions, bool resourcePermissionCompare)
+        bool ResourcePermissionsCompare(ObservableCollection<WindowsGroupPermission> resourcePermissions, bool resourcePermissionCompare)
         {
             if (_resourcePermissions == null)
             {
@@ -675,42 +712,74 @@ namespace Dev2.Settings.Security
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].WindowsGroup != resourcePermissions[i].WindowsGroup)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].DeployTo != resourcePermissions[i].DeployTo)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].DeployFrom != resourcePermissions[i].DeployFrom)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].Administrator != resourcePermissions[i].Administrator)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].View != resourcePermissions[i].View)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].Execute != resourcePermissions[i].Execute)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].Contribute != resourcePermissions[i].Contribute)
                 {
                     resourcePermissionCompare = false;
                 }
-                if (!resourcePermissionCompare) continue;
+                if (!resourcePermissionCompare)
+                {
+                    continue;
+                }
+
                 if (ResourcePermissions[i].IsDeleted != resourcePermissions[i].IsDeleted)
                 {
                     resourcePermissionCompare = false;

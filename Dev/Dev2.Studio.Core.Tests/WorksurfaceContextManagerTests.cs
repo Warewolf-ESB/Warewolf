@@ -26,7 +26,7 @@ namespace Dev2.Core.Tests
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var svr = new Mock<IServer>();
             svr.Setup(a => a.DisplayName).Returns("Localhost");
             var workFlow = XML.XmlResource.Fetch("ResourceWithErrors");
@@ -40,7 +40,7 @@ namespace Dev2.Core.Tests
             {
                 ShellViewModel.ActiveServer = svr.Object;
             };
-            Task<IExplorerItem> ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
+            var ac = new Task<IExplorerItem>(() => new Mock<IExplorerItem>().Object);
             svr.Setup(a => a.LoadExplorer(false)).Returns(() => ac);
             CustomContainer.Register(svr.Object);
             CustomContainer.Register(new Mock<Microsoft.Practices.Prism.PubSubEvents.IEventAggregator>().Object);
@@ -957,7 +957,7 @@ namespace Dev2.Core.Tests
             var resourceModelMock = new Mock<IContextualResourceModel>();
             resourceModelMock.SetupGet(model => model.ServerResourceType).Returns("Dev2Server");
             var workFlow = XML.XmlResource.Fetch("ResourceWithErrors");
-            string workFlowXaml = workFlow.ToString(SaveOptions.DisableFormatting);
+            var workFlowXaml = workFlow.ToString(SaveOptions.DisableFormatting);
             resourceModelMock.SetupGet(model => model.WorkflowXaml).Returns(new StringBuilder(workFlowXaml));
             resourceModelMock.SetupGet(model => model.Environment.EnvironmentID).Returns(Guid.NewGuid);
             resourceModelMock.SetupGet(model => model.Environment.ResourceRepository).Returns(new Mock<IResourceRepository>().Object);

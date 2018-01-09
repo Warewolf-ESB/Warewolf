@@ -12,7 +12,7 @@ using Dev2.Web;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal class ExecutionDto
+    class ExecutionDto
     {
         public WebRequestTO WebRequestTO { get; set; }
         public string ServiceName { get; set; }
@@ -27,7 +27,7 @@ namespace Dev2.Runtime.WebServer
         public ErrorResultTO ErrorResultTO { get; set; }
     }
 
-    internal static class ExecutionDtoExtentions
+    static class ExecutionDtoExtentions
     {
         public static IResponseWriter CreateResponseWriter(this ExecutionDto dto)
         {
@@ -65,11 +65,14 @@ namespace Dev2.Runtime.WebServer
                                 executePayload = ExecutionEnvironmentUtils.GetXmlOutputFromEnvironment(dataObject,
                                     resource.DataList.ToString(), 0);
                             }
-                            else if (dataObject.ReturnType == EmitionTypes.SWAGGER)
+                            else
                             {
-                                formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
-                                executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
-                                    resource.DataList.ToString(), webRequest.WebServerUrl);
+                                if (dataObject.ReturnType == EmitionTypes.SWAGGER)
+                                {
+                                    formatter = DataListFormat.CreateFormat("SWAGGER", EmitionTypes.SWAGGER, "application/json");
+                                    executePayload = ExecutionEnvironmentUtils.GetSwaggerOutputForService(resource,
+                                        resource.DataList.ToString(), webRequest.WebServerUrl);
+                                }
                             }
                         }
                     }
@@ -102,24 +105,35 @@ namespace Dev2.Runtime.WebServer
                 executePayload = SetupErrors(dataObject, allErrors);
             }
 
-            Dev2Logger.Debug("Execution Result [ " + executePayload + " ]");
+            if (dataObject.Environment.HasErrors())
+            {
+                Dev2Logger.Error(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine,string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+            }
+            else
+            {
+                Dev2Logger.Debug(GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag, dataObject.ExecutionID.ToString());
+            }
             if (!dataObject.Environment.HasErrors() && esbExecuteRequest.WasInternalService)
             {
                 if (executePayload.IsJSON())
                 {
                     formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
                 }
-                else if (executePayload.IsXml())
+                else
                 {
-                    formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                    if (executePayload.IsXml())
+                    {
+                        formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
+                    }
                 }
             }
             Dev2DataListDecisionHandler.Instance.RemoveEnvironment(dataObject.DataListID);
             dataObject.Environment = null;
+            dto.ErrorResultTO.ClearErrors();
             return new StringResponseWriter(executePayload, formatter.ContentType);
         }
 
-        private static string SetupErrors(IDSFDataObject dataObject,  ErrorResultTO allErrors)
+        static string SetupErrors(IDSFDataObject dataObject, ErrorResultTO allErrors)
         {
             string executePayload;
             if (dataObject.ReturnType == EmitionTypes.XML)

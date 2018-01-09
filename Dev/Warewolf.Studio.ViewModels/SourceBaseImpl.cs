@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Dev2;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 
@@ -86,7 +85,7 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModel = explorerViewModel.Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-                var env = ServerRepository.Instance.Get(environmentId);
+                var env = CustomContainer.Get<IServerRepository>().Get(environmentId);
                 var resource = env.ResourceRepository.LoadContextualResourceModel(resourceId);
                 var item = environmentViewModel.FindByPath(resource.GetSavePath());
                 var viewModel = environmentViewModel as EnvironmentViewModel;
@@ -112,11 +111,11 @@ namespace Warewolf.Studio.ViewModels
             {
                 return "Failed";
             }
-            string exceptionMsg = Resources.Languages.Core.ExceptionErrorLabel + exception.Message;
+            var exceptionMsg = Resources.Languages.Core.ExceptionErrorLabel + exception.Message;
 
             if (exception.InnerException != null)
             {
-                string innerExpceptionMsg = Resources.Languages.Core.InnerExceptionErrorLabel + exception.InnerException.Message;
+                var innerExpceptionMsg = Resources.Languages.Core.InnerExceptionErrorLabel + exception.InnerException.Message;
                 return exceptionMsg + Environment.NewLine + Environment.NewLine + innerExpceptionMsg;
             }
             return exceptionMsg;

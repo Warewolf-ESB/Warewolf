@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ namespace Dev2.Common
     {
         public string GetRandom(enRandomType type, int length, double from, double to)
         {
-            int seed = DateTime.Now.Millisecond;
+            var seed = DateTime.Now.Millisecond;
             if (length < 0 && type != enRandomType.Guid && type != enRandomType.Numbers)
             {
                 throw new ArgumentException(ErrorResource.InvalidLength);
@@ -41,29 +41,19 @@ namespace Dev2.Common
             }
         }
 
-        private string GenerateNumbers(double from, double to, ref int seed)
+        string GenerateNumbers(double from, double to, ref int seed)
         {
             //Added for BUG 9506 to account for when the from is larger thean the to.
             if (from > to)
             {
-                double tmpTo = to;
+                var tmpTo = to;
                 to = from;
                 from = tmpTo;
             }
-            int powerOfTen = (int)Math.Pow(10, GetDecimalPlaces(@from, to));
-            Random rand = GetRandom(ref seed);
+            var powerOfTen = (int)Math.Pow(10, GetDecimalPlaces(@from, to));
+            var rand = GetRandom(ref seed);
             string result;
-            if (powerOfTen != 1)
-                result = (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture);
-            //result = ((double)(rand.Next((int)(from * powerOfTen), (int)((to * powerOfTen) > 0 ? (to * powerOfTen + 1) : (to * powerOfTen)))) / (double)powerOfTen).ToString(CultureInfo.InvariantCulture);
-            else
-            {
-                if (IsInIntRange(from) && IsInIntRange(to))
-                    result = rand.Next((int)from, (int)(to > 0 ? to + 1 : to)).ToString(CultureInfo.InvariantCulture);
-                else
-                    result = Math.Round(rand.NextDouble() * (to - @from) + @from).ToString(CultureInfo.InvariantCulture);
-
-            }
+            result = powerOfTen != 1 ? (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture) : IsInIntRange(from) && IsInIntRange(to) ? rand.Next((int)from, (int)(to > 0 ? to + 1 : to)).ToString(CultureInfo.InvariantCulture) : Math.Round(rand.NextDouble() * (to - @from) + @from).ToString(CultureInfo.InvariantCulture);
             if (result == double.PositiveInfinity.ToString(CultureInfo.InvariantCulture))
             {
                 return double.MaxValue.ToString(CultureInfo.InvariantCulture);
@@ -75,57 +65,58 @@ namespace Dev2.Common
             return result;
         }
 
-        private bool IsInIntRange(double x)
+        bool IsInIntRange(double x)
         {
             return x >= int.MinValue && x <= int.MaxValue;
         }
 
-        private uint GetDecimalPlaces(double from, double to)
+        uint GetDecimalPlaces(double from, double to)
         {
-            double smallest = Math.Min(
+            var smallest = Math.Min(
                 Math.Abs(from),
                 Math.Abs(to)
                 );
-            double largest = Math.Max(
+            var largest = Math.Max(
                 Math.Abs(from),
                 Math.Abs(to)
                 );
             return Math.Max(DecimalPlaces(smallest), DecimalPlaces(largest));
         }
 
-        private uint DecimalPlaces(double x)
+        uint DecimalPlaces(double x)
         {
             uint places = 0;
-            // ReSharper disable once CompareOfFloatsByEqualityOperator
-            // ReSharper disable once EmptyEmbeddedStatement
-            for (; x * Math.Pow(10, places) % 1 != 0; places++) ;
+            while (!((x * Math.Pow(10, places) % 1).Equals(0)))
+            {
+                places++;
+            }
             return places;
         }
-        private string GenerateLetters(int length, ref int seed)
+        string GenerateLetters(int length, ref int seed)
         {
-            int charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
-            int charEnd = charStart + EnvironmentVariables.CharacterMap.LettersLength;
+            var charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
+            var charEnd = charStart + EnvironmentVariables.CharacterMap.LettersLength;
             var result = new StringBuilder();
 
 
             for (int i = 0; i < length; i++)
             {
-                Random rand = GetRandom(ref seed);
+                var rand = GetRandom(ref seed);
                 result.Append((char)rand.Next(charStart, charEnd));
             }
 
             return result.ToString();
         }
 
-        private string GenerateMixed(int length, ref int seed)
+        string GenerateMixed(int length, ref int seed)
         {
             var result = new StringBuilder();
 
             for (int i = 0; i < length; i++)
             {
-                Random rand = GetRandom(ref seed);
+                var rand = GetRandom(ref seed);
 
-                int coinFlip = rand.Next(1, 10);
+                var coinFlip = rand.Next(1, 10);
 
 
                 if (coinFlip < 5)
@@ -143,7 +134,7 @@ namespace Dev2.Common
             return result.ToString();
         }
 
-        private Random GetRandom(ref int seed)
+        Random GetRandom(ref int seed)
         {
             var r = new Random(BitConverter.ToInt32(Guid.NewGuid().ToByteArray(), 0));
             return new Random(seed += r.Next(1, 100000));

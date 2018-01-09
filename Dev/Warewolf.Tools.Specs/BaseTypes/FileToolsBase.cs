@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,12 +20,16 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public class FileToolsBase : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public FileToolsBase(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -38,14 +42,13 @@ namespace Warewolf.Tools.Specs.BaseTypes
         protected void RemovedFilesCreatedForTesting()
         {
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            string destLocation;
-            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out destLocation))
+            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualDestinationHolder, out string destLocation))
             {
-                IActivityIOPath dst = ActivityIOFactory.CreatePathFromString(destLocation,
+                var dst = ActivityIOFactory.CreatePathFromString(destLocation,
                     scenarioContext.Get<string>(CommonSteps.DestinationUsernameHolder),
                     scenarioContext.Get<string>(CommonSteps.DestinationPasswordHolder),
                     true);
-                IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
+                var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(dst);
 
                 if (dstEndPoint.PathIs(dstEndPoint.IOPath) == enPathType.File)
                 {
@@ -53,8 +56,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
-            string sourceLocation;
-            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualSourceHolder, out sourceLocation))
+            if (scenarioContext != null && scenarioContext.TryGetValue(CommonSteps.ActualSourceHolder, out string sourceLocation))
             {
                 if (string.IsNullOrEmpty(sourceLocation))
                 {
@@ -64,11 +66,11 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 {
                     return;
                 }
-                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(sourceLocation,
+                var source = ActivityIOFactory.CreatePathFromString(sourceLocation,
                     scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
                     scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                     true);
-                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 try
                 {
                     broker.Delete(sourceEndPoint);

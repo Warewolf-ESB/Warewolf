@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,13 +21,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     [ToolDescriptorInfo("FileFolder-UnZip", "UnZip", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Unzip")]
     public class DsfUnZip : DsfAbstractMultipleFilesActivity, IUnZip, IPathOverwrite, IPathOutput, IPathInput,
-                            IDestinationUsernamePassword
+                            IDestinationUsernamePassword, IEquatable<DsfUnZip>
     {
         public DsfUnZip()
             : base("Unzip")
@@ -57,8 +57,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if(t.Item1 == Overwrite.ToString())
                 {
-                    bool tmpOverwrite;
-                    bool.TryParse(t.Item2, out tmpOverwrite);
+                    bool.TryParse(t.Item2, out var tmpOverwrite);
                     Overwrite = tmpOverwrite;
                 }
 
@@ -87,7 +86,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override string ExecuteBroker(IActivityOperationsBroker broker, IActivityIOOperationsEndPoint scrEndPoint, IActivityIOOperationsEndPoint dstEndPoint)
         {
-            Dev2UnZipOperationTO zipTo =
+            var zipTo =
                        ActivityIOFactory.CreateUnzipTO(ColItr.FetchNextValue(_archPassItr),
                                                        Overwrite);
             return broker.UnZip(scrEndPoint, dstEndPoint, zipTo);
@@ -104,5 +103,28 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(ArchivePassword, Overwrite.ToString(), OutputPath, InputPath);
         }
         #endregion
+
+        public bool Equals(DsfUnZip other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(ArchivePassword, other.ArchivePassword);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfUnZip) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (base.GetHashCode() * 397) ^ (ArchivePassword != null ? ArchivePassword.GetHashCode() : 0);
+            }
+        }
     }
 }

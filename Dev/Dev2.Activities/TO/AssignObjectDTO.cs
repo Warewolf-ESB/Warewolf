@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,29 +8,36 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 using System.Collections.Generic;
+using System.Linq;
 using Dev2.Common.Interfaces.Interfaces;
 
 namespace Dev2.TO
 {
-    // ReSharper disable once InconsistentNaming
-    public class AssignObjectDTO : ValidatedObject, IDev2TOFn
+
+    public class AssignObjectDTO : ValidatedObject, IDev2TOFn, IEquatable<AssignObjectDTO>
     {
-        private string _fieldName;
-        private string _fieldValue;
-        private int _indexNumber;
-        private bool _isFieldNameFocused;
-        private bool _isFieldValueFocused;
+        string _fieldName;
+        string _fieldValue;
+        int _indexNumber;
+        bool _isFieldNameFocused;
+        bool _isFieldValueFocused;
 
         public AssignObjectDTO()
             : this("[[Variable]]", "Expression", 0)
         {
         }
 
-        public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber, bool inserted = false)
+        public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber)
+            : this(fieldName, fieldValue, indexNumber, false)
+        {
+        }
+
+        public AssignObjectDTO(string fieldName, string fieldValue, int indexNumber, bool inserted)
         {
             _fieldName = fieldName;
             _fieldValue = fieldValue;
@@ -124,13 +131,13 @@ namespace Dev2.TO
 
         public bool CanRemove()
         {
-            bool result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
+            var result = string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue);
             return result;
         }
 
         public bool CanAdd()
         {
-            bool result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
+            var result = !(string.IsNullOrEmpty(FieldName) && string.IsNullOrEmpty(FieldValue));
             return result;
         }
 
@@ -146,12 +153,47 @@ namespace Dev2.TO
             return ruleSet;
         }
 
-        private void RaiseCanAddRemoveChanged()
+        void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+
+        }
+
+        public bool Equals(AssignObjectDTO other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(FieldName, other.FieldName)
+                && string.Equals(FieldValue, other.FieldValue)
+                && IndexNumber == other.IndexNumber
+                && IsFieldNameFocused == other.IsFieldNameFocused
+                && IsFieldValueFocused == other.IsFieldValueFocused
+                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable)
+                && string.Equals(WatermarkTextValue, other.WatermarkTextValue)
+                && Inserted == other.Inserted && OutList.SequenceEqual(other.OutList, StringComparer.Ordinal);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((AssignObjectDTO)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (FieldName != null ? FieldName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FieldValue != null ? FieldValue.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IndexNumber;
+                hashCode = (hashCode * 397) ^ IsFieldNameFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFieldValueFocused.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

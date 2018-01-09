@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,19 +24,22 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
     [Binding]
     public class FindIndexSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public FindIndexSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -46,8 +49,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             var resultVariable = ResultVariable;
-            string resultVar;
-            if (scenarioContext.TryGetValue("resultVariable", out resultVar))
+            if (scenarioContext.TryGetValue("resultVariable", out string resultVar))
             {
                 resultVariable = resultVar;
                 var resultVars = resultVariable.Split(',');
@@ -55,14 +57,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             }
             BuildShapeAndTestData();
 
-            string inField;
-            scenarioContext.TryGetValue("inField", out inField);
-            string index;
-            scenarioContext.TryGetValue("index", out index);
-            string characters;
-            scenarioContext.TryGetValue("characters", out characters);
-            string direction;
-            scenarioContext.TryGetValue("direction", out direction);
+            scenarioContext.TryGetValue("inField", out string inField);
+            scenarioContext.TryGetValue("index", out string index);
+            scenarioContext.TryGetValue("characters", out string characters);
+            scenarioContext.TryGetValue("direction", out string direction);
 
             var findIndex = new DsfIndexActivity
                 {
@@ -113,8 +111,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         [Given(@"I have a Find Index variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAFindIndexVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -128,16 +125,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         [Given(@"a find index recordset")]
         public void GivenAFindIndexRecordset(Table table)
         {
-            List<TableRow> records = table.Rows.ToList();
+            var records = table.Rows.ToList();
 
             if (records.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -148,8 +144,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
 
             foreach (TableRow record in records)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
                 if (variableList == null)
                 {
@@ -164,15 +159,13 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
         public void WhenTheDataFindIndexToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the find index result is ""(.*)""")]
         public void ThenTheFindIndexResultIs(string results)
         {
-            string error;
-            string actualValue;
             if (string.IsNullOrEmpty(results))
             {
                 results = null;
@@ -183,21 +176,19 @@ namespace Dev2.Activities.Specs.Toolbox.Data.FindIndex
             }
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(results, actualValue);
         }
 
         [Then(@"the find index result is")]
         public void ThenTheFindIndexResultIs(Table table)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
 
-            List<string> records = actualValue.Split(',').ToList();
-            List<TableRow> tableRows = table.Rows.ToList();
+            var records = actualValue.Split(',').ToList();
+            var tableRows = table.Rows.ToList();
 
             Assert.AreEqual(tableRows.Count, records.Count);
 

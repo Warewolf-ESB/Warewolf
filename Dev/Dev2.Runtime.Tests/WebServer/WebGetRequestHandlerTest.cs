@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,8 +44,8 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //------------Setup for test--------------------------
 
-            Mock<IPrincipal> principle = new Mock<IPrincipal>();
-            Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            var principle = new Mock<IPrincipal>();
+            var mockIdentity = new Mock<IIdentity>();
             var resourceCatalog = new Mock<IResourceCatalog>();
             var testCatalog = new Mock<ITestCatalog>();
             mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
@@ -61,9 +61,9 @@ namespace Dev2.Tests.Runtime.WebServer
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
 
-            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
-            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            var ctx = new Mock<ICommunicationContext>();
+            var boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
+            var queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
@@ -86,16 +86,16 @@ namespace Dev2.Tests.Runtime.WebServer
         public void WebGetRequestHandler_ProcessRequest_WhenValidUserContextWhenNullDataListID_ExpectExecution()
         {
             //------------Setup for test--------------------------
-            Mock<IPrincipal> principle = new Mock<IPrincipal>();
-            Mock<IIdentity> mockIdentity = new Mock<IIdentity>();
+            var principle = new Mock<IPrincipal>();
+            var mockIdentity = new Mock<IIdentity>();
             mockIdentity.Setup(identity => identity.Name).Returns("FakeUser");
             principle.Setup(p => p.Identity).Returns(mockIdentity.Object);
             ClaimsPrincipal.ClaimsPrincipalSelector = () => new ClaimsPrincipal(principle.Object);
             ClaimsPrincipal.PrimaryIdentitySelector = identities => new ClaimsIdentity(mockIdentity.Object);
 
-            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
-            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, null }, { "wid", Guid.Empty.ToString() } };
+            var ctx = new Mock<ICommunicationContext>();
+            var boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
+            var queryString = new NameValueCollection { { GlobalConstants.DLID, null }, { "wid", Guid.Empty.ToString() } };
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));

@@ -23,13 +23,14 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Warewolf.Exchange.Email.Wrapper;
 
 namespace Dev2.Activities.Exchange
 {
     [ToolDescriptorInfo("Utility-SendMail", "Exchange Send", ToolType.Native, "8926E59B-18A3-03BB-A92F-6090C5C3EA80", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_Exchange_Send")]
-    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>
+    public class DsfExchangeEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfExchangeEmailActivity>
     {
-        private readonly IDev2EmailSender _emailSender;
+        readonly IDev2EmailSender _emailSender;
 
         public DsfExchangeEmailActivity()
             : this(new Dev2EmailSender())
@@ -54,7 +55,7 @@ namespace Dev2.Activities.Exchange
 
         #endregion
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public IExchangeSource SavedSource { get; set; }
 
         [FindMissing]
@@ -64,7 +65,7 @@ namespace Dev2.Activities.Exchange
         [FindMissing]
         public string Bcc { get; set; }
 
-        // ReSharper restore MemberCanBePrivate.Global
+        
         [FindMissing]
         public string Subject { get; set; }
         [FindMissing]
@@ -88,7 +89,7 @@ namespace Dev2.Activities.Exchange
 
         #region Overrides of DsfNativeActivity<string>
 
-        private bool IsDebug
+        bool IsDebug
         {
             get
             {
@@ -103,11 +104,11 @@ namespace Dev2.Activities.Exchange
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-        // ReSharper disable MethodTooLong
+
         protected override void OnExecute(NativeActivityContext context)
-        // ReSharper restore MethodTooLong
+        
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -116,8 +117,8 @@ namespace Dev2.Activities.Exchange
         {
             _dataObject = dataObject;
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            int indexToUpsertTo = 0;
+            var allErrors = new ErrorResultTO();
+            var indexToUpsertTo = 0;
 
             InitializeDebug(dataObject);
             try
@@ -161,8 +162,7 @@ namespace Dev2.Activities.Exchange
                 {
                     while (colItr.HasMoreData())
                     {
-                        ErrorResultTO errors;
-                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = _emailSender.SendEmail(runtimeSource, colItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
                         allErrors.MergeErrors(errors);
                         if (!allErrors.HasErrors())
                         {
@@ -189,7 +189,7 @@ namespace Dev2.Activities.Exchange
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFEmail", e);
+                Dev2Logger.Error("DSFEmail", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 
@@ -228,18 +228,10 @@ namespace Dev2.Activities.Exchange
             AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
-        private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
+        int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
         {
             string expression;
-            if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                expression = Result;
-            }
-            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
+            expression = DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star ? Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture)) : Result;
             foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result, update);
@@ -334,5 +326,48 @@ namespace Dev2.Activities.Exchange
         }
 
         #endregion
+
+        public bool Equals(DsfExchangeEmailActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual(SavedSource, other.SavedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(To, other.To) 
+                && string.Equals(Cc, other.Cc) 
+                && string.Equals(Bcc, other.Bcc) 
+                && string.Equals(Subject, other.Subject)
+                && string.Equals(Attachments, other.Attachments)
+                && string.Equals(Body, other.Body)
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfExchangeEmailActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SavedSource != null ? SavedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Cc != null ? Cc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Bcc != null ? Bcc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Subject != null ? Subject.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Attachments != null ? Attachments.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Body != null ? Body.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

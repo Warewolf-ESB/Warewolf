@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,17 +10,17 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using Infragistics.Calculations.CalcManager;
 
-namespace Dev2.MathOperations {
+namespace Dev2.MathOperations
+{
     public interface IFunction {
         string FunctionName { get; }
         IList<string> arguments { get; }
         IList<string> ArgumentDescriptions { get; }
         string Description { get; }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void CreateCustomFunction(string functionName, List<string> arguments, List<string> argumentDescriptions, string description,
            Func<double[], double> function, IDev2CalculationManager calcManager);
     }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
     [TestClass]
     public class IntallerActionsForDevelopmentTest
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Travis Frisinger")]
@@ -43,7 +43,7 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("InstallerActionsForDevelopment_ExecuteInstallerActions")]
-        // ReSharper disable InconsistentNaming
+        
         public void InstallerActionsForDevelopment_ExecuteInstallerActions_WhenGroupExist_ExpectUserNotAdded()
         {
             var warewolfGroupOps = MoqInstallerActionFactory.CreateSecurityOperationsObject();
@@ -63,6 +63,6 @@ namespace Dev2.Infrastructure.Tests.MoqInstallerActions
             Assert.IsTrue(isAdminAMember);
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,7 +21,6 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using TestingDotnetDllCascading;
 using WarewolfCOMIPC.Client;
@@ -35,7 +33,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
     /// Summary description for ComPluginRuntimeHandlerTest
     /// </summary>
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class ComPluginRuntimeHandlerTest
     {
         public const string adodbConnectionClassId = "00000514-0000-0010-8000-00AA006D2EA4";
@@ -44,7 +42,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         ///Gets or sets the test context which provides
         ///information about and functionality for the current test run.
         ///</summary>
-        // ReSharper disable once UnusedMember.Global
+        
         public TestContext TestContext { get; set; }
 
         [ClassInitialize]
@@ -61,7 +59,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
                     stream.CopyTo(fileStream);
                 }
             }
-            Process regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
+            var regeditProcess = Process.Start("regedit.exe", "/s " + RegistryFilePath);
             regeditProcess.WaitForExit();
         }
 
@@ -137,7 +135,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //---------------Set up test pack-------------------
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
-            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            var args = new ComPluginInvokeArgs
             {
                 ClsId = adodbConnectionClassId,
                 Is32Bit = false,
@@ -164,7 +162,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             //---------------Set up test pack-------------------
             var type = typeof(ComPluginRuntimeHandler);
             var methodInfo = type.GetMethod("BuildValuedTypeParams", BindingFlags.Static | BindingFlags.NonPublic);
-            ComPluginInvokeArgs args = new ComPluginInvokeArgs
+            var args = new ComPluginInvokeArgs
             {
                 ClsId = adodbConnectionClassId,
                 Is32Bit = false,
@@ -268,7 +266,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-        [DeploymentItem("WarewolfCOMIPC.exe")]
+        [DeploymentItem("Warewolf.COMIPC.exe"),DeploymentItem("Warewolf.COMIPC.pdb")]
         public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------
@@ -312,9 +310,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             CreateComPluginSource();
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler();
-            string outString;
             var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "InvalidName", Parameters = svc.Method.Parameters };
-            var run = isolated.Test(args, out outString);
+            var run = isolated.Test(args, out string outString);
             Assert.IsNotNull(run);
             Assert.IsNull(outString);
 
@@ -335,9 +332,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             mock.Setup(wrapper => wrapper.GetInternalStream()).Returns(memoryStream);
             //------------Execute Test-------------------------- -
             var isolated = new ComPluginRuntimeHandler(mock.Object);
-            string outString;
             var args = new ComPluginInvokeArgs { ClsId = adodbConnectionClassId, Fullname = svc.Namespace, Method = "ToString", Parameters = svc.Method.Parameters, Is32Bit = true };
-            var run = isolated.Test(args, out outString);
+            var run = isolated.Test(args, out string outString);
             Assert.IsNotNull(run);
             Assert.IsNotNull(outString);
 
@@ -386,7 +382,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             };
         }
 
-        private static ComPluginService CreatePluginService()
+        static ComPluginService CreatePluginService()
         {
             return CreatePluginService(new ServiceMethod
             {
@@ -394,7 +390,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
             });
         }
 
-        private static ComPluginService CreatePluginService(ServiceMethod method)
+        static ComPluginService CreatePluginService(ServiceMethod method)
         {
             var type = typeof(DummyClassForPluginTest);
 

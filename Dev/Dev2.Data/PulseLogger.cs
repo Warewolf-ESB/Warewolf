@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,16 +17,15 @@ using Dev2.Instrumentation;
 
 namespace Dev2.Data
 {
-    public class PulseLogger : IPulseLogger
+    public class PulseLogger : IPulseLogger, IDisposable
     {
-        readonly Timer _timer;
+        internal readonly Timer _timer;
 
         public PulseLogger(double intervalMs)
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -41,13 +40,11 @@ namespace Dev2.Data
                     GC.GetTotalMemory(false) / 10000000,
                     ServerStats.TotalRequests,
                     ServerStats.TotalTime,
-                    DateTime.Now - Process.GetCurrentProcess().StartTime));
-            }
-                // ReSharper disable EmptyGeneralCatchClause
-            catch
-                // ReSharper restore EmptyGeneralCatchClause
+                    DateTime.Now - Process.GetCurrentProcess().StartTime), "Warewolf System Data");
+            }                
+            catch (Exception err)
             {
-                // cant have any errors here
+                Dev2Logger.Warn(err.Message, "Warewolf Warn");
             }
         }
 
@@ -68,12 +65,17 @@ namespace Dev2.Data
             
         }
 
+        public void Dispose()
+        {
+            _timer.Dispose();
+        }
+
         public double Interval { get; private set; }
 
         #endregion
     }
 
-    public class PulseTracker : IPulseLogger
+    public class PulseTracker : IPulseLogger, IDisposable
     {
         readonly Timer _timer;
 
@@ -81,8 +83,7 @@ namespace Dev2.Data
         {
             Interval = intervalMs;
             _timer = new Timer(Interval);
-            _timer.Elapsed += _timer_Elapsed;
-       
+            _timer.Elapsed += _timer_Elapsed;       
         }
 
         void _timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -95,11 +96,9 @@ namespace Dev2.Data
                     WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = false;
                 }
             }
-                // ReSharper disable EmptyGeneralCatchClause
-            catch
-                // ReSharper restore EmptyGeneralCatchClause
+            catch (Exception err)
             {
-                // cant have any errors here
+                Dev2Logger.Warn(err.Message, "Warewolf Warn");
             }
         }
 
@@ -114,10 +113,13 @@ namespace Dev2.Data
             }
             catch(Exception)
             {
-
                 return false;
             }
-            
+        }
+
+        public void Dispose()
+        {
+            _timer.Dispose();
         }
 
         public double Interval { get; private set; }

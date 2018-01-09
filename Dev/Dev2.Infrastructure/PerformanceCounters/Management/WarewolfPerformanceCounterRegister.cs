@@ -4,13 +4,13 @@ using System.Diagnostics;
 using System.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.PerformanceCounters.Management
 {
     public class WarewolfPerformanceCounterRegister : IWarewolfPerformanceCounterRegister
     {
-        // ReSharper disable once ParameterTypeCanBeEnumerable.Local
+        
         public  WarewolfPerformanceCounterRegister(IList<IPerformanceCounter> counters, IList<IResourcePerformanceCounter> resourcePerformanceCounters  )
         {
             RegisterCountersOnMachine(counters, GlobalConstants.Warewolf);
@@ -34,7 +34,7 @@ namespace Dev2.PerformanceCounters.Management
                 }
                 else
                 {
-                    PerformanceCounterCategory cat = new PerformanceCounterCategory(category);
+                    var cat = new PerformanceCounterCategory(category);
                     if (!counters.All(a => cat.CounterExists(a.Name)))
                     {
                         PerformanceCounterCategory.Delete(category);
@@ -45,7 +45,7 @@ namespace Dev2.PerformanceCounters.Management
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
 
           
@@ -54,16 +54,16 @@ namespace Dev2.PerformanceCounters.Management
 
 
 
-        private static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters, string category)
+        static void CreateAllCounters(IEnumerable<IPerformanceCounter> counters, string category)
         {
-            CounterCreationDataCollection counterCreationDataCollection = new CounterCreationDataCollection();
-            foreach(var counterl in counters)
+            var counterCreationDataCollection = new CounterCreationDataCollection();
+            foreach (var counterl in counters)
             {
                 foreach (var counter in counterl.CreationData())
-                {   
+                {
                     counterCreationDataCollection.Add(counter);
                 }
-               
+
             }
             PerformanceCounterCategory.Create(category, "Warewolf Performance Counters", PerformanceCounterCategoryType.MultiInstance, counterCreationDataCollection);
         }

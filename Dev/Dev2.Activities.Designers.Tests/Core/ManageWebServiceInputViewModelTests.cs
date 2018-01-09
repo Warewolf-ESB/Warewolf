@@ -4,14 +4,11 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.Web_Service_Get;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
-using Dev2.Common.Interfaces.WebService;
-using Dev2.Common.Interfaces.WebServices;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -36,7 +33,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
             //------------Assert Results-------------------------
-            ManageWebServiceInputViewModel vm = new ManageWebServiceInputViewModel(webget, mod);
+            var vm = new ManageWebServiceInputViewModel(webget, mod);
             Assert.IsNotNull(vm.CloseCommand);
             Assert.IsNotNull(vm.PasteResponseCommand);
             Assert.IsNotNull(vm.CloseCommand);
@@ -48,8 +45,8 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestCategory("OutputsRegion_Ctor")]
         public void ManageWebServiceInputViewModel_TestAction()
         {
-            bool called = false;
-            bool calledOk = false;
+            var called = false;
+            var calledOk = false;
 
             var mod = new MyWebModel();
             var act = new DsfWebGetActivity()
@@ -63,7 +60,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
-            ManageWebServiceInputViewModel vm = new ManageWebServiceInputViewModel(webget, mod);
+            var vm = new ManageWebServiceInputViewModel(webget, mod);
             vm.TestAction = () => { called = true; };
             vm.OkAction = () =>
             {
@@ -131,7 +128,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             Assert.IsTrue(inputview.OutputArea.IsEnabled);
             Assert.IsNotNull(inputview.OutputArea.Outputs);
             Assert.IsTrue(inputview.OutputArea.Outputs.Count>0);
-            Assert.AreEqual(3, webget.InputArea.Headers.Count);
+            Assert.AreEqual(2, webget.InputArea.Headers.Count);
         }
 
         [TestMethod]
@@ -335,7 +332,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var webget = new WebServiceGetViewModel(ModelItemUtils.CreateModelItem(act), mod);
 
-            ManageWebServiceInputViewModel vm = new ManageWebServiceInputViewModel(webget, mod);
+            var vm = new ManageWebServiceInputViewModel(webget, mod);
             var lst = new List<IServiceInput>();
             vm.InputArea.Inputs = lst;
             Assert.AreEqual(lst.Count, vm.InputArea.Inputs.Count);

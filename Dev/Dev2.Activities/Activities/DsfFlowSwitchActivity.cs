@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,14 +10,14 @@
 
 using System;
 using System.Collections.Generic;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Warewolf.Core;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
 {
     [ToolDescriptorInfo("ControlFlow-Switch", "Switch", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Switch")]
     public class DsfFlowSwitchActivity : DsfFlowNodeActivity<string>
@@ -27,6 +27,36 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfFlowSwitchActivity()
             : base("Switch")
         {
+        }
+
+        public DsfFlowSwitchActivity(string displayName, IDebugDispatcher debugDispatcher)
+            : this(displayName, debugDispatcher, false)
+        {
+        }
+
+        public DsfFlowSwitchActivity(string displayName, IDebugDispatcher debugDispatcher, bool isAsync)
+            : base(displayName, debugDispatcher, isAsync)
+        {
+        }
+
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();            
+            //if (Switches != null)
+            //{
+            //    foreach (var swt in Switches)
+            //    {
+            //        armConnectors.Add(($"{GetDisplayName()}: {swt.Key}->{swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
+            //    }
+            //}
+            //if (Default != null)
+            //{
+            //    foreach (var dft in Default)
+            //    {
+            //        armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+            //    }
+            //}
+            return armConnectors;
         }
 
         #endregion

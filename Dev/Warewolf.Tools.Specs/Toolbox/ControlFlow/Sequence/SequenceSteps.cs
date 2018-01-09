@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,19 +27,24 @@ using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Interfaces;
+using Dev2.TO;
 
 namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 {
     [Binding]
     public class SequenceSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
-        private readonly CommonSteps _commonSteps;
+        readonly ScenarioContext scenarioContext;
+        readonly CommonSteps _commonSteps;
 
         public SequenceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }
@@ -62,9 +67,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains an Assign ""(.*)"" as")]
         public void GivenContainsAnAssignAs(string parentName, string assignName, Table table)
         {
-            DsfMultiAssignActivity assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
+            var assignActivity = new DsfMultiAssignActivity { DisplayName = assignName };
 
-            foreach(var tableRow in table.Rows)
+            foreach (var tableRow in table.Rows)
             {
                 var value = tableRow["value"];
                 var variable = tableRow["variable"];
@@ -77,8 +82,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                     value = string.Format("!~calculation~!{0}!~~calculation~!", value);
                 }
 
-                List<ActivityDTO> fieldCollection;
-                scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+                scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
                 _commonSteps.AddVariableToVariableList(variable);
 
@@ -90,8 +94,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains an Unique ""(.*)"" as")]
         public void GivenContainsAnUniqueAs(string parentName, string activityName, Table table)
         {
-            DsfUniqueActivity activity = new DsfUniqueActivity { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfUniqueActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Field(s)"];
                 var returnFields = tableRow["Return Fields"];
@@ -112,7 +116,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             _commonSteps.AddVariableToVariableList(resultVariable);
 
-            DsfCalculateActivity calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+            var calculateActivity = new DsfCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, calculateActivity);
 
@@ -123,7 +127,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             _commonSteps.AddVariableToVariableList(resultVariable);
 
-            DsfAggregateCalculateActivity aggCalculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
+            var aggCalculateActivity = new DsfAggregateCalculateActivity { Expression = formula, Result = resultVariable, DisplayName = activityName };
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, aggCalculateActivity);
         }
@@ -133,7 +137,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             _commonSteps.AddVariableToVariableList(result);
 
-            DsfCountRecordsetNullHandlerActivity countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
+            var countRecordsetNullHandlerActivity = new DsfCountRecordsetNullHandlerActivity { CountNumber = result, RecordsetName = recordSet, DisplayName = activityName };
 
             _commonSteps.AddActivityToActivityList(parentName, activityName, countRecordsetNullHandlerActivity);
         }
@@ -141,8 +145,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Delete ""(.*)"" as")]
         public void GivenItContainsDeleteAs(string parentName, string activityName, Table table)
         {
-            DsfDeleteRecordNullHandlerActivity nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var nullHandlerActivity = new DsfDeleteRecordNullHandlerActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var result = tableRow["result"];
                 var variable = tableRow["Variable"];
@@ -161,8 +165,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             var result = resultVariable;
             var recset = recsetToSearch;
             _commonSteps.AddVariableToVariableList(result);
-            DsfFindRecordsMultipleCriteriaActivity activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfFindRecordsMultipleCriteriaActivity { RequireAllFieldsToMatch = false, RequireAllTrue = false, Result = result, FieldsToSearch = recset, DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var matchType = tableRow["Match Type"];
                 var matchValue = tableRow["Match"];
@@ -176,8 +180,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains find unique ""(.*)"" as")]
         public void GivenItContainFindUniqueAs(string parentName, string activityName, Table table)
         {
-            DsfUniqueActivity activity = new DsfUniqueActivity { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfUniqueActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var inFields = tableRow["In Fields"];
                 var returnFields = tableRow["Return Fields"];
@@ -195,8 +199,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains case convert ""(.*)"" as")]
         public void GivenItContainsCaseConvertAs(string parentName, string activityName, Table table)
         {
-            DsfCaseConvertActivity activity = new DsfCaseConvertActivity { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfCaseConvertActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
                 var conversionType = tableRow["Type"];
@@ -217,7 +221,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
                 _commonSteps.AddVariableToVariableList(variable);
 
-                enTypeOfSystemInformationToGather systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
+                var systemInfo = (enTypeOfSystemInformationToGather)Dev2EnumConverter.GetEnumFromStringDiscription(tableRow["Selected"], typeof(enTypeOfSystemInformationToGather));
                 activity.SystemInformationCollection.Add(new GatherSystemInformationTO(systemInfo, variable, 1));
             }
 
@@ -329,8 +333,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Data Split ""(.*)"" as")]
         public void GivenItContainsDataSplitAs(string parentName, string activityName, Table table)
         {
-            DsfDataSplitActivity activity = new DsfDataSplitActivity { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfDataSplitActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var valueToSplit = string.IsNullOrEmpty(tableRow["String"]) ? "" : tableRow["String"];
                 var variable = tableRow["Variable"];
@@ -353,8 +357,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Replace ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsReplaceIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfReplaceActivity activity = new DsfReplaceActivity { Result = resultVariable, DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfReplaceActivity { Result = resultVariable, DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
                 var find = tableRow["Find"];
@@ -372,8 +376,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Find Index ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsFindIndexIntoAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfIndexActivity activity = new DsfIndexActivity { Result = resultVariable, DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfIndexActivity { Result = resultVariable, DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["In Fields"];
                 var index = tableRow["Index"];
@@ -392,8 +396,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains an Create ""(.*)"" as")]
         public void GivenContainsAnCreateAs(string parentName, string activityName, Table table)
         {
-            DsfPathCreate activity = new DsfPathCreate { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfPathCreate { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["File or Folder"];
                 var exist = tableRow["If it exits"];
@@ -416,8 +420,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains an Delete Folder ""(.*)"" as")]
         public void GivenContainsAnDeleteFolderAs(string parentName, string activityName, Table table)
         {
-            DsfPathDelete activity = new DsfPathDelete { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfPathDelete { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Recordset"];
                 //var userName = tableRow["Username"];
@@ -437,8 +441,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Data Merge ""(.*)"" into ""(.*)"" as")]
         public void GivenItContainsDataMergeAs(string parentName, string activityName, string resultVariable, Table table)
         {
-            DsfDataMergeActivity activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfDataMergeActivity { Result = resultVariable, DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variable = tableRow["Variable"];
                 var type = tableRow["Type"];
@@ -455,8 +459,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"""(.*)"" contains Base convert ""(.*)"" as")]
         public void GivenItContainsBaseConvertAs(string parentName, string activityName, Table table)
         {
-            DsfBaseConvertActivity activity = new DsfBaseConvertActivity { DisplayName = activityName };
-            foreach(var tableRow in table.Rows)
+            var activity = new DsfBaseConvertActivity { DisplayName = activityName };
+            foreach (var tableRow in table.Rows)
             {
                 var variableToConvert = tableRow["Variable"];
                 var from = tableRow["From"];
@@ -480,13 +484,11 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             {
                 Action = sequence
             };
-            string errorVariable;
-            scenarioContext.TryGetValue("errorVariable", out errorVariable);
+            scenarioContext.TryGetValue("errorVariable", out string errorVariable);
 
-            string webserviceToCall;
-            scenarioContext.TryGetValue("webserviceToCall", out webserviceToCall);
+            scenarioContext.TryGetValue("webserviceToCall", out string webserviceToCall);
 
-            if(!string.IsNullOrEmpty(errorVariable))
+            if (!string.IsNullOrEmpty(errorVariable))
             {
                 sequence.OnErrorVariable = errorVariable;
             }
@@ -508,7 +510,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 DebugDispatcher.Instance.Remove(Guid.Empty);
             }
             DebugDispatcher.Instance.Add(Guid.Empty, testDebugWriter);
-            IDSFDataObject result = ExecuteProcess(isDebug: true, channel: esbChannel, throwException: false);
+            var result = ExecuteProcess(isDebug: true, channel: esbChannel, throwException: false);
             Thread.Sleep(2000);
             var states = testDebugWriter.DebugStates;
             var debugStates = states.Where(a=>a.StateType!=StateType.Duration).ToList();
@@ -520,9 +522,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
             {
                 DebugDispatcher.Instance.Remove(Guid.Empty);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
                 //May already been removed
             }
@@ -530,9 +532,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
         void CheckDebugStates(IEnumerable<IDebugState> debugStates)
         {
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
-            if(sequence != null)
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
+            if (sequence != null)
             {
                 var innerActivitiesDebugStates = debugStates.Where(state => state.ParentID.GetValueOrDefault().ToString() == sequence.UniqueID.ToString());
                 var count = innerActivitiesDebugStates.Count();
@@ -544,8 +545,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
         DsfSequenceActivity SetupSequence()
         {
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
             return sequence;
         }
 
@@ -561,9 +561,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Given(@"I have a ForEach ""(.*)"" as ""(.*)"" executions ""(.*)""")]
         public void GivenIHaveAForEachAsExecutions(string activityName, string forEachType, string numberOfExecutions)
         {
-            DsfForEachActivity forEachActivity = new DsfForEachActivity { DisplayName = activityName };
-            enForEachType typeOfForEach;
-            Enum.TryParse(forEachType, out typeOfForEach);
+            var forEachActivity = new DsfForEachActivity { DisplayName = activityName };
+            Enum.TryParse(forEachType, out enForEachType typeOfForEach);
 
             forEachActivity.ForEachType = typeOfForEach;
             forEachActivity.NumOfExections = numberOfExecutions;
@@ -576,8 +575,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         {
             BuildDataList();
 
-            DsfForEachActivity forEachActivity;
-            scenarioContext.TryGetValue(activityName, out forEachActivity);
+            scenarioContext.TryGetValue(activityName, out DsfForEachActivity forEachActivity);
 
             var sequence = SetupSequence();
             var activityFunc = new ActivityFunc<string, bool> { Handler = sequence };
@@ -590,10 +588,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
 
             PerformExecution();
 
-            List<IDebugState> debugStates;
-            scenarioContext.TryGetValue("DebugStates", out debugStates);
+            scenarioContext.TryGetValue("DebugStates", out List<IDebugState> debugStates);
 
-            if(debugStates.Count > 0)
+            if (debugStates.Count > 0)
             {
                 var sequenceDebugState = debugStates.Where(state => state.DisplayName == sequence.DisplayName);
                 var debugStateOfSequence = sequenceDebugState as IDebugState[] ?? sequenceDebugState.ToArray();
@@ -601,8 +598,7 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
                 Assert.IsTrue(debugStateOfSequence.All(state => state.ParentID.GetValueOrDefault().ToString() == forEachActivity.UniqueID));
             }
 
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             activityList.Add(activityName, forEachActivity);
         }
 
@@ -610,10 +606,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Then(@"the ""(.*)"" debug inputs as")]
         public void ThenDebugInputsAs(string toolName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
             var sequenceActivity = sequence.Activities.ToList().FirstOrDefault(activity => activity.DisplayName == toolName) ?? activityList[toolName];
             var actualDebugItems = GetDebugInputItemResults(sequenceActivity);
             _commonSteps.ThenTheDebugInputsAs(table, actualDebugItems);
@@ -622,17 +616,15 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Sequence
         [Then(@"the ""(.*)"" debug outputs as")]
         public void ThenDebugOutputsAs(string toolName, Table table)
         {
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
-            DsfSequenceActivity sequence;
-            scenarioContext.TryGetValue("activity", out sequence);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
+            scenarioContext.TryGetValue("activity", out DsfSequenceActivity sequence);
             var sequenceActivity = sequence.Activities.ToList().FirstOrDefault(activity => activity.DisplayName == toolName) ?? activityList[toolName];
             var actualDebugItems = GetDebugOutputItemResults(sequenceActivity);
             _commonSteps.ThenTheDebugOutputAs(table, actualDebugItems);
         }
     }
 
-    internal class TestDebugWriter : IDebugWriter
+    class TestDebugWriter : IDebugWriter
     {
         public List<IDebugState> DebugStates
         {

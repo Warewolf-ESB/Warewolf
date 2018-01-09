@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,9 +15,9 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Factories
-// ReSharper restore CheckNamespace
+
 {
     public static class DsfActivityFactory
     {
@@ -29,11 +29,7 @@ namespace Dev2.Studio.Core.Factories
             {
                 if(ifNullCreateNew)
                 {
-                    if (resource.ServerResourceType == "WebService")
-                    {
-                        activityToUpdate = new DsfWebserviceActivity();
-                    }
-                    else if (resource.ServerResourceType == "PluginService")
+                    if (resource.ServerResourceType == "PluginService")
                     {
                         activityToUpdate = new DsfPluginActivity();
                     }
@@ -82,14 +78,22 @@ namespace Dev2.Studio.Core.Factories
 
         static DsfActivity SetActivityProperties(IContextualResourceModel resource, DsfActivity activity)
         {
-            
-            switch(resource.ResourceType)
+
+            switch (resource.ResourceType)
             {
                 case ResourceType.WorkflowService:
                     WorkflowPropertyInterigator.SetActivityProperties(resource, ref activity);
                     break;
                 case ResourceType.Service:
-                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity,resource.Environment.ResourceRepository);
+                    WorkerServicePropertyInterigator.SetActivityProperties(resource, ref activity, resource.Environment.ResourceRepository);
+                    break;
+                case ResourceType.Source:
+                    break;
+                case ResourceType.Unknown:
+                    break;
+                case ResourceType.Server:
+                    break;
+                default:
                     break;
             }
             return activity;

@@ -1,17 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.ExtMethods;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel;
@@ -20,10 +16,9 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class FetchPluginConstructors : IEsbManagementEndpoint
+    public class FetchPluginConstructors : DefaultEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _catalog;
+        readonly IResourceCatalog _catalog;
 
         public FetchPluginConstructors(IResourceCatalog catalog)
         {
@@ -34,21 +29,15 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
         }
 
-
-        public string HandlesType()
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            return "FetchPluginConstructors";
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
-        {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 
                 var pluginSource = values["source"].DeserializeToObject<PluginSourceDefinition>();
                 var ns = values["namespace"].DeserializeToObject<INamespaceItem>();
-                // ReSharper disable MaximumChainedReferences
+                
                 var services = new PluginServices();
                 var src = Resources.GetResource<PluginSource>(GlobalConstants.ServerWorkspaceID, pluginSource.Id);
                 var svc = new PluginService();
@@ -62,7 +51,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     svc.Source = src;
                 }
                 var serviceConstructorList = services.Constructors(svc, Guid.Empty, Guid.Empty);
-                List<IPluginConstructor> constructors = serviceConstructorList.Select(a => new PluginConstructor
+                var constructors = serviceConstructorList.Select(a => new PluginConstructor
                 {
                     ConstructorName = BuildConstructorName(a.Parameters.Select(parameter => parameter.ShortTypeName)),
                     Inputs = a.Parameters.Cast<IConstructorParameter>().ToList(),
@@ -81,7 +70,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        private string BuildConstructorName(IEnumerable<string> parameters)
+        string BuildConstructorName(IEnumerable<string> parameters)
         {
             var enumerable = parameters as string[] ?? parameters.ToArray();
             var name = new StringBuilder(".ctor ");
@@ -100,27 +89,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return name.ToString();
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
-
         public IResourceCatalog Resources => _catalog ?? ResourceCatalog.Instance;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "FetchPluginConstructors";
     }
 }

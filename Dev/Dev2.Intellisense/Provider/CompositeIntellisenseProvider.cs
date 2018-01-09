@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors
 {
     public class CompositeIntellisenseProvider : List<IIntellisenseProvider>, IIntellisenseProvider
@@ -45,7 +45,7 @@ namespace Dev2.Studio.InterfaceImplementors
                 {
                     if(results.All(r => r.IsError) || context.DesiredResultSet == IntellisenseDesiredResultSet.EntireSet)
                     {
-                        IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
+                        var subset = provider.GetIntellisenseResults(context);
                         results.AddRange(subset);
                     }
                 }
@@ -61,7 +61,7 @@ namespace Dev2.Studio.InterfaceImplementors
                        return results;
                     }
 
-                    IList<IntellisenseProviderResult> subset = provider.GetIntellisenseResults(context);
+                    var subset = provider.GetIntellisenseResults(context);
                     results.AddRange(subset);
                 }
             }
@@ -71,7 +71,11 @@ namespace Dev2.Studio.InterfaceImplementors
 
         public void Dispose()
         {
-            for(int i = 0; i < Count; i++) this[i].Dispose();
+            for(int i = 0; i < Count; i++)
+            {
+                this[i].Dispose();
+            }
+
             Clear();
         }
 

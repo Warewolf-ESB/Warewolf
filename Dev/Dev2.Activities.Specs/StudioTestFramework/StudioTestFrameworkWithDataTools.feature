@@ -22,9 +22,9 @@ Background: Setup for workflows for tests
 			| [[returnVal]]  |
 		Given I have "Workflow 3" with inputs as
 			| Input Var Name |
-			| [[A]]              |
-			| [[B]]              |
-			| [[C]]              |
+			| [[A]]          |
+			| [[B]]          |
+			| [[C]]          |
 		And "Workflow 3" has outputs as
 			| Ouput Var Name |
 			| [[message]]    |

@@ -9,12 +9,12 @@ using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
 {
-    // ReSharper disable once InconsistentNaming
+    
     public class ManageRabbitMQSourceModel : IRabbitMQSourceModel
     {
-        private readonly IStudioUpdateManager _updateManager;
-        private readonly IQueryManager _queryManager;
-        private readonly IShellViewModel _shellViewModel;
+        readonly IStudioUpdateManager _updateManager;
+        readonly IQueryManager _queryManager;
+        readonly IShellViewModel _shellViewModel;
 
         public ManageRabbitMQSourceModel(IStudioUpdateManager updateManager, IQueryManager queryManager, IShellViewModel shellViewModel)
         {

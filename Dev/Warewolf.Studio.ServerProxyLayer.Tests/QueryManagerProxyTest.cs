@@ -19,10 +19,10 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-
-// ReSharper disable AccessToForEachVariableInClosure
-// ReSharper disable InconsistentNaming
-// ReSharper disable UnusedVariable
+using System.Windows;
+using System.Threading.Tasks;
+using Dev2.Common.Interfaces.Explorer;
+using System.Threading;
 
 namespace Warewolf.Studio.ServerProxyLayer.Test
 {
@@ -42,7 +42,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
 
             //------------Assert Results-------------------------
             Assert.IsNotNull(queryManagerProxy.CommunicationControllerFactory);
-            PrivateObject p = new PrivateObject(queryManagerProxy);
+            var p = new PrivateObject(queryManagerProxy);
             Assert.IsNotNull(p.GetField("Connection"));
         }
 
@@ -52,7 +52,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_DBSources_ShowServerDisconnected()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             ErrorRunTest("FetchDbSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count, 0), a => a.FetchDbSources());
         }
@@ -63,7 +63,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_DBSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchDbSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count, 0), a => a.FetchDbSources());
         }
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchDependantsFromServerService()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             var msg = new ExecuteMessage() { HasError = false, Message = res };
             var id = Guid.NewGuid();
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchDependenciesFromServerService()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             var msg = new ExecuteMessage() { HasError = false, Message = res };
             var id = Guid.NewGuid();
@@ -100,7 +100,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_GetComputerNamesService()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("GetComputerNamesService", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count, 0), a => a.GetComputerNames());
         }
@@ -112,7 +112,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_GetComputerNamesService_Error()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("GetComputerNamesService", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count, 0), a => a.GetComputerNames());
         }
@@ -125,7 +125,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchFiles()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetFiles", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("fileListing", new FileListing()) }, a => Assert.AreEqual(a.Count, 0), a => a.FetchFiles(new FileListing()));
         }
@@ -137,7 +137,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchFiles_error()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetFiles", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("fileListing", new FileListing()) }, a => Assert.AreEqual(a.Count, 0), a => a.FetchFiles(new FileListing()));
         }
@@ -149,7 +149,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchFilesroot()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetFiles", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { }, a => Assert.AreEqual(a.Count, 0), a => a.FetchFiles());
         }
@@ -161,7 +161,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchFilesroot_error()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetFiles", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { }, a => Assert.AreEqual(a.Count, 0), a => a.FetchFiles());
         }
@@ -173,7 +173,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchNamespaces()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchPluginNameSpaces", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new PluginSourceDefinition()) }, a => Assert.AreEqual(a.Count, 0), a => a.FetchNamespaces(new PluginSourceDefinition()));
         }
@@ -184,7 +184,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchConstructors()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IPluginConstructor>());
             var ns = new Mock<INamespaceItem>();
             RunTest("FetchPluginConstructors", new ExecuteMessage()
@@ -204,7 +204,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchConstructors_GivenEnvHasObjectVariablesAddsvariables()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IPluginConstructor>());
             var aggr = new Mock<IEventAggregator>();
             var dataListViewModel = new DataListViewModel(aggr.Object);
@@ -230,7 +230,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_FetchNamespaces_error()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchPluginNameSpaces", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new PluginSourceDefinition()) }, a => Assert.AreEqual(a.Count, 0), a => a.FetchNamespaces(new PluginSourceDefinition()));
         }
@@ -242,7 +242,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_GetDllListings()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetDllListingsService", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }, a => Assert.AreEqual(a.Count, 0), a => a.GetDllListings(new FileListing()));
         }
@@ -254,7 +254,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_GetDllListings_Error()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetDllListingsService", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }, a => Assert.AreEqual(a.Count, 0), a => a.GetDllListings(new FileListing()));
         }
@@ -264,7 +264,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_GetCOMDllListings()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetComDllListingsService", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }
             , a => Assert.AreEqual(a.Count, 0), a => a.GetComDllListings(new FileListing()));
@@ -277,7 +277,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_GetComDllListings_Error()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTestStringArgs("GetComDllListingsService", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("currentDllListing", new FileListing()) }
             , a => Assert.AreEqual(a.Count, 0), a => a.GetComDllListings(new FileListing()));
@@ -289,7 +289,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_DBActions()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchDbActions", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new DbSourceDefinition()) }, a => Assert.AreEqual(a.Count, 0), a => a.FetchDbActions(new Mock<IDbSource>().Object));
         }
@@ -302,7 +302,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_DBActionsError()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchDbActions", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("source", new DbSourceDefinition()) }, a => Assert.AreEqual(a.Count, 0), a => a.FetchDbActions(new Mock<IDbSource>().Object));
         }
@@ -314,7 +314,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_DBSources_HasError()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchDbSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count, 0), a => a.FetchDbSources());
         }
@@ -325,7 +325,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_WebSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchWebServiceSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchWebServiceSources());
         }
@@ -337,7 +337,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_WebSourcesError()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchWebServiceSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchWebServiceSources());
         }
@@ -349,7 +349,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_ResourceXML()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IPluginSource>());
             RunTestStringArgs("FetchResourceDefinitionService", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>> { new Tuple<string, object>("ResourceID", Guid.NewGuid()) }, a => Assert.IsNotNull(a), a => a.FetchResourceXaml(Guid.NewGuid()));
         }
@@ -360,7 +360,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_PlugintSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IPluginSource>());
             RunTest("FetchPluginSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchPluginSources());
         }
@@ -370,7 +370,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_ComPlugintSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IComPluginSource>());
             RunTest("FetchComPluginSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchComPluginSources());
         }
@@ -383,7 +383,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_PluginSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IPluginSource>());
             RunTest("FetchPluginSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchPluginSources());
         }
@@ -395,7 +395,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_ComPluginSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IComPluginSource>());
             RunTest("FetchComPluginSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchComPluginSources());
         }
@@ -406,7 +406,7 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_RabbitSources()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest("FetchRabbitMQServiceSources", new ExecuteMessage() { HasError = false, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchRabbitMQServiceSources());
         }
@@ -420,12 +420,62 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
         public void QueryManagerProxy_Fetch_RabbitSourcesError()
         {
             var message = new ExecuteMessage();
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res = ser.SerializeToBuilder(new List<IRabbitMQServiceSourceDefinition>());
             RunTest<IEnumerable<IRabbitMQServiceSourceDefinition>>("FetchRabbitMQServiceSources", new ExecuteMessage() { HasError = true, Message = res }, new List<Tuple<string, object>>(), a => Assert.AreEqual(a.Count(), 0), a => a.FetchRabbitMQServiceSources());
         }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec_ShouldLoadExplorerItemsShowPopup()
+        {
+            //------------Setup for test--------------------------
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(true);
+            comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
+            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var item = queryManagerProxy.Load(false).Result;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(item);
+            mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.AtLeastOnce);
+        }
 
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void QueryManagerProxy_LoadExplorer_WhenLongerThan30Sec__Localhost_ShouldLoadExplorerItemsNotShowPopup()
+        {
+            //------------Setup for test--------------------------
+            SynchronizationContext.SetSynchronizationContext(new SynchronizationContext());
+            var comms = new Mock<ICommunicationControllerFactory>();
+            var env = new Mock<IEnvironmentConnection>();
+            var controller = new Mock<ICommunicationController>();
+            env.Setup(a => a.WorkspaceID).Returns(Guid.NewGuid);
+            env.Setup(a => a.DisplayName).Returns("localhost");
+            env.Setup(a => a.IsConnected).Returns(true);
+            env.Setup(e => e.IsLocalHost).Returns(true);
+            comms.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(controller.Object);
+            var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
+            controller.Setup(a => a.ExecuteCompressedCommandAsync<IExplorerItem>(env.Object, It.IsAny<Guid>())).Returns(Task.Delay(70000).ContinueWith(t => new Mock<IExplorerItem>().Object));
+            var mockPopupController = new Mock<IPopupController>();
+            mockPopupController.Setup(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false)).Returns(MessageBoxResult.OK);
+            CustomContainer.Register(mockPopupController.Object);
+            //------------Execute Test---------------------------
+            var item = queryManagerProxy.Load(false).Result;
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(item);
+            mockPopupController.Verify(popup => popup.Show(It.IsAny<string>(), It.IsAny<string>(), MessageBoxButton.OK, MessageBoxImage.Warning, "", false, false, true, false, false, false), Times.Never);
+
+        }
         public void ErrorRunTest<T>(string svcName, ExecuteMessage message, IList<Tuple<string, Object>> args, Action<T> resultAction, Func<IQueryManager, T> action)
         {
             //------------Setup for test--------------------------
@@ -439,10 +489,10 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController(svcName)).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
             //------------Execute Test---------------------------
-            T res = action(queryManagerProxy);
+            var res = action(queryManagerProxy);
             //------------Assert Results-------------------------
 
             foreach (var tuple in args)
@@ -465,10 +515,10 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController(svcName)).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
             //------------Execute Test---------------------------
-            T res = action(queryManagerProxy);
+            var res = action(queryManagerProxy);
             //------------Assert Results-------------------------
 
             foreach (var tuple in args)
@@ -491,10 +541,10 @@ namespace Warewolf.Studio.ServerProxyLayer.Test
             var controller = new Mock<ICommunicationController>();
             comms.Setup(a => a.CreateController(svcName)).Returns(controller.Object);
             var queryManagerProxy = new QueryManagerProxy(comms.Object, env.Object);
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             controller.Setup(a => a.ExecuteCommand<ExecuteMessage>(env.Object, It.IsAny<Guid>())).Returns(message);
             //------------Execute Test---------------------------
-            T res = action(queryManagerProxy);
+            var res = action(queryManagerProxy);
             //------------Assert Results-------------------------
 
             foreach (var tuple in args)

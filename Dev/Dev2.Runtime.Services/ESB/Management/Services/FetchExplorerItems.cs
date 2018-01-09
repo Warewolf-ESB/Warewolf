@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,42 +12,22 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBeInternal
-// ReSharper disable MemberCanBePrivate.Global
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchExplorerItems : IEsbManagementEndpoint
+    public class FetchExplorerItems : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
-        public AuthorizationContext GetAuthorizationContextForService()
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            return AuthorizationContext.Any;
-        }
-
-        private IExplorerServerResourceRepository _serverExplorerRepository;
-      
-        public string HandlesType()
-        {
-            return "FetchExplorerItemsService";
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
-        {
-            Dev2Logger.Info("Fetch Explorer Items");
+            Dev2Logger.Info("Fetch Explorer Items", GlobalConstants.WarewolfInfo);
 
             var serializer = new Dev2JsonSerializer();
             try
@@ -56,14 +36,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException(nameof(values));
                 }
-                StringBuilder tmp;
-                values.TryGetValue("ReloadResourceCatalogue", out tmp);
-                string reloadResourceCatalogueString = "";
+                values.TryGetValue("ReloadResourceCatalogue", out StringBuilder tmp);
+                var reloadResourceCatalogueString = "";
                 if (tmp != null)
                 {
                     reloadResourceCatalogueString = tmp.ToString();
                 }
-                bool reloadResourceCatalogue = false;
+                var reloadResourceCatalogue = false;
                 if (!string.IsNullOrEmpty(reloadResourceCatalogueString))
                 {
 
@@ -75,32 +54,37 @@ namespace Dev2.Runtime.ESB.Management.Services
                 if (reloadResourceCatalogue)
                 {
                     var exeManager = CustomContainer.Get<IExecutionManager>();
-                    exeManager?.StartRefresh();
-                    ResourceCatalog.Instance.Reload();
-                    exeManager?.StopRefresh();
+                    if (exeManager != null)
+                    {
+                        if (!exeManager.IsRefreshing)
+                        {
+                            exeManager.StartRefresh();
+                            ResourceCatalog.Instance.Reload();
+                            exeManager.StopRefresh();                            
+                        }                        
+                    }
                 }
-                var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
-                message.SetMessage(serializer.Serialize(item));
-                return serializer.SerializeToBuilder(message);
+                return serializer.SerializeToBuilder(GetExplorerItems(serializer, reloadResourceCatalogue));
             }
             catch (Exception e)
             {
-                Dev2Logger.Info("Fetch Explorer Items Error", e);
+                Dev2Logger.Info("Fetch Explorer Items Error", e, GlobalConstants.WarewolfInfo);
                 IExplorerRepositoryResult error = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
                 return serializer.SerializeToBuilder(error);
             }
+            finally
+            {
+                var exeManager = CustomContainer.Get<IExecutionManager>();
+                exeManager?.StopRefresh();
+            }
         }
 
-        public DynamicService CreateServiceEntry()
+        CompressedExecuteMessage GetExplorerItems(Dev2JsonSerializer serializer, bool reloadResourceCatalogue)
         {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
+            var item = ServerExplorerRepo.Load(GlobalConstants.ServerWorkspaceID, reloadResourceCatalogue);
+            var message = new CompressedExecuteMessage();
+            message.SetMessage(serializer.Serialize(item));
+            return message;
         }
 
         public IExplorerServerResourceRepository ServerExplorerRepo
@@ -108,5 +92,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
             set { _serverExplorerRepository = value; }
         }
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "FetchExplorerItemsService";
     }
 }

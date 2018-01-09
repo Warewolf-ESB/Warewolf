@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.ConverterTests
 {
     [TestClass]
@@ -30,7 +30,7 @@ namespace Dev2.Core.Tests.ConverterTests
         {
             //Arrange
             var converter = new DeployViewConnectedToVisiblityConverter();
-            Mock<IEnvironmentConnection> mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(m => m.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockEnvironmentConnection.Setup(m => m.IsConnected).Returns(false);
             IServer server = new Server(Guid.NewGuid(), mockEnvironmentConnection.Object);
@@ -48,7 +48,7 @@ namespace Dev2.Core.Tests.ConverterTests
         {
             //Arrange
             var converter = new DeployViewConnectedToVisiblityConverter();
-            Mock<IEnvironmentConnection> mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
+            var mockEnvironmentConnection = new Mock<IEnvironmentConnection>();
             mockEnvironmentConnection.Setup(m => m.ServerEvents).Returns(new Mock<IEventPublisher>().Object);
             mockEnvironmentConnection.Setup(m => m.IsConnected).Returns(true);
             IServer server = new Server(Guid.NewGuid(), mockEnvironmentConnection.Object);

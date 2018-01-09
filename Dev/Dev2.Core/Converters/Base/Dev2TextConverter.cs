@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters
 {
-    internal class Dev2TextConverter : IBaseConverter
+    class Dev2TextConverter : IBaseConverter
     {
         public string ConvertToBase(byte[] payload)
         {
@@ -29,7 +29,6 @@ namespace Dev2.Converters
 
         public bool IsType(string payload)
         {
-            //2013.02.13: Ashley Lewis - Bug 8725, Task 8836
             return true;
         }
 

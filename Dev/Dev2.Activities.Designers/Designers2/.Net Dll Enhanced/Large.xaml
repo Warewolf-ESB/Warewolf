@@ -36,14 +36,14 @@
     </core:ActivityDesignerTemplate.Resources>
 
     <core:ActivityDesignerTemplate.RightButtons>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="{Binding ButtonDisplayValue}"
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
-        <!-- ReSharper restore UnusedMember.Global -->
+        
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid x:Name="MainGrid" Margin="{StaticResource ElementBorder}">
@@ -432,7 +432,7 @@
                   Margin="{StaticResource ControlBorderTop}" >
                 <errors:OnError />
             </Grid>
-            <!-- ReSharper restore UnusedMember.Global -->
+            
         </Grid>
     </Grid>
 </core:ActivityDesignerTemplate>

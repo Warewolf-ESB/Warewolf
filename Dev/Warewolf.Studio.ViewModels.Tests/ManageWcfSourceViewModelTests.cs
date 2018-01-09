@@ -8,13 +8,14 @@ using Moq;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.SaveDialog;
 using Dev2.Studio.Interfaces;
+using System.Text;
+using System.Xml.Linq;
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
     [TestClass]
     public class ManageWcfSourceViewModelTests
     {
-        public const string TestOwner = "Bernardt Joubert";
         public const string Category = "Exchange Email";
 
         public ManageWcfSourceViewModel GetModel()
@@ -25,7 +26,6 @@ namespace Warewolf.Studio.ViewModels.Tests
                 Name = "TestWcf",
                 EndpointUrl = "http/test/com"
             };
-
             var updateManager = new Mock<IWcfSourceModel>();
             updateManager.Setup(model => model.ServerName).Returns("Test");
             updateManager.Setup(model => model.FetchSource(It.IsAny<Guid>())).Returns(sourceModel);
@@ -34,7 +34,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                                                 .Callback<Func<IWcfServerSource>, Action<IWcfServerSource>>((func, action) =>
                                                 {
                                                     var wcfSource = func.Invoke();
-                                                    action(wcfSource);
+                                                    action?.Invoke(wcfSource);
                                                 });
             var manageWcfSourceViewModel = new ManageWcfSourceViewModel(updateManager.Object, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), sourceModel, asyncWorker.Object, new Mock<IServer>().Object);
             return manageWcfSourceViewModel;
@@ -48,36 +48,31 @@ namespace Warewolf.Studio.ViewModels.Tests
             var task = new Task<IRequestServiceNameViewModel>(() => mockRequestServiceNameViewModel.Object);
             mockRequestServiceNameViewModel.Setup(m => m.ResourceName).Returns(new ResourceName("", "test"));
             mockRequestServiceNameViewModel.Setup(m => m.ShowSaveDialog()).Returns(MessageBoxResult.OK);
-
-
             task.Start();
-
             return new ManageWcfSourceViewModel(new ManageWcfSourceModel(new Mock<IStudioUpdateManager>().Object, new Mock<IQueryManager>().Object),task, new Microsoft.Practices.Prism.PubSubEvents.EventAggregator(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object);
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InstantiateNewModel_Returns_Success()
         {
             var model = GetModel();
             model.UpdateHelpDescriptor("Test");
-
             Assert.IsNotNull(model);
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InstantiateNewTestModel_Returns_Success()
         {
             var model = TestModel();
-
             Assert.IsNotNull(model);
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeProperties_Returns_Success()
         {
@@ -90,8 +85,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             model.Name = " test";
             model.HeaderText = "Testwcf";
             model.CancelTestCommand = null;
-            
-
             Assert.IsNull(model.RefreshCommand);
             Assert.IsNull(model.CancelTestCommand);
             Assert.IsNotNull(model.ResourceName);
@@ -105,15 +98,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeTestProperties_Returns_Success()
         {
             var model = GetModel();
             model.TestMessage = "Testing";
             model.Testing = true;
-            model.EndpointUrl = "test";
-           
+            model.EndpointUrl = "test";           
             Assert.IsNotNull(model.EndpointUrl);
             Assert.IsNotNull(model.TestMessage);
             Assert.IsFalse(model.TestFailed);
@@ -122,7 +114,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeTestNullEndpointUrl_Returns_Success()
         {
@@ -131,7 +123,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             model.Testing = false;
             model.EndpointUrl = null;
             model.TestFailed = false;
-
             Assert.IsNull(model.EndpointUrl);
             Assert.IsNotNull(model.TestMessage);
             Assert.IsFalse(model.TestFailed);
@@ -141,16 +132,14 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_InitialIzeTestCanTestTrue_Returns_Success()
         {
             var model = GetModel();
             model.TestMessage = "Testing";
             model.Testing = false;
-
             model.TestFailed = false;
-
             Assert.IsNotNull(model.EndpointUrl);
             Assert.IsNotNull(model.TestMessage);
             Assert.IsFalse(model.TestFailed);
@@ -160,72 +149,64 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_CancelTest_Returns_Success()
         {
             var model = GetModel();
             model.TestMessage = "Testing";
-            model.Testing = false;
-
-            
+            model.Testing = false;            
             Assert.IsFalse(model.CanCancelTest());
         }
        
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_CancelTestCommand_Returns_Success()
         {
             var model = GetModel();
             model.CancelTestCommand.Execute(null);
-
             Assert.IsFalse(model.CanCancelTest());
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToNewSource_Returns_Success()
         {
             var model = GetModel();
             model.ToNewSource();
-
             Assert.IsFalse(model.CanCancelTest());
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToModel_Returns_Success()
         {
             var model = GetModel();
             model.ToModel();
-
             Assert.IsFalse(model.CanCancelTest());
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToModelItemNotNull_Returns_Success()
         {
             var model = GetModel();
             model.Item = new WcfServiceSourceDefinition();
             model.ToModel();
-
             Assert.IsFalse(model.CanCancelTest());
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_SaveConnection_Returns_Success()
         {
             var model = TestModel();
-
-
             model.Item = new WcfServiceSourceDefinition()
             {
                 Name = "Test",
@@ -233,20 +214,17 @@ namespace Warewolf.Studio.ViewModels.Tests
             };
             model.SaveCommand.Execute(null);
             model.Save();
-
             Assert.IsFalse(model.CanCancelTest());
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         public void WcfSource_ToSourceNullResource_Returns_Success()
         {
             var model = TestModel();
-
             model.ToSource();
-            model.TestPassed = true;
-            
+            model.TestPassed = true;            
             Assert.IsNotNull(model.RequestServiceNameViewModel);
             Assert.IsFalse(model.CanCancelTest());
             Assert.IsTrue(model.CanSave());
@@ -254,17 +232,52 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        [Owner(TestOwner)]
+        [Owner("Bernardt Joubert")]
         [TestCategory(Category)]
         [ExpectedException(typeof(NullReferenceException))]
         public void WcfSource_RequestServiceModelThrows_Returns_Exeption()
         {
             var model = GetModel();
-
             model.ToSource();
             model.TestPassed = true;
-
             var requestModel = model.RequestServiceNameViewModel;
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory(Category)]
+        public void WcfSource_FetchSource_Returns_IWcfServerSource()
+        {
+            //setup
+            var studioUpdateManager = new Mock<IStudioUpdateManager>();
+            var queryManager = new Mock<IQueryManager>();            
+            var value = new StringBuilder(@"<Source ID=""00000000-0000-0000-0000-000000000000"" Name=""NewWcfSource"" ResourceType=""Wcf"" IsValid=""true"" ServerType=""Wcf"" Type=""WcfSource"" ConnectionString=""No Wcf Connection!"" ServerVersion=""0.0.0.0"" ServerID=""00000000-0000-0000-0000-000000000000"">
+  <DisplayName>NewWcfSource</DisplayName>
+  <AuthorRoles>
+  </AuthorRoles>
+  <ErrorMessages />
+  <AuthorRoles>
+  </AuthorRoles>
+  <Comment>
+  </Comment>
+  <HelpLink>
+  </HelpLink>
+  <Tags>
+  </Tags>
+  <UnitTestTargetWorkflowService>
+  </UnitTestTargetWorkflowService>
+  <BizRule>
+  </BizRule>
+  <WorkflowActivityDef>
+  </WorkflowActivityDef>
+</Source>");
+            queryManager.Setup(proxy => proxy.FetchResourceXaml(It.IsAny<Guid>())).Returns(value);
+            var manageWcfSourceViewModel = new ManageWcfSourceModel(studioUpdateManager.Object, queryManager.Object);
+            //exe
+            var source = manageWcfSourceViewModel.FetchSource(Guid.Empty);
+            //assert
+            Assert.IsNotNull(source, "No source returned from Wcf service get source method.");
+            Assert.AreEqual("NewWcfSource", source.Name, "Wrong source name returned from Wcf service get source method.");
         }
     }
 }

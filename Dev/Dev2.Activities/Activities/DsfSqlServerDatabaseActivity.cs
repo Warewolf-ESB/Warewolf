@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -12,15 +13,15 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable ConvertToAutoProperty
+
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("MicrosoftSQL", "SQL Server", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_SQL_Server")]
-    public class DsfSqlServerDatabaseActivity : DsfActivity
+    public class DsfSqlServerDatabaseActivity : DsfActivity,IEquatable<DsfSqlServerDatabaseActivity>
     {
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
         public string ProcedureName { get; set; }
 
@@ -30,7 +31,7 @@ namespace Dev2.Activities
             Type = "SQL Server Database";
             DisplayName = "SQL Server Database";
         }
-        
+
         protected override void ExecutionImpl(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO errors, int update)
         {
             var execErrors = new ErrorResultTO();
@@ -42,15 +43,19 @@ namespace Dev2.Activities
                 errors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            if(databaseServiceExecution != null)
+            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
+                if (databaseServiceExecution.SourceIsNull())
+                {
+                    databaseServiceExecution.GetSource(SourceId);
+                }
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
             }
+
             ServiceExecution.Execute(out execErrors, update);
             var fetchErrors = execErrors.FetchErrors();
-            foreach(var error in fetchErrors)
+            foreach (var error in fetchErrors)
             {
                 dataObject.Environment.Errors.Add(error);
             }
@@ -69,7 +74,7 @@ namespace Dev2.Activities
             {
                 foreach (var serviceInput in Inputs)
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(serviceInput.Value, serviceInput.Name, env, update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -78,7 +83,7 @@ namespace Dev2.Activities
         }
 
         protected override void BeforeExecutionStart(IDSFDataObject dataObject, ErrorResultTO tmpErrors)
-        {            
+        {
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
@@ -87,15 +92,13 @@ namespace Dev2.Activities
             {
                 databaseServiceExecution.ProcedureName = ExecuteActionString;
             }
-            
+
             ServiceExecution.GetSource(SourceId);
-            ServiceExecution.BeforeExecution(tmpErrors);
         }
 
         protected override void AfterExecutionCompleted(ErrorResultTO tmpErrors)
         {
             base.AfterExecutionCompleted(tmpErrors);
-            ServiceExecution.AfterExecution(tmpErrors);
         }
 
 
@@ -104,5 +107,34 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
+        public bool Equals(DsfSqlServerDatabaseActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other)
+                && string.Equals(SourceId.ToString(), other.SourceId.ToString())
+                && string.Equals(ProcedureName, other.ProcedureName) 
+                && string.Equals(ExecuteActionString, other.ExecuteActionString);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfSqlServerDatabaseActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SourceId != null ? SourceId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ProcedureName != null ? ProcedureName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ExecuteActionString != null ? ExecuteActionString.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

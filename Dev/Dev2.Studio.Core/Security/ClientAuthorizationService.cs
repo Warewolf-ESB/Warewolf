@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Security
 {
     public class ClientAuthorizationService : AuthorizationServiceBase
@@ -28,8 +28,7 @@ namespace Dev2.Security
         public ClientAuthorizationService(ISecurityService securityService, bool isLocalConnection)
             : base(securityService, isLocalConnection)
         {
-            var clientSecurityService = securityService as ClientSecurityService;
-            if(clientSecurityService != null)
+            if (securityService is ClientSecurityService clientSecurityService)
             {
                 _environmentConnection = clientSecurityService.EnvironmentConnection;
             }
@@ -52,8 +51,7 @@ namespace Dev2.Security
             {
                 serverOnlyPermissions= serverOnlyPermissions.Where(permission => permission.IsBuiltInGuests);
             }
-            Guid resourceId;
-            if (Guid.TryParse(resource, out resourceId))
+            if (Guid.TryParse(resource, out Guid resourceId))
             {
                 if (resourceId == Guid.Empty)
                 {
@@ -74,7 +72,7 @@ namespace Dev2.Security
 
         public override bool IsAuthorized(AuthorizationContext context, string resource)
         {
-            bool x =IsAuthorized(_environmentConnection.Principal, context, resource);
+            var x =IsAuthorized(_environmentConnection.Principal, context, resource);
             return x;
         }
 

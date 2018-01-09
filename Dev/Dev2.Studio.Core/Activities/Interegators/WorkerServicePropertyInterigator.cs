@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ using Dev2.Common.Common;
 using Dev2.Studio.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Activities.Interegators
 {
     public static class WorkerServicePropertyInterigator
@@ -38,26 +38,27 @@ namespace Dev2.Studio.Core.Activities.Interegators
 
                         fragment += "</Action>";
                         fragment = fragment.Replace("&", "&amp;");
-                        XmlDocument document = new XmlDocument();
+                        var document = new XmlDocument();
 
                         document.LoadXml(fragment);
 
                         if(document.DocumentElement != null)
                         {
-                            XmlNode node = document.SelectSingleNode("//Action");
-                            if(node?.Attributes != null)
+                            var node = document.SelectSingleNode("//Action");
+                            if (node?.Attributes != null)
                             {
                                 var attr = node.Attributes["SourceName"];
                                 if(attr != null)
                                 {
                                     if (resourceRepository != null && node.Attributes["SourceID"] != null)
                                     {
-                                        Guid sourceId;
-                                        Guid.TryParse( node.Attributes["SourceID"].Value, out sourceId);
+                                        Guid.TryParse(node.Attributes["SourceID"].Value, out Guid sourceId);
                                         activity.FriendlySourceName = resourceRepository.LoadContextualResourceModel(sourceId).DisplayName;
                                     }
                                     else
+                                    {
                                         activity.FriendlySourceName = attr.Value;
+                                    }
                                 }
 
                                 attr = node.Attributes["SourceMethod"];

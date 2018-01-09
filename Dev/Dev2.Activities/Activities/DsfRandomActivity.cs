@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,13 +32,13 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable FunctionComplexityOverflow
+
+
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-Random", "Random", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Random")]
-    public class DsfRandomActivity : DsfActivityAbstract<string>
+    public class DsfRandomActivity : DsfActivityAbstract<string>,IEquatable<DsfRandomActivity>
     {
 
         #region Properties
@@ -90,7 +90,7 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -98,8 +98,8 @@ namespace Dev2.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
 
             var env = dataObject.Environment;
@@ -114,25 +114,25 @@ namespace Dev2.Activities
                         AddDebugInputItem(Length, From, To, dataObject.Environment, RandomType, update);
                     }
 
-                    IWarewolfIterator lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
+                    var lengthItr = !String.IsNullOrEmpty(Length) ? new WarewolfIterator(env.EvalStrict(Length, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
                     var fromItr = !String.IsNullOrEmpty(From) ? new WarewolfIterator(env.EvalStrict(From, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
                     var toItr = !String.IsNullOrEmpty(To) ? new WarewolfIterator(env.EvalStrict(To, update)) as IWarewolfIterator : new WarewolfAtomIterator(new[] { DataStorage.WarewolfAtom.Nothing, });
-                    WarewolfListIterator colItr = new WarewolfListIterator();
+                    var colItr = new WarewolfListIterator();
                     colItr.AddVariableToIterateOn(lengthItr);
                     colItr.AddVariableToIterateOn(fromItr);
                     colItr.AddVariableToIterateOn(toItr);
 
-                    Dev2Random dev2Random = new Dev2Random();
+                    var dev2Random = new Dev2Random();
                     var counter = 1;
                     while (colItr.HasMoreData())
                     {
-                        int lengthNum = -1;
-                        double fromNum = -1.0;
-                        double toNum = -1.0;
+                        var lengthNum = -1;
+                        var fromNum = -1.0;
+                        var toNum = -1.0;
 
-                        string fromValue = colItr.FetchNextValue(fromItr);
-                        string toValue = colItr.FetchNextValue(toItr);
-                        string lengthValue = colItr.FetchNextValue(lengthItr);
+                        var fromValue = colItr.FetchNextValue(fromItr);
+                        var toValue = colItr.FetchNextValue(toItr);
+                        var lengthValue = colItr.FetchNextValue(lengthItr);
 
                         if (RandomType != enRandomType.Guid)
                         {
@@ -174,7 +174,7 @@ namespace Dev2.Activities
                                 #endregion
                             }
                         }
-                        string value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
+                        var value = dev2Random.GetRandom(RandomType, lengthNum, fromNum, toNum);
 
                         var rule = new IsSingleValueRule(() => Result);
                         var single = rule.Check();
@@ -197,7 +197,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFRandomActivity", e);
+                Dev2Logger.Error("DSFRandomActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -260,16 +260,15 @@ namespace Dev2.Activities
 
         #region Private Methods
 
-        private double GetFromValue(string fromValue, out ErrorResultTO errors)
+        double GetFromValue(string fromValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            double fromNum;
             if (string.IsNullOrEmpty(fromValue))
             {
                 errors.AddError(ErrorResource.IntegerOrDecimaExpectedForStart);
                 return -1;
             }
-            if (!double.TryParse(fromValue, out fromNum))
+            if (!double.TryParse(fromValue, out double fromNum))
             {
                 errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForStart + " from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
@@ -277,16 +276,15 @@ namespace Dev2.Activities
             return fromNum;
         }
 
-        private double GetToValue(string toValue, out ErrorResultTO errors)
+        double GetToValue(string toValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            double toNum;
             if (string.IsNullOrEmpty(toValue))
             {
                 errors.AddError(ErrorResource.IntegerOrDecimaExpectedForEnd);
                 return -1;
             }
-            if (!double.TryParse(toValue, out toNum))
+            if (!double.TryParse(toValue, out double toNum))
             {
                 errors.AddError(string.Format(ErrorResource.IntegerOrDecimaExpectedForEnd + " from {0} to {1}.", double.MinValue, double.MaxValue));
                 return -1;
@@ -294,17 +292,16 @@ namespace Dev2.Activities
             return toNum;
         }
 
-        private int GetLengthValue(string lengthValue, out ErrorResultTO errors)
+        int GetLengthValue(string lengthValue, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
-            int lengthNum;
             if (string.IsNullOrEmpty(lengthValue))
             {
                 errors.AddError(string.Format(ErrorResource.PositiveIntegerRequired, "Length."));
                 return -1;
             }
 
-            if (!int.TryParse(lengthValue, out lengthNum))
+            if (!int.TryParse(lengthValue, out int lengthNum))
             {
                 errors.AddError(string.Format(ErrorResource.EnsureValueIsInteger, "Length"));
                 return -1;
@@ -319,7 +316,7 @@ namespace Dev2.Activities
             return lengthNum;
         }
 
-        private void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType, int update)
+        void AddDebugInputItem(string lengthExpression, string fromExpression, string toExpression, IExecutionEnvironment executionEnvironment, enRandomType randomType, int update)
         {
             AddDebugInputItem(new DebugItemStaticDataParams(randomType.GetDescription(), "Random"));
 
@@ -376,5 +373,39 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfRandomActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Length, other.Length) 
+                && RandomType == other.RandomType 
+                && string.Equals(From, other.From) 
+                && string.Equals(To, other.To) 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfRandomActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Length != null ? Length.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) RandomType;
+                hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -7,7 +7,6 @@ namespace Dev2.Common
     [Serializable]
     public class ResourceCriteria : IResourceCriteria
     {
-       
         public Guid ResourceID { get; set; }
         public Guid WorkspaceId { get; set; }
         public IVersionInfo VersionInfo { get; set; }

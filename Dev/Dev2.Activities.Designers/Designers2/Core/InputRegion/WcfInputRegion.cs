@@ -14,25 +14,25 @@ using Dev2.Common.Interfaces.ToolBase.WCF;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class WcfInputRegion : IWcfInputRegion
     {
-        private readonly ModelItem _modelItem;
-        private readonly IActionToolRegion<IWcfAction> _action;
+        readonly ModelItem _modelItem;
+        readonly IActionToolRegion<IWcfAction> _action;
         bool _isEnabled;
-        // ReSharper disable once NotAccessedField.Local
-        private ICollection<IServiceInput> _inputs;
-        private bool _isInputsEmptyRows;
 
-        // ReSharper disable once UnusedMember.Global
+        ICollection<IServiceInput> _inputs;
+        bool _isInputsEmptyRows;
+
+
         public WcfInputRegion()
         {
             ToolRegionName = "WcfInputRegion";
         }
-        private readonly IActionInputDatatalistMapper _datatalistMapper;
+        readonly IActionInputDatatalistMapper _datatalistMapper;
         public WcfInputRegion(ModelItem modelItem, IActionToolRegion<IWcfAction> action)
                    : this(new ActionInputDatatalistMapper())
         {
@@ -48,25 +48,32 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             inputs.AddRange(serviceInputs);
             Inputs = inputs;
             if (inputsFromModel == null)
+            {
                 UpdateOnActionSelection();
+            }
+
             IsEnabled = action?.SelectedAction != null;
         }
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public WcfInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
         }
 
 
-        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -76,14 +83,18 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Inputs", Inputs.ToList());
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -94,15 +105,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
         }
 
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 UpdateOnActionSelection();
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -116,12 +127,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateOnActionSelection()
+        void UpdateOnActionSelection()
         {
             Inputs = new List<IServiceInput>();
             IsEnabled = false;
@@ -178,8 +189,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WcfInputRegionClone;
-            if (region != null)
+            if (toRestore is WcfInputRegionClone region)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)

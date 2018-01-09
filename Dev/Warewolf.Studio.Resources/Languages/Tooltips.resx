@@ -218,11 +218,17 @@ Returns the response text of the web get request.</value>
   <data name="ViewSwaggerToolTip" xml:space="preserve">
     <value>View Swagger source for the current resource</value>
   </data>
+  <data name="ViewMergeTooltip" xml:space="preserve">
+    <value>Select between two resources to merge</value>
+  </data>
   <data name="ViewJsonObjectTooltip" xml:space="preserve">
     <value>Click to see the JSON representation of this object.</value>
   </data>
   <data name="ViewApisJsonTooltip" xml:space="preserve">
     <value>View APIs.json url and content</value>
+  </data>
+  <data name="ViewExecutionLoggingTooltip" xml:space="preserve">
+    <value>View Execution Logging</value>
   </data>
   <data name="UserNameToolTip" xml:space="preserve">
     <value>Enter the user name you want to connect with</value>
@@ -561,6 +567,9 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="ServiceTestPassedTooltip" xml:space="preserve">
     <value>Passed</value>
   </data>
+  <data name="MergeNoConflictTooltip" xml:space="preserve">
+    <value>No conflicts found</value>
+  </data>
   <data name="ServiceTestOutputVariableTooltip" xml:space="preserve">
     <value>The output you want to make the assert on</value>
   </data>
@@ -699,6 +708,9 @@ Returns the output of the script, if any.</value>
   </data>
   <data name="SaveButtonTooltip" xml:space="preserve">
     <value>Save the Resource</value>
+  </data>
+  <data name="MergeButtonTooltip" xml:space="preserve">
+    <value>Merge the Service</value>
   </data>
   <data name="RunAllTestsToolTip" xml:space="preserve">
     <value>Run all tests in browser for this resource</value>
@@ -1642,21 +1654,18 @@ You can use [[Scalar]] as well as [[Recordset().Fields]].
 Using recordset () will add a new record and (*) will assign every record.</value>
   </data>
   <data name="DateTimeToolTipOutputformat" xml:space="preserve">
-    <value>Describe the format you would like the date time to be returned in.
-Leaving this field blank will assume the same as the Input Format.
-To include text or non-date information use 'around the text you want to escape'. 
-e.g. Time is now 15 hours and 33 minutes. Would have an output format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+    <value>Return Date format.
+To exclude use 'around escaped text'.</value>
   </data>
   <data name="DateTimeToolTipInputformat" xml:space="preserve">
-    <value>Describe the format of the date time you are entering. e.g. 23-July 1978 would be described as dd-MM yyyy.
-Leaving this field blank will assume the system date time format.
-To escape text or non-date information use 'around the text you want to escape'. 
-e.g. Time is now 15 hours and 33 minutes. Would have an input format of 'Time is now' 24hr 'hours and' min 'minutes.'</value>
+    <value>Input Date format.
+To exclude use 'around escaped text'.</value>
   </data>
   <data name="DateTimeToolTipDatetime" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To format a date time, or to add/subtract from a date time, put it in here.
-Leaving this field blank will give you the system date time.</value>
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will give you the default date time.</value>
   </data>
   <data name="DateTimeToolTipAddtime" xml:space="preserve">
     <value>Put a positive or negative number here to add or subtract from the input date time.
@@ -1677,12 +1686,14 @@ Using recordset () will add a new record and (*) will assign every record.</valu
   <data name="DateTimeDifferenceToolTipDatetime2" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To find the difference in time between two date times, put the second date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time.</value>
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will give you the default date time.</value>
   </data>
   <data name="DateTimeDifferenceToolTipDatetime1" xml:space="preserve">
     <value>Any variable and/or data goes in here.
 To find the difference in time between two date times, put the first date time in here. The format needs to be the same for the two.
-Leaving this field blank will give you the system date time.</value>
+The default date time format is shown, if this is not the required format, then it can be changed to the format needed.
+Leaving this field blank will give you the default date time.</value>
   </data>
   <data name="DataSplitToolTipWithtype" xml:space="preserve">
     <value>Select where you would like to split the data.</value>
@@ -1743,6 +1754,15 @@ If you use recordset (*) notation, the list will be repeated for every record.</
   <data name="DataMergeToolTipAlignType" xml:space="preserve">
     <value>For Index you can specify if your data is aligned to the right or left.
 E.g. Text is normally left and numbers normally right.</value>
+  </data>
+  <data name="DecisionToolTipDisplayText" xml:space="preserve">
+    <value>Will appear on the small view.</value>
+  </data>
+  <data name="DecisionToolTipTrueArm" xml:space="preserve">
+    <value>Will appear on the design surface to help understand the flow.</value>
+  </data>
+  <data name="DecisionToolTipFalseArm" xml:space="preserve">
+    <value>Will appear on the design surface to help understand the flow</value>
   </data>
   <data name="DataListVariableInputTooltip" xml:space="preserve">
     <value>The variable name you want to declare, without the [[ ]] braces</value>
@@ -2177,5 +2197,32 @@ To create a SFTP Key, put the full path and file or folder name here.</value>
   </data>
   <data name="MappingsRecordsetNameTooltip" xml:space="preserve">
     <value>The name of the Recordset or Scalar  you want to put the result into</value>
+  </data>
+  <data name="MergeCurrentWorkflowNameRBTooltip" xml:space="preserve">
+    <value>Select the current Workflow name conflict</value>
+  </data>
+  <data name="MergeDifferenceWorkflowNameRBTooltip" xml:space="preserve">
+    <value>Select the difference Workflow name conflict</value>
+  </data>
+  <data name="MergeCurrentVariablesRBTooltip" xml:space="preserve">
+    <value>Select the current Variable conflict</value>
+  </data>
+  <data name="MergeDifferenceVariablesRBTooltip" xml:space="preserve">
+    <value>Select the difference Variable conflict</value>
+  </data>
+  <data name="MergeCurrentConflictRBTooltip" xml:space="preserve">
+    <value>Select the current Tool conflict</value>
+  </data>
+  <data name="MergeDifferenceConflictRBTooltip" xml:space="preserve">
+    <value>Select the difference Tool conflict</value>
+  </data>
+  <data name="MergeCurrentArmRBTooltip" xml:space="preserve">
+    <value>Select the current Tool connection conflict</value>
+  </data>
+  <data name="MergeDifferenceArmRBTooltip" xml:space="preserve">
+    <value>Select the difference Tool connection conflict</value>
+  </data>
+  <data name="MergeSelectionViewLabelTooltip" xml:space="preserve">
+    <value>Select the version you want to merge with</value>
   </data>
 </root>

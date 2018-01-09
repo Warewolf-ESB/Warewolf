@@ -18,11 +18,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
     [Binding]
     public sealed class ConsumeRabbitMQSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ConsumeRabbitMQSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -121,7 +125,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.RabbitMQ.Consum
             vm.SelectedRabbitMQSource = SourceDefinitions().FirstOrDefault(definition => definition.ResourceName == "localhost");
         }
 
-        private IEnumerable<IRabbitMQServiceSourceDefinition> SourceDefinitions()
+        IEnumerable<IRabbitMQServiceSourceDefinition> SourceDefinitions()
         {
             return new List<IRabbitMQServiceSourceDefinition>(new[]
             {

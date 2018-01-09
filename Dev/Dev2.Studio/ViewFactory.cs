@@ -6,9 +6,9 @@ using Warewolf.Studio.Views;
 
 namespace Dev2
 {
-    internal class ViewFactory : IViewFactory
+    class ViewFactory : IViewFactory
     {
-        private readonly ConcurrentDictionary<string, Func<IView>> _viewMap =
+        readonly ConcurrentDictionary<string, Func<IView>> _viewMap =
             new ConcurrentDictionary<string, Func<IView>>();
 
         public ViewFactory()
@@ -36,8 +36,7 @@ namespace Dev2
 
         public IView GetViewGivenServerResourceType(string resourceModel)
         {
-            Func<IView> funcView;
-            if (_viewMap.TryGetValue(resourceModel, out funcView))
+            if (_viewMap.TryGetValue(resourceModel, out Func<IView> funcView))
             {
                 return funcView.Invoke();
             }

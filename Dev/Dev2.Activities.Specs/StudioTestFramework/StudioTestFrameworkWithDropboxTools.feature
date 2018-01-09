@@ -46,7 +46,7 @@ Scenario: Test Wf With Dropbox Upload Tool
 	Given I have a workflow "TestWFWithDropBoxUpload"	
 	And "TestWFWithDropBoxUpload" contains a DropboxUpload "UploadTool" Setup as
 	| Local File      | OverwriteOrAdd | DropboxFile | Result  |
-	| C:\Home.Dropbox | Overwrite      | source.xml  | [[res]] |
+	| C:\Home.Delete  | Overwrite      | source.xml  | [[res]] |
 	And I save workflow "TestWFWithDropBoxUpload"
 	Then the test builder is open with "TestWFWithDropBoxUpload"
 	And I click New Test

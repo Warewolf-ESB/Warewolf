@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using FontAwesome.WPF;
+using System.Windows.Controls;
 
 namespace Warewolf.Studio.Core
 {
@@ -21,14 +22,7 @@ namespace Warewolf.Studio.Core
             
             _brush = new SolidColorBrush(Color.FromArgb(255, 51, 51, 51));
         }
-
-        /// <summary>
-        /// Converts a value. 
-        /// </summary>
-        /// <returns>
-        /// A converted value. If the method returns null, the valid null value is used.
-        /// </returns>
-        /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
+        
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value != null)
@@ -37,13 +31,6 @@ namespace Warewolf.Studio.Core
                 {
                     case "WorkflowService":
                         return _dict[CustomMenuIcons.WorkflowService] as DrawingImage;
-                    case "DbService":
-                        return _dict[CustomMenuIcons.DbService] as DrawingImage;
-                    case "WebService":
-                        return _dict[CustomMenuIcons.WebService] as DrawingImage;
-                    case "PluginService":
-                    case "ComPluginService":
-                        return _dict[CustomMenuIcons.PluginService] as DrawingImage;
                     case "PluginSource":
                     case "ComPluginSource":
                         return _dict[CustomMenuIcons.PluginSource] as DrawingImage;
@@ -70,7 +57,6 @@ namespace Warewolf.Studio.Core
                     case "SharepointServerSource":
                         return Application.Current.Resources["SharepointSource"];
                     case "ServerSource":
-                        return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
                     case "Server":
                     case "Dev2Server":
                         return _dict[CustomMenuIcons.ServerSource] as DrawingImage;
@@ -85,6 +71,8 @@ namespace Warewolf.Studio.Core
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.History, _brush);
                     case "ServiceTestsViewer":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Flask, _brush);
+                    case "MergeConflicts":
+                        return _dict[CustomMenuIcons.MergeConflicts] as DrawingImage;
                     case "Settings":
                         return ImageAwesome.CreateImageSource(FontAwesomeIcon.Cogs, _brush);
                     case "DependencyViewer":

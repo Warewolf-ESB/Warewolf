@@ -13,7 +13,7 @@ using Dev2.Common.Interfaces.Versioning;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable LoopCanBeConvertedToQuery
+
 
 namespace Dev2.Studio.Core
 {
@@ -40,9 +40,11 @@ namespace Dev2.Studio.Core
             AdminManagerProxy = new AdminManagerProxy(controllerFactory, environmentConnection);
         }
 
-        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
+        public async Task<IExplorerItem> LoadExplorer() => await LoadExplorer(false).ConfigureAwait(false);
+
+        public async Task<IExplorerItem> LoadExplorer(bool reloadCatalogue)
         {
-            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue);
+            var explorerItems = await QueryManagerProxy.Load(reloadCatalogue).ConfigureAwait(true);
             return explorerItems;
         }
         public Task<List<string>> LoadExplorerDuplicates()
@@ -64,15 +66,20 @@ namespace Dev2.Studio.Core
                 throw new ArgumentNullException(nameof(vm));
             }
             if (vm.ResourceType == "Folder")
+            {
                 UpdateManagerProxy.RenameFolder(vm.ResourcePath, vm.ResourcePath?.Replace(vm.ResourceName, newName));
+            }
             else
+            {
                 UpdateManagerProxy.Rename(vm.ResourceId, newName);
+            }
+
             return true;
         }
 
         public async Task<bool> Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination)
         {
-            var res = await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath);
+            var res = await UpdateManagerProxy.MoveItem(explorerItemViewModel.ResourceId, destination.ResourcePath, explorerItemViewModel.ResourcePath).ConfigureAwait(true);
             if (res.Status == ExecStatus.Success)
             {
                 return true;
@@ -90,7 +97,7 @@ namespace Dev2.Studio.Core
 
         public IDeletedFileMetadata HasDependencies(IExplorerItemViewModel explorerItemViewModel, IDependencyGraphGenerator graphGenerator, IExecuteMessage dep)
         {
-            IGraph graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
+            var graph = graphGenerator.BuildGraph(dep.Message, "", 1000, 1000, 1);
             _popupController = CustomContainer.Get<IPopupController>();
             if (graph.Nodes.Count > 1)
             {
@@ -126,7 +133,7 @@ namespace Dev2.Studio.Core
             };
         }
 
-        private IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
+        IDeletedFileMetadata BuildMetadata(Guid resourceId, bool isDeleted, bool showDependecnies, bool applyToAll, bool deleteAnyway)
         {
             return new DeletedFileMetadata
             {
@@ -137,7 +144,7 @@ namespace Dev2.Studio.Core
                 DeleteAnyway = deleteAnyway
             };
         }
-        
+
         public StringBuilder GetVersion(IVersionInfo versionInfo, Guid resourceId)
         {
             return VersionManager.GetVersion(versionInfo, resourceId);

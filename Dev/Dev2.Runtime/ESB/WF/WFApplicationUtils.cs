@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,9 +25,6 @@ using Dev2.Interfaces;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 
-// ReSharper disable ReturnTypeCanBeEnumerable.Local
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-
 namespace Dev2.Runtime.ESB.WF
 {
     public sealed class WfApplicationUtils
@@ -39,7 +36,9 @@ namespace Dev2.Runtime.ESB.WF
             _add = AddDebugItem;
         }
 
-        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime = null, bool interrogateInputs = false, bool interrogateOutputs = false, bool durationVisible = true)
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors) => DispatchDebugState(dataObject, stateType, hasErrors, existingErrors, out errors, null, false, false, true);
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs) => DispatchDebugState(dataObject, stateType, hasErrors, existingErrors, out errors, workflowStartTime, interrogateInputs, interrogateOutputs, true);
+        public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, out ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs, bool durationVisible)
         {
             errors = new ErrorResultTO();
             if (dataObject != null)
@@ -51,8 +50,7 @@ namespace Dev2.Runtime.ESB.WF
 
         public DebugState GetDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, ErrorResultTO errors, DateTime? workflowStartTime, bool interrogateInputs, bool interrogateOutputs, bool durationVisible)
         {
-            Guid parentInstanceId;
-            Guid.TryParse(dataObject.ParentInstanceID, out parentInstanceId);
+            Guid.TryParse(dataObject.ParentInstanceID, out Guid parentInstanceId);
             var hasError = dataObject.Environment.HasErrors();
             var errorMessage = string.Empty;
             if (hasError)
@@ -63,18 +61,22 @@ namespace Dev2.Runtime.ESB.WF
             {
                 existingErrors = errorMessage;
             }
-            else if (!existingErrors.Contains(errorMessage))
+            else
             {
-                existingErrors += Environment.NewLine + errorMessage;
+                if (!existingErrors.Contains(errorMessage))
+                {
+                    existingErrors += Environment.NewLine + errorMessage;
+                }
             }
             var name = "localhost";
-            Guid remoteID;
-            var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out remoteID);
+            var hasRemote = Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
             if (hasRemote)
             {
                 var res = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID);
                 if (res != null)
+                {
                     name = remoteID != Guid.Empty ? _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, remoteID).ResourceName : "localhost";
+                }
             }
             var debugState = BuildDebugState(dataObject, stateType, hasErrors, existingErrors, workflowStartTime, durationVisible, parentInstanceId, name, hasError);
 
@@ -86,18 +88,16 @@ namespace Dev2.Runtime.ESB.WF
             }
             if (interrogateInputs)
             {
-                ErrorResultTO invokeErrors;
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Input);
-                var inputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                var inputs = GetDebugValues(defs, dataObject, out ErrorResultTO invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 debugState.Inputs.AddRange(inputs);
             }
             if (interrogateOutputs)
             {
-                ErrorResultTO invokeErrors;
 
                 var defs = DataListUtil.GenerateDefsFromDataListForDebug(FindServiceShape(dataObject.WorkspaceID, dataObject.ResourceID), enDev2ColumnArgumentDirection.Output);
-                var outputs = GetDebugValues(defs, dataObject, out invokeErrors);
+                var outputs = GetDebugValues(defs, dataObject, out ErrorResultTO invokeErrors);
                 errors.MergeErrors(invokeErrors);
                 debugState.Outputs.AddRange(outputs);
             }
@@ -122,6 +122,25 @@ namespace Dev2.Runtime.ESB.WF
                 if (debugState.StateType == StateType.End)
                 {
                     debugDispatcher.Write(debugState, dataObject.IsServiceTestExecution, dataObject.IsDebugFromWeb, dataObject.TestName, dataObject.RemoteInvoke, dataObject.RemoteInvokerID, dataObject.ParentInstanceID, dataObject.RemoteDebugItems);
+                    var dataObjectExecutionId = dataObject.ExecutionID.ToString();
+                    try
+                    {
+                        var resource = _lazyCat.GetResource(GlobalConstants.ServerWorkspaceID, dataObject.ResourceID);
+                        var executePayload = ExecutionEnvironmentUtils.GetJsonOutputFromEnvironment(dataObject, resource.DataList.ToString(), 0);
+                        var executionLogginResultString = GlobalConstants.ExecutionLoggingResultStartTag + (executePayload ?? "").Replace(Environment.NewLine, string.Empty) + GlobalConstants.ExecutionLoggingResultEndTag;
+                        if (dataObject.Environment.HasErrors())
+                        {
+                            Dev2Logger.Error(executionLogginResultString, dataObjectExecutionId);
+                        }
+                        else
+                        {
+                            Dev2Logger.Debug(executionLogginResultString, dataObjectExecutionId);
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        Dev2Logger.Debug("Error getting execution result for :" + dataObject.ResourceID, dataObjectExecutionId);
+                    }
                 }
                 else
                 {
@@ -130,7 +149,8 @@ namespace Dev2.Runtime.ESB.WF
             }
         }
 
-        private static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
+
+        static DebugState BuildDebugState(IDSFDataObject dataObject, StateType stateType, bool hasErrors, string existingErrors, DateTime? workflowStartTime, bool durationVisible, Guid parentInstanceId, string name, bool hasError)
         {
             var debugState = new DebugState
             {
@@ -160,9 +180,9 @@ namespace Dev2.Runtime.ESB.WF
             return debugState;
         }
 
-        private readonly Func<IDebugDispatcher> _getDebugDispatcher = () => DebugDispatcher.Instance;
+        readonly Func<IDebugDispatcher> _getDebugDispatcher = () => DebugDispatcher.Instance;
 
-        private List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
+        List<DebugItem> GetDebugValues(IList<IDev2Definition> values, IDSFDataObject dataObject, out ErrorResultTO errors)
         {
             errors = new ErrorResultTO();
             var results = new List<DebugItem>();
@@ -171,7 +191,9 @@ namespace Dev2.Runtime.ESB.WF
             {
                 var defn = GetVariableName(dev2Definition);
                 if (added.Any(a => a == defn))
+                {
                     continue;
+                }
 
                 added.Add(defn);
                 var itemToAdd = new DebugItem();
@@ -188,7 +210,7 @@ namespace Dev2.Runtime.ESB.WF
             return results;
         }
 
-        private string GetVariableName(IDev2Definition value)
+        string GetVariableName(IDev2Definition value)
         {
             string variableName;
             if (value.IsJsonArray && value.Name.StartsWith("@"))
@@ -207,20 +229,20 @@ namespace Dev2.Runtime.ESB.WF
             return variableName;
         }
 
-        private void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
+        void AddDebugItem(DebugOutputBase parameters, IDebugItem debugItem)
         {
             var debugItemResults = parameters.GetDebugItemResult();
             debugItem.AddRange(debugItemResults);
         }
 
-        private readonly IResourceCatalog _lazyCat = ResourceCatalog.Instance;
+        readonly IResourceCatalog _lazyCat = ResourceCatalog.Instance;
         /// <summary>
         /// Finds the service shape.
         /// </summary>
         /// <param name="workspaceId">The workspace ID.</param>
         /// <param name="resourceId">The ID of the resource</param>
         /// <returns></returns>
-        private string FindServiceShape(Guid workspaceId, Guid resourceId)
+        string FindServiceShape(Guid workspaceId, Guid resourceId)
         {
             const string EmptyDataList = "<DataList></DataList>";
             var resource = _lazyCat.GetResource(workspaceId, resourceId);

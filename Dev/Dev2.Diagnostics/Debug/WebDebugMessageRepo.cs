@@ -11,12 +11,17 @@ namespace Dev2.Diagnostics.Debug
             lock (Lock)
             {
                 if (ds.ParentID == default(Guid) && (ds.StateType != StateType.Start))
+                {
                     ds.ParentID = null;
+                }
+
                 if (ds.ParentID == default(Guid) && (ds.StateType != StateType.End))
+                {
                     ds.ParentID = null;
-                IList<IDebugState> list;
+                }
+
                 var key = new Tuple<Guid, Guid>(clientId, sessionId);
-                if (Data.TryGetValue(key, out list))
+                if (Data.TryGetValue(key, out IList<IDebugState> list))
                 {
                     list.Add(ds);
                 }

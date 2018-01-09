@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,7 @@
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.String.Xml;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
 {
@@ -23,11 +23,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         [TestMethod]
         public void ToStringOnEnumerableSegment_Expected_EnumerableFormat()
         {
-            XmlPath path = new XmlPath();
-            IPathSegment segment = path.CreatePathSegment("Departments()");
+            var path = new XmlPath();
+            var segment = path.CreatePathSegment("Departments()");
 
             const string expected = "Departments()";
-            string actual = segment.ToString();
+            var actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -35,11 +35,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         [TestMethod]
         public void ToStringOnScalarSegment_Expected_ScalarFormat()
         {
-            XmlPath path = new XmlPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new XmlPath();
+            var segment = path.CreatePathSegment("Name");
 
             const string expected = "Name";
-            string actual = segment.ToString();
+            var actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -47,11 +47,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         [TestMethod]
         public void ToStringOnEnumerableSegment_WhereEnumerablesArentConsidered_Expected_ScalarFormat()
         {
-            XmlPath path = new XmlPath();
-            IPathSegment segment = path.CreatePathSegment("Departments()");
+            var path = new XmlPath();
+            var segment = path.CreatePathSegment("Departments()");
 
             const string expected = "Departments";
-            string actual = segment.ToString(false);
+            var actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
         }
@@ -59,11 +59,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         [TestMethod]
         public void ToStringOnEnumerableSegment_WhereEnumerablesAreConsidered_Expected_ScalarFormat()
         {
-            XmlPath path = new XmlPath();
-            IPathSegment segment = path.CreatePathSegment("Departments()");
+            var path = new XmlPath();
+            var segment = path.CreatePathSegment("Departments()");
 
             const string expected = "Departments()";
-            string actual = segment.ToString(true);
+            var actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);
         }
@@ -71,11 +71,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         [TestMethod]
         public void ToStringOnScalarSegmentt_WhereEnumerablesArentConsidered__Expected_ScalarFormat()
         {
-            XmlPath path = new XmlPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new XmlPath();
+            var segment = path.CreatePathSegment("Name");
 
             const string expected = "Name";
-            string actual = segment.ToString(false);
+            var actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
         }
@@ -83,11 +83,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
         [TestMethod]
         public void ToStringOnScalarSegmentt_WhereEnumerablesAreConsidered__Expected_ScalarFormat()
         {
-            XmlPath path = new XmlPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new XmlPath();
+            var segment = path.CreatePathSegment("Name");
 
             const string expected = "Name";
-            string actual = segment.ToString(true);
+            var actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);
         }

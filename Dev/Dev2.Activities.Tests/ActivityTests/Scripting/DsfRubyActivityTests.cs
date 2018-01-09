@@ -13,7 +13,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Scripting
 {
@@ -60,7 +60,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             //---------------Execute Test ----------------------
             var toolDescriptorInfo = typeof(DsfRubyActivity).GetCustomAttributes(typeof(ToolDescriptorInfo), false).Single() as ToolDescriptorInfo;
             //---------------Test Result -----------------------
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual("Scripting", toolDescriptorInfo.Category );
             Assert.AreEqual("ruby script", toolDescriptorInfo.FilterTag );
             Assert.AreEqual("Scripting-Ruby", toolDescriptorInfo.Icon );
@@ -83,7 +83,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        public void DisplayName_GivenIsNew_ShouldSetJavascript()
+        public void Equals_Given_GivenIsNew_ShouldSetJavascript()
         {
             //---------------Set up test pack-------------------
             var act = new DsfRubyActivity();
@@ -152,11 +152,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             SetupArguments("<DataList><Result>\"C:\test\"</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
                             "return [[Result]]", enScriptType.Ruby, true);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -176,11 +173,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             SetupArguments("<DataList><Result>C:\test</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]",
                             "return \"C:\\test\"", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -199,11 +193,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"return 1+1;", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -222,11 +213,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"i = 1 + 1;return i;", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -245,11 +233,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><inputData>1</inputData><Result>0</Result></DataList>", "<DataList><inputData/><Result/></DataList>", "[[Result]]", @"i = [[inputData]] + [[inputData]];return i;", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -268,11 +253,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData><Result>0</Result></DataList>", "<DataList><inputData><field1/></inputData><Result/></DataList>", "[[Result]]", @"i = [[inputData().field1]] + [[inputData().field1]];return i;", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            string actual;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -291,11 +273,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><inputData><field1>1</field1></inputData><inputData><field1>2</field1></inputData><inputData><field1>3</field1></inputData><inputData><field1>4</field1></inputData></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"i = '[[inputData(*).field1]]';return i;", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            IList<string> dataListItems;
-            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out dataListItems, out error);
+            var result = ExecuteProcess();
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> dataListItems, out string error);
 
             // remove test datalist ;)
 
@@ -317,11 +296,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "<DataList><inputData><field1/></inputData><Result><res/></Result></DataList>", "[[Result().res]]", @"i = [[inputData(*).field1]] + [[inputData(*).field1]];return i;", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string error;
-            IList<string> dataListItems;
-            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out dataListItems, out error);
+            var result = ExecuteProcess();
+            GetRecordSetFieldValueFromDataList(result.Environment, "Result", "res", out IList<string> dataListItems, out string error);
 
             // remove test datalist ;)
 
@@ -340,12 +316,9 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
         {
             SetupArguments("<DataList><Result>0</Result></DataList>", "<DataList><Result/></DataList>", "[[Result]]", @"def Add(x,y); return x + y; end; Add(1,1);", enScriptType.Ruby);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            string error;
-            string actual;
-
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -363,7 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDl, string testData, string result, string script, enScriptType type, bool escape = false)
+        void SetupArguments(string currentDl, string testData, string result, string script, enScriptType type, bool escape = false)
         {
             TestStartNode = new FlowStep
             {
@@ -374,7 +347,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Scripting
             TestData = currentDl;
         }
 
-        private static string GetRbTmpFile()
+        static string GetRbTmpFile()
         {
             var codeBase = Assembly.GetExecutingAssembly().Location;
             var directoryName = Path.GetDirectoryName(codeBase);

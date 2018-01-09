@@ -6,11 +6,17 @@ using Dev2.Runtime.Interfaces;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceSyncProvider: IResourceSyncProvider
+    class ResourceSyncProvider: IResourceSyncProvider
     {
         #region Implementation of IResourceSyncProvider
 
-        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite = true, bool delete = true, IList<string> filesToIgnore = null)
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath) => SyncTo(sourceWorkspacePath, targetWorkspacePath, true, true, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite) => SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, true, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete) => SyncTo(sourceWorkspacePath, targetWorkspacePath, overwrite, delete, null);
+
+        public void SyncTo(string sourceWorkspacePath, string targetWorkspacePath, bool overwrite, bool delete, IList<string> filesToIgnore)
         {
             if (filesToIgnore == null)
             {
@@ -48,22 +54,22 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             else
             {
                 filesToCopyFromSource.AddRange(sourceFiles
-                    // ReSharper disable SimplifyLinqExpression
+                    
                     .Where(sf => !destinationFiles.Any(df => string.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
-                // ReSharper restore SimplifyLinqExpression
+                
             }
 
             //
             // Calculate the files which are to be deleted from the destination, this respects the delete parameter
             //
-            // ReSharper disable once CollectionNeverQueried.Local
+            
             var filesToDeleteFromDestination = new List<FileInfo>();
             if (delete)
             {
                 filesToDeleteFromDestination.AddRange(destinationFiles
-                    // ReSharper disable SimplifyLinqExpression
+                    
                     .Where(sf => !sourceFiles.Any(df => string.Compare(df.Name, sf.Name, StringComparison.OrdinalIgnoreCase) == 0)));
-                // ReSharper restore SimplifyLinqExpression
+                
             }
 
             //

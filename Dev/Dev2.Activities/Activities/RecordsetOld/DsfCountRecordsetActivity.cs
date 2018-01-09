@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,11 +25,11 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
-    public class DsfCountRecordsetActivity : DsfActivityAbstract<string>
+    public class DsfCountRecordsetActivity : DsfActivityAbstract<string>,IEquatable<DsfCountRecordsetActivity>
     {
         #region Fields
 
@@ -55,17 +55,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             DisplayName = "Count Records";
         }
 
-        // ReSharper disable RedundantOverridenMember
-        protected override void CacheMetadata(NativeActivityMetadata metadata)
-        {
-            base.CacheMetadata(metadata);
-
-        }
-        // ReSharper restore RedundantOverridenMember
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -79,8 +72,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -92,8 +85,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
-                        if(CountNumber == string.Empty)
+                        var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+                        if (CountNumber == string.Empty)
                         {
                             allErrors.AddError(ErrorResource.BlankResultVariable);
                         }
@@ -209,5 +202,33 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfCountRecordsetActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(RecordsetName, other.RecordsetName) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && string.Equals(CountNumber, other.CountNumber);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfCountRecordsetActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (RecordsetName != null ? RecordsetName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CountNumber != null ? CountNumber.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

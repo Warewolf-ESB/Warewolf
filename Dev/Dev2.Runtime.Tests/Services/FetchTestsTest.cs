@@ -10,13 +10,34 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class FetchTestsTest
     {
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_GivenArgsWithResourceId_ShouldReturnResourceId()
+        {
+            //------------Setup for test--------------------------
+            var fetchTests = new FetchTests();
+            var stringBuilder = new StringBuilder();
+            var resId = Guid.NewGuid();
+            stringBuilder.Append(resId);
+            //------------Execute Test---------------------------
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                { "resourceID", stringBuilder }
+            };
+            //------------Execute Test---------------------------
+            var resourceID = fetchTests.GetResourceID(requestArgs);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resId, resourceID);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
@@ -69,7 +90,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(null, null);
+            var jsonResult = fetchTests.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -85,7 +106,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -101,7 +122,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);

@@ -14,7 +14,7 @@ using Moq;
 using TechTalk.SpecFlow;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.ServerSource
 {
@@ -43,6 +43,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             FeatureContext.Current.Add("updateManager", mockStudioUpdateManager);
             FeatureContext.Current.Add("requestServiceNameViewModel", mockRequestServiceNameViewModel);
             FeatureContext.Current.Add("externalProcessExecutor", mockExecutor);
+            FeatureContext.Current.Add("manageServerSourceViewModel", manageServerSourceViewModel);
         }
 
         [BeforeScenario("ServerSource")]
@@ -52,6 +53,9 @@ namespace Warewolf.UIBindingTests.ServerSource
             ScenarioContext.Current.Add("updateManager", FeatureContext.Current.Get<Mock<IManageServerSourceModel>>("updateManager"));
             ScenarioContext.Current.Add("requestServiceNameViewModel", FeatureContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel"));
             ScenarioContext.Current.Add("externalProcessExecutor", FeatureContext.Current.Get<Mock<IExternalProcessExecutor>>("externalProcessExecutor"));
+            var manageNewServerViewModel = FeatureContext.Current.Get<ManageNewServerViewModel>("manageServerSourceViewModel");
+            manageNewServerViewModel.HeaderText = "New Server Source";
+            manageNewServerViewModel.Header = "New Server Source";
         }
 
         [Given(@"I open New Server Source")]
@@ -295,7 +299,7 @@ namespace Warewolf.UIBindingTests.ServerSource
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string errorMsg)
         {
-            string newErrorMsg = errorMsg;
+            var newErrorMsg = errorMsg;
 
             var manageServerControl = ScenarioContext.Current.Get<ManageServerControl>(Core.Utils.ViewNameKey);
             var viewModel = GetViewModel(manageServerControl);
@@ -431,7 +435,10 @@ namespace Warewolf.UIBindingTests.ServerSource
 
             var environmentModel = ServerRepository.Instance.Source;
             if (!environmentModel.IsConnected)
+            {
                 environmentModel.Connect();
+            }
+
             var controllerFactory = new CommunicationControllerFactory();
             var environmentConnection = environmentModel.Connection;
             var manager = new StudioResourceUpdateManager
@@ -458,7 +465,7 @@ namespace Warewolf.UIBindingTests.ServerSource
             var protocol = table.Rows[0]["Protocol"];
             var serverName = table.Rows[0]["ServerName"];
             var suthentication = table.Rows[0]["Authentication"];
-            string port = table.Rows[0]["port"];
+            var port = table.Rows[0]["port"];
             var serverSource = ScenarioContext.Current.Get<IServerSource>("serverSource");
             var resourceId = Guid.NewGuid();
 
@@ -496,11 +503,15 @@ namespace Warewolf.UIBindingTests.ServerSource
         {
             var guid = ScenarioContext.Current.Get<Guid>("resourceId");
             var environmentModel = ScenarioContext.Current.Get<IServer>("environmentModel");
-            IContextualResourceModel loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
-            if(ScenarioContext.Current.ContainsKey("resourceModel"))
+            var loadContextualResourceModel = environmentModel.ResourceRepository.LoadContextualResourceModel(guid);
+            if (ScenarioContext.Current.ContainsKey("resourceModel"))
+            {
                 ScenarioContext.Current["resourceModel"] = loadContextualResourceModel;
+            }
             else
+            {
                 ScenarioContext.Current.Add("resourceModel", loadContextualResourceModel);
+            }
         }
 
         [Then(@"the server source has correct values as")]

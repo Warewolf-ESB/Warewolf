@@ -1,8 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using System;
+using System.Collections.ObjectModel;
 
 namespace Dev2.Studio.Interfaces.DataList
 {
-    public interface IComplexObjectItemModel : IDataListItemModel
+    public interface IComplexObjectItemModel : IDataListItemModel, IEquatable<IComplexObjectItemModel>
     {
         ObservableCollection<IComplexObjectItemModel> Children { get; set; }
         bool IsArray { get; set; }

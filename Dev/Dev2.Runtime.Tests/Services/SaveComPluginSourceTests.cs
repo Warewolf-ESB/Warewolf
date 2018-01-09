@@ -87,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveComPluginSource = new SaveComPluginSource();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(null, null);
+            var jsonResult = saveComPluginSource.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -103,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveComPluginSource = new SaveComPluginSource();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(values, null);
+            var jsonResult = saveComPluginSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -122,7 +122,6 @@ namespace Dev2.Tests.Runtime.Services
                 ClsId = Guid.NewGuid().ToString(),
                 ResourcePath = Environment.CurrentDirectory,
                 SelectedDll = new DllListing() { Name = "k"}
-
             };
             var compressedExecuteMessage = new CompressedExecuteMessage();
             var serializeToJsonString = source.SerializeToJsonString(new DefaultSerializationBinder());
@@ -132,17 +131,17 @@ namespace Dev2.Tests.Runtime.Services
                 { "ComPluginSource", source.SerializeToJsonStringBuilder() }
             };
             var catalog = new Mock<IResourceCatalog>();
-            catalog.Setup(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName,It.IsAny<string>(), It.IsAny<string>()));
-            catalog.Setup(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(),It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName));
+            catalog.Setup(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(),It.IsAny<string>()));
             var saveComPluginSource = new SaveComPluginSource(catalog.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(values, null);
+            var jsonResult = saveComPluginSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
-            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName, It.IsAny<string>(), It.IsAny<string>()));
-            catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName));
+            catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), It.IsAny<IResource>(), It.IsAny<string>()));
         }
 
         [TestMethod]
@@ -169,17 +168,17 @@ namespace Dev2.Tests.Runtime.Services
             };
             var catalog = new Mock<IResourceCatalog>();
             var comPluginSource = new ComPluginSource();
-            catalog.Setup(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName, It.IsAny<string>(), It.IsAny<string>())).Returns(comPluginSource);
-            catalog.Setup(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            catalog.Setup(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName)).Returns(comPluginSource);
+            catalog.Setup(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>()));
             var saveComPluginSource = new SaveComPluginSource(catalog.Object);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            StringBuilder jsonResult = saveComPluginSource.Execute(values, null);
+            var jsonResult = saveComPluginSource.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsFalse(result.HasError);
-            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName, It.IsAny<string>(), It.IsAny<string>()));
-            catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()));
+            catalog.Verify(resourceCatalog => resourceCatalog.GetResource(It.IsAny<Guid>(), source.ResourceName));
+            catalog.Verify(resourceCatalog => resourceCatalog.SaveResource(It.IsAny<Guid>(), comPluginSource, It.IsAny<string>()));
         }
        
     }

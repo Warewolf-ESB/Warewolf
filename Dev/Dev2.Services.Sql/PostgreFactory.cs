@@ -43,7 +43,7 @@ namespace Dev2.Services.Sql
 
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            var ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
             return ds.Tables[0];
         }
@@ -51,7 +51,9 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is NpgsqlCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "PostgreCommand"));
+            }
 
             using (var dataset = new DataSet())
             {

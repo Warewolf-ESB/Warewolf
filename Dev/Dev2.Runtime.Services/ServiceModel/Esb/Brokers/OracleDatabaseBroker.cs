@@ -42,9 +42,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }
-            else if (foundXMLFrags == 0)
+            else
             {
-                res = payload;
+                if (foundXMLFrags == 0)
+                {
+                    res = payload;
+                }
             }
 
             return base.NormalizeXmlPayload(res);
@@ -108,7 +111,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         {
             return new OracleServer();
         }
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
             {
@@ -134,14 +137,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                     //
                     // Execute command and normalize XML
                     //
-                    IDbCommand command = CommandFromServiceMethod(server, dbService.Method);
+                    var command = CommandFromServiceMethod(server, dbService.Method);
 
-                    // ReSharper disable PossibleNullReferenceException
+
 
                     var databaseName = (dbService.Source as DbSource).DatabaseName;
                     var fullProcedureName = dbService.Method.ExecuteAction.Substring(dbService.Method.ExecuteAction.IndexOf(".", StringComparison.Ordinal) + 1);
 
-                    // ReSharper disable once RedundantAssignment
+                    
                     var outParams = server.GetProcedureOutParams(fullProcedureName, databaseName);
                     var countRefCursors = outParams.Count(parameter => parameter.OracleDbType == OracleDbType.RefCursor);
                     var countSingleParams = outParams.Count(parameter => parameter.OracleDbType != OracleDbType.RefCursor);
@@ -154,7 +157,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                         throw new Exception("Mixing single return values and Ref Cursors are not currently supported.");
                     }
                     var dbDataParameters = server.GetProcedureInputParameters(command, databaseName, fullProcedureName);
-                    IDbCommand cmd = command.Connection.CreateCommand();
+                    var cmd = command.Connection.CreateCommand();
                     cmd.CommandType = CommandType.StoredProcedure;
                     cmd.CommandText = databaseName +"."+ fullProcedureName;
                     var parameters = dbService.Method.Parameters;
@@ -170,7 +173,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
                     
 
-                    // ReSharper restore PossibleNullReferenceException
+                    
                     foreach (var dbDataParameter in outParams)
                     {
                         cmd.Parameters.Add(dbDataParameter);

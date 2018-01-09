@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,10 +15,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 using Dev2.Studio.Core;
+using System.ComponentModel;
 
 namespace Dev2.Core.Tests.Helpers
 {
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class VersionCheckerTests
     {
@@ -51,15 +52,29 @@ namespace Dev2.Core.Tests.Helpers
         public void VersionChecker_Currentr_NullVersionChecker_ExpectException()
         {
             //------------Setup for test--------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new VersionChecker(new WarewolfWebClient(new WebClient()), null);
-            // ReSharper restore ObjectCreationAsStatement
+
 
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
         }
-        
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("VersionChecker_Ctor")]
+        public void WarewolfWebClient_AddRemove_EventHandlers()
+        {
+            using (var warewolfWebClient =
+                        new WarewolfWebClient(new WebClient()))
+            {
+                warewolfWebClient.DownloadProgressChanged += new Mock<DownloadProgressChangedEventHandler>().Object;
+                warewolfWebClient.DownloadProgressChanged -= new Mock<DownloadProgressChangedEventHandler>().Object;
+                warewolfWebClient.DownloadFileCompleted += new Mock<AsyncCompletedEventHandler>().Object;
+                warewolfWebClient.DownloadFileCompleted -= new Mock<AsyncCompletedEventHandler>().Object;
+            }
+        }
     }
 }
-// ReSharper restore InconsistentNaming
+

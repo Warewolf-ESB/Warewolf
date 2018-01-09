@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,9 +18,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Warewolf.Security.Encryption;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Runtime.ServiceModel.Data
-// ReSharper restore CheckNamespace
+
 {
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSource : Resource, IDisposable,IResourceSource, IWebSource
@@ -83,8 +83,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            AuthenticationType authType;
-            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out authType) ? authType : AuthenticationType.Windows;
+            AuthenticationType = Enum.TryParse(properties["AuthenticationType"], true, out AuthenticationType authType) ? authType : AuthenticationType.Windows;
         }
 
         #endregion

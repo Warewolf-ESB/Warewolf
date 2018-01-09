@@ -9,31 +9,31 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.DotNet;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
-// ReSharper disable UnusedMember.Global
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
-// ReSharper disable ExplicitCallerInfoArgument
+
+
+
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 {
     public class DotNetNamespaceRegion : INamespaceToolRegion<INamespaceItem>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IPluginSource> _source;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IPluginSource> _source;
+        bool _isEnabled;
 
-        private Action _sourceChangedNamespace;
-        private INamespaceItem _selectedNamespace;
-        private IPluginServiceModel _model;
-        private ICollection<INamespaceItem> _namespaces;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private bool _isNamespaceEnabled;
-        private IList<string> _errors;
+        Action _sourceChangedNamespace;
+        INamespaceItem _selectedNamespace;
+        readonly IPluginServiceModel _model;
+        ICollection<INamespaceItem> _namespaces;
+        bool _isRefreshing;
+        double _labelWidth;
+        bool _isNamespaceEnabled;
+        IList<string> _errors;
 
         public DotNetNamespaceRegion()
         {
@@ -104,16 +104,16 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
         }
 
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 UpdateBasedOnSource();
                 SelectedNamespace = null;
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -127,7 +127,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             }
         }
 
-        private void UpdateBasedOnSource()
+        void UpdateBasedOnSource()
         {
             if (_source?.SelectedSource != null)
             {
@@ -161,7 +161,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             set
             {
                 SetSelectedNamespace(value);
-                SourceChangedNamespace();
+                SourceChangedNamespace?.Invoke();
                 OnSomethingChanged(this);
 
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
@@ -253,8 +253,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetNamespaceRegion;
-            if (region != null)
+            if (toRestore is DotNetNamespaceRegion region)
             {
                 SelectedNamespace = region.SelectedNamespace;
                 IsEnabled = region.IsEnabled;
@@ -271,7 +270,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
 
         #region Implementation of INamespaceToolRegion<INamespaceItem>
 
-        private void SetSelectedNamespace(INamespaceItem value)
+        void SetSelectedNamespace(INamespaceItem value)
         {
             if (value != null)
             {

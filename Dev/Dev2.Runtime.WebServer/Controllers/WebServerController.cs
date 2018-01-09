@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,143 +16,12 @@ using System.Web.Http;
 using Dev2.Runtime.WebServer.Handlers;
 using Dev2.Runtime.WebServer.Security;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.WebServer.Controllers
 {
     [AuthorizeWeb]
     public class WebServerController : AbstractController
     {
-        [HttpGet]
-        [Route("{website}/decisions/{file}")]
-        public HttpResponseMessage GetDecisions(string website, string file)
-        {
-            return Get(website, "decisions", file);
-        }
-
-        [HttpGet]
-        [Route("{website}/dialogs/{file}")]
-        public HttpResponseMessage GetDialogs(string website, string file)
-        {
-            return Get(website, "dialogs", file);
-        }
-
-        [HttpGet]
-        [Route("{website}/services/{file}")]
-        public HttpResponseMessage GetServices(string website, string file)
-        {
-            return Get(website, "services", file);
-        }
-
-        [HttpGet]
-        [Route("{website}/sources/{file}")]
-        public HttpResponseMessage GetSources(string website, string file)
-        {
-            return Get(website, "sources", file);
-        }
-
-        [HttpGet]
-        [Route("{website}/switch/{file}")]
-        public HttpResponseMessage GetSwitch(string website, string file)
-        {
-            return Get(website, "switch", file);
-        }
-
-        [HttpGet]
-        [Route("{website}/{folder}/{file}")]
-        public HttpResponseMessage Get(string website, string folder, string file)
-        {
-            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
-            var requestVariables = new NameValueCollection
-            {
-                { "website", website },
-                { "path", $"{folder}/{file}" }
-            };
-
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        }
-
-        [HttpGet]
-        [Route("{website}/{path}/{folder}/{*file}")]
-        public HttpResponseMessage Get(string website, string path, string folder, string file)
-        {
-            // DO NOT replace {folder} with {type} in route mapping --> {type} is a query string parameter!
-            var requestVariables = new NameValueCollection
-            {
-                { "website", website },
-                { "path", path }
-            };
-
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        }
-
-        [HttpGet]
-        [Route("{website}/content/{*file}")]
-        public HttpResponseMessage GetContent(string website, string file)
-        {
-            var requestVariables = new NameValueCollection
-            {
-                { "website", website },
-                { "path", $"content/{file}" }
-            };
-
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        }
-
-        [HttpGet]
-        [Route("{website}/images/{*file}")]
-        public HttpResponseMessage GetImage(string website, string file)
-        {
-            var requestVariables = new NameValueCollection
-            {
-                { "website", website },
-                { "path", $"images/{file}" }
-            };
-
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        }
-
-        [HttpGet]
-        [Route("{website}/scripts/{*file}")]
-        public HttpResponseMessage GetScript(string website, string file)
-        {
-            var requestVariables = new NameValueCollection
-            {
-                { "website", website },
-                { "path", $"scripts/{file}" }
-            };
-
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        }
-
-        [HttpGet]
-        [Route("{website}/views/{*file}")]
-        public HttpResponseMessage GetView(string website, string file)
-        {
-            var requestVariables = new NameValueCollection
-            {
-                { "website", website },
-                { "path", $"views/{file}" }
-            };
-
-            return ProcessRequest<WebsiteResourceHandler>(requestVariables);
-        }
-
-        [HttpPost]
-        [Route("{__website__}/{__path__}/Service/{__name__}/{__method__}")]
-        public HttpResponseMessage InvokeService(string __website__, string __path__, string __name__, string __method__)
-        {
-            // DO NOT replace {method} with {action} in route mapping --> {action} is a reserved placeholder!
-            var requestVariables = new NameValueCollection
-            {
-                { "website", __website__ },
-                { "path", __path__ },
-                { "name", __name__ },
-                { "action", __method__ },
-            };
-
-            return ProcessRequest<WebsiteServiceHandler>(requestVariables);
-        }
-
         [HttpGet]
         [HttpPost]
         [Route("Services/{*__name__}")]
@@ -161,20 +30,16 @@ namespace Dev2.Runtime.WebServer.Controllers
             return ExecuteWorkflow(__name__, false);
         }
 
-        private HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
+        HttpResponseMessage ExecuteWorkflow(string __name__, bool isPublic)
         {
-
-            if (__name__.EndsWith("apis.json"))
+            if (__name__.EndsWith("apis.json", StringComparison.OrdinalIgnoreCase))
             {
                 var path = __name__.Split(new[] { "/apis.json" }, StringSplitOptions.RemoveEmptyEntries);
-                if (path.Any())
+                if (path.Any() && path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
                 {
-                    if (path[0].Equals("apis.json", StringComparison.OrdinalIgnoreCase))
-                    {
-                        path[0] = null;
-                    }
-
+                    path[0] = null;
                 }
+
                 var requestVar = new NameValueCollection
                 {
                     {"path", path[0]},
@@ -205,9 +70,8 @@ namespace Dev2.Runtime.WebServer.Controllers
                 : ProcessRequest<WebGetRequestHandler>(requestVariables);
         }
 
-        private HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
+        public HttpResponseMessage ExecuteFolderTests(string __url__, bool isPublic)
         {
-
             var requestVariables = new NameValueCollection
             {
                 { "path", __url__ },
@@ -219,7 +83,6 @@ namespace Dev2.Runtime.WebServer.Controllers
             return httpResponseMessage;
         }
 
-
         [HttpGet]
         [HttpPost]
         [Route("Secure/{*__name__}")]
@@ -228,12 +91,13 @@ namespace Dev2.Runtime.WebServer.Controllers
             if (Request?.RequestUri != null)
             {
                 var requestUri = Request.RequestUri;
-                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
+                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
                     return ExecuteFolderTests(requestUri.ToString(), false);
+                }
             }
             return ExecuteWorkflow(__name__, false);
         }
-
 
         [HttpGet]
         [HttpPost]
@@ -243,8 +107,10 @@ namespace Dev2.Runtime.WebServer.Controllers
             if (Request?.RequestUri != null)
             {
                 var requestUri = Request.RequestUri;
-                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase))
+                if (requestUri.ToString().EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase) || requestUri.ToString().EndsWith("/.tests.trx", StringComparison.InvariantCultureIgnoreCase))
+                {
                     return ExecuteFolderTests(requestUri.ToString(), true);
+                }
             }
             return ExecuteWorkflow(__name__, true);
         }
@@ -265,6 +131,5 @@ namespace Dev2.Runtime.WebServer.Controllers
             var requestVariables = new NameValueCollection();
             return ProcessRequest<GetApisJsonServiceHandler>(requestVariables);
         }
-
     }
 }

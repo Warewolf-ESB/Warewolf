@@ -6,12 +6,9 @@ using Dev2.Common.Interfaces;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.Core;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Views
 {
-    /// <summary>
-    /// Interaction logic for JsonObjectsView.xaml
-    /// </summary>
     public partial class JsonObjectsView: IJsonObjectsView
     {
         readonly Grid _blackoutGrid = new Grid();
@@ -24,7 +21,9 @@ namespace Dev2.Studio.Core.Views
         void JsonObjectsView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         void JsonObjectsView_OnClosed(object sender, EventArgs e)
@@ -46,7 +45,7 @@ namespace Dev2.Studio.Core.Views
             ShowDialog();
         }
 
-        private void JsonObjectsView_OnKeyUp(object sender, KeyEventArgs e)
+        void JsonObjectsView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if ((Keyboard.Modifiers == (ModifierKeys.Alt | ModifierKeys.Control)) && (e.Key == Key.F4))
             {

@@ -20,8 +20,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
-// ReSharper disable All
+
+
 
 namespace Dev2.Activities.Designers.Tests.WebGetTool
 {
@@ -353,11 +353,16 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         public override string TestService(IWebService inputValues)
         {
             if (IsTextResponse)
+            {
                 return new Dev2JsonSerializer().Serialize("dora");
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            }
+
+            var serializer = new Dev2JsonSerializer();
             var svc = new WebService();
             if (!HasRecError)
+            {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = false, Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+            }
             else
             {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder", Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
@@ -370,10 +375,10 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
     public class MyWebModel : IWebServiceModel
     {
 #pragma warning disable 649
-        private IStudioUpdateManager _updateRepository;
+        IStudioUpdateManager _updateRepository;
 #pragma warning restore 649
 #pragma warning disable 649
-        private IQueryManager _queryProxy;
+        IQueryManager _queryProxy;
 #pragma warning restore 649
         public ObservableCollection<IWebServiceSource> _sources = new ObservableCollection<IWebServiceSource>
         {
@@ -400,11 +405,16 @@ namespace Dev2.Activities.Designers.Tests.WebGetTool
         public virtual string TestService(IWebService inputValues)
         {
             if (IsTextResponse)
+            {
                 return new Dev2JsonSerializer().Serialize("dora");
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            }
+
+            var serializer = new Dev2JsonSerializer();
             var svc = new WebService();
             if (!HasRecError)
+            {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = false, Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };
+            }
             else
             {
                 svc.Recordsets = new RecordsetList() { new Recordset() { HasErrors = true, ErrorMessage = "bobthebuilder", Fields = new List<RecordsetField> { new RecordsetField() { Alias = "bob", Name = "the", RecordsetAlias = "dd", Path = new XmlPath() } } } };

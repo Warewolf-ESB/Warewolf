@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,7 @@ using System;
 using System.Globalization;
 using Infragistics.Calculations.CalcManager;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.MathOperationTest
 {
@@ -24,7 +24,7 @@ namespace Dev2.Tests.MathOperationTest
     public class InfragisticsEvaluationTest
     {
 
-        private Dev2CalculationManager _manager;
+        Dev2CalculationManager _manager;
 
         [TestInitialize]
         public void Init()
@@ -98,11 +98,11 @@ namespace Dev2.Tests.MathOperationTest
             AssertValues(new Tuple<string, string>("false", "isodd(\"2\")"), new Tuple<string, string>("false", "isodd(\"-4\")"), new Tuple<string, string>("true", "isodd(\"1\")"), new Tuple<string, string>("true", "isodd(\"-1\")"));
         }
 
-        private void AssertValues(params Tuple<string, string> [] functions)
+        void AssertValues(params Tuple<string, string>[] functions)
         {
-            foreach (var function in  functions)
+            foreach (var function in functions)
             {
-                Assert.AreEqual( function.Item1, _manager.CalculateFormula(function.Item2).ToString(CultureInfo.InvariantCulture).ToLower());
+                Assert.AreEqual(function.Item1, _manager.CalculateFormula(function.Item2).ToString(CultureInfo.InvariantCulture).ToLower());
             }
         }
     }

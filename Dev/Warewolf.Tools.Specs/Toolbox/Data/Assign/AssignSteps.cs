@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,12 +24,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
     [Binding]
     public class AssignSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public AssignSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -37,8 +41,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         {
             BuildShapeAndTestData();
 
-            List<ActivityDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
             var multiAssign = new DsfMultiAssignActivity();
 
@@ -66,11 +69,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 value = string.Format("!~calculation~!{0}!~~calculation~!", value);
             }
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            List<ActivityDTO> fieldCollection;
-            scenarioContext.TryGetValue("fieldCollection", out fieldCollection);
+            scenarioContext.TryGetValue("fieldCollection", out List<ActivityDTO> fieldCollection);
 
             if (variableList == null)
             {
@@ -90,8 +91,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         [Given(@"I have a variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveAVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -114,10 +114,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
                 }
                 else
                 {
-                    string actualValue;
-                    string error;
                     GetScalarValueFromEnvironment(result.Environment, variable,
-                        out actualValue, out error);
+                        out string actualValue, out string error);
                 }
                 Assert.Fail("Should have thrown NullReferenceException");
             }
@@ -131,7 +129,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
         public void WhenTheAssignToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -157,11 +155,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             }
             else
             {
-                string actualValue;
                 value = value.Replace('"', ' ').Trim();
-                string error;
                 GetScalarValueFromEnvironment(result.Environment, variable,
-                                           out actualValue, out error);
+                                           out string actualValue, out string error);
                 actualValue = actualValue.Replace('"', ' ').Trim();
                 Assert.AreEqual(value, actualValue);
             }
@@ -174,7 +170,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Assign
             var result = scenarioContext.Get<IDSFDataObject>("result");
             Assert.IsNotNull(result);
             if (result.Environment.AllErrors.Any())
+            {
                 Assert.AreEqual(p0, result.Environment.AllErrors.FirstOrDefault());
+            }
         }
     }
 }

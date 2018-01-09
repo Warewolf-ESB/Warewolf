@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ namespace Dev2.Intellisense.Helper
 {
     public class FileSystemQuery:IFileSystemQuery
     {
-        private const char SlashC = '\\';
+        const char SlashC = '\\';
 
         [NonSerialized]
         List<string> _queryCollection;
@@ -27,25 +27,25 @@ namespace Dev2.Intellisense.Helper
         List<string> _computerNameCache = new List<string>();
         DateTime _gotComputerNamesLast;
         readonly TimeSpan _networkQueryTime  = new TimeSpan(0,0,15,0);
-        private readonly IDirectory _directory;
-        private readonly IDirectoryEntryFactory _directoryEntryFactory;
-        private readonly IShareCollectionFactory _shareCollectionFactory;
+        readonly IDirectory _directory;
+        readonly IDirectoryEntryFactory _directoryEntryFactory;
+        readonly IShareCollectionFactory _shareCollectionFactory;
 
-        public FileSystemQuery(IDirectory directory,IDirectoryEntryFactory directoryEntryFactory,IShareCollectionFactory shareCollectionFactory)
+        public FileSystemQuery(IDirectory directory, IDirectoryEntryFactory directoryEntryFactory, IShareCollectionFactory shareCollectionFactory)
         {
             VerifyArgument.IsNotNull("Directory",directory);
-            VerifyArgument.IsNotNull("DirectoryEntryFactory", directoryEntryFactory);
             VerifyArgument.IsNotNull("ShareCollectionFactory", shareCollectionFactory);
             _directory = directory;
             _directoryEntryFactory = directoryEntryFactory;
             _shareCollectionFactory = shareCollectionFactory;
         }
+
         public FileSystemQuery()
         {
             _directory = new DirectoryWrapper();
             _shareCollectionFactory = new ShareCollectionFactory();
-            _directoryEntryFactory = new DirectoryEntryFactory();
         }
+
         public List<string> QueryCollection
         {
             get
@@ -107,20 +107,27 @@ namespace Dev2.Intellisense.Helper
 
         public List<string> GetAllFilesAndFolders(string searchPath, List<string> queryCollection, char directorySeparatorChar)
         {
-            bool bQueryUncShares = false;
-            string sFileServer = string.Empty;
-            if(String.IsNullOrEmpty(searchPath)) return new List<string>();
-            if(searchPath.Length > 3)
+            var bQueryUncShares = false;
+            var sFileServer = string.Empty;
+            if (String.IsNullOrEmpty(searchPath))
+            {
+                return new List<string>();
+            }
+
+            if (searchPath.Length > 3)
             {
                 bQueryUncShares = GetServerNameFromInput(searchPath, ref queryCollection, ref sFileServer);
             }
-            if(bQueryUncShares)
+            if (bQueryUncShares)
             {
                 GetSharesInformationFromSpecifiedServer(sFileServer, queryCollection);
             }
-            else if(queryCollection.Count==0)
+            else
             {
-                queryCollection = GetFilesAndFoldersIncludingNetwork(searchPath, queryCollection, directorySeparatorChar);
+                if (queryCollection.Count == 0)
+                {
+                    queryCollection = GetFilesAndFoldersIncludingNetwork(searchPath, queryCollection, directorySeparatorChar);
+                }
             }
             return queryCollection;
         }
@@ -129,20 +136,23 @@ namespace Dev2.Intellisense.Helper
         {
             var fileServer = searchPath.Substring(2, searchPath.Length - 3);
             var c = searchPath[searchPath.Length - 1];
-            bool bQueryUncShares =false;
-            if(searchPath[0] == SlashC && searchPath[1] == SlashC && c == SlashC && !fileServer.Contains("\\"))
+            var bQueryUncShares =false;
+            if (searchPath[0] == SlashC && searchPath[1] == SlashC && c == SlashC && !fileServer.Contains("\\"))
             {
                 bQueryUncShares = true;
                 sFileServer = fileServer;
             }
-            else if (searchPath[0] == SlashC && searchPath[1] == SlashC && c != SlashC && !fileServer.Contains("\\"))
+            else
             {
-                fileServer = searchPath.Substring(2);
-                if(_computerNameCache.Count == 0)
+                if (searchPath[0] == SlashC && searchPath[1] == SlashC && c != SlashC && !fileServer.Contains("\\"))
                 {
-                    GetComputerNamesOnNetwork("\\",queryCollection);
+                    fileServer = searchPath.Substring(2);
+                    if (_computerNameCache.Count == 0)
+                    {
+                        GetComputerNamesOnNetwork("\\", queryCollection);
+                    }
+                    queryCollection = _computerNameCache.Where(s => s.ToLower().Contains(fileServer.ToLower())).ToList();
                 }
-                queryCollection = _computerNameCache.Where(s => s.ToLower().Contains(fileServer.ToLower())).ToList();
             }
             return bQueryUncShares;
         }
@@ -161,8 +171,7 @@ namespace Dev2.Intellisense.Helper
 
         public List<string> GetFilesAndFoldersIncludingNetwork(string searchPath, List<string> queryCollection, char directorySeparatorChar)
         {
-            string sServerFolderShare;
-            if(GetServerFolderShare(searchPath, out sServerFolderShare))
+            if (GetServerFolderShare(searchPath, out string sServerFolderShare))
             {
                 queryCollection.Add(sServerFolderShare);
             }
@@ -195,7 +204,7 @@ namespace Dev2.Intellisense.Helper
         {
             VerifyArgument.IsNotNull("Directory",dir);
 
-            int lastIndexOfDirSepChar = searchPath.LastIndexOf(directorySeparatorChar);
+            var lastIndexOfDirSepChar = searchPath.LastIndexOf(directorySeparatorChar);
             var queryCollection = new List<string>(); 
             if(lastIndexOfDirSepChar > 0)
             {
@@ -210,9 +219,8 @@ namespace Dev2.Intellisense.Helper
             return queryCollection;
         }
 
-       public List<string> FindNetworkComputers()
+        public List<string> FindNetworkComputers()
         {
-
             var root =  _directoryEntryFactory.Create( "WinNT:");
             return (from IDirectoryEntry dom in root.Children
                     from IDirectoryEntry entry in dom.Children
@@ -220,7 +228,7 @@ namespace Dev2.Intellisense.Helper
                     select @"\\"+entry.Name).ToList();
         }
 
-      public bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
+        public bool GetServerFolderShare(string sInPath, out string sServerFolderShare)
         {
             sServerFolderShare = string.Empty;
             const char cPathDel = SlashC;

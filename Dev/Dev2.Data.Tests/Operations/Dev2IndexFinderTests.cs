@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,9 +19,9 @@ namespace Dev2.Data.Tests.Operations
     [TestClass]
     public class Dev2IndexFinderTests
     {
-        private IDev2IndexFinder _indexFinder;
+        IDev2IndexFinder _indexFinder;
 
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides

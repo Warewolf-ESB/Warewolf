@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -55,27 +55,17 @@ namespace Dev2.Activities.Designers2.Sequence
 
         public object SmallViewItem
         {
-            get
-            {
-                return _smallViewItem;
-            }
-            // ReSharper disable ValueParameterNotUsed
+            get => _smallViewItem;
             set
-            // ReSharper restore ValueParameterNotUsed
             {
-                var test = value as ModelItem;
-
-                if (test != null && !_addedFromDesignSurface)
+                if (value is ModelItem test)
                 {
-                    if (test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
+                    if (!_addedFromDesignSurface && test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
                     {
                         dynamic mi = ModelItem;
                         ModelItemCollection activitiesCollection = mi.Activities;
                         activitiesCollection.Insert(activitiesCollection.Count, test);
                     }
-                }
-                if (test != null)
-                {
                     _addedFromDesignSurface = false;
                 }
                 _smallViewItem = null;
@@ -87,8 +77,7 @@ namespace Dev2.Activities.Designers2.Sequence
             get
             {
                 var property = ModelItem.GetProperty("Activities");
-                var activityNames = property as Collection<Activity>;
-                if (activityNames != null)
+                if (property is Collection<Activity> activityNames)
                 {
                     var fullListOfNames = activityNames.Select(item => item.DisplayName).ToList();
                     if (fullListOfNames.Count <= 4)
@@ -108,29 +97,30 @@ namespace Dev2.Activities.Designers2.Sequence
             if (dataObject != null && (dataObject.GetDataPresent(GlobalConstants.ExplorerItemModelFormat) || dataObject.GetDataPresent(GlobalConstants.UpgradedExplorerItemModelFormat)))
             {
                 var explorerItemModel = dataObject.GetData(GlobalConstants.UpgradedExplorerItemModelFormat);
-                Guid envId = new Guid();
-                Guid resourceId = new Guid();
+                var envId = new Guid();
+                var resourceId = new Guid();
 
                 if (explorerItemModel == null)
                 {
                     return false;
                 }
-                IExplorerItemViewModel itemModel = explorerItemModel as IExplorerItemViewModel;
-                if (itemModel != null)
+                if (explorerItemModel is IExplorerItemViewModel itemModel)
                 {
                     if (itemModel.Server != null)
+                    {
                         envId = itemModel.Server.EnvironmentID;
+                    }
                     resourceId = itemModel.ResourceId;
                 }
 
                 try
                 {
-                    IServer server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
+                    var server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
                     var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
-                    if (resource != null)
+                    if (resource == null)
                     {
-                        DsfActivity d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
+                        var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
                         if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
                         {
@@ -141,7 +131,7 @@ namespace Dev2.Activities.Designers2.Sequence
                             }
                         }
 
-                        ModelItem modelItem = ModelItemUtils.CreateModelItem(d);
+                        var modelItem = ModelItemUtils.CreateModelItem(d);
                         if (modelItem != null)
                         {
                             dynamic mi = ModelItem;
@@ -149,14 +139,27 @@ namespace Dev2.Activities.Designers2.Sequence
                             activitiesCollection.Insert(activitiesCollection.Count, d);
                             return true;
                         }
-                    }
+                    }                    
+                    return true;
                 }
                 catch (RuntimeBinderException e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, "Warewolf Error");
                 }
             }
             return false;
+        }
+
+        private static void ValidateRemoteProperties(IContextualResourceModel resource, DsfActivity d)
+        {
+            if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            {
+                dynamic mvm = Application.Current.MainWindow.DataContext;
+                if (mvm != null && mvm.ActiveItem != null)
+                {
+                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                }
+            }
         }
 
         public bool DoDrop(IDataObject dataObject)
@@ -172,8 +175,7 @@ namespace Dev2.Activities.Designers2.Sequence
             if (!string.IsNullOrEmpty(modelItemString))
             {
                 var objectData = dataObject.GetData(modelItemString);
-                var data = objectData as List<ModelItem>;
-                if (data != null && data.Count >= 1)
+                if (objectData is List<ModelItem> data && data.Count >= 1)
                 {
                     foreach (var item in data)
                     {

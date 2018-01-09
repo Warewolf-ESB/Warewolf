@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,6 @@
 using Dev2.Common.Common;
 using Dev2.Common.DependencyVisualization;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -21,7 +20,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Common
 {
-  
+
     /// <summary>
     /// Used to generate dependency graphs.
     /// Extracted From View Model ;)
@@ -37,7 +36,7 @@ namespace Dev2.Common
         /// <param name="height">The height.</param>
         /// <param name="nestingLevel">How deep should the graph show.</param>
         /// <returns></returns>
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+
         public IGraph BuildGraph(StringBuilder xmlData, string modelName, double width, double height, int nestingLevel)
         {
             if (xmlData == null || xmlData.Length == 0)
@@ -122,14 +121,14 @@ namespace Dev2.Common
 
                 return graph;
             }
-            catch
+            catch (Exception ex)
             {
                 return new Graph(ErrorResource.DependencyInormationMalformed);
             }
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        private IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
+
+        IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             var screenWidth = width;
             var screenHeight = height - 150;
@@ -140,18 +139,15 @@ namespace Dev2.Common
             const int Distance = 300;
             var centerPoint = new Point(centerX, centerY);
 
-            double x;
-            double y;
-
             var tmpX = nodeElm.AttributeSafe("x");
             var tmpY = nodeElm.AttributeSafe("y");
-            double.TryParse(tmpX, out x);
-            double.TryParse(tmpY, out y);
+            double.TryParse(tmpX, out double x);
+            double.TryParse(tmpY, out double y);
 
-            // ReSharper disable once PossibleNullReferenceException
+
             var id = nodeElm.Attribute("id").Value;
             var isTarget = id == resourceName;
-            // ReSharper disable once PossibleNullReferenceException
+
             var broken = string.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)

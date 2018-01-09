@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,13 +26,12 @@ namespace Dev2.Activities.Designers2.RecordsLengthNullHandler
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Recordset_Length;
         }
         
-        public string RecordsetNameValue { get { return (string)GetValue(RecordsetNameValueProperty); } set { SetValue(RecordsetNameValueProperty, value); } }
+        public string RecordsetNameValue { get => (string)GetValue(RecordsetNameValueProperty); set => SetValue(RecordsetNameValueProperty, value); }
 
         public static readonly DependencyProperty RecordsetNameValueProperty =
             DependencyProperty.Register("RecordsetNameValue", typeof(string), typeof(RecordsLengthDesignerViewModel), new PropertyMetadata(null, OnRecordsetNameValueChanged));
-
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        string RecordsetName { set { SetProperty(value); } get { return GetProperty<string>(); } }
+        
+        string RecordsetName { set => SetProperty(value); get => GetProperty<string>(); }
 
         static void OnRecordsetNameValueChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {

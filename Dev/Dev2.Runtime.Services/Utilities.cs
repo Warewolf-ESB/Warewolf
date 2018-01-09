@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,18 +9,17 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 
 namespace Dev2.Runtime
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public static class Utilities
     {
         #region GenerateString
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public static string GenerateString(this Random random, int length, string prefix = "")
+        public static string GenerateString(this Random random, int length) => random.GenerateString(length, "");
+
+        public static string GenerateString(this Random random, int length, string prefix)
         {
             var modulo = length / 3;
             var builder = new StringBuilder(prefix);
@@ -37,6 +36,5 @@ namespace Dev2.Runtime
         }
 
         #endregion
-
     }
 }

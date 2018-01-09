@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,14 +31,13 @@ namespace Dev2.Core.Tests.ConverterTests
 
             var activityDtos = new List<ActivityDTO> { new ActivityDTO("name", "value", 0), new ActivityDTO("name1", "value1", 1), new ActivityDTO("name2", "value2", 2) };
 
-            DsfMultiAssignActivity multiAssign = new DsfMultiAssignActivity();
+            var multiAssign = new DsfMultiAssignActivity();
             multiAssign.FieldsCollection = activityDtos;
 
             dynamic modelItem = ModelItemUtils.CreateModelItem(multiAssign);
 
-            ModelItemCollection collection = modelItem.FieldsCollection as ModelItemCollection;
             //------------Execute Test---------------------------
-            if(collection != null)
+            if (modelItem.FieldsCollection is ModelItemCollection collection)
             {
                 var result = converter.Convert(collection[1], typeof(int), null, CultureInfo.CurrentCulture);
 
@@ -60,15 +59,14 @@ namespace Dev2.Core.Tests.ConverterTests
 
             var activityDtos = new List<ActivityDTO> { new ActivityDTO("name", "value", 0), new ActivityDTO("name1", "value1", 1), new ActivityDTO("name2", "value2", 2) };
 
-            DsfMultiAssignActivity multiAssign = new DsfMultiAssignActivity();
+            var multiAssign = new DsfMultiAssignActivity();
             multiAssign.FieldsCollection = activityDtos;
-            ModelItem modelItemThatdoesntExist = ModelItemUtils.CreateModelItem(new ActivityDTO("thing", "stuff", 8));
+            var modelItemThatdoesntExist = ModelItemUtils.CreateModelItem(new ActivityDTO("thing", "stuff", 8));
 
             dynamic modelItem = ModelItemUtils.CreateModelItem(multiAssign);
 
-            ModelItemCollection collection = modelItem.FieldsCollection as ModelItemCollection;
             //------------Execute Test---------------------------
-            if(collection != null)
+            if (modelItem.FieldsCollection is ModelItemCollection collection)
             {
                 var result = converter.Convert(modelItemThatdoesntExist, typeof(int), null, CultureInfo.CurrentCulture);
 

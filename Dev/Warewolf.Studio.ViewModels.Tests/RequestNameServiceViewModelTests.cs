@@ -1,4 +1,5 @@
-﻿using Dev2.Studio.Interfaces;
+﻿using Dev2;
+using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
@@ -13,9 +14,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         [TestCategory("DeploySourceExplorerViewModel_Ctor_valid")]
         public void TestDispose()
         {
-            RequestServiceNameViewModel vm = new RequestServiceNameViewModel();
+            var serverRepo = new Mock<IServerRepository>();
+            var connectionObject = new Mock<IEnvironmentConnection>();
+            serverRepo.Setup(repository => repository.ActiveServer.Connection).Returns(connectionObject.Object);
+            CustomContainer.Register(serverRepo.Object);
+            var vm = new RequestServiceNameViewModel();
             var x = new Mock<IExplorerViewModel>();
-            PrivateObject p = new PrivateObject(vm);
+            var p = new PrivateObject(vm);
             var env = new Mock<IEnvironmentViewModel>();
             p.SetField("_environmentViewModel", env.Object);
             vm.SingleEnvironmentExplorerViewModel = x.Object;

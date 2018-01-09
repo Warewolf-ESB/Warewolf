@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,19 +17,13 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
 
-// ReSharper disable CheckNamespace
-
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
-{
-    // ReSharper disable InconsistentNaming
-    public class DataMergeDTO : ValidatedObject, IDev2TOFn
-    // ReSharper restore InconsistentNaming
+{    
+    public class DataMergeDTO : ValidatedObject, IDev2TOFn    
     {
         public const string MergeTypeIndex = "Index";
         public const string MergeTypeChars = "Chars";
         public const string MergeTypeNone = "None";
-
         public const string AlignmentLeft = "Left";
 
         #region Fields
@@ -49,10 +43,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Ctor
 
-        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted = false)
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment)
+            : this(inputVariable, mergeType, at, indexNum, padding, alignment, false)
+        {
+        }
+
+        public DataMergeDTO(string inputVariable, string mergeType, string at, int indexNum, string padding, string alignment, bool inserted)
         {
             Inserted = inserted;
-
             InputVariable = string.IsNullOrEmpty(inputVariable) ? string.Empty : inputVariable;
             MergeType = string.IsNullOrEmpty(mergeType) ? MergeTypeIndex : mergeType;
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
@@ -60,7 +58,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _enableAt = true;
             Padding = string.IsNullOrEmpty(padding) ? string.Empty : padding;
             Alignment = string.IsNullOrEmpty(alignment) ? AlignmentLeft : alignment;
-
         }
 
         public DataMergeDTO()
@@ -74,11 +71,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        public bool IsPaddingFocused { get { return _isPaddingFocused; } set { OnPropertyChanged(ref _isPaddingFocused, value); } }
+        public bool IsPaddingFocused { get => _isPaddingFocused; set => OnPropertyChanged(ref _isPaddingFocused, value); }
 
-        public bool IsAtFocused { get { return _isAtFocused; } set { OnPropertyChanged(ref _isAtFocused, value); } }
+        public bool IsAtFocused { get => _isAtFocused; set => OnPropertyChanged(ref _isAtFocused, value); }
 
-        public bool IsFieldNameFocused { get { return _isFieldNameFocused; } set { OnPropertyChanged(ref _isFieldNameFocused, value); } }
+        public bool IsFieldNameFocused { get => _isFieldNameFocused; set => OnPropertyChanged(ref _isFieldNameFocused, value); }
 
         public bool Inserted { get; set; }
 
@@ -86,10 +83,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
         [FindMissing]
@@ -107,11 +104,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
+        public bool EnableAt { get => _enableAt; set => OnPropertyChanged(ref _enableAt, value); }
 
-        public bool EnablePadding { get { return _enablePadding; } set { OnPropertyChanged(ref _enablePadding, value); } }
+        public bool EnablePadding { get => _enablePadding; set => OnPropertyChanged(ref _enablePadding, value); }
 
-        public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
+        public int IndexNumber { get => _indexNum; set => OnPropertyChanged(ref _indexNum, value); }
 
         [FindMissing]
         public string InputVariable
@@ -171,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanAdd()
         {
-            bool result = true;
+            var result = true;
             if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
             {
                 if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))
@@ -206,7 +203,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -216,16 +213,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "Input":
                     if (!string.IsNullOrEmpty(InputVariable))
                     {
-                        var inputExprRule = new IsValidExpressionRule(() => InputVariable, datalist, "0");
+                        var inputExprRule = new IsValidExpressionRule(() => InputVariable, datalist, "0", new VariableUtils());
                         ruleSet.Add(inputExprRule);
                     }
                     else
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => InputVariable));
+                    }
+
                     break;
                 case "At":
                     if (MergeType == MergeTypeIndex)
                     {
-                        var atExprRule = new IsValidExpressionRule(() => At, datalist, "1");
+                        var atExprRule = new IsValidExpressionRule(() => At, datalist, "1", new VariableUtils());
                         ruleSet.Add(atExprRule);
 
                         ruleSet.Add(new IsStringEmptyRule(() => atExprRule.ExpressionValue));
@@ -235,12 +235,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 case "Padding":
                     if (!string.IsNullOrEmpty(Padding))
                     {
-                        var paddingExprRule = new IsValidExpressionRule(() => Padding, datalist, "0");
+                        var paddingExprRule = new IsValidExpressionRule(() => Padding, datalist, "0", new VariableUtils());
                         ruleSet.Add(paddingExprRule);
 
                         ruleSet.Add(new IsSingleCharRule(() => paddingExprRule.ExpressionValue));
                     }
                     break;
+                default:
+                    return ruleSet;
             }
             return ruleSet;
         }

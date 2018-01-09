@@ -4,25 +4,29 @@ using System.Diagnostics;
 using System.IO;
 using System.IO.Pipes;
 using Newtonsoft.Json;
-// ReSharper disable InconsistentNaming
+using System.Reflection;
 
-// ReSharper disable NonLocalizedString
+
+
 namespace WarewolfCOMIPC.Client
 {
     public class IpcClient : IDisposable, IDev2IpcClient
     {
-        private bool _disposed;
-        private readonly INamedPipeClientStreamWrapper _pipeWrapper;
-        private readonly Process _process;
-        private static IpcClient _ipcClient;
-        private static readonly object padlock = new object();
+        bool _disposed;
+        readonly INamedPipeClientStreamWrapper _pipeWrapper;
+        readonly Process _process;
+        static IpcClient _ipcClient;
+        static readonly object padlock = new object();
 
-        private IpcClient()
+        IpcClient()
         {
-            string token = Guid.NewGuid().ToString();
+            var token = Guid.NewGuid().ToString();
 
             // Pass token to child process
-            var psi = new ProcessStartInfo("WarewolfCOMIPC.exe", token)
+            var currentAssemblyPath = Assembly.GetExecutingAssembly().Location;
+            var currentAssemblyDirectoryPath = Path.GetDirectoryName(currentAssemblyPath);
+            var clientPath = Path.Combine(currentAssemblyDirectoryPath, "WarewolfCOMIPC.exe");
+            var psi = new ProcessStartInfo(clientPath, token)
             {
                 Verb = "runas",
                 UseShellExecute = false,
@@ -42,11 +46,9 @@ namespace WarewolfCOMIPC.Client
             _pipeWrapper = clientStreamWrapper;
         }
 
+        public static IpcClient GetIPCExecutor() => GetIPCExecutor(null);
 
-        /// <summary>
-        /// Gets the instance.
-        /// </summary>
-        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper = null)
+        public static IpcClient GetIPCExecutor(INamedPipeClientStreamWrapper clientStreamWrapper)
         {
             if (clientStreamWrapper != null)
             {
@@ -71,7 +73,10 @@ namespace WarewolfCOMIPC.Client
         public object Invoke(Guid clsid, string function, Execute execute, ParameterInfoTO[] args)
         {
             if (_disposed)
+            {
                 throw new ObjectDisposedException(nameof(IpcClient));
+            }
+
             var info = new CallData
             {
                 CLSID = clsid,
@@ -98,8 +103,7 @@ namespace WarewolfCOMIPC.Client
                     {
 
                         result = serializer.Deserialize(jsonTextReader, typeof(string));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -122,8 +126,7 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetMethods:
                     {
                         result = serializer.Deserialize(jsonTextReader, typeof(string));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -134,8 +137,7 @@ namespace WarewolfCOMIPC.Client
                 case Execute.GetNamespaces:
                     {
                         result = serializer.Deserialize(jsonTextReader, typeof(List<string>));
-                        var exception = result as Exception;
-                        if (exception != null)
+                        if (result is Exception exception)
                         {
                             throw exception;
                         }
@@ -193,7 +195,9 @@ namespace WarewolfCOMIPC.Client
         protected void Dispose(bool disposing)
         {
             if (_disposed)
+            {
                 return;
+            }
 
             if (disposing)
             {

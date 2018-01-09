@@ -8,21 +8,21 @@ using System.IO;
 using System.Net;
 using Dev2.Common.Interfaces.Wrappers;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     public class DropBoxUpload : IDropBoxUpload
     {
-        private readonly IFilenameValidator _validator;
+        readonly IFilenameValidator _validator;
 
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        private WriteMode _writeMode;
 
-        private readonly string _dropboxPath;
-        private readonly string _fromPath;
+        readonly WriteMode _writeMode;
 
-        private DropBoxUpload(IFilenameValidator validator)
+        readonly string _dropboxPath;
+        readonly string _fromPath;
+
+        DropBoxUpload(IFilenameValidator validator)
         {
             _validator = validator;
         }
@@ -56,20 +56,20 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             {
                 using (var stream = new MemoryStream(File.ReadAllBytes(_fromPath)))
                 {
-                    FileMetadata uploadAsync = client.UploadAsync(_dropboxPath, _writeMode, true, null, false, stream).Result;
+                    var uploadAsync = client.UploadAsync(_dropboxPath, _writeMode, true, null, false, stream).Result;
                     return new DropboxUploadSuccessResult(uploadAsync);
                 }
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception.Message);
+                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
                 return exception.InnerException != null ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
             }
         }
 
         #endregion Implementation of IDropboxSingleExecutor
 
-        private void InitializeCertPinning()
+        void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
             {

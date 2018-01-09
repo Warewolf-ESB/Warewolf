@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities
 {
     [TestClass]
@@ -318,7 +318,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutputTO.Value) };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -354,7 +354,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString("8") };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -391,7 +391,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutputTO.Value) };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -496,7 +496,7 @@ namespace Dev2.Tests.Activities
                 Result = new TestRunResult { RunTestResult = RunResult.TestPassed }
             };
             var warewolfAtoms = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(serviceTestOutputTO.Value) };
-            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0, false)).Returns(warewolfAtoms);
+            mockEnv.Setup(environment => environment.EvalAsList(It.IsAny<string>(), 0)).Returns(warewolfAtoms);
             mockDataObject.Setup(o => o.Environment).Returns(mockEnv.Object);
             var dsfDataObject = mockDataObject.Object;
             serviceTestOutputs.Add(serviceTestOutputTO);
@@ -862,14 +862,14 @@ namespace Dev2.Tests.Activities
             Assert.AreEqual(RunResult.None, serviceTestStepTO.StepOutputs[0].Result.RunTestResult);
         }
 
-        private static IDSFDataObject GetDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
+        static IDSFDataObject GetDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
         {
             var mockDataObject = GetMockDataObject(isServiceTestExecution, resourceId, testName);
             var dsfDataObject = mockDataObject.Object;
             return dsfDataObject;
         }
 
-        private static Mock<IDSFDataObject> GetMockDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
+        static Mock<IDSFDataObject> GetMockDataObject(bool isServiceTestExecution, Guid resourceId, string testName)
         {
             var mockDataObject = new Mock<IDSFDataObject>();
             mockDataObject.Setup(o => o.IsServiceTestExecution).Returns(isServiceTestExecution);

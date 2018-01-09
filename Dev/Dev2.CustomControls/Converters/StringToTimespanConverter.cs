@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,12 +30,11 @@ namespace Dev2.CustomControls.Converters
         /// <param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             if (value is TimeSpan)
             {
-                TimeSpan time;
-                if (TimeSpan.TryParse(value.ToString(), out time))
+                if (TimeSpan.TryParse(value.ToString(), out TimeSpan time))
                 {
                     result = time.Minutes.ToString(CultureInfo.InvariantCulture);
                 }
@@ -57,9 +56,8 @@ namespace Dev2.CustomControls.Converters
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var result = new TimeSpan();
-            int inVal;
 
-            if (int.TryParse(value.ToString(), out inVal))
+            if (int.TryParse(value.ToString(), out int inVal))
             {
                 result = new TimeSpan(0, inVal, 0);
             }

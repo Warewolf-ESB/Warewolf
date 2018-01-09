@@ -44,7 +44,8 @@ namespace Dev2.Common.Interfaces
     {
         string TestConnection(IWcfServerSource wcfServerSource);
         Action<Guid, bool> ServerSaved { get; set; }
-        void FireServerSaved(Guid savedServerID, bool isDeleted = false);
+        void FireServerSaved(Guid savedServerID);
+        void FireServerSaved(Guid savedServerID, bool isDeleted);
 
         List<IDeployResult> Deploy(List<Guid> resourceIDsToDeploy, bool deployTests, IConnection destinationEnvironment);
     }

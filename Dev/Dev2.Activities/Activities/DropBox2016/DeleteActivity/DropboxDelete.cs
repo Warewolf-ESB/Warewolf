@@ -6,16 +6,16 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api;
 using Dropbox.Api.Files;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.DropBox2016.DeleteActivity
 {
     public class DropboxDelete : IDropBoxDelete
     {
-        private readonly IFilenameValidator _validator;
-        private readonly string _dropboxPath;
+        readonly IFilenameValidator _validator;
+        readonly string _dropboxPath;
 
-        private DropboxDelete(IFilenameValidator validator)
+        DropboxDelete(IFilenameValidator validator)
         {
             _validator = validator;
         }
@@ -25,7 +25,10 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             _validator.Validate();
             if (!dropboxPath.StartsWith(@"/"))
+            {
                 dropboxPath = string.Concat(@"/", dropboxPath);
+            }
+
             _dropboxPath = dropboxPath;
             InitializeCertPinning();
         }
@@ -35,19 +38,19 @@ namespace Dev2.Activities.DropBox2016.DeleteActivity
         {
             try
             {
-                FileMetadata deleteAsync = client.DeleteAsync(_dropboxPath).Result as FileMetadata;
+                var deleteAsync = client.DeleteAsync(_dropboxPath).Result as FileMetadata;
                 return new DropboxDeleteSuccessResult(deleteAsync);
             }
             catch (Exception exception)
             {
-                Dev2Logger.Error(exception.Message);
+                Dev2Logger.Error(exception.Message, GlobalConstants.WarewolfError);
                 return exception.InnerException != null ? new DropboxFailureResult(exception.InnerException) : new DropboxFailureResult(exception);
             }
         }
 
         #endregion
 
-        private void InitializeCertPinning()
+        void InitializeCertPinning()
         {
             ServicePointManager.ServerCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) =>
             {

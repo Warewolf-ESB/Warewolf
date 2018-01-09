@@ -6,8 +6,8 @@ using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
-// ReSharper disable PossibleNullReferenceException
+
+
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region DeserializeService
 
-        private class ComPluginServicesMock : ComPluginServices
+        class ComPluginServicesMock : ComPluginServices
         {
             public new Service DeserializeService(string args)
             {
@@ -190,13 +190,12 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Execute Test---------------------------
             try
             {
-                string serializedResult;
-                pluginServices.Test(serviceDef, out serializedResult);
+                pluginServices.Test(serviceDef, out string serializedResult);
             }
             catch(Exception e)
             {
                 //Calls the execution correctly;
-                // ReSharper disable once PossibleNullReferenceException
+                
                 Assert.AreEqual("[Microsoft][ODBC Driver Manager] Data source name not found and no default driver specified", e.InnerException.Message);
                 
             }
@@ -210,8 +209,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new ComPluginServicesMock();
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = services.Test(null, out serializedResult);
+            var result = services.Test(null, out string serializedResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }
@@ -222,8 +220,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new ComPluginServicesMock();
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = services.Test("xxx", out serializedResult);
+            var result = services.Test("xxx", out string serializedResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }
@@ -272,7 +269,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
                 ClsId = clsId
             };
         }
-        private const string clsId = "00000514-0000-0010-8000-00AA006D2EA4";
+        const string clsId = "00000514-0000-0010-8000-00AA006D2EA4";
         #endregion
     }
 }

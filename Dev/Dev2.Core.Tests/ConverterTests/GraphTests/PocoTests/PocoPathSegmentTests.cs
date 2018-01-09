@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,7 @@
 using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
@@ -24,11 +24,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void ToStringOnEnumerableSegment_Expected_EnumerableFormat()
         {
-            PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment("Collection()");
+            var path = new PocoPath();
+            var segment = path.CreatePathSegment("Collection()");
 
             const string expected = "Collection()";
-            string actual = segment.ToString();
+            var actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -39,11 +39,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void ToStringOnScalarSegment_Expected_ScalarFormat()
         {
-            PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new PocoPath();
+            var segment = path.CreatePathSegment("Name");
 
             const string expected = "Name";
-            string actual = segment.ToString();
+            var actual = segment.ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -54,11 +54,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void ToStringOnEnumerableSegment_WhereEnumerablesArentConsidered_Expected_ScalarFormat()
         {
-            PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment("Collection()");
+            var path = new PocoPath();
+            var segment = path.CreatePathSegment("Collection()");
 
             const string expected = "Collection";
-            string actual = segment.ToString(false);
+            var actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
         }
@@ -69,11 +69,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void ToStringOnEnumerableSegment_WhereEnumerablesAreConsidered_Expected_ScalarFormat()
         {
-            PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment("Collection()");
+            var path = new PocoPath();
+            var segment = path.CreatePathSegment("Collection()");
 
             const string expected = "Collection()";
-            string actual = segment.ToString(true);
+            var actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);
         }
@@ -84,11 +84,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void ToStringOnScalarSegment_WhereEnumerablesArentConsidered__Expected_ScalarFormat()
         {
-            PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new PocoPath();
+            var segment = path.CreatePathSegment("Name");
 
             const string expected = "Name";
-            string actual = segment.ToString(false);
+            var actual = segment.ToString(false);
 
             Assert.AreEqual(expected, actual);
         }
@@ -99,11 +99,11 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void ToStringOnScalarSegmentt_WhereEnumerablesAreConsidered__Expected_ScalarFormat()
         {
-            PocoPath path = new PocoPath();
-            IPathSegment segment = path.CreatePathSegment("Name");
+            var path = new PocoPath();
+            var segment = path.CreatePathSegment("Name");
 
             const string expected = "Name";
-            string actual = segment.ToString(true);
+            var actual = segment.ToString(true);
 
             Assert.AreEqual(expected, actual);
         }

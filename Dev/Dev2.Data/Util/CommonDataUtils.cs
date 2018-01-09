@@ -86,7 +86,7 @@ namespace Dev2.Data.Util
             var lvls = Enum.GetValues(typeof(CompressionLevel));
             var pos = 0;
             //19.09.2012: massimo.guerrera - Changed to default instead of none
-            CompressionLevel clvl = CompressionLevel.Default;
+            var clvl = CompressionLevel.Default;
 
             while (pos < lvls.Length && lvls.GetValue(pos).ToString() != lvl)
             {
@@ -226,7 +226,7 @@ namespace Dev2.Data.Util
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
 
@@ -248,16 +248,14 @@ namespace Dev2.Data.Util
                         var result = outerEnvironment.Eval(dev2Definition.RawValue, update);
                         if (result.IsWarewolfAtomListresult)
                         {
-                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                            if (data != null && data.Item.Any())
+                            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
                             {
                                 env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
                             }
                         }
                         else
                         {
-                            var data = result as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                            if (data != null)
+                            if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
                             {
                                 env.AssignWithFrame(new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
                             }
@@ -343,15 +341,15 @@ namespace Dev2.Data.Util
 
             if (!string.IsNullOrEmpty(dataList))
             {
-                XmlDocument xDoc = new XmlDocument();
+                var xDoc = new XmlDocument();
                 xDoc.LoadXml(dataList);
 
-                XmlNodeList tmpRootNl = xDoc.ChildNodes;
-                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+                var tmpRootNl = xDoc.ChildNodes;
+                var nl = tmpRootNl[0].ChildNodes;
 
                 for (int i = 0; i < nl.Count; i++)
                 {
-                    XmlNode tmpNode = nl[i];
+                    var tmpNode = nl[i];
 
                     var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
 
@@ -366,13 +364,17 @@ namespace Dev2.Data.Util
                         if (tmpNode.HasChildNodes && !jsonAttribute)
                         {
                             // it is a record set, make it as such
-                            string recordsetName = tmpNode.Name;
+                            var recordsetName = tmpNode.Name;
                             // now extract child node defs
-                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            var childNl = tmpNode.ChildNodes;
                             for (int q = 0; q < childNl.Count; q++)
                             {
                                 var xmlNode = childNl[q];
-                                if (xmlNode == null) continue;
+                                if (xmlNode == null)
+                                {
+                                    continue;
+                                }
+
                                 var fieldIoDirection = DataListUtil.GetDev2ColumnArgumentDirection(xmlNode);
                                 if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, fieldIoDirection))
                                 {
@@ -396,14 +398,13 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        private static bool IsObject(XmlNode tmpNode)
+        static bool IsObject(XmlNode tmpNode)
         {
-            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsJson"];
+            var isObjectAttribute = tmpNode.Attributes?["IsJson"];
 
             if (isObjectAttribute != null)
             {
-                bool isObject;
-                if (bool.TryParse(isObjectAttribute.Value, out isObject))
+                if (bool.TryParse(isObjectAttribute.Value, out bool isObject))
                 {
                     return isObject;
                 }
@@ -411,14 +412,13 @@ namespace Dev2.Data.Util
             return false;
         }
 
-        private bool IsArray(XmlNode tmpNode)
+        bool IsArray(XmlNode tmpNode)
         {
-            XmlAttribute isObjectAttribute = tmpNode.Attributes?["IsArray"];
+            var isObjectAttribute = tmpNode.Attributes?["IsArray"];
 
             if (isObjectAttribute != null)
             {
-                bool isArray;
-                if (bool.TryParse(isObjectAttribute.Value, out isArray))
+                if (bool.TryParse(isObjectAttribute.Value, out bool isArray))
                 {
                     return isArray;
                 }
@@ -432,15 +432,15 @@ namespace Dev2.Data.Util
 
             if (!string.IsNullOrEmpty(dataList))
             {
-                XmlDocument xDoc = new XmlDocument();
+                var xDoc = new XmlDocument();
                 xDoc.LoadXml(dataList);
 
-                XmlNodeList tmpRootNl = xDoc.ChildNodes;
-                XmlNodeList nl = tmpRootNl[0].ChildNodes;
+                var tmpRootNl = xDoc.ChildNodes;
+                var nl = tmpRootNl[0].ChildNodes;
 
                 for (int i = 0; i < nl.Count; i++)
                 {
-                    XmlNode tmpNode = nl[i];
+                    var tmpNode = nl[i];
 
                     var ioDirection = DataListUtil.GetDev2ColumnArgumentDirection(tmpNode);
                     var isObject = IsObject(tmpNode);
@@ -452,10 +452,8 @@ namespace Dev2.Data.Util
                     }
                     else if (tmpNode.HasChildNodes && !isObject)
                     {
-                        // it is a record set, make it as such
-                        string recordsetName = tmpNode.Name;
-                        // now extract child node defs
-                        XmlNodeList childNl = tmpNode.ChildNodes;
+                        var recordsetName = tmpNode.Name;
+                        var childNl = tmpNode.ChildNodes;
                         for (int q = 0; q < childNl.Count; q++)
                         {
                             var xmlNode = childNl[q];
@@ -467,11 +465,13 @@ namespace Dev2.Data.Util
                             }
                         }
                     }
-                    else if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                    else
                     {
-                        // scalar value, make it as such
-                        var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
-                        result.Add(dev2Definition);
+                        if (DataListUtil.CheckIODirection(dev2ColumnArgumentDirection, ioDirection))
+                        {
+                            var dev2Definition = isObject ? DataListFactory.CreateDefinition("@" + tmpNode.Name, "", "", false, "", false, "", false, isArray) : DataListFactory.CreateDefinition(tmpNode.Name, "", "", false, "", false, "");
+                            result.Add(dev2Definition);
+                        }
                     }
 
                 }
@@ -482,7 +482,7 @@ namespace Dev2.Data.Util
 
 
 
-        private void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
+        void AtomListInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
             var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             DataListUtil.GetRecordsetIndexType(dev2ColumnDefinition.Value);
@@ -494,24 +494,22 @@ namespace Dev2.Data.Util
             }
         }
 
-        private void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
+        void ScalarAtomList(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
         {
-            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-            if (data != null && data.Item.Any())
+            if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
             {
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last())), 0);
             }
         }
-        private void ScalarAtom(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
+        void ScalarAtom(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IExecutionEnvironment env, IDev2Definition dev2Definition)
         {
-            var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-            if (data != null)
+            if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
             {
                 env.AssignWithFrame(new AssignValue("[[" + dev2Definition.Name + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item)), 0);
             }
         }
 
-        private void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
+        void AtomInputs(CommonFunctions.WarewolfEvalResult warewolfEvalResult, IDev2Definition dev2ColumnDefinition, IExecutionEnvironment env)
         {
             var recsetResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
             if (dev2ColumnDefinition.IsRecordSet)

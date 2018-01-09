@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,19 +22,22 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
     [Binding]
     public class WebRequestSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public WebRequestSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -42,20 +45,16 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
                 scenarioContext.Add("variableList", variableList);
             }
             var resultVariable = ResultVariable;
-            string resVar;
-            if(scenarioContext.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out string resVar))
             {
                 resultVariable = resVar;
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
-            string header;
-            scenarioContext.TryGetValue("header", out header);
-            string url;
-            scenarioContext.TryGetValue("url", out url);
-            string timeout;
-            scenarioContext.TryGetValue("timeoutSeconds", out timeout);
+            scenarioContext.TryGetValue("header", out string header);
+            scenarioContext.TryGetValue("url", out string url);
+            scenarioContext.TryGetValue("timeoutSeconds", out string timeout);
             var webGet = new DsfWebGetRequestWithTimeoutActivity
                 {
                     Result = resultVariable,
@@ -82,15 +81,14 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         public void WhenTheWebRequestToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Given(@"I have a web request variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAWebRequestVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -110,11 +108,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.WebRequest
         [Then(@"the result should contain the string ""(.*)""")]
         public void ThenTheResultShouldContainTheString(string expectedResult)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

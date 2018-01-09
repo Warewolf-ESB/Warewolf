@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,15 +35,15 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     /// <New>
     /// Activity for replacing a certain character set in a number of field with a new character set 
     /// </New>
     [ToolDescriptorInfo("Data-Replace", "Replace", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Replace")]
-    public class DsfReplaceActivity : DsfActivityAbstract<string>
+    public class DsfReplaceActivity : DsfActivityAbstract<string>,IEquatable<DsfReplaceActivity>
     {
 
         #region Properties
@@ -111,7 +111,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <param name="context"></param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -119,12 +119,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            IDev2ReplaceOperation replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
+            var replaceOperation = Dev2OperationsFactory.CreateReplaceOperation();
             IErrorResultTO errors;
             IErrorResultTO allErrors = new ErrorResultTO();
 
-            int replacementCount = 0;
-            int replacementTotal = 0;
+            var replacementCount = 0;
+            var replacementTotal = 0;
 
             InitializeDebug(dataObject);
             try
@@ -254,10 +254,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 // now push the result to the server
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception ex)
             {
-                Dev2Logger.Error("DSFReplace", ex);
+                Dev2Logger.Error("DSFReplace", ex, GlobalConstants.WarewolfError);
                 allErrors.AddError(ex.Message);
             }
             finally
@@ -360,5 +360,38 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfReplaceActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(FieldsToSearch, other.FieldsToSearch) 
+                && string.Equals(Find, other.Find) 
+                && string.Equals(ReplaceWith, other.ReplaceWith) 
+                && CaseMatch == other.CaseMatch 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfReplaceActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsToSearch != null ? FieldsToSearch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Find != null ? Find.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ReplaceWith != null ? ReplaceWith.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ CaseMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,18 +22,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Scheduler.Test
 {
     [TestClass]
     public class ScheduledResourceModelTest
     {
-        private Mock<IDev2TaskService> _mockService;
-        private string _folderId;
-        private string _agentPath;
-        private Mock<ITaskServiceConvertorFactory> _convertorFactory;
-        private Mock<ITaskFolder> _folder;
-        private Mock<ISecurityWrapper> _wrapper;
+        Mock<IDev2TaskService> _mockService;
+        string _folderId;
+        string _agentPath;
+        Mock<ITaskServiceConvertorFactory> _convertorFactory;
+        Mock<ITaskFolder> _folder;
+        Mock<ISecurityWrapper> _wrapper;
 
         [TestInitialize]
         public void Init()
@@ -78,9 +78,9 @@ namespace Dev2.Scheduler.Test
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task>());
             try
             {
-                // ReSharper disable ObjectCreationAsStatement
+                
                 new ScheduledResourceModel(null, null, null, null, null, null, null);
-                // ReSharper restore ObjectCreationAsStatement
+                
             }
             catch (Exception e)
             {
@@ -99,7 +99,7 @@ securityWrapper
 
 
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -161,7 +161,7 @@ securityWrapper
 
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
                                                    @"c:\", _wrapper.Object, d => d.WorkflowName);
-            IScheduledResource a = model.ScheduledResources.First();
+            var a = model.ScheduledResources.First();
             Assert.AreEqual("bob", a.Name);
             Assert.AreEqual("a", a.WorkflowName);
         }
@@ -272,16 +272,16 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
             //var history = RunOutput(startTime, endTime, "Bob");
             var serializer = new Dev2JsonSerializer();
             var debugStates = serializer.Deserialize<List<IDebugState>>(content).First();
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(debugStates.StartTime, history.First().DebugOutput.First().StartTime);
             Assert.AreEqual(debugStates.EndTime, history.First().DebugOutput.First().EndTime);
@@ -319,13 +319,13 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
             //WE ONLY RETURN EXECUTED HISTORY
             Assert.AreEqual(0, history.Count);
         }
@@ -357,13 +357,13 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(ScheduleRunStatus.Error, history.Last().TaskHistoryOutput.Success);
@@ -396,13 +396,13 @@ securityWrapper
             _convertorFactory.Setup(a => a.CreateTaskEventLog(It.IsAny<string>())).Returns(log);
 
             //test
-            // ReSharper disable UseObjectOrCollectionInitializer
+            
             var model = new ScheduledResourceModel(_mockService.Object, _folderId, _agentPath, _convertorFactory.Object,
-                                                   // ReSharper restore UseObjectOrCollectionInitializer
+                                                   
                                                    @"c:\", _wrapper.Object, a => a.WorkflowName);
             model.DirectoryHelper = dirHelper.Object;
             model.FileHelper = fileHelper.Object;
-            IList<IResourceHistory> history = model.CreateHistory(res.Object);
+            var history = model.CreateHistory(res.Object);
 
             Assert.AreEqual(1, history.Count);
             Assert.AreEqual(history.Last().DebugOutput.Count, 1);
@@ -444,13 +444,12 @@ securityWrapper
             _mockService.Setup(a => a.GetFolder("WareWolf")).Returns(mockFolder.Object);
             var resource = new Mock<IScheduledResource>();
             resource.Setup(a => a.Name).Returns("Dora");
-            string errorMessage;
             //run test
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             mockFolder.Verify(
                 a =>
                 a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword, null));
+                                         TaskLogonType.InteractiveTokenOrPassword));
         }
 
 
@@ -470,8 +469,7 @@ securityWrapper
                 a => a.IsWindowsAuthorised(It.IsAny<string>(), It.IsAny<string>()))
                     .Returns(false);
             //run test
-            string errorMessage;
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceLogOnAsBatchErrorTest, errorMessage);
         }
 
@@ -493,8 +491,7 @@ securityWrapper
                     .Returns(false);
             resourceToSave.Setup(a => a.WorkflowName).Returns("bob");
             //run test
-            string errorMessage;
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual(Warewolf.Resource.Errors.ErrorResource.ScheduledResourceInvalidUserPermissionErrorTest, errorMessage);
         }
 
@@ -515,8 +512,7 @@ securityWrapper
                     .Returns(true);
             resourceToSave.Setup(a => a.Name).Returns("bob?");
             //run test
-            string errorMessage;
-            model.Save(resourceToSave.Object, out errorMessage);
+            model.Save(resourceToSave.Object, out string errorMessage);
             Assert.AreEqual("The task name may not contain the following characters \\/:*?\"<>| .", errorMessage);
 
         }
@@ -558,12 +554,12 @@ securityWrapper
             mockFolder.Verify(
                 a =>
                 a.RegisterTaskDefinition("henry", task.Object, TaskCreation.CreateOrUpdate, "user", "pwd",
-                                         TaskLogonType.InteractiveTokenOrPassword, null));
+                                         TaskLogonType.InteractiveTokenOrPassword));
             task.Verify(a => a.AddTrigger(It.IsAny<ITrigger>()));
         }
 
 
-        private void SetupSingleTask()
+        void SetupSingleTask()
         {
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             var task1 = new Mock<IDev2Task>();
@@ -586,7 +582,7 @@ securityWrapper
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
 
-        private void SetupSingleTaskWithId()
+        void SetupSingleTaskWithId()
         {
             _mockService.Setup(a => a.GetFolder(_folderId)).Returns(_folder.Object);
             var task1 = new Mock<IDev2Task>();
@@ -609,7 +605,7 @@ securityWrapper
             _folder.Setup(a => a.ValidTasks).Returns(new List<IDev2Task> { task1.Object, task2.Object });
         }
 
-        private List<IResourceHistory> RunOutput(DateTime starTime, DateTime endTime, string username = null)
+        List<IResourceHistory> RunOutput(DateTime starTime, DateTime endTime, string username = null)
         {
             var esbMethod = new GetScheduledResourceHistory();
             var security = new Mock<ISecurityWrapper>();
@@ -629,7 +625,7 @@ securityWrapper
                 };
             return history;
         }
-        // ReSharper restore InconsistentNaming
+
 
     }
 

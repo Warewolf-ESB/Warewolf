@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,29 +18,11 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management
 {
-    /// <summary>
-    /// The internal managment interface all Management Methods must implement
-    /// </summary>
     public interface IEsbManagementEndpoint : ISpookyLoadable<string>
     {
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
-        StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);
-
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
+        StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace);        
         DynamicService CreateServiceEntry();
-
         Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs);
-
         AuthorizationContext GetAuthorizationContextForService();
     }
-
-
 }

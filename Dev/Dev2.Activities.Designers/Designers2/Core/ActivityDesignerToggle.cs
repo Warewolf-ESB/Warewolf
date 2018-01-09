@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,7 +21,8 @@ namespace Dev2.Activities.Designers2.Core
 {
     public class ActivityDesignerToggle : DependencyObject
     {
-        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp, bool autoReset = false)
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp) => Create(collapseImageSourceUri, collapseToolTip, expandImageSourceUri, expandToolTip, automationID, target, dp, false);
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, DependencyObject target, DependencyProperty dp, bool autoReset)
         {
             var toggle = new ActivityDesignerToggle
             {
@@ -47,7 +48,9 @@ namespace Dev2.Activities.Designers2.Core
             return toggle;
         }
 
-        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, bool autoReset = false)
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID) => Create(collapseImageSourceUri, collapseToolTip, expandImageSourceUri, expandToolTip, automationID, false);
+
+        public static ActivityDesignerToggle Create(string collapseImageSourceUri, string collapseToolTip, string expandImageSourceUri, string expandToolTip, string automationID, bool autoReset)
         {
             var toggle = new ActivityDesignerToggle
             {
@@ -139,13 +142,13 @@ namespace Dev2.Activities.Designers2.Core
 
         static Image CreateImage(string sourceUri)
         {
-            Image image = new Image
+            var image = new Image
             {
                 Height = 14,
                 Width = 14
             };
 
-            if(Application.Current != null)
+            if (Application.Current != null)
             {
                 Brush brush = Application.Current.TryFindResource("WareWolfButtonBrush") as SolidColorBrush;
 

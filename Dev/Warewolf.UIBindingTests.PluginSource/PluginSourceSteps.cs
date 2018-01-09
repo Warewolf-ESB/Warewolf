@@ -15,8 +15,8 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
+using System.Windows.Controls;
 
-// ReSharper disable InconsistentNaming
 namespace Warewolf.UIBindingTests.PluginSource
 {
     [Binding]
@@ -205,6 +205,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                 case "Disabled":
                     Assert.IsFalse(viewModel.CanSelectConfigFiles);
                     break;
+                default:
+                    break;
             }
         }
 
@@ -219,6 +221,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                     break;
                 case "Disabled":
                     Assert.IsFalse(viewModel.CanSelectConfigFiles);
+                    break;
+                default:
                     break;
             }
         }
@@ -244,11 +248,37 @@ namespace Warewolf.UIBindingTests.PluginSource
                     viewModel.GACAssemblyName = input;
                     assemblyNameOnViewModel = viewModel.GACAssemblyName;
                     break;
+                default:
+                    break;
             }
 
-            sourceControl.SetTextBoxValue(controlName, input);
+            SetTextBoxValue(sourceControl, controlName, input);
             var isSameAsViewModel = input.Equals(assemblyNameOnViewModel, StringComparison.OrdinalIgnoreCase);
             Assert.IsTrue(isSameAsViewModel);
+        }
+
+        void SetTextBoxValue(ManagePluginSourceControl sourceControl, string controlName, string input)
+        {
+            switch (controlName)
+            {
+                case "AssemblyName":
+                    sourceControl.AssemblyNameTextBox.Text = input;
+                    var assem = sourceControl.AssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+                    assem?.UpdateSource();
+                    break;
+                case "ConfigFile":
+                    sourceControl.ConfigFileTextbox.Text = input;
+                    var config = sourceControl.ConfigFileTextbox.GetBindingExpression(TextBlock.TextProperty);
+                    config?.UpdateSource();
+                    break;
+                case "GacAssemblyName":
+                    sourceControl.GacAssemblyNameTextBox.Text = input;
+                    var gac = sourceControl.GacAssemblyNameTextBox.GetBindingExpression(TextBlock.TextProperty);
+                    gac?.UpdateSource();
+                    break;
+                default:
+                    break;
+            }
         }
 
         [Then(@"""(.*)"" value is ""(.*)""")]
@@ -265,6 +295,8 @@ namespace Warewolf.UIBindingTests.PluginSource
                     break;
                 case "GacAssemblyName":
                     Assert.AreEqual(assemblyName, viewModel.GACAssemblyName);
+                    break;
+                default:
                     break;
             }
         }

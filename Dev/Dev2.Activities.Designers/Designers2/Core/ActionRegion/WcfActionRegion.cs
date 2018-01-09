@@ -3,7 +3,6 @@ using System.Activities.Presentation.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
@@ -12,26 +11,26 @@ using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Warewolf.Core;
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable ConvertToAutoProperty
+
+
 
 namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class WcfActionRegion : IActionToolRegion<IWcfAction>
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IWcfServerSource> _source;
-        private bool _isEnabled;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IWcfServerSource> _source;
+        bool _isEnabled;
 
         readonly Dictionary<string, IList<IToolRegion>> _previousRegions = new Dictionary<string, IList<IToolRegion>>();
-        private Action _sourceChangedAction;
-        private IWcfAction _selectedAction;
-        private readonly IWcfServiceModel _model;
-        private ICollection<IWcfAction> _actions;
-        private bool _isActionEnabled;
-        private bool _isRefreshing;
-        private double _labelWidth;
-        private IList<string> _errors;
+        Action _sourceChangedAction;
+        IWcfAction _selectedAction;
+        readonly IWcfServiceModel _model;
+        ICollection<IWcfAction> _actions;
+        bool _isActionEnabled;
+        bool _isRefreshing;
+        double _labelWidth;
+        IList<string> _errors;
 
         public WcfActionRegion()
         {
@@ -80,13 +79,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
                 IsRefreshing = true;
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 if (_source?.SelectedSource != null)
                 {
                     Actions = _model.GetActions(_source.SelectedSource);
@@ -95,7 +94,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                     IsEnabled = true;
                 }
                 IsRefreshing = false;
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 OnPropertyChanged(@"IsEnabled");
             }
             catch (Exception e)
@@ -110,7 +109,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
@@ -141,11 +140,12 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
                 if (!Equals(value, _selectedAction) && _selectedAction != null)
                 {
                     if (!String.IsNullOrEmpty(_selectedAction.Method))
+                    {
                         StorePreviousValues(_selectedAction.GetHashCodeBySource());
+                    }
                 }
                 var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                var region = outputs as OutputsRegion;
-                if (region != null)
+                if (outputs is OutputsRegion region)
                 {
                     region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                     region.RecordsetName = String.Empty;
@@ -158,7 +158,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private void RestoreIfPrevious(IWcfAction value)
+        void RestoreIfPrevious(IWcfAction value)
         {
             if (IsAPreviousValue(value) && _selectedAction != null)
             {
@@ -168,7 +168,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             else
             {
                 SetSelectedAction(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
             var delegateCommand = RefreshActionsCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
@@ -273,8 +273,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WcfActionMemento;
-            if (region != null)
+            if (toRestore is WcfActionMemento region)
             {
                 SelectedAction = region.SelectedAction;
                 RestoreIfPrevious(region.SelectedAction);
@@ -293,7 +292,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #region Implementation of IActionToolRegion<IWcfAction>
 
-        private void SetSelectedAction(IWcfAction value)
+        void SetSelectedAction(IWcfAction value)
         {
             _selectedAction = value;
             SavedAction = value;
@@ -304,13 +303,13 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
             OnPropertyChanged("SelectedAction");
         }
-        private void StorePreviousValues(string actionName)
+        void StorePreviousValues(string actionName)
         {
             _previousRegions.Remove(actionName);
             _previousRegions[actionName] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IWcfAction value)
+        void RestorePreviousValues(IWcfAction value)
         {
             var toRestore = _previousRegions[value.GetHashCodeBySource()];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -319,7 +318,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
         }
 
-        private bool IsAPreviousValue(IWcfAction value)
+        bool IsAPreviousValue(IWcfAction value)
         {
             return value != null && _previousRegions.Keys.Any(a => a == value.GetHashCodeBySource());
         }
@@ -368,7 +367,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
     public class WcfActionMemento : IActionToolRegion<IWcfAction>
     {
-        private IWcfAction _selectedAction;
+        IWcfAction _selectedAction;
 
         #region Implementation of INotifyPropertyChanged
 
@@ -422,14 +421,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #endregion
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;

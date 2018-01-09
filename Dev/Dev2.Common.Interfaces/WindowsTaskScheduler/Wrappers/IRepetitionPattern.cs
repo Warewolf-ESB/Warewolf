@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
@@ -55,7 +54,7 @@ namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
         /// <returns>
         ///     <c>true</c> if properties have been set; otherwise, <c>false</c>.
         /// </returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         bool IsSet();
     }
 }

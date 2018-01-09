@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@ using System;
 using System.ServiceProcess;
 using Dev2.Util;
 
-// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Core.Services
 {
     public class WindowsServiceManager : IWindowsServiceManager
@@ -21,14 +20,11 @@ namespace Dev2.Studio.Core.Services
 
         public bool Exists()
         {
-            bool result = true;
+            var result = true;
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
-                if(controller.Status == ServiceControllerStatus.Running)
-                {
-                }
+                var controller = new ServiceController(AppUsageStats.ServiceName);
             }
             catch(InvalidOperationException)
             {
@@ -44,7 +40,7 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
+                var controller = new ServiceController(AppUsageStats.ServiceName);
                 result = controller.Status == ServiceControllerStatus.Running;
             }
             catch(InvalidOperationException)
@@ -61,8 +57,8 @@ namespace Dev2.Studio.Core.Services
 
             try
             {
-                ServiceController controller = new ServiceController(AppSettings.ServiceName);
-                if(controller.Status != ServiceControllerStatus.Running)
+                var controller = new ServiceController(AppUsageStats.ServiceName);
+                if (controller.Status != ServiceControllerStatus.Running)
                 {
                     controller.Start();
                     controller.WaitForStatus(ServiceControllerStatus.Running, TimeSpan.FromSeconds(120));

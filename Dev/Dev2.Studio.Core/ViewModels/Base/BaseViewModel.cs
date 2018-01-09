@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,10 +10,10 @@
 
 using Caliburn.Micro;
 
-// ReSharper disable once CheckNamespace
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.Core.ViewModels.Base
-// ReSharper restore CheckNamespace
+
 {
     public enum ViewModelDialogResults
     {
@@ -28,9 +28,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
     /// </summary>
     public abstract class BaseViewModel : SimpleBaseViewModel
     {
-        // ReSharper disable InconsistentNaming
+        
         readonly protected IEventAggregator _eventPublisher;
-        // ReSharper restore InconsistentNaming
+
 
         #region Constructor
 
@@ -40,10 +40,10 @@ namespace Dev2.Studio.Core.ViewModels.Base
             _eventPublisher = eventPublisher;
             _eventPublisher.Subscribe(this);
 
-            // ReSharper disable once DoNotCallOverridableMethodsInConstructor
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            
+            
             SatisfyImports();
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            
         }
 
         public IEventAggregator EventPublisher => _eventPublisher;

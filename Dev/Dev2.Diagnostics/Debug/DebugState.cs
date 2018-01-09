@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,15 +34,16 @@ namespace Dev2.Diagnostics.Debug
     [Serializable]
     public class DebugState : IDebugState, INotifyPropertyChanged
     {
-        private DateTime _startTime;
-        private DateTime _endTime;
+        DateTime _startTime;
+        String _durationString;
+        DateTime _endTime;
         string _errorMessage;
         bool _isDurationVisible;
         string _server;
         Guid _environmentID;
         Guid _disconnectedID;
-        private Guid? _parentID;
-        private Guid _id;
+        Guid? _parentID;
+        Guid _id;
 
         #region Ctor
 
@@ -191,11 +192,7 @@ namespace Dev2.Diagnostics.Debug
             {
                 return XmlConvert.ToString(Duration);
             }
-            // ReSharper disable ValueParameterNotUsed
-            set
-            // ReSharper restore ValueParameterNotUsed
-            {
-            }
+            set => _durationString = value;
         }
 
         /// <summary>
@@ -316,6 +313,8 @@ namespace Dev2.Diagnostics.Debug
                         return ExecutionOrigin.GetDescription();
                     case ExecutionOrigin.Workflow:
                         return $"{ExecutionOrigin.GetDescription()} - {ExecutionOriginDescription}";
+                    default:
+                        break;
                 }
 
                 return string.Empty;
@@ -402,11 +401,11 @@ namespace Dev2.Diagnostics.Debug
 
         #region IDebugItem serialization helper methods
 
-        private void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
+        void Serialize(IByteWriterBase writer, IList<IDebugItem> items)
         {
 
             writer.Write(items.Count);
-            // ReSharper disable ForCanBeConvertedToForeach
+
             for (var i = 0; i < items.Count; i++)
             {
                 writer.Write(items[i].FetchResultsList().Count);
@@ -422,10 +421,10 @@ namespace Dev2.Diagnostics.Debug
                     writer.Write(itemResult.MoreLink);
                 }
             }
-            // ReSharper restore ForCanBeConvertedToForeach
+
         }
 
-        private static void Deserialize(IByteReaderBase reader, ICollection<IDebugItem> items)
+        static void Deserialize(IByteReaderBase reader, ICollection<IDebugItem> items)
         {
             var count = reader.ReadInt32();
             for (var i = 0; i < count; i++)
@@ -451,7 +450,7 @@ namespace Dev2.Diagnostics.Debug
 
         #endregion
 
-        
+
         public bool IsFinalStep()
         {
             return StateType == StateType.End && OriginalInstanceID == ID && (!ParentID.HasValue || ParentID == Guid.Empty);
@@ -565,7 +564,9 @@ namespace Dev2.Diagnostics.Debug
             if (propertyName?.Equals("ParentID") ?? false)
             {
                 if (ParentID == Guid.Empty)
+                {
                     ParentID = null;
+                }
             }
         }
     }

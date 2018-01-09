@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,19 +22,23 @@ using Warewolf.Storage;
 using Warewolf.Tools.Specs.BaseTypes;
 using WarewolfParserInterop;
 
-// ReSharper disable NotAccessedVariable
+
 
 namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 {
     [Binding]
     public class LengthSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public LengthSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -43,9 +47,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             var shape = new XElement("root");
             var data = new XElement("root");
 
-            int row = 0;
-            dynamic variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            var row = 0;
+            scenarioContext.TryGetValue("variableList", out dynamic variableList);
 
             if (variableList != null)
             {
@@ -68,12 +71,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
                 DataObject.Environment.CommitAssign();
             }
 
-            string recordSetName;
-            scenarioContext.TryGetValue("recordset", out recordSetName);
+            scenarioContext.TryGetValue("recordset", out string recordSetName);
 
             var recordset = scenarioContext.Get<string>("recordset");
-            bool treaNullAsZero;
-            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
+            scenarioContext.TryGetValue("treaNullAsZero", out bool treaNullAsZero);
 
             //var length = new DsfRecordsetNullhandlerLengthActivity
             //{
@@ -81,16 +82,16 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             //    RecordsLength = ResultVariable, 
             //    TreatNullAsZero = treaNullAsZero
             //};
-            DsfActivityAbstract<string> length;
-            scenarioContext.TryGetValue("activityMode", out length);
+            scenarioContext.TryGetValue("activityMode", out DsfActivityAbstract<string> length);
             if (length != null)
-
+            {
                 length = new DsfRecordsetNullhandlerLengthActivity
                 {
                     RecordsetName = recordset,
                     RecordsLength = ResultVariable,
                     TreatNullAsZero = treaNullAsZero
                 };
+            }
             else
             {
                length = new DsfRecordsetLengthActivity
@@ -112,16 +113,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I get the length from a recordset that looks like with this shape")]
         public void GivenIGetTheLengthFromARecordsetThatLooksLikeWithThisShape(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
-            if(tableRows.Count == 0)
+            if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -131,10 +131,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -153,7 +152,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public void WhenTheLengthToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -161,7 +160,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public void ThenTheLengthResultShouldBe(string expectedResult)
         {
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            string actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]",0));
+            var actualValue = ExecutionEnvironment.WarewolfEvalResultToString(result.Environment.Eval("[[result]]",0));
             expectedResult = expectedResult.Replace('"', ' ').Trim();
            
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;

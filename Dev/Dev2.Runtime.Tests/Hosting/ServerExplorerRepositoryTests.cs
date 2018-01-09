@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ using Dev2.Runtime.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -46,14 +46,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             Assert.AreEqual(repo.Directory, dir.Object);
             Assert.AreEqual(repo.ResourceCatalogue, catalogue.Object);
 
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -66,11 +66,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             new ServerExplorerRepository(null, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -84,10 +84,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             new ServerExplorerRepository(null, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -99,11 +99,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalogue = new Mock<IResourceCatalog>();
             var dir = new Mock<IDirectory>();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             new ServerExplorerRepository(catalogue.Object, null, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(),testCatalogue.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
@@ -116,11 +116,11 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
 
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var testCatalogue = new Mock<ITestCatalog>();
             new ServerExplorerRepository(catalogue.Object, factory.Object, null, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(),testCatalogue.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -465,7 +465,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
-            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource")).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
 
@@ -474,7 +474,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "bob");
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
         }
 
         [TestMethod]
@@ -496,7 +496,7 @@ namespace Dev2.Tests.Runtime.Hosting
                 , Permissions.Administrator, "bob"
                 );
             factory.Setup(a => a.CreateRootExplorerItem(It.IsAny<string>(), It.IsAny<Guid>())).Returns(explorerItem);
-            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true)).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
+            catalogue.Setup(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource")).Returns(new ResourceCatalogResult { Message = "bob", Status = ExecStatus.DuplicateMatch });
             testCatalogue.Setup(catalog => catalog.DeleteAllTests(It.IsAny<Guid>())).Verifiable();
             var sync = new Mock<IExplorerRepositorySync>();
             var serverExplorerRepository = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
@@ -506,7 +506,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
             Assert.AreEqual(result.Message, "bob");
             Assert.AreEqual(result.Status, ExecStatus.DuplicateMatch);
-            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource", true));
+            catalogue.Verify(a => a.DeleteResource(It.IsAny<Guid>(), guid, "DbSource"));
             testCatalogue.Verify(catalog => catalog.DeleteAllTests(It.IsAny<Guid>()), Times.Once);
         }
         [TestMethod]
@@ -546,7 +546,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -584,7 +584,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -621,7 +621,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -660,7 +660,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -697,7 +697,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Fail, Message = "Error Renaming" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Fail, Message = "Error Renaming" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -1117,13 +1117,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var res = repo.AddItem(null, Guid.NewGuid());
             Assert.AreEqual(res.Status, ExecStatus.Fail);
             Assert.AreEqual(res.Message, "Item to add was null");
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -1137,13 +1137,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var res = repo.RenameItem(null, "bob", Guid.NewGuid());
             Assert.AreEqual(res.Status, ExecStatus.Fail);
             Assert.AreEqual(res.Message, "Item to rename was null");
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
 
@@ -1157,13 +1157,13 @@ namespace Dev2.Tests.Runtime.Hosting
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
             var catalogue = new Mock<IResourceCatalog>();
-            // ReSharper disable ObjectCreationAsStatement
+            
             var sync = new Mock<IExplorerRepositorySync>();
             var repo = new ServerExplorerRepository(catalogue.Object, factory.Object, dir.Object, sync.Object, new Mock<IServerVersionRepository>().Object, new FileWrapper(), testCatalogue.Object);
             var res = repo.DeleteItem(null, Guid.NewGuid());
             Assert.AreEqual(res.Status, ExecStatus.Fail);
             Assert.AreEqual(res.Message, "Item to delete was null");
-            // ReSharper restore ObjectCreationAsStatement
+            
 
         }
     }

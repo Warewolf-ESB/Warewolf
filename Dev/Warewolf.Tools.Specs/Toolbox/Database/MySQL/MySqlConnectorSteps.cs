@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -23,11 +24,11 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
     [Binding]
     public sealed class MySqlConnectorSteps
     {
-        private DbSourceDefinition _sqlSource;
-        private DbSourceDefinition _anotherSqlSource;
-        private DbAction _someAction;
-        private Mock<IServiceOutputMapping> _outputMapping;
-        
+        DbSourceDefinition _sqlSource;
+        DbSourceDefinition _anotherSqlSource;
+        DbAction _someAction;
+        Mock<IServiceOutputMapping> _outputMapping;
+
         [Given(@"I drag in mysql connector tool")]
         public void GivenIDragInMysqlConnectorTool()
         {
@@ -75,7 +76,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             mockDatabaseInputViewModel.SetupAllProperties();
             mockDatabaseInputViewModel.Setup(model => model.OkSelected).Returns(true);
 
-            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("mysqlActivity", mysqlActivity);
             ScenarioContext.Current.Add("viewModel", mysqlDesignerViewModel);
@@ -85,21 +86,21 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
 
         #region Private Methods
 
-        private DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
+        DsfMySqlDatabaseActivity GetDsfMySqlDatabaseActivity()
         {
             return ScenarioContext.Current.Get<DsfMySqlDatabaseActivity>("mysqlActivity");
         }
-        private Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
+        Mock<IManageDatabaseInputViewModel> GetDatabaseInputViewModel()
         {
             return ScenarioContext.Current.Get<Mock<IManageDatabaseInputViewModel>>("mockDatabaseInputViewModel");
         }
 
-        private MySqlDatabaseDesignerViewModel GetViewModel()
+        MySqlDatabaseDesignerViewModel GetViewModel()
         {
             return ScenarioContext.Current.Get<MySqlDatabaseDesignerViewModel>("viewModel");
         }
 
-        private Mock<IDbServiceModel> GetServiceModel()
+        Mock<IDbServiceModel> GetServiceModel()
         {
             return ScenarioContext.Current.Get<Mock<IDbServiceModel>>("mockDbServiceModel");
         }
@@ -151,20 +152,22 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsNull(viewModel.ActionRegion.SelectedAction);            
         }
 
-        private void SetupActions(IDbSource selectedSource)
+        void SetupActions(IDbSource selectedSource)
         {
             if (selectedSource != null)
             {
                 _someAction = new DbAction
                 {
                     Name = "someAction",
-                    Inputs = new List<IServiceInput> {new ServiceInput("SomeInput", "")}
+                    Inputs = new List<IServiceInput> { new ServiceInput("SomeInput", "") }
                 };
                 var serviceModel = GetServiceModel();
                 serviceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _someAction });
             }
             if (GetViewModel().ActionRegion.SelectedAction == null)
+            {
                 GetViewModel().ActionRegion.SelectedAction = _someAction;
+            }
         }
 
         [Then(@"Input is Not enabled for mysql connector tool")]
@@ -206,7 +209,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             var viewModel = GetViewModel();
             var onlyAction = viewModel.ActionRegion.SelectedAction.Inputs.FirstOrDefault();
             if (onlyAction != null)
+            {
                 Assert.AreEqual(p0, onlyAction.Name);
+            }
         }
 
         [Then(@"I click validate on mysql connector tool")]
@@ -235,10 +240,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
+            {
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
+            }
         }
 
-        private void SetupOutpuRegions()
+        void SetupOutpuRegions()
         {
             GetViewModel().OutputsRegion.Outputs = new IServiceOutputMapping[]
             {
@@ -257,7 +264,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsTrue(ClickOk());
         }
 
-        private bool ClickOk()
+        bool ClickOk()
         {
             return GetViewModel().ManageServiceInputViewModel.OkSelected = true;
         }
@@ -267,8 +274,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
         {
             var viewModel = GetViewModel();
             var outputMapping = viewModel.OutputsRegion.Outputs.FirstOrDefault();
-            if (outputMapping != null)            
+            if (outputMapping != null)
+            {
                 Assert.AreEqual(p0, outputMapping.RecordSetName);
+            }
         }
         
         [Given(@"I open an existing mysql connector tool")]
@@ -318,7 +327,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             
             mockDatabaseInputViewModel.Setup(model => model.OkSelected).Returns(true);
 
-            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var mysqlDesignerViewModel = new MySqlDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             var selectedSource = SetupSelectedSource(mysqlDesignerViewModel);            
 
@@ -329,10 +338,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetupActions(selectedSource);
         }
 
-        private static IDbSource SetupSelectedSource(MySqlDatabaseDesignerViewModel mysqlDesignerViewModel)
+        static IDbSource SetupSelectedSource(MySqlDatabaseDesignerViewModel mysqlDesignerViewModel)
         {
             return mysqlDesignerViewModel.SourceRegion.SelectedSource =
-                mysqlDesignerViewModel.SourceRegion.Sources.FirstOrDefault(p=>p.Name == "DemoSqlsource");
+                mysqlDesignerViewModel.SourceRegion.Sources.FirstOrDefault(p => p.Name == "DemoSqlsource");
         }
 
         [Given(@"Source is enabled and set to ""(.*)"" on mysql connector tool")]
@@ -371,7 +380,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
             var onlyAction = viewModel.ActionRegion.SelectedAction.Inputs.FirstOrDefault();
             if (onlyAction != null)
+            {
                 Assert.AreEqual(p0, onlyAction.Name);
+            }
         }
 
         [Given(@"Inputs are ""(.*)"" for mysql connector tool")]
@@ -382,7 +393,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             Assert.IsTrue(viewModel.ActionRegion.IsEnabled);
             var onlyAction = viewModel.ActionRegion.SelectedAction.Inputs.FirstOrDefault();
             if (onlyAction != null)
+            {
                 Assert.AreEqual(p0, onlyAction.Name);
+            }
         }
 
         [Then(@"The outputs appear as ""(.*)"" on mysql connector tool")]
@@ -393,7 +406,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
+            {
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
+            }
         }
         
         [When(@"I select ""(.*)"" Action for mysql connector tool")]
@@ -410,7 +425,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Resources.MySQL
             //SetupOutpuRegions();
             var outputResults = viewModel.OutputsRegion.Outputs.FirstOrDefault();
             if (outputResults != null)
+            {
                 Assert.AreEqual("SomeRecordSet", outputResults.RecordSetName);
+            }
         }
 
         [Then(@"Action on mysql connector tool is null")]

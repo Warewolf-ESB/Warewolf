@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,24 +13,18 @@ using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class StringToResourceConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null)
-            {
-                return null;
-            }
-            var resourceKey = value.ToString();
+            var inputValue = value ?? throw new ArgumentNullException("value");
+            var resourceKey = inputValue.ToString();
             return Application.Current.Resources[resourceKey];
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 }

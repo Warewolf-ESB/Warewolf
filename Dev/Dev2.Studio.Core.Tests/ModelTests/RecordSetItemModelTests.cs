@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Models.DataList;
@@ -8,19 +7,17 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class RecordSetItemModelTests
     {
-
         #region Test Fields
 
-        private IRecordSetItemModel _recordSetItemModel;
+        IRecordSetItemModel _recordSetItemModel;
 
         #endregion Test Fields
 
         #region Private Test Methods
 
-        private void TestRecordSetItemModelSet(string name, bool populateAllFields = false)
+        void TestRecordSetItemModelSet(string name, bool populateAllFields = false)
         {
             if (populateAllFields)
             {
@@ -67,7 +64,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void Validatename_GivenValidName_ShouldHaveNoErrorMessage()
         {
             //---------------Set up test pack-------------------
-            RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
+            var recordSetItemModel = new RecordSetItemModel("DisplayName");
             //---------------Assert Precondition----------------
             Assert.IsTrue(string.IsNullOrEmpty(recordSetItemModel.ErrorMessage));
             //---------------Execute Test ----------------------
@@ -84,7 +81,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ValidateRecordsetName_GivenInvalidName_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
-            RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
+            var recordSetItemModel = new RecordSetItemModel("DisplayName");
             //---------------Assert Precondition----------------
             Assert.IsTrue(string.IsNullOrEmpty(recordSetItemModel.ErrorMessage));
             //---------------Execute Test ----------------------
@@ -100,7 +97,7 @@ namespace Dev2.Core.Tests.ModelTests
         public void ValidateName_GivenNameHasXmlEscapeCharacters_ShouldHaveErrorMessage()
         {
             //---------------Set up test pack-------------------
-            RecordSetItemModel recordSetItemModel = new RecordSetItemModel("DisplayName");
+            var recordSetItemModel = new RecordSetItemModel("DisplayName");
             //---------------Assert Precondition----------------
             Assert.IsTrue(string.IsNullOrEmpty(recordSetItemModel.ErrorMessage));
             //---------------Execute Test ----------------------
@@ -112,6 +109,5 @@ namespace Dev2.Core.Tests.ModelTests
         }
 
         #endregion Name Validation
-
     }
 }

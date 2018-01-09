@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,14 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.ExtMethods;
 using Dev2.DataList;
 
 namespace Dev2.BussinessLogic
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpIsHex : AbstractRecsetSearchValidation
     {
         public override string HandlesType()

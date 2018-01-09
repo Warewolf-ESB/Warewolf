@@ -20,10 +20,10 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public const string TestOwner = "Bernardt Joubert";
         public const string Category = "SharePoint";
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var fileUploadactivity = new SharepointCopyFileActivity();
-           
+
             return ModelItemUtils.CreateModelItem(fileUploadactivity);
         }
 
@@ -53,7 +53,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointCopyFileDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
@@ -68,7 +68,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointCopyFileDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), null);
             //------------Assert Results-------------------------
         }

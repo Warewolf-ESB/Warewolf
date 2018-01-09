@@ -21,7 +21,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
 
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.OracleSource
 {
@@ -95,7 +95,8 @@ namespace Warewolf.UIBindingTests.OracleSource
         public void GivenIOpen(string name)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var upd = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager").Object;
+            var mock = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var upd = mock.Object;
             var dbsrc = new DbSourceDefinition
             {
                 Name = name,
@@ -103,11 +104,11 @@ namespace Warewolf.UIBindingTests.OracleSource
                 ServerName = "RSAKLFSVRDEV",
                 AuthenticationType = AuthenticationType.Windows
             };
+            mock.Setup(model => model.FetchDbSource(It.IsAny<Guid>())).Returns(dbsrc);
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageOracleSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOracleSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
@@ -141,8 +142,7 @@ namespace Warewolf.UIBindingTests.OracleSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOracleSourceViewModel manageDatabaseSourceViewModel)
             {
                 Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
             }
@@ -389,7 +389,7 @@ namespace Warewolf.UIBindingTests.OracleSource
             Utils.CloseViewAfterTesting(manageDatabaseSourceControl);
         }
 
-        private static void CleanupResources()
+        static void CleanupResources()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel =
@@ -400,13 +400,12 @@ namespace Warewolf.UIBindingTests.OracleSource
             var viewModel = new ManageOracleSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageOracleSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageOracleSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageOracleSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;
             }
-            
+
         }
 
         [AfterScenario("OracleDbSource")]

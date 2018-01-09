@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,7 @@ using System;
 using Dev2.Studio.Core.AppResources.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.ConverterTests
 {
     [TestClass]
@@ -25,8 +25,9 @@ namespace Dev2.Core.Tests.ConverterTests
         {
             //------------Setup for test--------------------------
             var dateTimeToStringConverter = new DateTimeToStringConverter();
-
             //------------Execute Test---------------------------
+            var stringObj=dateTimeToStringConverter.ToString();
+            Assert.IsFalse(string.IsNullOrEmpty(stringObj));
             var convertedValue = dateTimeToStringConverter.Convert("some data", null, null, null);
             //------------Assert Results-------------------------
             Assert.IsNotInstanceOfType(convertedValue, typeof(string));

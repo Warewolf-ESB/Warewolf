@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,12 +26,16 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
     [Binding]
     public class GatherSystemInformationSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public GatherSystemInformationSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -57,19 +61,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         [Given(@"I have a variable ""(.*)"" and I selected ""(.*)""")]
         public void GivenIHaveAVariableAndISelected(string variable, string informationType)
         {
-            int row;
 
-            bool isRowAdded = scenarioContext.TryGetValue("row", out row);
-            if(isRowAdded)
+            var isRowAdded = scenarioContext.TryGetValue("row", out int row);
+            if (isRowAdded)
             {
                 scenarioContext.Add("row", row);
             }
             row++;
 
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -80,10 +82,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
                 (enTypeOfSystemInformationToGather)
                 Enum.Parse(typeof(enTypeOfSystemInformationToGather), informationType);
 
-            List<GatherSystemInformationTO> systemInformationCollection;
-            scenarioContext.TryGetValue("systemInformationCollection", out systemInformationCollection);
+            scenarioContext.TryGetValue("systemInformationCollection", out List<GatherSystemInformationTO> systemInformationCollection);
 
-            if(systemInformationCollection == null)
+            if (systemInformationCollection == null)
             {
                 systemInformationCollection = new List<GatherSystemInformationTO>();
                 scenarioContext.Add("systemInformationCollection", systemInformationCollection);
@@ -95,7 +96,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
         public void WhenTheGatherSystemInfomartionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -107,9 +108,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
 
             if(DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
                 foreach(string recordSetValue in recordSetValues)
@@ -119,23 +120,18 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.GatherSystemInformation
             }
             else
             {
-                string actualValue;
                 GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
-                                           out actualValue, out error);
+                                           out string actualValue, out error);
                 Verify(type, actualValue, error);
             }
         }
 
         void Verify(string type, string actualValue, string error)
-        {
-            if(type == "DateTime")
+        {            
+            var component = Type.GetType("System." + type);
+            if (component != null)
             {
-                Assert.IsTrue(actualValue.Contains("."));
-            }
-            Type component = Type.GetType("System." + type);
-            if(component != null)
-            {
-                TypeConverter converter = TypeDescriptor.GetConverter(component);
+                var converter = TypeDescriptor.GetConverter(component);
                 converter.ConvertFrom(actualValue);
             }
             Assert.AreEqual(string.Empty, error);

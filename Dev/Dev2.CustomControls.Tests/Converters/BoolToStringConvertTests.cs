@@ -5,7 +5,7 @@ using Dev2.CustomControls.Converters;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.CustomControls.Tests.Converters
 {

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Activities;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Activities;
 using Dev2.Common.Interfaces;
@@ -23,7 +22,7 @@ using Warewolf.Storage;
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DsfWebDeleteActivityTests
     {
         [TestMethod]
@@ -39,7 +38,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             Assert.IsNotNull(dsfWebDeleteActivity);
         }
 
-        private static TestDsfWebDeleteActivity CreateTestDeleteActivity()
+        static TestDsfWebDeleteActivity CreateTestDeleteActivity()
         {
             var testDsfWebDeleteActivity = new TestDsfWebDeleteActivity();
             testDsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;
@@ -216,7 +215,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             dsfWebDeleteActivity.Inputs = serviceInputs;
             dsfWebDeleteActivity.Outputs = serviceOutputs;
             var serviceXml = XmlResource.Fetch("WebService");
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new WebService(serviceXml) { RequestResponse = response };
             dsfWebDeleteActivity.OutputDescription = new OutputDescription();
             dsfWebDeleteActivity.ResourceCatalog = new Mock<IResourceCatalog>().Object;

@@ -16,25 +16,19 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-
-// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public class DotNetConstructorInputRegion : IDotNetConstructorInputRegion
     {
-        private readonly ModelItem _modelItem;
-        private readonly IConstructorRegion<IPluginConstructor> _action;
+        readonly ModelItem _modelItem;
+        readonly IConstructorRegion<IPluginConstructor> _action;
         bool _isEnabled;
-        private ICollection<IServiceInput> _inputs;
-        private bool _isInputsEmptyRows;
-        private readonly IActionInputDatatalistMapper _datatalistMapper;
-        private RelayCommand _viewObjectResult;
+        ICollection<IServiceInput> _inputs;
+        bool _isInputsEmptyRows;
+        readonly IActionInputDatatalistMapper _datatalistMapper;
+        RelayCommand _viewObjectResult;
 
-        // ReSharper disable once UnusedMember.Global
         public DotNetConstructorInputRegion()
         {
             ToolRegionName = "DotNetConstructorInputRegion";
@@ -56,25 +50,32 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             Inputs = inputs;
             IsInputsEmptyRows = Inputs.Count == 0;
             if (inputsFromModel == null)
+            {
                 UpdateOnActionSelection();
+            }
+
             IsEnabled = action?.SelectedConstructor != null;
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public DotNetConstructorInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
         }
 
-        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -84,14 +85,18 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("ConstructorInputs", Inputs.ToList());
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -101,15 +106,15 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 UpdateOnActionSelection();
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -123,12 +128,12 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateOnActionSelection()
+        void UpdateOnActionSelection()
         {
             Inputs = new List<IServiceInput>();
             IsEnabled = false;
@@ -163,7 +168,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                 },o => true));
             }
         }
-        private void ViewJsonObjects(IServiceInput input)
+        void ViewJsonObjects(IServiceInput input)
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(JSONUtils.Format(input.Dev2ReturnType)));
         }
@@ -211,8 +216,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DotNetConstructorInputRegionClone;
-            if (region != null)
+            if (toRestore is DotNetConstructorInputRegionClone region)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)

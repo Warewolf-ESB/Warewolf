@@ -65,7 +65,7 @@ namespace Warewolf.UIBindingTests.ExchangeSource
         public void ThenTabIsOpened(string headerText)
         {
             var viewModel = ScenarioContext.Current.Get<IDockAware>("viewModel");
-            // ReSharper disable once RedundantNameQualifier
+            
             Assert.AreEqual(headerText, ((ManageExchangeSourceViewModel)viewModel).HeaderText);
         }
 

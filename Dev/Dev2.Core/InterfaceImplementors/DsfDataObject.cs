@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,12 +27,12 @@ using Dev2.Interfaces;
 using Dev2.Web;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-// ReSharper disable FunctionComplexityOverflow
 
-// ReSharper disable CheckNamespace
+
+
 
 namespace Dev2.DynamicServices
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     The core TO used in the execution engine ;)
@@ -41,20 +41,25 @@ namespace Dev2.DynamicServices
     {
         #region Class Members
 
-        private readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
-        private string _parentWorkflowInstanceId = string.Empty;
-        private readonly ConcurrentStack<IExecutionEnvironment> _environments;
+        readonly XNamespace _dSfDataObjectNs = XNamespace.Get("http://dev2.co.za/");
+        string _parentWorkflowInstanceId = string.Empty;
+        readonly ConcurrentStack<IExecutionEnvironment> _environments;
         #endregion Class Members
 
         #region Constructor
 
-        private DsfDataObject()
+        DsfDataObject()
         {
             Environment = new ExecutionEnvironment();
             _environments = new ConcurrentStack<IExecutionEnvironment>();
         }
 
-        public DsfDataObject(string xmldata, Guid dataListId, string rawPayload = "")
+        public DsfDataObject(string xmldata, Guid dataListId)
+            : this(xmldata, dataListId, "")
+        {
+        }
+
+        public DsfDataObject(string xmldata, Guid dataListId, string rawPayload)
         {
             Environment = new ExecutionEnvironment();
             _environments = new ConcurrentStack<IExecutionEnvironment>();
@@ -70,9 +75,9 @@ namespace Dev2.DynamicServices
                         xe = XElement.Parse(xmldata);
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch (Exception)
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
                     // we only trying to parse ;)
                 }
@@ -80,7 +85,7 @@ namespace Dev2.DynamicServices
                 if (xe != null)
                 {
                     bool isDebug;
-                    string debugString = ExtractValue(xe, "IsDebug");
+                    var debugString = ExtractValue(xe, "IsDebug");
                     if (!string.IsNullOrEmpty(debugString))
                     {
                         bool.TryParse(debugString, out isDebug);
@@ -92,19 +97,17 @@ namespace Dev2.DynamicServices
                     }
                     IsDebug = isDebug;
 
-                    Guid debugSessionId;
-                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out debugSessionId);
+                    Guid.TryParse(ExtractValue(xe, "DebugSessionID"), out Guid debugSessionId);
                     DebugSessionID = debugSessionId;
 
-                    Guid environmentId;
-                    if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out environmentId))
+                    if (Guid.TryParse(ExtractValue(xe, "EnvironmentID"), out Guid environmentId))
                     {
                         EnvironmentID = environmentId;
                         DebugEnvironmentId = environmentId;
                     }
 
-                    bool isOnDemandSimulation = false;
-                    string onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
+                    var isOnDemandSimulation = false;
+                    var onDemandSimulationString = ExtractValue(xe, "IsOnDemandSimulation");
                     if (!string.IsNullOrEmpty(onDemandSimulationString))
                     {
                         bool.TryParse(onDemandSimulationString, out isOnDemandSimulation);
@@ -114,12 +117,10 @@ namespace Dev2.DynamicServices
                     ParentServiceName = ExtractValue(xe, "ParentServiceName");
                     _parentWorkflowInstanceId = ExtractValue(xe, "ParentWorkflowInstanceId");
 
-                    Guid executionCallbackId;
-                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out executionCallbackId);
+                    Guid.TryParse(ExtractValue(xe, "ExecutionCallbackID"), out Guid executionCallbackId);
                     ExecutionCallbackID = executionCallbackId;
 
-                    Guid bookmarkExecutionCallbackId;
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out bookmarkExecutionCallbackId);
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid bookmarkExecutionCallbackId);
                     BookmarkExecutionCallbackID = bookmarkExecutionCallbackId;
 
                     if (BookmarkExecutionCallbackID == Guid.Empty && ExecutionCallbackID != Guid.Empty)
@@ -127,20 +128,17 @@ namespace Dev2.DynamicServices
                         BookmarkExecutionCallbackID = ExecutionCallbackID;
                     }
 
-                    Guid parentInstanceId;
-                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out parentInstanceId);
+                    Guid.TryParse(ExtractValue(xe, "BookmarkExecutionCallbackID"), out Guid parentInstanceId);
 
                     ParentInstanceID = ExtractValue(xe, "ParentInstanceID");
 
-                    int numberOfSteps;
-                    Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out numberOfSteps);
+                    Int32.TryParse(ExtractValue(xe, "NumberOfSteps"), out int numberOfSteps);
                     NumberOfSteps = numberOfSteps;
 
                     CurrentBookmarkName = ExtractValue(xe, "CurrentBookmarkName");
 
-                    Guid instId;
 
-                    if (Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out instId))
+                    if (Guid.TryParse(ExtractValue(xe, "WorkflowInstanceId"), out Guid instId))
                     {
                         WorkflowInstanceId = instId;
                     }
@@ -156,8 +154,7 @@ namespace Dev2.DynamicServices
                     DataListID = dataListId;
 
                     // set the IsDataListScoped flag ;)
-                    bool isScoped;
-                    bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out isScoped);
+                    bool.TryParse(ExtractValue(xe, "IsDataListScoped"), out bool isScoped);
                     IsDataListScoped = isScoped;
 
                     // Set incoming service name ;)
@@ -176,10 +173,10 @@ namespace Dev2.DynamicServices
 
         public Guid DebugEnvironmentId { get; set; }
 
-        private string ExtractValue(XElement xe, string elementName)
+        string ExtractValue(XElement xe, string elementName)
         {
-            IEnumerable<XElement> tmp = xe.Descendants(elementName);
-            XElement targetElement = tmp.FirstOrDefault();
+            var tmp = xe.Descendants(elementName);
+            var targetElement = tmp.FirstOrDefault();
 
             return targetElement?.Value ?? string.Empty;
         }
@@ -188,7 +185,7 @@ namespace Dev2.DynamicServices
 
         #region Properties
 
-        private StringBuilder _rawPayload;
+        StringBuilder _rawPayload;
         public ServiceAction ExecuteAction { get; set; }
         public string ParentWorkflowXmlData { get; set; }
         public Guid DebugSessionID { get; set; }
@@ -197,6 +194,7 @@ namespace Dev2.DynamicServices
         public bool IsDebugNested { get; set; }
         public List<Guid> TestsResourceIds { get; set; }
         public bool IsSubExecution { get; set; }
+        public string QueryString { get; set; }
         public bool IsRemoteInvoke => EnvironmentID != Guid.Empty;
 
         public bool IsRemoteInvokeOverridden { get; set; }
@@ -216,10 +214,11 @@ namespace Dev2.DynamicServices
 
         public void PopEnvironment()
         {
-            IExecutionEnvironment localEnv;
-            var tryPop = _environments.TryPop(out localEnv);
+            var tryPop = _environments.TryPop(out IExecutionEnvironment localEnv);
             if (tryPop)
+            {
                 Environment = localEnv;
+            }
         }
 
         public void PushEnvironment(IExecutionEnvironment env)
@@ -312,6 +311,9 @@ namespace Dev2.DynamicServices
         public bool StopExecution { get; set; }
         public IServiceTestModelTO ServiceTest { get; set; }
 
+        public Guid? ExecutionID { get; set; }
+        public string WebUrl { get; set; }
+
         #endregion Properties
 
         #region Methods
@@ -323,7 +325,6 @@ namespace Dev2.DynamicServices
         public IDSFDataObject Clone()
         {
             IDSFDataObject result = new DsfDataObject();
-
             result.BookmarkExecutionCallbackID = BookmarkExecutionCallbackID;
             result.CurrentBookmarkName = CurrentBookmarkName;
             result.DebugSessionID = DebugSessionID;
@@ -381,10 +382,13 @@ namespace Dev2.DynamicServices
             result.SourceResourceID = SourceResourceID;
             result.IsServiceTestExecution = IsServiceTestExecution;
             result.IsDebugFromWeb = IsDebugFromWeb;
+            result.ExecutionID = ExecutionID;
+            result.WebUrl = WebUrl;
             result.IsSubExecution = IsSubExecution;
+            result.QueryString = QueryString;
             if (ServiceTest != null)
             {
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 var testString = serializer.Serialize(ServiceTest);
                 result.ServiceTest = serializer.Deserialize<IServiceTestModelTO>(testString);
             }
@@ -440,7 +444,7 @@ namespace Dev2.DynamicServices
         {
             foreach (XName key in readWriteValues.Keys)
             {
-                PropertyInfo pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
+                var pi = typeof(IDSFDataObject).GetProperty(key.LocalName);
 
                 if (pi != null)
                 {
@@ -453,51 +457,36 @@ namespace Dev2.DynamicServices
 
         #region Private Methods
 
-        private void ExtractOutMergeDataFromRequest(XElement xe)
+        void ExtractOutMergeDataFromRequest(XElement xe)
         {
-            Guid datalistOutMergeId;
-            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out datalistOutMergeId);
+            Guid.TryParse(ExtractValue(xe, "DatalistOutMergeID"), out Guid datalistOutMergeId);
             DatalistOutMergeID = datalistOutMergeId;
 
-            enDataListMergeTypes datalistOutMergeType;
-            // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
-            if (Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out datalistOutMergeType))
-            // ReSharper restore ConvertIfStatementToConditionalTernaryExpression
-            {
-                DatalistOutMergeType = datalistOutMergeType;
-            }
-            else
-            {
-                DatalistOutMergeType = enDataListMergeTypes.Intersection;
-            }
 
-            enTranslationDepth datalistOutMergeDepth;
+            DatalistOutMergeType = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeType"), true, out enDataListMergeTypes datalistOutMergeType) ? datalistOutMergeType : enDataListMergeTypes.Intersection;
+
             DatalistOutMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeDepth"), true,
-                out datalistOutMergeDepth)
+                out enTranslationDepth datalistOutMergeDepth)
                 ? datalistOutMergeDepth
                 : enTranslationDepth.Data_With_Blank_OverWrite;
 
-            DataListMergeFrequency datalistOutMergeFrequency;
             DatalistOutMergeFrequency = Enum.TryParse(ExtractValue(xe, "DatalistOutMergeFrequency"), true,
-                out datalistOutMergeFrequency)
+                out DataListMergeFrequency datalistOutMergeFrequency)
                 ? datalistOutMergeFrequency
                 : DataListMergeFrequency.OnCompletion;
         }
 
-        private void ExtractInMergeDataFromRequest(XElement xe)
+        void ExtractInMergeDataFromRequest(XElement xe)
         {
-            Guid datalistInMergeId;
-            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out datalistInMergeId);
+            Guid.TryParse(ExtractValue(xe, "DatalistInMergeID"), out Guid datalistInMergeId);
             DatalistInMergeID = datalistInMergeId;
 
-            enDataListMergeTypes datalistInMergeType;
-            DatalistInMergeType = Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out datalistInMergeType)
+            DatalistInMergeType = Enum.TryParse(ExtractValue(xe, "DatalistInMergeType"), true, out enDataListMergeTypes datalistInMergeType)
                 ? datalistInMergeType
                 : enDataListMergeTypes.Intersection;
 
-            enTranslationDepth datalistInMergeDepth;
             DatalistInMergeDepth = Enum.TryParse(ExtractValue(xe, "DatalistInMergeDepth"), true,
-                out datalistInMergeDepth)
+                out enTranslationDepth datalistInMergeDepth)
                 ? datalistInMergeDepth
                 : enTranslationDepth.Data_With_Blank_OverWrite;
         }

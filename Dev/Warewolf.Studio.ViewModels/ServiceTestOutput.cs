@@ -7,34 +7,34 @@ using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestOutput : BindableBase, IServiceTestOutput
     {
-        private string _variable;
-        private string _value;
-        private string _assertOp;
-        private ObservableCollection<string> _assertOps;
-        private bool _hasOptionsForValue;
-        private bool _isSinglematchCriteriaVisible;
-        private bool _isBetweenCriteriaVisible;
-        private bool _isSearchCriteriaEnabled;
-        private bool _isSearchCriteriaVisible;
-        private List<string> _optionsForValue;
-        private string _from;
-        private string _to;
-        private readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
-        private readonly IList<IFindRecsetOptions> _findRecsetOptions;
-        private bool _testPassed;
-        private bool _testPending;
-        private bool _testInvalid;
-        private bool _testFailing;
-        private TestRunResult _result;
-        private bool _canEditVariable;
+        string _variable;
+        string _value;
+        string _assertOp;
+        ObservableCollection<string> _assertOps;
+        bool _hasOptionsForValue;
+        bool _isSinglematchCriteriaVisible;
+        bool _isBetweenCriteriaVisible;
+        bool _isSearchCriteriaEnabled;
+        bool _isSearchCriteriaVisible;
+        List<string> _optionsForValue;
+        string _from;
+        string _to;
+        readonly IList<string> _requiresSearchCriteria = new List<string> { "Doesn't Contain", "Contains", "=", "<> (Not Equal)", "Ends With", "Doesn't Start With", "Doesn't End With", "Starts With", "Is Regex", "Not Regex", ">", "<", "<=", ">=" };
+        readonly IList<IFindRecsetOptions> _findRecsetOptions;
+        bool _testPassed;
+        bool _testPending;
+        bool _testInvalid;
+        bool _testFailing;
+        TestRunResult _result;
+        bool _canEditVariable;
 
-        // ReSharper disable once UnusedMember.Global
+
         public ServiceTestOutput()
         {
             
@@ -43,7 +43,10 @@ namespace Warewolf.Studio.ViewModels
         public ServiceTestOutput(string variable, string value, string from, string to)
         {
             if (variable == null)
+            {
                 throw new ArgumentNullException(nameof(variable));
+            }
+
             Variable = variable;
             Value = value;
             From = from;
@@ -240,24 +243,24 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateTestPassed()
+        void UpdateTestPassed()
         {
             TestPassed = _result.RunTestResult == RunResult.TestPassed;
         }
 
-        private void UpdateTestFailing()
+        void UpdateTestFailing()
         {
             TestFailing = _result.RunTestResult == RunResult.TestFailed;
         }
 
-        private void UpdateTestInvalid()
+        void UpdateTestInvalid()
         {
             TestInvalid = _result.RunTestResult == RunResult.TestInvalid ||
                           _result.RunTestResult == RunResult.TestResourceDeleted ||
                           _result.RunTestResult == RunResult.TestResourcePathUpdated;
         }
 
-        private void UpdateTestPending()
+        void UpdateTestPending()
         {
             TestPending = _result.RunTestResult != RunResult.TestFailed &&
                           _result.RunTestResult != RunResult.TestPassed &&
@@ -365,7 +368,8 @@ namespace Warewolf.Studio.ViewModels
                         IsBetweenCriteriaVisible = true;
                         IsSinglematchCriteriaVisible = false;
                         break;
-
+                    default:
+                        break;
                 }
             }
         }
@@ -395,6 +399,6 @@ namespace Warewolf.Studio.ViewModels
         [JsonIgnore]
         public Action<string> AddStepOutputRow { get; set; }
 
-       
+
     }
 }

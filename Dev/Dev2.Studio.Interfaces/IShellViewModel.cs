@@ -9,25 +9,36 @@ using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Common.Interfaces.Versioning;
-
-// ReSharper disable InconsistentNaming
+using Dev2.Common.Interfaces.Data;
 
 namespace Dev2.Studio.Interfaces
 {
     public interface IShellViewModelEdit
     {
-        void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key = null);
-        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key = null);
+        void EditSqlServerResource(IDbSource selectedSource);
+        void EditSqlServerResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditMySqlResource(IDbSource selectedSource);
+        void EditMySqlResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditPostgreSqlResource(IDbSource selectedSource);
+        void EditPostgreSqlResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditOracleResource(IDbSource selectedSource);
+        void EditOracleResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditOdbcResource(IDbSource selectedSource);
+        void EditOdbcResource(IDbSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IPluginSource selectedSource);
+        void EditResource(IPluginSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IWebServiceSource selectedSource);
+        void EditResource(IWebServiceSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IEmailServiceSource selectedSource);
+        void EditResource(IEmailServiceSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IExchangeSource selectedSource);
+        void EditResource(IExchangeSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource);
+        void EditResource(IRabbitMQServiceSourceDefinition selectedSource, IWorkSurfaceKey key);
+        void EditResource(IWcfServerSource selectedSource);
+        void EditResource(IWcfServerSource selectedSource, IWorkSurfaceKey key);
+        void EditResource(IComPluginSource selectedSource);
+        void EditResource(IComPluginSource selectedSource, IWorkSurfaceKey key);
     }
 
     public interface IShellViewModelNew
@@ -68,13 +79,17 @@ namespace Dev2.Studio.Interfaces
         void DeployResources(Guid sourceEnvironmentId, Guid destinationEnvironmentId, IList<Guid> resources, bool deployTests);
         void AddDeploySurface(IEnumerable<IExplorerTreeItem> items);
         void OpenResource(Guid resourceId, Guid environmentId, IServer activeServer);
+        void OpenMergeConflictsView(IExplorerItemViewModel currentResource, Guid differenceResourceId, IServer server);
+        void OpenMergeConflictsView(IContextualResourceModel currentResourceModel, IContextualResourceModel differenceResourceModel, bool loadFromServer);
         void CloseResource(Guid resourceId, Guid environmentId);
-        void UpdateCurrentDataListWithObjectFromJson(string parentObjectName,string json);
+        void CloseResource(IContextualResourceModel currentResourceModel, Guid environmentId);
+        void UpdateCurrentDataListWithObjectFromJson(string parentObjectName, string json);
         void ViewSwagger(Guid resourceId, IServer server);
         void ViewApisJson(string resourcePath, Uri webServerUri);
         void CreateTest(Guid resourceId);
-        void RunAllTests(Guid resourceId);
+        void RunAllTests(string ResourcePath, Guid resourceId);
         void CloseResourceTestView(Guid resourceId, Guid serverId, Guid environmentId);
+        void CloseResourceMergeView(Guid resourceId, Guid serverId, Guid environmentId);
         void BrowserDebug(Guid resourceId, IServer server);
         void StudioDebug(Guid resourceId, IServer server);
         void CopyUrlLink(Guid resourceId, IServer server);
@@ -83,6 +98,7 @@ namespace Dev2.Studio.Interfaces
         void ResetMainView();
         void OnActiveServerChanged();
         ICommand DeployCommand { get; }
+        ICommand MergeCommand { get; }
         ICommand ExitCommand { get; }
         IServer ActiveServer { get; set; }
         IContextualResourceModel DeployResource { get; set; }
@@ -116,10 +132,13 @@ namespace Dev2.Studio.Interfaces
         bool ResourceCalled { get; set; }
 
         void DisplayDialogForNewVersion();
-        Task<bool> CheckForNewVersion();
+        Task<bool> CheckForNewVersionAsync();
         bool ShowDeleteDialogForFolder(string folderBeingDeleted);
         IWorkflowDesignerViewModel CreateNewDesigner(IContextualResourceModel resourceModel);
         void OpenCurrentVersion(Guid resourceId, Guid environmentId);
         IWorkflowDesignerViewModel GetWorkflowDesigner();
+        void OpenMergeDialogView(IExplorerItemViewModel currentResource);
+        void UpdateExplorerWorkflowChanges(Guid resourceId);
+        IResource CreateResourceFromStreamContent(string resourceContent);
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,8 +33,7 @@ namespace Dev2.Providers.Events
         public bool RemoveEvent<TEvent>()
             where TEvent : class, new()
         {
-            object value;
-            return _subjects.TryRemove(typeof(TEvent), out value);
+            return _subjects.TryRemove(typeof(TEvent), out object value);
         }
 
         public IObservable<TEvent> GetEvent<TEvent>()
@@ -54,8 +53,7 @@ namespace Dev2.Providers.Events
         {
             VerifyArgument.IsNotNull("sampleEvent", sampleEvent);
 
-            object subject;
-            if(_subjects.TryGetValue(typeof(TEvent), out subject))
+            if (_subjects.TryGetValue(typeof(TEvent), out object subject))
             {
                 ((ISubject<TEvent>)subject).OnNext(sampleEvent);
             }

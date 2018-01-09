@@ -14,29 +14,28 @@ namespace Dev2.Services.Sql
 {
     public sealed class MySqlServer : IDbServer
     {
-        private readonly IDbFactory _factory;
-        private IDbCommand _command;
-        private MySqlConnection _connection;
-        private IDbTransaction _transaction;
+        readonly IDbFactory _factory;
+        IDbCommand _command;
+        MySqlConnection _connection;
+        IDbTransaction _transaction;
 
         public bool IsConnected => _connection != null && _connection.State == ConnectionState.Open;
 
         public string ConnectionString => _connection?.ConnectionString;
 
-        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException = false, string dbName = "")
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> procedureProcessor, Func<IDbCommand, List<IDbDataParameter>, List<IDbDataParameter>, string, string, bool> functionProcessor, bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
-
-
-            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
+            var proceduresDataTable = GetSchema(_connection);
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                var fullProcedureName = row["Name"].ToString();
                 if (row["Db"].ToString() == dbName)
                 {
                     using (
@@ -45,11 +44,10 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> outParameters ;
 
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName, out outParameters);
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-       
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> outParameters);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
                             procedureProcessor(command, parameters, outParameters, helpText, fullProcedureName);
 
 
@@ -99,8 +97,8 @@ namespace Dev2.Services.Sql
         {
             VerifyConnection();
             MySqlDataReader reader = null;
-            List<string> result = new List<string>();
-            MySqlCommand cmd = new MySqlCommand("SHOW DATABASES", _connection);
+            var result = new List<string>();
+            var cmd = new MySqlCommand("SHOW DATABASES", _connection);
             try
             {
                 reader = cmd.ExecuteReader();
@@ -126,8 +124,7 @@ namespace Dev2.Services.Sql
         {
             VerifyArgument.IsNotNull("command", command);
 
-            return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
+            return ExecuteReader(command, reader => _factory.CreateTable(reader, LoadOption.OverwriteChanges));
         }
 
         public DataTable FetchDataTable( IDbDataParameter[] parameters,IEnumerable<IDbDataParameter> outparameters)
@@ -147,21 +144,22 @@ namespace Dev2.Services.Sql
 
         public void FetchStoredProcedures(
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor) => FetchStoredProcedures(procedureProcessor, functionProcessor, false, "");
+
+        public void FetchStoredProcedures(
+            Func<IDbCommand, List<IDbDataParameter>, string, string, bool> procedureProcessor,
             Func<IDbCommand, List<IDbDataParameter>, string, string, bool> functionProcessor,
-            bool continueOnProcessorException = false,string dbName="")
+            bool continueOnProcessorException, string dbName)
         {
             VerifyArgument.IsNotNull("procedureProcessor", procedureProcessor);
             VerifyArgument.IsNotNull("functionProcessor", functionProcessor);
             VerifyConnection();
 
-            DataTable proceduresDataTable = GetSchema(_connection);
-
-
-            // ROUTINE_CATALOG - ROUTINE_SCHEMA ,SPECIFIC_SCHEMA
+            var proceduresDataTable = GetSchema(_connection);
 
             foreach (DataRow row in proceduresDataTable.Rows)
             {
-                string fullProcedureName = row["Name"].ToString();
+                var fullProcedureName = row["Name"].ToString();
                 if (row["Db"].ToString() == dbName)
                 {
                     using (
@@ -170,10 +168,9 @@ namespace Dev2.Services.Sql
                     {
                         try
                         {
-                            List<IDbDataParameter> isOut;
-                            List<IDbDataParameter> parameters = GetProcedureParameters(command, dbName, fullProcedureName,out isOut);
-                            string helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
-                           
+                            var parameters = GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
+                            var helpText = FetchHelpTextContinueOnException(fullProcedureName, _connection);
+
                             procedureProcessor(command, parameters, helpText, fullProcedureName);
 
 
@@ -190,9 +187,9 @@ namespace Dev2.Services.Sql
             }
         }
 
-        // ReSharper disable InconsistentNaming
 
-        private string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
+
+        string FetchHelpTextContinueOnException(string fullProcedureName, IDbConnection con)
         {
             string helpText;
 
@@ -212,7 +209,7 @@ namespace Dev2.Services.Sql
 
         #region VerifyConnection
 
-        private void VerifyConnection()
+        void VerifyConnection()
         {
             if (!IsConnected)
             {
@@ -249,12 +246,11 @@ namespace Dev2.Services.Sql
 
         #endregion
 
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior,
-            Func<IDataAdapter, T> handler)
+        static T ExecuteReader<T>(IDbCommand command, Func<IDataAdapter, T> handler)
         {
             try
             {
-                 var da = new MySqlDataAdapter(command as MySqlCommand);
+                var da = new MySqlDataAdapter(command as MySqlCommand);
                 using (da)
                 {
                     return handler(da);
@@ -266,7 +262,7 @@ namespace Dev2.Services.Sql
                 {
                     var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
-                    exceptionDataTable.LoadDataRow(new object[] {e.Message}, true);
+                    exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
                     return handler(new MySqlDataAdapter());
                 }
                 throw;
@@ -286,32 +282,31 @@ namespace Dev2.Services.Sql
             }
         }
 
-        private DataTable GetSchema(IDbConnection connection)
+        DataTable GetSchema(IDbConnection connection)
         {
-            const string CommandText = GlobalConstants.SchemaQueryMySql;
+            var CommandText = GlobalConstants.SchemaQueryMySql;
             using (IDbCommand command = _factory.CreateCommand(connection, CommandType.Text, CommandText))
             {
                 return FetchDataTable(command);
             }
         }
 
-        private string GetHelpText(IDbConnection connection, string objectName)
+        string GetHelpText(IDbConnection connection, string objectName)
         {
             using (
                 IDbCommand command = _factory.CreateCommand(connection, CommandType.Text,
                     string.Format("SHOW CREATE PROCEDURE {0} ", objectName)))
             {
-                return ExecuteReader(command, CommandBehavior.SchemaOnly & CommandBehavior.KeyInfo,
-                    delegate(IDataAdapter reader)
+                return ExecuteReader(command, delegate (IDataAdapter reader)
                     {
                         var sb = new StringBuilder();
-                        DataSet ds = new DataSet(); //conn is opened by dataadapter
+                        var ds = new DataSet(); //conn is opened by dataadapter
                         reader.Fill(ds);
-                        var t =  ds.Tables[0];
+                        var t = ds.Tables[0];
                         var dataTableReader = t.CreateDataReader();
                         while (dataTableReader.Read())
                         {
-                            object value = dataTableReader.GetValue(2);
+                            var value = dataTableReader.GetValue(2);
                             if (value != null)
                             {
                                 sb.Append(value);
@@ -327,8 +322,7 @@ namespace Dev2.Services.Sql
             using (IDbCommand command = _factory.CreateCommand(_connection, CommandType.StoredProcedure,fullProcedureName))
             {
 
-                List<IDbDataParameter> isOut;
-                GetProcedureParameters(command, dbName, fullProcedureName, out isOut);
+                GetProcedureParameters(command, dbName, fullProcedureName, out List<IDbDataParameter> isOut);
                 return isOut.Select(a=>a as MySqlParameter).ToList();
 
             }
@@ -338,37 +332,41 @@ namespace Dev2.Services.Sql
         {
             outParams = new List<IDbDataParameter>();
             //Please do not use SqlCommandBuilder.DeriveParameters(command); as it does not handle CLR procedures correctly.
-            string originalCommandText = command.CommandText;
+            var originalCommandText = command.CommandText;
             var parameters = new List<IDbDataParameter>();
             command.CommandType = CommandType.Text;
             command.CommandText =
                 string.Format(
                     "SELECT param_list FROM mysql.proc WHERE db='{0}' AND name='{1}'",
                     dbName, procedureName);
-            DataTable dataTable = FetchDataTable(command);
+            var dataTable = FetchDataTable(command);
             foreach (DataRow row in dataTable.Rows)
             {
-                var bytes = row?[0] as byte[];
-                if(bytes != null)
+                if (row?[0] is byte[] bytes)
                 {
                     var parameterName = Encoding.Default.GetString(bytes);
-                    parameterName= Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
+                    parameterName = Regex.Replace(parameterName, @"(\()([0-z,])+(\))", "");
                     var parameternames = parameterName.Split(',');
-                    foreach(var parameter in parameternames)
+                    foreach (var parameter in parameternames)
                     {
-                        bool isout = false;
+                        var isout = false;
                         const ParameterDirection direction = ParameterDirection.Input;
-                        if(parameter.Contains("OUT "))
+                        if (parameter.Contains("OUT "))
+                        {
                             isout = true;
+                        }
+
                         if (parameter.Contains("INOUT"))
+                        {
                             isout = false;
+                        }
+
                         var parameterx = parameter.Replace("IN ", "").Replace("OUT ", "");
                         if (!String.IsNullOrEmpty(parameterName))
                         {
                             var split = parameterx.Split(' ');
 
-                            MySqlDbType sqlType;
-                            Enum.TryParse(split.Where(a=>a.Trim().Length>0).ToArray()[1], true, out sqlType);
+                            Enum.TryParse(split.Where(a => a.Trim().Length > 0).ToArray()[1], true, out MySqlDbType sqlType);
 
                             var sqlParameter = new MySqlParameter(split.First(a => a.Trim().Length > 0), sqlType) { Direction = direction };
                             if (!isout)
@@ -378,14 +376,11 @@ namespace Dev2.Services.Sql
                             }
                             else
                             {
-                                sqlParameter.Direction = ParameterDirection.Output; 
+                                sqlParameter.Direction = ParameterDirection.Output;
                                 outParams.Add(sqlParameter);
                                 sqlParameter.Value = "@a";
                                 command.Parameters.Add(sqlParameter);
                             }
-                            if (parameterName.ToLower() == "@return_value")
-                            {
-                            }                       
                         }
                     }
                 }
@@ -396,7 +391,7 @@ namespace Dev2.Services.Sql
 
         #region IDisposable
 
-        private bool _disposed;
+        bool _disposed;
 
         public MySqlServer()
         {

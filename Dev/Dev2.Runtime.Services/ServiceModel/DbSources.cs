@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,9 +15,9 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers;
 
 namespace Dev2.Runtime.ServiceModel
 {
-    public class DbSources : ExceptionManager
+    public class DbSources : ExceptionManager, IDbSources
     {
-        
+
         #region Get database list
 
         public virtual DatabaseValidationResult DoDatabaseValidation(DbSource dbSourceDetails)
@@ -45,6 +45,34 @@ namespace Dev2.Runtime.ServiceModel
                 case enSourceType.PostgreSQL:
                     var postgreBroker = CreatePostgreDatabaseBroker();
                     result.DatabaseList = postgreBroker.GetDatabases(dbSourceDetails);
+                    break;
+                case enSourceType.WebService:
+                    break;
+                case enSourceType.DynamicService:
+                    break;
+                case enSourceType.ManagementDynamicService:
+                    break;
+                case enSourceType.PluginSource:
+                    break;
+                case enSourceType.Unknown:
+                    break;
+                case enSourceType.Dev2Server:
+                    break;
+                case enSourceType.EmailSource:
+                    break;
+                case enSourceType.WebSource:
+                    break;
+                case enSourceType.OauthSource:
+                    break;
+                case enSourceType.SharepointServerSource:
+                    break;
+                case enSourceType.RabbitMQSource:
+                    break;
+                case enSourceType.ExchangeSource:
+                    break;
+                case enSourceType.WcfSource:
+                    break;
+                case enSourceType.ComPluginSource:
                     break;
                 default:
                     result.IsValid = false;

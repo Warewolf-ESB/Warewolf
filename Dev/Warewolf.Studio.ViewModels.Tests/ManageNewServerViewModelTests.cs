@@ -17,9 +17,9 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Moq;
-// ReSharper disable MethodSupportsCancellation
-// ReSharper disable ConvertToConstant.Local
-// ReSharper disable InconsistentNaming
+
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -28,22 +28,22 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IManageServerSourceModel> _updateManagerMock;
-        private Mock<IEventAggregator> _aggregatorMock;
-        private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IExternalProcessExecutor> _executorMock;
-        private Mock<IServerSource> _serverSourceMock;
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
+        Mock<IManageServerSourceModel> _updateManagerMock;
+        Mock<IEventAggregator> _aggregatorMock;
+        Mock<IAsyncWorker> _asyncWorkerMock;
+        Mock<IExternalProcessExecutor> _executorMock;
+        Mock<IServerSource> _serverSourceMock;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
 
-        private List<string> _changedProperties;
-        private ManageNewServerViewModel _target;
+        List<string> _changedProperties;
+        ManageNewServerViewModel _target;
 
-        private List<string> _changedPropertiesSource;
-        private ManageNewServerViewModel _targetSource;
+        List<string> _changedPropertiesSource;
+        ManageNewServerViewModel _targetSource;
 
-        private List<string> _changedPropertiesRequestServiceViewModel;
-        private ManageNewServerViewModel _targetRequestServiceViewModel;
+        List<string> _changedPropertiesRequestServiceViewModel;
+        ManageNewServerViewModel _targetRequestServiceViewModel;
 
         #endregion Fields
 
@@ -73,12 +73,12 @@ namespace Warewolf.Studio.ViewModels.Tests
                         {
                             try
                             {
-                                progress();
-                                success();
+                                progress?.Invoke();
+                                success?.Invoke();
                             }
                             catch (Exception ex)
                             {
-                                errorAction(ex);
+                                errorAction?.Invoke(ex);
                             }
                         });
 
@@ -91,7 +91,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IServerSource>, Action<IServerSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _updateManagerMock.Setup(it => it.GetComputerNames())
                 .Returns(new List<string> { "computerName1", "computerName2" });
@@ -106,11 +106,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                         {
                             try
                             {
-                                success(progress());
+                                success?.Invoke(progress?.Invoke());
                             }
                             catch (Exception ex)
                             {
-                                errorAction(ex);
+                                errorAction?.Invoke(ex);
                             }
                         });
 
@@ -243,7 +243,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                             task = Task.Factory.StartNew(
                                 () =>
                                     {
-                                        while (!token.IsCancellationRequested) ;
+                                        while (!token.IsCancellationRequested)
+                                        {
+                                            ;
+                                        }
+
                                         isCancelled = true;
                                     });
                         });
@@ -343,7 +347,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Action, Action, CancellationTokenSource, Action<Exception>>(
                     (progress, success, token, errorAction) =>
                     {
-                        errorAction(null);
+                        errorAction?.Invoke(null);
                     });
             _target.Protocol = "http";
             _target.SelectedPort = "3412";
@@ -372,7 +376,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Action, Action, CancellationTokenSource, Action<Exception>>(
                     (progress, success, token, errorAction) =>
                     {
-                        errorAction(new Exception(expectedExceptionMessage));
+                        errorAction?.Invoke(new Exception(expectedExceptionMessage));
                     });
             _target.Protocol = "http";
             _target.SelectedPort = "3412";
@@ -1016,7 +1020,7 @@ namespace Warewolf.Studio.ViewModels.Tests
              .Callback<Func<IServerSource>, Action<IServerSource>>((func, action) =>
              {
                  var dbSource = func.Invoke();
-                 action(dbSource);
+                 action?.Invoke(dbSource);
              });
             asyncWorker.Setup(it =>it.Start(It.IsAny<Func<List<ComputerName>>>(),
                                             It.IsAny<Action<List<ComputerName>>>(),
@@ -1026,11 +1030,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                                         {
                                             try
                                             {
-                                                success(progress());
+                                                success?.Invoke(progress?.Invoke());
                                             }
                                             catch (Exception ex)
                                             {
-                                                errorAction(ex);
+                                                errorAction?.Invoke(ex);
                                             }
                                         });
             var executor = new Mock<IExternalProcessExecutor>();
@@ -1069,7 +1073,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Func<List<ComputerName>>, Action<List<ComputerName>>, Action<Exception>>(
                     (progress, success, errorAction) =>
                         {
-                            errorAction(new Exception(expectedTestMessage));
+                            errorAction?.Invoke(new Exception(expectedTestMessage));
                         });
 
             //act
@@ -1100,7 +1104,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Func<List<ComputerName>>, Action<List<ComputerName>>, Action<Exception>>(
                     (progress, success, errorAction) =>
                         {
-                            errorAction(new Exception("outerException", new Exception(expectedTestMessage)));
+                            errorAction?.Invoke(new Exception("outerException", new Exception(expectedTestMessage)));
                         });
 
             //act

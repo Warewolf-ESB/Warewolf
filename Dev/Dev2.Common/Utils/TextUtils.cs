@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,17 +14,17 @@ namespace Dev2.Common.Utils
     {
         public static string ReplaceWorkflowNewLinesWithEnvironmentNewLines(string stringToReplaceIn)
         {
-            int startIndex = 0;
+            var startIndex = 0;
             while (startIndex != -1 && startIndex < stringToReplaceIn.Length)
             {
-                int indexOfReplacement = stringToReplaceIn.IndexOf('\n', startIndex);
+                var indexOfReplacement = stringToReplaceIn.IndexOf('\n', startIndex);
                 if (indexOfReplacement != -1)
                 {
-                    bool dontReplace = true;
-                    int index = indexOfReplacement - 1;
+                    var dontReplace = true;
+                    var index = indexOfReplacement - 1;
                     if (index >= 0)
                     {
-                        char backwardsLookup = stringToReplaceIn[index];
+                        var backwardsLookup = stringToReplaceIn[index];
                         if (backwardsLookup == '\r')
                         {
                             dontReplace = false;

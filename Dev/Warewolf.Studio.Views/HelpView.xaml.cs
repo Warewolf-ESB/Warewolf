@@ -12,10 +12,10 @@ namespace Warewolf.Studio.Views
         public HelpView()
         {
             InitializeComponent();
-            RichTextDocument richTextDocument = XamRichTextEditor.Document;
-            // ReSharper disable PossibleNullReferenceException
-            Color color = (Color)ColorConverter.ConvertFromString("#FFF4F2EE");
-            // ReSharper restore PossibleNullReferenceException
+            var richTextDocument = XamRichTextEditor.Document;
+
+            var color = (Color)ColorConverter.ConvertFromString("#FFF4F2EE");
+
             var colorInfo = new ColorInfo(color);
             richTextDocument.RootNode.Settings = new DocumentSettings
             {

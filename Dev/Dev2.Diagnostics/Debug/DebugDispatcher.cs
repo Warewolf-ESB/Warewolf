@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Runtime.Serialization.Formatters;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Newtonsoft.Json;
@@ -20,12 +19,12 @@ namespace Dev2.Diagnostics.Debug
 {
     public class DebugDispatcher : IDebugDispatcher
     {
-        private readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
-        private static bool _shutdownRequested;
+        readonly ConcurrentDictionary<Guid, IDebugWriter> _writers = new ConcurrentDictionary<Guid, IDebugWriter>();
+        static bool _shutdownRequested;
         static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Objects,
-            TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
         };
 
         static DebugDispatcher _instance;
@@ -66,8 +65,7 @@ namespace Dev2.Diagnostics.Debug
         /// <param name="workspaceId">The ID of workspace to be removed.</param>
         public void Remove(Guid workspaceId)
         {
-            IDebugWriter writer;
-            _writers.TryRemove(workspaceId, out writer);
+            _writers.TryRemove(workspaceId, out IDebugWriter writer);
         }
 
         /// <summary>
@@ -77,8 +75,7 @@ namespace Dev2.Diagnostics.Debug
         /// <returns>The <see cref="IDebugWriter"/> with the specified ID, or <code>null</code> if not found.</returns>
         public IDebugWriter Get(Guid workspaceId)
         {
-            IDebugWriter writer;
-            _writers.TryGetValue(workspaceId, out writer);
+            _writers.TryGetValue(workspaceId, out IDebugWriter writer);
             return writer;
         }
 
@@ -87,7 +84,10 @@ namespace Dev2.Diagnostics.Debug
             _shutdownRequested = true;
         }
 
-        public void Write(IDebugState debugState, bool isTestExecution,bool isDebugFromWeb, string testName, bool isRemoteInvoke = false, string remoteInvokerId = null, string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null)
+        public void Write(IDebugState debugState)=>Write(debugState, false, false, "", false, null, null, null);
+        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName) => Write(debugState, isTestExecution, isDebugFromWeb, testName, false, null, null, null);
+        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId) => Write(debugState, isTestExecution, isDebugFromWeb, testName, isRemoteInvoke, remoteInvokerId, null, null);
+        public void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId, string parentInstanceId, IList<IDebugState> remoteDebugItems)
         {
             if (debugState == null)
             {
@@ -114,15 +114,13 @@ namespace Dev2.Diagnostics.Debug
 
             if (remoteDebugItems != null)
             {
-                Guid parentId;
-                Guid.TryParse(parentInstanceId, out parentId);
+                Guid.TryParse(parentInstanceId, out Guid parentId);
                 foreach (var item in remoteDebugItems)
                 {
                     item.WorkspaceID = debugState.WorkspaceID;
                     item.OriginatingResourceID = debugState.OriginatingResourceID;
                     item.ClientID = debugState.ClientID;
-                    Guid remoteEnvironmentId;
-                    if (Guid.TryParse(remoteInvokerId, out remoteEnvironmentId))
+                    if (Guid.TryParse(remoteInvokerId, out Guid remoteEnvironmentId))
                     {
                         item.EnvironmentID = remoteEnvironmentId;
                     }
@@ -135,7 +133,7 @@ namespace Dev2.Diagnostics.Debug
 
                 remoteDebugItems.Clear();
             }
-            Dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}");
+            Dev2Logger.Debug($"EnvironmentID: {debugState.EnvironmentID} Debug:{debugState.DisplayName}",GlobalConstants.WarewolfDebug);
             QueueWrite(debugState);
 
             if (debugState.IsFinalStep())

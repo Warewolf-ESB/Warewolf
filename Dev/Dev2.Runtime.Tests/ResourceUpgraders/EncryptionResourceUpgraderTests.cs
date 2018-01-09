@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,7 +34,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
-        // ReSharper disable InconsistentNaming
+        
         public void EncryptionResourceUpgrader_Upgrade_HasMatchin_ExpectReplace()
         {
             _matchAndReplaceWhereAppropriate(_beforeContainingSource, _beforeWithoutSource, _connectionString);
@@ -58,7 +58,7 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptPasswordsAndConnectionStrings(matchingString);
+            var output = upgrader.EncryptPasswordsAndConnectionStrings(matchingString);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(matchingString);
             output.Should().NotContain(pieceToReplace);
@@ -74,44 +74,44 @@ namespace Dev2.Tests.Runtime.ResourceUpgraders
         [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
-        // ReSharper disable InconsistentNaming
+        
         public void EncryptionResourceUpgrader_Upgrade_CanDecrypt()
         {
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
-            Regex cs = new Regex(@"ConnectionString=""([^""]+)""");
+            var cs = new Regex(@"ConnectionString=""([^""]+)""");
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
+            var output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(_beforeContainingSource);
             output.Should().NotContain(_connectionString);
-            Match m = cs.Match(output);
+            var m = cs.Match(output);
             m.Success.Should().BeTrue();
             m.Groups.Count.Should().BeGreaterOrEqualTo(1);
             m.Groups[1].Success.Should().BeTrue();
-            string x = m.Groups[1].Value;
+            var x = m.Groups[1].Value;
             DpapiWrapper.Decrypt(x).Should().Be(_connectionString);
         }
 
         [TestMethod]
         [Owner("Kerneels Roos")]
         [TestCategory("EncryptionResourceUpgrader_Upgrade")]
-        // ReSharper disable InconsistentNaming
+        
         public void EncryptionResourceUpgrader_TwiceUpgrade_DoesNotEncrypt()
         {
             //------------Setup for test--------------------------
             var upgrader = new EncryptionResourceUpgrader();
-            Regex cs = new Regex(@"ConnectionString=""([^""]+)""");
+            var cs = new Regex(@"ConnectionString=""([^""]+)""");
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            string output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
+            var output = upgrader.EncryptSourceConnectionStrings(_beforeContainingSource);
             output.Should().NotBeNullOrEmpty();
             output.Should().NotBe(_beforeContainingSource);
             output.Should().NotContain(_connectionString);
-            string output2 = upgrader.EncryptSourceConnectionStrings(output);
+            var output2 = upgrader.EncryptSourceConnectionStrings(output);
             output.Should().NotBeNullOrEmpty();
             output2.Should().Be(output);
         }

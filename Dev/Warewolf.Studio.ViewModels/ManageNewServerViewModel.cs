@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -107,9 +107,6 @@ namespace Warewolf.Studio.ViewModels
 
         void SetupHeaderTextFromExisting()
         {
-            if (_warewolfserverName != null)
-            {
-            }
             HeaderText = (_serverSource == null ? ResourceName : _serverSource.Name).Trim();
             Header = _serverSource == null ? ResourceName : _serverSource.Name;
         }
@@ -129,21 +126,29 @@ namespace Warewolf.Studio.ViewModels
             }
 
             Protocol = source.Address.Contains("https") ? Protocols[0] : Protocols[1];
-            int portIndex = GetSpecifiedIndexOf(source.Address, ':', 2);
+            var portIndex = GetSpecifiedIndexOf(source.Address, ':', 2);
             var ports = source.Address.Substring(portIndex + 1).Split('/');
             if (ports.Any())
+            {
                 SelectedPort = ports[0];
+            }
+
             Address = source.Address;
             Password = source.Password;
             Header = ResourceName;
         }
 
-        private static int GetSpecifiedIndexOf(string str, char ch, int index)
+        static int GetSpecifiedIndexOf(string str, char ch, int index)
         {
-            int i = 0, o = 1;
+            var i = 0;
+            var o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
             {
-                if (o == index) return i;
+                if (o == index)
+                {
+                    return i;
+                }
+
                 o++;
                 i++;
             }
@@ -254,7 +259,10 @@ namespace Warewolf.Studio.ViewModels
                         src.ResourcePath = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                         Save(src);
                         if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                        {
                             AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ID);
+                        }
+
                         Item = src;
                         _serverSource = src;
                         SetupHeaderTextFromExisting();
@@ -319,6 +327,7 @@ namespace Warewolf.Studio.ViewModels
         IServerSource ToSource()
         {
             if (_serverSource == null)
+            {
                 return new ServerSource
                 {
                     Address = GetAddressName(),
@@ -329,7 +338,7 @@ namespace Warewolf.Studio.ViewModels
                     ID = _serverSource?.ID ?? SelectedGuid
                 }
             ;
-            // ReSharper disable once RedundantIfElseBlock
+            }
             else
             {
                 _serverSource.AuthenticationType = AuthenticationType;
@@ -343,7 +352,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(Address))
             {
                 return false;
@@ -532,7 +544,7 @@ namespace Warewolf.Studio.ViewModels
 
         #endregion
 
-        private string GetAddressName()
+        string GetAddressName()
         {
             string addressName = null;
             if (!string.IsNullOrEmpty(ServerName?.Name))
@@ -621,9 +633,12 @@ namespace Warewolf.Studio.ViewModels
                     {
                         SelectedPort = "3143";
                     }
-                    else if (Protocol == "http" && SelectedPort == "3143")
+                    else
                     {
-                        SelectedPort = "3142";
+                        if (Protocol == "http" && SelectedPort == "3143")
+                        {
+                            SelectedPort = "3142";
+                        }
                     }
 
                 }

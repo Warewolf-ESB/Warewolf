@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
@@ -82,14 +82,16 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var createFolderService = new AddFolderService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            item.ResourcePath = @"root\";
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.AddItem(item, It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Fail, "noddy"));
             var serializer = new Dev2JsonSerializer();
-            var inputs = new Dictionary<string, StringBuilder>();
-            inputs.Add("itemToAdd", serializer.SerializeToBuilder(item));
-
+            var inputs = new Dictionary<string, StringBuilder>
+            {
+                { "itemToAdd", serializer.SerializeToBuilder(item) }
+            };
             ws.Setup(a => a.ID).Returns(Guid.Empty);
             createFolderService.ServerExplorerRepo = repo.Object;
             //------------Execute Test---------------------------

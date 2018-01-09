@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,7 @@ using System.Collections.Generic;
 using Dev2.Data.Interfaces;
 using Dev2.PathOperations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests.PathOperations
 {
@@ -25,9 +25,9 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetOperation_NonExistingPath_FriendlyError()
         {
-            bool pass = false;
+            var pass = false;
             var testProvider = new Dev2FileSystemProvider();
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
+            var path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try
             {
                 using(testProvider.Get(path, new List<string>()))
@@ -51,9 +51,9 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetDirectoryOperation_NonExistingPath_FriendlyError()
         {
-            bool pass = false;
-            Dev2FileSystemProvider testProvider = new Dev2FileSystemProvider();
-            IActivityIOPath path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
+            var pass = false;
+            var testProvider = new Dev2FileSystemProvider();
+            var path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try
             {
                 testProvider.ListDirectory(path);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity();
             //------------Execute Test---------------------------
-            PrivateObject px = new PrivateObject(dsfSqlBulkInsertActivity);
+            var px = new PrivateObject(dsfSqlBulkInsertActivity);
 
             var sqlBulkInserter = px.GetProperty("SqlBulkInserter");
             //------------Assert Results-------------------------
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var dsfSqlBulkInsertActivity = new DsfSqlBulkInsertActivity();
-            PrivateObject p = new PrivateObject(dsfSqlBulkInsertActivity);
+            var p = new PrivateObject(dsfSqlBulkInsertActivity);
             p.SetProperty("SqlBulkInserter",new Mock<ISqlBulkInserter>().Object);
             
             //------------Execute Test---------------------------
@@ -1962,27 +1962,27 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString, DbSource dbSource = null, string destinationTableName = null, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows, bool keepIdentity = false)
+        void SetupArguments(string currentDL, string testData, ISqlBulkInserter sqlBulkInserter, IList<DataColumnMapping> inputMappings, string resultString, DbSource dbSource = null, string destinationTableName = null, PopulateOptions populateOptions = PopulateOptions.IgnoreBlankRows, bool keepIdentity = false)
         {
             var ignoreBlankRows = populateOptions == PopulateOptions.IgnoreBlankRows;
-            if(dbSource == null)
+            if (dbSource == null)
             {
                 dbSource = CreateDbSource();
             }
-            if(destinationTableName == null)
+            if (destinationTableName == null)
             {
                 destinationTableName = "SomeTestTable";
             }
             var x = new DsfSqlBulkInsertActivity
-                {
-                    Database = dbSource,
-                    TableName = destinationTableName,
-                    InputMappings = inputMappings,
-                    Result = resultString,
-                    IgnoreBlankRows = ignoreBlankRows,
-                    KeepIdentity = keepIdentity
-                };
-            PrivateObject p = new PrivateObject(x);
+            {
+                Database = dbSource,
+                TableName = destinationTableName,
+                InputMappings = inputMappings,
+                Result = resultString,
+                IgnoreBlankRows = ignoreBlankRows,
+                KeepIdentity = keepIdentity
+            };
+            var p = new PrivateObject(x);
             p.SetProperty("SqlBulkInserter", sqlBulkInserter);
 
             TestStartNode = new FlowStep

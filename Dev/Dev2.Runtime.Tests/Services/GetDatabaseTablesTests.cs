@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]    
@@ -130,7 +130,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource();
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
-            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            var someJsonData = JsonConvert.SerializeObject(dbSource);
             var esb = new GetDatabaseTables();
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);
@@ -159,7 +159,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var dbSource = CreateDev2TestingDbSource(true);
             ResourceCatalog.Instance.SaveResource(Guid.Empty, dbSource, "");
-            string someJsonData = JsonConvert.SerializeObject(dbSource);
+            var someJsonData = JsonConvert.SerializeObject(dbSource);
             var esb = new GetDatabaseTables();
             var mockWorkspace = new Mock<IWorkspace>();
             mockWorkspace.Setup(workspace => workspace.ID).Returns(Guid.Empty);

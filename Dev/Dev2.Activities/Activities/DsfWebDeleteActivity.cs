@@ -15,7 +15,7 @@ namespace Dev2.Activities
     public class DsfWebDeleteActivity : DsfWebActivityBase
     {
 
-        // ReSharper disable once MemberCanBeProtected.Global
+        
         public DsfWebDeleteActivity()
             : base(WebRequestDataDto.CreateRequestDataDto(WebRequestMethod.Delete, "DELETE Web Method", "DELETE Web Method"))
         {

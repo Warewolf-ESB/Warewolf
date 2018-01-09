@@ -18,7 +18,7 @@ namespace Dev2.ViewModels
     public class StudioTestViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab, IHandle<DebugOutputMessage>
     {
         readonly IPopupController _popupController;
-        private DebugOutputViewModel _debugOutputViewModel;
+        DebugOutputViewModel _debugOutputViewModel;
 
         public StudioTestViewModel(IEventAggregator eventPublisher, IServiceTestViewModel vm, IPopupController popupController, IView view)
             : base(eventPublisher)
@@ -39,7 +39,7 @@ namespace Dev2.ViewModels
                     NotifyOfPropertyChange(() => DisplayName);
                 }
             };
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), CustomContainer.Get<IServerRepository>(), new DebugOutputFilterStrategy(), ViewModel.WorkflowDesignerViewModel.ResourceModel) { IsTestView = true };
         }
 
         public override bool HasVariables => false;
@@ -66,15 +66,14 @@ namespace Dev2.ViewModels
         [ExcludeFromCodeCoverage]
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 loadedView.DataContext = ViewModel;
                 base.OnViewLoaded(loadedView);
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public string ResourceType => "ServiceTestsViewer";
 
         #region Implementation of IHelpSource
@@ -97,7 +96,7 @@ namespace Dev2.ViewModels
 
         public void Handle(DebugOutputMessage message)
         {
-            Dev2Logger.Info(message.GetType().Name);
+            Dev2Logger.Info(message.GetType().Name, "Warewolf Info");
             DebugOutputViewModel.Clear();
             DebugOutputViewModel.DebugStatus = DebugStatus.Ready;
             foreach (var debugState in message.DebugStates)
@@ -150,6 +149,10 @@ namespace Dev2.ViewModels
                             {
                                 ViewModel.Save();
                             }
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        default:
                             break;
                     }
                 }

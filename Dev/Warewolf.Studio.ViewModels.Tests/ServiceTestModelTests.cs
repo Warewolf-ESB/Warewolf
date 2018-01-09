@@ -11,7 +11,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -1193,7 +1193,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var areEqual = methodInfo.Invoke(null, new object[] { serviceTestModel.TestSteps, serviceTestSteps });
 
             //---------------Test Result -----------------------
-            Assert.IsTrue(bool.Parse(areEqual.ToString()));
+            Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
 
         [TestMethod]
@@ -1283,7 +1283,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     new ServiceTestOutput("rec(1).b", "val", "", "")
                 }
             };
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1311,7 +1311,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     new ServiceTestOutput("rec(1).a", "val", "", "") { AssertOp =">" }
                 }
             };
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1339,7 +1339,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     new ServiceTestOutput("rec(1).a", "val", "", "") {  }
                 }
             };
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1367,7 +1367,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     new ServiceTestOutput("rec(1).a", "val", "a", "") {  }
                 }
             };
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1394,7 +1394,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 new ServiceTestOutput("rec(1).a", "val1","","")
             };
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1422,7 +1422,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
             catch (TargetInvocationException ex)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 var b = ex.InnerException.GetType() == typeof(NullReferenceException);
                 //---------------Test Result -----------------------
                 Assert.IsTrue(b);
@@ -1449,11 +1449,11 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
             try
             {
-                methodInfo.Invoke(serviceTestModel, new object[] { default(ServiceTestModel), true });
+                methodInfo.Invoke(serviceTestModel, new object[] { default(ServiceTestModel) });
             }
             catch (TargetInvocationException ex)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 var b = ex.InnerException.GetType() == typeof(NullReferenceException);
 
                 Assert.IsTrue(b);
@@ -1483,7 +1483,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             //---------------Execute Test ----------------------
 
             fieldInfo.SetValue(serviceTestModel, default(ObservableCollection<IServiceTestInput>));
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { new ServiceTestModel(), true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { new ServiceTestModel() });
             //---------------Test Result -----------------------
             Assert.IsTrue(bool.Parse(areEqual.ToString()));
         }
@@ -1513,7 +1513,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
 
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1543,7 +1543,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
 
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }
@@ -1576,7 +1576,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 }
             };
 
-            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel, true });
+            var areEqual = methodInfo.Invoke(serviceTestModel, new object[] { testModel });
             //---------------Test Result -----------------------
             Assert.IsFalse(bool.Parse(areEqual.ToString()));
         }

@@ -5,9 +5,7 @@ using System.Threading.Tasks;
 namespace Dev2.SignalR.Wrappers
 {
     public interface IHubConnectionWrapper 
-    {
-
-        
+    {        
         IHubProxyWrapper CreateHubProxy(string hubName);
         event Action<Exception> Error;
         event Action Closed;
@@ -21,11 +19,7 @@ namespace Dev2.SignalR.Wrappers
 
     public interface IStateChangeWrapped
     {
-         ConnectionStateWrapped OldState { get;  }
-
-        /// <summary>
-        /// Gets the new state of the connection.
-        /// </summary>
+         ConnectionStateWrapped OldState { get;  }        
          ConnectionStateWrapped NewState { get; }
     }
 }

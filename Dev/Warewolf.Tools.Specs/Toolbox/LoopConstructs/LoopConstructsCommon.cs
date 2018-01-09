@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,27 +19,30 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
     [Binding]
     public class LoopConstructsCommon
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public LoopConstructsCommon(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         [Given(@"There is a recordset in the datalist with this shape")]
         public void GivenThereIsARecordsetInTheDatalistWithThisShape(Table table)
         {
-            List<TableRow> rows = table.Rows.ToList();
+            var rows = table.Rows.ToList();
 
             if (rows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -50,8 +53,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
 
             foreach (TableRow tableRow in rows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
                 if (variableList == null)
                 {
@@ -91,8 +93,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs
         [Given(@"I have a variable ""(.*)"" with the value ""(.*)""")]
         public void GivenIHaveAVariableWithTheValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,12 +23,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
     [Binding]
     public class DeleteSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -36,7 +40,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
         public void WhenTheDeleteFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -46,8 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
             {
                 BuildShapeAndTestData();
 
-                string privateKeyFile;
-                scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out privateKeyFile);
+                scenarioContext.TryGetValue(CommonSteps.SourcePrivatePublicKeyFile, out string privateKeyFile);
                 var delete = new DsfPathDelete
                 {
                     InputPath = scenarioContext.Get<string>(CommonSteps.SourceHolder),
@@ -75,7 +78,10 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Delete
 
             var viewModel = new DeleteDesignerViewModel(ModelItemUtils.CreateModelItem(delete));
             if (!scenarioContext.ContainsKey("viewModel"))
+            {
                 scenarioContext.Add("viewModel", viewModel);
+            }
+
             viewModel.Validate();
         }
     }

@@ -7,9 +7,8 @@ using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
-{
-    // ReSharper disable once InconsistentNaming
-    internal class ODBCFactory : IDbFactory
+{    
+    class ODBCFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 
@@ -32,22 +31,21 @@ namespace Dev2.Services.Sql
             };
         }
 
-        public DataTable GetSchema(IDbConnection connection, string collectionName)
-        {
-            return GetOdbcServerSchema(connection);
-        }
+        public DataTable GetSchema(IDbConnection connection, string collectionName) => GetOdbcServerSchema(connection);
 
         DataTable GetOdbcServerSchema(IDbConnection connection)
         {
             if (!(connection is OdbcConnection))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Oracle"));
+            }
 
             return ((OdbcConnection)connection).GetSchema();
         }
 
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            var ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
             return ds.Tables[0];
         }
@@ -55,7 +53,10 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is OdbcCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "OracleCommand"));
+            }
+
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new OdbcDataAdapter(command as OdbcCommand))

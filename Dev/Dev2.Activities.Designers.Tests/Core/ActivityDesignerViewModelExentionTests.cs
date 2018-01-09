@@ -8,7 +8,7 @@ using Dev2.Activities.DropBox2016.DropboxFileActivity;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {

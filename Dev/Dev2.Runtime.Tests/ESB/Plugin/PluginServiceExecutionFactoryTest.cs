@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -170,7 +170,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
             //------------Execute Test---------------------------
             using (Isolated<PluginRuntimeHandler> isolated = new Isolated<PluginRuntimeHandler>())
             {
-                PluginInvokeArgs args = new PluginInvokeArgs
+                var args = new PluginInvokeArgs
                 {
                     AssemblyLocation = source.AssemblyLocation
                     ,
@@ -183,8 +183,8 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                     Parameters = svc.Method.Parameters
                 };
                 var result = PluginServiceExecutionFactory.InvokePlugin(args);
-                var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
                 //------------Assert Results-------------------------
+                var castResult = JsonConvert.DeserializeObject(result.ToString()) as dynamic;
                 if (castResult != null)
                 {
                     StringAssert.Contains(castResult.Name.ToString(), "test data");
@@ -210,7 +210,7 @@ namespace Dev2.Tests.Runtime.ESB.Plugin
                 loc = assembly.Location;
             }
 
-            Guid resourceID = Guid.Empty;
+            var resourceID = Guid.Empty;
             if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();

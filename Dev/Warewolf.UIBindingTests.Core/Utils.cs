@@ -5,10 +5,9 @@ using Dev2.Common.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TechTalk.SpecFlow;
-using Warewolf.Studio.Themes.Luna;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable ObjectCreationAsStatement
+
 
 namespace Warewolf.UIBindingTests.Core
 {
@@ -38,22 +37,22 @@ namespace Warewolf.UIBindingTests.Core
         {
             var window = new Window {Content = view};
             var app = Application.Current;
-            
-            app.MainWindow = window;
-            app.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
-            {
-                app.MainWindow.Close();
-            }));
 
-            
+            if (app != null)
+            {
+                app.MainWindow = window;
+                app.Dispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(() =>
+                {
+                    app.MainWindow.Close();
+                }));
+            }
         }
 
         public static void SetupResourceDictionary()
         {
-            new LunaTheme();
-            Application app = Application.Current ?? new Application();
-            ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
-            foreach(var resourceDictionary in themeDictionary.MergedDictionaries)
+            var app = Application.Current ?? new Application();
+            var themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
+            foreach (var resourceDictionary in themeDictionary.MergedDictionaries)
             {
                 app.Resources.MergedDictionaries.Add(resourceDictionary);
                 var resourceDictionaries = resourceDictionary.MergedDictionaries;
@@ -79,9 +78,8 @@ namespace Warewolf.UIBindingTests.Core
 
         public static void SetupResourceDictionaryActivities()
         {
-            new LunaTheme();
-            Application app = Application.Current ?? new Application();
-            ResourceDictionary themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
+            var app = Application.Current ?? new Application();
+            var themeDictionary = new ResourceDictionary { Source = new Uri("pack://application:,,,/Warewolf.Studio.Themes.Luna;component/Theme.xaml", UriKind.RelativeOrAbsolute) };
             app.Resources.MergedDictionaries.Add(themeDictionary);
   
 
@@ -124,7 +122,7 @@ namespace Warewolf.UIBindingTests.Core
             Assert.AreEqual(isEnabled, controlEnabled, "Control " + controlName + " in view " + viewName + " is not " + enabledString + ".");
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public static void ResetViewModel<T,U>(T newViewModel, T currentViewModel)
             where T : SourceBaseImpl<U>
             where U:IEquatable<U>

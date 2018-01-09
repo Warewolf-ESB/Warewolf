@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,10 +25,10 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.IntellisenseProvider
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class FileSystemIntellisenseProviderTest
     {
-        private IResourceModel _resourceModel;
+        IResourceModel _resourceModel;
 
         #region Test Initialization
 
@@ -417,7 +417,7 @@ namespace Dev2.Core.Tests.IntellisenseProvider
         public void QueryList(string searchPath)
         {
             QueryCollection = new List<string>();
-            switch(searchPath)
+            switch (searchPath)
             {
                 case @"\\RSAKLFSVRTFSBLD\DevelopmentDropOff\Runt":
                     AddToList(1);
@@ -451,6 +451,8 @@ namespace Dev2.Core.Tests.IntellisenseProvider
                     break;
                 case "":
                     AddToList(8);
+                    break;
+                default:
                     break;
             }
         }

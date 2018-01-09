@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.PerformanceCounters.Counters
 {

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,8 +20,8 @@ namespace Warewolf.Studio.ViewModels
     public class FileChooserModel : IFileChooserModel
     {
         readonly IQueryManager _queryManager;
-        private readonly string _filter;
-        private readonly IFile _fileWrapper;
+        readonly string _filter;
+        readonly IFile _fileWrapper;
 
         public FileChooserModel(IQueryManager queryManager)
         {
@@ -47,7 +47,7 @@ namespace Warewolf.Studio.ViewModels
             return FilterFileListings(fileListings);
         }
 
-        private IList<IFileListing> FilterFileListings(IList<IFileListing> fileListings)
+        IList<IFileListing> FilterFileListings(IList<IFileListing> fileListings)
         {
             if (!string.IsNullOrEmpty(_filter))
             {
