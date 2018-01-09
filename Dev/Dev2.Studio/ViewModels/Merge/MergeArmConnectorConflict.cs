@@ -26,6 +26,7 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         bool _isChecked;
         bool _isArmSelectionAllowed;
+        bool _isArmConnectorVisible;
 
         public string Grouping => SourceUniqueId + Key ?? "";
 
@@ -58,6 +59,8 @@ namespace Dev2.ViewModels.Merge
             }
         }
 
+        public bool IsArmConnectorVisible => !string.IsNullOrWhiteSpace(ArmDescription);
+
         public MergeArmConnectorConflict(IArmConnectorConflict container)
         {
             Container = container;
@@ -65,8 +68,9 @@ namespace Dev2.ViewModels.Merge
         public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
-            LeftArmDescription = "Left";
-            RightArmDescription = "Right";
+            var description = armDescription.Split(new[] { "->" }, StringSplitOptions.None);
+            LeftArmDescription = description[0];
+            RightArmDescription = description[1];
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
