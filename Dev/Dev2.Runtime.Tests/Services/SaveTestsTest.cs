@@ -14,7 +14,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveTests.Execute(null, null);
+            var jsonResult = saveTests.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var jsonResult = saveTests.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var jsonResult = saveTests.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var jsonResult = saveTests.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var jsonResult = saveTests.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -164,7 +164,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var jsonResult = saveTests.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsTrue(result.HasError);
@@ -192,7 +192,7 @@ namespace Dev2.Tests.Runtime.Services
             var saveTests = new SaveTests();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
-            StringBuilder jsonResult = saveTests.Execute(values, null);
+            var jsonResult = saveTests.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //---------------Test Result -----------------------
             Assert.IsTrue(result.HasError);

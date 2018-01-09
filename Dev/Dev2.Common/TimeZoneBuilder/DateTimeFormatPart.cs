@@ -8,14 +8,14 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.TimeZoneBuilder
 {
-    internal class DateTimeFormatPart : IDateTimeFormatPart
+    class DateTimeFormatPart : IDateTimeFormatPart
     {
-        private readonly Dictionary<string, ITimeZoneTO> _timeZones;
+        readonly Dictionary<string, ITimeZoneTO> _timeZones;
 
         public Dictionary<string, IDateTimeFormatPartTO> DateTimeFormatsParts { get; set; }
         public Dictionary<string, List<IDateTimeFormatPartOptionTO>> DateTimeFormatPartOptions { get; set; }
-        private static AssignManager _assignManager;
-        private static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
+        protected readonly AssignManager _assignManager;
+        protected static readonly IDatetimeParserHelper DatetimeParserHelper = new DateTimeParserHelper();
         public DateTimeFormatPart(Dictionary<string, ITimeZoneTO> timeZones)
         {
             _timeZones = timeZones;
@@ -41,7 +41,7 @@ namespace Dev2.Common.TimeZoneBuilder
         #endregion
 
         #region Private Logic
-        private void AddYearParts()
+        protected virtual void AddYearParts()
         {
             DateTimeFormatsParts.Add("yy", new DateTimeFormatPartTO("yy", false, "Year in 2 digits: 08"));
             DateTimeFormatPartOptions.Add("yy", new List<IDateTimeFormatPartOptionTO>
@@ -57,7 +57,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddMonthParts()
+        protected virtual void AddMonthParts()
         {
             DateTimeFormatsParts.Add("mm", new DateTimeFormatPartTO("mm", false, "Month in 2 digits: 03"));
             DateTimeFormatPartOptions.Add("mm",
@@ -79,40 +79,40 @@ namespace Dev2.Common.TimeZoneBuilder
                 new List<IDateTimeFormatPartOptionTO>
                 {
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false,
                         1, _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false,
                         2, _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3,
                         _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4,
                         _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5,
                         _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6,
                         _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7,
                         _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false,
                         8, _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember,
                         false, 9, _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false,
                         10, _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember,
                         false, 11, _assignManager.AssignMonths),
                     new DateTimeFormatPartOptionTO(
-                        CultureInfo.CurrentCulture.DateTimeFormat.AbbreviatedMonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember,
+                        CultureInfo.InvariantCulture.DateTimeFormat.AbbreviatedMonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember,
                         false, 12, _assignManager.AssignMonths),
                 });
 
@@ -120,22 +120,22 @@ namespace Dev2.Common.TimeZoneBuilder
             DateTimeFormatPartOptions.Add("MM",
                 new List<IDateTimeFormatPartOptionTO>
                 {
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false, 1, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false, 2, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false, 8, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember, false, 9, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false, 10, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember, false, 11, _assignManager.AssignMonths),
-                    new DateTimeFormatPartOptionTO(CultureInfo.CurrentCulture.DateTimeFormat.MonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember, false, 12, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[0].Length, CompareTextValueToDateTimePart.IsTextJanuary, false, 1, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[1].Length, CompareTextValueToDateTimePart.IsTextFebuary, false, 2, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[2].Length, CompareTextValueToDateTimePart.IsTextMarch, false, 3, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[3].Length, CompareTextValueToDateTimePart.IsTextApril, false, 4, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[4].Length, CompareTextValueToDateTimePart.IsTextMay, false, 5, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[5].Length, CompareTextValueToDateTimePart.IsTextJune, false, 6, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[6].Length, CompareTextValueToDateTimePart.IsTextJuly, false, 7, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[7].Length, CompareTextValueToDateTimePart.IsTextAugust, false, 8, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[8].Length, CompareTextValueToDateTimePart.IsTextSeptember, false, 9, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[9].Length, CompareTextValueToDateTimePart.IsTextOctober, false, 10, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[10].Length, CompareTextValueToDateTimePart.IsTextNovember, false, 11, _assignManager.AssignMonths),
+                    new DateTimeFormatPartOptionTO(CultureInfo.InvariantCulture.DateTimeFormat.MonthNames[11].Length, CompareTextValueToDateTimePart.IsTextDecember, false, 12, _assignManager.AssignMonths),
                 });
         }
 
-        private void AddDayParts()
+        protected virtual void AddDayParts()
         {
             DateTimeFormatsParts.Add("d", new DateTimeFormatPartTO("d", false, "Day of month in single digit: 6"));
             DateTimeFormatPartOptions.Add("d",
@@ -209,7 +209,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddWeekParts()
+        protected virtual void AddWeekParts()
         {
             DateTimeFormatsParts.Add("ww", new DateTimeFormatPartTO("ww", false, "Week of year: 09"));
             DateTimeFormatPartOptions.Add("ww",
@@ -227,7 +227,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddHourParts()
+        protected virtual void AddHourParts()
         {
             DateTimeFormatsParts.Add("24h", new DateTimeFormatPartTO("24h", false, "Hours in 24 hour format: 15"));
             DateTimeFormatPartOptions.Add("24h",
@@ -245,7 +245,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddMinuteParts()
+        protected virtual void AddMinuteParts()
         {
             DateTimeFormatsParts.Add("min", new DateTimeFormatPartTO("min", false, "Minutes: 30"));
             DateTimeFormatPartOptions.Add("min",
@@ -255,7 +255,7 @@ namespace Dev2.Common.TimeZoneBuilder
                     new DateTimeFormatPartOptionTO(1, DatetimeParserHelper.IsNumberMinutes, true, null, _assignManager.AssignMinutes),
                 });
         }
-        private void AddSecondParts()
+        protected virtual void AddSecondParts()
         {
             DateTimeFormatsParts.Add("ss", new DateTimeFormatPartTO("ss", false, "Seconds: 29"));
             DateTimeFormatPartOptions.Add("ss",
@@ -275,7 +275,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 });
         }
 
-        private void AddOffsetParts()
+        protected virtual void AddOffsetParts()
         {
             DateTimeFormatsParts.Add("am/pm", new DateTimeFormatPartTO("am/pm", false, "am or pm"));
             DateTimeFormatPartOptions.Add("am/pm",
@@ -308,7 +308,7 @@ namespace Dev2.Common.TimeZoneBuilder
                 return dateTimeFormatPartOptionTo;
             }).OrderByDescending(k => k.Length).ToList());
         }
-        private void AddEraParts()
+        protected virtual void AddEraParts()
         {
             DateTimeFormatsParts.Add("Era", new DateTimeFormatPartTO("Era", false, "A.D."));
 

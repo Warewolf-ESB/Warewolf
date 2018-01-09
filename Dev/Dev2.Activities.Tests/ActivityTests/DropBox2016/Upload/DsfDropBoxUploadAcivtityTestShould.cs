@@ -18,19 +18,19 @@ using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 {
     [TestClass]
     public class DsfDropBoxUploadAcivtityTestShould
     {
-        private static DsfDropBoxUploadActivity CreateDropboxActivity()
+        static DsfDropBoxUploadActivity CreateDropboxActivity()
         {
             return new DsfDropBoxUploadActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }
@@ -228,7 +228,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var esbChannel = new Mock<IEsbChannel>().Object;
             var datObj = new Mock<IDSFDataObject>().Object;
             var executionEnvironment = new Mock<IExecutionEnvironment>().Object;
-            // ReSharper disable once RedundantAssignment
+            
             var errorResultTO = new ErrorResultTO();
             dsfDropBoxUploadAcivtityMock.Execute(esbChannel, datObj, String.Empty, String.Empty, out errorResultTO, 0);
             var debugOutputs = dsfDropBoxUploadAcivtityMock.GetDebugOutputs(executionEnvironment, 0);
@@ -252,8 +252,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
-            IDSFDataObject dataObject = datObj.Object;
+            
+            var dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file location has been entered"));
@@ -276,8 +276,8 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             var datObj = new Mock<IDSFDataObject>();
             var executionEnvironment = new Mock<IExecutionEnvironment>();
             datObj.Setup(o => o.Environment).Returns(executionEnvironment.Object);
-            // ReSharper disable once RedundantAssignment
-            IDSFDataObject dataObject = datObj.Object;
+            
+            var dataObject = datObj.Object;
             dsfDropBoxUploadAcivtityMock.Execute(dataObject, 0);
             //---------------Test Result -----------------------
             executionEnvironment.Verify(environment => environment.AddError("Please confirm that the correct file destination has been entered"));
@@ -364,7 +364,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
     public class DsfDropBoxUploadActivityMock : DsfDropBoxUploadActivity
     {
-        private readonly IDropboxClientWrapper _dropboxClientWrapper;
+        readonly IDropboxClientWrapper _dropboxClientWrapper;
 
         public DsfDropBoxUploadActivityMock(IDropboxSingleExecutor<IDropboxResult> singleExecutor, IDropboxClientWrapper dropboxClientWrapper)
             : base(dropboxClientWrapper)
@@ -375,7 +375,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         public void Execute(IEsbChannel esbChannel, IDSFDataObject dataObject, string inputs, string outputs, out ErrorResultTO tmpErrors, int update)
         {
-            //ExecutionImpl(esbChannel, dataObject, inputs, outputs, out tmpErrors, update);
             tmpErrors = new ErrorResultTO();
         }
 
@@ -387,7 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 
         #region Overrides of DsfDropBoxUploadActivity
 
-        // ReSharper disable once RedundantOverridenMember
+        
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             base.ExecuteTool(dataObject, update);
@@ -414,7 +413,6 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                 var dropboxResult = DropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
                 if (IsUplodValidSuccess)
                 {
-                    //FileSuccesResult = GlobalConstants.DropBoxSucces;
                     FileMetadata = ((DropboxUploadSuccessResult)dropboxResult).GerFileMetadata();
                 }
                 else
@@ -426,9 +424,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
             }
             catch (Exception e)
             {
-                //dataObject.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e);
-                //FileSuccesResult = GlobalConstants.DropBoxFailure;
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 Exception = new DropboxFailureResult(new Exception()).GetException();
                 return new List<string> { string.Empty };
             }

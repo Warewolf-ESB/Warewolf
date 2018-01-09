@@ -27,7 +27,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -39,7 +39,7 @@ namespace Dev2.Activities.Designers.Tests.Core
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         [TestMethod]
@@ -52,8 +52,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -82,14 +82,13 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as WcfInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is WcfInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
@@ -105,8 +104,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -121,8 +120,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -139,11 +138,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfWcfEndPointActivity() { SourceId = id };
             var src = new Mock<IWcfServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IWcfServerSource>());
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new WcfInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
@@ -164,8 +163,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IWcfServiceModel>();
             var lst = new ObservableCollection<IWcfServerSource>() { new WcfServiceSourceDefinition() { Name = "bravo" }, new WcfServiceSourceDefinition() { Name = "johnny" } };
             src.Setup(a => a.RetrieveSources()).Returns(lst);
-            WcfSourceRegion sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
-            WcfActionRegion WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
+            var sourceRegion = new WcfSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()));
+            var WcfActionRegion = new WcfActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfWcfEndPointActivity()), sourceRegion);
 
             var region = new WcfInputRegion(ModelItemUtils.CreateModelItem(act), WcfActionRegion);
 
@@ -185,8 +184,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -227,8 +226,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -260,7 +259,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
-        private IWcfAction ValueFunction()
+        IWcfAction ValueFunction()
         {
             return new WcfAction()
             {

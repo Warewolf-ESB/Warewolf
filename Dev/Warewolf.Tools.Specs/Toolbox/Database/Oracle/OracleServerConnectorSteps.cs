@@ -13,6 +13,7 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Threading;
@@ -25,10 +26,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class OracleServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I drag a Oracle Server database connector")]
         public void GivenIDragAOracleServerDatabaseConnector()
@@ -233,7 +234,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test Oracle Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel();
             foreach (var row in table.Rows)
             {
@@ -307,7 +308,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockDatabaseInputViewModel.SetupAllProperties();
-            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var oracleDatabaseDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", oracleDatabaseDesignerViewModel);
             ScenarioContext.Current.Add("mockDatabaseInputViewModel", mockDatabaseInputViewModel);
@@ -354,7 +355,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDatabaseInputViewModel.Setup(model => model.TestAction).Returns(mockAction.Object);
             mockDatabaseInputViewModel.Setup(model => model.OkAction).Returns(mockAction.Object);
 
-            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var oracleServerDesignerViewModel = new OracleDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             oracleServerDesignerViewModel.ManageServiceInputViewModel = mockDatabaseInputViewModel.Object;
 
             AddScenarioContext(oracleServerDesignerViewModel, mockDatabaseInputViewModel, mockDbServiceModel);

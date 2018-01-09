@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,13 +30,13 @@ namespace System.Windows.Automation.Peers
         /// <summary>
         /// The name reported as the core class name.
         /// </summary>
-        private const string AutoCompleteBoxClassNameCore = "AutoCompleteBox";
+        const string AutoCompleteBoxClassNameCore = "AutoCompleteBox";
 
         /// <summary>
         /// Gets the AutoCompleteBox that owns this
         /// AutoCompleteBoxAutomationPeer.
         /// </summary>
-        private AutoCompleteBox OwnerAutoCompleteBox => (AutoCompleteBox)Owner;
+        AutoCompleteBox OwnerAutoCompleteBox => (AutoCompleteBox)Owner;
 
         /// <summary>
         /// Gets a value indicating whether the UI automation provider allows
@@ -104,9 +104,9 @@ namespace System.Windows.Automation.Peers
         public override object GetPattern(PatternInterface patternInterface)
         {
             object iface = null;
-            AutoCompleteBox owner = OwnerAutoCompleteBox;
+            var owner = OwnerAutoCompleteBox;
 
-            if(patternInterface == PatternInterface.Value)
+            if (patternInterface == PatternInterface.Value)
             {
                 iface = this;
             }
@@ -116,16 +116,16 @@ namespace System.Windows.Automation.Peers
             }
             else
             {
-                AutomationPeer peer = owner.SelectionAdapter?.CreateAutomationPeer();
-                if(peer != null)
+                var peer = owner.SelectionAdapter?.CreateAutomationPeer();
+                if (peer != null)
                 {
                     iface = peer.GetPattern(patternInterface);
                 }
             }
 
-            // ReSharper disable ConvertIfStatementToNullCoalescingExpression
+            
             if(iface == null)
-            // ReSharper restore ConvertIfStatementToNullCoalescingExpression
+            
             {
                 iface = base.GetPattern(patternInterface);
             }
@@ -230,24 +230,24 @@ namespace System.Windows.Automation.Peers
         [SuppressMessage("Microsoft.Design", "CA1002:DoNotExposeGenericLists", Justification = "Required by automation")]
         protected override List<AutomationPeer> GetChildrenCore()
         {
-            List<AutomationPeer> children = new List<AutomationPeer>();
-            AutoCompleteBox owner = OwnerAutoCompleteBox;
+            var children = new List<AutomationPeer>();
+            var owner = OwnerAutoCompleteBox;
 
             // TextBox part.
-            TextBox textBox = owner.TextBox;
-            if(textBox != null)
+            var textBox = owner.TextBox;
+            if (textBox != null)
             {
-                AutomationPeer peer = CreatePeerForElement(textBox);
-                if(peer != null)
+                var peer = CreatePeerForElement(textBox);
+                if (peer != null)
                 {
                     children.Insert(0, peer);
                 }
             }
 
             // Include SelectionAdapter's children.
-            AutomationPeer selectionAdapterPeer = owner.SelectionAdapter?.CreateAutomationPeer();
-            List<AutomationPeer> listChildren = selectionAdapterPeer?.GetChildren();
-            if(listChildren != null)
+            var selectionAdapterPeer = owner.SelectionAdapter?.CreateAutomationPeer();
+            var listChildren = selectionAdapterPeer?.GetChildren();
+            if (listChildren != null)
             {
                 children.AddRange(listChildren);
             }
@@ -266,12 +266,11 @@ namespace System.Windows.Automation.Peers
         /// </remarks>
         IRawElementProviderSimple[] ISelectionProvider.GetSelection()
         {
-            object selectedItem = OwnerAutoCompleteBox.SelectionAdapter?.SelectedItem;
-            UIElement uie = selectedItem as UIElement;
-            if(uie != null)
+            var selectedItem = OwnerAutoCompleteBox.SelectionAdapter?.SelectedItem;
+            if (selectedItem is UIElement uie)
             {
-                AutomationPeer peer = CreatePeerForElement(uie);
-                if(peer != null)
+                var peer = CreatePeerForElement(uie);
+                if (peer != null)
                 {
                     return new[] { ProviderFromPeer(peer) };
                 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,15 +14,14 @@ namespace Dev2.Utilities
 {
     public static class FindRecordsDisplayUtil
     {
-        private static Dictionary<string, string> _changedOptions;
+        static Dictionary<string, string> _changedOptions;
 
         public static string ConvertForDisplay(string key)
         {
             InitDictionary();
 
-            string value;
 
-            if(!_changedOptions.TryGetValue(key, out value))
+            if (!_changedOptions.TryGetValue(key, out string value))
             {
                 value = key;
             }
@@ -30,9 +29,9 @@ namespace Dev2.Utilities
             return value;
         }
 
-        private static void InitDictionary()
+        static void InitDictionary()
         {
-            if(_changedOptions == null)
+            if (_changedOptions == null)
             {
                 _changedOptions = new Dictionary<string, string> { { "Equals", "=" }, { "Not Equals", "<> (Not Equal)" }, { "Not Contains", "Doesn't Contain" }, { "Regex", "Is Regex" } };
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class NumberFormatActivityTests : BaseActivityUnitTest
     {
         #region Class Members
@@ -41,9 +41,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion Properties
 
         #region Private Methods
-         //SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
-         //                  "[[resRecordSet().number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
-        private void SetupArguments(string currentDl, string testData, string result, string expression,
+        //SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
+        //                  "[[resRecordSet().number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
+        void SetupArguments(string currentDl, string testData, string result, string expression,
             enRoundingType roundingType, string roundingDecimalPlaces, string decimalPlacesToShow)
         {
             TestStartNode = new FlowStep
@@ -71,13 +71,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
                            "[[res]]", "[[number]]", enRoundingType.Normal, "", "");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "790";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -89,13 +87,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
                            "[[resRecordSet().number]]", "[[recordSet(*).number]]", enRoundingType.Normal, "", "");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            //string expected = "790";
-            IList<string> actual;
-            string error;
-
-            GetRecordSetFieldValueFromDataList(result.Environment, "resRecordSet", "number", out actual, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "resRecordSet", "number", out IList<string> actual, out string error);
 
             // remove test datalist ;)
             var actualVals = actual.Where(s => !string.IsNullOrEmpty(s)).ToList();
@@ -109,13 +103,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
                            "[[res]]", "123.123", enRoundingType.Normal, "2", "1");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "123.1";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             Assert.AreEqual(expected, actual);
         }
@@ -125,13 +117,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
                            "[[res]]", "123.123", enRoundingType.Normal, "", "3");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "123.000";
-            string actual;
-            string error;
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -143,16 +133,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             SetupArguments(ActivityStrings.NumberFormatActivity_DataList_WithData, ActivityStrings.NumberFormatActivity_DataList_Shape,
                            "[[res]]", "123.123", enRoundingType.None, "", "");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "123.123";
-            string actual;
-            string error;
-            string systemError;
 
-            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out systemError, out error);
+            GetScalarValueFromEnvironment(result.Environment, GlobalConstants.ErrorPayload, out string systemError, out string error);
 
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out error);
 
             // remove test datalist ;)
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,12 +24,12 @@ namespace Dev2.Core.Tests.Utils {
 
         #region Locals
 
-        private string _name;
-        private string _value;
-        private string _mapsTo;
-        private string _defaultValue;
-        private bool _required;
-        private string _recordSetName;
+        string _name;
+        string _value;
+        string _mapsTo;
+        string _defaultValue;
+        bool _required;
+        string _recordSetName;
 
         #endregion Locals
 

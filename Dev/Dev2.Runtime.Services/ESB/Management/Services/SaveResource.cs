@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,38 +10,29 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveResource : IEsbManagementEndpoint
     {
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             if (requestArgs != null && requestArgs.Count > 0)
             {
-                StringBuilder resourceDefinition;
-                requestArgs.TryGetValue("ResourceXml", out resourceDefinition);
+                requestArgs.TryGetValue("ResourceXml", out StringBuilder resourceDefinition);
                 if (resourceDefinition != null && resourceDefinition.Length > 0)
                 {
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializer = new Dev2JsonSerializer();
                     resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                     var xml = resourceDefinition.ToXElement();
                     var resource = new Resource(xml);
@@ -55,34 +46,27 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;            
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
-                Dev2Logger.Info("Save Resource Service");
-                StringBuilder resourceDefinition;
+                Dev2Logger.Info("Save Resource Service", GlobalConstants.WarewolfInfo);
 
-                string workspaceIdString = string.Empty;
-                StringBuilder savePathValue;
-                values.TryGetValue("savePath", out savePathValue);
+                var workspaceIdString = string.Empty;
+                values.TryGetValue("savePath", out StringBuilder savePathValue);
                 if (savePathValue == null)
                 {
                     throw new InvalidDataContractException("SavePath is missing");
                 }
-                values.TryGetValue("ResourceXml", out resourceDefinition);
-                StringBuilder tmp;
-                values.TryGetValue("WorkspaceID", out tmp);
+                values.TryGetValue("ResourceXml", out StringBuilder resourceDefinition);
+                values.TryGetValue("WorkspaceID", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     workspaceIdString = tmp.ToString();
                 }
-                Guid workspaceId;
-                if (!Guid.TryParse(workspaceIdString, out workspaceId))
+                if (!Guid.TryParse(workspaceIdString, out Guid workspaceId))
                 {
                     workspaceId = theWorkspace.ID;
                 }
@@ -91,7 +75,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException("ResourceXml is missing");
                 }
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 resourceDefinition = new StringBuilder(serializer.Deserialize<CompressedExecuteMessage>(resourceDefinition).GetDecompressedMessage());
                 var res = new ExecuteMessage { HasError = false };
                 var saveResult = ResourceCatalog.Instance.SaveResource(workspaceId, resourceDefinition, savePathValue.ToString(), "Save");
@@ -105,23 +89,13 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceXml ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
-
-        public string HandlesType()
-        {
-            return "SaveResourceService";
-        }
+        public string HandlesType() => "SaveResourceService";
     }
 }

@@ -2,13 +2,13 @@ using Dev2.Data.Interfaces;
 
 namespace Dev2.Data.Util
 {
-    internal class CommonScalarUtil : ICommonScalarUtil
+    class CommonScalarUtil : ICommonScalarUtil
     {
         #region Implementation of ICommonScalarUtil
 
         public bool IsValueScalar(string value)
         {
-            bool result = false;
+            var result = false;
 
             if (!string.IsNullOrEmpty(value))
             {

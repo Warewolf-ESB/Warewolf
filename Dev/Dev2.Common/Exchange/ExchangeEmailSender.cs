@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,24 +16,19 @@ namespace Dev2.Common.Exchange
 {
     public class ExchangeEmailSender : IExchangeEmailSender
     {
-        private readonly IExchange _source;
-
-        public ExchangeEmailSender()
-        {
-        }
+        readonly IExchange _source;
 
         public ExchangeEmailSender(IExchange source)
         {
             _source = source;
         }
 
-        private void Initialize(ExchangeService service)
+        void Initialize(ExchangeService service)
         {
             service.Credentials = new WebCredentials(_source.UserName, _source.Password);
             service.UseDefaultCredentials = false;
             service.TraceEnabled = false;
             service.TraceFlags = TraceFlags.None;
-
             if (!string.IsNullOrEmpty(_source.AutoDiscoverUrl))
             {
                 service.Url = new Uri(_source.AutoDiscoverUrl);
@@ -44,23 +39,15 @@ namespace Dev2.Common.Exchange
             }
         }
 
-        private static bool RedirectionUrlValidationCallback(string redirectionUrl)
+        static bool RedirectionUrlValidationCallback(string redirectionUrl)
         {
-            var result = false;
-
             var redirectionUri = new Uri(redirectionUrl);
-
-            if (redirectionUri.Scheme == "https")
-            {
-                result = true;
-            }
-            return result;
+            return redirectionUri.Scheme == "https";
         }
 
         public void Send(ExchangeService service, EmailMessage message)
         {
             Initialize(service);
-
             message.Send();
         }
     }

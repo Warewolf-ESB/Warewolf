@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ namespace Dev2.Validation
 {
     public class IsValidCalculateRule : Rule<string>
     {
-        private readonly ISyntaxTreeBuilderHelper _syntaxBuilder;
+        readonly ISyntaxTreeBuilderHelper _syntaxBuilder;
 
         public IsValidCalculateRule(Func<string> getValue)
             : base(getValue)
@@ -33,12 +33,10 @@ namespace Dev2.Validation
         {
             var value = GetValue();
 
-            string calculationExpression;
-            if (DataListUtil.IsCalcEvaluation(value, out calculationExpression))
+            if (DataListUtil.IsCalcEvaluation(value, out string calculationExpression))
             {
                 value = calculationExpression;
-                Token[] tokens;
-                _syntaxBuilder.Build(value, false, out tokens);
+                _syntaxBuilder.Build(value, false, out Token[] tokens);
 
                 if (_syntaxBuilder.EventLog != null && _syntaxBuilder.HasEventLogs)
                 {
@@ -46,7 +44,7 @@ namespace Dev2.Validation
                     return new ActionableErrorInfo(DoError) { Message = "Syntax Error An error occurred while parsing { " + value + " } It appears to be malformed" };
                 }
             }
-            
+
             return null;
         }
     }

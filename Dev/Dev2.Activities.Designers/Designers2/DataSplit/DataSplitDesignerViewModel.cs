@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 {
     public class DataSplitDesignerViewModel : ActivityCollectionDesignerViewModel<DataSplitDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
 
         public DataSplitDesignerViewModel(ModelItem modelItem)
@@ -65,10 +65,10 @@ namespace Dev2.Activities.Designers2.DataSplit
 
         public ICommand SplitTypeUpdatedCommand { get; private set; }
 
-        public bool IsSourceStringFocused { get { return (bool)GetValue(IsSourceStringFocusedProperty); } set { SetValue(IsSourceStringFocusedProperty, value); } }
+        public bool IsSourceStringFocused { get => (bool)GetValue(IsSourceStringFocusedProperty); set => SetValue(IsSourceStringFocusedProperty, value); }
         public static readonly DependencyProperty IsSourceStringFocusedProperty = DependencyProperty.Register("IsSourceStringFocused", typeof(bool), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public string ProcessDirectionGroup { get { return (string)GetValue(ProcessDirectionGroupProperty); } set { SetValue(ProcessDirectionGroupProperty, value); } }
+        public string ProcessDirectionGroup { get => (string)GetValue(ProcessDirectionGroupProperty); set => SetValue(ProcessDirectionGroupProperty, value); }
         public static readonly DependencyProperty ProcessDirectionGroupProperty = DependencyProperty.Register("ProcessDirectionGroup", typeof(string), typeof(DataSplitDesignerViewModel), new PropertyMetadata(default(string)));
 
         string SourceString => GetProperty<string>();
@@ -83,7 +83,7 @@ namespace Dev2.Activities.Designers2.DataSplit
 
             var mi = ModelItemCollection[index];
             var splitType = mi.GetProperty("SplitType") as string;
-            switch(splitType)
+            switch (splitType)
             {
                 case DataSplitDTO.SplitTypeIndex:
                     mi.SetProperty("IsEscapeCharEnabled", false);
@@ -115,14 +115,16 @@ namespace Dev2.Activities.Designers2.DataSplit
                     mi.SetProperty("EnableAt", false);
                     mi.SetProperty("At", string.Empty);
                     break;
+                default:
+                    break;
             }
         }
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            // ReSharper disable LoopCanBeConvertedToQuery  InitialFocusElement
+         
             foreach(var error in GetRuleSet("SourceString").ValidateRules("'String to Split'", () => IsSourceStringFocused = true))
-            // ReSharper restore LoopCanBeConvertedToQuery
+            
             {
                 yield return error;
             }
@@ -137,11 +139,11 @@ namespace Dev2.Activities.Designers2.DataSplit
             }
 
 
-            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
+            foreach(var error in dto.GetRuleSet("OutputVariable", GetDatalistString?.Invoke()).ValidateRules("'Results'", () => mi.SetProperty("IsOutputVariableFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("At", GetDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            foreach(var error in dto.GetRuleSet("At", GetDatalistString?.Invoke()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;
             }
@@ -157,16 +159,21 @@ namespace Dev2.Activities.Designers2.DataSplit
         {
             var ruleSet = new RuleSet();
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "SourceString":
                     if (!string.IsNullOrEmpty(SourceString) && !string.IsNullOrWhiteSpace(SourceString))
                     {
-                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString(), "1");
+                        var inputExprRule = new IsValidExpressionRule(() => SourceString, GetDatalistString?.Invoke(), "1", new VariableUtils());
                         ruleSet.Add(inputExprRule);
                     }
                     else
+                    {
                         ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => SourceString));
+                    }
+
+                    break;
+                default:
                     break;
             }
             return ruleSet;

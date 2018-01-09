@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net;
 using System.Reflection;
@@ -18,14 +17,14 @@ using Dev2.Common;
 using Ionic.Zip;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.Helpers
 {
     public static class FileHelper
     {
         // Used to migrate Dev2 -> Warewolf 
-        private const string NewPath = @"Warewolf\";
-        private const string OldPath = @"Dev2\";
+        const string NewPath = @"Warewolf\";
+        const string OldPath = @"Dev2\";
 
 
         /// <summary>
@@ -44,41 +43,41 @@ namespace Dev2.Studio.Core.Helpers
 
         public static void CreateTextFile(StringBuilder outputTxt, string outputPath)
         {
-            Dev2Logger.Info("");
+            Dev2Logger.Info("", "Warewolf Info");
             EnsurePathIsvalid(outputPath, ".txt");
             var fs = File.Open(outputPath,
                                       FileMode.OpenOrCreate,
                                       FileAccess.Write);
             using (var writer = new StreamWriter(fs, Encoding.UTF8))
             {
-                Dev2Logger.Info("Writing a text file");
+                Dev2Logger.Info("Writing a text file", "Warewolf Info");
                 writer.Write(outputTxt);
             }
         }
 
         public static string GetDebugItemTempFilePath(string uri)
         {
-            Dev2Logger.Info("");
+            Dev2Logger.Info("", "Warewolf Info");
 
             using (var client = new WebClient { Credentials = CredentialCache.DefaultCredentials })
             {
-                string serverLogData = client.UploadString(uri, "");
-                string value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
-                string uniqueOutputPath = GetUniqueOutputPath(".txt");
+                var serverLogData = client.UploadString(uri, "");
+                var value = serverLogData.Replace("<DataList><Dev2System.ManagmentServicePayload>", "").Replace("</Dev2System.ManagmentServicePayload></DataList>", "");
+                var uniqueOutputPath = GetUniqueOutputPath(".txt");
                 CreateTextFile(new StringBuilder(value), uniqueOutputPath);
                 return uniqueOutputPath;
             }
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string CreateATemporaryFile(StringBuilder fileContent, string uniqueOutputPath)
         {
             CreateTextFile(fileContent, uniqueOutputPath);
-            string sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
-            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
+            var sourceDirectoryName = Path.GetDirectoryName(uniqueOutputPath);
+            var fileNameWithoutExtension = Path.GetFileNameWithoutExtension(uniqueOutputPath);
             if (sourceDirectoryName != null)
             {
-                string destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
+                var destinationArchiveFileName = Path.Combine(sourceDirectoryName, fileNameWithoutExtension + ".zip");
                 using (var zip = new ZipFile())
                 {
                     zip.AddFile(uniqueOutputPath, ".");
@@ -131,7 +130,11 @@ namespace Dev2.Studio.Core.Helpers
         {
             var location = Assembly.GetExecutingAssembly().Location;
             var directory = Path.GetDirectoryName(location);
-            if(directory == null) return null;
+            if(directory == null)
+            {
+                return null;
+            }
+
             var path = Path.Combine(directory, uri);
             return path;
         }
@@ -139,10 +142,10 @@ namespace Dev2.Studio.Core.Helpers
         public static void MigrateTempData(string rootPath)
         {
 
-            string fullNewPath = Path.Combine(rootPath, NewPath);
-            string fullOldPath = Path.Combine(rootPath, OldPath);
+            var fullNewPath = Path.Combine(rootPath, NewPath);
+            var fullOldPath = Path.Combine(rootPath, OldPath);
 
-            if(!Directory.Exists(fullOldPath))
+            if (!Directory.Exists(fullOldPath))
             {
                 return;//no old data to migrate
             }

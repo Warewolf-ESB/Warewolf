@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -65,7 +65,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             var action = xml.Descendants("Action").FirstOrDefault();
             if(action == null)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 if (xml.HasAttributes && xml.Attribute("Type").Value == "InvokeWebService")
                 {
                     action = xml;
@@ -78,8 +78,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
             RequestUrl = action.AttributeSafe("RequestUrl");
             JsonPath = action.AttributeSafe("JsonPath");
-            WebRequestMethod requestMethod;
-            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out requestMethod) ? requestMethod : WebRequestMethod.Get;
+            RequestMethod = Enum.TryParse(action.AttributeSafe("RequestMethod"), true, out WebRequestMethod requestMethod) ? requestMethod : WebRequestMethod.Get;
             RequestHeaders = action.ElementSafe("RequestHeaders");
             RequestBody = action.ElementSafe("RequestBody");
 
@@ -218,7 +217,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             }
             catch(JsonException je)
             {
-                Dev2Logger.Error(je);
+                Dev2Logger.Error(je, GlobalConstants.WarewolfError);
             }
         }
 

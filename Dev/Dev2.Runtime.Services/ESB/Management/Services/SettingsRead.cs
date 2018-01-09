@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,13 +12,10 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -26,24 +23,9 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Checks a users permissions on the local file system
-    /// </summary>
-    public class SettingsRead : IEsbManagementEndpoint
+    public class SettingsRead : DefaultEsbManagementEndpoint
     {
-
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             var serializer = new Dev2JsonSerializer();
             var settings = new Settings();
@@ -62,7 +44,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 settings.HasError = true;
                 settings.Error = ErrorResource.ErrorReadingSettingsConfiguration + ex.Message;
                 settings.Security = new SecuritySettingsTO(SecurityRead.DefaultPermissions);
@@ -72,44 +54,14 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(settings);
         }
 
-        protected virtual IEsbManagementEndpoint CreatePerfCounterReadEndPoint()
-        {
-            return new FetchPerformanceCounters();
-        }
+        protected virtual IEsbManagementEndpoint CreatePerfCounterReadEndPoint() => new FetchPerformanceCounters();
 
-        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint()
-        {
-            return new SecurityRead();
-        }
-        
-        protected virtual IEsbManagementEndpoint CreateLoggingSettingsReadEndPoint()
-        {
-            return new LoggingSettingsRead();
-        }
+        protected virtual IEsbManagementEndpoint CreateSecurityReadEndPoint() => new SecurityRead();
 
-        public DynamicService CreateServiceEntry()
-        {
-            var dynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        protected virtual IEsbManagementEndpoint CreateLoggingSettingsReadEndPoint() => new LoggingSettingsRead();
 
-            var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            dynamicService.Actions.Add(serviceAction);
-
-            return dynamicService;
-        }
-
-        public string HandlesType()
-        {
-            return "SettingsReadService";
-        }
+        public override string HandlesType() => "SettingsReadService";
     }
 }

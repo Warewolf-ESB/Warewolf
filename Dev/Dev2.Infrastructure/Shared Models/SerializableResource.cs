@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,9 @@ using Dev2.Common.Interfaces.Security;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Providers.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Data.ServiceModel
-// ReSharper restore CheckNamespace
+
 {
 
     /// <summary>
@@ -27,9 +27,9 @@ namespace Dev2.Data.ServiceModel
         /// <summary>
         /// The resource ID that uniquely identifies the resource.
         /// </summary>
-// ReSharper disable InconsistentNaming
+
         public Guid ResourceID { get; set; }
-// ReSharper restore InconsistentNaming
+
 
         /// <summary>
         /// The display name of the resource.

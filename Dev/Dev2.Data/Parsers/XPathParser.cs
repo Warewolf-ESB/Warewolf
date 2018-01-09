@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ using Dev2.Data.Util;
 using org.xml.sax;
 using Saxon.Api;
 using Warewolf.Resource.Errors;
-// ReSharper disable LoopCanBeConvertedToQuery
+
 
 namespace Dev2.Data.Parsers
 {
@@ -47,21 +47,26 @@ namespace Dev2.Data.Parsers
         public IEnumerable<string> ExecuteXPath(string xmlData, string xPath)
         {
             if (string.IsNullOrEmpty(xmlData))
+            {
                 throw new ArgumentNullException(nameof(xmlData));
+            }
+
             if (string.IsNullOrEmpty(xPath))
+            {
                 throw new ArgumentNullException(nameof(xPath));
+            }
+
             try
             {
-                bool isFragment;
                 var useXmlData = DataListUtil.AdjustForEncodingIssues(xmlData);
-                var isXml = DataListUtil.IsXml(useXmlData, out isFragment);
+                var isXml = DataListUtil.IsXml(useXmlData, out bool isFragment);
 
                 if (!isXml && !isFragment)
                 {
                     throw new Exception("Input XML is not valid.");
                 }
                 List<string> stringList;
-                XmlDocument document = new XmlDocument();
+                var document = new XmlDocument();
                 document.LoadXml(useXmlData);
                 var namespaces = new List<KeyValuePair<string, string>>();
                 if (document.DocumentElement != null)
@@ -83,7 +88,7 @@ namespace Dev2.Data.Parsers
                 }
                 using (TextReader stringReader = new StringReader(useXmlData))
                 {
-                    Processor processor = new Processor(false);
+                    var processor = new Processor(false);
                     var compiler = processor.NewXPathCompiler();
                     compiler.XPathLanguageVersion = "3.0";
                     foreach (var keyValuePair in namespaces)
@@ -111,25 +116,24 @@ namespace Dev2.Data.Parsers
                     throw new Exception(ErrorResource.XPathProvidedNotValid);
                 }
 
-                Dev2Logger.Error(exception);
+                Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
                 throw;
             }
         }
 
-        private static List<string> BuildListFromXPathResult(IEnumerator list)
+        static List<string> BuildListFromXPathResult(IEnumerator list)
         {
-            List<string> stringList = new List<string>();
+            var stringList = new List<string>();
             while (list.MoveNext())
             {
                 var current = list.Current;
-                var realElm = current as XdmNode;
-                if(realElm != null)
+                if (current is XdmNode realElm)
                 {
-                    if(realElm.NodeKind == XmlNodeType.Attribute)
+                    if (realElm.NodeKind == XmlNodeType.Attribute)
                     {
                         stringList.Add(realElm.StringValue);
                     }
-                    else if(realElm.NodeKind == XmlNodeType.Element)
+                    else if (realElm.NodeKind == XmlNodeType.Element)
 
                     {
                         var xElement = XElement.Parse(current.ToString());

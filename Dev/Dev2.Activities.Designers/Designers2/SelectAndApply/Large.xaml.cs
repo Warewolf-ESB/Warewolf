@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,8 +24,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        SelectAndApplyDesignerViewModel ViewModel => DataContext as SelectAndApplyDesignerViewModel;
-
         void DoDrop(object sender, DragEventArgs e)
         {
             if (_dropEnabledActivityDesignerUtils != null)
@@ -39,9 +37,6 @@ namespace Dev2.Activities.Designers2.SelectAndApply
             }
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

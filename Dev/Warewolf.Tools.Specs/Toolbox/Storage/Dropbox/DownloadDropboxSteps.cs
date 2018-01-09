@@ -23,11 +23,15 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class DownloadDropboxSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DownloadDropboxSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -151,7 +155,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New DropboxDownload Source window is opened")]
         public void ThenTheReadNewDropboxSourceWindowIsOpened()
         {
-            Mock<IEventAggregator> eventAggregator = GetEventAggregator();
+            var eventAggregator = GetEventAggregator();
             eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));        
         }
 
@@ -166,7 +170,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenDropboxDownloadTheDropboxSourceWindowIsOpened(string sourceName)
         {
             if (sourceName == "Drop")
+            {
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+            }
         }
 
 

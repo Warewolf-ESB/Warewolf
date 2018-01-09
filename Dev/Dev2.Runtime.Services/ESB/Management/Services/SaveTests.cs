@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -12,27 +11,22 @@ using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class SaveTests : IEsbManagementEndpoint
     {
-        private ITestCatalog _testCatalog;
-        private IResourceCatalog _resourceCatalog;
+        ITestCatalog _testCatalog;
+        IResourceCatalog _resourceCatalog;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("resourceID", out tmp);
+            requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -48,29 +42,25 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Tests Service");
-                StringBuilder testDefinitionMessage;
-                StringBuilder resourceIdString;
-                StringBuilder resourcePathString;
-                values.TryGetValue("resourceID", out resourceIdString);
+                Dev2Logger.Info("Save Tests Service", GlobalConstants.WarewolfInfo);
+                values.TryGetValue("resourceID", out StringBuilder resourceIdString);
                 if (resourceIdString == null)
                 {
                     throw new InvalidDataContractException("resourceID is missing");
                 }
-                Guid resourceId;
-                if (!Guid.TryParse(resourceIdString.ToString(), out resourceId))
+                if (!Guid.TryParse(resourceIdString.ToString(), out Guid resourceId))
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                values.TryGetValue("resourcePath", out resourcePathString);
+                values.TryGetValue("resourcePath", out StringBuilder resourcePathString);
                 if (resourcePathString == null)
                 {
                     throw new InvalidDataContractException("resourcePath is missing");
                 }
-                values.TryGetValue("testDefinitions", out testDefinitionMessage);
+                values.TryGetValue("testDefinitions", out StringBuilder testDefinitionMessage);
                 if (testDefinitionMessage == null || testDefinitionMessage.Length == 0)
                 {
                     throw new InvalidDataContractException("testDefinition is missing");
@@ -114,7 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 var res = new ExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
@@ -146,8 +136,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService { Name = HandlesType() };
+            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

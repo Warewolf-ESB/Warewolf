@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,13 +18,9 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
 
 namespace Dev2.Core.Tests
 {
-    /// <summary>
-    /// Summary description for DeployServiceTest
-    /// </summary>
     [TestClass]
     public class DeployServiceTest
     {
@@ -183,6 +179,5 @@ namespace Dev2.Core.Tests
         }
 
         #endregion
-
     }
 }

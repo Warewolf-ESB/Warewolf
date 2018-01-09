@@ -27,7 +27,7 @@ namespace Dev2.Activities.Scripting
     /// Activity used for executing JavaScript through a tool
     /// </summary>
     [ToolDescriptorInfo("Scripting-JavaScript", "JavaScript", ToolType.Native, "B857B914-216D-49A2-83D3-225EC622FB47", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Scripting", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Javascript")]
-    public class DsfJavascriptActivity : DsfActivityAbstract<string>
+    public class DsfJavascriptActivity : DsfActivityAbstract<string>,IEquatable<DsfJavascriptActivity>
     {
         public DsfJavascriptActivity()
             : base("JavaScript")
@@ -68,7 +68,7 @@ namespace Dev2.Activities.Scripting
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -76,8 +76,8 @@ namespace Dev2.Activities.Scripting
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             AddScriptSourcePathsToList();
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             var env = dataObject.Environment;
             InitializeDebug(dataObject);
@@ -122,14 +122,7 @@ namespace Dev2.Activities.Scripting
             }
             catch (Exception e) when (e is NullReferenceException || e is RuntimeBinderException)
             {
-                if (e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException))
-                {
-                    allErrors.AddError(ErrorResource.ScriptingErrorReturningValue);
-                }
-                else
-                {
-                    allErrors.AddError(e.Message.Replace(" for main:Object", string.Empty));
-                }
+                allErrors.AddError(e.GetType() == typeof(NullReferenceException) || e.GetType() == typeof(RuntimeBinderException) ? ErrorResource.ScriptingErrorReturningValue : e.Message.Replace(" for main:Object", string.Empty));
             }
             finally
             {
@@ -152,10 +145,12 @@ namespace Dev2.Activities.Scripting
                 }
             }
         }
-        private void AddScriptSourcePathsToList()
+        void AddScriptSourcePathsToList()
         {
             if (!string.IsNullOrEmpty(IncludeFile))
+            {
                 _sources.AddPaths(IncludeFile);
+            }
         }
         public override void UpdateForEachInputs(IList<Tuple<string, string>> updates)
         {
@@ -220,5 +215,41 @@ namespace Dev2.Activities.Scripting
         }
 
         #endregion GetForEachInputs/Outputs
+
+        public bool Equals(DsfJavascriptActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Script, other.Script)
+                && ScriptType == other.ScriptType
+                && EscapeScript == other.EscapeScript 
+                && string.Equals(Result, other.Result) 
+                && string.Equals(IncludeFile, other.IncludeFile);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfJavascriptActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_sources != null ? _sources.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Script != null ? Script.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) ScriptType;
+                hashCode = (hashCode * 397) ^ EscapeScript.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (IncludeFile != null ? IncludeFile.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

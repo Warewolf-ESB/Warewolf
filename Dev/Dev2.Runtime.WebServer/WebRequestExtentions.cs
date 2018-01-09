@@ -5,7 +5,7 @@ using Dev2.Runtime.WebServer.TransferObjects;
 
 namespace Dev2.Runtime.WebServer
 {
-    internal static class WebRequestExtentions
+    static class WebRequestExtentions
     {
         public static void BindRequestVariablesToDataObject( this WebRequestTO request, ref IDSFDataObject dataObject)
         {
@@ -18,8 +18,7 @@ namespace Dev2.Runtime.WebServer
 
                 if (!string.IsNullOrEmpty(request.InstanceID))
                 {
-                    Guid tmpId;
-                    if (Guid.TryParse(request.InstanceID, out tmpId))
+                    if (Guid.TryParse(request.InstanceID, out Guid tmpId))
                     {
                         dataObject.WorkflowInstanceId = tmpId;
                     }
@@ -47,7 +46,9 @@ namespace Dev2.Runtime.WebServer
             {
                 var pathStartIndex = webServerUrl.IndexOf("public/", StringComparison.InvariantCultureIgnoreCase);
                 path = webServerUrl.Substring(pathStartIndex)
+                                   .Replace("/.tests.trx", "")
                                    .Replace("/.tests", "")
+                                   .Replace("/.tests.trx", "")
                                    .Replace("public", "")
                                    .Replace("Public", "")
                                    .TrimStart('/')
@@ -57,19 +58,15 @@ namespace Dev2.Runtime.WebServer
             {
                 var pathStartIndex = webServerUrl.IndexOf("secure/", StringComparison.InvariantCultureIgnoreCase);
                 path = webServerUrl.Substring(pathStartIndex)
+                                    .Replace("/.tests.trx", "")
                                     .Replace("/.tests", "")
+                                    .Replace("/.tests.trx", "")
                                     .Replace("secure", "")
                                     .Replace("Secure", "")
                                     .TrimStart('/')
                                     .TrimEnd('/');
             }
             return path.Replace("/", "\\");
-        }
-
-        public static bool IsRunAllTestsRequest( this WebRequestTO webRequest, string serviceName)
-        {
-            var isRunAllTestsRequest = !string.IsNullOrEmpty(serviceName) && serviceName == "*" && webRequest.WebServerUrl.EndsWith("/.tests", StringComparison.InvariantCultureIgnoreCase);
-            return isRunAllTestsRequest;
         }
     }
 }

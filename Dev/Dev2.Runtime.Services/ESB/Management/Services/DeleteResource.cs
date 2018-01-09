@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,27 +10,24 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class DeleteResource : IEsbManagementEndpoint
     {
-        private readonly IResourceCatalog _resourceCatalog;
-        private readonly ITestCatalog _testCatalog;
+        readonly IResourceCatalog _resourceCatalog;
+        readonly ITestCatalog _testCatalog;
 
         public DeleteResource(IResourceCatalog resourceCatalog, ITestCatalog testCatalog)
         {
@@ -47,12 +44,10 @@ namespace Dev2.Runtime.ESB.Management.Services
         IResourceCatalog MyResourceCatalog => _resourceCatalog ?? ResourceCatalog.Instance;
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("ResourceID", out tmp);
+            requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -61,26 +56,22 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 string type = null;
 
-                StringBuilder tmp;
-                values.TryGetValue("ResourceID", out tmp);
-                Guid resourceId = Guid.Empty;
+                values.TryGetValue("ResourceID", out StringBuilder tmp);
+                var resourceId = Guid.Empty;
                 if (tmp != null)
                 {
                     if (!Guid.TryParse(tmp.ToString(), out resourceId))
                     {
-                        Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:");
+                        Dev2Logger.Info("Delete Resource Service. Invalid Parameter Guid:", GlobalConstants.WarewolfInfo);
                         var failureResult = new ExecuteMessage { HasError = true };
                         failureResult.SetMessage("Invalid guid passed for ResourceID");
                         return serializer.SerializeToBuilder(failureResult);
@@ -91,7 +82,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     type = tmp.ToString();
                 }
-                Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId);
+                Dev2Logger.Info("Delete Resource Service. Resource:" + resourceId, GlobalConstants.WarewolfInfo);
 
                 var msg = MyResourceCatalog.DeleteResource(theWorkspace.ID, resourceId, type);
                 if (theWorkspace.ID == GlobalConstants.ServerWorkspaceID)
@@ -113,29 +104,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public string HandlesType()
-        {
-            return "DeleteResourceService";
-        }
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public DynamicService CreateServiceEntry()
-        {
-            var deleteResourceService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var deleteResourceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            deleteResourceService.Actions.Add(deleteResourceAction);
-
-            return deleteResourceService;
-        }
+        public string HandlesType() => "DeleteResourceService";
     }
 }

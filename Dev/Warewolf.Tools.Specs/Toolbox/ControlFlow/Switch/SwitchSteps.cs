@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,12 +23,16 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
     [Binding]
     public class SwitchSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public SwitchSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -48,8 +52,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             var sw = new FlowSwitch<string>();
             sw.Expression = flowSwitch;
             var multiAssign = new DsfMultiAssignActivity();
-            int row = 1;
-            foreach(var variable in variableList)
+            var row = 1;
+            foreach (var variable in variableList)
             {
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;
@@ -67,10 +71,9 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         [Given(@"I need to switch on variable ""(.*)"" with the value ""(.*)""")]
         public void GivenINeedToSwitchOnVariableWithTheValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -83,19 +86,17 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
         public void WhenTheSwitchToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the variable ""(.*)"" will evaluate to ""(.*)""")]
         public void ThenTheVariableWillEvaluateTo(string variable, string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, variable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(expectedResult, actualValue);
         }
     }

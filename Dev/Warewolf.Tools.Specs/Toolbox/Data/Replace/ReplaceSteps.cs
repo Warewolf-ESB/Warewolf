@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,23 +22,26 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
     [Binding]
     public class ReplaceSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ReplaceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
-        private string _inFields = "[[sentence]]";
+        string _inFields = "[[sentence]]";
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -47,21 +50,17 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string find;
-            scenarioContext.TryGetValue("find", out find);
-            string replaceWith;
-            scenarioContext.TryGetValue("replaceWith", out replaceWith);
+            scenarioContext.TryGetValue("find", out string find);
+            scenarioContext.TryGetValue("replaceWith", out string replaceWith);
 
-            string resultVar;
-            scenarioContext.TryGetValue("resultVar", out resultVar);
+            scenarioContext.TryGetValue("resultVar", out string resultVar);
 
             if (string.IsNullOrEmpty(resultVar))
             {
                 resultVar = ResultVariable;
             }
 
-            string sentence;
-            if(scenarioContext.TryGetValue("sentence", out sentence))
+            if (scenarioContext.TryGetValue("sentence", out string sentence))
             {
                 _inFields = sentence;
             }
@@ -97,10 +96,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         [Given(@"I have a replace variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAReplaceVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -124,31 +122,27 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         public void WhenTheReplaceToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the replace result should be ""(.*)""")]
         public void ThenTheReplaceResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(expectedResult, actualValue);
         }
 
         [Then(@"""(.*)"" should be ""(.*)""")]
         public void ThenShouldBe(string variable, string value)
         {
-            string error;
-            string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, variable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(value, actualValue);
         }
     }

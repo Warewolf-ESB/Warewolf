@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,10 +18,10 @@ using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using Unlimited.Framework.Converters.Graph.String.Xml;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Framework.Converters.Graph.String
-// ReSharper restore CheckNamespace
+
 {
     [Serializable]
     public class StringInterrogator : IInterrogator
@@ -75,10 +75,6 @@ namespace Unlimited.Framework.Converters.Graph.String
             {
                 navigator = new PocoNavigator(data);
             }
-            else if( pathType == typeof(StringPath))
-            {
-                navigator = new StringNavigator(data);
-            }
             else
             {
                 navigator = null;
@@ -91,28 +87,28 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         #region Private Methods
 
-        private bool IsXml(string data)
+        bool IsXml(string data)
         {
-            bool result = true;
+            var result = true;
 
             try
             {
-// ReSharper disable ReturnValueOfPureMethodIsNotUsed
+
                 XDocument.Parse(data);
-// ReSharper restore ReturnValueOfPureMethodIsNotUsed
+
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 result = false;
             }
 
             return result;
         }
 
-        private bool IsJson(string data)
+        bool IsJson(string data)
         {
-            bool result = true;
+            var result = true;
 
             try
             {
@@ -120,7 +116,7 @@ namespace Unlimited.Framework.Converters.Graph.String
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ex);
+                Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 result = false;
             }
 

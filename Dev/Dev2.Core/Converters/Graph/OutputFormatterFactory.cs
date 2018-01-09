@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,20 +13,13 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Unlimited.Framework.Converters.Graph
 {
-    public class OutputFormatterFactory
+    public static class OutputFormatterFactory
     {
         public static IOutputFormatter CreateOutputFormatter(IOutputDescription outputDescription)
         {
             IOutputFormatter outputFormatter;
 
-            if (outputDescription.Format == OutputFormats.ShapedXML)
-            {
-                outputFormatter = new ShapedXmlOutputFormatter(outputDescription);
-            }
-            else
-            {
-                outputFormatter = null;
-            }
+            outputFormatter = outputDescription.Format == OutputFormats.ShapedXML ? new ShapedXmlOutputFormatter(outputDescription) : null;
 
             return outputFormatter;
         }
@@ -35,14 +28,7 @@ namespace Unlimited.Framework.Converters.Graph
         {
             IOutputFormatter outputFormatter;
 
-            if (outputDescription.Format == OutputFormats.ShapedXML)
-            {
-                outputFormatter = new ShapedXmlOutputFormatter(outputDescription, rootNodeName);
-            }
-            else
-            {
-                outputFormatter = null;
-            }
+            outputFormatter = outputDescription.Format == OutputFormats.ShapedXML ? new ShapedXmlOutputFormatter(outputDescription, rootNodeName) : null;
 
             return outputFormatter;
         }

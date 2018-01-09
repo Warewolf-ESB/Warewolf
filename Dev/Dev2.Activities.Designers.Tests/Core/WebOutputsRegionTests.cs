@@ -12,7 +12,7 @@ using Newtonsoft.Json.Serialization;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //---------------Set up test pack-------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
-            bool wasCalled = false;
+            var wasCalled = false;
             outputsRegion.PropertyChanged += (sender, args) =>
             {
                 wasCalled = true;
@@ -153,7 +153,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             serviceOutputMapping.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "MappedFrom")
+                {
                     outPutsChanged = true;
+                }
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(outputsRegion.Outputs);
@@ -180,7 +182,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             serviceOutputMapping.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "MappedFrom")
+                {
                     outPutsChanged = true;
+                }
             };
             //---------------Assert Precondition----------------
             Assert.IsNotNull(outputsRegion.Outputs);

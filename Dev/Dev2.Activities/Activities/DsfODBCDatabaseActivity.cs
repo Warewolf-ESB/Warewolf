@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
@@ -12,14 +13,14 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Odbc", "ODBC", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EE11", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_ODBC")]
-    public class DsfODBCDatabaseActivity : DsfActivity
+    public class DsfODBCDatabaseActivity : DsfActivity,IEquatable<DsfODBCDatabaseActivity>
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
@@ -43,8 +44,7 @@ namespace Dev2.Activities
                 errors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            if (databaseServiceExecution != null)
+            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
@@ -70,7 +70,7 @@ namespace Dev2.Activities
             {
                 foreach (var serviceInput in Inputs)
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(serviceInput.Value, serviceInput.Name, env, update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -84,7 +84,7 @@ namespace Dev2.Activities
             base.BeforeExecutionStart(dataObject, tmpErrors);
             ServiceExecution = new DatabaseServiceExecution(dataObject);
             var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            databaseServiceExecution.ProcedureName = databaseServiceExecution.ODBCMethod(CommandText);
+            databaseServiceExecution.ProcedureName = databaseServiceExecution.OdbcMethod(CommandText);
 
             ServiceExecution.GetSource(SourceId);
             ServiceExecution.BeforeExecution(tmpErrors);
@@ -99,6 +99,34 @@ namespace Dev2.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
+        }
+
+        public bool Equals(DsfODBCDatabaseActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && (SourceId != null && SourceId.Equals(other.SourceId))
+                && string.Equals(CommandText, other.CommandText);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfODBCDatabaseActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SourceId != null ? SourceId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CommandText != null ? CommandText.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

@@ -5,13 +5,17 @@ namespace Warewolf.Studio.AntiCorruptionLayer
 {
     public class Utils
     {
+        protected Utils()
+        {
+        }
+
         public static string FetchVersionInfo()
         {
             var versionResource = GetFileVersionInfo();
             return versionResource.FileVersion;
         }
 
-        private static FileVersionInfo GetFileVersionInfo()
+        static FileVersionInfo GetFileVersionInfo()
         {
             var asm = Assembly.GetExecutingAssembly();
             var fileName = asm.Location;

@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -19,33 +19,27 @@ using Dev2.Studio.Core.Factories;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
 namespace Dev2.Studio.ViewModels.DataList
 {
     public class DataMappingViewModel : SimpleBaseViewModel, IDataMappingViewModel
     {
-        #region Locals
+        IWebActivity _activity;
 
-        private IWebActivity _activity;
-// ReSharper disable InconsistentNaming
-        public bool _isInitialLoad;
-// ReSharper restore InconsistentNaming
-        private string _activityName;
-        private string _xmlOutput;
+        bool _isInitialLoad;
 
-        private IInputOutputViewModel _currentlySelectedOutput;
-        private IInputOutputViewModel _currentlySelectedInput;
+        string _activityName;
+        string _xmlOutput;
 
-        #endregion Locals
+        IInputOutputViewModel _currentlySelectedOutput;
+        IInputOutputViewModel _currentlySelectedInput;
 
-        #region Imports
-
-        #endregion Imports
-
-        #region Ctor
-        public DataMappingViewModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler = null)
+        public DataMappingViewModel(IWebActivity activity)
+            : this(activity, null)
         {
+        }
 
+        public DataMappingViewModel(IWebActivity activity, NotifyCollectionChangedEventHandler mappingCollectionChangedEventHandler)
+        {
             _activity = activity;
             Inputs = new ObservableCollection<IInputOutputViewModel>();
             Outputs = new ObservableCollection<IInputOutputViewModel>();
@@ -57,13 +51,9 @@ namespace Dev2.Studio.ViewModels.DataList
             }
             Initialize(_activity);
         }
-        #endregion Ctor
 
-        #region Initialize
         internal void Initialize(IWebActivity activity)
         {
-            // -- NEW ;)
-
             Activity = activity;
             ActivityName = activity.ServiceName;
 
@@ -74,7 +64,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 activeDataList = DataListSingleton.DataListAsXmlString;
             }
 
-            ActivityDataMappingBuilder ioBuilder = new ActivityDataMappingBuilder
+            var ioBuilder = new ActivityDataMappingBuilder
             {
                 DataList = activeDataList,
             };
@@ -82,20 +72,14 @@ namespace Dev2.Studio.ViewModels.DataList
             ioBuilder.SetupActivityData(activity);
 
             var mappingData = ioBuilder.Generate();
-
-            // save model data
-            //Outputs = mappingData.Outputs.ToObservableCollection();
             foreach(var ioViewModel in mappingData.Outputs)
             {
                 Outputs.Add(ioViewModel);
             }
-            //Inputs = mappingData.Inputs.ToObservableCollection();
             foreach(var ioViewModel in mappingData.Inputs)
             {
                 Inputs.Add(ioViewModel);
             }
-
-            // update special fields on the model?!
             var toSaveOutputMapping = ioBuilder.SavedOutputMapping;
             var toSaveInputMapping = ioBuilder.SavedInputMapping;
 
@@ -109,15 +93,9 @@ namespace Dev2.Studio.ViewModels.DataList
 
         }
 
-        #endregion Initialize
-
-        #region Bindings
         public string XmlOutput
         {
-            get
-            {
-                return _xmlOutput;
-            }
+            get => _xmlOutput;
             set
             {
                 _xmlOutput = value;
@@ -127,10 +105,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public IWebActivity Activity
         {
-            get
-            {
-                return _activity;
-            }
+            get => _activity;
             set
             {
                 _activity = value;
@@ -140,10 +115,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public bool IsInitialLoad
         {
-            get
-            {
-                return _isInitialLoad;
-            }
+            get => _isInitialLoad;
             set
             {
                 _isInitialLoad = value;
@@ -152,10 +124,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string ActivityName
         {
-            get
-            {
-                return _activityName;
-            }
+            get => _activityName;
             set
             {
                 _activityName = value;
@@ -163,21 +132,13 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        public ObservableCollection<IInputOutputViewModel> Outputs { get; private set; }
+        public ObservableCollection<IInputOutputViewModel> Outputs { get; set; }
 
-        public ObservableCollection<IInputOutputViewModel> Inputs { get; private set; }
-
-        #endregion Bindings
-
-        #region Final Output
-
-        #endregion Final Output
-
-        #region Work Around Till Refactor
+        public ObservableCollection<IInputOutputViewModel> Inputs { get; set; }
 
         public string GetInputString(IList<IInputOutputViewModel> inputData)
         {
-            string inputString = string.Empty;
+            var inputString = string.Empty;
             IList<IDev2Definition> inputs = new List<IDev2Definition>();
             if(inputData.Count != 0)
             {
@@ -192,7 +153,7 @@ namespace Dev2.Studio.ViewModels.DataList
 
         public string GetOutputString(IList<IInputOutputViewModel> outputData)
         {
-            string outputString = string.Empty;
+            var outputString = string.Empty;
             IList<IDev2Definition> outputs = new List<IDev2Definition>();
             if(outputData.Count != 0)
             {
@@ -205,39 +166,24 @@ namespace Dev2.Studio.ViewModels.DataList
             return outputString;
         }
 
-        #endregion Work Around Till Refactor
-
-        #region Get Current Output Item
-
         public IInputOutputViewModel CurrentlySelectedOutput
         {
-            get
-            {
-                return _currentlySelectedOutput;
-            }
+            get => _currentlySelectedOutput;
             set
             {
                 _currentlySelectedOutput = value;
                 OnPropertyChanged("CurrentlySelectedOutput");
             }
         }
-        #endregion Get Current Output Item
-
-        #region Get Current Input Item
 
         public IInputOutputViewModel CurrentlySelectedInput
         {
-            get
-            {
-                return _currentlySelectedInput;
-            }
+            get => _currentlySelectedInput;
             set
             {
                 _currentlySelectedInput = value;
                 OnPropertyChanged("CurrentlySelectedInput");
             }
         }
-        #endregion Get Current Input Item
-
     }
 }

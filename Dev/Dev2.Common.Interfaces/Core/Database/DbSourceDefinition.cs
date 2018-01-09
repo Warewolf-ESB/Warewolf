@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Runtime.ServiceModel.Data;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Common.Interfaces.Core
 {
 

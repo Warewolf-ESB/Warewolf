@@ -16,8 +16,7 @@ namespace Warewolf.Studio.CustomControls
 
             try
             {
-                var xamDataTreeNodeControl = values[0] as XamDataTreeNodeControl;
-                if(xamDataTreeNodeControl != null)
+                if (values[0] is XamDataTreeNodeControl xamDataTreeNodeControl)
                 {
                     return (double)values[1] - xamDataTreeNodeControl.Node.Manager.Level * 21 - 62;
                 }
@@ -34,7 +33,8 @@ namespace Warewolf.Studio.CustomControls
             throw new NotImplementedException();
         }
     }
-    public class ServiceTestWidthConverter : IMultiValueConverter
+
+    public class MergeWidthConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
@@ -59,7 +59,7 @@ namespace Warewolf.Studio.CustomControls
             throw new NotImplementedException();
         }
     }
-    public class ServiceTestHeaderTemplateWidthConverter : IMultiValueConverter
+    public class MergeHeaderTemplateWidthConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

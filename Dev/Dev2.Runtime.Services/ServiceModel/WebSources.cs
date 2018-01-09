@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Text;
 using System.Xml.Linq;
@@ -23,7 +22,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.ServiceModel
 {
     public delegate string WebExecuteString(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null);
@@ -32,10 +31,6 @@ namespace Dev2.Runtime.ServiceModel
     // PBI 5656 - 2013.05.20 - TWR - Created
     public class WebSources : ExceptionManager
     {
-        readonly IResourceCatalog _resourceCatalog;
-
-        #region CTOR
-
         public WebSources()
             : this(ResourceCatalog.Instance)
         {
@@ -47,15 +42,9 @@ namespace Dev2.Runtime.ServiceModel
             {
                 throw new ArgumentNullException(nameof(resourceCatalog));
             }
-            _resourceCatalog = resourceCatalog;
         }
-
-        #endregion
-
-        #region Get
-
         // POST: Service/WebSources/Get
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
         public WebSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new WebSource();
@@ -75,12 +64,8 @@ namespace Dev2.Runtime.ServiceModel
             return result;
         }
 
-        #endregion
-
-        #region Test
-
         // POST: Service/WebSources/Test
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -108,18 +93,13 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        #endregion
-
-        #region CanConnectServer
-
         ValidationResult CanConnectServer(WebSource source)
         {
             try
             {
-                ErrorResultTO errors;
                 return new ValidationResult
                 {
-                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out errors)
+                    Result = Execute(source, WebRequestMethod.Get, source.DefaultQuery, (string)null, true, out ErrorResultTO errors)
                 };
             }
             catch (WebException wex)
@@ -145,17 +125,14 @@ namespace Dev2.Runtime.ServiceModel
             }
         }
 
-        #endregion
-
-        #region Execute
-
-        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers = null)
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
+        public static string Execute(WebSource source, WebRequestMethod method, string relativeUri, string data, bool throwError, out ErrorResultTO errors, string[] headers)
         {
-            EnsureWebClient(source, headers);
+            CreateWebClient(source, headers);
             return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
         }
 
-        private static string GetAddress(WebSource source, string relativeUri)
+        static string GetAddress(WebSource source, string relativeUri)
         {
             if (source == null)
             {
@@ -172,59 +149,26 @@ namespace Dev2.Runtime.ServiceModel
             return $"{source.Address}{relativeUri}";
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
-        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers = null)
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors) => Execute(source, method, relativeUri, data, throwError, out errors, null);
+        public static byte[] Execute(WebSource source, WebRequestMethod method, string relativeUri, byte[] data, bool throwError, out ErrorResultTO errors, string[] headers)
         {
-            EnsureWebClient(source, headers);
-            return Execute(source.Client, GetAddress(source, relativeUri), method, data, throwError, out errors);
+            CreateWebClient(source, headers);
+            return Execute(source.Client, GetAddress(source, relativeUri), method, data, out errors);
         }
 
-        #endregion
+        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, out ErrorResultTO errors)
 
-        #region Execute(client, address, method, data)
-
-        // ReSharper disable UnusedParameter.Local
-        static byte[] Execute(WebClient client, string address, WebRequestMethod method, byte[] data, bool throwError, out ErrorResultTO errors)
-            // ReSharper restore UnusedParameter.Local
         {
             errors = new ErrorResultTO();
-            switch (method)
-            {
-                case WebRequestMethod.Get:
-                    return client.DownloadData(address);
-
-                default:
-                    return client.UploadData(address, method.ToString().ToUpperInvariant(), data);
-            }
+            return method == WebRequestMethod.Get ? client.DownloadData(address) : client.UploadData(address, method.ToString().ToUpperInvariant(), data);
         }
 
         static string Execute(WebClient client, string address, WebRequestMethod method, string data, bool throwError, out ErrorResultTO errors)
         {
-            if (method == WebRequestMethod.Put)
-            {
-                if (data != null)
-                {
-
-                    var deserializeObject = JsonConvert.DeserializeObject(data);
-                    if (deserializeObject != null)
-                    {
-                        client.Headers["Content-Type"] = "application/json";
-                    }
-                }
-
-
-            }
             errors = new ErrorResultTO();
             try
             {
-                switch (method)
-                {
-                    case WebRequestMethod.Get:
-                        return FixResponse(client.DownloadString(address));
-
-                    default:
-                        return FixResponse(client.UploadString(address, method.ToString().ToUpperInvariant(), data));
-                }
+                return method == WebRequestMethod.Get ? client.DownloadString(address) : client.UploadString(address, method.ToString().ToUpperInvariant(), data);
             }
             catch (Exception e)
             {
@@ -244,20 +188,7 @@ namespace Dev2.Runtime.ServiceModel
         }
 
 
-        #endregion
-
-        #region FixResponse
-
-        static string FixResponse(string result)
-        {
-            return result;
-        }
-
-        #endregion
-
-        #region EnsureWebClient
-
-        public static void EnsureWebClient(WebSource source, IEnumerable<string> headers)
+        public static void CreateWebClient(WebSource source, IEnumerable<string> headers)
         {
             if (source != null && source.Client != null)
             {
@@ -288,8 +219,5 @@ namespace Dev2.Runtime.ServiceModel
                 ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls | SecurityProtocolType.Ssl3;
             }
         }
-
-        #endregion
     }
-
 }

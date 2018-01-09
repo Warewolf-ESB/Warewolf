@@ -10,12 +10,32 @@ using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.Models.DataList
 {
-    public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel
+    public class RecordSetItemModel : DataListItemModel, IRecordSetItemModel, IEquatable<RecordSetItemModel>
     {
-        private ObservableCollection<IRecordSetFieldItemModel> _children;
-        private string _searchText;
+        ObservableCollection<IRecordSetFieldItemModel> _children;
+        string _searchText;
 
-        public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", IDataListItemModel parent = null, OptomizedObservableCollection<IRecordSetFieldItemModel> children = null, bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true) 
+        public RecordSetItemModel(string displayname)
+            : this(displayname, enDev2ColumnArgumentDirection.None, "", null, null, false, "", true, true, false, true)
+        {
+        }
+
+        public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection)
+            : this(displayname, dev2ColumnArgumentDirection, "", null, null, false, "", true, true, false, true)
+        {
+        }
+
+        public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible)
+            : this(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisible, false, true)
+        {
+        }
+
+        public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected)
+            : this(displayname, dev2ColumnArgumentDirection, description, parent, children, hasError, errorMessage, isEditable, isVisible, isSelected, true)
+        {
+        }
+
+        public RecordSetItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, IDataListItemModel parent, OptomizedObservableCollection<IRecordSetFieldItemModel> children, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded) 
             : base(displayname, dev2ColumnArgumentDirection, description, hasError, errorMessage, isEditable, isVisible, isSelected, isExpanded)
         {
             Children = children;            
@@ -53,14 +73,7 @@ namespace Dev2.Studio.Core.Models.DataList
                         recordSetFieldItemModel.Filter(searchText);
                     }
                 }
-                if(_children != null && _children.Any(model => model.IsVisible))
-                {
-                    IsVisible = true;
-                }
-                else
-                {
-                    IsVisible = !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
-                }
+                IsVisible = _children != null && _children.Any(model => model.IsVisible) ? true : !string.IsNullOrEmpty(DisplayName) && DisplayName.ToLower().Contains(searchText.ToLower());
             }
             else
             {
@@ -110,11 +123,11 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        private void SetChildInputValues(bool value)
+        void SetChildInputValues(bool value)
         {
-            if(Children != null)
+            if (Children != null)
             {
-                foreach(var dataListItemModel in Children)
+                foreach (var dataListItemModel in Children)
                 {
                     var child = dataListItemModel;
                     if (!string.IsNullOrEmpty(child.DisplayName))
@@ -125,7 +138,7 @@ namespace Dev2.Studio.Core.Models.DataList
             }
         }
 
-        private void SetChildOutputValues(bool value)
+        void SetChildOutputValues(bool value)
         {
             if (Children != null)
             {
@@ -144,7 +157,7 @@ namespace Dev2.Studio.Core.Models.DataList
 
         public override string ValidateName(string name)
         {
-            Dev2DataLanguageParser parser = new Dev2DataLanguageParser();
+            var parser = new Dev2DataLanguageParser();
             if (!string.IsNullOrEmpty(name))
             {
                 name = DataListUtil.RemoveRecordsetBracketsFromValue(name);
@@ -187,5 +200,32 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         #endregion
+
+        public bool Equals(RecordSetItemModel other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(Input, other.Input) && Equals(Output, other.Output)
+                && Equals(_children, other._children);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((RecordSetItemModel) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_children != null ? _children.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_searchText != null ? _searchText.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

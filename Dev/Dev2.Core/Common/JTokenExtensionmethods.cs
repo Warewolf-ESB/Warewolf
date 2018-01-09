@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,10 +31,9 @@ namespace Dev2
 
         public static bool IsEnumerableOfPrimitives(this JToken property)
         {
-            bool returnValue = false;
-            var array = property as JArray;
+            var returnValue = false;
 
-            if (array != null && array.Count > 0)
+            if (property is JArray array && array.Count > 0)
             {
                 returnValue = array[0].IsPrimitive();
             }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Windows;
@@ -17,8 +16,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Xml.Linq;
 using Caliburn.Micro;
-using Dev2.Runtime.Configuration.ComponentModel;
-using Dev2.Runtime.Configuration.Services;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Warewolf.Resource.Errors;
 
@@ -28,17 +25,15 @@ namespace Dev2.Runtime.Configuration.ViewModels
     {
         #region Fields
 
-        private ObservableCollection<string> _errors;
-        private List<SettingsObject> _settingsObjects;
-        private SettingsObject _selectedSettingsObjects;
-        private UserControl _settingsView;
-        private Visibility _errorsVisible;
-        private XElement _initConfigXml;
+        ObservableCollection<string> _errors;
+        UserControl _settingsView;
+        Visibility _errorsVisible;
+        XElement _initConfigXml;
 
-        private RelayCommand _saveCommand;
-        private RelayCommand _cancelCommand;
-        private RelayCommand _clearErrorsCommand;
-        private bool _saveSuccess;
+        RelayCommand _saveCommand;
+        RelayCommand _cancelCommand;
+        RelayCommand _clearErrorsCommand;
+        bool _saveSuccess;
 
         #endregion
 
@@ -49,19 +44,20 @@ namespace Dev2.Runtime.Configuration.ViewModels
             Errors = new ObservableCollection<string>();
             ClearErrors();
 
-            if(!SetConfiguration(configurationXml)) return;
+            if(!SetConfiguration(configurationXml))
+            {
+                return;
+            }
 
             SaveCallback = saveCallback;
             CancelCallback = cancelCallback;
             SettingChangedCallback = settingChangedCallback;
-
-            CommunicationService = new WebCommunicationService();
         }
 
-        private bool SetConfiguration(XElement configurationXml)
+        bool SetConfiguration(XElement configurationXml)
         {
             // Check for null
-            if(configurationXml == null)
+            if (configurationXml == null)
             {
                 SetError("'configurationXML' of the MainViewModel was null.");
                 return false;
@@ -73,20 +69,9 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 Configuration = new Settings.Configuration(configurationXml);
                 Configuration.PropertyChanged += ConfigurationPropertyChanged;
             }
-            catch(Exception)
+            catch (Exception)
             {
                 SetError(string.Format(ErrorResource.ErrorParsingInput, configurationXml));
-                return false;
-            }
-
-            // Try create settings graph
-            try
-            {
-                SettingsObjects = SettingsObject.BuildGraph(Configuration);
-            }
-            catch(Exception)
-            {
-                SetError(string.Format(ErrorResource.ErrorBuildingSettingsGraph, configurationXml));
                 return false;
             }
 
@@ -124,19 +109,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public List<SettingsObject> SettingsObjects
-        {
-            get
-            {
-                return _settingsObjects;
-            }
-            private set
-            {
-                _settingsObjects = value;
-                NotifyOfPropertyChange(() => SettingsObjects);
-            }
-        }
-
         public ObservableCollection<string> Errors
         {
             get
@@ -150,35 +122,15 @@ namespace Dev2.Runtime.Configuration.ViewModels
             }
         }
 
-        public SettingsObject SelectedSettingsObjects
-        {
-            get
-            {
-                return _selectedSettingsObjects;
-            }
-            set
-            {
-                _selectedSettingsObjects = value;
-                NotifyOfPropertyChange(() => SelectedSettingsObjects);
-                UpdateSettingsView(_selectedSettingsObjects);
-            }
-        }
-
         public UserControl SettingsView
         {
             get
             {
                 return _settingsView;
-            }
-            // ReSharper disable UnusedMember.Local
-            private set
-            // ReSharper restore UnusedMember.Local
+            }            
+            private set            
             {
-                if(value == null)
-                {
-                    throw new ArgumentNullException("value");
-                }
-                _settingsView = value;
+                _settingsView = value ?? throw new ArgumentNullException("value");
                 NotifyOfPropertyChange(() => SettingsView);
             }
         }
@@ -212,32 +164,30 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         public Settings.Configuration Configuration { get; private set; }
 
-        public ICommunicationService CommunicationService { get; set; }
-
         #endregion
 
         #region Private Properties
 
-        private Func<XElement, XElement> SaveCallback { get; set; }
-        private System.Action CancelCallback { get; set; }
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
-        private System.Action SettingChangedCallback { get; set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        Func<XElement, XElement> SaveCallback { get; set; }
+        System.Action CancelCallback { get; set; }
+
+        System.Action SettingChangedCallback { get; set; }
+
 
         #endregion
 
         #region Private Methods
 
-        private void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch(e.PropertyName)
+            switch (e.PropertyName)
             {
                 case "HasChanges":
                     CommandManager.InvalidateRequerySuggested();
                     SaveCommand.RaiseCanExecuteChanged();
                     CancelCommand.RaiseCanExecuteChanged();
                     ClearErrorsCommand.RaiseCanExecuteChanged();
-                    if(Configuration.HasChanges)
+                    if (Configuration.HasChanges)
                     {
                         SaveSuccess = false;
                     }
@@ -248,35 +198,37 @@ namespace Dev2.Runtime.Configuration.ViewModels
                     CancelCommand.RaiseCanExecuteChanged();
                     ClearErrorsCommand.RaiseCanExecuteChanged();
                     break;
+                default:
+                    break;
             }
         }
 
-        private bool CanSaveConfig()
+        bool CanSaveConfig()
         {
             return Configuration.HasChanges && !Configuration.HasError;
         }
 
-        private bool CanCancel()
+        bool CanCancel()
         {
             return Configuration.HasChanges;
         }
 
-        private void Save()
+        void Save()
         {
             SaveSuccess = false;
 
-            if(SaveCallback == null)
+            if (SaveCallback == null)
             {
                 return;
             }
 
             try
             {
-                XElement newConfig = SaveCallback(Configuration.ToXml());
+                var newConfig = SaveCallback(Configuration.ToXml());
                 SetConfiguration(newConfig);
                 SaveSuccess = true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SaveSuccess = false;
                 SetError(string.Format(ErrorResource.ErrorDuringSaveCallback, ex.Message));
@@ -284,11 +236,11 @@ namespace Dev2.Runtime.Configuration.ViewModels
 
         }
 
-        private void Cancel()
+        void Cancel()
         {
             SaveSuccess = false;
 
-            if(CancelCallback == null)
+            if (CancelCallback == null)
             {
                 return;
             }
@@ -298,55 +250,24 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 CancelCallback();
                 SetConfiguration(_initConfigXml);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 SetError(string.Format(ErrorResource.ErrorDuringCancelCallback, ex.Message));
             }
         }
 
-        private void ClearErrors()
+        void ClearErrors()
         {
             Errors.Clear();
             ErrorsVisible = Visibility.Collapsed;
         }
 
-        private void SetError(string error)
+        void SetError(string error)
         {
             Errors.Add(error);
             ErrorsVisible = Errors.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
         }
-
-        private void UpdateSettingsView(SettingsObject settingsObject)
-        {
-            if(!settingsObject.IsSelected)
-            {
-                settingsObject.IsSelected = true;
-            }
-
-            // Instantiate view model
-            var vm = CreateViewModel(settingsObject.ViewModel, settingsObject.Object);
-            Items.Add(vm);
-            ActivateItem(vm);
-        }
-
-        private SettingsViewModelBase CreateViewModel(Type viewModelType, object Object)
-        {
-            SettingsViewModelBase viewModel = null;
-            try
-            {
-                viewModel = Activator.CreateInstance(viewModelType) as SettingsViewModelBase;
-            }
-            finally
-            {
-                if(viewModel != null)
-                {
-                    viewModel.CommunicationService = CommunicationService;
-                    viewModel.Object = Object;
-                }
-            }
-
-            return viewModel;
-        }
+        
         #endregion
     }
 }

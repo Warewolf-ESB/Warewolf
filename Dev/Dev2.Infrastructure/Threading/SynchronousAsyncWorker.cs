@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,14 +10,13 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces.Threading;
 
 namespace Dev2.Threading
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class SynchronousAsyncWorker : IAsyncWorker
     {
         public Task Start(Action backgroundAction, Action uiAction)
@@ -51,7 +50,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                     
                 }
             });
@@ -59,18 +58,8 @@ namespace Dev2.Threading
             return task;
         }
 
-        public readonly List<Exception> Exceptions = new List<Exception>();
-        /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
-        /// </summary>
-        /// <param name="backgroundAction">The background action.</param>
-        /// <param name="uiAction">The UI action.</param>
-        /// <param name="cancellationTokenSource">Allows the task to be cancelled.</param>
-        /// <param name="onError"></param>
-        /// <returns></returns>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/08/08</date>
+        internal readonly List<Exception> Exceptions = new List<Exception>();
+
         public Task Start(Action backgroundAction, Action uiAction, CancellationTokenSource cancellationTokenSource, Action<Exception> onError)
         {
             var task = new Task(() =>
@@ -86,22 +75,14 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                   
                 }
             }, cancellationTokenSource.Token);
             task.RunSynchronously();
             return task;
         }
-
-        /// <summary>
-        /// Starts the specified background action and continues with the UI action 
-        /// on the thread this was invoked from (typically the UI thread).
-        /// </summary>
-        /// <param name="backgroundAction">The background action.</param>
-        /// <returns></returns>
-        /// <author>Trevor.Williams-Ros</author>
-        /// <date>2013/08/08</date>
+        
         public Task Start(Action backgroundAction)
         {
             var task = new Task(backgroundAction.Invoke);
@@ -142,7 +123,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                    
                 }
             });
@@ -176,7 +157,7 @@ namespace Dev2.Threading
                 catch (Exception e)
                 {
                     Exceptions.Add(e);
-                    onError(e);
+                    onError?.Invoke(e);
                   
                 }
             }, cancellationTokenSource.Token);

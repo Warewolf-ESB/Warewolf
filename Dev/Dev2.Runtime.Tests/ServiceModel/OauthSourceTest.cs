@@ -2,7 +2,7 @@
 using Dev2.Data.ServiceModel;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Security.Encryption;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {

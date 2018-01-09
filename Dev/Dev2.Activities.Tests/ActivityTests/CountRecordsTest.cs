@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -40,11 +40,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = @"5";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -59,11 +57,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetupArguments("<root><ADL><TestCountvar/></ADL></root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[TestCountvar]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "TestCountvar", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -80,13 +76,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void CountOutputToRecset()
         {
             SetupArguments("<root>" + ActivityStrings.CountRecordsDataListShape + "</root>", "<root><recset1><field1/></recset1><TestCountvar/></root>", "[[recset1()]]", "[[recset1().field1]]");
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "5";
-            IList<string> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actual, out error);
-            string actualSet = actual.First(c =>  !string.IsNullOrEmpty(c));
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> actual, out string error);
+            var actualSet = actual.First(c =>  !string.IsNullOrEmpty(c));
 
             // remove test datalist ;)
 
@@ -247,12 +241,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "", "[[res]]");
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
             const string Expected = @"";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
             Assert.AreEqual(Expected, actual);
         }
@@ -265,12 +257,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1().field1]]", "[[res]]");
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
             const string Expected = @"";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
             Assert.AreEqual(Expected, actual);
         }
@@ -283,12 +273,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1()]][[recset1()]]", "[[res]]");
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
             const string Expected = @"";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
             Assert.AreEqual(Expected, actual);
         }
@@ -301,12 +289,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             SetupArguments(ActivityStrings.DeleteRecordsDataListWithData, ActivityStrings.DeleteRecordsDataListShape, "[[recset1]]", "[[res]]");
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             //------------Assert Results-------------------------
             const string Expected = @"";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "res", out string actual, out string error);
             // remove test datalist ;)
             Assert.AreEqual(Expected, actual);
         }
@@ -314,7 +300,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string recordSetName, string countNumber)
+        void SetupArguments(string currentDL, string testData, string recordSetName, string countNumber)
         {
             TestStartNode = new FlowStep
             {

@@ -12,19 +12,21 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class GetApisJsonServiceHandler : AbstractWebRequestHandler
     {
-        private static IAuthorizationService _authorizationService;
-        private static IResourceCatalog _resourceCatalog;
+        static IAuthorizationService _authorizationService;
+        static IResourceCatalog _resourceCatalog;
 
         public GetApisJsonServiceHandler()
             : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
         {
         }
 
+#pragma warning disable S3010 // Used by tests for constructor injection
         public GetApisJsonServiceHandler(IResourceCatalog catalog, IAuthorizationService auth)
         {
             _resourceCatalog = catalog;
             _authorizationService = auth;
         }
+#pragma warning restore S3010
       
         public override void ProcessRequest(ICommunicationContext ctx)
         {
@@ -33,8 +35,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 throw new ArgumentNullException("ctx");
             }
             var basePath = ctx.Request.BoundVariables["path"];
-            bool isPublic;
-            if (!bool.TryParse(ctx.Request.BoundVariables["isPublic"], out isPublic))
+            if (!bool.TryParse(ctx.Request.BoundVariables["isPublic"], out bool isPublic))
             {
                 isPublic = false;
             }
@@ -44,11 +45,11 @@ namespace Dev2.Runtime.WebServer.Handlers
         }
 
         static IResponseWriter GetApisJson(string basePath,bool isPublic)
-        {            
+        {
             var apiBuilder = new ApisJsonBuilder(_authorizationService, _resourceCatalog);
             var apis = apiBuilder.BuildForPath(basePath, isPublic);
             var converter = new JsonSerializer();
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
             var jsonTextWriter = new JsonTextWriter(new StringWriter(result)) { Formatting = Formatting.Indented };
             converter.Serialize(jsonTextWriter, apis);
             jsonTextWriter.Flush();

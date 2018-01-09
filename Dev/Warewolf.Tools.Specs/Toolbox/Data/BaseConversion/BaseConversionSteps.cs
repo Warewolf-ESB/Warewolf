@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,12 +22,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
     [Binding]
     public class BaseConversionSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public BaseConversionSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -42,7 +46,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
                     Action = baseConvert
                 };
 
-            int row = 1;
+            var row = 1;
 
             var baseCollection = scenarioContext.Get<List<Tuple<string, string, string>>>("baseCollection");
 
@@ -58,10 +62,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         [Given(@"I have a convert variable ""(.*)"" with a value of ""(.*)""")]
         public void GivenIHaveAConvertVariableWithAValueOf(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -73,10 +76,9 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         [Given(@"I convert a variable ""(.*)"" from type ""(.*)"" to type ""(.*)""")]
         public void GivenIConvertAVariableFromTypeToType(string variable, string fromType, string toType)
         {
-            List<Tuple<string, string, string>> baseCollection;
-            scenarioContext.TryGetValue("baseCollection", out baseCollection);
+            scenarioContext.TryGetValue("baseCollection", out List<Tuple<string, string, string>> baseCollection);
 
-            if(baseCollection == null)
+            if (baseCollection == null)
             {
                 baseCollection = new List<Tuple<string, string, string>>();
                 scenarioContext.Add("baseCollection", baseCollection);
@@ -89,18 +91,16 @@ namespace Dev2.Activities.Specs.Toolbox.Data.BaseConversion
         public void WhenTheBaseConversionToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the result is ""(.*)""")]
         public void ThenTheResultIs(string value)
         {
-            string error;
-            string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment, "[[var]]", out actualValue, out error);
+            GetScalarValueFromEnvironment(result.Environment, "[[var]]", out string actualValue, out string error);
             if (string.IsNullOrEmpty(value))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

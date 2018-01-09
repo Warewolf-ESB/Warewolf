@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,9 +13,9 @@ using System.Collections.Generic;
 
 namespace Dev2.Services.Security
 {
-    // ReSharper disable InconsistentNaming
+    
     public class SecuritySettingsTO
-        // ReSharper restore InconsistentNaming
+
     {
         public SecuritySettingsTO()
         {

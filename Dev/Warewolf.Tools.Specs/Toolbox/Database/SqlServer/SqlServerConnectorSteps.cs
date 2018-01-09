@@ -4,16 +4,15 @@ using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
+using Dev2.Activities.Designers2.Core;
 using Dev2.Activities.Designers2.SqlServerDatabase;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
-using Dev2.Studio.Interfaces.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -25,10 +24,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class SQLServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()
@@ -56,7 +55,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             var dbSources = new ObservableCollection<IDbSource> { _greenPointSource };
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockServiceInputViewModel.SetupAllProperties();
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
@@ -163,7 +162,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
-            int rowNum = 0;
+            var rowNum = 0;
             foreach (var row in table.Rows)
             {
                 var inputValue = row["Input"];
@@ -229,7 +228,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.RetrieveSources()).Returns(dbSources);
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("mockServiceInputViewModel", mockServiceInputViewModel);
@@ -298,7 +297,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test Sql Server Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel();
             foreach (var row in table.Rows)
             {
@@ -346,7 +345,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenRecordsetNameEquals(string recsetName)
         {
             if(!string.IsNullOrEmpty(recsetName))
+            {
                 Assert.AreEqual<string>(recsetName, GetViewModel().OutputsRegion.RecordsetName);
+            }
         }
 
         [Given(@"I have a workflow ""(.*)""")]
@@ -409,7 +410,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             mockDbServiceModel.Setup(model => model.GetActions(It.IsAny<IDbSource>())).Returns(new List<IDbAction> { _getCountriesAction, _importOrderAction });
             mockServiceInputViewModel.SetupAllProperties();
 
-            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker());
+            var sqlServerDesignerViewModel = new SqlServerDatabaseDesignerViewModel(modelItem, mockDbServiceModel.Object, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             ScenarioContext.Current.Add("viewModel", sqlServerDesignerViewModel);
             ScenarioContext.Current.Add("privateObject", privateObject);
@@ -439,7 +440,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         {
             var viewModel = GetViewModel().ErrorRegion.Errors;
             if (table != null && viewModel.Count > 0)
+            {
                 Assert.IsTrue(table.Rows[0].Values.ToString() == p0);
+            }
         }
 
         [Then(@"the workflow containing the Sql Server connector has ""(.*)"" execution error")]

@@ -2,7 +2,7 @@
 using Dev2.DynamicServices;
 using Dev2.Runtime.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Hosting
 {

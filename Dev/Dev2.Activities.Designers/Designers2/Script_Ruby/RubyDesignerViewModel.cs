@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,7 +44,6 @@ namespace Dev2.Activities.Designers2.Script_Ruby
 
         public bool EscapeScript { get; private set; }
 
-
         public ICommand ChooseScriptSourceCommand { get; private set; }
 
         public string ScriptTypeDefaultText
@@ -54,7 +53,6 @@ namespace Dev2.Activities.Designers2.Script_Ruby
         }
 
         public static readonly DependencyProperty ScriptTypeTextProperty = DependencyProperty.Register("ScriptTypeDefaultText", typeof(string), typeof(RubyDesignerViewModel), new PropertyMetadata("Ruby Syntax"));
-
 
         public override void Validate()
         {
@@ -67,11 +65,11 @@ namespace Dev2.Activities.Designers2.Script_Ruby
         }
 
         public void ChooseScriptSources()
-        {            
+        {
             var fileChooserMessage = _scriptChooser.ChooseScriptSources(IncludeFile);
             fileChooserMessage.Filter = "rb";
             _eventPublisher.Publish(fileChooserMessage);
+            IncludeFile = string.Join(";", fileChooserMessage.SelectedFiles);
         }
-
     }
 }

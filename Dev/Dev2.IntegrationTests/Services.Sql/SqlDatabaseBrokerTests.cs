@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,22 +15,28 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Runtime.ServiceModel.Esb.Brokers;
+using Dev2.Services.Sql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Security.Claims;
+using System.Security.Principal;
+using System.Threading;
+using Warewolf.Security.Encryption;
+using System.Runtime.InteropServices;
+using System.Runtime.ConstrainedExecution;
+using System.Security;
+using Dev2.Common.Interfaces;
 
 namespace Dev2.Integration.Tests.Services.Sql
 {
     [TestClass]
     public class SqlDatabaseBrokerTests
     {
-        //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithDbAccess_GetsMethods()
-        // ReSharper restore InconsistentNaming
         {
-            Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
+            RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -38,17 +44,13 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Assert.AreEqual(true, result.Count > 0);
             });
         }
-
-        //Ashley.Lewis - 10.05.2013 - Added for Bug 9394
+        
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_WindowsUserWithoutDbAccess_ThrowsLoginFailedException()
-        // ReSharper restore InconsistentNaming
         {
-
-            Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
+            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var broker = new SqlDatabaseBroker();
@@ -68,11 +70,11 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
+        [TestCategory("SqlDatabaseBroker")]
         [ExpectedException(typeof(SqlException))]
-        // ReSharper disable InconsistentNaming
+        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithInvalidUsername_ThrowsLoginFailedException()
-        // ReSharper restore InconsistentNaming
+
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
@@ -84,26 +86,21 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Ashley Lewis")]
-        [TestCategory("SqlDatabaseBroker_GetServiceMethods")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_GetServiceMethods_SqlUserWithValidUsername_GetsMethods()
-        // ReSharper restore InconsistentNaming
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             var broker = new SqlDatabaseBroker();
             var result = broker.GetServiceMethods(dbSource);
             Assert.AreEqual(true, result.Count > 0);
         }
-
-        //Massimo.Guerrera - 10.05.2013 - Added for Bug 9394
+        
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_WindowsUserWithDbAccess_ReturnsValidResult()
-        // ReSharper restore InconsistentNaming
         {
-            Impersonator.RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
+            RunAs("IntegrationTester", "DEV2", "I73573r0", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
                 var serviceConn = new DbService
@@ -124,18 +121,14 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Assert.AreEqual(OutputFormats.ShapedXML, result.Format);
             });
         }
-
-        //Massimo.Guerrera - 10.05.2013 - Added for Bug 9394
+        
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_WindowsUserWithoutDbAccess_ReturnsInvalidResult()
-        // ReSharper restore InconsistentNaming
         {
             Exception exception = null;
-
-            Impersonator.RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
+            RunAs("NoDBAccessTest", "DEV2", "One23456", () =>
             {
                 var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource(AuthenticationType.Windows);
 
@@ -166,19 +159,15 @@ namespace Dev2.Integration.Tests.Services.Sql
                 Assert.IsNotNull(exception);
                 Assert.IsInstanceOfType(exception, typeof(SqlException));
                 Assert.AreEqual("Login failed for user 'DEV2\\NoDBAccessTest'.", exception.Message);
-
             });
-
-
         }
 
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        [ExpectedException(typeof(SqlException))]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]
+        [ExpectedException(typeof(WarewolfDbException))]        
         public void SqlDatabaseBroker_TestService_SqlUserWithInvalidUsername_ReturnsInvalidResult()
-        // ReSharper restore InconsistentNaming
+
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             dbSource.UserID = "Billy.Jane";
@@ -203,10 +192,9 @@ namespace Dev2.Integration.Tests.Services.Sql
 
         [TestMethod]
         [Owner("Massimo.Guerrera")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_SqlUserWithValidUsername_ReturnsValidResult()
-        // ReSharper restore InconsistentNaming
+
         {
             var dbSource = SqlServerTestUtils.CreateDev2TestingDbSource();
             var serviceConn = new DbService
@@ -227,13 +215,10 @@ namespace Dev2.Integration.Tests.Services.Sql
             Assert.AreEqual(OutputFormats.ShapedXML, result.Format);
         }
 
-
         [TestMethod]
         [Owner("Hagashen Naidu")]
-        [TestCategory("SqlDatabaseBroker_TestService")]
-        // ReSharper disable InconsistentNaming
+        [TestCategory("SqlDatabaseBroker")]        
         public void SqlDatabaseBroker_TestService_ValidDbServiceThatReturnsNull_RecordsetWithNullColumn()
-        // ReSharper restore InconsistentNaming
         {
             var service = new DbService
             {
@@ -254,12 +239,144 @@ namespace Dev2.Integration.Tests.Services.Sql
             };
 
             var broker = new SqlDatabaseBroker();
-            IOutputDescription outputDescription = broker.TestService(service);
+            var outputDescription = broker.TestService(service);
             Assert.AreEqual(1, outputDescription.DataSourceShapes.Count);
-            IDataSourceShape dataSourceShape = outputDescription.DataSourceShapes[0];
+            var dataSourceShape = outputDescription.DataSourceShapes[0];
             Assert.IsNotNull(dataSourceShape);
             Assert.AreEqual(3, dataSourceShape.Paths.Count);
             StringAssert.Contains(dataSourceShape.Paths[2].DisplayPath, "TestTextNull"); //This is the field that contains a null value. Previously this column would not have been returned.
+        }
+
+        public static bool RunAs(string userName, string domain, string password, Action action)
+        {
+            var result = false;
+            using (var impersonator = new Impersonator())
+            {
+                if (impersonator.Impersonate(userName, domain, password))
+                {
+                    action?.Invoke();
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
+        public interface IImpersonator
+        {
+            bool Impersonate(string userName, string domain, string password);
+            void Undo();
+            bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted);
+        }
+
+        public class Impersonator : IDisposable, IImpersonator
+        {
+
+            const int LOGON32_PROVIDER_DEFAULT = 0;
+            const int LOGON32_LOGON_INTERACTIVE = 2;
+
+
+            #region DllImports
+
+            [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+            static extern bool LogonUser(string lpszUsername, string lpszDomain, string lpszPassword, int dwLogonType, int dwLogonProvider, out IntPtr phToken);
+
+            [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+            static extern int DuplicateToken(IntPtr hToken, int impersonationLevel, out IntPtr hNewToken);
+
+            [DllImport("advapi32.dll", SetLastError = true, CharSet = CharSet.Auto)]
+            static extern bool RevertToSelf();
+
+            [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
+            [ReliabilityContract(Consistency.WillNotCorruptState, Cer.Success)]
+            [SuppressUnmanagedCodeSecurity]
+            [return: MarshalAs(UnmanagedType.Bool)]
+            static extern bool CloseHandle(IntPtr handle);
+
+            #endregion
+
+            WindowsImpersonationContext _impersonationContext;
+
+            #region Impersonate
+
+            public bool Impersonate(string userName, string domain, string password)
+            {
+                var token = IntPtr.Zero;
+                var tokenDuplicate = IntPtr.Zero;
+
+                if (RevertToSelf() && LogonUser(userName, domain, password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out token) && DuplicateToken(token, 2, out tokenDuplicate) != 0)
+                {
+                    var tempWindowsIdentity = new WindowsIdentity(tokenDuplicate);
+                    _impersonationContext = tempWindowsIdentity.Impersonate();
+                    if (_impersonationContext != null)
+                    {
+                        ClaimsPrincipal principal = new WindowsPrincipal(tempWindowsIdentity);
+                        Thread.CurrentPrincipal = principal;
+                        CloseHandle(token);
+                        CloseHandle(tokenDuplicate);
+                        return true;
+                    }
+                }
+                if (token != IntPtr.Zero)
+                {
+                    CloseHandle(token);
+                }
+                if (tokenDuplicate != IntPtr.Zero)
+                {
+                    CloseHandle(tokenDuplicate);
+                }
+                return false;
+            }
+
+            #endregion
+
+            #region Undo
+
+            public void Undo()
+            {
+                if (_impersonationContext != null)
+                {
+                    _impersonationContext.Undo();
+                    _impersonationContext.Dispose();
+                }
+            }
+
+            public bool ImpersonateForceDecrypt(string userName, string domain, string decryptIfEncrypted)
+            {
+                return Impersonate(userName, domain, DpapiWrapper.DecryptIfEncrypted(decryptIfEncrypted));
+            }
+
+            #endregion
+
+            #region IDisposable
+
+            ~Impersonator()
+            {
+                Dispose(false);
+            }
+
+            bool _disposed;
+
+            public void Dispose()
+            {
+                Dispose(true);
+                GC.SuppressFinalize(this);
+            }
+
+            protected virtual void Dispose(bool disposing)
+            {
+                if (!_disposed)
+                {
+                    if (disposing)
+                    {
+                        Undo();
+                    }
+
+                    _disposed = true;
+                }
+            }
+
+            #endregion
         }
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
@@ -8,7 +9,7 @@ using Dev2.Validation;
 
 namespace Dev2.TO
 {
-    public class SharepointSearchTo : ValidatedObject, IDev2TOFn
+    public class SharepointSearchTo : ValidatedObject, IDev2TOFn, IEquatable<SharepointSearchTo>
     {
         int _indexNum;
         string _searchType;
@@ -25,11 +26,21 @@ namespace Dev2.TO
         string _internalName;
 
         public SharepointSearchTo()
-            : this("Field Name", "Equal","", 0)
+            : this("Field Name", "Equal", "", 0)
         {
         }
 
-        public SharepointSearchTo(string fieldName,string searchType, string valueToMatch, int indexNum, bool inserted = false, string from = "", string to = "")
+        public SharepointSearchTo(string fieldName, string searchType, string valueToMatch, int indexNum)
+            : this(fieldName, searchType, valueToMatch, indexNum, false, "", "")
+        {
+        }
+
+        public SharepointSearchTo(string fieldName, string searchType, string valueToMatch, int indexNum, bool inserted)
+            : this(fieldName, searchType, valueToMatch, indexNum, inserted, "", "")
+        {
+        }
+
+        public SharepointSearchTo(string fieldName,string searchType, string valueToMatch, int indexNum, bool inserted, string from, string to)
         {
             FieldName = fieldName;
             Inserted = inserted;
@@ -58,7 +69,7 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsFromFocused { get { return _isFromFocused; } set { OnPropertyChanged(ref _isFromFocused, value); } }
+        public bool IsFromFocused { get => _isFromFocused; set => OnPropertyChanged(ref _isFromFocused, value); }
 
         [FindMissing]
         public string To
@@ -75,9 +86,7 @@ namespace Dev2.TO
             }
         }
 
-
-
-        public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
+        public bool IsToFocused { get => _isToFocused; set => OnPropertyChanged(ref _isToFocused, value); }
 
         [FindMissing]
         public string ValueToMatch
@@ -94,7 +103,7 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsSearchCriteriaFocused { get { return _isSearchCriteriaFocused; } set { OnPropertyChanged(ref _isSearchCriteriaFocused, value); } }
+        public bool IsSearchCriteriaFocused { get => _isSearchCriteriaFocused; set => OnPropertyChanged(ref _isSearchCriteriaFocused, value); }
 
         public string SearchType
         {
@@ -113,14 +122,12 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsSearchTypeFocused { get { return _isSearchTypeFocused; } set { OnPropertyChanged(ref _isSearchTypeFocused, value); } }
+        public bool IsSearchTypeFocused { get => _isSearchTypeFocused; set => OnPropertyChanged(ref _isSearchTypeFocused, value); }
 
         void RaiseCanAddRemoveChanged()
-        {
-            // ReSharper disable ExplicitCallerInfoArgument
+        {            
             OnPropertyChanged("CanRemove");
-            OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
+            OnPropertyChanged("CanAdd");            
         }
 
         public bool IsSearchCriteriaEnabled
@@ -186,7 +193,10 @@ namespace Dev2.TO
             }
             set
             {
-                if (value == null) return;
+                if (value == null)
+                {
+                    return;
+                }
 
                 _fieldName = value;
                 OnPropertyChanged();
@@ -202,8 +212,11 @@ namespace Dev2.TO
             }
             set
             {
-                if(value==null) return;
-                
+                if(value==null)
+                {
+                    return;
+                }
+
                 _internalName = value;
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
@@ -218,7 +231,7 @@ namespace Dev2.TO
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -226,21 +239,71 @@ namespace Dev2.TO
             switch (propertyName)
             {
                 case "FieldName":
-                    if(FieldName.Length == 0)
+                    if (FieldName.Length == 0)
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => FieldName));
                     }
-                    break;
+                    return ruleSet;
                 case "ValueToMatch":
-                    if(ValueToMatch.Length == 0)
+                    if (ValueToMatch.Length == 0)
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => ValueToMatch));
                     }
-                    ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1"));
-                    break;
+                    ruleSet.Add(new IsValidExpressionRule(() => ValueToMatch, datalist, "1", new VariableUtils()));
+                    return ruleSet;
+                default:
+                    return ruleSet;
             }
+        }
 
-            return ruleSet;
+        public bool Equals(SharepointSearchTo other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return IndexNumber == other.IndexNumber
+                && string.Equals(SearchType, other.SearchType)
+                && IsSearchCriteriaEnabled == other.IsSearchCriteriaEnabled
+                && IsSearchCriteriaFocused == other.IsSearchCriteriaFocused
+                && IsSearchTypeFocused == other.IsSearchTypeFocused
+                && string.Equals(ValueToMatch, other.ValueToMatch)
+                && string.Equals(From, other.From)
+                && string.Equals(To, other.To)
+                && IsSearchCriteriaVisible == other.IsSearchCriteriaVisible
+                && IsFromFocused == other.IsFromFocused
+                && IsToFocused == other.IsToFocused
+                && string.Equals(FieldName, other.FieldName)
+                && string.Equals(InternalName, other.InternalName)
+                && Inserted == other.Inserted;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointSearchTo)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = IndexNumber;
+                hashCode = (hashCode * 397) ^ (SearchType != null ? SearchType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsSearchCriteriaEnabled.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsSearchCriteriaFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsSearchTypeFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ValueToMatch != null ? ValueToMatch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (From != null ? From.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsSearchCriteriaVisible.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFromFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsToFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldName != null ? FieldName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (InternalName != null ? InternalName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
+                return hashCode;
+            }
         }
     }
 
@@ -265,7 +328,7 @@ namespace Dev2.TO
 
         public static string GetStartTagForSearchOption(string searchOption)
         {
-            switch(searchOption)
+            switch (searchOption)
             {
                 case "Begins With":
                     return "<BeginsWith>";
@@ -285,9 +348,11 @@ namespace Dev2.TO
                     return "<Leq>";
                 case "<>":
                     return "<Neq>";
+                default:
+                    return null;
             }
-            return null;
         }
+
         public static string GetEndTagForSearchOption(string searchOption)
         {
             switch (searchOption)
@@ -310,8 +375,9 @@ namespace Dev2.TO
                     return "</Leq>";
                 case "<>":
                     return "</Neq>";
+                default:
+                    return null;
             }
-            return null;
         }
     }
 }

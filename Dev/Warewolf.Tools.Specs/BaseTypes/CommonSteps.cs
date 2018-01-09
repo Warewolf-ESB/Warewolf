@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,11 +45,15 @@ namespace Dev2.Activities.Specs.BaseTypes
     [Binding]
     public class CommonSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -72,15 +76,15 @@ namespace Dev2.Activities.Specs.BaseTypes
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
-            string fetchErrors = result.Environment.FetchErrors();
-            bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
+            var fetchErrors = result.Environment.FetchErrors();
+            var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
+            var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            List<string> allErrors = new List<string>();
+            var allErrors = new List<string>();
             allErrors.AddRange(result.Environment.Errors.ToList());
             allErrors.AddRange(result.Environment.AllErrors.ToList());
 
@@ -88,8 +92,13 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 var validateFromModelView = ValidateFromModelView();
                 if (validateFromModelView != null)
+                {
                     foreach (var errorInfo in validateFromModelView)
+                    {
                         allErrors.Add(errorInfo.Message);
+                    }
+                }
+
                 var errorThrown = allErrors.Contains(fetchErrors);
                 Assert.IsTrue(allErrors.Count > 0, "Expected " + anError + " error but the environment did not contain any.");
             }
@@ -103,8 +112,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if (containsInnerActivity)
             {
-                DsfNativeActivity<string> selectAndAppltTool;
-                scenarioContext.TryGetValue("innerActivity", out selectAndAppltTool);
+                scenarioContext.TryGetValue("innerActivity", out DsfNativeActivity<string> selectAndAppltTool);
                 var result = scenarioContext.Get<IDSFDataObject>("result");
                 if (!result.Environment.HasErrors())
                 {
@@ -114,14 +122,13 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else if (containsKey)
             {
-                object baseAct;
-                scenarioContext.TryGetValue("activity", out baseAct);
+                scenarioContext.TryGetValue("activity", out object baseAct);
                 var stringAct = baseAct as DsfFlowNodeActivity<string>;
                 var boolAct = baseAct as DsfFlowNodeActivity<bool>;
                 var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
-                    DsfActivityAbstract<string> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -131,7 +138,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (boolAct != null)
                 {
-                    DsfActivityAbstract<bool> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -141,7 +148,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (multipleFilesActivity != null)
                 {
-                    DsfAbstractMultipleFilesActivity dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
+                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -187,8 +194,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"I have a source path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveASourcePathWithValue(string pathVariable, string location)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -234,8 +240,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"assign error to variable ""(.*)""")]
         public void GivenAssignErrorToVariable(string errorVariable)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -257,16 +262,16 @@ namespace Dev2.Activities.Specs.BaseTypes
         {
             try
             {
-                Dev2Logger.Debug(string.Format("Source File: {0}", scenarioContext.Get<string>(ActualSourceHolder)));
+                Dev2Logger.Debug(string.Format("Source File: {0}", scenarioContext.Get<string>(ActualSourceHolder)), "Warewolf Debug");
                 var broker = ActivityIOFactory.CreateOperationsBroker();
-                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(ActualSourceHolder),
+                var source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(ActualSourceHolder),
                     scenarioContext.Get<string>(SourceUsernameHolder),
                     scenarioContext.Get<string>(SourcePasswordHolder),
                     true, "");
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
                 var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());
-                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                 {
                     var result = broker.PutRaw(sourceEndPoint, ops);
@@ -275,7 +280,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                         result = broker.PutRaw(sourceEndPoint, ops);
                         if (result != "Success")
                         {
-                            Dev2Logger.Debug("Create Source File for file op test error");
+                            Dev2Logger.Debug("Create Source File for file op test error", "Warewolf Debug");
                         }
                     }
                 }
@@ -286,7 +291,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             catch (Exception e)
             {
-                Dev2Logger.Debug("Create Source File for file op test error", e);
+                Dev2Logger.Debug("Create Source File for file op test error", e, "Warewolf Debug");
             }
         }
 
@@ -309,8 +314,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"I have a destination path ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADestinationPathWithValue(string pathVariable, string location)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -327,8 +331,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"overwrite is ""(.*)""")]
         public void GivenOverwriteIs(string overwrite)
         {
-            bool isOverwrite;
-            bool.TryParse(overwrite, out isOverwrite);
+            bool.TryParse(overwrite, out bool isOverwrite);
             scenarioContext.Add(OverwriteHolder, isOverwrite);
         }
 
@@ -348,8 +351,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"validation is ""(.*)""")]
         public void ThenValidationIs(string expectedValidationResult)
         {
-            IList<IActionableErrorInfo> validationErrors;
-            scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
+            scenarioContext.TryGetValue(ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
             if (expectedValidationResult.Equals("True", StringComparison.OrdinalIgnoreCase))
             {
                 if (validationErrors != null)
@@ -369,8 +371,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"validation message is ""(.*)""")]
         public void ThenValidationMessageIs(string validationMessage)
         {
-            IList<IActionableErrorInfo> validationErrors;
-            scenarioContext.TryGetValue(ValidationErrors, out validationErrors);
+            scenarioContext.TryGetValue(ValidationErrors, out IList<IActionableErrorInfo> validationErrors);
             if (string.IsNullOrEmpty(validationMessage.Trim()) || string.IsNullOrWhiteSpace(validationMessage.Trim()) || validationMessage == "\"\"")
             {
                 if (validationErrors != null && validationErrors.Count > 0)
@@ -390,7 +391,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
@@ -399,8 +400,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Given(@"result as ""(.*)""")]
         public void GivenResultAs(string resultVar)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -416,13 +416,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         [Then(@"the result from the web service ""(.*)"" will have the same data as variable ""(.*)""")]
         public void ThenTheResultFromTheWebServiceWillHaveTheSameDataAsVariable(string webservice, string errorVariable)
         {
-            string error;
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
             //Get the error value
-            string errorValue;
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(errorVariable),
-                                       out errorValue, out error);
+                                       out string errorValue, out string error);
             errorValue = errorValue.Replace('"', ' ').Trim();
 
             var retryCount = 0;
@@ -432,7 +430,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 retryCount++;
                 //Call the service and get the result
-                WebClient webClient = new WebClient
+                var webClient = new WebClient
                 {
                     UseDefaultCredentials = true,
                     Credentials = CredentialCache.DefaultCredentials
@@ -442,7 +440,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
-        private static WebSource CreateTestWebSource()
+        static WebSource CreateTestWebSource()
         {
             return new WebSource
             {
@@ -460,9 +458,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if (DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i) && i != "\"\"").ToList();
                 expectedValue = expectedValue.Replace('"', ' ').Trim();
@@ -488,10 +486,9 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else
             {
-                string actualValue;
                 expectedValue = expectedValue.Replace('"', ' ').Trim();
                 GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(variable),
-                                           out actualValue, out error);
+                                           out string actualValue, out error);
                 if (string.IsNullOrEmpty(expectedValue))
                 {
                     actualValue = "";
@@ -510,10 +507,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     else
                     {
-                        Type component = Type.GetType("System." + type);
+                        var component = Type.GetType("System." + type);
                         if (component != null)
                         {
-                            TypeConverter converter = TypeDescriptor.GetConverter(component);
+                            var converter = TypeDescriptor.GetConverter(component);
 
                             try
                             {
@@ -537,17 +534,15 @@ namespace Dev2.Activities.Specs.BaseTypes
         public void ThenTheOutputIsApproximatelyTheSizeOfTheOriginalInput(string compressionTimes)
         {
             var source = scenarioContext.Get<IDSFDataObject>("result");
-            string inputFilePath, outputFilePath, error;
-
             GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(scenarioContext.Get<string>(SourceHolder)),
-                                       out inputFilePath, out error);
+                                       out string inputFilePath, out string error);
 
             GetScalarValueFromEnvironment(source.Environment, DataListUtil.RemoveLanguageBrackets(scenarioContext.Get<string>(DestinationHolder)),
-                                           out outputFilePath, out error);
+                                           out string outputFilePath, out error);
 
             var inputFile = new FileInfo(inputFilePath);
             var outputFile = new FileInfo(outputFilePath);
-            double compressionTimesValue = double.Parse(compressionTimes);
+            var compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
                 Math.Round(inputFile.Length / (double)outputFile.Length, 1));
@@ -555,8 +550,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public void AddVariableToVariableList(string resultVariable)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -568,15 +562,13 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public void AddActivityToActivityList(string parentName, string activityName, Activity activity)
         {
-            Dictionary<string, Activity> activityList;
-            if (!scenarioContext.TryGetValue("activityList", out activityList))
+            if (!scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList))
             {
                 activityList = new Dictionary<string, Activity>();
                 scenarioContext.Add("activityList", activityList);
             }
 
-            Activity parentActivity;
-            if (activityList.TryGetValue(parentName, out parentActivity))
+            if (activityList.TryGetValue(parentName, out Activity parentActivity))
             {
                 if (parentActivity is DsfSequenceActivity)
                 {
@@ -596,11 +588,13 @@ namespace Dev2.Activities.Specs.BaseTypes
                 {
                     var forEachActivity = pair.Value as DsfForEachActivity;
                     if (forEachActivity == null)
+                    {
                         return false;
+                    }
+
                     return forEachActivity.DataFunc.Handler != null && forEachActivity.DataFunc != null && forEachActivity.DataFunc.Handler as DsfForEachActivity != null;
                 });
-                var forEachParentActivity = findAllForEach.Value as DsfForEachActivity;
-                if (forEachParentActivity != null)
+                if (findAllForEach.Value is DsfForEachActivity forEachParentActivity)
                 {
                     var activityFunc = new ActivityFunc<string, bool> { Handler = activity };
                     DsfForEachActivity foundCorrectParentForEach = null;
@@ -636,15 +630,14 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public Dictionary<string, Activity> GetActivityList()
         {
-            Dictionary<string, Activity> activityList;
-            scenarioContext.TryGetValue("activityList", out activityList);
+            scenarioContext.TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             return activityList;
         }
 
         public string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
-            string rawRef = DataListUtil.StripBracketsFromValue(value);
-            string objRef = string.Empty;
+            var rawRef = DataListUtil.StripBracketsFromValue(value);
+            var objRef = string.Empty;
 
             if (partType == enIntellisensePartType.RecordsetsOnly)
             {
@@ -666,20 +659,17 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             try
             {
-                var multipleFilesActivity = act as DsfAbstractMultipleFilesActivity;
-                if (multipleFilesActivity != null)
+                if (act is DsfAbstractMultipleFilesActivity multipleFilesActivity)
                 {
                     return DebugItemResults(multipleFilesActivity, result.Environment);
                 }
 
-                DsfActivityAbstract<string> dsfActivityAbstractString = act as DsfActivityAbstract<string>;
-                if (dsfActivityAbstractString != null)
+                if (act is DsfActivityAbstract<string> dsfActivityAbstractString)
                 {
                     return DebugItemResults(dsfActivityAbstractString, result.Environment);
                 }
 
-                DsfActivityAbstract<bool> dsfActivityAbstractBool = act as DsfActivityAbstract<bool>;
-                if (dsfActivityAbstractBool != null)
+                if (act is DsfActivityAbstract<bool> dsfActivityAbstractBool)
                 {
                     return DebugItemResults(dsfActivityAbstractBool, result.Environment);
                 }
@@ -687,7 +677,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
-            catch
+            catch (Exception ex)
             {
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
@@ -715,7 +705,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
-            catch
+            catch (Exception ex)
             {
 
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
@@ -728,7 +718,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         List<IDebugItemResult> BuildExpectedDebugItems(Table table)
         {
             var columnHeaders = table.Header.ToArray();
-            List<IDebugItemResult> list = new List<IDebugItemResult>();
+            var list = new List<IDebugItemResult>();
 
 
             foreach (TableRow row in table.Rows)
@@ -838,11 +828,9 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(variable);
                 if (!string.IsNullOrEmpty(indexRegionFromRecordset))
                 {
-                    int indexForRecset;
-                    int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                    int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                    List<Tuple<string, string>> variableList;
-                    if (!scenarioContext.TryGetValue("variableList", out variableList))
+                    if (!scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList))
                     {
                         return;
                     }
@@ -883,8 +871,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     var dt = inputDebugItems[i].Value.Split(new[] { '/', ':', '.', ' ' });
                     Assert.IsTrue(dt.Length == 8);
                     Assert.IsTrue(inputDebugItems[i].Value.Contains("."));
-                    int val;
-                    Assert.IsTrue(int.TryParse(dt[6], out val));
+                    Assert.IsTrue(int.TryParse(dt[6], out int val));
                     Assert.IsTrue(dt.Last().EndsWith("AM") || dt.Last().EndsWith("PM"));
 
                 }
@@ -899,7 +886,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         void Verify(string expectedValue, string actualValue, string name, int index, string variable = "")
         {
             expectedValue = expectedValue.Replace("‡", "=");
-            string type = "";
+            var type = "";
 
             if (!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -945,16 +932,16 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else
             {
-                Type component = Type.GetType("System." + type);
+                var component = Type.GetType("System." + type);
                 if (component != null)
                 {
-                    TypeConverter converter = TypeDescriptor.GetConverter(component);
+                    var converter = TypeDescriptor.GetConverter(component);
 
                     try
                     {
                         converter.ConvertFrom(actualValue);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Assert.Fail("Value is not expected type");
                     }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,65 +22,48 @@ using Dev2.PathOperations;
 
 namespace Dev2.Session
 {
-    internal class Dev2StudioSessionBroker : IDev2StudioSessionBroker
+    class Dev2StudioSessionBroker : IDev2StudioSessionBroker
     {
         #region Static Conts
 
-        private const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
+        const string SavePath = @"Warewolf\DebugData\PersistSettings.dat";
         // the settings lock object
-        private static readonly object SettingsLock = new object();
-        private static readonly object InitLock = new object();
-        private string _debugPersistPath;
-        private string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+        static readonly object SettingsLock = new object();
+        static readonly object InitLock = new object();
+        string _debugPersistPath;
+        string _rootPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
         #endregion
 
-        private readonly IDictionary<string, DebugTO> _debugPersistSettings =
+        readonly IDictionary<string, DebugTO> _debugPersistSettings =
             new ConcurrentDictionary<string, DebugTO>();
 
-        private IActivityIOOperationsEndPoint _debugOptsEndPoint;
-        private IActivityIOPath _debugPath;
+        IActivityIOOperationsEndPoint _debugOptsEndPoint;
+        IActivityIOPath _debugPath;
 
-        /// <summary>
-        ///     Init the Debug Session
-        /// </summary>
-        /// <param name="to"></param>
-        /// <returns></returns>
         public DebugTO InitDebugSession(DebugTO to)
         {
             DebugTO tmp;
-
-            to.Error = string.Empty;
-
-            // Bootstrap the operations
+            to.Error = string.Empty;            
             if (to.BaseSaveDirectory != null)
             {
                 BootstrapPersistence(to.BaseSaveDirectory);
                 InitPersistSettings();
             }
-            else if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
-            {
-                BootstrapPersistence(_rootPath);
-                InitPersistSettings();
-            }
-
-            if (to.BaseSaveDirectory == null)
-            {
-                // set the save location
-                to.BaseSaveDirectory = _rootPath;
-            }
-
-
-            if (to.DataList != null)
-            {
-                to.DataListHash = to.DataList.GetHashCode(); // set incoming DL hash
-            }
             else
             {
-                to.DataListHash = -1; // default value
+                if (to.BaseSaveDirectory == null && _debugPersistSettings.Count == 0)
+                {
+                    BootstrapPersistence(_rootPath);
+                    InitPersistSettings();
+                }
             }
-
-            lock(SettingsLock)
+            if (to.BaseSaveDirectory == null)
+            {
+                to.BaseSaveDirectory = _rootPath;
+            }
+            to.DataListHash = to.DataList != null ? to.DataList.GetHashCode() : -1;
+            lock (SettingsLock)
             {
                 if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
                 {
@@ -91,7 +74,6 @@ namespace Dev2.Session
                 }
                 else
                 {
-                    // if no XML data copy over the DataList
                     to.XmlData = to.RememberInputs ? to.XmlData : "<DataList></DataList>";                 
                 }
                 to.BinaryDataList = new DataListModel();
@@ -101,53 +83,41 @@ namespace Dev2.Session
             tmp?.CleanUp();
             return to;
         }
-
-        /// <summary>
-        ///     Save the debug session data
-        /// </summary>
-        /// <param name="to"></param>
-        /// <returns></returns>
+        
         public DebugTO PersistDebugSession(DebugTO to)
         {
             lock (SettingsLock)
             {
                 if (to.DataList != null)
+                {
                     to.DataListHash = to.DataList.GetHashCode();
-                        // set incoming hash //2013.01.22: Ashley Lewis - Added condition for Bug 7837
+                }
                 to.Error = string.Empty;
 
                 if (to.RememberInputs)
                 {
-                    // update the current TO
                     _debugPersistSettings[to.WorkflowID] = to;
                 }
                 else
                 {
-                    // no longer relavent, remove it
-                    DebugTO tmp;
-
-                    if (_debugPersistSettings.TryGetValue(to.WorkflowID, out tmp))
+                    if (_debugPersistSettings.TryGetValue(to.WorkflowID, out DebugTO tmp))
                     {
-                         _debugPersistSettings[to.WorkflowID].CleanUp();
+                        _debugPersistSettings[to.WorkflowID].CleanUp();
                         _debugPersistSettings.Remove(to.WorkflowID);
                     }
                 }
 
                 var settingList = new List<SaveDebugTO>();
-
-                // build the list
+                
                 foreach (string key in _debugPersistSettings.Keys)
                 {
-                    DebugTO tmp;
 
-                    if (key.Length > 0 && _debugPersistSettings.TryGetValue(key, out tmp))
+                    if (key.Length > 0 && _debugPersistSettings.TryGetValue(key, out DebugTO tmp))
                     {
-                        SaveDebugTO that = tmp.CopyToSaveDebugTO();
+                        var that = tmp.CopyToSaveDebugTO();
                         settingList.Add(that);
                     }
                 }
-
-                // push to disk
                 using (Stream s = File.Open(_debugPersistPath, FileMode.Truncate))
                 {
                     var bf = new XmlSerializer(typeof (List<SaveDebugTO>));
@@ -161,7 +131,7 @@ namespace Dev2.Session
 
         #region Private Method
 
-        private void BootstrapPersistence(string baseDir)
+        void BootstrapPersistence(string baseDir)
         {
             lock (InitLock)
             {
@@ -172,14 +142,7 @@ namespace Dev2.Session
                         _rootPath = baseDir;
                     }
 
-                    if (_rootPath.EndsWith("\\"))
-                    {
-                        _debugPersistPath = _rootPath + SavePath;
-                    }
-                    else
-                    {
-                        _debugPersistPath = _rootPath + "\\" + SavePath;
-                    }
+                    _debugPersistPath = _rootPath.EndsWith("\\") ? _rootPath + SavePath : _rootPath + "\\" + SavePath;
 
                     _debugPath = ActivityIOFactory.CreatePathFromString(_debugPersistPath, "", "");
                     _debugOptsEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(_debugPath);
@@ -191,7 +154,7 @@ namespace Dev2.Session
         /// <summary>
         ///     Boot strap the Session
         /// </summary>
-        private void InitPersistSettings()
+        void InitPersistSettings()
         {
             lock (SettingsLock)
             {
@@ -208,12 +171,12 @@ namespace Dev2.Session
                     {
                         if (s.Length > 0)
                         {
-                            var bf = new XmlSerializer(typeof (List<SaveDebugTO>));
+                            var bf = new XmlSerializer(typeof(List<SaveDebugTO>));
 
                             try
                             {
-                                var settings = (List<SaveDebugTO>) bf.Deserialize(s);
-                                _debugPersistSettings.Values.ToList().ForEach(a=>a.CleanUp());
+                                var settings = (List<SaveDebugTO>)bf.Deserialize(s);
+                                _debugPersistSettings.Values.ToList().ForEach(a => a.CleanUp());
                                 _debugPersistSettings.Clear();
                                 // now push back into the Dictionary
                                 foreach (SaveDebugTO dto in settings)
@@ -228,12 +191,12 @@ namespace Dev2.Session
                             }
                             catch (Exception e)
                             {
-                                Dev2Logger.Error(e);
+                                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                             }
                         }
                         else
                         {
-                            Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ");
+                            Dev2Logger.Error("No debug data stream [ " + _debugPath + " ] ", GlobalConstants.WarewolfError);
                         }
 
                         s.Close();

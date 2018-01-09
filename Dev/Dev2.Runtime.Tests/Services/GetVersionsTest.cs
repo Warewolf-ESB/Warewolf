@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
   namespace Dev2.Tests.Runtime.Services
   {
         [TestClass]
@@ -82,10 +82,10 @@ using Moq;
                 var getVersions = new GetVersions();
                 var serializer = new Dev2JsonSerializer();
                 //------------Execute Test---------------------------
-                StringBuilder jsonResult = getVersions.Execute(null, null);
-                IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
-                //------------Assert Results-------------------------
-                Assert.AreEqual(ExecStatus.Fail, result.Status);
+                var jsonResult = getVersions.Execute(null, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(ExecStatus.Fail, result.Status);
             }
 
             [TestMethod]
@@ -96,8 +96,8 @@ using Moq;
                 //------------Setup for test--------------------------
                 var getVersions = new GetVersions();
                 var resourceId = Guid.NewGuid();
-                ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
-                var repo = new Mock<IServerVersionRepository>();
+                var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var repo = new Mock<IServerVersionRepository>();
                 var ws = new Mock<IWorkspace>();
                 repo.Setup(a => a.GetVersions(resourceId)).Returns(new List<IExplorerItem> {item});
                 var serializer = new Dev2JsonSerializer();

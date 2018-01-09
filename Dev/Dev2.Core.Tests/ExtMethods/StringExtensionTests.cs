@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Tests.ExtMethods
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class StringExtensionTests
     {
         [TestMethod]
@@ -67,8 +67,7 @@ namespace Dev2.Tests.ExtMethods
         public void StringExtension_IsNumeric_StringIsNegativeNumericWithAPeriod_True()
         {
             //------------Execute Test---------------------------
-            decimal val;
-            var result = "-123.142".IsNumeric(out val);
+            var result = "-123.142".IsNumeric(out decimal val);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }

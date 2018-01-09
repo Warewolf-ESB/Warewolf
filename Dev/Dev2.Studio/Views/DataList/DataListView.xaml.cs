@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,7 @@ using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Views.DataList
 {
     /// <summary>
@@ -33,14 +33,12 @@ namespace Dev2.Studio.Views.DataList
 
         #region Events
 
-        private void NametxtTextChanged(object sender, RoutedEventArgs e)
+        void NametxtTextChanged(object sender, RoutedEventArgs e)
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if(vm != null)
+            if (DataContext is IDataListViewModel vm)
             {
-                TextBox txtbox = sender as TextBox;
-                IDataListItemModel itemThatChanged = txtbox?.DataContext as IDataListItemModel;
-                if (itemThatChanged != null)
+                var txtbox = sender as TextBox;
+                if (txtbox?.DataContext is IDataListItemModel itemThatChanged)
                 {
                     itemThatChanged.IsExpanded = true;
                 }
@@ -48,9 +46,9 @@ namespace Dev2.Studio.Views.DataList
             }
         }
 
-        private void Inputcbx_OnChecked(object sender, RoutedEventArgs e)
+        void Inputcbx_OnChecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
+            var checkBox = sender as CheckBox;
             if (checkBox == null || !checkBox.IsEnabled)
             {
                 return;
@@ -58,9 +56,9 @@ namespace Dev2.Studio.Views.DataList
             WriteToResourceModel();
         }
 
-        private void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
+        void Outputcbx_OnChecked(object sender, RoutedEventArgs e)
         {
-            CheckBox checkBox = sender as CheckBox;
+            var checkBox = sender as CheckBox;
             if (checkBox == null || !checkBox.IsEnabled)
             {
                 return;
@@ -68,27 +66,25 @@ namespace Dev2.Studio.Views.DataList
             WriteToResourceModel();
         }
 
-        private void NametxtFocusLost(object sender, RoutedEventArgs e)
+        void NametxtFocusLost(object sender, RoutedEventArgs e)
         {
             DoDataListValidation(sender);
         }
 
         void DoDataListValidation(object sender)
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if(vm != null)
+            if (DataContext is IDataListViewModel vm)
             {
-                TextBox txtbox = sender as TextBox;
-                if(txtbox != null)
+                if (sender is TextBox txtbox)
                 {
-                    IDataListItemModel itemThatChanged = txtbox.DataContext as IDataListItemModel;
+                    var itemThatChanged = txtbox.DataContext as IDataListItemModel;
                     vm.RemoveBlankRows(itemThatChanged);
                     vm.ValidateNames(itemThatChanged);
                 }
             }
         }
 
-        private void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        void UserControlLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             WriteToResourceModel();
         }
@@ -97,10 +93,9 @@ namespace Dev2.Studio.Views.DataList
 
         #region Private Methods
 
-        private void WriteToResourceModel()
+        void WriteToResourceModel()
         {
-            IDataListViewModel vm = DataContext as IDataListViewModel;
-            if (vm != null && !vm.IsSorting)
+            if (DataContext is IDataListViewModel vm && !vm.IsSorting)
             {
                 vm.WriteToResourceModel();
             }
@@ -108,7 +103,7 @@ namespace Dev2.Studio.Views.DataList
 
         #endregion Private Methods
 
-        private void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
+        void UIElement_OnLostKeyboardFocus(object sender, KeyboardFocusChangedEventArgs e)
         {
             var vm = DataContext as IDataListViewModel;
             var model = vm?.Parent as WorkSurfaceContextViewModel;
@@ -127,8 +122,10 @@ namespace Dev2.Studio.Views.DataList
                     return SortButton.Command.CanExecute(null);
                 case "Variables":
                     return ScalarExplorer.IsEnabled;
+                default:
+                    break;
             }
-            
+
             return false;
         }
 

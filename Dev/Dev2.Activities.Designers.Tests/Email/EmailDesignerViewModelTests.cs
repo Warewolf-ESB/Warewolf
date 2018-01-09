@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.Email
 {
     [TestClass]
@@ -42,7 +42,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = AppLocalhost;
+            AppUsageStats.LocalHost = AppLocalhost;
         }
 
         [TestMethod]
@@ -54,9 +54,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new EmailDesignerViewModel(CreateModelItem(), null, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -70,9 +70,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -86,9 +86,9 @@ namespace Dev2.Activities.Designers.Tests.Email
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new EmailDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -252,7 +252,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
             var eventPublisher = new Mock<IEventAggregator>();
             var mockShellViewModel = new Mock<IShellViewModel>();
-            mockShellViewModel.Setup(model => model.EditResource(It.IsAny<IEmailServiceSource>(),null)).Verifiable();
+            mockShellViewModel.Setup(model => model.EditResource(It.IsAny<IEmailServiceSource>())).Verifiable();
             CustomContainer.Register(mockShellViewModel.Object);
             var resourceModel = new Mock<IResourceModel>();
 
@@ -263,7 +263,7 @@ namespace Dev2.Activities.Designers.Tests.Email
 
 
             //------------Assert Results-------------------------
-            mockShellViewModel.Verify(model => model.EditResource(It.IsAny<IEmailServiceSource>(), null));
+            mockShellViewModel.Verify(model => model.EditResource(It.IsAny<IEmailServiceSource>()));
             CustomContainer.DeRegister<IShellViewModel>();
         }
 
@@ -358,7 +358,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
         public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_AddsFilesToAttachments()
         {
-            List<string> selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
+            var selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
             //------------Setup for test--------------------------
             var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
 
@@ -395,7 +395,7 @@ namespace Dev2.Activities.Designers.Tests.Email
         [TestCategory("EmailDesignerViewModel_ChooseAttachments")]
         public void EmailDesignerViewModel_ChooseAttachments_SelectedFilesIsNotNull_SelectedNewFilesToAttachments()
         {
-            List<string> selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
+            var selectedFiles = new List<string> { @"c:\tmp2.txt", @"c:\logs\errors2.log" };
             //------------Setup for test--------------------------
             var existingFiles = new List<string> { @"c:\tmp1.txt", @"c:\logs\errors1.log" };
 
@@ -524,7 +524,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 .Callback((string method, string url, string data, List<Tuple<string, string>> headers, Action<string> asyncCallback) =>
                 {
                     postData = data;
-                    asyncCallback(new Dev2JsonSerializer().Serialize(result));
+                    asyncCallback?.Invoke(new Dev2JsonSerializer().Serialize(result));
                 }).Returns(string.Empty)
                 .Verifiable();
 

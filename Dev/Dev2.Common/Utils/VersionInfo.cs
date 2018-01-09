@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,17 +9,16 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using Vestris.ResourceLib;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Studio.Utils
 {
     public static class VersionInfo
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static string FetchVersionInfo()
         {
             var versionResource = GetVersionResource();
@@ -32,11 +31,11 @@ namespace Dev2.Studio.Utils
             return new Version(versionResource.FileVersion);
         }
 
-        private static VersionResource GetVersionResource()
+        static VersionResource GetVersionResource()
         {
-            Assembly asm = Assembly.GetExecutingAssembly();
+            var asm = Assembly.GetExecutingAssembly();
             var versionResource = new VersionResource();
-            string fileName = asm.Location;
+            var fileName = asm.Location;
             versionResource.LoadFrom(fileName);
             return versionResource;
         }

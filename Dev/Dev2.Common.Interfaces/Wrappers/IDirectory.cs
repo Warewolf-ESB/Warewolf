@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,7 @@ namespace Dev2.Common.Interfaces.Wrappers
         string[] GetFileSystemEntries(string path);
         string[] GetFileSystemEntries(string path, string searchPattern);
         string[] GetDirectories(string workspacePath);
+        string[] GetDirectories(string path, string pattern);
         void Move(string directoryStructureFromPath, string directoryStructureToPath);
         void Delete(string directoryStructureFromPath, bool recursive);
     }

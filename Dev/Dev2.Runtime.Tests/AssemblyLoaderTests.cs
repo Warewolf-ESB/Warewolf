@@ -52,8 +52,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsFalse(tryLoadAssembly);
             Assert.IsNull(assembly);
@@ -80,8 +79,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsFalse(tryLoadAssembly);
             Assert.IsNull(assembly);
@@ -111,8 +109,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
@@ -138,8 +135,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(dirtyname, "", out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
@@ -173,8 +169,7 @@ namespace Dev2.Tests.Runtime
             //---------------Execute Test ----------------------
             var value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             Assert.AreEqual(0, value.Count);
-            Assembly assembly;
-            assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
+            assemblyLoader.TryLoadAssembly(dirtyname, "", out Assembly assembly);
             value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             //---------------Test Result -----------------------
             Assert.IsTrue(value.Count > 2);
@@ -219,8 +214,7 @@ namespace Dev2.Tests.Runtime
             //---------------Execute Test ----------------------
             var value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             Assert.AreEqual(0, value.Count);
-            Assembly assembly;
-            assemblyLoader.TryLoadAssembly(location, type.FullName, out assembly);
+            assemblyLoader.TryLoadAssembly(location, type.FullName, out Assembly assembly);
             value = (List<string>)fieldInfo.GetValue(assemblyLoader);
             //---------------Test Result -----------------------
             Assert.AreEqual(1, value.Count);
@@ -245,8 +239,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            assemblyLoader.TryLoadAssembly(dirtyname, "", out assembly);
+            assemblyLoader.TryLoadAssembly(dirtyname, "", out Assembly assembly);
             //---------------Test Result -----------------------
 
         }
@@ -262,10 +255,9 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
             var human = new Human();
             var location = human.GetType().Assembly.Location;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(location, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(location, "", out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
@@ -285,8 +277,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            assemblyLoader.TryLoadAssembly(location, "", out assembly);
+            assemblyLoader.TryLoadAssembly(location, "", out Assembly assembly);
             //---------------Test Result -----------------------
 
         }
@@ -305,8 +296,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(location, "", out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(location, "", out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
@@ -330,8 +320,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(location, type.FullName, out assembly);
+            var tryLoadAssembly = assemblyLoader.TryLoadAssembly(location, type.FullName, out Assembly assembly);
             //---------------Test Result -----------------------
             Assert.IsTrue(tryLoadAssembly);
             Assert.IsNotNull(assembly);
@@ -358,8 +347,7 @@ namespace Dev2.Tests.Runtime
             //---------------Assert Precondition----------------
             Assert.IsNotNull(assemblyLoader);
             //---------------Execute Test ----------------------
-            Assembly assembly;
-            assemblyLoader.TryLoadAssembly(location, type.FullName, out assembly);
+            assemblyLoader.TryLoadAssembly(location, type.FullName, out Assembly assembly);
             //---------------Test Result -----------------------
 
         }

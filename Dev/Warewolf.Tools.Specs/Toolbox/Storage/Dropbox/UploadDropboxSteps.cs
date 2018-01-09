@@ -25,12 +25,16 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class UploadDropboxSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public UploadDropboxSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -89,7 +93,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [When(@"the Dropbox tool is executed")]
         public void WhenTheDropboxToolIsExecuted()
         {
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -180,7 +184,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheDropboxSourceWindowIsOpened(string sourceName)
         {
             if(sourceName == "Drop")
+            {
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+            }
         }
         [Then(@"Edit is Enabled")]
         public void ThenEditIsEnabled()

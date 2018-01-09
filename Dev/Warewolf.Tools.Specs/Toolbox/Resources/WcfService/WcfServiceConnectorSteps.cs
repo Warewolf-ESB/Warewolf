@@ -25,11 +25,15 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
     [Binding]
     public class WcfServiceConnectorSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public WcfServiceConnectorSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -145,7 +149,9 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
             if (table.Rows.Count == 0)
             {
                 if (vm.InputArea.Inputs != null)
+                {
                     Assert.IsTrue(vm.InputArea.Inputs.Count == 0);
+                }
             }
             else
             {
@@ -167,7 +173,9 @@ namespace Dev2.Activities.Specs.Toolbox.WcfService
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)
+                {
                     Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+                }
             }
             else
             {

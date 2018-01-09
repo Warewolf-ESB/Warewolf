@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -53,7 +53,8 @@ namespace Dev2.Webs.Callbacks
 
         public ILayoutObjectViewModel SelectedLayoutObject => null;
 
-        public virtual void Save(string value, IServer server, bool closeBrowserWindow = true)
+        public virtual void Save(string value, IServer server) => Save(value, server, true);
+        public virtual void Save(string value, IServer server, bool closeBrowserWindow)
         {
             if(closeBrowserWindow)
             {
@@ -75,7 +76,7 @@ namespace Dev2.Webs.Callbacks
             Owner?.Close();
         }
 
-        // ReSharper disable once EventNeverSubscribedTo.Global
+        
 #pragma warning disable 67
         public event NavigateRequestedEventHandler NavigateRequested;
 #pragma warning restore 67

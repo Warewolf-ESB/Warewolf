@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,7 +51,7 @@ namespace Dev2.Utilities
 
         public StringBuilder GetXamlDefinition(ActivityBuilder builder)
         {
-            StringBuilder text = new StringBuilder();
+            var text = new StringBuilder();
             try
             {
                 if(builder != null)
@@ -70,7 +70,7 @@ namespace Dev2.Utilities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error loading XAML: ",e);
+                Dev2Logger.Error("Error loading XAML: ",e, GlobalConstants.WarewolfError);
             }
             return text;
         }
@@ -92,7 +92,7 @@ namespace Dev2.Utilities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("Error loading XAML: ",e);
+                Dev2Logger.Error("Error loading XAML: ",e, GlobalConstants.WarewolfError);
             }
             return null;
         }
@@ -131,9 +131,9 @@ namespace Dev2.Utilities
             return builder;
         }
 
-        private static ActivityBuilder GetActivityBuilder(ModelService modelService)
+        public static ActivityBuilder GetActivityBuilder(ModelService modelService)
         {
-            if(modelService?.Root == null)
+            if (modelService?.Root == null)
             {
                 return null;
             }
@@ -151,9 +151,10 @@ namespace Dev2.Utilities
             SetNamespaces(builder);
         }
 
-        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache = GlobalConstants.Resultscache;
+        public static ConcurrentDictionary<Guid, TextExpressionCompilerResults> Resultscache { get => resultscache; set => resultscache = value; }
+        static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = GlobalConstants.Resultscache;
 
-        private void SetNamespaces(object target)
+        void SetNamespaces(object target)
         {
             var dev2ActivitiesAssembly = typeof(WorkflowHelper).Assembly;
             var dev2CommonAssembly = typeof(GlobalConstants).Assembly;
@@ -233,7 +234,7 @@ namespace Dev2.Utilities
             return length > 0 ? xml.Remove(startIdx, length) : xml;
         }
 
-        private void SetVariables(Collection<Variable> variables)
+        void SetVariables(Collection<Variable> variables)
         {
             try
             {
@@ -251,7 +252,7 @@ namespace Dev2.Utilities
                 variables.Add(new Variable<Unlimited.Applications.BusinessDesignStudio.Activities.Util> { Name = "t" });
                 variables.Add(new Variable<Dev2DataListDecisionHandler> { Name = "Dev2DecisionHandler" });
             }
-            catch(Exception)
+            catch (Exception)
             {
                 variables = new Collection<Variable>();
                 variables.Clear();

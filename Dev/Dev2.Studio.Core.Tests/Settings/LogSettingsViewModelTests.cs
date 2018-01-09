@@ -7,7 +7,7 @@ using Dev2.Studio.Interfaces;
 using log4net.Config;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Core.Tests.Settings
 {
@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ServerEventLogLevel")
@@ -86,13 +86,59 @@ namespace Dev2.Core.Tests.Settings
         }
 
         [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_Handle")]
+        public void LogSettingsViewModel_SelectedLoggingType_ShouldSelectLoggingType()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateLogSettingViewModel();
+            //------------Execute Test---------------------------
+            viewModel.SelectedLoggingType = "Fatal: Only log events that are fatal";
+            //------------Assert Results-------------------------
+            Assert.AreEqual("Fatal: Only log events that are fatal", viewModel.SelectedLoggingType);
+            Assert.AreEqual(LogLevel.FATAL, viewModel.ServerEventLogLevel);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_Handle")]
+        public void LogSettingsViewModel_GetServerLogFileCommand_CanExecute()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateLogSettingViewModel();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            var canExecute = viewModel.GetServerLogFileCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("LogSettingsViewModel_Handle")]
+        public void LogSettingsViewModel_GetStudioLogFileCommand_CanExecute()
+        {
+            //------------Setup for test--------------------------      
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            CustomContainer.Register(mockMainViewModel.Object);
+            var viewModel = CreateLogSettingViewModel();
+            //------------Execute Test---------------------------
+            //------------Assert Results-------------------------
+            var canExecute = viewModel.GetStudioLogFileCommand.CanExecute(null);
+            Assert.IsTrue(canExecute);
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("LogSettingsViewModel_StudioLogLevel")]
         public void LogSettingsViewModel_StudioLogLevel_Set_PropertyChangeFired()
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "StudioEventLogLevel")
@@ -116,7 +162,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ServerLogMaxSize")
@@ -140,7 +186,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "ServerLogMaxSize")
@@ -164,7 +210,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "StudioLogMaxSize")
@@ -209,36 +255,7 @@ namespace Dev2.Core.Tests.Settings
             //------------Assert Results-------------------------
             Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.StudioFileLogLevel);
         }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("LogSettingsViewModel_ServerFileLogLevel")]
-        public void LogSettingsViewModel_ServerFileLogLevel_Construct_IsTrace()
-        {
-            //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
-
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.TRACE, logSettingsViewModel.ServerFileLogLevel);
-        }
-
-        [TestMethod]
-        [Owner("Pieter Terblanche")]
-        [TestCategory("LogSettingsViewModel_ServerFileLogLevel")]
-        public void LogSettingsViewModel_ServerFileLogLevel_SetLevel_IsInfo()
-        {
-            //------------Setup for test--------------------------
-            var logSettingsViewModel = CreateLogSettingViewModel();
-
-            //------------Execute Test---------------------------
-            logSettingsViewModel.ServerFileLogLevel = LogLevel.INFO;
-
-            //------------Assert Results-------------------------
-            Assert.AreEqual(LogLevel.INFO, logSettingsViewModel.ServerFileLogLevel);
-        }
-
+                
         [TestMethod]
         [Owner("Pieter Terblanche")]
         [TestCategory("LogSettingsViewModel_CanEdit")]
@@ -281,7 +298,7 @@ namespace Dev2.Core.Tests.Settings
         {
             //------------Setup for test--------------------------
             var logSettingsViewModel = CreateLogSettingViewModel();
-            bool hasPropertyChanged = false;
+            var hasPropertyChanged = false;
             logSettingsViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "StudioLogMaxSize")

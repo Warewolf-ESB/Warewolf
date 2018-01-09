@@ -1,7 +1,7 @@
 ﻿using System.IO;
 using Dev2.Activities.DropBox2016;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
@@ -20,9 +20,14 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         public void MyTestCleanup()
         {
             if(File.Exists(ValidFileName))
+            {
                 File.Delete(ValidFileName);
+            }
+
             if (File.Exists(InValidFileName))
+            {
                 File.Delete(InValidFileName);
+            }
         }
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

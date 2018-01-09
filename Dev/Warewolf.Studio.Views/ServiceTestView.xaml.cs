@@ -24,7 +24,7 @@ namespace Warewolf.Studio.Views
             PreviewDrop += DropPointOnDragEnter;
         }
 
-        private void DropPointOnDragEnter(object sender, DragEventArgs e)
+        void DropPointOnDragEnter(object sender, DragEventArgs e)
         {
             if (sender != null)
             {
@@ -37,7 +37,7 @@ namespace Warewolf.Studio.Views
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                DependencyObject node = e.OriginalSource as DependencyObject;
+                var node = e.OriginalSource as DependencyObject;
                 while (node != null)
                 {
                     if (node is WorkflowViewElement)
@@ -52,84 +52,76 @@ namespace Warewolf.Studio.Views
                         }
                         break;
                     }
-                    if (node is Visual)
-                    {
-                        node = VisualTreeHelper.GetParent(node);
-                    }
-                    else
-                    {
-                        node = null;
-                    }
+                    node = node is Visual ? VisualTreeHelper.GetParent(node) : null;
                 }
             }
         }
-        private void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
+        void ToggleButton_OnChecked(object sender, RoutedEventArgs e)
         {
-            var control = sender as ToggleButton;
 
-            if (control != null)
+            if (sender is ToggleButton control)
             {
                 RefreshCommands(e);
             }
         }
 
-        private void RefreshCommands(RoutedEventArgs e)
+        void RefreshCommands(RoutedEventArgs e)
         {
             var serviceTestViewModel = DataContext as IServiceTestViewModel;
             serviceTestViewModel?.RefreshCommands();
             e.Handled = true;
         }
 
-        private void SelectedTestCheckBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void SelectedTestCheckBox_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var cb = sender as CheckBox;
-            if (cb != null)
+            if (sender is CheckBox cb)
             {
                 var item = cb.DataContext;
                 TestsListbox.SelectedItem = item;
             }
         }
 
-        private void SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        void SelectedTestRunTestButton_OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            var btn = sender as Button;
-            if (btn != null)
+            if (sender is Button btn)
             {
                 var item = btn.DataContext;
                 TestsListbox.SelectedItem = item;
             }
         }
 
-        private void MainGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        void MainGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var serviceTestViewModel = DataContext as IServiceTestViewModel;
             serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.HelpText.ServiceTestGenericHelpText);
             e.Handled = true;
         }
 
-        private void ListBoxItemGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        void ListBoxItemGrid_OnMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var serviceTestViewModel = DataContext as IServiceTestViewModel;
             serviceTestViewModel?.UpdateHelpDescriptor(Studio.Resources.Languages.HelpText.ServiceTestSelectedTestHelpText);
             e.Handled = true;
         }
 
-        private void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
+        void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
             var textBox = sender as IntellisenseTextBox;
             if (textBox != null)
-                RefreshCommands(e);
-            if(textBox == null)
             {
-                var box = sender as TextBox;
-                if (box != null)
+                RefreshCommands(e);
+            }
+
+            if (textBox == null)
+            {
+                if (sender is TextBox box)
                 {
                     RefreshCommands(e);
                 }
             }
         }
 
-        private void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void Selector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var routedEventArgs = new RoutedEventArgs(e.RoutedEvent);
             RefreshCommands(routedEventArgs);

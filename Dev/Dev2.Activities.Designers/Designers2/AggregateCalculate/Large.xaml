@@ -31,14 +31,14 @@
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
-        <!-- ReSharper restore UnusedMember.Global -->
+        
     </core:ActivityDesignerTemplate.RightButtons>
 
     <Grid Margin="{StaticResource ElementBorder}">
@@ -58,7 +58,7 @@
                    FontWeight="Normal"
                    FontStyle="Italic" 
                    VerticalAlignment="Top"/>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <ui:IntellisenseTextBox x:Name="InitialFocusElement"
                                 Grid.Column="1"
                                 Grid.Row="0"
@@ -78,7 +78,7 @@
                                 Text="{Binding Path=ModelItem.Expression, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                 AutomationProperties.AutomationId="{Binding ModelItem.AutomationID, StringFormat=UI_{0}_fxtxt_AutoID}"
                                 attachedProperties:WizardEngineAttachedProperties.DontOpenWizard="True">
-            <!-- ReSharper restore UnusedMember.Global -->
+            
             <ui:IntellisenseTextBox.IntellisenseProvider>
                 <interfaceImplementors:CompositeIntellisenseProvider>
                     <interfaceImplementors:DefaultIntellisenseProvider />

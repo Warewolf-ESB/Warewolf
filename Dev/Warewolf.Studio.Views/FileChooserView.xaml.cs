@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -66,41 +66,40 @@ namespace Warewolf.Studio.Views
             Close();
         }
 
-        private void ManageEmailAttachmentView_OnClosing(object sender, CancelEventArgs e)
+        void ManageEmailAttachmentView_OnClosing(object sender, CancelEventArgs e)
         {
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
-        private void ManageEmailAttachmentView_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void ManageEmailAttachmentView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
 
-        private void DrivesDataTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        void DrivesDataTree_OnSelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
-            var newValueModel = e.NewValue as IFileListingModel;
-            if (newValueModel != null && !newValueModel.IsDirectory)
+            if (e.NewValue is IFileListingModel newValueModel && !newValueModel.IsDirectory)
             {
                 newValueModel.IsSelected = true;
                 DriveNameIntellisenseTextBox.Text = newValueModel.FullName;
             }
 
-            var oldValueModel = e.OldValue as IFileListingModel;
-            if (oldValueModel != null)
+            if (e.OldValue is IFileListingModel oldValueModel)
             {
                 oldValueModel.IsSelected = false;
             }
         }
 
-        private void DriveNameIntellisenseTextBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        void DriveNameIntellisenseTextBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (e.AddedItems.Count > 0) // make sure there is at least one item..
             {
                 var selection = e.AddedItems[0];
 
-                var fileChooser = DataContext as FileChooser;
-                if (fileChooser != null)
+                if (DataContext is FileChooser fileChooser)
                 {
                     fileChooser.SelectedDriveName = selection.ToString();
                 }

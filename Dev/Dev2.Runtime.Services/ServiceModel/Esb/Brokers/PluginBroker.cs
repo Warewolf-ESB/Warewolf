@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 return PluginServiceExecutionFactory.GetNamespaces(pluginSource);
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;
@@ -42,7 +42,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 return PluginServiceExecutionFactory.GetNamespacesWithJsonObjects(pluginSource);
             }
-            // ReSharper disable once RedundantCatchClause
+            
             catch (BadImageFormatException)
             {
                 throw;
@@ -66,7 +66,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         public IOutputDescription TestPlugin(PluginService pluginService)
         {
-            PluginInvokeArgs args = new PluginInvokeArgs
+            var args = new PluginInvokeArgs
             {
                 AssemblyLocation = ((PluginSource)pluginService.Source).AssemblyLocation,
                 AssemblyName = ((PluginSource)pluginService.Source).AssemblyName,
@@ -75,8 +75,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 Parameters = pluginService.Method.Parameters
             };
 
-            string serializedResult;
-            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args, out serializedResult);
+            var pluginResult = PluginServiceExecutionFactory.TestPlugin(args, out string serializedResult);
             pluginService.SerializedResult = serializedResult;
             return pluginResult;
         }

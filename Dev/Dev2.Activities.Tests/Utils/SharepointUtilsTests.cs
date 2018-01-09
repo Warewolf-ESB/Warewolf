@@ -9,7 +9,7 @@ using Microsoft.SharePoint.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.Utils
 {
     [TestClass]
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(null);
+            var validList = SharepointUtils.GetValidReadListItems(null);
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             Assert.AreEqual(0,validList.Count());
@@ -39,7 +39,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title",""), new SharepointReadListTo(null, "Title", "Title","") });
+            var validList = SharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo(null, "Title", "Title", "") });
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
@@ -56,7 +56,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo(null, "Title", "Title", "") });
+            var validList = SharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo(null, "Title", "Title", "") });
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
@@ -73,7 +73,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var validList = sharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo("", "Title", "Title", "") });
+            var validList = SharepointUtils.GetValidReadListItems(new List<SharepointReadListTo> { new SharepointReadListTo("Bob", "Title", "Title", ""), new SharepointReadListTo("", "Title", "Title", "") });
             //------------Assert Results-------------------------
             Assert.IsNotNull(validList);
             var tos = validList as IList<SharepointReadListTo> ?? validList.ToList();
@@ -277,7 +277,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("true", SharepointFieldType.Boolean);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("true", SharepointFieldType.Boolean);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value,typeof(Boolean));
         } 
@@ -291,7 +291,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("Bob", SharepointFieldType.Text);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("Bob", SharepointFieldType.Text);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(String));
         }
@@ -305,7 +305,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("Bob", SharepointFieldType.Note);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("Bob", SharepointFieldType.Note);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(String));
         }
@@ -319,7 +319,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("2", SharepointFieldType.Integer);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("2", SharepointFieldType.Integer);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(Int32));
         }
@@ -333,7 +333,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("2.15", SharepointFieldType.Number);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("2.15", SharepointFieldType.Number);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(Decimal));
         }
@@ -347,7 +347,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
 
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("2", SharepointFieldType.Number);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("2", SharepointFieldType.Number);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(Decimal));
         }
@@ -361,7 +361,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType("2.01", SharepointFieldType.Currency);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType("2.01", SharepointFieldType.Currency);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(Decimal));
         }
@@ -375,7 +375,7 @@ namespace Dev2.Tests.Activities.Utils
             var sharepointUtils = new SharepointUtils();
             
             //------------Execute Test---------------------------
-            var value = sharepointUtils.CastWarewolfValueToCorrectType(DateTime.Now, SharepointFieldType.DateTime);
+            var value = SharepointUtils.CastWarewolfValueToCorrectType(DateTime.Now, SharepointFieldType.DateTime);
             //------------Assert Results-------------------------
             Assert.IsInstanceOfType(value, typeof(DateTime));
         }

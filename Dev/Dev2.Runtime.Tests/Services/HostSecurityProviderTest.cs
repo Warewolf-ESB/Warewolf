@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,8 @@ using Dev2.Runtime.Security;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable PossibleNullReferenceException
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -166,7 +166,7 @@ namespace Dev2.Tests.Runtime.Services
                 HostSecureConfig.CreateKey(HostSecureConfigTests.DefaultSystemKeyPublic));
             var provider = new HostSecurityProviderImpl(config.Object);
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var originalID = Guid.Parse(TestXml.Attribute("ServerID").Value);
             var signedXml = provider.SignXml(new StringBuilder(TestXml.ToString()));
 

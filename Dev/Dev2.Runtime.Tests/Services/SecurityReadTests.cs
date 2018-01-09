@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,8 +23,8 @@ using Dev2.Tests.Runtime.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json;
+using Dev2.Infrastructure.Tests.Services.Security;
 
-// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
@@ -241,12 +241,12 @@ namespace Dev2.Tests.Runtime.Services
             var expected = SecurityRead.DefaultPermissions[0];
             var actual = securitySettings.WindowsGroupPermissions[0];
 
-            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
 
             expected = SecurityRead.DefaultPermissions[1];
             actual = securitySettings.WindowsGroupPermissions[1];
-            result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
         }
 
@@ -273,12 +273,12 @@ namespace Dev2.Tests.Runtime.Services
             var expected = SecurityRead.DefaultPermissions[0];
             var actual = securitySettings.WindowsGroupPermissions[0];
 
-            var result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            var result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
 
             expected = SecurityRead.DefaultPermissions[1];
             actual = securitySettings.WindowsGroupPermissions[1];
-            result = new WindowsGroupPermissionEqualityComparer().Equals(expected, actual);
+            result = SecurityServiceBaseTests.WindowsGroupPermissionEquals(expected, actual);
             Assert.IsTrue(result);
         }
 

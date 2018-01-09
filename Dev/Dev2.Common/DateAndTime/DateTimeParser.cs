@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,12 +17,12 @@ using System.Linq;
 using Dev2.Common.TimeZoneBuilder;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable NonLocalizedString
-// ReSharper disable CollectionNeverQueried.Local
+
+
 
 namespace Dev2.Common.DateAndTime
 {
-    public class DateTimeParser : IDateTimeParser
+    public abstract class DateTimeParser : IDateTimeParser
     {
         /// <summary>
         ///     used to describe the position of the parser relative to escaped regions
@@ -36,22 +36,22 @@ namespace Dev2.Common.DateAndTime
             InsideInferredLiteralRegionWithEscape,
         }
 
-        public const char DateLiteralCharacter = '\'';
+        public static readonly char DateLiteralCharacter = '\'';
 
-        private static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
-        private static Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions =new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        protected  static Dictionary<char, List<int>> _dateTimeFormatForwardLookups = new Dictionary<char, List<int>>();
+        protected Dictionary<string, IDateTimeFormatPartTO> _dateTimeFormatsParts = new Dictionary<string, IDateTimeFormatPartTO>();
+        protected Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        protected static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _timeFormatPartOptions = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
         public static Dictionary<string, ITimeZoneTO> TimeZones = new Dictionary<string, ITimeZoneTO>();
-        private static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet= new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
-        private static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet =new Dictionary<char, List<int>>();
+        static Dictionary<string, List<IDateTimeFormatPartOptionTO>> _dateTimeFormatPartOptionsForDotNet = new Dictionary<string, List<IDateTimeFormatPartOptionTO>>();
+        static Dictionary<char, List<int>> _dateTimeFormatForwardLookupsForDotNet = new Dictionary<char, List<int>>();
 
-        static DateTimeParser()
+        protected DateTimeParser()
         {
             InitializeBuilders();
         }
 
-        private static void InitializeBuilders()
+        void InitializeBuilders()
         {
             var timeZoneBuilder = new TimeZoneBuilder.TimeZoneBuilder();
             timeZoneBuilder.Build();
@@ -84,7 +84,7 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
         {
-            bool nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
+            var nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
 
             return nothingDied;
         }
@@ -99,9 +99,8 @@ namespace Dev2.Common.DateAndTime
 
         public string TranslateDotNetToDev2Format(string originalFormat, out string error)
         {
-            List<IDateTimeFormatPartTO> dotNetFormatParts;
             TryGetDateTimeFormatParts(originalFormat, _dateTimeFormatForwardLookupsForDotNet,
-                _dateTimeFormatPartOptionsForDotNet, out dotNetFormatParts, out error);
+                _dateTimeFormatPartOptionsForDotNet, out List<IDateTimeFormatPartTO> dotNetFormatParts, out error);
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "m", "Minutes");
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "mm", "Minutes");
             dotNetFormatParts = ReplaceToken(dotNetFormatParts, "M", "Month in single digit");
@@ -119,21 +118,25 @@ namespace Dev2.Common.DateAndTime
             //
             // Get input format string for the dotnet parts
             //
-            string dev2Format = "";
+            var dev2Format = "";
             foreach (IDateTimeFormatPartTO part in dotNetFormatParts)
             {
                 if (part.Isliteral)
+                {
                     dev2Format += "'" + part.Value + "'";
+                }
                 else
+                {
                     dev2Format += part.Value;
+                }
             }
             return dev2Format;
         }
 
-        private List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList,
+        List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList,
             string findTokenValue, string describeReplaceWith)
         {
-            int mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
+            var mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
             while (mPart > -1 && mPart < currentPartList.Count)
             {
                 currentPartList[mPart] =
@@ -147,7 +150,7 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Breaks a date time format up into parts
         /// </summary>
-        internal static bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
+        public bool TryGetDateTimeFormatParts(string format, out List<IDateTimeFormatPartTO> formatParts,
             out string error)
         {
             return TryGetDateTimeFormatParts(format, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions,
@@ -157,22 +160,22 @@ namespace Dev2.Common.DateAndTime
         /// <summary>
         ///     Breaks a date time format up into parts
         /// </summary>
-        static bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
+        bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             formatParts = new List<IDateTimeFormatPartTO>();
             error = "";
 
-            char[] formatArray = format.ToArray();
+            var formatArray = format.ToArray();
             var literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
-            int count = 0;
+            var count = 0;
 
-            string currentValue = "";
+            var currentValue = "";
             while (count < formatArray.Length && nothingDied)
             {
-                int forwardLookupLength = 0;
-                char currentChar = formatArray[count];
+                var forwardLookupLength = 0;
+                var currentChar = formatArray[count];
 
                 if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
                 {
@@ -215,27 +218,26 @@ namespace Dev2.Common.DateAndTime
 
             return nothingDied;
         }
-        /// <summary>
-        ///     Parses the given data using the specified format
-        /// </summary>
-        private bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
+
+        bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             result = new DateTimeResultTO();
             error = "";
-
-            int culturesTried = 0;
+            var originalInputFormat = inputFormat;
+            var originalData = data;
+            var culturesTried = 0;
             const int MaxAttempts = 8;
             if (string.IsNullOrWhiteSpace(data))
             {
-                data = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
+                originalData = DateTime.Now.ToShortDateString() + " " + DateTime.Now.ToLongTimeString();
             }
 
             if (string.IsNullOrWhiteSpace(inputFormat))
             {
-                inputFormat =
+                originalInputFormat =
                     TranslateDotNetToDev2Format(
                         GlobalConstants.Dev2DotNetDefaultDateTimeFormat.Replace("ss", "ss.fff"), out error);
             }
@@ -245,12 +247,11 @@ namespace Dev2.Common.DateAndTime
             }
             while (culturesTried <= MaxAttempts)
             {
-                char[] dateTimeArray = data.ToArray();
-                List<IDateTimeFormatPartTO> formatParts;
-                int position = 0;
+                var dateTimeArray = originalData.ToArray();
+                var position = 0;
 
 
-                nothingDied = TryGetDateTimeFormatParts(inputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out formatParts, out error);
+                nothingDied = TryGetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
                 if (!string.IsNullOrEmpty(error))
                 {
                     return false;
@@ -258,14 +259,13 @@ namespace Dev2.Common.DateAndTime
                 if (nothingDied)
                 {
 
-                    int count = 0;
+                    var count = 0;
                     while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
-                        IDateTimeFormatPartTO formatPart = formatParts[count];
+                        var formatPart = formatParts[count];
 
-                        int resultLength;
                         if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
-                            out resultLength, out error))
+                            out int resultLength, out error))
                         {
                             position += resultLength;
                         }
@@ -280,7 +280,7 @@ namespace Dev2.Common.DateAndTime
                     }
                     if (!nothingDied)
                     {
-                        inputFormat = MatchInputFormatToCulture(ref error, culturesTried);
+                        originalInputFormat = MatchInputFormatToCulture(ref error, culturesTried);
 
                         if (culturesTried >= MaxAttempts)
                         {
@@ -317,9 +317,10 @@ namespace Dev2.Common.DateAndTime
             return nothingDied;
         }
 
-        private string MatchInputFormatToCulture(ref string error, int culturesTried)
+
+        string MatchInputFormatToCulture(ref string error, int culturesTried)
         {
-            string inputFormat = "";
+            var inputFormat = "";
             switch (culturesTried)
             {
                 case 0:
@@ -368,9 +369,9 @@ namespace Dev2.Common.DateAndTime
                     break;
 
                 case 7:
-                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                    string finalPattern = shortPattern + " " + longPattern;
+                    var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                    var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                    var finalPattern = shortPattern + " " + longPattern;
                     if (finalPattern.Contains("ss"))
                     {
                         finalPattern =
@@ -379,11 +380,13 @@ namespace Dev2.Common.DateAndTime
                     }
                     inputFormat = TranslateDotNetToDev2Format(finalPattern, out error);
                     break;
+                default:
+                    break;
             }
             return inputFormat;
         }
 
-        private static bool IsBlankResult(IDateTimeResultTO result)
+        static bool IsBlankResult(IDateTimeResultTO result)
         {
             return result.AmPm == DateTimeAmPm.am &&
                    result.Days == 0 &&
@@ -391,7 +394,7 @@ namespace Dev2.Common.DateAndTime
                    result.DaysOfYear == 0 &&
                    result.Era == null &&
                    result.Hours == 0 &&
-                   result.Is24H == false &&
+                   !result.Is24H &&
                    result.Milliseconds == 0 &&
                    result.Minutes == 0 &&
                    result.Months == 0 &&
@@ -400,22 +403,19 @@ namespace Dev2.Common.DateAndTime
                    result.Years == 0;
         }
 
-        /// <summary>
-        ///     Extracts data from a date time text given a potision and a date time format part. This data is then assigned to the
-        ///     given result.
-        /// </summary>
-        private static bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
+
+        bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             error = "";
             resultLength = 0;
 
-            bool dataFound = false;
+            var dataFound = false;
 
             if (part.Isliteral)
             {
-                string forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, part.Value.Length);
+                var forwardLookupResult = ForwardLookup(dateTimeArray, startPosition, part.Value.Length);
 
                 if (forwardLookupResult != part.Value)
                 {
@@ -454,14 +454,14 @@ namespace Dev2.Common.DateAndTime
 
                 if (nothingDied)
                 {
-                    int partOptionsCount = 0;
+                    var partOptionsCount = 0;
 
                     //
                     // Try get a value for each option
                     //
                     while (partOptionsCount < partOptions.Count)
                     {
-                        IDateTimeFormatPartOptionTO partOption = partOptions[partOptionsCount];
+                        var partOption = partOptions[partOptionsCount];
 
                         string forwardLookupResult;
                         bool predicateRun;
@@ -538,8 +538,8 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public static string ForwardLookup(char[] formatArray, int startPosition, int lookupLength)
         {
-            string result = "";
-            int position = startPosition;
+            var result = "";
+            var position = startPosition;
 
             while (position >= 0 && position < formatArray.Length && position < startPosition + lookupLength)
             {

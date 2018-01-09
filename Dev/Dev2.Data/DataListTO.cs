@@ -10,7 +10,12 @@ namespace Dev2.Data
 {
     public class DataListTO
     {
-        public DataListTO(string dataList, bool ignoreColumnDirection = false)
+        public DataListTO(string dataList)
+            : this(dataList, false)
+        {
+        }
+
+        public DataListTO(string dataList, bool ignoreColumnDirection)
         {
             var fixedDataList = dataList.Replace(GlobalConstants.SerializableResourceQuote, "\"").Replace(GlobalConstants.SerializableResourceSingleQuote, "\'");
             Inputs = new List<string>();

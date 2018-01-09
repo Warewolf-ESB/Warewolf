@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@ using System.Windows;
 
 namespace Dev2.Activities.Designers2.Web_Service_Put
 {
-    // Interaction logic for Large.xaml
     public partial class Large
     {
         public Large()
@@ -21,28 +20,11 @@ namespace Dev2.Activities.Designers2.Web_Service_Put
             SetInitialFocus();
         }
 
-        #region Overrides of ActivityDesignerTemplate
+        protected override IInputElement GetInitialFocusElement() => MainGrid;
 
-        protected override IInputElement GetInitialFocusElement()
+        void AutoCompleteBox_OnTextChanged(object sender, RoutedEventArgs e)
         {
-            return MainGrid;
-        }
-
-        #endregion
-        void RequestBody_OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            var viewModel = DataContext as WebServicePutViewModel;
-
-            if (viewModel != null)
-            {
-                var dataContext = viewModel.InputArea;
-                if (dataContext.IsEnabled)
-                {
-                    //MinHeight = dataContext.MinHeight + 25;
-                    //MaxHeight += e.NewSize.Height;
-                    //Height = MinHeight;
-                }
-            }
+            System.Diagnostics.Debug.WriteLine("a");
         }
     }
 }

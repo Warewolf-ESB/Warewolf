@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,23 +33,26 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
     [Binding]
     public class ForEachSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ForEachSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
-        private const string ResultRecordsetVariable = "[[r().v]]";
+        const string ResultRecordsetVariable = "[[r().v]]";
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -57,8 +60,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
             variableList.Add(new Tuple<string, string>(ResultRecordsetVariable, ""));
 
-            string outMapTo;
-            if(scenarioContext.TryGetValue("outMapTo", out outMapTo))
+            if (scenarioContext.TryGetValue("outMapTo", out string outMapTo))
             {
                 variableList.Add(new Tuple<string, string>(outMapTo, ""));
             }
@@ -92,26 +94,22 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             var activityFunction = new ActivityFunc<string, bool> { Handler = activity };
             var foreachType = scenarioContext.Get<enForEachType>("foreachType");
 
-            string recordSet;
-            if(!scenarioContext.TryGetValue("recordset", out recordSet))
+            if (!scenarioContext.TryGetValue("recordset", out string recordSet))
             {
                 recordSet = string.Empty;
             }
 
-            string from;
-            if(!scenarioContext.TryGetValue("from", out from))
+            if (!scenarioContext.TryGetValue("from", out string from))
             {
                 from = string.Empty;
             }
 
-            string to;
-            if(!scenarioContext.TryGetValue("to", out to))
+            if (!scenarioContext.TryGetValue("to", out string to))
             {
                 to = string.Empty;
             }
 
-            string numberAs;
-            if(!scenarioContext.TryGetValue("numberAs", out numberAs))
+            if (!scenarioContext.TryGetValue("numberAs", out string numberAs))
             {
                 numberAs = string.Empty;
             }
@@ -135,14 +133,14 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             scenarioContext.Add("activity", dsfForEach);
         }
 
-        private string BuildInputMappings()
+        string BuildInputMappings()
         {
             var inputMappings = new StringBuilder();
             inputMappings.Append("<Inputs>");
 
             var inMapTo = scenarioContext.Get<string>("inMapTo");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
 
             var inMapFrom = scenarioContext.Get<string>("inMapFrom");
             inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>", inColumn,
@@ -152,14 +150,14 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
             return inputMappings.ToString();
         }
 
-        private string BuildOutputMappings()
+        string BuildOutputMappings()
         {
             var outputMappings = new StringBuilder();
             outputMappings.Append("<Outputs>");
 
             var outMapFrom = scenarioContext.Get<string>("outMapFrom");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
 
             var outMapTo = scenarioContext.Get<string>("outMapTo");
             outputMappings.Append(string.Format(
@@ -175,7 +173,7 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         {
             var forEachType = (enForEachType)Enum.Parse(typeof(enForEachType), foreachType);
             scenarioContext.Add("foreachType", forEachType);
-            switch(forEachType)
+            switch (forEachType)
             {
                 case enForEachType.NumOfExecution:
                     scenarioContext.Add("numberAs", recordSet);
@@ -189,6 +187,8 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
                     break;
                 case enForEachType.InRecordset:
                     scenarioContext.Add("recordset", recordSet);
+                    break;
+                default:
                     break;
             }
         }
@@ -218,18 +218,17 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public void WhenTheForeachToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
+            var result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
             scenarioContext.Add("result", result);
         }
         
         [Then(@"the foreach executes (.*) times")]
         public void ThenTheForeachExecutesTimes(int numOfIterations)
         {
-            string error;
             var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, ResultRecordsetVariable);
             var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, ResultRecordsetVariable);
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            var recordSetValues = RetrieveAllRecordSetFieldValues(DataObject.Environment, recordset, column, out error);
+            var recordSetValues = RetrieveAllRecordSetFieldValues(DataObject.Environment, recordset, column, out string error);
             recordSetValues = Enumerable.Where<string>(recordSetValues, i => !string.IsNullOrEmpty(i)).ToList();
             Assert.AreEqual<int>(numOfIterations, recordSetValues.Count);
         }
@@ -237,11 +236,15 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
 
     public class mockEsb : IEsbChannel
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public mockEsb(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -307,22 +310,19 @@ namespace Dev2.Activities.Specs.Toolbox.LoopConstructs.ForEach
         public IExecutionEnvironment ExecuteSubRequest(IDSFDataObject dataObject, Guid workspaceID, string inputDefs, string outputDefs,
                                       out ErrorResultTO errors, int update,bool b)
         {
-            List<string> inputList;
-            List<string> outputList;
-            List<int> updateValues;
-            if (!scenarioContext.TryGetValue("indexUpdate", out updateValues))
+            if (!scenarioContext.TryGetValue("indexUpdate", out List<int> updateValues))
             {
                 updateValues = new List<int>();
                 scenarioContext.Add("indexUpdate", updateValues);
             }
 
-            if(!scenarioContext.TryGetValue("inputDefs", out inputList))
+            if (!scenarioContext.TryGetValue("inputDefs", out List<string> inputList))
             {
                 inputList = new List<string>();
                 scenarioContext.Add("inputDefs", inputList);
             }
 
-            if(!scenarioContext.TryGetValue("outputDefs", out outputList))
+            if(!scenarioContext.TryGetValue("outputDefs", out List<string> outputList))
             {
                 outputList = new List<string>();
                 scenarioContext.Add("outputDefs", outputList);

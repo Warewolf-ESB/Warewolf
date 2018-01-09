@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 
 namespace Dev2.Common.Interfaces
 {
-    internal interface IAssignManager
+    interface IAssignManager
     {
         void AssignAmPm(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value);
         void AssignMilliseconds(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,9 +20,9 @@ namespace Dev2.Diagnostics
     {
         #region Class Members
 
-        private readonly DateTimeToStringConverter _dateTimeToStringConverter;
-        private readonly TimeSpanToStringConverter _timeSpanToStringConverter;
-        private readonly EnumToStringConverter _enumToStringConverter;
+        readonly DateTimeToStringConverter _dateTimeToStringConverter;
+        readonly TimeSpanToStringConverter _timeSpanToStringConverter;
+        readonly EnumToStringConverter _enumToStringConverter;
 
         #endregion Class Members
 
@@ -70,40 +70,80 @@ namespace Dev2.Diagnostics
             }
 
             filterText = filterText.ToLower();
-            IDebugState debugState = content as IDebugState;
 
-            if(debugState != null)
+            if (content is IDebugState debugState)
             {
-                string convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
-                if(convertedActivityType.ToLower().Contains(filterText)) return true;
-
-                if(debugState.ActivityType.ToString().ToLower().Contains(filterText)) return true;
-                if(debugState.DisplayName != null && debugState.DisplayName.ToLower().Contains(filterText)) return true;
-                if(debugState.ActivityType == ActivityType.Step && debugState.Name != null && debugState.Name.ToLower().Contains(filterText)) return true;
-                if(debugState.ActivityType == ActivityType.Workflow && debugState.Server != null && debugState.Server.ToLower().Contains(filterText)) return true;
-                if(debugState.Version != null && debugState.Version.ToLower().Contains(filterText)) return true;
-
-                if(debugState.ActivityType == ActivityType.Step)
+                var convertedActivityType = Convert.ToString(_enumToStringConverter.Convert(debugState.ActivityType, null, null, null));
+                if (convertedActivityType.ToLower().Contains(filterText))
                 {
-                    string convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
-                    if(convertedDuration.ToLower().Contains(filterText)) return true;
+                    return true;
                 }
 
-                if(debugState.ActivityType == ActivityType.Workflow)
+                if (debugState.ActivityType.ToString().ToLower().Contains(filterText))
                 {
-                    string convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
-                    if(debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText)) return true;
-
-                    string convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
-                    if(debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText)) return true;
+                    return true;
                 }
 
-                if(debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText))) return true;
-                if(debugState.Outputs != null && debugState.Outputs.Any(o => o.Contains(filterText))) return true;
+                if (debugState.DisplayName != null && debugState.DisplayName.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.ActivityType == ActivityType.Step && debugState.Name != null && debugState.Name.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.ActivityType == ActivityType.Workflow && debugState.Server != null && debugState.Server.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.Version != null && debugState.Version.ToLower().Contains(filterText))
+                {
+                    return true;
+                }
+
+                if (debugState.ActivityType == ActivityType.Step)
+                {
+                    var convertedDuration = Convert.ToString(_timeSpanToStringConverter.Convert(debugState.Duration, null, null, null));
+                    if (convertedDuration.ToLower().Contains(filterText))
+                    {
+                        return true;
+                    }
+                }
+
+                if (debugState.ActivityType == ActivityType.Workflow)
+                {
+                    var convertedStartTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.StartTime, null, null, null));
+                    if (debugState.StateType == StateType.Before && convertedStartTime.ToLower().Contains(filterText))
+                    {
+                        return true;
+                    }
+
+                    var convertedEndTime = Convert.ToString(_dateTimeToStringConverter.Convert(debugState.EndTime, null, null, null));
+                    if (debugState.StateType == StateType.After && convertedEndTime.ToLower().Contains(filterText))
+                    {
+                        return true;
+                    }
+                }
+
+                if (debugState.Inputs != null && debugState.Inputs.Any(o => o.Contains(filterText)))
+                {
+                    return true;
+                }
+
+                if (debugState.Outputs != null && debugState.Outputs.Any(o => o.Contains(filterText)))
+                {
+                    return true;
+                }
             }
-            else if(content is string && content.ToString().ToLower().Contains(filterText))
+            else
             {
-                return true;
+                if (content is string && content.ToString().ToLower().Contains(filterText))
+                {
+                    return true;
+                }
             }
 
             return false;

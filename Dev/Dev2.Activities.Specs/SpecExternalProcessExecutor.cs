@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using Dev2.Common;
 
 namespace Dev2.Activities.Specs
 {
-    internal class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
+    class SpecExternalProcessExecutor : ISpecExternalProcessExecutor
     {
         #region Implementation of IExternalProcessExecutor
 
@@ -28,9 +29,14 @@ namespace Dev2.Activities.Specs
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, "Warewolf Error");
             }
 
+        }
+
+        public Process Start(ProcessStartInfo startInfo)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

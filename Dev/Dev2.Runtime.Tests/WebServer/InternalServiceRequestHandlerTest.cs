@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,7 +44,7 @@ namespace Dev2.Tests.Runtime.WebServer
         public void InternalServiceRequestHandler_ProcessRequest_WhenMalformedConnectionId_ExpectException()
         {
             //------------Setup for test--------------------------
-            Mock<IPrincipal> principle = new Mock<IPrincipal>();
+            var principle = new Mock<IPrincipal>();
             principle.Setup(p => p.Identity.Name).Returns("FakeUser");
 
             var eer = new EsbExecuteRequest
@@ -64,9 +64,9 @@ namespace Dev2.Tests.Runtime.WebServer
         public void InternalServiceRequestHandler_ProcessRequest_WhenNullExecutingUserInFirstOverload_ExpectException()
         {
             //------------Setup for test--------------------------
-            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
-            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            var ctx = new Mock<ICommunicationContext>();
+            var boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
+            var queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost"));
@@ -84,9 +84,9 @@ namespace Dev2.Tests.Runtime.WebServer
         public void InternalServiceRequestHandler_ProcessRequest_WhenExecutingUser()
         {
             //------------Setup for test--------------------------
-            Mock<ICommunicationContext> ctx = new Mock<ICommunicationContext>();
-            NameValueCollection boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
-            NameValueCollection queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
+            var ctx = new Mock<ICommunicationContext>();
+            var boundVariables = new NameValueCollection { { "servicename", "ping" }, { "instanceid", "" }, { "bookmark", "" } };
+            var queryString = new NameValueCollection { { GlobalConstants.DLID, Guid.Empty.ToString() }, { "wid", Guid.Empty.ToString() } };
             ctx.Setup(c => c.Request.BoundVariables).Returns(boundVariables);
             ctx.Setup(c => c.Request.QueryString).Returns(queryString);
             ctx.Setup(c => c.Request.Uri).Returns(new Uri("http://localhost:3142/secure/Testing123.json?<DataList></DataList>&wid=7481a128-cf36-427c-90d7-daa32368af8d"));
@@ -111,7 +111,7 @@ namespace Dev2.Tests.Runtime.WebServer
             {
                 { "DebugPayload", new StringBuilder("<DataList>Value:SomeStringAsValue,IsDebug:true</DataList>") }
             };
-            EsbExecuteRequest eer = new EsbExecuteRequest
+            var eer = new EsbExecuteRequest
             {
                 ServiceName = "Ping",
                 Args = args,
@@ -146,6 +146,56 @@ namespace Dev2.Tests.Runtime.WebServer
             internalServiceRequestHandler.ProcessRequest(eer, Guid.Empty, Guid.Empty, Guid.NewGuid().ToString());
 
         }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildStudioUrl_GivenPayLoad_BuildCorrect_WebURL()
+        {
+            //------------Setup for test--------------------------
+            var executingUser = new Mock<IPrincipal>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(true);
+            var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
+
+            var privateObject = new PrivateObject(internalServiceRequestHandler);
+            var xElement = XML.XmlResource.Fetch("DebugPayload");
+            var s = xElement.ToString();
+            var invoke = privateObject.Invoke("BuildStudioUrl", s).ToString();
+            //------------Execute Test---------------------------
+            Assert.IsNotNull(invoke);
+            Assert.IsFalse(invoke.Contains(" "));
+            Assert.IsFalse(invoke.Contains(Environment.NewLine));
+        }
+
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        public void BuildStudioUrl_GivenPayLoad_BuildCorrect_WebURL_StripDebugInfo()
+        {
+            //------------Setup for test--------------------------
+            var executingUser = new Mock<IPrincipal>();
+            var resourceCatalog = new Mock<IResourceCatalog>();
+            var authorizationService = new Mock<IAuthorizationService>();
+            authorizationService.Setup(service => service.IsAuthorized(AuthorizationContext.Contribute, Guid.Empty.ToString())).Returns(true);
+            var internalServiceRequestHandler = new InternalServiceRequestHandler(resourceCatalog.Object, authorizationService.Object) { ExecutingUser = executingUser.Object };
+
+            var privateObject = new PrivateObject(internalServiceRequestHandler);
+            var xElement = XML.XmlResource.Fetch("DebugPayload");
+            var s = xElement.ToString();
+            //------------Test Preconditions---------------------------
+            var invoke = privateObject.Invoke("BuildStudioUrl", s).ToString();
+            Assert.IsNotNull(invoke);
+            Assert.IsFalse(invoke.Contains(" "));
+            Assert.IsFalse(invoke.Contains(Environment.NewLine));
+            //------------Execute Test---------------------------
+            Assert.IsFalse(invoke.Contains("BDSDebugMode"));
+            Assert.IsFalse(invoke.Contains("DebugSessionID"));
+            Assert.IsFalse(invoke.Contains("EnvironmentID"));
+            const string expected = "<DataList><input>a</input><rec%20json:Array=\"true\"%20xmlns:json=\"http://james.newtonking.com/projects/json\"><field>w</field></rec><obj><Name>nathi</Name></obj></DataList>";
+            Assert.AreEqual( expected, invoke);
+
+        }
+
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("InternalServiceRequestHandler_ProcessRequest")]

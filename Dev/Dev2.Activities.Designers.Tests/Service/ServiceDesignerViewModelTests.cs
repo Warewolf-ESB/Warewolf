@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,6 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.DataList.Contract;
 using Dev2.Providers.Errors;
 using Dev2.Providers.Events;
-using Dev2.Simulation;
 using Dev2.Studio.Core;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Core.Factories;
@@ -47,10 +46,8 @@ using Moq;
 using Moq.Language.Flow;
 using Moq.Protected;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using Dev2.Common.Interfaces;
-using Dev2.Studio.Core.Views;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.Service
 {
     [TestClass]
@@ -188,9 +185,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullModelItem_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServiceDesignerViewModel(null, null, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -200,9 +197,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullRootModel_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServiceDesignerViewModel(new Mock<ModelItem>().Object, null, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -212,9 +209,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEnvironmentRepository_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -224,10 +221,10 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullAsyncWorker_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
 
             new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IServerRepository>().Object, new Mock<IEventAggregator>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
 
@@ -237,9 +234,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [ExpectedException(typeof(ArgumentNullException))]
         public void ServiceDesignerViewModel_Constructor_NullEventPublisher_ThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ServiceDesignerViewModel(new Mock<ModelItem>().Object, new Mock<IContextualResourceModel>().Object, new Mock<IServerRepository>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -278,9 +275,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_Constructor")]
         [Description("ServiceDesignerViewModel constructor sets IsDeleted to true and removes other errors when the resource model has an error where the FixType is Delete.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_Constructor_ResourceContainingDeletedError_InitializesPropertiesCorrectly()
-        // ReSharper restore InconsistentNaming
+
         {
             var instanceID = Guid.NewGuid();
             var error1 = new ErrorInfo { InstanceID = instanceID, ErrorType = ErrorType.Critical, FixType = FixType.ReloadMapping, FixData = "xxxxx" };
@@ -352,24 +349,12 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #endregion
 
-        #region Design Validation Service
-
-
-
-
-        #endregion
-
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
         public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasSourceAndIsInvalidXml_NoErrorMessageAdded()
         {
-            //------------Setup for test--------------------------
-            Guid instanceID;
-            Mock<IServer> environment;
-            Mock<IContextualResourceModel> resourceModel;
-            Guid sourceID;
-            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID, true);
+            var mockRepo = SetupForSourceCheck(out Guid instanceID, out Mock<IServer> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID, true);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns((IResourceModel)null);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
             mockRepo.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(resourceModel.Object);
@@ -417,7 +402,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 DisplayName = helloWorld
             };
@@ -463,7 +447,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -511,14 +494,13 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -559,14 +541,13 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -607,14 +588,13 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             //---------------Precondition------------------------
             Assert.IsNotNull(viewModel);
             //------------Execute Test---------------------------
@@ -655,14 +635,13 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
             };
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            PrivateType privateType = new PrivateType(typeof(ServiceDesignerViewModel));
+            var privateType = new PrivateType(typeof(ServiceDesignerViewModel));
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------
@@ -702,7 +681,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -711,7 +689,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object,
                 new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker())
             { IsWorstErrorReadOnly = false };
-            PrivateObject privateType = new PrivateObject(viewModel);
+            var privateType = new PrivateObject(viewModel);
             var mock = new Mock<IComplexObjectItemModel>();
             mock.Setup(model => model.GetJson()).Returns("");
             //---------------Precondition------------------------
@@ -753,7 +731,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -800,7 +777,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -850,7 +826,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -900,7 +875,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 ServiceName = helloWorld,
                 DisplayName = "DsfActivity"
@@ -954,7 +928,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 DisplayName = string.Empty,
                 ServiceName = helloWorld
@@ -1000,7 +973,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 EnvironmentID = new InArgument<Guid>(Guid.Empty)
                 ,
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 Type = new InArgument<string>(resourceType),
                 DisplayName = string.Empty,
                 FriendlySourceName = "Other Server"
@@ -1020,12 +992,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_InitializeResourceModel")]
         public void ServiceDesignerViewModel_InitializeResourceModel_ServiceTypeHasSource_NoErrorMessageAdded()
         {
-            //------------Setup for test--------------------------
-            Guid instanceID;
-            Mock<IServer> environment;
-            Mock<IContextualResourceModel> resourceModel;
-            Guid sourceID;
-            var mockRepo = SetupForSourceCheck(out instanceID, out environment, out resourceModel, out sourceID);
+            var mockRepo = SetupForSourceCheck(out Guid instanceID, out Mock<IServer> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID);
 
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), false, false)).Returns(new Mock<IResourceModel>().Object);
             mockRepo.Setup(repository => repository.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceModel.Object);
@@ -1046,9 +1013,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_OpenParent")]
         [Description("ServiceDesignerViewModel OpenParent must not do anything if IsDeleted is true.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_OpenParent_WhenDeleted_DoesNothing()
-        // ReSharper restore InconsistentNaming
+
         {
             var eventAggregator = new Mock<IEventAggregator>();
             //eventAggregator.Setup(e => e.Publish(It.IsAny<EditActivityMessage>())).Verifiable();
@@ -1182,9 +1149,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Description("FixErrors when WorstError is None must do nothing.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_FixNoError_DoesNothing()
-        // ReSharper restore InconsistentNaming
+
         {
             var model = CreateServiceDesignerViewModel(Guid.NewGuid());
             Assert.IsFalse(model.ShowLarge, "FixErrors pre-condition for None error failed.");
@@ -1198,9 +1165,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Description("FixErrors when FixType is ReloadMapping must reload mapping.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_FixReloadMapping_Done()
-        // ReSharper restore InconsistentNaming
+
         {
             const string xml = @"<Args>
           <Input>[
@@ -1269,9 +1236,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Owner("Hagashen Naidu")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_DoesNotSetResourceModelValidWhenResourceStillHasErrors()
-        // ReSharper restore InconsistentNaming
+
         {
             //---------------------------------Setup-------------------------------------------------------------------------------------------------------
             const string xml = @"<Args>
@@ -1316,9 +1283,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestMethod]
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Owner("Travis Frisinger")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_RequiredMapping_Done()
-        // ReSharper restore InconsistentNaming
+
         {
             const string xml = @"<Args>
           <Input>[
@@ -1360,9 +1327,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_Required_Done()
-        // ReSharper restore InconsistentNaming
+
         {
             const string xml = @"<Args>
           <Input>[
@@ -1410,9 +1377,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_RequiredWhenMappingValid_ShouldRemoveError()
-        // ReSharper restore InconsistentNaming
+
         {
             const string xml = @"<Args>
           <Input>[
@@ -1449,9 +1416,9 @@ namespace Dev2.Activities.Designers.Tests.Service
         [TestCategory("ServiceDesignerViewModel_FixErrors")]
         [Description("FixErrors when FixType is MappingRequired must get a value for mapping to be fixed.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void ServiceDesignerViewModel_FixErrors_MulitpleRequiredWhenMappingValid_ShouldRemoveRequiredMappingErrors()
-        // ReSharper restore InconsistentNaming
+
         {
             const string xml = @"<Args>
           <Input>[
@@ -1513,7 +1480,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
 
@@ -1591,7 +1558,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -1667,7 +1633,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
@@ -1739,7 +1704,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>",
                 FriendlySourceName = "www.youtube.com"
@@ -1756,7 +1720,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
             environment.Setup(a => a.ResourceRepository).Returns(resRepo.Object);
             //------------Execute Test---------------------------
-            bool wasSet = false;
+            var wasSet = false;
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
             viewModel.PropertyChanged += (sender, args) =>
             {
@@ -1822,7 +1786,6 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>",
                 FriendlySourceName = "www.Dev2.com"
@@ -1884,11 +1847,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
-            // ReSharper disable MaximumChainedReferences
+            
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1906,20 +1869,19 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            // ReSharper disable MaximumChainedReferences
+            
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             //------------Execute Test---------------------------
-            // ReSharper disable UnusedVariable
+            
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, worker.Object);
-            // ReSharper restore UnusedVariable
+            
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
             var wasCalled = false;
@@ -1969,11 +1931,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
-            // ReSharper disable MaximumChainedReferences
+            
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -1991,16 +1953,15 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            // ReSharper disable MaximumChainedReferences
+            
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
-                // ReSharper restore MaximumChainedReferences
+                
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -2009,19 +1970,19 @@ namespace Dev2.Activities.Designers.Tests.Service
                 }
                 );
             //------------Execute Test---------------------------
-            // ReSharper disable UnusedVariable
+            
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
 
             //------------Events Setup---------------------------
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetInputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
-            // ReSharper disable MaximumChainedReferences
+            
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
-            // ReSharper restore MaximumChainedReferences
+            
             viewModel.MappingManager.MappingFactory = mappingF.Object;
-            // ReSharper restore UnusedVariable
+            
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
@@ -2069,11 +2030,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
-            // ReSharper disable MaximumChainedReferences
+            
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, true))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -2091,16 +2052,15 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            // ReSharper disable MaximumChainedReferences
+            
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
-                // ReSharper restore MaximumChainedReferences
+                
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -2109,19 +2069,19 @@ namespace Dev2.Activities.Designers.Tests.Service
                 }
                 );
             //------------Execute Test---------------------------
-            // ReSharper disable UnusedVariable
+            
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
 
             //------------Events Setup---------------------------
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetInputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
-            // ReSharper disable MaximumChainedReferences
+            
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
-            // ReSharper restore MaximumChainedReferences
+            
             viewModel.MappingManager.MappingFactory = mappingF.Object;
-            // ReSharper restore UnusedVariable
+            
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
@@ -2170,11 +2130,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
-            // ReSharper disable MaximumChainedReferences
+            
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -2192,16 +2152,15 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            // ReSharper disable MaximumChainedReferences
+            
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
-                // ReSharper restore MaximumChainedReferences
+                
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -2210,19 +2169,19 @@ namespace Dev2.Activities.Designers.Tests.Service
                 }
                 );
             //------------Execute Test---------------------------
-            // ReSharper disable UnusedVariable
+            
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
 
             //------------Events Setup---------------------------
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetOutputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
-            // ReSharper disable MaximumChainedReferences
+            
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
-            // ReSharper restore MaximumChainedReferences
+            
             viewModel.MappingManager.MappingFactory = mappingF.Object;
-            // ReSharper restore UnusedVariable
+            
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
@@ -2269,11 +2228,11 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceModel.Setup(model => model.DataList).Returns("<DataList><n1/></DataList>");
 
             var resources = new Mock<IResourceRepository>();
-            // ReSharper disable MaximumChainedReferences
+            
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
                   .Callback((Expression<Func<IResourceModel, bool>> expression, bool b, bool c) => Assert.IsTrue(expression.ToString().Contains("c => (c.ID == ")))
                   .Returns(resourceModel.Object).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             environment.Setup(a => a.ResourceRepository).Returns(resources.Object);
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(resourceModel.Object);
@@ -2291,16 +2250,15 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.NewGuid().ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs></Inputs>",
                 OutputMapping = "<Outputs></Outputs>"
             };
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            // ReSharper disable MaximumChainedReferences
+            
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>())).Callback(
-                // ReSharper restore MaximumChainedReferences
+                
                 (
                     System.Action a, System.Action b) =>
                 {
@@ -2309,9 +2267,9 @@ namespace Dev2.Activities.Designers.Tests.Service
                 }
                 );
             //------------Execute Test---------------------------
-            // ReSharper disable UnusedVariable
+            
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            // ReSharper restore UnusedVariable
+            
             environment.Setup(a => a.IsConnected).Returns(true);
             connection.Setup(a => a.Verify(It.IsAny<Action<ConnectResult>>(), true)).Verifiable();
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
@@ -2378,52 +2336,51 @@ namespace Dev2.Activities.Designers.Tests.Service
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = new InArgument<Guid>(Guid.Empty),
                 UniqueID = Guid.Empty.ToString(),
-                SimulationMode = SimulationMode.OnDemand,
                 InputMapping = "<Inputs><Input Name=\"n1\" Source=\"[[n1]]\" /></Inputs>",
                 OutputMapping = "<Outputs><Output Name=\"n1\" MapsTo=\"[[n1]]\" Value=\"[[n1]]\" /></Outputs>"
             };
 
             var modelItem = CreateModelItem(activity);
             var worker = new Mock<IAsyncWorker>();
-            // ReSharper disable MaximumChainedReferences
+            
             worker.Setup(a => a.Start(It.IsAny<System.Action>(), It.IsAny<System.Action>()))
                 .Callback((System.Action a, System.Action b) =>
-                // ReSharper restore MaximumChainedReferences
+                
                 {
                     a.Invoke();
                     b.Invoke();
                 }
                 );
             //------------Execute Test---------------------------
-            // ReSharper disable UnusedVariable
+            
 
 
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
             var webFact = new Mock<IWebActivityFactory>();
             var wa = new Mock<IWebActivity>();
-            // ReSharper disable MaximumChainedReferences
+            
             webFact.Setup(
                 a => a.CreateWebActivity(It.IsAny<Object>(), It.IsAny<IContextualResourceModel>(), It.IsAny<string>())).Returns(wa.Object).Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             viewModel.MappingManager.ActivityFactory = webFact.Object;
 
             var mappingF = new Mock<IDataMappingViewModelFactory>();
             var mapping = new Mock<IDataMappingViewModel>();
             mapping.Setup(a => a.GetOutputString(It.IsAny<IList<IInputOutputViewModel>>())).Returns("bob");
-            // ReSharper disable once MaximumChainedReferences
+            
             mappingF.Setup(a => a.CreateModel(It.IsAny<IWebActivity>(), It.IsAny<NotifyCollectionChangedEventHandler>()))
                     .Returns(mapping.Object);
             viewModel.MappingManager.MappingFactory = mappingF.Object;
 
-            // ReSharper restore UnusedVariable
-            // ReSharper disable MaximumChainedReferences
-            // ReSharper disable MaximumChainedReferences
+            
+            
+            
             resources.Setup(a => a.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false))
                 .Returns(resourceModel.Object)
                 .Callback((Expression<Func<IResourceModel, bool>> expression, bool b) => Assert.IsTrue(expression.ToString().Contains("c => (c.ResourceName == ")))
 
                 .Verifiable();
-            // ReSharper restore MaximumChainedReferences
+            
             environment.Setup(a => a.IsConnected).Returns(true);
 
             environment.Raise(a => a.ResourcesLoaded += null, new ResourcesLoadedEventArgs { Model = environment.Object });
@@ -2458,7 +2415,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
 
@@ -2483,19 +2440,19 @@ namespace Dev2.Activities.Designers.Tests.Service
             var resourceID = Guid.NewGuid();
 
             var resourceModel = CreateResourceModel(Guid.Empty, false, null);
-            ISetup<IContextualResourceModel, string> setupResourceModel = resourceModel.Setup(model => model.DataList);
+            var setupResourceModel = resourceModel.Setup(model => model.DataList);
             setupResourceModel.Returns("<DataList><n1/></DataList>");
 
 
             var rootModel = CreateResourceModel(Guid.Empty);
 
             var envRepository = new Mock<IServerRepository>();
-            ISetup<IServerRepository, IServer> setupFindSingle = envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>()));
+            var setupFindSingle = envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>()));
             setupFindSingle.Returns((IServer)null);
-            ISetup<IServerRepository, IServer> setupActiveEnvironment = envRepository.Setup(r => r.ActiveServer);
+            var setupActiveEnvironment = envRepository.Setup(r => r.ActiveServer);
             setupActiveEnvironment.Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.EnvironmentID), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(rootModel.Object.Environment.EnvironmentID), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
 
@@ -2528,7 +2485,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
@@ -2559,7 +2516,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IServer, bool>>>())).Returns(resourceModel.Object.Environment);
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString() };
 
             var modelItem = CreateModelItem(activity);
             var viewModel = new ServiceDesignerViewModel(modelItem, rootModel.Object, envRepository.Object, new Mock<IEventAggregator>().Object) { RunWorkflowAsync = true };
@@ -2592,7 +2549,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
             var resourceType = resourceModel.Object.ServerResourceType;
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), Type = new InArgument<string>(resourceType) };
 
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
@@ -2624,7 +2581,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             envRepository.Setup(r => r.ActiveServer).Returns(resourceModel.Object.Environment);
 
             var resourceType = resourceModel.Object.ResourceType.ToString();
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, Type = new InArgument<string>(resourceType) };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), Type = new InArgument<string>(resourceType) };
 
             var modelItem = CreateModelItem(activity);
             //------------Execute Test---------------------------
@@ -2639,7 +2596,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         #region CreateModelItem
 
-        private static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
+        static Mock<ModelItem> CreateModelItem(Guid uniqueID, Guid serviceID, Guid environmentID, params ModelProperty[] modelProperties)
         {
             const int OffSet = 4;
             var startIndex = 0;
@@ -2694,8 +2651,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static Mock<IContextualResourceModel> CreateResourceModel(Guid resourceID, bool resourceRepositoryReturnsNull, Mock<IContextualResourceModel> contextualResourceModel, params IErrorInfo[] resourceErrors)
         {
-            Mock<IResourceRepository> resourceRepository;
-            Mock<IContextualResourceModel> resourceModel = CreateResourceModel(resourceID, out resourceRepository, resourceErrors);
+            var resourceModel = CreateResourceModel(resourceID, out Mock<IResourceRepository> resourceRepository, resourceErrors);
             resourceRepository.Setup(r => r.FindSingle(It.IsAny<Expression<Func<IResourceModel, bool>>>(), true, false)).Returns(resourceRepositoryReturnsNull ? null : resourceModel.Object);
             if (resourceRepositoryReturnsNull)
             {
@@ -2751,10 +2707,10 @@ namespace Dev2.Activities.Designers.Tests.Service
             resourceRepository = new Mock<IResourceRepository>();
             resourceRepository.Setup(repository => repository.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(model.Object);
             var mockEnvironmentRepository = new Mock<IServerRepository>();
-            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>(), null)).Returns(new List<IServer> { environmentModel });
-            // ReSharper disable ObjectCreationAsStatement
+            mockEnvironmentRepository.Setup(e => e.LookupEnvironments(It.IsAny<IServer>())).Returns(new List<IServer> { environmentModel });
+            
             new ServerRepository(mockEnvironmentRepository.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             environment.Setup(e => e.ResourceRepository).Returns(resourceRepository.Object);
             return model;
         }
@@ -2838,7 +2794,7 @@ namespace Dev2.Activities.Designers.Tests.Service
 
         static Mock<IResourceRepository> SetupForSourceCheck(out Guid instanceID, out Mock<IServer> environment, out Mock<IContextualResourceModel> resourceModel, out Guid sourceID, bool mangleXaml = false)
         {
-            Mock<IResourceRepository> mockRepo = new Mock<IResourceRepository>();
+            var mockRepo = new Mock<IResourceRepository>();
             instanceID = Guid.NewGuid();
             var connection = new Mock<IEnvironmentConnection>();
             connection.Setup(conn => conn.ServerEvents).Returns(new EventPublisher());
@@ -2850,7 +2806,7 @@ namespace Dev2.Activities.Designers.Tests.Service
             environment.Setup(e => e.IsConnected).Returns(true);
 
             const string src = @"1afe38e9-a6f5-403d-9e52-06dd7ae11198";
-            string xaml = string.Format(@"<Action Name=""foobar"" Type=""InvokeWebService"" SourceID=""{0}"" SourceName=""dummy"" SourceMethod="""" RequestUrl="""" RequestMethod=""Post"" JsonPath=""""></Action>", src);
+            var xaml = string.Format(@"<Action Name=""foobar"" Type=""InvokeWebService"" SourceID=""{0}"" SourceName=""dummy"" SourceMethod="""" RequestUrl="""" RequestMethod=""Post"" JsonPath=""""></Action>", src);
 
             if (mangleXaml)
             {
@@ -2871,7 +2827,7 @@ namespace Dev2.Activities.Designers.Tests.Service
         #endregion
 
 
-        // ReSharper disable once UnusedParameter.Local
+        
         static ModelItem CreateModelItem(DsfActivity activity)
         {
             return ModelItemUtils.CreateModelItem(activity);
@@ -2890,7 +2846,7 @@ namespace Dev2.Activities.Designers.Tests.Service
                 rootModel.Setup(m => m.GetErrors(It.IsAny<Guid>())).Returns(new List<IErrorInfo>());
             }
             rootModel.Setup(r => r.UserPermissions).Returns(Permissions.Administrator);
-            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), SimulationMode = SimulationMode.OnDemand, ServiceName = name };
+            var activity = new DsfActivity { ResourceID = new InArgument<Guid>(resourceID), EnvironmentID = new InArgument<Guid>(Guid.Empty), UniqueID = Guid.NewGuid().ToString(), ServiceName = name };
 
             if (type != null)
             {
@@ -2925,9 +2881,9 @@ namespace Dev2.Activities.Designers.Tests.Service
             var environmentRepository = new Mock<IServerRepository>();
             environmentRepository.Setup(e => e.ActiveServer).Returns(activeEnvironment.Object);
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             var model = new ServiceDesignerViewModel(modelItem, rootModel.Object, environmentRepository.Object, new Mock<IEventAggregator>().Object, new SynchronousAsyncWorker());
-            // ReSharper restore ObjectCreationAsStatement
+            
             return model;
         }
 

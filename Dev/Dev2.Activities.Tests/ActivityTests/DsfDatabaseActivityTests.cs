@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,9 +32,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfDatabaseActivity_BeforeExecutionStart")]
         [Description("DsfDatabaseActivity BeforeExecutionStart constructs a valid database service execution.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfDatabaseActivity_UnitTest_BeforeExecutionStart_CreatesServiceExecutionAndInvokesServiceExecutionBeforeExecution()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var databaseActivity = new MockDsfDatabaseActivity();
@@ -52,13 +52,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfDatabaseActivity_ExecutionImpl")]
         [Description("DsfDatabaseActivity ExecutionImpl invokes the database service.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfDatabaseActivity_UnitTest_ExecutionImpl_InvokesDatabaseServiceExecution()
-        // ReSharper restore InconsistentNaming
+
         {
-            // ReSharper disable RedundantAssignment
-            ErrorResultTO errors = new ErrorResultTO();
-            // ReSharper restore RedundantAssignment
+            
+            var errors = new ErrorResultTO();
+
 
             var dataObj = new Mock<IDSFDataObject>();
 
@@ -81,9 +81,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfDatabaseActivity_AfterExecutionCompleted")]
         [Description("DsfDatabaseActivity AfterExecutionCompleted invokes DatabaseServiceExecution AfterExecution.")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfDatabaseActivity_UnitTest_AfterExecutionCompleted_InvokesServiceExecutionAfterExecution()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObj = new Mock<IDSFDataObject>();
 

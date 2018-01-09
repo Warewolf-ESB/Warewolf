@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Linq;
 using Dev2.Activities;
@@ -30,9 +29,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
 
     /// <summary>
@@ -41,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can read a folder's contents via FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-ReadFolder", "Read Folder", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Read_Folder")]
-    public class DsfFolderRead : DsfAbstractFileActivity, IPathInput
+    public class DsfFolderRead : DsfAbstractFileActivity, IPathInput,IEquatable<DsfFolderRead>
     {
 
         public DsfFolderRead()
@@ -87,42 +86,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
 
 
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
-                IActivityIOPath ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                var broker = ActivityIOFactory.CreateOperationsBroker();
+                var ioPath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
+                var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ioPath);
 
                 try
                 {
-                    IList<IActivityIOPath> listOfDir = broker.ListDirectory(endPoint, GetReadType());
-                    if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
+                    var listOfDir = broker.ListDirectory(endPoint, GetReadType());
+                    if (DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) != enRecordsetIndexType.Numeric)
                     {
-                        if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
+                        if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
-                            string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
-                            int indexToUpsertTo = 1;
-                            if(listOfDir != null)
+                            var indexToUpsertTo = 1;
+                            if (listOfDir != null)
                             {
-                                foreach(IActivityIOPath pa in listOfDir)
+                                foreach (IActivityIOPath pa in listOfDir)
                                 {
-                                    string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                    var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                         indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                     outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), pa.Path));
                                     indexToUpsertTo++;
                                 }
                             }
                         }
-                        else if(DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            if(listOfDir != null)
+                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                             {
-                                foreach(IActivityIOPath pa in listOfDir)
+                                if (listOfDir != null)
                                 {
-                                    outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                                    foreach (IActivityIOPath pa in listOfDir)
+                                    {
+                                        outputs.Add(DataListFactory.CreateOutputTO(Result, pa.Path));
+                                    }
                                 }
                             }
                         }
@@ -131,7 +133,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         if(listOfDir != null)
                         {
-                            string xmlList = string.Join(",", listOfDir.Select(c => c.Path));
+                            var xmlList = string.Join(",", listOfDir.Select(c => c.Path));
                             outputs.Add(DataListFactory.CreateOutputTO(Result));
                             outputs.Last().OutputStrings.Add(xmlList);
                         }
@@ -151,8 +153,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Properties
 
-        // ReSharper disable MemberCanBePrivate.Global
-        // ReSharper disable UnusedAutoPropertyAccessor.Global
+        
+        
         /// <summary>
         /// Gets or sets the files option.
         /// </summary>
@@ -178,7 +180,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Gets or sets the files and folders option.
         /// </summary>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         [Inputs("Files & Folders")]
         [FindMissing]
         public bool IsFilesAndFoldersSelected
@@ -204,14 +206,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private ReadTypes GetReadType()
+        ReadTypes GetReadType()
         {
-            if(IsFoldersSelected)
+            if (IsFoldersSelected)
             {
                 return ReadTypes.Folders;
             }
 
-            if(IsFilesSelected)
+            if (IsFilesSelected)
             {
                 return ReadTypes.Files;
             }
@@ -250,5 +252,37 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfFolderRead other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && IsFilesSelected == other.IsFilesSelected
+                && IsFoldersSelected == other.IsFoldersSelected 
+                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected 
+                && string.Equals(InputPath, other.InputPath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFolderRead) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

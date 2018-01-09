@@ -8,7 +8,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Warewolf.Web.UI.Tests</RootNamespace>
     <AssemblyName>Warewolf.Web.UI.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">15.0</VisualStudioVersion>
@@ -27,6 +27,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,28 +38,297 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accord, Version=3.7.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.3.7.0\lib\net45\Accord.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video, Version=3.7.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Accord.Video.3.7.0\lib\net45\Accord.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="Accord.Video.FFMPEG, Version=3.7.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=x86">
+      <HintPath>..\packages\Accord.Video.FFMPEG.3.7.0\lib\net45\Accord.Video.FFMPEG.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="WebDriver, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.WebDriver.3.4.0\lib\net40\WebDriver.dll</HintPath>
+    <Reference Include="WebDriver, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.WebDriver.3.5.2\lib\net40\WebDriver.dll</HintPath>
     </Reference>
-    <Reference Include="WebDriver.Support, Version=3.4.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Selenium.Support.3.4.0\lib\net40\WebDriver.Support.dll</HintPath>
+    <Reference Include="WebDriver.Support, Version=3.5.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Selenium.Support.3.5.2\lib\net40\WebDriver.Support.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExecutionLoggingTests.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="WebDriverExtentionMethods.cs" />
+    <Compile Include="BrowserWebDrivers\ChromeIncognitoWebDriver.cs" />
+    <Compile Include="BrowserWebDrivers\ChromeWebDriver.cs" />
+    <Compile Include="BrowserWebDrivers\FirefoxWebDriver.cs" />
+    <Compile Include="BrowserWebDrivers\InternetExplorerWebDriver.cs" />
+    <Compile Include="BrowserWebDrivers\OperaWebDriver.cs" />
+    <Compile Include="Web_UITests_For_Chome.cs" />
+    <Compile Include="GlobalConstants.cs" />
+    <Compile Include="ScreenRecording\FfMpegVideoRecorder.cs" />
+    <Compile Include="..\AssemblyCommonInfo.cs">
+      <Link>Properties\AssemblyCommonInfo.cs</Link>
+    </Compile>
+    <Compile Include="ScreenRecording\IVideoRecorder.cs" />
+    <Compile Include="BrowserWebDrivers\BaseWebDriver.cs" />
+    <Compile Include="Web_UITests_For_Firefox.cs" />
+    <Compile Include="Web_UITests_For_IE.cs" />
+    <Compile Include="Web_UITests_For_Opera.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="Convert NUnit tests to MSTest.ps1" />
     <None Include="packages.config" />
+    <None Include="..\Run Tests.ps1">
+      <Visible>False</Visible>
+      <Link>Run Tests.ps1</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="BrowserWebDrivers\Profiles\Chrome\CrashpadMetrics-active.pma" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\metadata" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\settings.dat" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Cookies" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Cookies-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Current Session" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Current Tabs" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\databases\Databases.db" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\databases\Databases.db-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\data_reduction_proxy_leveldb\000005.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\data_reduction_proxy_leveldb\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\data_reduction_proxy_leveldb\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\data_reduction_proxy_leveldb\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\data_reduction_proxy_leveldb\LOG.old" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\data_reduction_proxy_leveldb\MANIFEST-000004" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension Rules\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension Rules\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension Rules\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension Rules\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension Rules\LOG.old" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension Rules\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension State\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension State\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension State\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension State\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension State\LOG.old" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Extension State\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Favicons" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Favicons-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\History" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\History Provider Cache" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\History-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\IndexedDB\https_www.google.co.za_0.indexeddb.leveldb\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\IndexedDB\https_www.google.co.za_0.indexeddb.leveldb\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\IndexedDB\https_www.google.co.za_0.indexeddb.leveldb\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\IndexedDB\https_www.google.co.za_0.indexeddb.leveldb\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\IndexedDB\https_www.google.co.za_0.indexeddb.leveldb\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Last Session" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Last Tabs" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Extension Settings\ghbmnnjooekpmoecnnnilnnbdlolhkhi\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Extension Settings\ghbmnnjooekpmoecnnnilnnbdlolhkhi\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Extension Settings\ghbmnnjooekpmoecnnnilnnbdlolhkhi\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Extension Settings\ghbmnnjooekpmoecnnnilnnbdlolhkhi\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Extension Settings\ghbmnnjooekpmoecnnnilnnbdlolhkhi\LOG.old" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Extension Settings\ghbmnnjooekpmoecnnnilnnbdlolhkhi\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Storage\chrome-extension_pkedcjkdefgpdelpbcmbmeomcjbeemfm_0.localstorage" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Local Storage\chrome-extension_pkedcjkdefgpdelpbcmbmeomcjbeemfm_0.localstorage-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Login Data" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Login Data-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Network Action Predictor" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Network Action Predictor-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Origin Bound Certs" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Origin Bound Certs-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Preferences" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\previews_opt_out.db" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\previews_opt_out.db-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\QuotaManager" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\QuotaManager-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\README" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Secure Preferences" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\f41ff951-1515-4448-a1dd-4b691f496fc5\09bef4a5e3c18346_0" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\f41ff951-1515-4448-a1dd-4b691f496fc5\27fb9a86b6d6504f_0" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\f41ff951-1515-4448-a1dd-4b691f496fc5\b336251156d2a72e_0" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\f41ff951-1515-4448-a1dd-4b691f496fc5\fdf2cfeb8ad0eeac_0" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\f41ff951-1515-4448-a1dd-4b691f496fc5\index" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\f41ff951-1515-4448-a1dd-4b691f496fc5\index-dir\the-real-index" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\Database\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\Database\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\Database\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\Database\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\Database\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\ScriptCache\2cc80dabc69f58b6_0" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\ScriptCache\2cc80dabc69f58b6_1" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\ScriptCache\index" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\ScriptCache\index-dir\the-real-index" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Session Storage\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Session Storage\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Session Storage\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Session Storage\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Session Storage\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Shortcuts" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Shortcuts-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Data\LevelDB\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Data\LevelDB\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Data\LevelDB\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Data\LevelDB\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Data\LevelDB\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Extension Settings\pkedcjkdefgpdelpbcmbmeomcjbeemfm\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Extension Settings\pkedcjkdefgpdelpbcmbmeomcjbeemfm\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Extension Settings\pkedcjkdefgpdelpbcmbmeomcjbeemfm\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Extension Settings\pkedcjkdefgpdelpbcmbmeomcjbeemfm\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Sync Extension Settings\pkedcjkdefgpdelpbcmbmeomcjbeemfm\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Top Sites" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Top Sites-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\TransportSecurity" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Visited Links" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Web Applications\_crx_aohghmighlieiainnegkcijnfilokake\Google Docs.ico.md5" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Web Data" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Default\Web Data-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\First Run" />
+    <None Include="BrowserWebDrivers\Profiles\Chrome\Local State" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\addons.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\addonStartup.json.lz4" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\cert8.db" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\compatibility.ini" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\containers.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\content-prefs.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\cookies.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\crashes\store.json.mozlz4" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\datareporting\session-state.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\datareporting\state.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\extensions.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\favicons.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\favicons.sqlite-shm" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\favicons.sqlite-wal" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\formhistory.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\gmp-gmpopenh264\1.6\gmpopenh264.info" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\gmp-widevinecdm\1.4.8.903\manifest.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\gmp-widevinecdm\1.4.8.903\widevinecdm.dll.lib" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\handlers.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\key3.db" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\logins.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\parent.lock" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\permissions.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\places.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\places.sqlite-shm" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\places.sqlite-wal" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\pluginreg.dat" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\search.json.mozlz4" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\secmod.db" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\sessionCheckpoints.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\sessionstore-backups\upgrade.js-20170814072924" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\chrome\.metadata" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\chrome\.metadata-v2" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\chrome\idb\2918063365piupsah.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\moz-safe-about+home\.metadata" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\moz-safe-about+home\.metadata-v2" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\moz-safe-about+home\idb\818200132aebmoouht.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\times.json" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\webappsstore.sqlite" />
+    <None Include="BrowserWebDrivers\Profiles\Firefox\xulstore.json" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Bookmarks" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\BookmarksExtras" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Certificate Revocation Lists" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Cookies" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Cookies-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Current Session" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\default_partner_content.json" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension Rules\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension Rules\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension Rules\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension Rules\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension Rules\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension State\000003.log" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension State\CURRENT" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension State\LOCK" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension State\LOG" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension State\LOG.old" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Extension State\MANIFEST-000001" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Favicons" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Favicons-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\History" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\History Provider Cache" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\History-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\08afbdb4-5a20-4fe3-8bad-73bac7947036.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\0f658244-8c72-41f9-ae05-09c7ba0dbf43.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\2df13391-e60e-4b32-9733-37ef0bfd2c0d.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\4af2466b-0612-41b5-9abb-f6afac9380fe.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\c73b8715-d278-471d-b7e9-2eb066311d7e.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\e8c69bce-d763-40a0-9254-bdd534a664ea.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List IconsOld\eaa71514-cbfd-462e-9985-f28e61932507.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\1ef8a154-821b-4817-aae0-50c0e066f3d4.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\48acfbaf-0758-4f48-b5c0-ee4f81b0fc70.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\8c294406-9e2f-41b7-802c-839f6d580335.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\cf068b29-14c3-473c-9ee0-c0f0bde335e3.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\da8a181a-fb22-4cd8-b765-ed373d1405bf.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\ddc95eee-7a1e-422e-a7ef-f1accca23871.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Jump List Icons\ebf91875-2900-4eb8-ba74-419cf3dc6084.tmp" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Last Session" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Local State" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Local Storage\chrome_startpage_0.localstorage" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Local Storage\chrome_startpage_0.localstorage-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Login Data" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Login Data-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Network Action Predictor" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Network Action Predictor-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\opera_autoupdate.log" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Preferences" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\previews_opt_out.db" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\previews_opt_out.db-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Shortcuts" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Shortcuts-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\siteprefs.json" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\ssdfp2544.1.571262073" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\themes_backup\default_theme.zip" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Top Sites" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Top Sites-journal" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\TransportSecurity" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Visited Links" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Web Data" />
+    <None Include="BrowserWebDrivers\Profiles\Opera\Web Data-journal" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="BrowserWebDrivers\Profiles\Chrome\Default\Google Profile.ico" />
+    <Content Include="BrowserWebDrivers\Profiles\Chrome\Default\Service Worker\CacheStorage\b29fd75021ac5176aed3e7052440ac33521fea01\index.txt" />
+    <Content Include="BrowserWebDrivers\Profiles\Chrome\Default\Web Applications\_crx_aohghmighlieiainnegkcijnfilokake\Google Docs.ico" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\AlternateServices.txt" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\blocklist.xml" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\gmp-gmpopenh264\1.6\gmpopenh264.dll" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\gmp-widevinecdm\1.4.8.903\LICENSE.txt" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\gmp-widevinecdm\1.4.8.903\widevinecdm.dll" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\prefs.js" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\SecurityPreloadState.txt" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\sessionstore-backups\previous.js" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\sessionstore.js" />
+    <Content Include="BrowserWebDrivers\Profiles\Firefox\SiteSecurityServiceState.txt" />
+    <Content Include="BrowserWebDrivers\Profiles\Opera\browser.js" />
+    <Content Include="BrowserWebDrivers\Profiles\Opera\dictionaries\dictionaries.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\CertificateTransparency\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\Crashpad\reports\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\EVWhitelist\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\FileTypePolicies\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\OriginTrials\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\PepperFlash\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\pnacl\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\Safe Browsing\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\SSLErrorAssistant\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\Subresource Filter\Unindexed Rules\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\SwReporter\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Chrome\WidevineCdm\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\bookmarkbackups\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\crashes\events\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\gmp\WINNT_x86-msvc\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\minidumps\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\saved-telemetry-pings\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\chrome\idb\2918063365piupsah.files\" />
+    <Folder Include="BrowserWebDrivers\Profiles\Firefox\storage\permanent\moz-safe-about+home\idb\818200132aebmoouht.files\" />
+  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="('$(VisualStudioVersion)' == '10.0' or '$(VisualStudioVersion)' == '') and '$(TargetFrameworkVersion)' == 'v3.5'">
       <ItemGroup>
@@ -71,30 +341,29 @@
       </ItemGroup>
     </Otherwise>
   </Choose>
-  <ItemGroup>
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Common, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITest.Extension, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Microsoft.VisualStudio.TestTools.UITesting, Version=15.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <Private>False</Private>
-    </Reference>
-  </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>powershell -ExecutionPolicy ByPass -nologo -file "$(ProjectDir)Convert NUnit tests to MSTest.ps1"</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
-  <Import Project="..\packages\Selenium.Chrome.WebDriver.2.30\build\Selenium.Chrome.WebDriver.targets" Condition="Exists('..\packages\Selenium.Chrome.WebDriver.2.30\build\Selenium.Chrome.WebDriver.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
-    <Error Condition="!Exists('..\packages\Selenium.Chrome.WebDriver.2.30\build\Selenium.Chrome.WebDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.Chrome.WebDriver.2.30\build\Selenium.Chrome.WebDriver.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.IEDriver.3.5.1\build\Selenium.WebDriver.IEDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.IEDriver.3.5.1\build\Selenium.WebDriver.IEDriver.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.GeckoDriver.0.18.0\build\Selenium.WebDriver.GeckoDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.GeckoDriver.0.18.0\build\Selenium.WebDriver.GeckoDriver.targets'))" />
+    <Error Condition="!Exists('..\packages\Accord.3.7.0\build\Accord.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.3.7.0\build\Accord.targets'))" />
+    <Error Condition="!Exists('..\packages\Accord.Video.FFMPEG.3.7.0\build\Accord.Video.FFMPEG.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Accord.Video.FFMPEG.3.7.0\build\Accord.Video.FFMPEG.targets'))" />
+    <Error Condition="!Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.32.0\build\Selenium.WebDriver.ChromeDriver.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Selenium.WebDriver.ChromeDriver.2.32.0\build\Selenium.WebDriver.ChromeDriver.targets'))" />
   </Target>
+  <PropertyGroup>
+    <PostBuildEvent>if exist "$(TargetDir)WebDriverProfiles" rmdir /s /q "$(TargetDir)WebDriverProfiles"
+if exist "$(ProjectDir)BrowserWebDrivers\Profiles" if not exist "$(TargetDir)WebDriverProfiles" xcopy /Y /Q /R /S "$(ProjectDir)BrowserWebDrivers\Profiles" "$(TargetDir)WebDriverProfiles\"</PostBuildEvent>
+  </PropertyGroup>
+  <Import Project="..\packages\Selenium.WebDriver.IEDriver.3.5.1\build\Selenium.WebDriver.IEDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.IEDriver.3.5.1\build\Selenium.WebDriver.IEDriver.targets')" />
+  <Import Project="..\packages\Selenium.WebDriver.GeckoDriver.0.18.0\build\Selenium.WebDriver.GeckoDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.GeckoDriver.0.18.0\build\Selenium.WebDriver.GeckoDriver.targets')" />
+  <Import Project="..\packages\Accord.3.7.0\build\Accord.targets" Condition="Exists('..\packages\Accord.3.7.0\build\Accord.targets')" />
+  <Import Project="..\packages\Accord.Video.FFMPEG.3.7.0\build\Accord.Video.FFMPEG.targets" Condition="Exists('..\packages\Accord.Video.FFMPEG.3.7.0\build\Accord.Video.FFMPEG.targets')" />
+  <Import Project="..\packages\Selenium.WebDriver.ChromeDriver.2.32.0\build\Selenium.WebDriver.ChromeDriver.targets" Condition="Exists('..\packages\Selenium.WebDriver.ChromeDriver.2.32.0\build\Selenium.WebDriver.ChromeDriver.targets')" />
 </Project>

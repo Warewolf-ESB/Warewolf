@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,7 +33,7 @@ namespace Dev2.Tests.Runtime.Services
     {
 
 
-        private Mock<IServerSchedulerFactory> _factory;
+        Mock<IServerSchedulerFactory> _factory;
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
@@ -66,7 +66,7 @@ namespace Dev2.Tests.Runtime.Services
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("Services_ScheduledResource_Get")]
         [TestMethod]
-// ReSharper disable InconsistentNaming
+
         public void GetScheduledResources_Execute_ReturnsScheduledResources()
 
         {
@@ -122,14 +122,13 @@ namespace Dev2.Tests.Runtime.Services
 
             var first = result.First().Trigger;
             Assert.IsNotNull(first.Trigger);
-            var dailyTrigger = first.Trigger.Instance as DailyTrigger;
-            if(dailyTrigger != null)
+            if (first.Trigger.Instance is DailyTrigger dailyTrigger)
             {
                 Assert.AreEqual(21, dailyTrigger.DaysInterval);
             }
         }
 
-        private StringBuilder RunOutput()
+        StringBuilder RunOutput()
         {
             var esbMethod = new GetScheduledResources();
             _factory = new Mock<IServerSchedulerFactory>();
@@ -152,5 +151,5 @@ namespace Dev2.Tests.Runtime.Services
             return output;
         }
     }
-    // ReSharper restore InconsistentNaming
+    
 }

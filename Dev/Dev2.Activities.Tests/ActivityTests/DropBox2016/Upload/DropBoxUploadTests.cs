@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Activities.DropBox2016.UploadActivity;
 using Dev2.Common.Interfaces.Wrappers;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable ObjectCreationAsStatement
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropBoxUploadTests
     {
-        private Mock<IDropBoxUpload> CreateDropboxUploadMock()
+        Mock<IDropBoxUpload> CreateDropboxUploadMock()
         {
             var mock = new Mock<IDropBoxUpload>();
             var fileMetadata = new DropboxUploadSuccessResult(new FileMetadata());
@@ -22,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Upload
                  .Returns(fileMetadata);
             return mock;
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]

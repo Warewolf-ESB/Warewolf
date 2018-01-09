@@ -12,13 +12,10 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for ActivityDefaultWindow.xaml
-    /// </summary>
     public partial class ActivityDefaultWindow
     {
         readonly Grid _blackoutGrid = new Grid();
-        private static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
+        static readonly IPopupController PopupController = CustomContainer.Get<IPopupController>();
 
         public ActivityDefaultWindow()
         {
@@ -29,7 +26,9 @@ namespace Warewolf.Studio.Views
         void WindowBorderLess_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (Mouse.LeftButton == MouseButtonState.Pressed)
+            {
                 DragMove();
+            }
         }
 
         void WindowBorderLess_OnClosed(object sender, EventArgs e)
@@ -37,13 +36,9 @@ namespace Warewolf.Studio.Views
             PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
         }
 
-        #region Implementation of IComponentConnector
-
-        #endregion
-
         void DoneButton_OnClick(object sender, RoutedEventArgs e)
         {
-            bool valid = true;
+            var valid = true;
             var content = ControlContentPresenter.Content as ActivityDesignerTemplate;
 
             if (content == null)
@@ -52,8 +47,7 @@ namespace Warewolf.Studio.Views
             }
             else
             {
-                var dataContext = content.DataContext as DecisionDesignerViewModel;
-                if (dataContext != null)
+                if (content.DataContext is DecisionDesignerViewModel dataContext)
                 {
                     dataContext.Validate();
                     if (dataContext.Errors != null)
@@ -71,12 +65,11 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private bool ValidateSwitchCase(bool valid)
+        bool ValidateSwitchCase(bool valid)
         {
             var configureSwitchArm = ControlContentPresenter.Content as ConfigureSwitchArm;
-            var switchDesignerViewModel = configureSwitchArm?.DataContext as SwitchDesignerViewModel;
 
-            if (switchDesignerViewModel != null)
+            if (configureSwitchArm?.DataContext is SwitchDesignerViewModel switchDesignerViewModel)
             {
                 if (string.IsNullOrWhiteSpace(switchDesignerViewModel.SwitchExpression))
                 {
@@ -114,7 +107,7 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ActivityDefaultWindow_OnKeyUp(object sender, KeyEventArgs e)
+        void ActivityDefaultWindow_OnKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {

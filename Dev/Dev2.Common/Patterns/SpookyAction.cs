@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,10 +14,10 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Common
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     Base class for all spooky action at a distanced impls
@@ -27,19 +27,19 @@ namespace Dev2.Common
     public class SpookyAction<TReflect, THandle>
         where TReflect : ISpookyLoadable<THandle>
     {
-        private readonly ConcurrentDictionary<THandle, TReflect> _options =
+        readonly ConcurrentDictionary<THandle, TReflect> _options =
             new ConcurrentDictionary<THandle, TReflect>();
 
-        private bool _initialized;
+        bool _initialized;
 
         /// <summary>
         ///     Private method for intitailizing the list of options
         /// </summary>
-        private void Bootstrap()
+        void Bootstrap()
         {
-            Type type = typeof(TReflect);
+            var type = typeof(TReflect);
 
-            List<Type> types =
+            var types =
                 type.Assembly.GetTypes()
                     .Where(t => type.IsAssignableFrom(t) && !t.IsAbstract && !t.IsInterface)
                     .ToList();
@@ -57,8 +57,7 @@ namespace Dev2.Common
         /// <returns></returns>
         public TReflect FindMatch(THandle typeOf)
         {
-            TReflect result;
-            if (!_options.TryGetValue(typeOf, out result))
+            if (!_options.TryGetValue(typeOf, out TReflect result))
             {
                 lock (_options)
                 {

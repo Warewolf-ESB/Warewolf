@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,6 +15,11 @@ using Dev2.Activities.Designers2.Core;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 using Dev2.Studio.Interfaces;
+using System;
+using Dev2.TO;
+using Dev2.Studio.Core;
+using Dev2.Studio.Core.Activities.Utils;
+using Dev2.Activities.Factories.Case;
 
 namespace Dev2.Activities.Designers2.CaseConvert
 {
@@ -22,6 +27,7 @@ namespace Dev2.Activities.Designers2.CaseConvert
     {
         public ObservableCollection<string> ItemsList { get; private set; }
 
+        internal Func<string> _getDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public CaseConvertDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
@@ -49,7 +55,16 @@ namespace Dev2.Activities.Designers2.CaseConvert
 
         protected override IEnumerable<IActionableErrorInfo> ValidateCollectionItem(ModelItem mi)
         {
-            yield break;
+            var dto = mi.GetCurrentValue() as CaseConvertTO;
+            if (dto == null)
+            {
+                yield break;
+            }
+
+            foreach (var error in dto.GetRuleSet("StringToConvert", _getDatalistString?.Invoke()).ValidateRules("'StringToConvert'", () => mi.SetProperty("IsStringToConvertFocused", true)))
+            {
+                yield return error;
+            }
         }
 
         public override void UpdateHelpDescriptor(string helpText)

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
@@ -173,17 +173,17 @@ namespace Dev2.TaskScheduler.Wrappers.Test
 
 
         }
-        private static void AssertTriggerValues<T,U>(ITrigger sanitised, Trigger trig, Func<T,U,bool> fun ) where T : class where U : class
+        static void AssertTriggerValues<T, U>(ITrigger sanitised, Trigger trig, Func<T, U, bool> fun) where T : class where U : class
         {
             var instance = sanitised as T;
             var native = trig as U;
 
-            Assert.IsTrue(fun(instance,native));
+            Assert.IsTrue(fun?.Invoke(instance, native) ?? default(bool));
 
         }
 
 
-        private static void AssertEqual(Trigger trig, ITrigger sanitised)
+        static void AssertEqual(Trigger trig, ITrigger sanitised)
         {
             Assert.AreEqual(trig.Repetition.Duration, sanitised.Repetition.Instance.Duration);
             Assert.AreEqual(trig.Repetition.Interval, sanitised.Repetition.Instance.Interval);
@@ -200,7 +200,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateRootFolder_GivenTaskFolder_ShouldReturnDevtaskFolder()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -214,7 +214,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTask_GivenTask_ShouldReturnDev2Task()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -228,7 +228,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskDefinition_GivenTaskDefinition_ShouldReturnDev2TaskDefinition()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -242,7 +242,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateActionCollection_GivenActionCollection_ShouldReturnDev2ActionCollection()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -256,7 +256,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskSettings_GivenTaskSettings_ShouldReturnDev2TaskSettings()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -271,7 +271,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTriggerCollection_GivenTriggerCollection_ShouldReturnDev2TriggerCollection()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -285,7 +285,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskCollection_GivenTaskCollection_ShouldReturnDev2TaskCollection()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -299,7 +299,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTrigger_GivenTrigger_ShouldReturnDev2Trigger()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -313,7 +313,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateRepetitionPattern_GivenRepetitionPattern_ShouldReturnDev2RepetitionPattern()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -326,7 +326,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateAction_GivenRepetitionAction_ShouldReturnDev2Action()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -340,14 +340,14 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskService_GivenValidArgs_ShouldReturnCorrectly()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
             const string targetServer = "localHost";
             const string userName = "nathi";
             const string accountDomain = "local";
-             string password = "";
+             var password = "";
             try
             {
                 var dev2TaskService = factory.CreateTaskService(targetServer, userName, accountDomain, password, true);
@@ -375,7 +375,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateExecAction_GivenValidArgs_ShouldReturnCorreclty()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -389,7 +389,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateExecAction_GivenAction_ShouldReturnCorreclty()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             var action = new Mock<IAction>();
             action.Setup(action1 => action1.Instance).Returns(Microsoft.Win32.TaskScheduler.Action.CreateAction(TaskActionType.SendEmail));
             //---------------Assert Precondition----------------
@@ -405,7 +405,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskEvent_GivenTaskEvent_ShouldDev2TaskEvent()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -419,7 +419,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskEventLog_Givenpath_ShouldReturnDev2TaskEventLog()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------
@@ -432,7 +432,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void CreateTaskService_ShouldReturnCorrectly()
         {
             //---------------Set up test pack-------------------
-            TaskServiceConvertorFactory factory = new TaskServiceConvertorFactory();
+            var factory = new TaskServiceConvertorFactory();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(factory);
             //---------------Execute Test ----------------------

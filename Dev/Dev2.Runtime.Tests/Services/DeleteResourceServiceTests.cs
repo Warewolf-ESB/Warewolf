@@ -13,7 +13,7 @@ using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -53,7 +53,7 @@ namespace Dev2.Tests.Runtime.Services
         public void HandlesType_GivenServiceIsCreated_ShouldHandleCorrectly()
         {
             //---------------Set up test pack-------------------
-            DeleteResource resourceService = new DeleteResource();
+            var resourceService = new DeleteResource();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -67,7 +67,7 @@ namespace Dev2.Tests.Runtime.Services
         public void CreateServiceEntry_GivenServiceIsCreated_ShouldCreateCorrectDynamicService()
         {
             //---------------Set up test pack-------------------
-            DeleteResource resourceService = new DeleteResource();
+            var resourceService = new DeleteResource();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -85,12 +85,12 @@ namespace Dev2.Tests.Runtime.Services
             var resourceCatalog = new Mock<IResourceCatalog>();
             var workScpace = new Mock<IWorkspace>();
             workScpace.Setup(workspace => workspace.ID).Returns(GlobalConstants.ServerWorkspaceID);
-            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(new ResourceCatalogResult()
+            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ResourceCatalogResult()
             {
                 Message = "Hi", Status = ExecStatus.Success
             });
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DeleteResource resourceService = new DeleteResource(resourceCatalog.Object, testCatalog.Object);
+            var resourceService = new DeleteResource(resourceCatalog.Object, testCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------
@@ -117,13 +117,13 @@ namespace Dev2.Tests.Runtime.Services
             var resourceCatalog = new Mock<IResourceCatalog>();
             var workScpace = new Mock<IWorkspace>();
             workScpace.Setup(workspace => workspace.ID).Returns(Guid.NewGuid);
-            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<bool>())).Returns(new ResourceCatalogResult()
+            resourceCatalog.Setup(catalog => catalog.DeleteResource(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(new ResourceCatalogResult()
             {
                 Message = "Hi",
                 Status = ExecStatus.Success
             });
             const string guid = "7B71D6B8-3E11-4726-A7A0-AC924977D6E5";
-            DeleteResource resourceService = new DeleteResource(resourceCatalog.Object, testCatalog.Object);
+            var resourceService = new DeleteResource(resourceCatalog.Object, testCatalog.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(resourceService);
             //---------------Execute Test ----------------------

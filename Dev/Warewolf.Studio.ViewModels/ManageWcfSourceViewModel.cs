@@ -12,22 +12,22 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Common.Interfaces.Core;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable NotAccessedField.Local
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageWcfSourceViewModel : SourceBaseImpl<IWcfServerSource>, IManageWcfSourceViewModel
     {
-        private readonly IWcfSourceModel _updateManager;
-        private readonly IServer _environment;
-        private CancellationTokenSource _token;
+        readonly IWcfSourceModel _updateManager;
+        readonly IServer _environment;
+        CancellationTokenSource _token;
         public ICommand TestCommand { get; set; }
         public ICommand CancelTestCommand { get; set; }
         public ICommand SaveCommand { get; set; }
         public string HeaderText { get; set; }
 
-        private string _endPointUrl;
+        string _endPointUrl;
 
         public ManageWcfSourceViewModel(IWcfSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
             : this(updateManager, aggregator, asyncWorker, environment)
@@ -67,7 +67,7 @@ namespace Warewolf.Studio.ViewModels
             CancelTestCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CancelTest, CanCancelTest);
         }
 
-        private bool _testPassed;
+        bool _testPassed;
         public bool TestPassed
         {
             get { return _testPassed; }
@@ -79,7 +79,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool _testFailed;
+        bool _testFailed;
         public bool TestFailed
         {
             get
@@ -120,13 +120,13 @@ namespace Warewolf.Studio.ViewModels
 
         public ICommand RefreshCommand { get; set; }
 
-        private string _testMessage;
+        string _testMessage;
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
+            
             set
-            // ReSharper restore UnusedMember.Local
+            
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
@@ -134,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool _testing;
+        bool _testing;
         public bool Testing
         {
             get
@@ -160,6 +160,7 @@ namespace Warewolf.Studio.ViewModels
             t.ContinueWith(a => Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 if (!_token.IsCancellationRequested)
+                {
                     switch (t.Status)
                     {
                         case TaskStatus.Faulted:
@@ -179,7 +180,23 @@ namespace Warewolf.Studio.ViewModels
                                 Testing = false;
                                 break;
                             }
+
+                        case TaskStatus.Created:
+                            break;
+                        case TaskStatus.WaitingForActivation:
+                            break;
+                        case TaskStatus.WaitingToRun:
+                            break;
+                        case TaskStatus.Running:
+                            break;
+                        case TaskStatus.WaitingForChildrenToComplete:
+                            break;
+                        case TaskStatus.Canceled:
+                            break;
+                        default:
+                            break;
                     }
+                }
             }));
             t.Start();
         }
@@ -187,7 +204,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(EndpointUrl))
             {
                 return false;
@@ -207,7 +227,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private string _resourceName;
+        string _resourceName;
         public string ResourceName
         {
             get
@@ -293,7 +313,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return _requestServiceNameViewModel.Result;
                 }
-                // ReSharper disable once RedundantIfElseBlock
+                
                 else
                 {
                     throw _requestServiceNameViewModel.Exception;
@@ -313,7 +333,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Item = src;
                     _wcfServerSource = src;
                     ResourceName = _wcfServerSource.Name;
@@ -338,10 +361,11 @@ namespace Warewolf.Studio.ViewModels
             HeaderText = (_wcfServerSource == null ? ResourceName : _wcfServerSource.Name).Trim();
             Header = (_wcfServerSource == null ? ResourceName : _wcfServerSource.Name).Trim();
         }
-        private IWcfServerSource _wcfServerSource;
+        IWcfServerSource _wcfServerSource;
         public IWcfServerSource ToSource()
         {
             if (_wcfServerSource == null)
+            {
                 return new WcfServiceSourceDefinition()
                 {
                     EndpointUrl = EndpointUrl,
@@ -351,7 +375,7 @@ namespace Warewolf.Studio.ViewModels
                     ResourceID = _wcfServerSource?.Id ?? Guid.NewGuid(),
                     Id = _wcfServerSource?.Id ?? Guid.NewGuid()
                 };
-            // ReSharper disable once RedundantIfElseBlock
+            }
             else
             {
                 _wcfServerSource.EndpointUrl = EndpointUrl;

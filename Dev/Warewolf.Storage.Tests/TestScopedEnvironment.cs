@@ -8,14 +8,14 @@ using Newtonsoft.Json.Linq;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Storage.Tests
 {
     [TestClass]
     public class TestScopedEnvironment
     {
-        private Mock<IExecutionEnvironment> _mockEnv;
+        Mock<IExecutionEnvironment> _mockEnv;
 
         [TestInitialize]
         public void Setup()
@@ -33,7 +33,7 @@ namespace Warewolf.Storage.Tests
 
             //------------Execute Test---------------------------
             //------------Assert Results-------------------------
-            PrivateObject p = new PrivateObject(scopedEnvironment);
+            var p = new PrivateObject(scopedEnvironment);
             Assert.AreEqual(_mockEnv.Object, p.GetField("_inner"));
             Assert.AreEqual("bob", p.GetField("_datasource").ToString());
             Assert.AreEqual("builder", p.GetField("_alias").ToString());
@@ -158,7 +158,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_AssignWithFrame_Basic_ExpectAssignWithFrameReplaced()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a,  int b) =>
             {
@@ -177,7 +177,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_AssignWithFrame_ExpectNoReplacement_IfNoAlias()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a, int b) =>
             {
@@ -241,7 +241,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_EvalRecordSetIndexes_Basic_ExpectAssignWithFrameReplaced()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a, int b) =>
             {
@@ -260,7 +260,7 @@ namespace Warewolf.Storage.Tests
         public void ScopedEnvironment_EvalRecordSetIndexes()
         {
             //------------Setup for test--------------------------
-            bool replaced = false;
+            var replaced = false;
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, "[[Person(*)]]", "[[a]]");
             _mockEnv.Setup(a => a.AssignWithFrame(It.IsAny<IAssignValue>(), It.IsAny<int>())).Callback((IAssignValue a, int b) =>
             {
@@ -582,7 +582,7 @@ namespace Warewolf.Storage.Tests
             var personName = "[[@Person(*).Name]]";
             var scopedEnvironment = new ScopedEnvironment(_mockEnv.Object, personName, "[[a]]");
             var clause = new Func<DataStorage.WarewolfAtom, DataStorage.WarewolfAtom>(atom => atom);
-            _mockEnv.Setup(environment => environment.Eval(personName, 0, false, false))
+            _mockEnv.Setup(environment => environment.Eval(personName, 0))
                 .Returns(() => CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing));            
             scopedEnvironment.ApplyUpdate(personName, clause, 0);
         }
@@ -733,35 +733,35 @@ namespace Warewolf.Storage.Tests
          void SetupReplacementFunction(ScopedEnvironment env, IEnumerable<string> originals, IEnumerable<string> replacements, Action<ScopedEnvironment> envAction)
         {
             var orzipped = originals.Zip(replacements, (a, b) => new Tuple<string, string>(a, b));
-           PrivateObject p = new PrivateObject(env);
-           var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int,string,string>;
+           var p = new PrivateObject(env);
+            var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int,string,string>;
            p.SetFieldOrProperty("_doReplace",new Func<string, int,string,string>(
                (s, i,val) =>
                {
 
-                   // ReSharper disable once PossibleNullReferenceException
+                   
                    var replaced =  fun(s,i,val);
                    Assert.IsTrue(orzipped.Any(a=>a.Item1==val&&a.Item2==replaced));
                   
                    return replaced;
                }));
-           envAction(env);
+            envAction?.Invoke(env);
         }
 
         void SetupReplacementFunctionDoesNotOccur(ScopedEnvironment env, Action<ScopedEnvironment> envAction)
         {
-            PrivateObject p = new PrivateObject(env);
+            var p = new PrivateObject(env);
             var fun = p.GetFieldOrProperty("_doReplace") as Func<string, int, string, string>;
             p.SetFieldOrProperty("_doReplace", new Func<string, int, string, string>(
                 (s, i, val) =>
                 {
-                    // ReSharper disable once PossibleNullReferenceException
+                    
                     var replaced = fun(s, i, val);
 
                     Assert.AreEqual(replaced, val);
                     return replaced;
                 }));
-            envAction(env);
+            envAction?.Invoke(env);
 
         }
     }

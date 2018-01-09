@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,9 +27,9 @@ namespace Dev2.Intellisense.Helper
     {
         Disk,
         Device ,
-// ReSharper disable InconsistentNaming
+
         IPC,
-// ReSharper restore InconsistentNaming
+
         Special = -2147483648
     }
 
@@ -46,13 +46,13 @@ namespace Dev2.Intellisense.Helper
 
         readonly string _networkName;
         readonly string _shareServer;
-        private readonly ShareType _shareType;
+        readonly ShareType _shareType;
 
         #endregion
 
         #region Constructor
 
-       
+
         public Share(string server, string netName, ShareType shareType)
         {
             if(ShareType.Special == shareType && "IPC$" == netName)
@@ -151,22 +151,20 @@ namespace Dev2.Intellisense.Helper
 
         #region Enumerate shares
 
-// ReSharper disable InconsistentNaming
+
         static void EnumerateSharesNT(string server, ShareCollection shares)
-// ReSharper restore InconsistentNaming
+
         {
-            int level = 2;
-            int hResume = 0;
-            IntPtr pBuffer = IntPtr.Zero;
+            var level = 2;
+            var hResume = 0;
+            var pBuffer = IntPtr.Zero;
 
             try
             {
-                int entriesRead;
-                int totalEntries;
-                int nRet = NetShareEnum(server, level, out pBuffer, -1,
-                    out entriesRead, out totalEntries, ref hResume);
+                var nRet = NetShareEnum(server, level, out pBuffer, -1,
+                    out int entriesRead, out int totalEntries, ref hResume);
 
-                if(ErrorAccessDenied == nRet)
+                if (ErrorAccessDenied == nRet)
                 {
                     level = 1;
                     nRet = NetShareEnum(server, level, out pBuffer, -1,
@@ -175,20 +173,20 @@ namespace Dev2.Intellisense.Helper
 
                 if(NoError == nRet && entriesRead > 0)
                 {
-                    Type t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
-                    int offset = Marshal.SizeOf(t);
+                    var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
+                    var offset = Marshal.SizeOf(t);
 
-                    for(int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
+                    for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
                     {
-                        IntPtr pItem = new IntPtr(lpItem);
-                        if(1 == level)
+                        var pItem = new IntPtr(lpItem);
+                        if (1 == level)
                         {
-                            ShareInfo1 si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
+                            var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
                             shares.Add(si.NetName, string.Empty, si.ShareType, si.Remark);
                         }
                         else
                         {
-                            ShareInfo2 si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
+                            var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
                             shares.Add(si.NetName, si.Path, si.ShareType, si.Remark);
                         }
                     }
@@ -267,10 +265,6 @@ namespace Dev2.Intellisense.Helper
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Remark;
-
-            public readonly int Permissions;
-            public readonly int MaxUsers;
-            public readonly int CurrentUsers;
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;

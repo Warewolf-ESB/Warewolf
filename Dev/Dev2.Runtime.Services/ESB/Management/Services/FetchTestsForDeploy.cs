@@ -1,54 +1,34 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBeInternal
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class FetchTestsForDeploy : IEsbManagementEndpoint
+    public class FetchTestsForDeploy : DefaultEsbManagementEndpoint
     {
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
-        {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Fetch Tests for deploy Service");
+                Dev2Logger.Info("Fetch Tests for deploy Service", GlobalConstants.WarewolfInfo);
 
-                StringBuilder resourceIdString;
-                values.TryGetValue("resourceID", out resourceIdString);
+                values.TryGetValue("resourceID", out StringBuilder resourceIdString);
                 if (resourceIdString == null)
                 {
                     throw new InvalidDataContractException("resourceID is missing");
                 }
-                Guid resourceId;
-                if (!Guid.TryParse(resourceIdString.ToString(), out resourceId))
+                if (!Guid.TryParse(resourceIdString.ToString(), out Guid resourceId))
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
@@ -57,7 +37,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     serviceTestModelTO.Password = SecurityEncryption.Encrypt(serviceTestModelTO.Password);
                 }
-                CompressedExecuteMessage message = new CompressedExecuteMessage();
+                var message = new CompressedExecuteMessage();
                 message.SetMessage(serializer.Serialize(tests));
                 message.HasError = false;
                 
@@ -65,7 +45,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
@@ -83,18 +63,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), null);
 
-            return newDs;
-        }
-
-        public string HandlesType()
-        {
-            return "FetchTestsForDeploy";
-        }
+        public override string HandlesType() => "FetchTestsForDeploy";
     }
 }

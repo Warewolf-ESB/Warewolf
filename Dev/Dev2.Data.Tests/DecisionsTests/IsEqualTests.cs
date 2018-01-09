@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,7 @@
 
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests.DecisionsTests
 {
@@ -24,11 +24,11 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var endsWith = new IsEqual();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "TestData";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -40,11 +40,11 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var endsWith = new IsEqual();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "TestData";
             cols[1] = "No";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

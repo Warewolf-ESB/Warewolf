@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ using Dev2.MathOperations;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.InterfaceImplementors
 {
     public sealed class CalculateIntellisenseProvider : IIntellisenseProvider
@@ -31,8 +31,8 @@ namespace Dev2.Studio.InterfaceImplementors
         readonly ISyntaxTreeBuilderHelper _syntaxTreeBuilderHelper;
 
         #region Static Members
-        private static HashSet<string> _functionNames;
-        private static readonly IList<IntellisenseProviderResult> EmptyResults = new List<IntellisenseProviderResult>();
+        static HashSet<string> _functionNames = new HashSet<string>(StringComparer.Ordinal);
+        static readonly IList<IntellisenseProviderResult> EmptyResults = new List<IntellisenseProviderResult>();
         #endregion
 
         #region Instance Fields
@@ -52,9 +52,6 @@ namespace Dev2.Studio.InterfaceImplementors
             {
                 return false;
             }
-            set
-            {
-            }
         }
 
         public bool HandlesResultInsertion
@@ -62,9 +59,6 @@ namespace Dev2.Studio.InterfaceImplementors
             get
             {
                 return false;
-            }
-            set
-            {
             }
         }
         #endregion
@@ -77,23 +71,19 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             _syntaxTreeBuilderHelper = syntaxTreeBuilderHelper;
             IntellisenseProviderType = IntellisenseProviderType.NonDefault;
-            IFrameworkRepository<IFunction> functionList = MathOpsFactory.FunctionRepository();
+            var functionList = MathOpsFactory.FunctionRepository();
             functionList.Load();
-            bool creatingFunctions = false;
-
-            if(_functionNames == null)
-            {
-                creatingFunctions = true;
-                _functionNames = new HashSet<string>(StringComparer.Ordinal);
-            }
-
             IntellisenseResult = functionList.All().Select(currentFunction =>
             {
-                string description = currentFunction.Description;
-                string dropDownDescription = description;
-                if(description != null && description.Length > 80) dropDownDescription = description.Substring(0, 77) + "...";
-                if(creatingFunctions) _functionNames.Add(currentFunction.FunctionName);
-                IntellisenseProviderResult result = new IntellisenseProviderResult(this, currentFunction.FunctionName, dropDownDescription, description, currentFunction.arguments?.ToArray() ?? new string[0], currentFunction.ArgumentDescriptions?.ToArray() ?? new string[0]);
+                var description = currentFunction.Description;
+                var dropDownDescription = description;
+                if (description != null && description.Length > 80)
+                {
+                    dropDownDescription = description.Substring(0, 77) + "...";
+                }
+                _functionNames.Add(currentFunction.FunctionName);
+
+                var result = new IntellisenseProviderResult(this, currentFunction.FunctionName, dropDownDescription, description, currentFunction.arguments?.ToArray() ?? new string[0], currentFunction.ArgumentDescriptions?.ToArray() ?? new string[0]);
                 return result;
             }).OrderBy(p => p.Name).ToList();
         }
@@ -126,7 +116,7 @@ namespace Dev2.Studio.InterfaceImplementors
 
                     if(_syntaxTreeBuilderHelper.EventLog != null && _syntaxTreeBuilderHelper.HasEventLogs)
                     {
-                        List<IntellisenseProviderResult> tResults = new List<IntellisenseProviderResult>();
+                        var tResults = new List<IntellisenseProviderResult>();
                         tResults.AddRange(IntellisenseResult);
                         return EvaluateEventLogs(tResults, inputText);
                     }
@@ -134,12 +124,11 @@ namespace Dev2.Studio.InterfaceImplementors
                     return IntellisenseResult;
                 }
 
-                Token[] tokens;
                 var searchText = context.FindTextToSearch();
-                _syntaxTreeBuilderHelper.Build(searchText, true, out tokens);
-                string sub = string.IsNullOrEmpty(searchText) ? inputText : searchText;
+                _syntaxTreeBuilderHelper.Build(searchText, true, out Token[] tokens);
+                var sub = string.IsNullOrEmpty(searchText) ? inputText : searchText;
 
-                List<IntellisenseProviderResult> subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();
+                var subResults = IntellisenseResult.Where(t => t.Name.StartsWith(sub)).ToList();
 
                 return subResults;
             }
@@ -147,7 +136,7 @@ namespace Dev2.Studio.InterfaceImplementors
             return EmptyResults;
         }
 
-        private IList<IntellisenseProviderResult> EvaluateEventLogs(IList<IntellisenseProviderResult> errors, string expression)
+        IList<IntellisenseProviderResult> EvaluateEventLogs(IList<IntellisenseProviderResult> errors, string expression)
         {
             var parseEventLog = _syntaxTreeBuilderHelper.EventLog;
             parseEventLog.Clear();
@@ -169,10 +158,10 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             if(value != null)
             {
-                string text = (string)value;
-                bool allowUserCalculateMode = (string)parameter == "True";
+                var text = (string)value;
+                var allowUserCalculateMode = (string)parameter == "True";
 
-                if(allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0)
                 {
                     if(text.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
                     {
@@ -193,10 +182,10 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             if(value != null)
             {
-                string text = (string)value;
-                bool allowUserCalculateMode = (string)parameter == "True";
+                var text = (string)value;
+                var allowUserCalculateMode = (string)parameter == "True";
 
-                if(allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0)
                 {
                     if(text[0] == '=')
                     {

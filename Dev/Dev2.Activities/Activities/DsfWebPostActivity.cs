@@ -19,7 +19,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("WebMethods", "POST", ToolType.Native, "6AEB1038-6332-46F9-8BDD-752DE4EA038E", "Dev2.Activities", "1.0.0.0", "Legacy", "HTTP Web Methods", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Post")]
-    public class DsfWebPostActivity:DsfActivity
+    public class DsfWebPostActivity:DsfActivity,IEquatable<DsfWebPostActivity>
     {
         public IList<INameValue> Headers { get; set; }
         public string QueryString { get; set; }
@@ -39,7 +39,11 @@ namespace Dev2.Activities
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            if (env == null) return _debugInputs;
+            if (env == null)
+            {
+                return _debugInputs;
+            }
+
             base.GetDebugInputs(env, update);
 
             IEnumerable<NameValue> head = null;
@@ -49,11 +53,13 @@ namespace Dev2.Activities
             }
 
             var url = ResourceCatalog.GetResource<WebSource>(Guid.Empty, SourceId);
-            string headerString=string.Empty;
+            var headerString=string.Empty;
             if (head != null)
+            {
                 headerString = string.Join(" ", head.Select(a => a.Name + " : " + a.Value));
+            }
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "URL"), debugItem);
             AddDebugItem(new DebugEvalResult(url.Address, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
@@ -103,7 +109,7 @@ namespace Dev2.Activities
 
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public IResponseManager ResponseManager { get; set; }
 
         
@@ -132,7 +138,9 @@ namespace Dev2.Activities
                 foreach (var nameValue in head)
                 {
                     if (!String.IsNullOrEmpty(nameValue.Name) && !String.IsNullOrEmpty(nameValue.Value))
+                    {
                         webclient.Headers.Add(nameValue.Name, nameValue.Value);
+                    }
                 }
             }
 
@@ -152,5 +160,33 @@ namespace Dev2.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfWebPostActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && Equals(Headers, other.Headers) && string.Equals(QueryString, other.QueryString) && Equals(OutputDescription, other.OutputDescription) && string.Equals(PostData, other.PostData);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebPostActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PostData != null ? PostData.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

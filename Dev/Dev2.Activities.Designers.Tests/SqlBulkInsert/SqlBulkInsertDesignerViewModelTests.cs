@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
 {
     [TestClass]
@@ -47,9 +47,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SqlBulkInsertDesignerViewModel(CreateModelItem(), null, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -62,11 +62,11 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             var x = CreateModelItem();
             var vm = new SqlBulkInsertDesignerViewModel(x);
             Assert.AreEqual(x, vm.ModelItem);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -77,7 +77,7 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
         public void SqlBulkInsertDesignerViewModel_UpdateHelp_ShouldCallToHelpViewMode()
         {
             //------------Setup for test--------------------------      
-            AppSettings.LocalHost = "http://localhost:1245";
+            AppUsageStats.LocalHost = "http://localhost:1245";
             var mockMainViewModel = new Mock<IShellViewModel>();
             var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
             mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
@@ -105,9 +105,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, null, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -121,9 +121,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             //------------Setup for test--------------------------
 
             //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
+            
             new SqlBulkInsertDesignerViewModel(CreateModelItem(), new Mock<IAsyncWorker>().Object, new Mock<IServer>().Object, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             //------------Assert Results-------------------------
         }
@@ -1172,23 +1172,23 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
             }
 
             var tableJson = new DbTableList();
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             resourceRepo.Setup(r => r.GetDatabaseTables(It.IsAny<DbSource>())).Callback((DbSource src) =>
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             {
                 if (sources != null)
                 {
                     var tableList = sources[src];
                     tableJson = tableList;
                 }
-                // ReSharper disable ImplicitlyCapturedClosure
+                
             }).Returns(() => tableJson);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
 
             var columnsJson = new DbColumnList();
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             resourceRepo.Setup(r => r.GetDatabaseTableColumns(It.IsAny<DbSource>(), It.IsAny<DbTable>())).Callback((DbSource src, DbTable tbl) =>
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             {
                 var tableName = tbl.TableName;
                 if (sources != null)
@@ -1205,9 +1205,9 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                     }
                     columnsJson = columnList;
                 }
-                // ReSharper disable ImplicitlyCapturedClosure
+                
             }).Returns(() => columnsJson);
-            // ReSharper restore ImplicitlyCapturedClosure
+            
 
             if (configureFindSingle)
             {
@@ -1252,6 +1252,8 @@ namespace Dev2.Activities.Designers.Tests.SqlBulkInsert
                                 break;
                             case 3:
                                 columns.Add(new DbColumn { ColumnName = dbName + "_Column_" + j + "_" + k, SqlDataType = SqlDbType.Float });
+                                break;
+                            default:
                                 break;
                         }
                     }

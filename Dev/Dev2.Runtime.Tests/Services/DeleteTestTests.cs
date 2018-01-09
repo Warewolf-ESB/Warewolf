@@ -8,13 +8,34 @@ using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
     public class DeleteTestTests
     {
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        [TestCategory("GetResourceID")]
+        public void GetResourceID_GivenArgsWithResourceId_ShouldReturnResourceIdFromArgs()
+        {
+            //------------Setup for test--------------------------
+            var deleteTest = new DeleteTest();
+            var resId = Guid.NewGuid();
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(resId);
+            //------------Execute Test---------------------------
+            var requestArgs = new Dictionary<string, StringBuilder>
+            {
+                { "resourceID", stringBuilder }
+            };
+            //------------Execute Test---------------------------
+            var resourceID = deleteTest.GetResourceID(requestArgs);
+            //------------Assert Results-------------------------
+            Assert.AreEqual(resId, resourceID);
+        }
+
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("GetResourceID")]
@@ -66,7 +87,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(null, null);
+            var jsonResult = deleteTest.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -82,7 +103,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(values, null);
+            var jsonResult = deleteTest.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -98,7 +119,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(values, null);
+            var jsonResult = deleteTest.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -114,7 +135,7 @@ namespace Dev2.Tests.Runtime.Services
             var deleteTest = new DeleteTest();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = deleteTest.Execute(values, null);
+            var jsonResult = deleteTest.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);

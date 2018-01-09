@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ using Moq;
 namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class CommandLineDesignerViewModelTests
     {
         [TestMethod]
@@ -55,9 +55,9 @@ namespace Dev2.Activities.Designers.Tests.ExecuteCommandLine
         {
             //------------Setup for test--------------------------
             const string CommandFileName = null;
-            // ReSharper disable RedundantArgumentDefaultValue
+            
             var viewModel = new CommandLineDesignerViewModel(CreateModelItem(CommandFileName));
-            // ReSharper restore RedundantArgumentDefaultValue
+            
 
             //------------Execute Test---------------------------
             viewModel.Validate();

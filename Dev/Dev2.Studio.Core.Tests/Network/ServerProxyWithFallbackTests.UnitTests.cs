@@ -3,7 +3,7 @@ using System.Net;
 using Dev2.Network;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Core.Tests.Network
 {
@@ -68,7 +68,7 @@ namespace Dev2.Core.Tests.Network
         
     }
 
-    internal class TestServerProxyWithFallback : ServerProxy
+    class TestServerProxyWithFallback : ServerProxy
     {
         // TODO: Move this constructor to a test class!!
         public TestServerProxyWithFallback(string uri, string userName, string password)

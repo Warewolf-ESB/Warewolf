@@ -17,8 +17,8 @@ using Dev2.Threading;
 using Dev2.TO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Dev2.Activities.Designers.Tests.Sharepoint
 {
@@ -118,17 +118,17 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
             Assert.AreEqual(sharepointListDesignerViewModelBase.GetNewSharepointSource, sharepointServerList[0]);
         }
 
-        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel()
+        static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel()
         {
             return CreateSharepointListDesignerViewModel(new Mock<IServer>());
         }
-        
-        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IServer> mockEnvironmentModel)
+
+        static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IServer> mockEnvironmentModel)
         {
             return CreateSharepointListDesignerViewModel(mockEnvironmentModel, new Mock<IEventAggregator>());
         }
 
-        private static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IServer> mockEnvironmentModel, Mock<IEventAggregator> mockEventAggregator)
+        static TestSharepointListDesignerViewModelBase CreateSharepointListDesignerViewModel(Mock<IServer> mockEnvironmentModel, Mock<IEventAggregator> mockEventAggregator)
         {
             return new TestSharepointListDesignerViewModelBase(CreateModelItem(), new SynchronousAsyncWorker(), mockEnvironmentModel.Object, mockEventAggregator.Object, false);
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -57,7 +57,7 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DeleteVersion_Name")]
-// ReSharper disable InconsistentNaming
+
         public void DeleteVersion_Name_GetName()
 
         {
@@ -144,5 +144,5 @@ namespace Dev2.Tests.Runtime.Services
             server.Verify(a => a.DeleteVersion(It.IsAny<Guid>(), "1", ""));
         }
     }
-    // ReSharper restore InconsistentNaming
+    
 }

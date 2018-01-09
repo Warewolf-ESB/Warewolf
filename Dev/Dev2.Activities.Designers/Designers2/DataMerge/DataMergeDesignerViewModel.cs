@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Activities.Designers2.DataMerge
 {
     public class DataMergeDesignerViewModel : ActivityCollectionDesignerViewModel<DataMergeDTO>
     {
-        public Func<string> GetDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
+        internal Func<string> _getDatalistString = () => DataListSingleton.ActiveDataList.Resource.DataList;
         public IList<string> ItemsList { get; private set; }
         public IList<string> AlignmentTypes { get; private set; }
         
@@ -97,16 +97,16 @@ namespace Dev2.Activities.Designers2.DataMerge
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("Input", GetDatalistString()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
+            foreach (var error in dto.GetRuleSet("Input", _getDatalistString?.Invoke()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
             {
                 yield return error;
             }
 
-            foreach(var error in dto.GetRuleSet("At", GetDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            foreach(var error in dto.GetRuleSet("At", _getDatalistString?.Invoke()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("Padding", GetDatalistString()).ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
+            foreach(var error in dto.GetRuleSet("Padding", _getDatalistString?.Invoke()).ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
             {
                 yield return error;
             }
@@ -115,7 +115,10 @@ namespace Dev2.Activities.Designers2.DataMerge
         protected override void RunValidation(int index)
         {
             if (index == -1)
+            {
                 return;
+            }
+
             OnMergeTypeChanged(index);
         }
 

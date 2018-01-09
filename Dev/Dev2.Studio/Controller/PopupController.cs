@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,6 @@ using Dev2.Studio.ViewModels.Dialogs;
 using Warewolf.Studio.Core.Popup;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable CheckNamespace
 namespace Dev2.Studio.Controller
 {
     public class PopupController : Common.Interfaces.Studio.Controller.IPopupController
@@ -50,13 +49,23 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult Show()
         {
-            var dev2MessageBoxViewModel = ShowDev2MessageBox(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
+            var dev2MessageBoxViewModel = ShowDev2MessageBox?.Invoke(Description, Header, Buttons, ImageType, DontShowAgainKey, IsDependenciesButtonVisible, IsError, IsInfo, IsQuestion, UrlsFound, IsDeleteAnywayButtonVisible, ApplyToAll);
             DeleteAnyway = dev2MessageBoxViewModel.IsDeleteAnywaySelected;
             ApplyToAll = dev2MessageBoxViewModel.ApplyToAll;
             return dev2MessageBoxViewModel.Result;
         }
 
-        public MessageBoxResult Show(string description, string header = "", MessageBoxButton buttons = MessageBoxButton.OK, MessageBoxImage image = MessageBoxImage.Asterisk, string dontShowAgainKey = null, bool isDependenciesButtonVisible = false, bool isError = false, bool isInfo = false, bool isQuestion = false, bool isDeleteAnywayButtonVisible = false, bool applyToAll = false)
+        public MessageBoxResult Show(string description) => Show(description, "", MessageBoxButton.OK, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header) => Show(description, header, MessageBoxButton.OK, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons) => Show(description, header, buttons, MessageBoxImage.Asterisk, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image) => Show(description, header, buttons, image, null, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey) => Show(description, header, buttons, image, dontShowAgainKey, false, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, false, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, false, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, false, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, false, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible) => Show(description, header, buttons, image, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, isDeleteAnywayButtonVisible, false);
+        public MessageBoxResult Show(string description, string header, MessageBoxButton buttons, MessageBoxImage image, string dontShowAgainKey, bool isDependenciesButtonVisible, bool isError, bool isInfo, bool isQuestion, bool isDeleteAnywayButtonVisible, bool applyToAll)
         {
             Buttons = buttons;
             Description = description;
@@ -72,7 +81,7 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
-        public Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, bool, bool, MessageBoxViewModel> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
+        internal Func<string, string, MessageBoxButton, MessageBoxImage, string, bool, bool, bool, bool, List<string>, bool, bool, MessageBoxViewModel> ShowDev2MessageBox = (description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll) => Dev2MessageBoxViewModel.Show(description, header, buttons, imageType, dontShowAgainKey, isDependenciesButtonVisible, isError, isInfo, isQuestion, urlsFound, isDeleteAnywayButtonVisible, applyToAll);
 
         public MessageBoxResult ShowNotConnected()
         {
@@ -139,6 +148,35 @@ namespace Dev2.Studio.Controller
             return Show();
         }
 
+        public MessageBoxResult ShowResourcesNotInCorrectPath()
+        {
+            Buttons = MessageBoxButton.OKCancel;
+            Header = "Unknown Resource";
+            Description = "The Resource you are attempting to open is unknown by the server. \nClick Ok to have the resource moved to the server or Cancel to Exit.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
+        public MessageBoxResult ShowCanNotMoveResource()
+        {
+            Buttons = MessageBoxButton.OKCancel;
+            Header = "Source data contains encrypted connections strings.";
+            Description = "If the Source was created on this Server, Click Continue Warewolf will attempt to Open it. \nIf the Source was created on the Remote server, click Cancel and then deploy it to this machine from the resources originating server.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
 
         public MessageBoxResult ShowServerNotConnected(string server)
         {
@@ -225,7 +263,7 @@ namespace Dev2.Studio.Controller
 
         public MessageBoxResult ShowDeployConflict(int conflictCount)
         {
-            string correctDesc = String.Empty;
+            var correctDesc = String.Empty;
             Buttons = MessageBoxButton.OKCancel;
             Header = "Deploy Conflicts";
             if (conflictCount == 1)
@@ -241,6 +279,21 @@ namespace Dev2.Studio.Controller
                               Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
                           "Cancel - Cancel the deploy and view the conflicts.";
+            ImageType = MessageBoxImage.Information;
+            IsDependenciesButtonVisible = false;
+            IsInfo = true;
+            IsError = false;
+            IsQuestion = false;
+            IsDeleteAnywayButtonVisible = false;
+            ApplyToAll = false;
+            return Show();
+        }
+
+        public MessageBoxResult ShowDeployNoResourcesToDeploy(string header, string description)
+        {
+            Buttons = MessageBoxButton.OK;
+            Header = header;
+            Description = description;
             ImageType = MessageBoxImage.Information;
             IsDependenciesButtonVisible = false;
             IsInfo = true;
@@ -506,5 +559,6 @@ namespace Dev2.Studio.Controller
                 Description = $"The name {name} already exists. Please choose a different name."
             };
         }
+
     }
 }

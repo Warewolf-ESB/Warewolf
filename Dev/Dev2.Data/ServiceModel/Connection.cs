@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,9 +21,9 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    public class Connection : Resource, IResourceSource, IConnection
+    public class Connection : Resource, IConnection
     {
-        public const int DefaultWebServerPort = 3142;
+        static readonly int DefaultWebServerPort = 3142;
 
         public string Address { get; set; }
 
@@ -62,7 +62,7 @@ namespace Dev2.Data.ServiceModel
             var props = connectionString.Split(';');
             foreach(var p in props.Select(prop => prop.Split('=')).Where(p => p.Length >= 1))
             {
-                switch(p[0].ToLowerInvariant())
+                switch (p[0].ToLowerInvariant())
                 {
                     case "appserveruri":
                         Address = p[1];
@@ -81,6 +81,8 @@ namespace Dev2.Data.ServiceModel
                     case "password":
                         Password = p[1];
                         break;
+                    default:
+                        break;
                 }
             }
         }
@@ -96,14 +98,7 @@ namespace Dev2.Data.ServiceModel
 
             if(result?.IndexOf("dsf", StringComparison.Ordinal) < 0)
             {
-                if(result.EndsWith("/"))
-                {
-                    result += "dsf";
-                }
-                else
-                {
-                    result += "/dsf";
-                }
+                result += result.EndsWith("/") ? "dsf" : "/dsf";
 
             }
 
@@ -148,5 +143,31 @@ namespace Dev2.Data.ServiceModel
 
         #endregion
 
+        protected bool Equals(Connection other)
+        {
+            return base.Equals(other) && string.Equals(Address, other.Address) && AuthenticationType == other.AuthenticationType && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password) && WebServerPort == other.WebServerPort;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Connection) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Address != null ? Address.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) AuthenticationType;
+                hashCode = (hashCode * 397) ^ (UserName != null ? UserName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ WebServerPort;
+                return hashCode;
+            }
+        }
     }
 }

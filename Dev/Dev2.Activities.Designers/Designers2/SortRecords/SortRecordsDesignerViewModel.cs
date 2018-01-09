@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,14 +31,15 @@ namespace Dev2.Activities.Designers2.SortRecords
 
         public List<string> SortOrderTypes { get; private set; }
 
-        public string SelectedSelectedSort { get { return (string)GetValue(SelectedSelectedSortProperty); } set { SetValue(SelectedSelectedSortProperty, value); } }
+        public string SelectedSelectedSort { get => (string)GetValue(SelectedSelectedSortProperty); set => SetValue(SelectedSelectedSortProperty, value); }
 
         public static readonly DependencyProperty SelectedSelectedSortProperty =
             DependencyProperty.Register("SelectedSelectedSort", typeof(string), typeof(SortRecordsDesignerViewModel), new PropertyMetadata(null, OnSelectedSelectedSortChanged));
 
-        // DO NOT bind to these properties - these are here for convenience only!!!
-       private  string SelectedSort { set { SetProperty(value);  }
-            get { return  GetProperty<string>(); }
+        string SelectedSort
+        {
+            set { SetProperty(value); }
+            get { return GetProperty<string>(); }
         }
 
         static void OnSelectedSelectedSortChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -54,13 +55,16 @@ namespace Dev2.Activities.Designers2.SortRecords
 
         public override void Validate()
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
-            IsSingleRecordSetRule rule = new IsSingleRecordSetRule(() => GetProperty<string>("SortField"));
+            
+            var rule = new IsSingleRecordSetRule(() => GetProperty<string>("SortField"));
             var single = rule.Check();
             if (single != null)
             {
                 if (Errors == null )
+                {
                     Errors = new List<IActionableErrorInfo>();
+                }
+
                 Errors.Add(single);
             }
         }

@@ -11,7 +11,7 @@ using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
+
 
 namespace Dev2.Activities.Designers2.SharePointMoveFile
 {
@@ -33,7 +33,7 @@ namespace Dev2.Activities.Designers2.SharePointMoveFile
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public string ServerInputPathFrom => GetProperty<string>();

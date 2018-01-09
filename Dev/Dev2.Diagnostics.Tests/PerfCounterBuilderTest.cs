@@ -6,8 +6,8 @@ using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
 using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable RedundantAssignment
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Diagnostics.Test
 {
@@ -17,14 +17,14 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
-        // ReSharper disable once InconsistentNaming
+
         public void PerformanceCounterBuilder_CtorBuildCounters_Valid_ExpectNewCounters()
         {
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 
@@ -37,9 +37,9 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(),
                 new WarewolfServicesNotFoundCounter()
             };
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
-            PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
+            var cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters();
             foreach (var performanceCounter in counters)
             {
@@ -55,14 +55,14 @@ namespace Dev2.Diagnostics.Test
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PerformanceCounterBuilder_CtorBuildCounters")]
-        // ReSharper disable once InconsistentNaming
+
         public void PerformanceCounterBuilder_CtorBuildCounters_RebuildDoesNotReset_ExpectNewCounters()
         {
             try
             {
                 PerformanceCounterCategory.Delete("Warewolf");
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 
@@ -75,14 +75,14 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors(),
                 new WarewolfServicesNotFoundCounter()
             };
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst,new List<IResourcePerformanceCounter>());
+            var register = new WarewolfPerformanceCounterRegister(lst,new List<IResourcePerformanceCounter>());
             foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.ToSafe().Increment();
             }
 
             register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
-            PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
+            var cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
             {
@@ -103,7 +103,7 @@ namespace Dev2.Diagnostics.Test
             {
                 PerformanceCounterCategory.Delete("Warewolf");
             }
-            // ReSharper disable once EmptyGeneralCatchClause
+            
             catch
             {
 
@@ -116,7 +116,7 @@ namespace Dev2.Diagnostics.Test
                 new WarewolfNumberOfAuthErrors()
             };
 
-            WarewolfPerformanceCounterRegister register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
+            var register = new WarewolfPerformanceCounterRegister(lst, new List<IResourcePerformanceCounter>());
             foreach (var performanceCounter in register.Counters)
             {
                 performanceCounter.ToSafe().Increment();
@@ -127,7 +127,7 @@ namespace Dev2.Diagnostics.Test
             {
                 performanceCounter.ToSafe().Increment(); // increment causes instance to be created on windows side
             }
-            PerformanceCounterCategory cat = new PerformanceCounterCategory("Warewolf");
+            var cat = new PerformanceCounterCategory("Warewolf");
             var counters = cat.GetCounters(GlobalConstants.GlobalCounterName);
             foreach (var performanceCounter in counters)
             {

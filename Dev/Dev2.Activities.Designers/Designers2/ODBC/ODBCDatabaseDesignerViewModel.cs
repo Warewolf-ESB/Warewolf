@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,26 +33,26 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-// ReSharper disable ExplicitCallerInfoArgument
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
 namespace Dev2.Activities.Designers2.ODBC
 {
-    // ReSharper disable once InconsistentNaming
+    
     public class ODBCDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDatabaseInputRegion _inputArea;
-        private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IActionToolRegion<IDbAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDatabaseInputRegion _inputArea;
+        ISourceToolRegion<IDbSource> _sourceRegion;
+        IActionToolRegion<IDbAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
         const string OutputDisplayName = " - Outputs";
-        private string _commandText;
+        string _commandText;
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
@@ -72,7 +72,7 @@ namespace Dev2.Activities.Designers2.ODBC
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageDatabaseServiceInputViewModel(this, Model));
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Designers2.ODBC
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -218,21 +218,16 @@ namespace Dev2.Activities.Designers2.ODBC
                     break;
                 }
             }
-            WorstDesignError = worstError[0];
+            SetWorstDesignError(worstError[0]);
         }
 
-        IErrorInfo WorstDesignError
+        void SetWorstDesignError(IErrorInfo value)
         {
-            // ReSharper disable once UnusedMember.Local
-            get { return _worstDesignError; }
-            set
+            if (_worstDesignError != value)
             {
-                if (_worstDesignError != value)
-                {
-                    _worstDesignError = value;
-                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value?.ErrorType ?? ErrorType.None;
-                }
+                _worstDesignError = value;
+                IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
+                WorstError = value?.ErrorType ?? ErrorType.None;
             }
         }
 
@@ -261,7 +256,7 @@ namespace Dev2.Activities.Designers2.ODBC
             var service = ToModel();
             if (!string.IsNullOrEmpty(CommandText))
             {
-                ServiceInputBuilder builder = new ServiceInputBuilder();
+                var builder = new ServiceInputBuilder();
                 var serviceInputs = new List<IServiceInput>();
                 builder.GetValue(CommandText, serviceInputs);
                 service.Inputs = serviceInputs;
@@ -280,7 +275,7 @@ namespace Dev2.Activities.Designers2.ODBC
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
         public string CommandText
         {
             get { return _commandText; }
@@ -315,9 +310,9 @@ namespace Dev2.Activities.Designers2.ODBC
 
         public ICommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
-        
+        string Type => GetProperty<string>();
+
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -353,7 +348,7 @@ namespace Dev2.Activities.Designers2.ODBC
                 };
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
@@ -461,7 +456,7 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             if (!string.IsNullOrEmpty(CommandText))
             {
-                DbAction command = new DbAction { Name = CommandText };
+                var command = new DbAction { Name = CommandText };
                 ActionRegion.SelectedAction = command;
             }
             var databaseService = new DatabaseService
@@ -478,7 +473,9 @@ namespace Dev2.Activities.Designers2.ODBC
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
+            {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+            }
         }
 
         public void ValidateTestComplete()
@@ -507,7 +504,8 @@ namespace Dev2.Activities.Designers2.ODBC
             }
         }
 
-        private IDbServiceModel Model { get; set; }
+        IDbServiceModel Model { get; set; }
+        IDbActionToolRegion<IDbAction> IDatabaseServiceViewModel.ActionRegion { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         void SetRegionVisibility(bool value)
         {

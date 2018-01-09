@@ -1,23 +1,25 @@
 using System;
 using System.Reflection;
 
-// ReSharper disable UseNameofExpression
+
 
 namespace Dev2.Runtime.DynamicProxy
 {
     public class DynamicObject
     {
-        private readonly Type _objType;
-        private object _obj;
+        readonly Type _objType;
+        object _obj;
 
-        private BindingFlags _commonBindingFlags =
+        BindingFlags _commonBindingFlags =
             BindingFlags.Instance |
             BindingFlags.Public;
-         
+
         public DynamicObject(object obj)
         {
-            if (obj == null) 
+            if (obj == null)
+            {
                 throw new ArgumentNullException("obj");
+            }
 
             _obj = obj;
             _objType = obj.GetType();
@@ -26,14 +28,16 @@ namespace Dev2.Runtime.DynamicProxy
         public DynamicObject(Type objType)
         {
             if (objType == null)
+            {
                 throw new ArgumentNullException("objType");
+            }
 
             _objType = objType;
         }
 
         public void CallConstructor(Type[] paramTypes, object[] paramValues)
         {
-            ConstructorInfo ctor = _objType.GetConstructor(paramTypes);
+            var ctor = _objType.GetConstructor(paramTypes);
             if (ctor == null)
             {
                 throw new DynamicProxyException(
@@ -45,7 +49,7 @@ namespace Dev2.Runtime.DynamicProxy
 
         public object CallMethod(string method, params object[] parameters)
         {
-            object retval = _objType.InvokeMember(
+            var retval = _objType.InvokeMember(
                 method,
                 BindingFlags.InvokeMethod | _commonBindingFlags,
                 null /* Binder */,

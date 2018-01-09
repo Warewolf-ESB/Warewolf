@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,15 +19,15 @@ using Dev2.Tests.Activities.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable CheckNamespace
+
 namespace ActivityUnitTests.ActivityTests
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ZipTests : BaseActivityUnitTest
     {
         static TestContext myTestContext;
@@ -97,9 +97,9 @@ namespace ActivityUnitTests.ActivityTests
             //------------Setup for test--------------------------
             tempFile = Path.GetTempFileName();
             var zipPathName = Path.GetTempPath() + NewFileName + ".zip";
-            IActivityIOOperationsEndPoint scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true,""));
-            IActivityIOOperationsEndPoint dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true,""));
-            Dev2ZipOperationTO zipTO = ActivityIOFactory.CreateZipTO(null, null, null, true);
+            var scrEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(tempFile, string.Empty, null, true,""));
+            var dstEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(ActivityIOFactory.CreatePathFromString(zipPathName, string.Empty, null, true,""));
+            var zipTO = ActivityIOFactory.CreateZipTO(null, null, null, true);
             File.WriteAllText(zipPathName, "");
             //------------Assert Preconditions-------------------
             Assert.IsTrue(zipTO.Overwrite);
@@ -122,20 +122,20 @@ namespace ActivityUnitTests.ActivityTests
         public void Zip_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
         {
             var fileNames = new List<string>();
-            Guid randomFileName = Guid.NewGuid();
+            var randomFileName = Guid.NewGuid();
             fileNames.Add(Path.Combine(myTestContext.TestRunDirectory, randomFileName + "Dev2.txt"));
 
 
             foreach(string fileName in fileNames)
             {
-                // ReSharper disable LocalizableElement
+                
                 File.WriteAllText(fileName, "TestData");
-                // ReSharper restore LocalizableElement
+                
             }
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
-            DsfZip preact = new DsfZip
+            var preact = new DsfZip
             {
                 InputPath = @"c:\OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
@@ -147,11 +147,8 @@ namespace ActivityUnitTests.ActivityTests
                 GetOperationBroker = () => activityOperationBrokerMock
             };
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
             CheckPathOperationActivityDebugInputOutput(preact, ActivityStrings.DebugDataListShape,
-                                                                ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+                                                                ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");

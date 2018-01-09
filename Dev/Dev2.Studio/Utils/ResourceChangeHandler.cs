@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,8 @@ namespace Dev2.Utils
 {
     public interface IResourceChangeHandler
     {
-        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null);
+        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants);
+        void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog);
     }
 
     public interface IResourceChangeHandlerFactory
@@ -48,7 +49,8 @@ namespace Dev2.Utils
             _eventPublisher = eventPublisher ?? throw new ArgumentNullException("eventPublisher");
         }
 
-        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog = null)
+        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants) => ShowResourceChanged(resource, numberOfDependants, null);
+        public void ShowResourceChanged(IContextualResourceModel resource, IList<string> numberOfDependants, IResourceChangedDialog resourceChangedDialog)
         {
             if(resource == null)
             {
@@ -72,7 +74,7 @@ namespace Dev2.Utils
                 }
                 else
                 {
-                    Dev2Logger.Info("Publish message of type - " + typeof(ShowReverseDependencyVisualizer));
+                    Dev2Logger.Info("Publish message of type - " + typeof(ShowReverseDependencyVisualizer), "Warewolf Info");
                     _eventPublisher.Publish(new ShowReverseDependencyVisualizer(resource));
                 }
             }

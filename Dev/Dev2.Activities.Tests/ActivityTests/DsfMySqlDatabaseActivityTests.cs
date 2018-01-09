@@ -11,12 +11,12 @@ namespace Dev2.Tests.Activities.ActivityTests
     [TestClass]
     public class DsfMySqlDatabaseActivityTests
     {
-        private static DsfMySqlDatabaseActivity CreateMySqlDatabaseActivity()
+        static DsfMySqlDatabaseActivity CreateMySqlDatabaseActivity()
         {
             return new DsfMySqlDatabaseActivity();
         }
 
-        private static IExecutionEnvironment CreateExecutionEnvironment()
+        static IExecutionEnvironment CreateExecutionEnvironment()
         {
             return new ExecutionEnvironment();
         }

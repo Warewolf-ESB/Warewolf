@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
-// ReSharper disable InconsistentNaming
+
 
 namespace WarewolfParsingTest
 {
@@ -33,7 +33,7 @@ namespace WarewolfParsingTest
         public void CreateDataSet_EvalRecsetWithAnExpression_ExpectData()
         {
             //------------Setup for test--------------------------
-            // ReSharper disable once UnusedVariable
+            
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
             //------------Execute Test---------------------------
 
@@ -47,7 +47,7 @@ namespace WarewolfParsingTest
         {
             //------------Setup for test--------------------------
             var createDataSet = WarewolfTestData.CreateTestEnvWithData;
-            JObject j =  JObject.FromObject(new Person{Name = "n",Children = new List<Person>()});
+            var j =  JObject.FromObject(new Person{Name = "n",Children = new List<Person>()});
             var added = WarewolfDataEvaluationCommon.addToJsonObjects(createDataSet, "[[@bob]]", j);
             //------------Execute Test---------------------------
 

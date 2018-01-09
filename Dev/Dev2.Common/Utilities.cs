@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,13 +19,17 @@ namespace Dev2.Common
     {
         public static IEnumerable<T> Flatten<T>(this IEnumerable<T> e, Func<T, IEnumerable<T>> f)
         {
+            if(e is null)
+            {
+                return new List<T>();
+            }
             var second = e as IList<T> ?? e.ToList();
-            return second.SelectMany(c => f(c).Flatten(f)).Concat(second);
+            return second.SelectMany(c => f?.Invoke(c).Flatten(f)).Concat(second);
         }
 
         public static IEnumerable<TSource> DistinctBy<TSource, TKey>(this IEnumerable<TSource> source, Func<TSource, TKey> keySelector)
         {
-            HashSet<TKey> seenKeys = new HashSet<TKey>();
+            var seenKeys = new HashSet<TKey>();
             return source.Where(element => seenKeys.Add(keySelector(element)));
         }
 
@@ -33,11 +37,11 @@ namespace Dev2.Common
         {
             if (userPrinciple == null)
             {
-                actionToBePerformed();
+                actionToBePerformed?.Invoke();
             }
             else
             {
-                WindowsIdentity identity = userPrinciple.Identity as WindowsIdentity;
+                var identity = userPrinciple.Identity as WindowsIdentity;
                 WindowsImpersonationContext impersonationContext = null;
                 if (identity != null)
                 {
@@ -52,25 +56,17 @@ namespace Dev2.Common
                 }
                 try
                 {
-                    actionToBePerformed();
+                    actionToBePerformed?.Invoke();
                 }
                 catch (Exception)
                 {
-                    
                     impersonationContext?.Undo();
                     identity = ServerUser.Identity as WindowsIdentity;
                     if (identity != null)
                     {
                         impersonationContext = identity.Impersonate();
                     }
-                    try
-                    {
-                        actionToBePerformed();
-                    }
-                    catch (Exception)
-                    {
-                        //Ignore
-                    }
+                    actionToBePerformed?.Invoke();
                 }
                 finally
                 {

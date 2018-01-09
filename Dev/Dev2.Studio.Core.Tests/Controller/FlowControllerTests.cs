@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,9 +31,9 @@ namespace Dev2.Core.Tests
         [TestCategory("FlowController_UnitTest")]
         [Description("Handling a configure decision expression message with isnew true will not display the decision wizard")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void FlowController_HandleConfigureDecisionExpressionMessageAndIsNewTrue_WizardNotShown()
-        // ReSharper restore InconsistentNaming
+
         {
             #region setup first Mock ModelItem
             var popupController = new Mock<IPopupController>();

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,25 +17,8 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Publish
         public Large()
         {
             InitializeComponent();
-            Loaded += OnLoaded;
         }
 
-        RabbitMQPublishDesignerViewModel ViewModel => DataContext as RabbitMQPublishDesignerViewModel;
-
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
-
-        //public string ThePassword { get { return ThePasswordBox.Password; } set { ThePasswordBox.Password = value; } }
-
-        void OnLoaded(object sender, RoutedEventArgs routedEventArgs)
-        {
-            //var viewModel = ViewModel;
-            //if(viewModel != null)
-            //{
-            //    ThePassword = viewModel.Password;
-            //}
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
     }
 }

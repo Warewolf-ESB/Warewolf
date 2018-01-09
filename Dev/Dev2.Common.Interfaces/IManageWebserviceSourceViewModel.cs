@@ -82,9 +82,9 @@ namespace Dev2.Common.Interfaces
         /// <summary>
         /// The name of the resource
         /// </summary>
-        // ReSharper disable UnusedMemberInSuper.Global
+        
         string ResourceName { get; set; }
-        // ReSharper restore UnusedMemberInSuper.Global
+        
 
         /// <summary>
         /// The authentications Type

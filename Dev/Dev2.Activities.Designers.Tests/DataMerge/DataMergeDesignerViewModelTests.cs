@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -120,7 +120,9 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             var itemsList = viewModel.ModelItemCollection;
             foreach(var i in itemsList)
+            {
                 Assert.AreEqual("True", i.GetProperty("EnablePadding").ToString());
+            }
         }
 
         [TestMethod]
@@ -136,7 +138,9 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
             var viewModel = new DataMergeDesignerViewModel(CreateModelItem(items));
             var itemsList = viewModel.ModelItemCollection;
             foreach(var i in itemsList)
+            {
                 Assert.AreEqual("True", i.GetProperty("EnablePadding").ToString());
+            }
         }
 
         [TestMethod]
@@ -248,13 +252,13 @@ namespace Dev2.Activities.Designers.Tests.DataMerge
 
             var dto = new DataMergeDTO("a&]]", DataMergeDTO.MergeTypeIndex, "", 0, "ab", "Left");
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var miCollection = mi.Properties["MergeCollection"].Collection;
             var dtoModelItem = miCollection.Add(dto);
-            // ReSharper restore PossibleNullReferenceException
+            
 
             var viewModel = new DataMergeDesignerViewModel(mi);
-            viewModel.GetDatalistString = () =>
+            viewModel._getDatalistString = () =>
                 {
                     const string trueString = "True";
                     const string noneString = "None";

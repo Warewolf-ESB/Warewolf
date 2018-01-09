@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,9 +18,9 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Utils;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Diagnostics
-// ReSharper restore CheckNamespace
+
 {
     [Serializable]
     public class DebugItem : IDebugItem
@@ -32,8 +32,8 @@ namespace Dev2.Diagnostics
             + new string(Path.GetInvalidPathChars());
 
         readonly string _tempPath;
-        private readonly Guid _itemId;
-        private readonly StringBuilder _stringBuilder;
+        readonly Guid _itemId;
+        readonly StringBuilder _stringBuilder;
         string _fileName;
         bool _isMoreLinkCreated;
 
@@ -41,12 +41,13 @@ namespace Dev2.Diagnostics
 
         #region public properties
 
-        public const int MaxItemDispatchCount = 10;
-        public const int MaxCharDispatchCount = 150;
-        public const int ActCharDispatchCount = 100;
+        public static readonly int MaxItemDispatchCount = 10;
+        public static readonly int MaxCharDispatchCount = 150;
+        public static readonly int ActCharDispatchCount = 100;
 
-        public static List<DebugItem> EmptyList = new List<DebugItem>();
         public List<IDebugItemResult> ResultsList { get; set; }
+        public static List<DebugItem> EmptyList { get => emptyList; set => emptyList = value; }
+        static List<DebugItem> emptyList = new List<DebugItem>();
 
         #endregion properties
 
@@ -88,7 +89,8 @@ namespace Dev2.Diagnostics
 
         #region Public Methods
 
-        public void Add(IDebugItemResult itemToAdd, bool isDeserialize = false)
+        public void Add(IDebugItemResult itemToAdd) => Add(itemToAdd, false);
+        public void Add(IDebugItemResult itemToAdd, bool isDeserialize)
         {
             if(!string.IsNullOrWhiteSpace(itemToAdd.GroupName) && itemToAdd.GroupIndex > MaxItemDispatchCount)
             {
@@ -184,7 +186,7 @@ namespace Dev2.Diagnostics
 
             var path = Path.Combine(_tempPath, fileName);
             File.AppendAllText(path, contents);
-            string linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
+            var linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
 
             return linkUri;
         }

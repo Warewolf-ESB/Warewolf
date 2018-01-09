@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,39 +13,25 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.Data.Settings;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class SettingsWrite : IEsbManagementEndpoint
+    public class SettingsWrite : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(values == null)
             {
                 throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
-            StringBuilder settingsJson;
-            values.TryGetValue("Settings", out settingsJson);
-            if(settingsJson == null || settingsJson.Length == 0)
+            values.TryGetValue("Settings", out StringBuilder settingsJson);
+            if (settingsJson == null || settingsJson.Length == 0)
             {
                 throw new InvalidDataException("Error: Unable to parse values.");
             }
@@ -60,7 +46,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingSettings, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettings, ex, GlobalConstants.WarewolfError);
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingSettings);
             }
@@ -79,7 +65,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex, GlobalConstants.WarewolfError);
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
             }
@@ -97,7 +83,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch (Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingLoggingConfiguration, ex, GlobalConstants.WarewolfError);
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingLoggingConfiguration);
             }
@@ -115,7 +101,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             catch(Exception ex)
             {
-                Dev2Logger.Error(ErrorResource.ErrorWritingSettingsConfiguration, ex);
+                Dev2Logger.Error(ErrorResource.ErrorWritingSettingsConfiguration, ex, GlobalConstants.WarewolfError);
                 result.HasError = true;
                 result.Message.AppendLine(ErrorResource.ErrorWritingSettingsConfiguration);
             }
@@ -123,34 +109,13 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         static string ExecuteService(IWorkspace theWorkspace, IEsbManagementEndpoint service, string valuesKey, object valuesValue)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var values = new Dictionary<string, StringBuilder> { { valuesKey, serializer.SerializeToBuilder(valuesValue) } };
             return service.Execute(values, theWorkspace).ToString();
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var dynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Settings ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            dynamicService.Actions.Add(serviceAction);
-
-            return dynamicService;
-        }
-
-        public string HandlesType()
-        {
-            return "SettingsWriteService";
-        }
+        public override string HandlesType() => "SettingsWriteService";
     }
 }

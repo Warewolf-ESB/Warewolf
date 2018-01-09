@@ -1,5 +1,5 @@
 ﻿using Microsoft.Practices.Prism.Mvvm;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Common.Interfaces
 {

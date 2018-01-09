@@ -8,6 +8,7 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.ServiceModel;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -19,13 +20,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
 
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Read List Item(s)", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Read_List_Item")]
-    public class SharepointReadListActivity : DsfActivityAbstract<string>
+    public class SharepointReadListActivity : DsfActivityAbstract<string>, IEquatable<SharepointReadListActivity>
     {
 
         public SharepointReadListActivity()
@@ -50,8 +51,8 @@ namespace Dev2.Activities.Sharepoint
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
-            ExecuteTool(dataObject,0);
+            var dataObject = context.GetExtension<IDSFDataObject>();
+            ExecuteTool(dataObject, 0);
         }
 
 
@@ -90,7 +91,7 @@ namespace Dev2.Activities.Sharepoint
             _debugInputs = new List<DebugItem>();
             _debugOutputs = new List<DebugItem>();
             _indexCounter = 1;
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             try
             {
                 var sharepointReadListTos = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
@@ -112,7 +113,7 @@ namespace Dev2.Activities.Sharepoint
                     using (var ctx = sharepointHelper.GetContext())
                     {
                         var camlQuery = SharepointUtils.BuildCamlQuery(env, FilterCriteria, fields, update);
-                        List list = ctx.Web.Lists.GetByTitle(SharepointList);
+                        var list = ctx.Web.Lists.GetByTitle(SharepointList);
                         var listItems = list.GetItems(camlQuery);
                         ctx.Load(listItems);
                         ctx.ExecuteQuery();
@@ -131,16 +132,16 @@ namespace Dev2.Activities.Sharepoint
                                     try
                                     {
                                         var sharepointValue = listItem[fieldName.InternalName];
-                                        
+
                                         if (sharepointValue != null)
                                         {
-                                            var sharepointVal = GetSharepointValue(sharepointValue);                                            
+                                            var sharepointVal = GetSharepointValue(sharepointValue);
                                             listItemValue = sharepointVal.ToString();
                                         }
                                     }
                                     catch (Exception e)
                                     {
-                                        Dev2Logger.Error(e);
+                                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                                         //Ignore sharepoint exception on retrieval not all fields can be retrieved.
                                     }
                                     var correctedVariable = variableName;
@@ -160,7 +161,7 @@ namespace Dev2.Activities.Sharepoint
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("SharepointReadListActivity", e);
+                Dev2Logger.Error("SharepointReadListActivity", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -184,54 +185,51 @@ namespace Dev2.Activities.Sharepoint
         {
             var type = sharepointValue.GetType();
             var val = sharepointValue;
-            if(type == typeof(FieldUserValue))
+            if (type == typeof(FieldUserValue))
             {
-                var fieldValue = sharepointValue as FieldUserValue;
-                if(fieldValue != null)
+                if (sharepointValue is FieldUserValue fieldValue)
                 {
                     return fieldValue.LookupValue;
                 }
             }
-            else if(type == typeof(FieldLookupValue))
+            else if (type == typeof(FieldLookupValue))
             {
-                var fieldValue = sharepointValue as FieldLookupValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldLookupValue fieldValue)
                 {
                     return fieldValue.LookupValue;
                 }
             }
             else if (type == typeof(FieldUrlValue))
             {
-                var fieldValue = sharepointValue as FieldUrlValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldUrlValue fieldValue)
                 {
                     return fieldValue.Url;
                 }
             }
             else if (type == typeof(FieldGeolocationValue))
             {
-                var fieldValue = sharepointValue as FieldGeolocationValue;
-                if (fieldValue != null)
+                if (sharepointValue is FieldGeolocationValue fieldValue)
                 {
-                    return string.Join(",",fieldValue.Longitude,fieldValue.Latitude,fieldValue.Altitude,fieldValue.Measure);
+                    return string.Join(",", fieldValue.Longitude, fieldValue.Latitude, fieldValue.Altitude, fieldValue.Measure);
                 }
             }
             else if (type == typeof(FieldLookupValue[]))
             {
-                var fieldValue = sharepointValue as FieldLookupValue[];
-                if (fieldValue != null)
-                {
-                    var returnString = string.Join(",",fieldValue.Select(value => value.LookupValue));
-                    return returnString;
-                }
-            }
-            else if (type == typeof(FieldUserValue[]))
-            {
-                var fieldValue = sharepointValue as FieldLookupValue[];
-                if (fieldValue != null)
+                if (sharepointValue is FieldLookupValue[] fieldValue)
                 {
                     var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
                     return returnString;
+                }
+            }
+            else
+            {
+                if (type == typeof(FieldUserValue[]))
+                {
+                    if (sharepointValue is FieldLookupValue[] fieldValue)
+                    {
+                        var returnString = string.Join(",", fieldValue.Select(value => value.LookupValue));
+                        return returnString;
+                    }
                 }
             }
             return val;
@@ -260,7 +258,7 @@ namespace Dev2.Activities.Sharepoint
             var validItems = SharepointUtils.GetValidReadListItems(ReadListItems).ToList();
             foreach (var varDebug in validItems)
             {
-                DebugItem debugItem = new DebugItem();
+                var debugItem = new DebugItem();
                 AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                 var variableName = varDebug.VariableName;
                 if (!string.IsNullOrEmpty(variableName))
@@ -273,18 +271,22 @@ namespace Dev2.Activities.Sharepoint
             }
             if (FilterCriteria != null && FilterCriteria.Any())
             {
-                string requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
+                var requireAllCriteriaToMatch = RequireAllCriteriaToMatch ? "Yes" : "No";
 
                 foreach (var varDebug in FilterCriteria)
                 {
-                    if (string.IsNullOrEmpty(varDebug.FieldName)) return;
-                    DebugItem debugItem = new DebugItem();
+                    if (string.IsNullOrEmpty(varDebug.FieldName))
+                    {
+                        return;
+                    }
+
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugItemStaticDataParams("", _indexCounter.ToString(CultureInfo.InvariantCulture)), debugItem);
                     var fieldName = varDebug.FieldName;
                     if (!string.IsNullOrEmpty(fieldName))
                     {
                         AddDebugItem(new DebugEvalResult(fieldName, "Field Name", env, update), debugItem);
-                        //AddDebugItem(new DebugItemStaticDataParams(varDebug.FieldName, "Field Name"), debugItem);
+
                     }
                     var searchType = varDebug.SearchType;
                     if (!string.IsNullOrEmpty(searchType))
@@ -324,5 +326,38 @@ namespace Dev2.Activities.Sharepoint
         }
 
 
+        public bool Equals(SharepointReadListActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other)
+                   && ReadListItems.SequenceEqual(other.ReadListItems, new SharepointReadListToComparer())
+                   && SharepointServerResourceId.Equals(other.SharepointServerResourceId)
+                   && string.Equals(SharepointList, other.SharepointList)
+                   && FilterCriteria.SequenceEqual(other.FilterCriteria, new SharepointSearchToComparer())
+                   && RequireAllCriteriaToMatch == other.RequireAllCriteriaToMatch;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointReadListActivity)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ReadListItems != null ? ReadListItems.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointList != null ? SharepointList.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FilterCriteria != null ? FilterCriteria.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RequireAllCriteriaToMatch.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

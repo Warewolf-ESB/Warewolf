@@ -18,12 +18,12 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ResourceCatalogImpl
 {
-    internal class ResourceDeleteProvider : IResourceDeleteProvider
+    class ResourceDeleteProvider : IResourceDeleteProvider
     {
-        private readonly FileWrapper _dev2FileWrapper = new FileWrapper();
+        readonly FileWrapper _dev2FileWrapper = new FileWrapper();
         readonly IServerVersionRepository _serverVersionRepository;
-        private readonly IResourceCatalog _resourceCatalog;
-       
+        readonly IResourceCatalog _resourceCatalog;
+
 
         public ResourceDeleteProvider(IResourceCatalog resourceCatalog, IServerVersionRepository serverVersionRepository)
         {
@@ -32,7 +32,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         #region Implementation of IResourceDeleteProvider
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions = true)
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type) => DeleteResource(workspaceID, resourceName, type, true);
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, string resourceName, string type, bool deleteVersions)
         {
             var @lock = Common.GetWorkspaceLock(workspaceID);
             lock (@lock)
@@ -50,7 +53,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 
                 var workspaceResources = _resourceCatalog.GetResources(workspaceID);
                 var resources = _resourceCatalog.GetResourcesBasedOnType(type, workspaceResources, r => string.Equals(r.ResourceName, resourceName, StringComparison.InvariantCultureIgnoreCase));
-                Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
+                var commands = new Dictionary<int, ResourceCatalogResult>()
                 {
                     {
                      0,ResourceCatalogResultBuilder.CreateNoMatchResult($"<Result>{type} '{resourceName}' was not found.</Result>")
@@ -70,7 +73,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions = true)
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type) => DeleteResource(workspaceID, resourceID, type, true);
+
+        public ResourceCatalogResult DeleteResource(Guid workspaceID, Guid resourceID, string type, bool deleteVersions)
         {
             try
             {
@@ -90,18 +95,18 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Delete Error", err);
+                Dev2Logger.Error("Delete Error", err, GlobalConstants.WarewolfError);
                 throw;
             }
         
         }
 
-        private ResourceCatalogResult DeleteFromWorkspace(Guid workspaceID, Guid resourceID, string type, bool deleteVersions)
+        ResourceCatalogResult DeleteFromWorkspace(Guid workspaceID, Guid resourceID, string type, bool deleteVersions)
         {
             var @lock = Common.GetWorkspaceLock(workspaceID);
-            lock(@lock)
+            lock (@lock)
             {
-                if(resourceID == Guid.Empty || string.IsNullOrEmpty(type))
+                if (resourceID == Guid.Empty || string.IsNullOrEmpty(type))
                 {
                     throw new InvalidDataContractException(ErrorResource.ResourceNameAndTypeMissing);
                 }
@@ -110,7 +115,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 var resources = workspaceResources.FindAll(r => Equals(r.ResourceID, resourceID));
 
                 var commands = GetDeleteCommands(workspaceID, resourceID, type, deleteVersions, resources, workspaceResources);
-                if(commands.ContainsKey(resources.Count))
+                if (commands.ContainsKey(resources.Count))
                 {
                     var resourceCatalogResult = commands[resources.Count];
                     return resourceCatalogResult;
@@ -122,17 +127,19 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         #endregion
 
         #region Private functions
-        private ResourceCatalogResult DeleteImpl(Guid workspaceID, IEnumerable<IResource> resources, List<IResource> workspaceResources, bool deleteVersions = true)
+        ResourceCatalogResult DeleteImpl(Guid workspaceID, IEnumerable<IResource> resources, List<IResource> workspaceResources, bool deleteVersions = true)
         {
 
-            IResource resource = resources.FirstOrDefault();
+            var resource = resources.FirstOrDefault();
 
             if (workspaceID == Guid.Empty && deleteVersions)
+            {
                 if (resource != null)
                 {
                     var explorerItems = _serverVersionRepository.GetVersions(resource.ResourceID);
                     explorerItems?.ForEach(a => _serverVersionRepository.DeleteVersion(resource.ResourceID, a.VersionInfo.VersionNumber, resource.GetResourcePath(workspaceID)));
                 }
+            }
 
             workspaceResources.Remove(resource);
             if (resource != null && _dev2FileWrapper.Exists(resource.FilePath))
@@ -162,7 +169,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                     ServerAuthorizationService.Instance.Remove(resource.ResourceID);
                 }
             }
-            
+
             ((ResourceCatalog)_resourceCatalog).RemoveFromResourceActivityCache(workspaceID, resource);
             return ResourceCatalogResultBuilder.CreateSuccessResult("Success");
         }
@@ -194,9 +201,9 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
 
-        private Dictionary<int, ResourceCatalogResult> GetDeleteCommands(Guid workspaceID, Guid resourceID, string type, bool deleteVersions, IEnumerable<IResource> resources, List<IResource> workspaceResources)
+        Dictionary<int, ResourceCatalogResult> GetDeleteCommands(Guid workspaceID, Guid resourceID, string type, bool deleteVersions, IEnumerable<IResource> resources, List<IResource> workspaceResources)
         {
-            Dictionary<int, ResourceCatalogResult> commands = new Dictionary<int, ResourceCatalogResult>()
+            var commands = new Dictionary<int, ResourceCatalogResult>()
             {
                 {
                     0,
@@ -208,6 +215,6 @@ namespace Dev2.Runtime.ResourceCatalogImpl
         }
 
         #endregion
-        
+
     }
 }

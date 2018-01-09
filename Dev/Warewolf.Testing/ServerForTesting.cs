@@ -1,7 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Xml.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Explorer;
@@ -13,6 +9,10 @@ using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 using Moq;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Xml.Linq;
 
 namespace Warewolf.Testing
 {
@@ -28,7 +28,7 @@ namespace Warewolf.Testing
             _updateManager = new Mock<IStudioUpdateManager>().Object;
         }
 
-        public ServerForTesting(Mock<IExplorerRepository> explorerRepository,Mock<IQueryManager> mockQueryManager)
+        public ServerForTesting(Mock<IExplorerRepository> explorerRepository, Mock<IQueryManager> mockQueryManager)
         {
             MockExplorerRepo = explorerRepository;
             _explorerProxy = explorerRepository.Object;
@@ -47,15 +47,15 @@ namespace Warewolf.Testing
             DisplayName = "localhost";
             ServerID = Guid.Empty;
             _updateManager = new Mock<IStudioUpdateManager>().Object;
-            Permissions = new List<IWindowsGroupPermission>{ permission };
+            Permissions = new List<IWindowsGroupPermission> { permission };
         }
 
-        private readonly IExplorerRepository _explorerProxy;
+        readonly IExplorerRepository _explorerProxy;
 #pragma warning disable 0649
         bool _hasLoaded;
 #pragma warning restore 0649
-        private IStudioUpdateManager _updateManager;
-        private List<IWindowsGroupPermission> _permissions;
+        IStudioUpdateManager _updateManager;
+        List<IWindowsGroupPermission> _permissions;
 
         public ServerForTesting(IResource copy) : base(copy)
         {
@@ -71,13 +71,13 @@ namespace Warewolf.Testing
 
         public Task<bool> ConnectAsync()
         {
-            var task = new Task<bool>(()=>true);
+            var task = new Task<bool>(() => true);
             task.Start();
             task.Wait();
             return task;
         }
 
-        public string DisplayName { get;  set; }
+        public string DisplayName { get; set; }
         public bool HasLoaded => _hasLoaded;
 
         public bool CanDeployTo => _canDeployTo;
@@ -94,7 +94,7 @@ namespace Warewolf.Testing
         {
             return null;
         }
-        
+
         public Task<List<string>> LoadExplorerDuplicates()
         {
             return null;
@@ -110,12 +110,14 @@ namespace Warewolf.Testing
             return CreateResources();
         }
 
-        private List<IResource> CreateResources()
+        List<IResource> CreateResources()
         {
             return new List<IResource>();
         }
 
-        public Task<IExplorerItem> LoadExplorer(bool reloadCatalogue=false)
+        public Task<IExplorerItem> LoadExplorer() => LoadExplorer(false);
+
+        public Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false)
         {
             return Task.FromResult(CreateExplorerItems());
         }
@@ -125,7 +127,7 @@ namespace Warewolf.Testing
             return null;
         }
 
-        private IExplorerItem CreateExplorerItems()
+        IExplorerItem CreateExplorerItems()
         {
             var mockExplorerItem = new Mock<IExplorerItem>();
             mockExplorerItem.Setup(item => item.DisplayName).Returns("Level 0");
@@ -135,7 +137,7 @@ namespace Warewolf.Testing
             return mockExplorerItem.Object;
         }
 
-        private IEnumerable<IExplorerItem> CreateFolders(IEnumerable<string> names)
+        IEnumerable<IExplorerItem> CreateFolders(IEnumerable<string> names)
         {
             var folders = new List<IExplorerItem>();
             foreach (var name in names)
@@ -150,16 +152,16 @@ namespace Warewolf.Testing
             CreateChildrenForFolder(folders[1], new[] { "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1", "Child 1" });
             return folders;
         }
+
         int i = 1;
 #pragma warning disable 0649
-        private bool _canDeployTo;
-        private bool _canDeployFrom;
+        bool _canDeployTo;
+        bool _canDeployFrom;
 #pragma warning restore 0649
-        private IQueryManager _queryManager;
+        IQueryManager _queryManager;
 
-        private void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
+        void CreateChildrenForFolder(IExplorerItem explorerItem, IEnumerable<string> childNames)
         {
-
             var resourceType = "EmailSource";
             foreach (var name in childNames)
             {
@@ -249,7 +251,6 @@ namespace Warewolf.Testing
                     Administrator = true,
                     IsServer = true,
                     ResourceID = Guid.Empty
-                
                 }};
             }
             set
@@ -257,13 +258,16 @@ namespace Warewolf.Testing
                 _permissions = value;
             }
         }
+
         public Guid EnvironmentID { get; set; }
 
         public Guid? ServerID { get; private set; }
 #pragma warning disable 0067
-        public event PermissionsChanged PermissionsChanged;
+        
         public event NetworkStateChanged NetworkStateChanged;
+
         public event ItemAddedEvent ItemAddedEvent;
+
 #pragma warning restore 0067
 
         [JsonIgnore]
@@ -280,7 +284,6 @@ namespace Warewolf.Testing
         {
             throw new NotImplementedException();
         }
-        
 
         public Dictionary<string, string> GetServerInformation()
         {
@@ -299,10 +302,10 @@ namespace Warewolf.Testing
             return false;
         }
 
-        #endregion
+        #endregion Implementation of IEquatable<IServer>
 
         #region Implementation of IServer
-        
+
         public IAuthorizationService AuthorizationService { get; }
         public string Name { get; set; }
         public bool CanStudioExecute { get; set; }
@@ -330,12 +333,14 @@ namespace Warewolf.Testing
         #region Implementation of IServer
 
         public event EventHandler<ConnectedEventArgs> IsConnectedChanged;
+
         public event EventHandler<ResourcesLoadedEventArgs> ResourcesLoaded;
+
         public event EventHandler AuthorizationServiceSet;
 
-        #endregion
+        #endregion Implementation of IServer
 
-        #endregion
+        #endregion Implementation of IServer
 
         protected virtual void OnIsConnectedChanged(ConnectedEventArgs e)
         {

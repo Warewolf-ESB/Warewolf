@@ -11,7 +11,7 @@ namespace Dev2.Activities
     }
     public class WebRequestDataDto : IWebRequestData
     {
-        private WebRequestDataDto()
+        WebRequestDataDto()
         {
 
         }

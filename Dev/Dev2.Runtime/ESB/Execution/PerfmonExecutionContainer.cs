@@ -8,13 +8,13 @@ namespace Dev2.Runtime.ESB.Execution
 {
     public class  PerfmonExecutionContainer:IEsbExecutionContainer
     {
-        private readonly IEsbExecutionContainer _container;
-        private readonly IPerformanceCounter _recPerSecondCounter;
-        private readonly IPerformanceCounter _currentConnections;
-        private readonly IPerformanceCounter _avgTime;
-        private readonly Stopwatch _stopwatch;
-        private readonly IPerformanceCounter _totalErrors;
-        private readonly IWarewolfPerformanceCounterLocater _locater;
+        readonly IEsbExecutionContainer _container;
+        readonly IPerformanceCounter _recPerSecondCounter;
+        readonly IPerformanceCounter _currentConnections;
+        readonly IPerformanceCounter _avgTime;
+        readonly Stopwatch _stopwatch;
+        readonly IPerformanceCounter _totalErrors;
+        readonly IWarewolfPerformanceCounterLocater _locater;
 
         public  PerfmonExecutionContainer(IEsbExecutionContainer container)
         {
@@ -27,7 +27,6 @@ namespace Dev2.Runtime.ESB.Execution
             _totalErrors = _locater.GetCounter("Total Errors");
             _stopwatch = new Stopwatch();
             _stopwatch.Start();
-            //_counter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Request Per Second");
         }
 
         #region Implementation of IEsbExecutionContainer
@@ -39,7 +38,7 @@ namespace Dev2.Runtime.ESB.Execution
             var concurrentInstanceCounter = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.ConcurrentRequests);
             var avgExecutionsInstance = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.AverageExecutionTime);
             var reqPerSecond = _locater.GetCounter(GetDataObject().ResourceID, WarewolfPerfCounterType.RequestsPerSecond);
-            ErrorResultTO outErrors = new ErrorResultTO();
+            var outErrors = new ErrorResultTO();
             try
             {
                 _recPerSecondCounter.Increment();

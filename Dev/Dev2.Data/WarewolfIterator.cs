@@ -6,6 +6,7 @@ using Dev2.Data.Util;
 using Dev2.MathOperations;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
+using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Data
 {
@@ -15,6 +16,8 @@ namespace Dev2.Data
         CommonFunctions.WarewolfEvalResult.WarewolfAtomResult _scalarResult;
         readonly int _maxValue;
         int _currentValue;
+        readonly FunctionEvaluatorOption _functionEvaluatorOption;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Object"/> class.
         /// </summary>
@@ -25,14 +28,20 @@ namespace Dev2.Data
             SetupForWarewolfRecordSetResult(warewolfEvalResult);
             _maxValue = _listResult?.Item.Count(atom => atom != null) ?? 1;
             _currentValue = 0;
+            _functionEvaluatorOption = FunctionEvaluatorOption.Dev2DateTimeFormat;
+        }
+
+        public WarewolfIterator(CommonFunctions.WarewolfEvalResult warewolfEvalResult, FunctionEvaluatorOption functionEvaluatorOption)
+            : this(warewolfEvalResult)
+        {
+            _functionEvaluatorOption = functionEvaluatorOption;
         }
 
         void SetupForWarewolfRecordSetResult(CommonFunctions.WarewolfEvalResult warewolfEvalResult)
         {
             if (warewolfEvalResult.IsWarewolfRecordSetResult)
             {
-                var listResult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult;
-                if (listResult != null)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult listResult)
                 {
                     var stringValue = "";
                     foreach (var item in listResult.Item.Data)
@@ -68,8 +77,7 @@ namespace Dev2.Data
         {
             if (warewolfEvalResult.IsWarewolfAtomListresult)
             {
-                var warewolfAtomListresult = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                if (warewolfAtomListresult != null)
+                if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
                 {
                     warewolfAtomListresult.Item.ResetCurrentEnumerator();
                     _listResult = warewolfAtomListresult;
@@ -96,28 +104,24 @@ namespace Dev2.Data
             return _scalarResult != null ? DoCalcution(ExecutionEnvironment.WarewolfAtomToStringErrorIfNull(_scalarResult.Item)) : null;
         }
 
-        static string DoCalcution(string warewolfAtomToString)
+        string DoCalcution(string warewolfAtomToString)
         {
-            if(warewolfAtomToString == null)
+            if (warewolfAtomToString == null)
             {
                 return null;
             }
-            string cleanExpression;
-            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out cleanExpression);
+            var isCalcEvaluation = DataListUtil.IsCalcEvaluation(warewolfAtomToString, out string cleanExpression);
 
             if (isCalcEvaluation)
             {
-                var functionEvaluator = new FunctionEvaluator();
-                string eval;
-                string error;
-                var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out eval, out error);
+                var functionEvaluator = new FunctionEvaluator(_functionEvaluatorOption);
+                var tryEvaluateFunction = functionEvaluator.TryEvaluateFunction(cleanExpression, out string eval, out string error);
                 warewolfAtomToString = eval;
                 if (eval == cleanExpression.Replace("\"", "") && cleanExpression.Contains("\""))
                 {
                     try
                     {
-                        string eval2;
-                        var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out eval2, out error);
+                        var b = functionEvaluator.TryEvaluateFunction(cleanExpression.Replace("\"", ""), out string eval2, out error);
                         if (b)
                         {
                             warewolfAtomToString = eval2;
@@ -127,13 +131,16 @@ namespace Dev2.Data
                     catch (Exception err)
                     {
 
-                        Dev2Logger.Warn(err);
+                        Dev2Logger.Warn(err, "Warewolf Warn");
                     }
                 }
                 if (!tryEvaluateFunction)
                 {
                     if (error == ErrorResource.IncorrectOperandType)
+                    {
                         error += string.Format("Unable to calculate: '{0}'. Try rewriting the expression.", cleanExpression);
+                    }
+
                     throw new Exception(error);
                 }
             }

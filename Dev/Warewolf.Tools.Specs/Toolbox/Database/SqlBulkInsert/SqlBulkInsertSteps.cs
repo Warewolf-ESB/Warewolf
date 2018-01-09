@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,11 +34,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
     [Binding]
     public class SqlBulkInsertSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public SqlBulkInsertSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -99,7 +103,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             scenarioContext.Add("activity", sqlBulkInsert);
         }
 
-        private void CreateIsolatedSQLTable(string tableNameUniqueNameGuid)
+        void CreateIsolatedSQLTable(string tableNameUniqueNameGuid)
         {
             var assembly = Assembly.GetExecutingAssembly();
             var resourceName = "Warewolf.Tools.Specs.Toolbox.Database.SqlBulkInsert." + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + ".sql";
@@ -129,25 +133,28 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        [AfterScenario("Import data into Table Batch size is 1")]
+        [AfterScenario("Database")]
         public void DeleteTestItem()
         {
-            var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
-            DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            if (scenarioContext.ScenarioInfo.Title.Replace(' ', '_') == "Import_data_into_Table_Batch_size_is_1")
+            {
+                var tableNameUniqueNameGuid = ScenarioContext.Current.Get<string>("tableNameUniqueNameGuid");
+                DeleteIsolatedSQLTable(tableNameUniqueNameGuid);
+            }
         }
 
-        private void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
+        void DeleteIsolatedSQLTable(string tableNameUniqueNameGuid)
         {
             var dbSource = scenarioContext.Get<DbSource>("dbSource");
             using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                var q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;           
+                var q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }
-                q = "drop table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
+                q = "drop table SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_') + "_" + tableNameUniqueNameGuid;
                 using (var cmd = new SqlCommand(q, connection))
                 {
                     cmd.ExecuteNonQuery();
@@ -163,10 +170,10 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             ClearCountColumn();
         }
 
-        private void ClearCountColumn()
+        void ClearCountColumn()
         {
             var dbSource = scenarioContext.Get<DbSource>("dbSource");
-            using(var connection = new SqlConnection(dbSource.ConnectionString))
+            using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
                 var q2 = "update SqlBulkInsertSpecFlowTestTableForeign_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
@@ -182,7 +189,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
         }
 
-        private void AddTableToDataList(Table table)
+        void AddTableToDataList(Table table)
         {
             // build up DataTable
             foreach (TableRow row in table.Rows)
@@ -190,7 +197,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                 var i = 0;
                 foreach (string columnName in table.Header)
                 {
-                    string value = row[i] == "blank" ? "" : row[i];
+                    var value = row[i] == "blank" ? "" : row[i];
                     if (value.ToUpper() == "NULL")
                     {
                         var recordsetDisplayValue = DataListUtil.CreateRecordsetDisplayValue("rs", columnName, "");
@@ -203,7 +210,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
                         var assignValue = new AssignValue(DataListUtil.AddBracketsToValueIfNotExist(recordsetDisplayValue), row[i]);
                         DataObject.Environment.AssignWithFrame(assignValue, 0);
                     }
-                   
+
                     i++;
                 }
                 DataObject.Environment.CommitAssign();
@@ -220,18 +227,12 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
         [When(@"the tool is executed")]
         public void WhenTheToolIsExecuted()
         {
-            bool checkConstraints;
-            scenarioContext.TryGetValue("checkConstraints", out checkConstraints);
-            bool keepIdentity;
-            scenarioContext.TryGetValue("keepIdentity", out keepIdentity);
-            bool ignoreBlankRows;
-            scenarioContext.TryGetValue("ignoreBlankRows", out ignoreBlankRows);
-            bool fireTriggers;
-            scenarioContext.TryGetValue("fireTriggers", out fireTriggers);
-            string batchSize;
-            scenarioContext.TryGetValue("batchSize", out batchSize);
-            string timeout;
-            scenarioContext.TryGetValue("timeout", out timeout);
+            scenarioContext.TryGetValue("checkConstraints", out bool checkConstraints);
+            scenarioContext.TryGetValue("keepIdentity", out bool keepIdentity);
+            scenarioContext.TryGetValue("ignoreBlankRows", out bool ignoreBlankRows);
+            scenarioContext.TryGetValue("fireTriggers", out bool fireTriggers);
+            scenarioContext.TryGetValue("batchSize", out string batchSize);
+            scenarioContext.TryGetValue("timeout", out string timeout);
 
             var sqlBulkInsert = scenarioContext.Get<DsfSqlBulkInsertActivity>("activity");
 
@@ -242,7 +243,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             sqlBulkInsert.BatchSize = batchSize;
             sqlBulkInsert.Timeout = timeout;
             sqlBulkInsert.Result = "[[result]]";
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -268,15 +269,15 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset.SqlBulkInsert
             }
 
 
-            List<DataRow> dataRows = t1.Rows.Cast<DataRow>().ToList();
-            List<TableRow> tableRows = table.Rows.ToList();
+            var dataRows = t1.Rows.Cast<DataRow>().ToList();
+            var tableRows = table.Rows.ToList();
 
-            using(var connection = new SqlConnection(dbSource.ConnectionString))
+            using (var connection = new SqlConnection(dbSource.ConnectionString))
             {
                 connection.Open();
-                string q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
+                var q1 = "truncate table SqlBulkInsertSpecFlowTestTable_for_" + scenarioContext.ScenarioInfo.Title.Replace(' ', '_');
 
-                using(var cmd = new SqlCommand(q1, connection))
+                using (var cmd = new SqlCommand(q1, connection))
                 {
                     cmd.ExecuteNonQuery();
                 }

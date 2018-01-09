@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,12 +23,22 @@ namespace Dev2.Common.DateAndTime
             return new DateTimeFormatter();
         }
 
+        public static IDateTimeFormatter CreateStandardFormatter()
+        {
+            return new StandardDateTimeFormatter();
+        }
+
         /// <summary>
         ///     Instantiates a concreate implementation of the IDateTimeParser
         /// </summary>
         public static IDateTimeParser CreateParser()
         {
-            return new DateTimeParser();
+            return new Dev2DateTimeParser();
+        }
+
+        public static IDateTimeParser CreateStandardParser()
+        {
+            return new StandardDateTimeParser();
         }
 
         /// <summary>
@@ -37,6 +47,11 @@ namespace Dev2.Common.DateAndTime
         public static IDateTimeComparer CreateComparer()
         {
             return new DateTimeComparer();
+        }
+
+        public static IDateTimeComparer CreateStandardComparer()
+        {
+            return new StandardDateTimeComparer();
         }
 
         /// <summary>

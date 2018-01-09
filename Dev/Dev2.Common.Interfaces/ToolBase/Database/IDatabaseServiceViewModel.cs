@@ -8,7 +8,7 @@ namespace Dev2.Common.Interfaces.ToolBase.Database
     public interface IDatabaseServiceViewModel
     {
         ISourceToolRegion<IDbSource> SourceRegion { get; set; }
-        IActionToolRegion<IDbAction> ActionRegion { get; set; } 
+        IDbActionToolRegion<IDbAction> ActionRegion { get; set; } 
         IDatabaseInputRegion InputArea { get; set; }
         IOutputsToolRegion OutputsRegion { get; set; }
 

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,9 +22,9 @@ namespace Dev2.TO
     public class JsonMappingEvaluated
     {
         readonly IExecutionEnvironment _env;
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public JsonMappingTo Simple { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         object _evalResultAsObject;
         CommonFunctions.WarewolfEvalResult _evalResult;
 
@@ -42,7 +42,7 @@ namespace Dev2.TO
 
         string CalculateDestinationNameFromSourceName(string sourceName)
         {
-            LanguageAST.LanguageExpression parsed = FsInteropFunctions.ParseLanguageExpression(sourceName,0);
+            var parsed = FsInteropFunctions.ParseLanguageExpression(sourceName,0);
             if (parsed.IsScalarExpression)
             {
                 return ((LanguageAST.LanguageExpression.ScalarExpression)parsed).Item;
@@ -63,7 +63,7 @@ namespace Dev2.TO
             {
                 if (_evalResultAsObject == null)
                 {
-                    CommonFunctions.WarewolfEvalResult e = EvalResult;
+                    var e = EvalResult;
                     _evalResultAsObject = CommonFunctions.evalResultToJsonCompatibleObject(e);
                     if (EvalResult.IsWarewolfAtomListresult && _evalResultAsObject == null)
                     {
@@ -71,16 +71,18 @@ namespace Dev2.TO
                     }
                     if (e.IsWarewolfAtomResult)
                     {
-                        var x = e as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (x != null && x.Item.IsDataString)
+                        if (e is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult x && x.Item.IsDataString)
                         {
                             if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "true")
                             {
                                 _evalResultAsObject = true;
                             }
-                            else if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
+                            else
                             {
-                                _evalResultAsObject = false;
+                                if (((DataStorage.WarewolfAtom.DataString)x.Item).Item == "false")
+                                {
+                                    _evalResultAsObject = false;
+                                }
                             }
                         }
                     }
@@ -126,23 +128,13 @@ namespace Dev2.TO
             }
             else
             {
-                if (FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0).IsRecordSetNameExpression)
-                {
-                    Evaluations = new List<JsonMappingEvaluated> { new JsonMappingEvaluated(env1, Compound.SourceName) };
-                }
-                else
-                {
-                    // we know this is a comma seperated list of expressions
-                    Evaluations =
-                        // ReSharper disable MaximumChainedReferences
-                        ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName,0))
+                Evaluations = FsInteropFunctions.ParseLanguageExpression(Compound.SourceName, 0).IsRecordSetNameExpression ? new List<JsonMappingEvaluated> { new JsonMappingEvaluated(env1, Compound.SourceName) } : ((LanguageAST.LanguageExpression.ComplexExpression)FsInteropFunctions.ParseLanguageExpression(Compound.SourceName, 0))
                             .Item
                             .Where(x => !x.IsWarewolfAtomExpression)
                             .Select(FsInteropFunctions.LanguageExpressionToString)
                             .Select(x =>
                                 new JsonMappingEvaluated(env1, x))
                             .ToList();
-                }         // ReSharper restore MaximumChainedReferences
             }
         }
 
@@ -212,7 +204,7 @@ namespace Dev2.TO
 
         object CreateArrayOfObjectsFromRecordSet(int i)
         {
-            JsonMappingEvaluated jsonMappingEvaluated = Evaluations.First();
+            var jsonMappingEvaluated = Evaluations.First();
             return new JProperty(
                         jsonMappingEvaluated.Simple.DestinationName,
                 GetEvalResult(jsonMappingEvaluated.EvalResult, i));
@@ -240,7 +232,7 @@ namespace Dev2.TO
         {
             if (evalResult.IsWarewolfAtomListresult)
             {
-                WarewolfAtomList<DataStorage.WarewolfAtom> lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
+                var lst = ((CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult)evalResult).Item;
                 if (i > lst.Count)
                 {
                     return null;
@@ -257,9 +249,9 @@ namespace Dev2.TO
             }
             if (evalResult.IsWarewolfRecordSetResult)
             {
-                DataStorage.WarewolfRecordset recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
+                var recset = ((CommonFunctions.WarewolfEvalResult.WarewolfRecordSetResult)EvalResult).Item;
 
-                KeyValuePair<string, WarewolfAtomList<DataStorage.WarewolfAtom>>[] data = recset.Data.ToArray();
+                var data = recset.Data.ToArray();
                 var jObjects = new List<JObject>();
                 for (int j = 0; j < recset.Count; j++)
                 {
@@ -287,8 +279,15 @@ namespace Dev2.TO
 
         public static string IsValidJsonMappingInput(string sourceName, string destinationName)
         {
-            if (string.IsNullOrEmpty(sourceName)) return ErrorResource.SupplySourceName;
-            if (string.IsNullOrEmpty(destinationName)) return ErrorResource.SupplyDestinationName;
+            if (string.IsNullOrEmpty(sourceName))
+            {
+                return ErrorResource.SupplySourceName;
+            }
+
+            if (string.IsNullOrEmpty(destinationName))
+            {
+                return ErrorResource.SupplyDestinationName;
+            }
 
             return ValidateInput(sourceName);
 
@@ -310,7 +309,7 @@ namespace Dev2.TO
                     }
                     if (complex.Item.Count() < 3 ||
                         complex.Item.Count() % 2 != 1 ||
-                        // ReSharper disable MaximumChainedReferences
+                        
                        !Enumerable.Range(1, complex.Item.Count() - 1)
                            .Where(i => i % 2 == 1)
                            .Select(i =>
@@ -319,7 +318,7 @@ namespace Dev2.TO
                                             complex.Item.ElementAt(i)
                                             ) == ",")
                            .Aggregate((a, b) => a && b))
-                    // ReSharper restore MaximumChainedReferences
+                    
                     {
                         return ErrorResource.ExpressionMustBeCommaSeperated;
                     }

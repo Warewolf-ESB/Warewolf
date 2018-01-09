@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,30 +28,18 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests
 {
     public static class Dev2MockFactory
     {
-        private static Mock<ShellViewModel> _mockMainViewModel;
-        private static Mock<IContextualResourceModel> _mockResourceModel;
+        static Mock<ShellViewModel> _mockMainViewModel;
+        static Mock<IContextualResourceModel> _mockResourceModel;
 
         static Dev2MockFactory()
         {
-            AppSettings.LocalHost = "https://localhost:3143";
+            AppUsageStats.LocalHost = "https://localhost:3143";
         }
-
-        /*
-         * Travis.Frisinger : 04-04-2012
-         * 
-         * The stuff for ILayoutObjectViewModel is ugly, but given that I need to return from a callback???
-         * It was the easiest method I would find to correctly result the LayoutGrid without taking another day to get it right
-         * http://stackoverflow.com/questions/2494930/settings-variable-values-in-a-moq-callback-call
-         * sites a method of returning inline, but it does not take paramers into the callback method and I could not get the ordering right
-         * hence this not-so-nice workaround
-         * 
-         */
-        // required for IsSelected Property of LayoutGridObjectViewModel
 
         static public Mock<ShellViewModel> MainViewModel
         {
@@ -93,8 +81,8 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock().Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppUsageStats.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.AppServerUri).Returns(new Uri(AppUsageStats.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
             var authService = new Mock<IAuthorizationService>();
             mockEnvironmentModel.Setup(a => a.AuthorizationService).Returns(authService.Object);
@@ -107,7 +95,7 @@ namespace Dev2.Core.Tests
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connect()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.LoadResources()).Verifiable();
             mockEnvironmentModel.Setup(environmentModel => environmentModel.ResourceRepository).Returns(SetupFrameworkRepositoryResourceModelMock(returnResource, resourceRepositoryFakeBacker).Object);
-            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppSettings.LocalHost));
+            mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.WebServerUri).Returns(new Uri(AppUsageStats.LocalHost));
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.ServerEvents).Returns(new EventPublisher());
             mockEnvironmentModel.Setup(environmentModel => environmentModel.Connection.Verify(It.IsAny<Action<ConnectResult>>(), false)).Callback(() => { });
             var authService = new Mock<IAuthorizationService>();
@@ -122,8 +110,6 @@ namespace Dev2.Core.Tests
         {
             var mockResourceModel = new Mock<IResourceRepository>();
             mockResourceModel.Setup(r => r.All()).Returns(new List<IResourceModel>());
-            //mockResourceModel.Setup(resource => resource.Save().Verifiable();
-            //mockResourceModel.Setup(resource => resource.ResourceType).Returns(enResourceType.Service);
 
             return mockResourceModel;
         }
@@ -185,11 +171,11 @@ namespace Dev2.Core.Tests
             return mockDataListViewModel;
         }
 
-        // ReSharper disable ParameterHidesMember
+        
 
         public static Mock<IPopupController> CreateIPopup(MessageBoxResult returningResult)
         {
-            Mock<IPopupController> result = new Mock<IPopupController>();
+            var result = new Mock<IPopupController>();
             result.Setup(moq => moq.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(returningResult).Verifiable();
 
             return result;

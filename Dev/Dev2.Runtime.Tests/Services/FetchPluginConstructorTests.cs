@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using TestingDotnetDllCascading;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var assembly = type.Assembly;
-            NamespaceItem namespaceItem = new NamespaceItem()
+            var namespaceItem = new NamespaceItem()
             {
                 AssemblyLocation = assembly.Location,
                 AssemblyName = assembly.FullName,
@@ -115,7 +115,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var assembly = type.Assembly;
-            NamespaceItem namespaceItem = new NamespaceItem()
+            var namespaceItem = new NamespaceItem()
             {
                 AssemblyLocation = assembly.Location,
                 AssemblyName = assembly.FullName,
@@ -176,7 +176,7 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var assembly = type.Assembly;
-            NamespaceItem namespaceItem = new NamespaceItem()
+            var namespaceItem = new NamespaceItem()
             {
                 AssemblyLocation = assembly.Location,
                 AssemblyName = assembly.FullName,
@@ -237,14 +237,14 @@ namespace Dev2.Tests.Runtime.Services
             //---------------Set up test pack-------------------
             var type = typeof(Human);
             var assembly = type.Assembly;
-            NamespaceItem namespaceItem = new NamespaceItem()
+            var namespaceItem = new NamespaceItem()
             {
                 AssemblyLocation = assembly.Location,
                 AssemblyName = assembly.FullName,
                 FullName = type.FullName,
 
             };
-            
+
 
             var pluginSourceDefinition = new PluginSourceDefinition();
             var serializeToJson = pluginSourceDefinition.SerializeToJsonStringBuilder();

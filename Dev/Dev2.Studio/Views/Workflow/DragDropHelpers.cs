@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,9 @@ using System.Windows;
 using Dev2.Studio.Interfaces;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Views.Workflow
-// ReSharper restore CheckNamespace
+
 {
     public class DragDropHelpers
     {
@@ -76,11 +76,9 @@ namespace Dev2.Studio.Views.Workflow
                 return false;
             }
 
-            IWorkflowDesignerViewModel workflowDesignerViewModel = _workflowDesignerView.DataContext as IWorkflowDesignerViewModel;
-            if (workflowDesignerViewModel != null)
+            if (_workflowDesignerView.DataContext is IWorkflowDesignerViewModel workflowDesignerViewModel)
             {
-                var explorerItemViewModel = objectData as ExplorerItemViewModel;
-                if (explorerItemViewModel != null)
+                if (objectData is ExplorerItemViewModel explorerItemViewModel)
                 {
                     if (workflowDesignerViewModel.Server.EnvironmentID != explorerItemViewModel.Server.EnvironmentID && !explorerItemViewModel.IsService)
                     {
@@ -96,7 +94,7 @@ namespace Dev2.Studio.Views.Workflow
                     {
                         return true;
                     }
-                    
+
                     if (explorerItemViewModel.CanExecute && explorerItemViewModel.CanView && explorerItemViewModel.IsService && !explorerItemViewModel.IsSource)
                     {
                         return false;

@@ -5,19 +5,19 @@ using System.Reflection;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
     public interface IAssemblyLoader
     {
         bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly);
-        // ReSharper disable once UnusedMemberInSuper.Global
+        
         void LoadDepencencies(Assembly asm, string assemblyLocation);
     }
     public class AssemblyLoader : IAssemblyLoader
     {
-        private readonly IAssemblyWrapper _assemblyWrapper;
+        readonly IAssemblyWrapper _assemblyWrapper;
 
         public AssemblyLoader()
             : this(new AssemblyWrapper())
@@ -29,7 +29,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             _assemblyWrapper = assemblyWrapper;
         }
 
-        private readonly List<string> _loadedAssemblies = new List<string>();
+        readonly List<string> _loadedAssemblies = new List<string>();
         #region Implementation of IAssemblyLoader
 
         public bool TryLoadAssembly(string assemblyLocation, string assemblyName, out Assembly loadedAssembly)
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                             loadedAssembly = _assemblyWrapper.Load(correctAssemblyName);
 
                         }
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     }
 
                     LoadDepencencies(loadedAssembly, assemblyLocation);
@@ -64,13 +64,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     throw;
 
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message);
+                    Dev2Logger.Error(e.Message, GlobalConstants.WarewolfError);
                 }
             }
             else
@@ -86,10 +86,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     throw;
                 }
-                catch
+                catch (Exception ex)
                 {
                     try
                     {
@@ -102,7 +102,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     }
                     catch (Exception e)
                     {
-                        Dev2Logger.Error(e);
+                        Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     }
                 }
                 try
@@ -118,12 +118,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 }
                 catch (BadImageFormatException e)//WOLF-1640
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     throw;
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 }
             }
             return false;
@@ -147,7 +147,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     {
                         depAsm = _assemblyWrapper.Load(toLoad);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         var path = Path.GetDirectoryName(assemblyLocation);
                         if (path != null)

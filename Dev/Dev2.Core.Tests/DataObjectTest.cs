@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,10 +24,10 @@ using Moq;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable FunctionComplexityOverflow
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable MethodTooLong
+
+
+
 namespace Dev2.Tests
 {
     [TestClass]
@@ -59,7 +59,7 @@ namespace Dev2.Tests
             mock.SetupAllProperties();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
             dataObject.Environment = mock.Object;
-            PrivateObject privateObject = new PrivateObject(dataObject);
+            var privateObject = new PrivateObject(dataObject);
             var field = privateObject.GetField("_environments", BindingFlags.Instance | BindingFlags.NonPublic) as ConcurrentStack<IExecutionEnvironment>;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataObject.Environment);
@@ -80,7 +80,7 @@ namespace Dev2.Tests
             mock.SetupAllProperties();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid());
             dataObject.Environment = mock.Object;
-            PrivateObject privateObject = new PrivateObject(dataObject);
+            var privateObject = new PrivateObject(dataObject);
             var field = privateObject.GetField("_environments", BindingFlags.Instance | BindingFlags.NonPublic) as ConcurrentStack<IExecutionEnvironment>;
             //---------------Assert Precondition----------------
             Assert.IsNotNull(dataObject.Environment);
@@ -191,7 +191,7 @@ namespace Dev2.Tests
         public void DsfDataObject_Clone_NormalClone_FullDuplicationForProperties()
         {
             //------------Setup for test--------------------------
-            Guid wfInstanceID = Guid.NewGuid();
+            var wfInstanceID = Guid.NewGuid();
             IDSFDataObject dataObject = new DsfDataObject(string.Empty, Guid.NewGuid(), "<x>1</x>");
             dataObject.BookmarkExecutionCallbackID = Guid.NewGuid();
             dataObject.CurrentBookmarkName = "def";
@@ -246,18 +246,18 @@ namespace Dev2.Tests
             dataObject.IsSubExecution = true;
             dataObject.ServiceTest = new ServiceTestModelTO {TestName = "Test Mock"};
             var threadsToDispose = new Dictionary<int, List<Guid>>();
-            List<Guid> guidList = new List<Guid> { Guid.NewGuid() };
+            var guidList = new List<Guid> { Guid.NewGuid() };
             threadsToDispose.Add(3, guidList);
             dataObject.ThreadsToDispose = threadsToDispose;
 
             //------------Execute Test---------------------------
-            IDSFDataObject clonedObject = dataObject.Clone();
+            var clonedObject = dataObject.Clone();
 
             //------------Assert Results-------------------------
 
             // check counts, then check values
             var properties = typeof(IDSFDataObject).GetProperties();
-            Assert.AreEqual(64, properties.Length);
+            Assert.AreEqual(67, properties.Length);
 
             // now check each value to ensure it transfered
             Assert.AreEqual(dataObject.BookmarkExecutionCallbackID, clonedObject.BookmarkExecutionCallbackID);
@@ -318,6 +318,8 @@ namespace Dev2.Tests
             Assert.AreNotEqual(dataObject.ServiceTest, clonedObject.ServiceTest);
             Assert.AreEqual(dataObject.ServiceTest.TestName, clonedObject.ServiceTest.TestName);
             Assert.AreEqual(dataObject.IsSubExecution,clonedObject.IsSubExecution);
+            Assert.AreEqual(dataObject.WebUrl,clonedObject.WebUrl);
+            Assert.AreEqual(dataObject.QueryString,clonedObject.QueryString);
         }
 
         #region Debug Mode Test

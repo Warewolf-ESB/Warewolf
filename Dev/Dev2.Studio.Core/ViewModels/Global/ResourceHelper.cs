@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,7 @@
 using System;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core
 {
     public static class ResourceHelper
@@ -29,7 +29,7 @@ namespace Dev2.Studio.Core
             {
                 return String.Empty;
             }
-            string displayName = resourceModel.ResourceName;
+            var displayName = resourceModel.ResourceName;
             if (resourceModel.Environment != null && !resourceModel.Environment.IsLocalHost)
             {
                 if (!resourceModel.Environment.Name.Contains("localhost"))

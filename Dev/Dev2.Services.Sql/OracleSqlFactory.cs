@@ -8,7 +8,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class OracleSqlFactory : IDbFactory
+    class OracleSqlFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 
@@ -39,14 +39,16 @@ namespace Dev2.Services.Sql
         DataTable GetOracleServerSchema(IDbConnection connection)
         {
             if (!(connection is OracleConnection))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Oracle"));
+            }
 
             return ((OracleConnection)connection).GetSchema();
         }
 
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            var ds = new DataSet(); //conn is opened by dataadapter
             reader.Fill(ds);
             var t = ds.Tables[0];
             return t;
@@ -55,7 +57,10 @@ namespace Dev2.Services.Sql
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is OracleCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "OracleCommand"));
+            }
+
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new OracleDataAdapter(command as OracleCommand))

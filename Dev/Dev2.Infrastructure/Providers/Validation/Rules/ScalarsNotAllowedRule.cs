@@ -17,8 +17,8 @@ namespace Dev2.Providers.Validation.Rules
         {
             var value = GetValue();
 
-            string[] fields = value.Split(',');
-            for(int i = 0; i < fields.Length; i++)
+            var fields = value.Split(',');
+            for (int i = 0; i < fields.Length; i++)
             {
                 if(!fields[i].Contains("(") && !fields[i].Contains(")"))
                 {

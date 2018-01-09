@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ using System.Net.NetworkInformation;
 using System.Net.Sockets;
 using Dev2.Runtime.ESB.Management.Services;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities
 {
     public interface IGetSystemInformation
@@ -77,7 +77,7 @@ namespace Dev2.Activities
             return GetOperatingSystemProperty("Version");
         }
 
-        private string GetOperatingSystemProperty(string property)
+        string GetOperatingSystemProperty(string property)
         {
             var name = (from x in new ManagementObjectSearcher("SELECT * FROM Win32_OperatingSystem").Get().OfType<ManagementObject>()
                         select x.GetPropertyValue(property)).First();
@@ -103,16 +103,15 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetFullDateTimeInformation()
+        public virtual string GetFullDateTimeInformation()
         {
-            return DateTime.Now.ToString(GlobalConstants.GlobalDefaultNowFormat);
+            return DateTime.Now.ToString(GlobalConstants.PreviousGlobalDefaultNowFormat);
         }
 
-        public string GetDateTimeFormatInformation()
+        public virtual string GetDateTimeFormatInformation()
         {
-            var dateTimeParser = new DateTimeParser();
-            string error;
-            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out error);
+            var dateTimeParser = new Dev2DateTimeParser();
+            var translatedDateTimeFormat = dateTimeParser.TranslateDotNetToDev2Format(CultureInfo.CurrentUICulture.DateTimeFormat.FullDateTimePattern, out string error);
             return translatedDateTimeFormat;
         }
 
@@ -129,7 +128,7 @@ namespace Dev2.Activities
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
             }
             return stringBuilder.ToString().TrimEnd(',');
@@ -147,7 +146,7 @@ namespace Dev2.Activities
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
             }
             return stringBuilder.ToString().TrimEnd(',');
@@ -194,7 +193,7 @@ namespace Dev2.Activities
             }
             return stringBuilder.ToString();
         }
-        
+
         public string GetVirtualMemoryTotalInformation()
         {
             var stringBuilder = new StringBuilder();
@@ -264,10 +263,11 @@ namespace Dev2.Activities
             return stringBuilder.ToString();
         }
 
-        public string GetUserRolesInformation(IIdentity currentIdentity = null)
+        public string GetUserRolesInformation() => GetUserRolesInformation(null);
+        public string GetUserRolesInformation(IIdentity currentIdentity)
         {
             var stringBuilder = new StringBuilder();
-            WindowsIdentity identity = currentIdentity as WindowsIdentity ?? WindowsIdentity.GetCurrent();
+            var identity = currentIdentity as WindowsIdentity ?? WindowsIdentity.GetCurrent();
 
             if (identity.Groups != null)
             {
@@ -367,7 +367,7 @@ namespace Dev2.Activities
             return GetIPAddress(AddressFamily.InterNetworkV6);
         }
 
-        private string GetIPAddress(AddressFamily ipv)
+        string GetIPAddress(AddressFamily ipv)
         {
             var hosts = Dns.GetHostEntry(Dns.GetHostName()).AddressList;
             var ips = (from host in hosts where host.AddressFamily == ipv select host.ToString()).ToList();

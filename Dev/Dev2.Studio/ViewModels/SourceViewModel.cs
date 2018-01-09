@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using Caliburn.Micro;
 using Dev2.Activities.Designers2.Core.Help;
@@ -10,7 +9,7 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.ViewModels
 {
@@ -18,7 +17,7 @@ namespace Dev2.ViewModels
         where T : IEquatable<T>
     {
         readonly IPopupController _popupController;
-        private readonly IServer _server;
+        readonly IServer _server;
 
         public SourceViewModel(IEventAggregator eventPublisher, SourceBaseImpl<T> vm, IPopupController popupController,IView view,IServer server)
             : base(eventPublisher)
@@ -81,8 +80,7 @@ namespace Dev2.ViewModels
 
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 loadedView.DataContext = ViewModel;
                 base.OnViewLoaded(loadedView);
@@ -91,7 +89,7 @@ namespace Dev2.ViewModels
 
 
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public string ResourceType
         {
             get
@@ -123,41 +121,77 @@ namespace Dev2.ViewModels
 
         public bool DoDeactivate(bool showMessage)
         {
+            ViewModel.UpdateHelpDescriptor(string.Empty);
             if (showMessage)
             {
-                ViewModel.UpdateHelpDescriptor(string.Empty);
-                if (ViewModel.HasChanged)
+                if (IsDirty)
                 {
-                    var result = _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
-                        $"Save {ViewModel.Header.Replace("*", "")}?",
-                                          MessageBoxButton.YesNoCancel,
-                                          MessageBoxImage.Information, "", false, false, true, false, false, false);
-
+                    var result = IsDirtyPopup();
                     switch (result)
                     {
-                        case MessageBoxResult.Cancel:
-                        case MessageBoxResult.None:
-                            return false;
                         case MessageBoxResult.No:
                             return true;
                         case MessageBoxResult.Yes:
-                            if (ViewModel.CanSave())
-                            {
-                                ViewModel.Save();
-                            }
+                            ViewModel.Save();
                             break;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Cancel:
+                            break;
+                        default:
+                            return false;
                     }
+                }
+                else if (ViewModel.HasChanged)
+                {
+                    var result = HasChangedPopup();
+                    switch (result)
+                    {
+                        case MessageBoxResult.No:
+                            return true;
+                        case MessageBoxResult.None:
+                            break;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Cancel:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        default:
+                            return false;
+                    }
+                }
+                else
+                {
+                    return true;
                 }
             }
             else
             {
-                ViewModel.UpdateHelpDescriptor(String.Empty);
                 if (ViewModel.CanSave())
                 {
                     ViewModel.Save();
                 }
             }
             return true;
+        }
+
+        MessageBoxResult IsDirtyPopup()
+        {
+            return _popupController.Show(string.Format(StringResources.ItemSource_NotSaved),
+                                    $"Save {ViewModel.Header.Replace("*", "")}?",
+                                                      MessageBoxButton.YesNoCancel,
+                                                      MessageBoxImage.Information, "", false, false, true, false, false, false);
+        }
+
+        MessageBoxResult HasChangedPopup()
+        {
+            return _popupController.Show(string.Format(StringResources.ItemSource_HasChanged_NotTested),
+                                    $"Test {ViewModel.Header.Replace("*", "")}?",
+                                                      MessageBoxButton.YesNo,
+                                                      MessageBoxImage.Information, "", false, false, true, false, false, false);
         }
 
         #endregion

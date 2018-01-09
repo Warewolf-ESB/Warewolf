@@ -1,5 +1,5 @@
 ﻿using System.Windows.Input;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Common.Interfaces
 {

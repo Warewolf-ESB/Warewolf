@@ -9,10 +9,10 @@ namespace Warewolf.Core
     [Serializable]
     public class ServiceInput : ObservableObject, IServiceInput, IEquatable<ServiceInput>
     {
-        private string _value;
-        private bool _requiredField;
-        private bool _emptyIsNull;
-        private string _name;
+        string _value;
+        bool _requiredField;
+        bool _emptyIsNull;
+        string _name;
 
         #region Equality members
 
@@ -162,7 +162,11 @@ namespace Warewolf.Core
             get
             {
                 var type = ShortTypeName == null ? "" : "(" + ShortTypeName + ")";
-                if (string.IsNullOrEmpty(Name)) return "";
+                if (string.IsNullOrEmpty(Name))
+                {
+                    return "";
+                }
+
                 var fullName = Name + type;
                 return fullName;
             }

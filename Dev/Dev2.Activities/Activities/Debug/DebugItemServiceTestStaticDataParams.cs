@@ -1,17 +1,22 @@
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Diagnostics;
-// ReSharper disable UnassignedGetOnlyAutoProperty
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
+
+
+
 
 namespace Dev2.Activities.Debug
 {
     public class DebugItemServiceTestStaticDataParams : DebugOutputBase
     {
         readonly string _operand;
+        
+        public DebugItemServiceTestStaticDataParams(string value, bool hasError)
+            : this(value, hasError, false)
+        {
+        }
 
-        public DebugItemServiceTestStaticDataParams(string value, bool hasError = false, bool mockSelected = false)
+        public DebugItemServiceTestStaticDataParams(string value, bool hasError, bool mockSelected)
         {
             Value = value;
             Type = DebugItemResultType.Value;
@@ -19,24 +24,7 @@ namespace Dev2.Activities.Debug
             TestStepHasError = hasError;
             MockSelected = mockSelected;
         }
-
-        public DebugItemServiceTestStaticDataParams(string value, string variable, bool mockSelected = false)
-        {
-            Value = value;
-            Variable = variable;
-            Type = DebugItemResultType.Variable;
-            MockSelected = mockSelected;
-        }
-
-        public DebugItemServiceTestStaticDataParams(string value, string variable, string operand, bool mockSelected = false)
-        {
-            Value = value;
-            _operand = operand;
-            Variable = variable;
-            Type = DebugItemResultType.Variable;
-            MockSelected = mockSelected;
-        }
-
+        
         public string Value { get; }
 
         public override string LabelText { get; }

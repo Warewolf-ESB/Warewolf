@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -15,15 +15,11 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
-
-// ReSharper disable CheckNamespace
+using Dev2.Common;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
 {
-    // ReSharper disable InconsistentNaming
     public class DataSplitDTO : ValidatedObject, IDev2TOFn, IOutputTOConvert
-    // ReSharper restore InconsistentNaming
     {
         public const string SplitTypeIndex = "Index";
         public const string SplitTypeChars = "Chars";
@@ -52,7 +48,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _isEscapeCharEnabled = true;
         }
 
-        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include = false, bool inserted = false)
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum)
+            : this(outputVariable, splitType, at, indexNum, false, false)
+        {
+        }
+
+        public DataSplitDTO(string outputVariable, string splitType, string at, int indexNum, bool include, bool inserted)
         {
             Inserted = inserted;
             OutputVariable = outputVariable;
@@ -60,14 +61,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             At = string.IsNullOrEmpty(at) ? string.Empty : at;
             IndexNumber = indexNum;
             Include = include;
-            if(splitType == "Index" || splitType == "Chars")
-            {
-                _enableAt = true;
-            }
-            else
-            {
-                _enableAt = false;
-            }
+            _enableAt = splitType == "Index" || splitType == "Chars";
             _isEscapeCharEnabled = true;
             OutList = new List<string>();
         }
@@ -76,31 +70,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
         }
 
-        public bool EnableAt { get { return _enableAt; } set { OnPropertyChanged(ref _enableAt, value); } }
+        public bool EnableAt { get => _enableAt; set => OnPropertyChanged(ref _enableAt, value); }
 
-        public int IndexNumber { get { return _indexNum; } set { OnPropertyChanged(ref _indexNum, value); } }
+        public int IndexNumber { get => _indexNum; set => OnPropertyChanged(ref _indexNum, value); }
 
         public List<string> OutList { get; set; }
 
-        public bool Include { get { return _include; } set { OnPropertyChanged(ref _include, value); } }
+        public bool Include { get => _include; set => OnPropertyChanged(ref _include, value); }
 
         [FindMissing]
-        public string EscapeChar { get { return _escapeChar; } set { OnPropertyChanged(ref _escapeChar, value); } }
+        public string EscapeChar { get => _escapeChar; set => OnPropertyChanged(ref _escapeChar, value); }
 
-        public bool IsEscapeCharFocused { get { return _isEscapeCharFocused; } set { OnPropertyChanged(ref _isEscapeCharFocused, value); } }
+        public bool IsEscapeCharFocused { get => _isEscapeCharFocused; set => OnPropertyChanged(ref _isEscapeCharFocused, value); }
 
-        public bool IsEscapeCharEnabled { get { return _isEscapeCharEnabled; } set { OnPropertyChanged(ref _isEscapeCharEnabled, value); } }
+        public bool IsEscapeCharEnabled { get => _isEscapeCharEnabled; set => OnPropertyChanged(ref _isEscapeCharEnabled, value); }
 
         [FindMissing]
         public string OutputVariable
         {
-            get { return _outputVariable; }
+            get => _outputVariable;
             set
             {
                 OnPropertyChanged(ref _outputVariable, value);
@@ -108,14 +100,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsOutputVariableFocused { get { return _isOutputVariableFocused; } set { OnPropertyChanged(ref _isOutputVariableFocused, value); } }
+        public bool IsOutputVariableFocused { get => _isOutputVariableFocused; set => OnPropertyChanged(ref _isOutputVariableFocused, value); }
 
         public string SplitType
         {
-            get { return _splitType; }
+            get => _splitType;
             set
             {
-                if(value != null)
+                if (value != null)
                 {
                     OnPropertyChanged(ref _splitType, value);
                     RaiseCanAddRemoveChanged();
@@ -126,7 +118,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string At
         {
-            get { return _at; }
+            get => _at;
             set
             {
                 OnPropertyChanged(ref _at, value);
@@ -134,33 +126,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsAtFocused { get { return _isAtFocused; } set { OnPropertyChanged(ref _isAtFocused, value); } }
+        public bool IsAtFocused { get => _isAtFocused; set => OnPropertyChanged(ref _isAtFocused, value); }
 
         public bool CanRemove()
         {
-            if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
+            if (SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
-                if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
+                if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
                     return true;
                 }
                 return false;
             }
-
             return false;
         }
 
         public bool CanAdd()
         {
-            bool result = true;
-            if(SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
+            if (SplitType == SplitTypeIndex || SplitType == SplitTypeChars)
             {
-                if(string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
+                if (string.IsNullOrEmpty(OutputVariable) && string.IsNullOrEmpty(At))
                 {
-                    result = false;
+                    return false;
                 }
+                return true;
             }
-            return result;
+            return true;
         }
 
         public void ClearRow()
@@ -184,37 +175,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             var ruleSet = new RuleSet();
-            if(IsEmpty())
+            if (IsEmpty())
             {
                 return ruleSet;
             }
 
-            switch(propertyName)
+            switch (propertyName)
             {
                 case "OutputVariable":
                     if (!string.IsNullOrEmpty(OutputVariable))
                     {
-                        var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "0");
+                        var outputExprRule = new IsValidExpressionRule(() => OutputVariable, datalist, "0", new VariableUtils());
                         ruleSet.Add(outputExprRule);
-                        ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist));
+                        ruleSet.Add(new IsValidExpressionRule(() => outputExprRule.ExpressionValue, datalist, new VariableUtils()));
                     }
                     break;
-
                 case "At":
-                    switch(SplitType)
+                    switch (SplitType)
                     {
                         case SplitTypeIndex:
-                            var atIndexExprRule = new IsValidExpressionRule(() => At, datalist, "1");
+                            var atIndexExprRule = new IsValidExpressionRule(() => At, datalist, "1", new VariableUtils());
                             ruleSet.Add(atIndexExprRule);
                             ruleSet.Add(new IsPositiveNumberRule(() => atIndexExprRule.ExpressionValue));
                             break;
                         case SplitTypeChars:
-                            var atCharsExprRule = new IsValidExpressionRule(() => At, datalist, ",");
+                            var atCharsExprRule = new IsValidExpressionRule(() => At, datalist, ",", new VariableUtils());
                             ruleSet.Add(atCharsExprRule);
                             ruleSet.Add(new IsStringEmptyRule(() => atCharsExprRule.ExpressionValue));
                             break;
+                        default:
+                            Dev2Logger.Info("No Rule Set for the Data Split DTO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
+                            break;
                     }
                     break;
+                default:
+                    return ruleSet;
             }
             return ruleSet;
         }

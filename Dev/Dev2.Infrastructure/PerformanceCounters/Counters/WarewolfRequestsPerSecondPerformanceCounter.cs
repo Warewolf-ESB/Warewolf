@@ -2,17 +2,16 @@
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfRequestsPerSecondPerformanceCounter : IPerformanceCounter
+    public class WarewolfRequestsPerSecondPerformanceCounter : IPerformanceCounter, IDisposable
     {
+        PerformanceCounter _counter;
+        Stopwatch _stopwatch;
 
-        private PerformanceCounter _counter;
-        private Stopwatch _stopwatch;
-
-        // ReSharper disable once InconsistentNaming
-        private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
+        const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
         public WarewolfRequestsPerSecondPerformanceCounter()
         {
             IsActive = true;
@@ -20,8 +19,6 @@ namespace Dev2.PerformanceCounters.Counters
 
         public void Setup()
         {
-
-
             if (_counter == null)
             {
                 _stopwatch = new Stopwatch();
@@ -35,6 +32,7 @@ namespace Dev2.PerformanceCounters.Counters
                 };
             }
         }
+
         public void Reset()
         {
             if (_counter != null)
@@ -42,6 +40,7 @@ namespace Dev2.PerformanceCounters.Counters
                 _counter.RawValue = 0;
             }
         }
+
         #region Implementation of IPerformanceCounter
 
         public void Increment()
@@ -57,8 +56,9 @@ namespace Dev2.PerformanceCounters.Counters
         public void IncrementBy(long ticks)
         {
             if (IsActive)
+            {
                 _counter.IncrementBy(ticks);
-
+            }
         }
 
         public void Decrement()
@@ -79,13 +79,18 @@ namespace Dev2.PerformanceCounters.Counters
         public IList<CounterCreationData> CreationData()
         {
 
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.RateOfCountsPerSecond32
             };
             return new[] { totalOps };
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public bool IsActive { get; set; }

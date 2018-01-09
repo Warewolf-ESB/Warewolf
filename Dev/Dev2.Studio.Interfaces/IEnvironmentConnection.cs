@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,12 +23,11 @@ using Dev2.SignalR.Wrappers;
 using System.Network;
 using Dev2.Common.Interfaces.Studio.Core;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Studio.Interfaces
 {
-    public interface IEnvironmentConnection:IDisposable,IEquatable<IEnvironmentConnection>
+    public interface IEnvironmentConnection
     {
-        // PBI 6690 - 2013.07.04 - TWR : added
         IEventPublisher ServerEvents { get; }
 
         Guid ServerID { get; set; }
@@ -57,10 +56,11 @@ namespace Dev2.Studio.Interfaces
         Task<bool> ConnectAsync(Guid id);
         void Disconnect();
         Guid ID { get; }
-        // BUG 9634 - 2013.07.17 - TWR : added
-        void Verify(Action<ConnectResult> callback, bool wait = true);
 
-        // BUG 10106 - 2013.08.13 - TWR - added
+        void Verify(Action<ConnectResult> callback);
+
+        void Verify(Action<ConnectResult> callback, bool wait);
+        
         void StartAutoConnect();
 
         bool IsLocalHost { get; }

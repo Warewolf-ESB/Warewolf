@@ -27,7 +27,7 @@ using Dev2.Studio.ViewModels.DataList;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -45,8 +45,8 @@ namespace Dev2.Activities.Designers.Tests.Core
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
 
-            DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
-            DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
+            var DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -76,14 +76,13 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IPluginServiceModel>();
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
-            DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
-            DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
+            var DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as DotNetConstructorInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is DotNetConstructorInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
@@ -99,9 +98,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfEnhancedDotNetDllActivity() { SourceId = id };
             var src = new Mock<IPluginServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
-            DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
+            var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -116,9 +115,9 @@ namespace Dev2.Activities.Designers.Tests.Core
             var act = new DsfEnhancedDotNetDllActivity() { SourceId = id };
             var src = new Mock<IPluginServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
-            DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
+            var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -136,11 +135,11 @@ namespace Dev2.Activities.Designers.Tests.Core
             var src = new Mock<IPluginServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IPluginSource>());
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
-            DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
+            var DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new DotNetConstructorInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
@@ -162,9 +161,9 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var lst = new ObservableCollection<IPluginSource>() { new PluginSourceDefinition() { Name = "bravo" }, new PluginSourceDefinition() { Name = "johnny" } };
             src.Setup(a => a.RetrieveSources()).Returns(lst);
-            DotNetSourceRegion sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
+            var sourceRegion = new DotNetSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()));
             var nameSpace = new Mock<INamespaceToolRegion<INamespaceItem>>();
-            DotNetConstructorRegion DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
+            var DotNetConstructorRegion = new DotNetConstructorRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfEnhancedDotNetDllActivity()), sourceRegion, nameSpace.Object);
 
             var region = new DotNetConstructorInputRegion(ModelItemUtils.CreateModelItem(act), DotNetConstructorRegion);
 
@@ -184,8 +183,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -226,8 +225,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -271,8 +270,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -313,8 +312,8 @@ namespace Dev2.Activities.Designers.Tests.Core
 
             var dataListViewModel = CreateDataListViewModel(mockResourceModel, eventAggregator.Object);
             var dataListItems = new OptomizedObservableCollection<IScalarItemModel>();
-            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input, string.Empty);
-            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input, string.Empty);
+            var dataListItem = new ScalarItemModel("scalar1", enDev2ColumnArgumentDirection.Input);
+            var secondDataListItem = new ScalarItemModel("scalar2", enDev2ColumnArgumentDirection.Input);
 
             dataListItems.Add(dataListItem);
             dataListItems.Add(secondDataListItem);
@@ -343,7 +342,7 @@ namespace Dev2.Activities.Designers.Tests.Core
 
         }
 
-        private IPluginConstructor ValueFunction()
+        IPluginConstructor ValueFunction()
         {
             return new PluginConstructor()
             {
@@ -356,7 +355,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             };
         }
 
-        private IPluginConstructor ValueFunctionWithTypes()
+        IPluginConstructor ValueFunctionWithTypes()
         {
             return new PluginConstructor()
             {
@@ -369,7 +368,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             };
         }
 
-        private IPluginConstructor ValueFunctionWithTypesNoValues()
+        IPluginConstructor ValueFunctionWithTypesNoValues()
         {
             return new PluginConstructor()
             {

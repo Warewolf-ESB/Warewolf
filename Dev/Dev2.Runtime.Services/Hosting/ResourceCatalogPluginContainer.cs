@@ -9,11 +9,11 @@ using Dev2.Runtime.ResourceCatalogImpl;
 
 namespace Dev2.Runtime.Hosting
 {
-    internal class ResourceCatalogPluginContainer
+    class ResourceCatalogPluginContainer
     {
-        private readonly IServerVersionRepository _versionRepository;
-        private readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
-        private readonly IEnumerable<DynamicService> _managementServices;
+        readonly IServerVersionRepository _versionRepository;
+        readonly ConcurrentDictionary<Guid, List<IResource>> _workspaceResources;
+        readonly IEnumerable<DynamicService> _managementServices;
 
         public ResourceCatalogPluginContainer(IServerVersionRepository versionRepository, ConcurrentDictionary<Guid, List<IResource>> workspaceResources, IEnumerable<DynamicService> managementServices = null)
         {
@@ -26,7 +26,6 @@ namespace Dev2.Runtime.Hosting
         public IResourceSyncProvider SyncProvider { get; private set; }
         public IResourceDeleteProvider DeleteProvider { get; private set; }
         public IResourceRenameProvider RenameProvider { get; private set; }
-        public IResourceCopyProvider CopyProvider { get; private set; }
         public IResourceSaveProvider SaveProvider { get; private set; }
         public IResourceDuplicateProvider DuplicateProvider { get; private set; }
 
@@ -36,7 +35,6 @@ namespace Dev2.Runtime.Hosting
             SyncProvider = new ResourceSyncProvider();
             DeleteProvider = new ResourceDeleteProvider(resourceCatalog,_versionRepository);
             RenameProvider = new ResourceRenameProvider(resourceCatalog,_versionRepository);
-            CopyProvider = new ResourceCopyProvider(resourceCatalog);
             SaveProvider = new ResourceSaveProvider(resourceCatalog,_versionRepository);
             DuplicateProvider = new ResourceDuplicateProvider(resourceCatalog);
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,8 +54,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModelValidateInputPathInvokesValidatePathDone()
         {
             //------------Setup for test-------------------------      
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -78,8 +78,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModelValidateOutputPathInvokesValidatePathDone()
         {
             //------------Setup for test-------------------------  
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -102,8 +102,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModelValidateInputAndOutputPathsInvokesBothDone()
         {
             //------------Setup for test-------------------------         
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -306,7 +306,7 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModelVerifyValidateFileContentEmptyPass()
         {
             var content = string.Empty;
-            string expectedResult = string.Empty;
+            var expectedResult = string.Empty;
 
             var viewModel = VerifyValidateFileContent(content, expectedResult);
             Assert.IsNull(viewModel.Errors);
@@ -372,8 +372,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         [TestCategory("FileActivityDesignerViewModel_ValidateArchivePassword")]
         public void FileActivityDesignerViewModelValidateArchiveNoPasswordPass()
         {
-            string password = String.Empty;
-            string expectedResult = String.Empty;
+            var password = String.Empty;
+            var expectedResult = String.Empty;
             var viewModel = VerifyValidateArchivePassword(password, expectedResult);
             Assert.IsNull(viewModel.Errors);
         }
@@ -416,8 +416,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModelValidateFileContent()
         {
             //------------Setup for test-------------------------  
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -443,8 +443,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         public void FileActivityDesignerViewModelValidatePassword()
         {
             //------------Setup for test-------------------------  
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -468,8 +468,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
             //------------Setup for test-------------------------
             const string LabelText = "Label";
 
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><contains></contains></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -487,8 +487,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         {
             //------------Setup for test-------------------------
             const string LabelText = "Label";
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><contains></contains></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);
@@ -505,8 +505,8 @@ namespace Dev2.Activities.Designers.Tests.Designers2.Core.FileActivityDesigner
         {
             //------------Setup for test-------------------------
             const string LabelText = "Label";
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><password></password></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);

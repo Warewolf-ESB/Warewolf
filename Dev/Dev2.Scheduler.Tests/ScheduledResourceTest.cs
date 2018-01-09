@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,8 +25,8 @@ namespace Dev2.Scheduler.Test
         public void ScheduledResource_Constructor()
         {
 
-            IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
-            ScheduledResource res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory", Guid.NewGuid().ToString());
+            var trigger = new Mock<IScheduleTrigger>().Object;
+            var res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory", Guid.NewGuid().ToString());
             Assert.AreEqual("bob", res.Name);
             Assert.AreEqual(SchedulerStatus.Enabled, res.Status);
             Assert.AreEqual(DateTime.MaxValue, res.NextRunDate);
@@ -41,7 +41,7 @@ namespace Dev2.Scheduler.Test
         public void ScheduledResource_Properties()
         {
 
-            IScheduleTrigger trigger = new Mock<IScheduleTrigger>().Object;
+            var trigger = new Mock<IScheduleTrigger>().Object;
             var id = Guid.NewGuid().ToString();
             var res = new ScheduledResource("bob", SchedulerStatus.Enabled, DateTime.MaxValue, trigger, "rory", id);
             res.Password = "PWD";

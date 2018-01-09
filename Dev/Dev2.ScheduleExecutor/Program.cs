@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -31,15 +30,15 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.ScheduleExecutor
 {
-    internal class Program
+    class Program
     {
-        private const string WarewolfTaskSchedulerPath = "\\warewolf\\";
-        private static readonly string OutputPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{GlobalConstants.SchedulerDebugPath}";
-        private static readonly string SchedulerLogDirectory = OutputPath + "SchedulerLogs";
-        private static readonly Stopwatch Stopwatch = new Stopwatch();
-        private static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
+        const string WarewolfTaskSchedulerPath = "\\warewolf\\";
+        static readonly string OutputPath = $"{Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData)}\\{GlobalConstants.SchedulerDebugPath}";
+        static readonly string SchedulerLogDirectory = OutputPath + "SchedulerLogs";
+        static readonly Stopwatch Stopwatch = new Stopwatch();
+        static readonly DateTime StartTime = DateTime.Now.Subtract(new TimeSpan(0, 0, 5));
 
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
 
             try
@@ -59,7 +58,7 @@ namespace Dev2.ScheduleExecutor
                 var paramters = new Dictionary<string, string>();
                 for (int i = 0; i < args.Length; i++)
                 {
-                    string[] singleParameters = args[i].Split(':');
+                    var singleParameters = args[i].Split(':');
 
                     paramters.Add(singleParameters[0],
                                   singleParameters.Skip(1).Aggregate((a, b) => $"{a}:{b}"));
@@ -68,7 +67,9 @@ namespace Dev2.ScheduleExecutor
                 try
                 {
                     if (paramters.ContainsKey("ResourceId"))
+                    {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid(), paramters["ResourceId"]);
+                    }
                     else
                     {
                         PostDataToWebserverAsRemoteAgent(paramters["Workflow"], paramters["TaskName"], Guid.NewGuid());
@@ -91,14 +92,14 @@ namespace Dev2.ScheduleExecutor
 
         public static string PostDataToWebserverAsRemoteAgent(string workflowName, string taskName, Guid requestID)
         {
-            string postUrl = $"http://localhost:3142/services/{workflowName}";
+            var postUrl = $"http://localhost:3142/services/{workflowName}";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
-            int len = postUrl.Split('?').Length;
+            var len = postUrl.Split('?').Length;
             if (len == 1)
             {
-                string result = string.Empty;
+                var result = string.Empty;
 
-                WebRequest req = WebRequest.Create(postUrl);
+                var req = WebRequest.Create(postUrl);
                 req.Credentials = CredentialCache.DefaultNetworkCredentials;
                 req.Method = "GET";
 
@@ -108,9 +109,9 @@ namespace Dev2.ScheduleExecutor
                     {
                         if (response != null)
                         {
-                            // ReSharper disable AssignNullToNotNullAttribute
+                            
                             using (var reader = new StreamReader(response.GetResponseStream()))
-                            // ReSharper restore AssignNullToNotNullAttribute
+                            
                             {
                                 result = reader.ReadToEnd();
                             }
@@ -165,11 +166,11 @@ namespace Dev2.ScheduleExecutor
                 Log("Error", $"userServerSettings.config does not exist in {Directory.GetCurrentDirectory()}");
             }
 
-            string postUrl = $"http://localhost:{portNumber}/services/{resourceId}.xml";
+            var postUrl = $"http://localhost:{portNumber}/services/{resourceId}.bite";
             Log("Info", $"Executing as {CredentialCache.DefaultNetworkCredentials.UserName}");
-            string result = string.Empty;
+            var result = string.Empty;
 
-            WebRequest req = WebRequest.Create(postUrl);
+            var req = WebRequest.Create(postUrl);
             req.Credentials = CredentialCache.DefaultNetworkCredentials;
             req.Method = "GET";
 
@@ -179,9 +180,9 @@ namespace Dev2.ScheduleExecutor
                 {
                     if(response != null)
                     {
-                        // ReSharper disable AssignNullToNotNullAttribute
+                        
                         using(var reader = new StreamReader(response.GetResponseStream()))
-                            // ReSharper restore AssignNullToNotNullAttribute
+                            
                         {
                             result = reader.ReadToEnd();
                         }
@@ -214,9 +215,9 @@ namespace Dev2.ScheduleExecutor
             return result;
         }
 
-        private static void CreateDebugState(string result, string workflowName, string taskName)
+        static void CreateDebugState(string result, string workflowName, string taskName)
         {
-            string user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
+            var user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
             var state = new DebugState
             {
                 HasError = true,
@@ -237,22 +238,25 @@ namespace Dev2.ScheduleExecutor
             });
             var js = new Dev2JsonSerializer();
             Thread.Sleep(5000);
-            string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
+            var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
             if (!Directory.Exists(OutputPath))
+            {
                 Directory.CreateDirectory(OutputPath);
+            }
+
             File.WriteAllText(
                 $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
         }
 
-        private static string GetCorrelationId(string taskName)
+        static string GetCorrelationId(string taskName)
         {
             try
             {
                 var factory = new TaskServiceConvertorFactory();
-                DateTime time = DateTime.Now;
-                ITaskEventLog eventLog = factory.CreateTaskEventLog(taskName);
-                ITaskEvent events = (from a in eventLog
+                var time = DateTime.Now;
+                var eventLog = factory.CreateTaskEventLog(taskName);
+                var events = (from a in eventLog
                                      where a.TaskCategory == "Task Started" && time > StartTime
                                      orderby a.TimeCreated
                                      select a).LastOrDefault();
@@ -275,9 +279,9 @@ namespace Dev2.ScheduleExecutor
             return "";
         }
 
-        private static void WriteDebugItems(string workflowName, string taskName, string result)
+        static void WriteDebugItems(string workflowName, string taskName, string result)
         {
-            string user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
+            var user = Thread.CurrentPrincipal.Identity.Name.Replace("\\", "-");
 
             var state = new DebugState
             {
@@ -294,8 +298,7 @@ namespace Dev2.ScheduleExecutor
             if (!string.IsNullOrEmpty(result))
             {
                 var data = DataListUtil.AdjustForEncodingIssues(result);
-                bool isFragment;
-                var isXml = DataListUtil.IsXml(data, out isFragment);
+                var isXml = DataListUtil.IsXml(data, out bool isFragment);
                 if (isXml)
                 {
                     var xmlData = XElement.Parse(data);
@@ -331,26 +334,29 @@ namespace Dev2.ScheduleExecutor
             }
             var js = new Dev2JsonSerializer();
             Thread.Sleep(5000);
-            string correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
+            var correlation = GetCorrelationId(WarewolfTaskSchedulerPath + taskName);
             if (!Directory.Exists(OutputPath))
+            {
                 Directory.CreateDirectory(OutputPath);
+            }
+
             File.WriteAllText(
                 $"{OutputPath}DebugItems_{workflowName.Replace("\\", "_")}_{DateTime.Now.ToString("yyyy-MM-dd")}_{correlation}_{user}.txt",
                 js.SerializeToBuilder(new List<DebugState> { state }).ToString());
 
         }
 
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
-        // ReSharper disable once ReturnTypeCanBeEnumerable.Local
-        private static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
+
+
+        static List<IDebugItemResult> ProcessRecordSet(XElement recordSetElement, IEnumerable<XElement> elements)
         {
             var processRecordSet = new List<IDebugItemResult>();
             var recSetName = recordSetElement.Name.LocalName;
             var xAttribute = recordSetElement.Attribute("Index");
-            if(xAttribute != null)
+            if (xAttribute != null)
             {
                 var index = xAttribute.Value;
-                // ReSharper disable once LoopCanBeConvertedToQuery
+
                 foreach (var xElement in elements)
                 {
                     var debugItemResult = new DebugItemResult
@@ -368,7 +374,7 @@ namespace Dev2.ScheduleExecutor
             return processRecordSet;
         }
 
-        private static void Log(string logType, string logMessage)
+        static void Log(string logType, string logMessage)
         {
             try
             {
@@ -383,30 +389,30 @@ namespace Dev2.ScheduleExecutor
                     tsw.WriteLine(logMessage);
                 }
             }
-            // ReSharper disable EmptyGeneralCatchClause
+
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+
             {
             }
         }
 
-        private static void SetupForLogging()
+        static void SetupForLogging()
         {
-            bool hasSchedulerLogDirectory = Directory.Exists(SchedulerLogDirectory);
+            var hasSchedulerLogDirectory = Directory.Exists(SchedulerLogDirectory);
             if (hasSchedulerLogDirectory)
             {
                 var directoryInfo = new DirectoryInfo(SchedulerLogDirectory);
-                FileInfo[] logFiles = directoryInfo.GetFiles();
+                var logFiles = directoryInfo.GetFiles();
                 if (logFiles.Length > 20)
                 {
                     try
                     {
-                        FileInfo fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
+                        var fileInfo = logFiles.OrderByDescending(f => f.LastWriteTime).First();
                         fileInfo.Delete();
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+
                     {
                     }
                 }

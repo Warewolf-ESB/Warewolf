@@ -1,7 +1,7 @@
 ﻿// 
 // /*
 // *  Warewolf - Once bitten, there's no going back
-// *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+// *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 // *  Licensed under GNU Affero General Public License 3.0 or later. 
 // *  Some rights reserved.
 // *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.CompilerServices;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.DB;
@@ -22,7 +21,8 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 {
     public class DbActionMemento : IActionToolRegion<IDbAction>
     {
-        private IDbAction _selectedAction;
+        IDbAction _selectedAction;
+        EventHandler<List<string>> _errorsHandler;
 
         #region Implementation of INotifyPropertyChanged
 
@@ -54,6 +54,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             }
             set
             {
+                _errorsHandler = value;
             }
         }
 
@@ -81,14 +82,14 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
 
         #endregion
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnSomethingChanged(IToolRegion args)
         {
             var handler = SomethingChanged;
             handler?.Invoke(this, args);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,9 +17,9 @@ namespace Dev2.Data.Util
 {
     public static class XmlHelper
     {
-        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
-        private static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
-        private static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",
+        static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
+        static readonly string[] StripTags = { "<XmlData>", "</XmlData>", "<Dev2ServiceInput>", "</Dev2ServiceInput>", "<sr>", "</sr>", "<ADL />" };
+        static readonly string[] NaughtyTags = { "<Dev2ResumeData>", "</Dev2ResumeData>",
                                                          "<Dev2XMLResult>", "</Dev2XMLResult>",
                                                          "<WebXMLConfiguration>", "</WebXMLConfiguration>",
                                                          "<ActivityInput>", "</ActivityInput>",
@@ -27,13 +27,11 @@ namespace Dev2.Data.Util
                                                          "<DL>","</DL>"
                                                        };
         const string AdlRoot = "ADL";
-        /// <summary>
-        /// Checks if the info contained in data is well formed XML
-        /// </summary>
+
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
-            string trimedData = data.Trim();
-            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var trimedData = data.Trim();
+            var result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;
@@ -83,8 +81,8 @@ namespace Dev2.Data.Util
 
         public static string ToCleanXml(this string payload)
         {
-            string result = payload;
-            string[] veryNaughtyTags = NaughtyTags;
+            var result = payload;
+            var veryNaughtyTags = NaughtyTags;
 
             if (!string.IsNullOrEmpty(payload))
             {
@@ -98,10 +96,7 @@ namespace Dev2.Data.Util
                 {
                     result = CleanupNaughtyTags(veryNaughtyTags, result);
                 }
-
-                // we now need to remove non-valid chars from the stream
-
-                int start = result.IndexOf("<", StringComparison.Ordinal);
+                var start = result.IndexOf("<", StringComparison.Ordinal);
                 if (start >= 0)
                 {
                     result = result.Substring(start);
@@ -109,9 +104,7 @@ namespace Dev2.Data.Util
 
                 if (result.Contains("<") && result.Contains(">"))
                 {
-                    bool isFragment;
-                    bool isHtml;
-                    var isXml = IsXml(result, out isFragment, out isHtml);
+                    var isXml = IsXml(result, out bool isFragment, out bool isHtml);
                     if (!(isXml && !isFragment && !isHtml))
                     {
                         // We need to replace DataList if present ;)
@@ -127,58 +120,44 @@ namespace Dev2.Data.Util
             return result;
         }
 
-        /// <summary>
-        /// Cleanups the naughty tags.
-        /// </summary>
-        /// <param name="toRemove">To remove.</param>
-        /// <param name="payload">The payload.</param>
-        /// <returns></returns>
-        private static string CleanupNaughtyTags(string[] toRemove, string payload)
+        static string CleanupNaughtyTags(string[] toRemove, string payload)
         {
-            bool foundOpen = false;
-            string result = payload;
+            var foundOpen = false;
+            var result = payload;
 
             for (int i = 0; i < toRemove.Length; i++)
             {
-                string myTag = toRemove[i];
+                var myTag = toRemove[i];
                 if (myTag.IndexOf("<", StringComparison.Ordinal) >= 0 && myTag.IndexOf("</", StringComparison.Ordinal) < 0)
                 {
                     foundOpen = true;
                 }
-                else if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
+                else
                 {
-                    // close tag
-                    if (foundOpen)
+                    if (myTag.IndexOf("</", StringComparison.Ordinal) >= 0)
                     {
-                        // remove data between
-                        int loc = i - 1;
-                        if (loc >= 0)
+                        if (foundOpen)
                         {
-                            int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
-                            int end = result.IndexOf(myTag, StringComparison.Ordinal);
-                            if (start < end && start >= 0)
+                            var loc = i - 1;
+                            if (loc >= 0)
                             {
-                                string canidate = result.Substring(start, end - start + myTag.Length);
-                                string tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
-                                if (tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0)
+                                var start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
+                                var end = result.IndexOf(myTag, StringComparison.Ordinal);
+                                if (start < end && start >= 0)
                                 {
-                                    // replace just the tags
-                                    result = result.Replace(myTag, "").Replace(toRemove[loc], "");
-                                }
-                                else
-                                {
-                                    // replace any tag and it's contents as long as it is not XML in side
-                                    result = result.Replace(canidate, "");
+                                    var canidate = result.Substring(start, end - start + myTag.Length);
+                                    var tmpResult = canidate.Replace(myTag, "").Replace(toRemove[loc], "");
+                                    result = tmpResult.IndexOf("</", StringComparison.Ordinal) >= 0 || tmpResult.IndexOf("/>", StringComparison.Ordinal) >= 0 ? result.Replace(myTag, "").Replace(toRemove[loc], "") : result.Replace(canidate, "");
                                 }
                             }
                         }
-                    }
-                    else
-                    {
-                        result = result.Replace(myTag, "");
-                    }
+                        else
+                        {
+                            result = result.Replace(myTag, "");
+                        }
 
-                    foundOpen = false;
+                        foundOpen = false;
+                    }
                 }
             }
 

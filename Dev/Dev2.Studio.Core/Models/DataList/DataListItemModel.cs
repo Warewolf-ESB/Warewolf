@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,34 +12,38 @@ using Caliburn.Micro;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Interfaces.DataList;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.Core.Models.DataList
 {
     public class DataListItemModel : PropertyChangedBase, IDataListItemModel
     {
         #region Fields
 
-        private string _description;
-        private bool _hasError;
-        private string _errorMessage;
-        private bool _isEditable;
-        private bool _isVisible;
-        private bool _isSelected;
-        private bool _isUsed;
-        private bool _allowNotes;
-        private bool _isComplexObject;
-        private string _displayName;
-        private bool _isExpanded = true;
+        string _description;
+        bool _hasError;
+        string _errorMessage;
+        bool _isEditable;
+        bool _isVisible;
+        bool _isSelected;
+        bool _isUsed;
+        bool _allowNotes;
+        bool _isComplexObject;
+        string _displayName;
+        bool _isExpanded = true;
         protected enDev2ColumnArgumentDirection _columnIODir = enDev2ColumnArgumentDirection.None;
-        private string _name;
-        
+        string _name;
+
         #endregion Fields
 
         #region Ctor
-        
-        public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection = enDev2ColumnArgumentDirection.None, string description = "", bool hasError = false, string errorMessage = "", bool isEditable = true, bool isVisible = true, bool isSelected = false, bool isExpanded = true)
+
+        public DataListItemModel(string displayname): this(displayname, enDev2ColumnArgumentDirection.None, "", false, "", true, true, false, true)
+        {
+        }
+
+        public DataListItemModel(string displayname, enDev2ColumnArgumentDirection dev2ColumnArgumentDirection, string description, bool hasError, string errorMessage, bool isEditable, bool isVisible, bool isSelected, bool isExpanded)
         {
             Description = description;
             HasError = hasError;
@@ -282,9 +286,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Output;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.None;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.Input)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.None;
+                    }
                 }
             }
             else
@@ -309,9 +316,12 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Input;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.None;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.Output)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.None;
+                    }
                 }
             }
             else
@@ -320,15 +330,18 @@ namespace Dev2.Studio.Core.Models.DataList
                 {
                     _columnIODir = enDev2ColumnArgumentDirection.Both;
                 }
-                else if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                else
                 {
-                    _columnIODir = enDev2ColumnArgumentDirection.Output;
+                    if (_columnIODir == enDev2ColumnArgumentDirection.None)
+                    {
+                        _columnIODir = enDev2ColumnArgumentDirection.Output;
+                    }
                 }
             }
            NotifyIOPropertyChanged();
         }
 
-        private void NotifyIOPropertyChanged()
+        void NotifyIOPropertyChanged()
         {
             NotifyOfPropertyChange(() => Input);
             NotifyOfPropertyChange(() => Output);
@@ -350,5 +363,52 @@ namespace Dev2.Studio.Core.Models.DataList
         }
 
         #endregion Overrides of Object
+
+        public bool Equals(IDataListItemModel other)
+        {
+            return string.Equals(Description, other.Description)
+                && HasError == other.HasError
+                && string.Equals(ErrorMessage, other.ErrorMessage)
+                && IsEditable == other.IsEditable
+                && IsVisible == other.IsVisible
+                && IsSelected == other.IsSelected 
+                && IsUsed == other.IsUsed
+                && AllowNotes == other.AllowNotes 
+                && IsComplexObject == other.IsComplexObject
+                && string.Equals(DisplayName, other.DisplayName) 
+                && ColumnIODirection == other.ColumnIODirection   
+                && string.Equals(Name, other.Name)
+                && Equals(IsBlank, other.IsBlank)
+                && Equals(Output, other.Output)
+                && Equals(Input, other.Input);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DataListItemModel) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (Description != null ? Description.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ HasError.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ErrorMessage != null ? ErrorMessage.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsEditable.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsVisible.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsUsed.GetHashCode();
+                hashCode = (hashCode * 397) ^ AllowNotes.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsComplexObject.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int)ColumnIODirection;
+                hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

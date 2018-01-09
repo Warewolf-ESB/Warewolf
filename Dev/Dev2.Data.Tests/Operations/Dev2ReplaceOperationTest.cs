@@ -8,7 +8,7 @@ namespace Dev2.Data.Tests.Operations
     [TestClass]
     public class Dev2ReplaceOperationTests
     {
-        private IDev2ReplaceOperation _dev2ReplaceOperation;
+        IDev2ReplaceOperation _dev2ReplaceOperation;
 
         [TestInitialize]
         public void Initialization()
@@ -28,9 +28,8 @@ namespace Dev2.Data.Tests.Operations
         public void GivenReplaceFolderWithC_Dev2ReplaceOperation_Replace_ShouldReturnColder()
         {
             Assert.IsNotNull(_dev2ReplaceOperation);
-            IErrorResultTO errorResultTo;
-            int replaceCount = 0;
-            var result = _dev2ReplaceOperation.Replace("FOLDER", "F", "C", false, out errorResultTo, ref replaceCount);
+            var replaceCount = 0;
+            var result = _dev2ReplaceOperation.Replace("FOLDER", "F", "C", false, out IErrorResultTO errorResultTo, ref replaceCount);
             Assert.AreEqual("COLDER", result);
         }
     }

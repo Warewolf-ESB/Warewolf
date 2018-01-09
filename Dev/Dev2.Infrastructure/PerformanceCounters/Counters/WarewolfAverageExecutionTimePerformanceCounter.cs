@@ -2,16 +2,17 @@
 using System.Diagnostics;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Monitoring;
+using System;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounter : IPerformanceCounter
+    public class WarewolfAverageExecutionTimePerformanceCounter : IPerformanceCounter, IDisposable
     {
 
-        private PerformanceCounter _counter;
-        private PerformanceCounter _baseCounter;
-        private bool _started;
-        private readonly WarewolfPerfCounterType _perfCounterType;
+        PerformanceCounter _counter;
+        PerformanceCounter _baseCounter;
+        bool _started;
+        readonly WarewolfPerfCounterType _perfCounterType;
 
         public WarewolfAverageExecutionTimePerformanceCounter()
         {
@@ -25,7 +26,7 @@ namespace Dev2.PerformanceCounters.Counters
         public IList<CounterCreationData> CreationData()
         {
 
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
@@ -33,7 +34,7 @@ namespace Dev2.PerformanceCounters.Counters
               
 
             };
-            CounterCreationData avgDurationBase = new CounterCreationData
+            var avgDurationBase = new CounterCreationData
             {
                 CounterName = "average time per operation base",
                 CounterHelp = "Average duration per operation execution base",
@@ -112,6 +113,12 @@ namespace Dev2.PerformanceCounters.Counters
                     _baseCounter.Decrement();
 
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
+            _baseCounter.Dispose();
         }
 
         public string Category => "Warewolf";

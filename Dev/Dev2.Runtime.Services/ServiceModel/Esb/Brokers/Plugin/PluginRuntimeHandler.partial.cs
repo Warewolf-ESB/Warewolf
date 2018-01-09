@@ -21,7 +21,7 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph;
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -31,9 +31,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
     /// </summary>
     public partial class PluginRuntimeHandler
     {
-        private readonly IAssemblyLoader _assemblyLoader;
+        readonly IAssemblyLoader _assemblyLoader;
 
-        // ReSharper disable once MemberCanBePrivate.Global
+
         public PluginRuntimeHandler(IAssemblyLoader assemblyLoader)
         {
             _assemblyLoader = assemblyLoader;
@@ -54,15 +54,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public object Run(PluginInvokeArgs setupInfo)
         {
-            Assembly loadedAssembly;
             _assemblyLocation = setupInfo.AssemblyLocation;
             AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+            if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
             {
                 return null;
             }
-            object pluginResult;
-            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+            var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
             AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
             var formater = setupInfo.OutputFormatter;
             if (formater != null)
@@ -80,16 +78,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
                 jsonResult = null;
                 _assemblyLocation = setupInfo.AssemblyLocation;
                 AppDomain.CurrentDomain.AssemblyResolve += CurrentDomain_AssemblyResolve;
-                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly))
+                if (!_assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly))
                 {
                     return null;
                 }
-                object pluginResult;
-                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out pluginResult);
+                var methodToRun = ExecutePlugin(setupInfo, loadedAssembly, out object pluginResult);
 
                 AppDomain.CurrentDomain.AssemblyResolve -= CurrentDomain_AssemblyResolve;
                 // do formating here to avoid object serialization issues ;)
@@ -111,18 +107,19 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e);
+                Dev2Logger.Error("IOutputDescription Test(PluginInvokeArgs setupInfo)", e, GlobalConstants.WarewolfError);
                 jsonResult = null;
                 return null;
             }
         }
 
-        private MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
+        MethodBase ExecutePlugin(PluginInvokeArgs setupInfo, Assembly loadedAssembly, out object pluginResult)
         {
             var typeList = BuildTypeList(setupInfo.Parameters, loadedAssembly);
             var type = loadedAssembly.GetType(setupInfo.Fullname);
             var valuedTypeList = new List<object>();
             if (setupInfo.Parameters != null)
+            {
                 foreach (var methodParameter in setupInfo.Parameters)
                 {
                     try
@@ -138,12 +135,14 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                         valuedTypeList.Add(methodParameter.Value);
                     }
                 }
+            }
+
             var methodToRun = type.GetMethod(setupInfo.Method, typeList.ToArray());
             if (methodToRun == null && typeList.Count == 0)
             {
                 methodToRun = type.GetMethod(setupInfo.Method);
             }
-            object instance = Activator.CreateInstance(type);
+            var instance = Activator.CreateInstance(type);
             if (methodToRun == null)
             {
                 var constructor = type.GetConstructor(typeList.ToArray());
@@ -166,11 +165,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return null;
         }
 
-        // ReSharper disable once InconsistentNaming
+
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
-            string[] tokens = args.Name.Split(",".ToCharArray());
-            Dev2Logger.Debug("Resolving : " + args.Name);
+            var tokens = args.Name.Split(",".ToCharArray());
+            Dev2Logger.Debug("Resolving : " + args.Name, GlobalConstants.WarewolfDebug);
             var directoryName = Path.GetDirectoryName(_assemblyLocation);
             var path = Path.Combine(new[] { directoryName, tokens[0] + ".dll" });
             var assembly = Assembly.LoadFile(path);
@@ -186,9 +185,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         {
             try
             {
-                Assembly loadedAssembly;
-                List<string> namespaces = new List<string>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                var namespaces = new List<string>();
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     namespaces = loadedAssembly.GetTypes()
@@ -203,7 +201,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (BadImageFormatException e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -214,13 +212,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        private IEnumerable<KeyValuePair<string, string>> ListNamespacesWIthReturnTypes(string assemblyLocation, string assemblyName)
+        IEnumerable<KeyValuePair<string, string>> ListNamespacesWIthReturnTypes(string assemblyLocation, string assemblyName)
         {
             try
             {
-                Assembly loadedAssembly;
                 var namespaces = new List<KeyValuePair<string, string>>();
-                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out loadedAssembly))
+                if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly loadedAssembly))
                 {
                     // ensure we flush out the rubbish that GAC brings ;)
                     var types = loadedAssembly.GetTypes();
@@ -236,7 +233,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             catch (BadImageFormatException e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -250,9 +247,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceMethodList ListMethods(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
@@ -317,13 +313,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="pluginResult">The plugin result.</param>
         /// <param name="methodToRun">The method automatic run.</param>
         /// <returns></returns>
-        private object AdjustPluginResult(object pluginResult, MethodBase methodToRun)
+        object AdjustPluginResult(object pluginResult, MethodBase methodToRun)
         {
-            object result = pluginResult;
-            var method = methodToRun as MethodInfo;
+            var result = pluginResult;
             // When it returns a primitive or string and it is not XML or JSON, make it so ;)
-            // ReSharper disable once PossibleNullReferenceException
-            if ((method != null && method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String") && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
+
+            if ((methodToRun is MethodInfo method && (method.ReturnType.IsPrimitive || method.ReturnType.FullName == "System.String")) && !DataListUtil.IsXml(pluginResult.ToString()) && !DataListUtil.IsJson(pluginResult.ToString()))
             {
                 // add our special tags ;)
                 result = $"<{GlobalConstants.PrimitiveReturnValueTag}>{pluginResult}</{GlobalConstants.PrimitiveReturnValueTag}>";
@@ -338,7 +333,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
+        IEnumerable<NamespaceItem> ReadNamespaces(string assemblyLocation, string assemblyName)
         {
             try
             {
@@ -354,7 +349,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return result;
             }
-            // ReSharper disable once RedundantCatchClause
+
             catch (BadImageFormatException)
             {
                 throw;
@@ -367,7 +362,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="assemblyLocation">The assembly location.</param>
         /// <param name="assemblyName">Name of the assembly.</param>
         /// <returns></returns>
-        private IEnumerable<NamespaceItem> ReadNamespacesWithJsonObjects(string assemblyLocation, string assemblyName)
+        IEnumerable<NamespaceItem> ReadNamespacesWithJsonObjects(string assemblyLocation, string assemblyName)
         {
             try
             {
@@ -375,7 +370,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 var list = ListNamespacesWIthReturnTypes(assemblyLocation, assemblyName);
 
 
-                // ReSharper disable once LoopCanBeConvertedToQuery
+
                 foreach (var keyVale in list)
                 {
                     result.Add(new NamespaceItem
@@ -389,7 +384,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return result;
             }
-            // ReSharper disable once RedundantCatchClause
+
             catch (BadImageFormatException)
             {
                 throw;
@@ -402,11 +397,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <param name="parameters">The parameters.</param>
         /// <param name="assembly"></param>
         /// <returns></returns>
-        private List<Type> BuildTypeList(IEnumerable<IMethodParameter> parameters, Assembly assembly)
+        List<Type> BuildTypeList(IEnumerable<IMethodParameter> parameters, Assembly assembly)
         {
             var typeList = new List<Type>();
-            // ReSharper disable once LoopCanBeConvertedToQuery
+
             if (parameters != null)
+            {
                 foreach (var methodParameter in parameters)
                 {
                     Type type;
@@ -422,6 +418,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                     typeList.Add(type);
                 }
+            }
+
             return typeList;
         }
     }

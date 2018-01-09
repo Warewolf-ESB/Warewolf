@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using System.Xml.Linq;
 using Dev2.Runtime.Interfaces;
@@ -35,13 +34,13 @@ namespace Dev2.Runtime.ServiceModel
 
         #region DeserializeService
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual Service DeserializeService(string args)
         {
             return JsonConvert.DeserializeObject<ComPluginService>(args);
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected virtual Service DeserializeService(XElement xml, string resourceType)
         {
             return xml == null ? new ComPluginService() : new ComPluginService(xml);

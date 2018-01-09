@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Dev2.Common.Interfaces.Core.Graph;
 
-// ReSharper disable once CheckNamespace
+
 namespace Unlimited.Framework.Converters.Graph.String.Json
 {
     [Serializable]

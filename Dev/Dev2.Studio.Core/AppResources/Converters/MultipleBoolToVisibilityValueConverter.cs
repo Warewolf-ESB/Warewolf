@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class MultipleBoolToVisibilityValueConverter : IMultiValueConverter
@@ -31,18 +31,18 @@ namespace Dev2.Studio.Core.AppResources.Converters
         /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding"/> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue"/> indicates that the source binding has no value to provide for conversion.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            List<bool> boolValues = new List<bool>();
+            var boolValues = new List<bool>();
 
-            foreach(object value in values)
+            foreach (object value in values)
             {
-                bool? item = value as bool?;
-                if(item != null)
+                var item = value as bool?;
+                if (item != null)
                 {
                     boolValues.Add(item.GetValueOrDefault());
                 }
             }
 
-            if(boolValues.Any(c => c == false))
+            if(boolValues.Any(c => !c))
             {
                 return Visibility.Collapsed;
             }

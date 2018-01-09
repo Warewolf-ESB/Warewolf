@@ -10,7 +10,7 @@ namespace Warewolf.Studio.Views
     /// <summary>
     /// Interaction logic for ManageRabbitMQSourceControl.xaml
     /// </summary>
-    // ReSharper disable once InconsistentNaming
+    
     public partial class ManageRabbitMQSourceControl : IView, ICheckControlEnabledView
     {
         public ManageRabbitMQSourceControl()
@@ -20,7 +20,7 @@ namespace Warewolf.Studio.Views
 
         public string GetHeaderText()
         {
-            BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            var be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return HeaderTextBlock.Text;
         }
@@ -39,6 +39,8 @@ namespace Warewolf.Studio.Views
                     return PasswordTextBox.Password;
                 case "Virtual Host":
                     return VirtualHostTextBox.Text;
+                default:
+                    break;
             }
             return String.Empty;
         }
@@ -52,6 +54,8 @@ namespace Warewolf.Studio.Views
                 case "Save":
                     var viewModel = DataContext as ManageRabbitMQSourceViewModel;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }
