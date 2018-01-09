@@ -3181,12 +3181,15 @@ namespace Dev2.Studio.ViewModels.Workflow
                     nodes.Add(normalDecision);
                     break;
                 case FlowSwitch<string> normalSwitch:
-                    var switchAct = new DsfFlowSwitchActivity();
-                    switchAct.ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
+                    var switchAct = new DsfFlowSwitchActivity
+                    {
+                        ExpressionText = String.Join("", GlobalConstants.InjectedSwitchDataFetch,
                                                     "(\"", nodeToAdd.GetProperty<string>("Switch"), "\",",
                                                     GlobalConstants.InjectedDecisionDataListVariable,
-                                                    ")");
-                    switchAct.UniqueID = nodeToAdd.GetProperty<string>("UniqueID");
+                                                    ")"),
+                        UniqueID = nodeToAdd.GetProperty<string>("UniqueID")
+                    };
+                    normalSwitch.DisplayName = model.MergeDescription;
                     normalSwitch.Expression = switchAct;
                     normalSwitch.Cases.Clear();
                     normalSwitch.Default = null;

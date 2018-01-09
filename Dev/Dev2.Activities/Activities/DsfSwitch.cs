@@ -73,14 +73,14 @@ namespace Dev2.Activities
             {
                 foreach (var swt in Switches)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: {swt.Key} -> {swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()} : {swt.Key} -> {swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
                 }
             }
             if (Default != null)
             {
                 foreach (var dft in Default)
                 {
-                    armConnectors.Add(($"{GetDisplayName()}: Default -> {dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+                    armConnectors.Add(($"{GetDisplayName()} : Default -> {dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
                 }
             }
             return armConnectors;
