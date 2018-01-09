@@ -711,17 +711,22 @@
                                                             Orientation="Horizontal" 
                                                             AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
                                                     <TextBlock x:Name="CurrentNodeLeftArmText" 
-                                                               Margin="20,0,0,0" 
+                                                               Margin="45,0,0,0" 
                                                                Text="{Binding LeftArmDescription}" 
                                                                ToolTip="{Binding LeftArmDescription}"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
 
-                                                    <fa:FontAwesome Margin="10,2,0,0" Icon="LongArrowRight" FontSize="18" Foreground="Gray"/>
+                                                    <fa:FontAwesome Margin="5,2,0,0" 
+                                                                    Icon="LongArrowRight" 
+                                                                    ToolTip="Connects to" 
+                                                                    FontSize="18" 
+                                                                    Foreground="Gray" 
+                                                                    Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                                     <TextBlock x:Name="CurrentNodeRightArmText" 
-                                                               Margin="10,0,0,0" 
+                                                               Margin="5,0,0,0" 
                                                                Text="{Binding RightArmDescription}" 
                                                                ToolTip="{Binding RightArmDescription}"
                                                                FontWeight="Bold" 
@@ -808,17 +813,22 @@
                                                         </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                     <TextBlock x:Name="DifferenceNodeArmText" 
-                                                               Margin="30,0,0,0" 
+                                                               Margin="25,0,0,0" 
                                                                Text="{Binding LeftArmDescription}" 
                                                                ToolTip="{Binding LeftArmDescription}"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
 
-                                                    <fa:FontAwesome Margin="10,2,0,0" Icon="LongArrowRight" FontSize="18" Foreground="Gray"/>
+                                                    <fa:FontAwesome Margin="5,2,0,0" 
+                                                                    Icon="LongArrowRight" 
+                                                                    ToolTip="Connects to" 
+                                                                    FontSize="18" 
+                                                                    Foreground="Gray" 
+                                                                    Visibility="{Binding IsArmConnectorVisible, Converter={StaticResource BoolToVisibilityConverter}}"/>
 
                                                     <TextBlock x:Name="DifferenceNodeRightArmText" 
-                                                               Margin="10,0,0,0" 
+                                                               Margin="5,0,0,0" 
                                                                Text="{Binding RightArmDescription}" 
                                                                ToolTip="{Binding RightArmDescription}"
                                                                FontWeight="Bold" 
