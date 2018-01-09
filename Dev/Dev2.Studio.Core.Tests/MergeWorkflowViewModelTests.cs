@@ -481,7 +481,7 @@ namespace Dev2.Core.Tests
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
-            arms.Add(("a", "a", iniqueId, Guid.NewGuid().ToString()));
+            arms.Add(("a -> b", "a", iniqueId, Guid.NewGuid().ToString()));
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             var conflictTreeNode = new ConflictTreeNode(activity.Object, new Point());
@@ -538,7 +538,7 @@ namespace Dev2.Core.Tests
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
-            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            arms.Add(("a -> b", iniqueId, iniqueId, Guid.NewGuid().ToString()));
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;
@@ -603,7 +603,7 @@ namespace Dev2.Core.Tests
             var activity = new Mock<IDev2Activity>();
             var arms = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
             var iniqueId = Guid.NewGuid().ToString();
-            arms.Add(("a", iniqueId, iniqueId, Guid.NewGuid().ToString()));
+            arms.Add(("a -> b", iniqueId, iniqueId, Guid.NewGuid().ToString()));
             activity.Setup(p => p.ArmConnectors()).Returns(arms);
             activity.Setup(p => p.UniqueID).Returns(iniqueId);
             b.Key = iniqueId;

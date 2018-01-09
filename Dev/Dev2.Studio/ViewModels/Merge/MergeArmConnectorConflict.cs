@@ -68,9 +68,12 @@ namespace Dev2.ViewModels.Merge
         public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
-            var description = armDescription.Split(new[] { "->" }, StringSplitOptions.None);
-            LeftArmDescription = description[0];
-            RightArmDescription = description[1];
+            if (!string.IsNullOrWhiteSpace(armDescription))
+            {
+                var description = armDescription.Split(new[] { "->" }, StringSplitOptions.None);
+                LeftArmDescription = description[0];
+                RightArmDescription = description[1];
+            }
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
