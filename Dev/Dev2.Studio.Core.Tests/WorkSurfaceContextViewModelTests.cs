@@ -1238,6 +1238,11 @@ namespace Dev2.Core.Tests
 
         public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
 
+        public void DeLinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        {
+            throw new NotImplementedException();
+        }
+
         public IServer Server
         {
             get { throw new NotImplementedException(); }
