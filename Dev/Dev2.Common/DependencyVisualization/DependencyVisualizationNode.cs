@@ -136,7 +136,7 @@ namespace Dev2.Common.DependencyVisualization
                     }
                     else
                     {
-                        bool visited = stack.Any(info => info.Node == current.Node);
+                        var visited = stack.Any(info => info.Node == current.Node);
                         if (!visited)
                         {
                             stack.Push(current);

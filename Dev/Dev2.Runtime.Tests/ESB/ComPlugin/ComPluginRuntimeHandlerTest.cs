@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -266,7 +266,7 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComPluginRuntimeHandler_ListMethods")]
-        [DeploymentItem("WarewolfCOMIPC.exe")]
+        [DeploymentItem("Warewolf.COMIPC.exe"),DeploymentItem("Warewolf.COMIPC.pdb")]
         public void ComPluginRuntimeHandler_ListMethods_WhenValidLocation_ExpectResults()
         {
             //------------Setup for test--------------------------

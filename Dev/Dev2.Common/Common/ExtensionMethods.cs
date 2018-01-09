@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,11 +52,11 @@ namespace Dev2.Common.Common
         
         public static StringBuilder CleanEncodingHeaderForXmlSave(this StringBuilder sb)
         {
-            int removeStartIdx = sb.IndexOf("<?", 0, false);
+            var removeStartIdx = sb.IndexOf("<?", 0, false);
             if (removeStartIdx >= 0)
             {
-                int removeEndIdx = sb.IndexOf("?>", 0, false);
-                int len = removeEndIdx - removeStartIdx + 2;
+                var removeEndIdx = sb.IndexOf("?>", 0, false);
+                var len = removeEndIdx - removeStartIdx + 2;
                 var result = sb.Remove(removeStartIdx, len);
 
                 return result;
@@ -67,8 +67,8 @@ namespace Dev2.Common.Common
         
         public static void WriteToFile(this StringBuilder sb, string fileName, Encoding encoding, IFileManager fileManager)
         {
-            int length = sb.Length;
-            int startIdx = 0;
+            var length = sb.Length;
+            var startIdx = 0;
             var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
             var cleanStringBuilder = sb.CleanEncodingHeaderForXmlSave();
 
@@ -104,7 +104,7 @@ namespace Dev2.Common.Common
                     return XElement.Load(result);
                 }
             }
-            catch
+            catch (Exception ex)
             {
                 using (Stream result = sb.EncodeStream(Encoding.Unicode))
                 {
@@ -132,7 +132,7 @@ namespace Dev2.Common.Common
                 result.Position = 0;
                 return result;
             }
-            catch
+            catch (Exception ex)
             {
                 var result = sb.EncodeStream(Encoding.Unicode);
                 XElement.Load(result);
@@ -143,8 +143,8 @@ namespace Dev2.Common.Common
 
         static Stream EncodeStream(this StringBuilder sb, Encoding encoding)
         {
-            int length = sb.Length;
-            int startIdx = 0;
+            var length = sb.Length;
+            var startIdx = 0;
             var rounds = (int)Math.Ceiling(length / GlobalConstants.MAX_SIZE_FOR_STRING);
             var ms = new MemoryStream(length);
             for (int i = 0; i < rounds; i++)
@@ -222,8 +222,8 @@ namespace Dev2.Common.Common
         
         public static int LastIndexOf(this StringBuilder sb, string value, bool ignoreCase)
         {
-            int result = -1;
-            int startIndex = -1;
+            var result = -1;
+            var startIndex = -1;
             while ((startIndex = IndexOf(sb, value, startIndex + 1, ignoreCase)) >= 0)
             {
                 result = startIndex;
@@ -239,8 +239,8 @@ namespace Dev2.Common.Common
             }
 
             int index;
-            int length = value.Length;
-            int maxSearchLength = sb.Length - length + 1;
+            var length = value.Length;
+            var maxSearchLength = sb.Length - length + 1;
 
             if (ignoreCase)
             {
@@ -336,16 +336,16 @@ namespace Dev2.Common.Common
         public static string ExtractXmlAttributeFromUnsafeXml(this StringBuilder sb, string searchTagStart,
             string searchTagEnd)
         {
-            int startIndex = sb.IndexOf(searchTagStart, 0, false);
+            var startIndex = sb.IndexOf(searchTagStart, 0, false);
             if (startIndex < 0)
             {
                 return string.Empty;
             }
 
-            int tagLength = searchTagStart.Length;
+            var tagLength = searchTagStart.Length;
             startIndex += tagLength;
-            int endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
-            int length = endIdx - startIndex;
+            var endIdx = sb.IndexOf(searchTagEnd, startIndex, false);
+            var length = endIdx - startIndex;
 
             return sb.Substring(startIndex, length);
         }
@@ -379,12 +379,7 @@ namespace Dev2.Common.Common
             var child = elem.Element(name);
             return child?.ToString() ?? string.Empty;
         }
-        /// <summary>
-        /// https://referencesource.microsoft.com/#System/compmod/system/collections/objectmodel/observablecollection.cs,cfaa9abd8b214ecb
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="enumerable"></param>
-        /// <returns></returns>
+
         public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
         {
             if (enumerable == null)
@@ -418,7 +413,7 @@ namespace Dev2.Common.Common
         public static bool IsValidJson(this string strInput)
         {
             var trimmedInput = strInput.Trim();
-            if (trimmedInput.StartsWith("{") && trimmedInput.EndsWith("}") || trimmedInput.StartsWith("[") && trimmedInput.EndsWith("]"))
+            if (trimmedInput.StartsWith("{") && trimmedInput.EndsWith("}") || trimmedInput.StartsWith("[") && trimmedInput.EndsWith("]", StringComparison.CurrentCulture))
             {
                 try
                 {

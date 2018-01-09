@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -155,13 +155,13 @@ namespace Dev2.Intellisense.Helper
         static void EnumerateSharesNT(string server, ShareCollection shares)
 
         {
-            int level = 2;
-            int hResume = 0;
-            IntPtr pBuffer = IntPtr.Zero;
+            var level = 2;
+            var hResume = 0;
+            var pBuffer = IntPtr.Zero;
 
             try
             {
-                int nRet = NetShareEnum(server, level, out pBuffer, -1,
+                var nRet = NetShareEnum(server, level, out pBuffer, -1,
                     out int entriesRead, out int totalEntries, ref hResume);
 
                 if (ErrorAccessDenied == nRet)
@@ -174,12 +174,12 @@ namespace Dev2.Intellisense.Helper
                 if(NoError == nRet && entriesRead > 0)
                 {
                     var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
-                    int offset = Marshal.SizeOf(t);
+                    var offset = Marshal.SizeOf(t);
 
-                    for(int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
+                    for (int i = 0, lpItem = pBuffer.ToInt32(); i < entriesRead; i++, lpItem += offset)
                     {
-                        IntPtr pItem = new IntPtr(lpItem);
-                        if(1 == level)
+                        var pItem = new IntPtr(lpItem);
+                        if (1 == level)
                         {
                             var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
                             shares.Add(si.NetName, string.Empty, si.ShareType, si.Remark);

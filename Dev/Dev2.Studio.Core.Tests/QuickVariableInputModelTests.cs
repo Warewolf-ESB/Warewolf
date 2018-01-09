@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -64,7 +64,7 @@ namespace Dev2.Core.Tests
 
 
             var model = new QuickVariableInputModel(TestModelItemFactory.CreateModelItem(activity), activity);
-            int colCount = model.GetCollectionCount();
+            var colCount = model.GetCollectionCount();
 
             Assert.AreEqual(3, colCount);
         }
@@ -85,7 +85,7 @@ namespace Dev2.Core.Tests
 
             model.AddListToCollection(listToAdd, false);
 
-            int colCount = model.GetCollectionCount();
+            var colCount = model.GetCollectionCount();
 
             Assert.AreEqual(5, colCount);
         }
@@ -106,7 +106,7 @@ namespace Dev2.Core.Tests
 
             model.AddListToCollection(listToAdd, true);
 
-            int colCount = model.GetCollectionCount();
+            var colCount = model.GetCollectionCount();
 
             Assert.AreEqual(2, colCount);
         }

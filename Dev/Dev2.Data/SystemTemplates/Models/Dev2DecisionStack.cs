@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,11 +21,9 @@ using Warewolf.Storage.Interfaces;
 
 namespace Dev2.Data.SystemTemplates.Models
 {
-    public class Dev2DecisionStack : IDev2FlowModel
+    public class Dev2DecisionStack : IDev2FlowModel, IEquatable<Dev2DecisionStack>
     {
         string _ver = "1.0.0";
-
-        #region Properties
 
         public IList<Dev2Decision> TheStack { get; set; }
 
@@ -42,8 +40,7 @@ namespace Dev2.Data.SystemTemplates.Models
         public string FalseArmText { get; set; }
 
         public string DisplayText { get; set; }
-
-        #endregion Properties
+        public string Version { get; set; }
 
         public string ToWebModel()
         {
@@ -73,7 +70,7 @@ namespace Dev2.Data.SystemTemplates.Models
         {
             var result = new StringBuilder("");
 
-            int cnt = 0;
+            var cnt = 0;
 
             errors = new ErrorResultTO();
             // build the output for decisions
@@ -110,10 +107,10 @@ namespace Dev2.Data.SystemTemplates.Models
         /// <returns></returns>
         public static string ExtractModelFromWorkflowPersistedData(string val)
         {
-            int start = val.IndexOf("(", StringComparison.Ordinal);
+            var start = val.IndexOf("(", StringComparison.Ordinal);
             if (start > 0)
             {
-                int end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
+                var end = val.IndexOf(@""",AmbientData", StringComparison.Ordinal);
 
                 if (end > start)
                 {
@@ -170,6 +167,38 @@ namespace Dev2.Data.SystemTemplates.Models
             var toReplace = new[] { "!", "[[]]", "&" };
 
             return toReplace.Aggregate(val, (current, r) => current.Replace(r, ""));
+        }
+        public bool Equals(Dev2DecisionStack other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var collectionEquals = CommonEqualityOps.CollectionEquals(TheStack, other.TheStack, new Dev2DecisionComparer());
+            return collectionEquals
+                && Mode == other.Mode
+                && string.Equals(TrueArmText, other.TrueArmText)
+                && string.Equals(FalseArmText, other.FalseArmText) 
+                && string.Equals(DisplayText, other.DisplayText);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != GetType()) return false;
+            return Equals((Dev2DecisionStack) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (TheStack != null ? TheStack.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) Mode;
+                hashCode = (hashCode * 397) ^ (TrueArmText != null ? TrueArmText.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FalseArmText != null ? FalseArmText.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayText != null ? DisplayText.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

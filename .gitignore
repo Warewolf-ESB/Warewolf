@@ -61,11 +61,12 @@ Dev/SonarQube/SolutionBinding.sqconfig
 *.tmp_proj
 
 ####################################################################################
-# Coverage
+# DotCover
 ####################################################################################
 /DotCoverOutput/**
 /DotCoverRunner.xml
 /DotCoverOutput.html
+/Dev/.axoCover
 /Dev/.axoCover/settings.json
 /Dev/.axoCover/reports
 /Dev/.axoCover/runs

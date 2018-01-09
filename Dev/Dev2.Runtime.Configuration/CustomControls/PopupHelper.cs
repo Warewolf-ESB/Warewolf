@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -97,14 +97,14 @@ namespace System.Windows.Controls
                 return;
             }
 
-            double rootWidth = w.ActualWidth;
-            double rootHeight = w.ActualHeight;
+            var rootWidth = w.ActualWidth;
+            var rootHeight = w.ActualHeight;
 #endif
 
-            double popupContentWidth = PopupChild.ActualWidth;
-            double popupContentHeight = PopupChild.ActualHeight;
-                        
-            if(rootHeight.Equals(0) || rootWidth.Equals(0) || popupContentWidth.Equals(0) || popupContentHeight.Equals(0))
+            var popupContentWidth = PopupChild.ActualWidth;
+            var popupContentHeight = PopupChild.ActualHeight;
+
+            if (rootHeight.Equals(0) || rootWidth.Equals(0) || popupContentWidth.Equals(0) || popupContentHeight.Equals(0))
             {
                 return;
             }
@@ -112,11 +112,11 @@ namespace System.Windows.Controls
             const double rootOffsetX = 0;
             const double rootOffsetY = 0;
 
-            double myControlHeight = Parent.ActualHeight;
-            double myControlWidth = Parent.ActualWidth;
-            
-            double popupMaxHeight = MaxDropDownHeight;
-            if(double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
+            var myControlHeight = Parent.ActualHeight;
+            var myControlWidth = Parent.ActualWidth;
+
+            var popupMaxHeight = MaxDropDownHeight;
+            if (double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
             {
                 popupMaxHeight = (rootHeight - myControlHeight) * 3 / 5;
             }
@@ -125,16 +125,16 @@ namespace System.Windows.Controls
             popupContentHeight = Math.Min(popupContentHeight, popupMaxHeight);
             popupContentWidth = Math.Max(myControlWidth, popupContentWidth);
             
-            double popupX = rootOffsetX;
-            if(rootWidth < popupX + popupContentWidth)
+            var popupX = rootOffsetX;
+            if (rootWidth < popupX + popupContentWidth)
             {
                 popupX = rootWidth - popupContentWidth;
                 popupX = Math.Max(0, popupX);
             }
             
-            bool below = true;
-            double popupY = rootOffsetY + myControlHeight;
-            if(rootHeight < popupY + popupContentHeight)
+            var below = true;
+            var popupY = rootOffsetY + myControlHeight;
+            if (rootHeight < popupY + popupContentHeight)
             {
                 below = false;
                 popupY = rootOffsetY - popupContentHeight;

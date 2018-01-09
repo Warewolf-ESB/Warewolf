@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Data.Decisions.Operations;
@@ -16,24 +17,63 @@ using Newtonsoft.Json;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-using Dev2.Common;
+using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
-    public class DsfDecision : DsfActivityAbstract<string>
+    public class DsfDecision : DsfActivityAbstract<string>, IEquatable<DsfDecision>, IAdapterActivity
     {
-        
         public IEnumerable<IDev2Activity> TrueArm { get; set; }
 
         public IEnumerable<IDev2Activity> FalseArm { get; set; }
         public Dev2DecisionStack Conditions { get; set; }
-        
+
         readonly DsfFlowDecisionActivity _inner;
-        #region Overrides of DsfNativeActivity<string>
+
         public DsfDecision(DsfFlowDecisionActivity inner) : this()
         {
             _inner = inner;
             UniqueID = _inner.UniqueID;
+        }
+        public override string GetDisplayName()
+        {
+            return Conditions.DisplayText;
+        }
+        
+
+        public override IEnumerable<IDev2Activity> GetNextNodes()
+        {
+            var nextNodes = new List<IDev2Activity>();
+            if (TrueArm != null)
+            {                
+                nextNodes.Add(TrueArm?.FirstOrDefault());
+            }
+            if (FalseArm != null)
+            {                
+                nextNodes.Add(FalseArm?.FirstOrDefault());
+
+            }
+            return nextNodes;
+        }
+
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            if (TrueArm != null)
+            {
+                foreach (var next in TrueArm)
+                {
+                    armConnectors.Add(($"{GetDisplayName()}: TRUE -> {next.GetDisplayName()}", "True", UniqueID, next.UniqueID));
+                }
+            }
+            if (FalseArm != null)
+            {
+                foreach (var next in FalseArm)
+                {
+                    armConnectors.Add(($"{GetDisplayName()}: FALSE -> {next.GetDisplayName()}", "False", UniqueID, next.UniqueID));
+                }
+            }
+            return armConnectors;
         }
 
         public DsfDecision()
@@ -72,7 +112,6 @@ namespace Dev2.Activities
             return new Dev2Decision { Cols1 = col1, Cols2 = col2, Cols3 = col3, EvaluationFn = decision.EvaluationFn };
         }
 
-        #region Overrides of DsfNativeActivity<string>
         IDev2Activity ExecuteDecision(IDSFDataObject dataObject)
         {
             InitializeDebug(dataObject);
@@ -166,7 +205,15 @@ namespace Dev2.Activities
             return null;
         }
 
-        #endregion
+        public override FlowNode GetFlowNode()
+        {
+            return new FlowDecision(_inner);
+        }
+
+        public IFlowNodeActivity GetInnerNode()
+        {
+            return _inner;
+        }
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
@@ -196,17 +243,13 @@ namespace Dev2.Activities
                     DispatchDebugState(dataObject, StateType.After, update);
                     _debugOutputs = new List<DebugItem>();
                 }
-            }            
+            }
         }
-
-        #region Overrides of DsfNativeActivity<string>
 
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
             return _debugInputs;
         }
-
-        #endregion
 
         List<DebugItem> CreateDebugInputs(IExecutionEnvironment env)
         {
@@ -267,14 +310,10 @@ namespace Dev2.Activities
             return val;
         }
 
-        #region Overrides of DsfNativeActivity<string>
-
         public override List<DebugItem> GetDebugOutputs(IExecutionEnvironment env, int update)
         {
             return _debugOutputs;
         }
-
-        #endregion
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public new string Result { get; set; }
@@ -289,13 +328,13 @@ namespace Dev2.Activities
             try
             {
                 resultString = GetResultString(theResult, dds);
-                
+
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
             }
-            
+
             catch (Exception)
-            
+
             {
                 itemToAdd.AddRange(new DebugItemStaticDataParams(resultString, "").GetDebugItemResult());
                 result.Add(itemToAdd);
@@ -312,7 +351,7 @@ namespace Dev2.Activities
             {
                 resultString = dds.TrueArmText;
             }
-            else
+            else if (theResult == "False")
             {
                 if (theResult == "False")
                 {
@@ -373,7 +412,6 @@ namespace Dev2.Activities
                 }
             }
         }
-        #endregion
 
         public override List<string> GetOutputs()
         {
@@ -381,6 +419,60 @@ namespace Dev2.Activities
         }
 
         public bool And { get; set; }
+
+        public bool Equals(DsfDecision other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }            
+            var areConditionsEqual = CommonEqualityOps.AreObjectsEqual(Conditions, other.Conditions);
+            if (!areConditionsEqual)
+            {
+                return false;
+            }
+            return string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(Result, other.Result)
+                && And == other.And
+                && Equals(UniqueID, other.UniqueID);
+        }      
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((DsfDecision)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Conditions != null ? Conditions.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ And.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 
 
@@ -401,8 +493,6 @@ namespace Dev2.Activities
         }
 
         public string NameOfArmToReturn { get; set; }
-
-        #region Overrides of DsfNativeActivity<string>
 
         protected override void OnExecute(NativeActivityContext context)
         {
@@ -434,7 +524,7 @@ namespace Dev2.Activities
             {
                 DispatchDebugState(dataObject, StateType.Before, 0, null, null, true);
             }
-            bool hasResult = false;
+            var hasResult = false;
             if (NameOfArmToReturn == falseArmText)
             {
                 NextNodes = _dsfDecision.FalseArm;
@@ -474,6 +564,5 @@ namespace Dev2.Activities
             return new List<string>();
         }
 
-        #endregion
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -166,7 +166,7 @@ namespace Dev2.Core.Tests.AppResources.Converters
 
         Color GetPixel(BitmapSource bitmapImage)
         {
-            int nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
+            var nStride = (bitmapImage.PixelWidth * bitmapImage.Format.BitsPerPixel + 7) / 8;
             var pixels = new byte[4];
             bitmapImage.CopyPixels(pixels, nStride, 0);
             return Color.FromArgb(pixels[0], pixels[1], pixels[2], pixels[3]);

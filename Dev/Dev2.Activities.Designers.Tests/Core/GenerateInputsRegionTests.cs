@@ -81,7 +81,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
 
             };
-            bool wasInvoked = false;
+            var wasInvoked = false;
             inputRegion.ErrorsHandler += (sender, list) =>
             {
                 wasInvoked = true;

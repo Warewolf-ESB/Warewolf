@@ -73,7 +73,7 @@ namespace Dev2.Tests.Runtime.Services
             var SavePluginService = new SavePluginService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = SavePluginService.Execute(null, null);
+            var jsonResult = SavePluginService.Execute(null, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -89,7 +89,7 @@ namespace Dev2.Tests.Runtime.Services
             var SavePluginService = new SavePluginService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = SavePluginService.Execute(values, null);
+            var jsonResult = SavePluginService.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
             var SavePluginService = new SavePluginService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = SavePluginService.Execute(values, null);
+            var jsonResult = SavePluginService.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -121,7 +121,7 @@ namespace Dev2.Tests.Runtime.Services
             var SavePluginService = new SavePluginService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = SavePluginService.Execute(values, null);
+            var jsonResult = SavePluginService.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -137,7 +137,7 @@ namespace Dev2.Tests.Runtime.Services
             var SavePluginService = new SavePluginService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = SavePluginService.Execute(values, null);
+            var jsonResult = SavePluginService.Execute(values, null);
             var result = serializer.Deserialize<ExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);

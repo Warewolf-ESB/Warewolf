@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -390,8 +390,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             _input2 = "2011/06/05 08:20:30:123 AM";
             _outputType = "Milliseconds";
-            IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
+            var comparer = DateTimeConverterFactory.CreateComparer();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "0");
         }
@@ -401,8 +401,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             _input2 = "2011/06/05 08:20:30:122 AM";
             _outputType = "Milliseconds";
-            IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
+            var comparer = DateTimeConverterFactory.CreateComparer();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out string result, out string error);
             Assert.IsTrue(result == "-1");
         }
@@ -413,8 +413,8 @@ namespace Dev2.Tests.ConverterTests.DateTimeTests
         {
             _input2 = "2011/06/05 08:20:30:124 AM";
             _outputType = "Milliseconds";
-            IDateTimeComparer comparer = DateTimeConverterFactory.CreateComparer();
-            IDateTimeDiffTO dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
+            var comparer = DateTimeConverterFactory.CreateComparer();
+            var dateTimeResult = DateTimeConverterFactory.CreateDateTimeDiffTO(Input1, _input2, InputFormat, _outputType);
             comparer.TryCompare(dateTimeResult, out string result, out string error);
             Assert.AreEqual("1", result);
         }

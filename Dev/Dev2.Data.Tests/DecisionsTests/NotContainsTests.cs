@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Data.Tests.DecisionsTests
 
             //------------Execute Test---------------------------
 
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
@@ -49,7 +49,7 @@ namespace Dev2.Data.Tests.DecisionsTests
 
             //------------Execute Test---------------------------
 
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -158,7 +158,7 @@ namespace Unlimited.Framework.Converters.Graph.Poco
                 propertyStack.Reverse()
                     .Select(p => new Tuple<IPathSegment, bool>(path.CreatePathSegment(p.Item1, p.Item2), p.Item3))
                     .ToList();
-            bool recordsetEncountered = false;
+            var recordsetEncountered = false;
 
             for (int i = displayPathSegments.Count - 1; i >= 0; i--)
             {

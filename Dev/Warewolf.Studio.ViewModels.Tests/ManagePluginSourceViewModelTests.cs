@@ -77,12 +77,12 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         try
                         {
-                            start();
-                            finish();
+                            start?.Invoke();
+                            finish?.Invoke();
                         }
                         catch (Exception e)
                         {
-                            exception(e);
+                            exception?.Invoke(e);
                         }
                     });
             _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IPluginSource>, Action<IPluginSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _changedProperties = new List<string>();
             _target = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);

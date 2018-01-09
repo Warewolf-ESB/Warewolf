@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,11 +32,12 @@ using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("Data-DataSplit", "Data Split", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Data_Split")]
-    public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfDataSplitActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfDataSplitActivity>
     {
         string _sourceString;
         int _indexCounter = 1;
@@ -681,6 +682,41 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override List<string> GetOutputs()
         {
             return ResultsCollection.Select(dto => dto.OutputVariable).ToList();
+        }
+
+        public bool Equals(DsfDataSplitActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection.OrderBy(dto => dto.IndexNumber), other.ResultsCollection.OrderBy(dto => dto.IndexNumber), new DataSplitDTOComparer());
+            return base.Equals(other) 
+                && string.Equals(SourceString, other.SourceString) 
+                && _indexCounter == other._indexCounter 
+                && resultsCollectionsAreEqual
+                && ReverseOrder == other.ReverseOrder
+                && SkipBlankRows == other.SkipBlankRows;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDataSplitActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SourceString != null ? SourceString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _indexCounter;
+                hashCode = (hashCode * 397) ^ (_resultsCollection != null ? _resultsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ ReverseOrder.GetHashCode();
+                hashCode = (hashCode * 397) ^ SkipBlankRows.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

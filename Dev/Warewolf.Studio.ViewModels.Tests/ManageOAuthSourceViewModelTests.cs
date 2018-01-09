@@ -38,7 +38,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IOAuthSource>, Action<IOAuthSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _manageOAuthSourceViewModel = new ManageOAuthSourceViewModel(_updateManager.Object, _oAuthSource.Object, _asyncWorkerMock.Object) { Name = "Testing OAuth" };
         }

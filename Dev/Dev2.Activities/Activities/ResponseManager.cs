@@ -48,7 +48,7 @@ namespace Dev2.Activities
                     if (OutputDescription != null)
                     {
 
-                        int i = 0;
+                        var i = 0;
                         foreach (var serviceOutputMapping in Outputs)
                         {
                             OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);

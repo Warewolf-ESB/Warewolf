@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ namespace Dev2.Common
     {
         public string GetRandom(enRandomType type, int length, double from, double to)
         {
-            int seed = DateTime.Now.Millisecond;
+            var seed = DateTime.Now.Millisecond;
             if (length < 0 && type != enRandomType.Guid && type != enRandomType.Numbers)
             {
                 throw new ArgumentException(ErrorResource.InvalidLength);
@@ -46,11 +46,11 @@ namespace Dev2.Common
             //Added for BUG 9506 to account for when the from is larger thean the to.
             if (from > to)
             {
-                double tmpTo = to;
+                var tmpTo = to;
                 to = from;
                 from = tmpTo;
             }
-            int powerOfTen = (int)Math.Pow(10, GetDecimalPlaces(@from, to));
+            var powerOfTen = (int)Math.Pow(10, GetDecimalPlaces(@from, to));
             var rand = GetRandom(ref seed);
             string result;
             result = powerOfTen != 1 ? (rand.NextDouble() * (to - from) + from).ToString(CultureInfo.InvariantCulture) : IsInIntRange(from) && IsInIntRange(to) ? rand.Next((int)from, (int)(to > 0 ? to + 1 : to)).ToString(CultureInfo.InvariantCulture) : Math.Round(rand.NextDouble() * (to - @from) + @from).ToString(CultureInfo.InvariantCulture);
@@ -72,11 +72,11 @@ namespace Dev2.Common
 
         uint GetDecimalPlaces(double from, double to)
         {
-            double smallest = Math.Min(
+            var smallest = Math.Min(
                 Math.Abs(from),
                 Math.Abs(to)
                 );
-            double largest = Math.Max(
+            var largest = Math.Max(
                 Math.Abs(from),
                 Math.Abs(to)
                 );
@@ -94,8 +94,8 @@ namespace Dev2.Common
         }
         string GenerateLetters(int length, ref int seed)
         {
-            int charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
-            int charEnd = charStart + EnvironmentVariables.CharacterMap.LettersLength;
+            var charStart = EnvironmentVariables.CharacterMap.LettersStartNumber;
+            var charEnd = charStart + EnvironmentVariables.CharacterMap.LettersLength;
             var result = new StringBuilder();
 
 
@@ -116,7 +116,7 @@ namespace Dev2.Common
             {
                 var rand = GetRandom(ref seed);
 
-                int coinFlip = rand.Next(1, 10);
+                var coinFlip = rand.Next(1, 10);
 
 
                 if (coinFlip < 5)

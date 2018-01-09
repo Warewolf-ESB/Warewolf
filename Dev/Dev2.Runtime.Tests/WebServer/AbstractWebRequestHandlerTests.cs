@@ -1720,7 +1720,7 @@ namespace Dev2.Tests.Runtime.WebServer
         {
             //---------------Set up test pack-------------------
             const string ServiceName = "hello World.tests";
-            NameValueCollection collection = new NameValueCollection();
+            var collection = new NameValueCollection();
 
             var dataObject = new Mock<IDSFDataObject>();
             dataObject.SetupProperty(o => o.ReturnType);

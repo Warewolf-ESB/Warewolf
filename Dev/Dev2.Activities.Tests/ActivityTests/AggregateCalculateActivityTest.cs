@@ -40,7 +40,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            DateTime res = DateTime.Parse(entry);
+            var res = DateTime.Parse(entry);
 
             if (res.Second == 0)
             {

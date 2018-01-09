@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -68,7 +68,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
             dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
             DataListSingleton.SetDataList(dataListViewModel);
             
-            int row = 0;
+            var row = 0;
             scenarioContext.TryGetValue("variableList", out dynamic variableList);
             if (variableList != null)
             {
@@ -132,7 +132,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
-            bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+            var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)

@@ -74,7 +74,7 @@ namespace Dev2.Common.DateAndTime
 
         public void AssignYears(IDateTimeResultTO dateTimeResultTo, bool assignAsTime, IConvertible value)
         {
-            int years = Convert.ToInt32(value);
+            var years = Convert.ToInt32(value);
 
             if (!assignAsTime && years < 100)
             {

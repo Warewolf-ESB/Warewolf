@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -408,7 +408,7 @@ namespace Dev2.Studio.ViewModels.Workflow
                 if (numberOfRows == 2)
                 {
                     var firstRow = WorkflowInputs.Where(c => c.Index == @"1" && c.Recordset == itemToRemove.Recordset);
-                    bool removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
+                    var removeRow = firstRow.All(item => string.IsNullOrWhiteSpace(item.Value));
 
                     if (removeRow)
                     {
@@ -575,7 +575,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         public bool AddBlankRow(IDataListItem selectedItem, out int indexToSelect)
         {
             indexToSelect = 1;
-            bool itemsAdded = false;
+            var itemsAdded = false;
             if (selectedItem != null && selectedItem.CanHaveMutipleRows)
             {
                 var recordset = DataList.RecordSets.FirstOrDefault(set => set.Name == selectedItem.Recordset);
@@ -588,9 +588,9 @@ namespace Dev2.Studio.ViewModels.Workflow
                     }
                     var numberOfRows = WorkflowInputs.Where(c => c.Recordset == selectedItem.Recordset);
                     var lastItem = numberOfRows.Last();
-                    int indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
+                    var indexToInsertAt = WorkflowInputs.IndexOf(lastItem);
                     var indexString = lastItem.Index;
-                    int indexNum = Convert.ToInt32(indexString) + 1;
+                    var indexNum = Convert.ToInt32(indexString) + 1;
                     indexToSelect = indexToInsertAt + 1;
                     itemsAdded = AddBlankRowToRecordset(selectedItem, recsetCols, indexToInsertAt, indexNum);
                 }
@@ -602,7 +602,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (selectedItem != null)
             {
-                int indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
+                var indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
                 if (indexToInsertAt != -1)
                 {
                     var indexOfItemToGet = indexToInsertAt + 1;
@@ -620,7 +620,7 @@ namespace Dev2.Studio.ViewModels.Workflow
         {
             if (selectedItem != null)
             {
-                int indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
+                var indexToInsertAt = WorkflowInputs.IndexOf(selectedItem);
                 if (indexToInsertAt != -1)
                 {
                     var indexOfItemToGet = indexToInsertAt - 1;
@@ -640,7 +640,7 @@ namespace Dev2.Studio.ViewModels.Workflow
 
         bool AddBlankRowToRecordset(IDataListItem dlItem, IList<IScalar> columns, int indexToInsertAt, int indexNum)
         {
-            bool itemsAdded = false;
+            var itemsAdded = false;
             if (dlItem.CanHaveMutipleRows)
             {
                 IList<IScalar> recsetCols = columns.Distinct(Scalar.Comparer).ToList();

@@ -223,7 +223,7 @@ namespace Dev2.Studio.Core.DataList
                 }
 
                 var texttrimmedRight = orignalText.Substring(0, caretIndex);
-                int start = texttrimmedRight.LastIndexOf(texttrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
+                var start = texttrimmedRight.LastIndexOf(texttrimmedRight.Split(_tokenisers).Last(), StringComparison.Ordinal);
                 filter = texttrimmedRight.Substring(start);
             }
             else

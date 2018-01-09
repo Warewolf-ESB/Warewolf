@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -55,27 +55,17 @@ namespace Dev2.Activities.Designers2.Sequence
 
         public object SmallViewItem
         {
-            get
-            {
-                return _smallViewItem;
-            }
-            
+            get => _smallViewItem;
             set
-            
             {
-                var test = value as ModelItem;
-
-                if (test != null && !_addedFromDesignSurface)
+                if (value is ModelItem test)
                 {
-                    if (test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
+                    if (!_addedFromDesignSurface && test.ItemType != typeof(System.Activities.Statements.Sequence) && test.ItemType != typeof(DsfActivity))
                     {
                         dynamic mi = ModelItem;
                         ModelItemCollection activitiesCollection = mi.Activities;
                         activitiesCollection.Insert(activitiesCollection.Count, test);
                     }
-                }
-                if (test != null)
-                {
                     _addedFromDesignSurface = false;
                 }
                 _smallViewItem = null;
@@ -120,7 +110,6 @@ namespace Dev2.Activities.Designers2.Sequence
                     {
                         envId = itemModel.Server.EnvironmentID;
                     }
-
                     resourceId = itemModel.ResourceId;
                 }
 
@@ -129,7 +118,7 @@ namespace Dev2.Activities.Designers2.Sequence
                     var server = ServerRepository.Instance.FindSingle(c => c.EnvironmentID == envId);
                     var resource = server?.ResourceRepository.LoadContextualResourceModel(resourceId);
 
-                    if (resource != null)
+                    if (resource == null)
                     {
                         var d = DsfActivityFactory.CreateDsfActivity(resource, null, true, ServerRepository.Instance, true);
                         d.ServiceName = d.DisplayName = d.ToolboxFriendlyName = resource.Category;
@@ -150,7 +139,8 @@ namespace Dev2.Activities.Designers2.Sequence
                             activitiesCollection.Insert(activitiesCollection.Count, d);
                             return true;
                         }
-                    }
+                    }                    
+                    return true;
                 }
                 catch (RuntimeBinderException e)
                 {
@@ -158,6 +148,18 @@ namespace Dev2.Activities.Designers2.Sequence
                 }
             }
             return false;
+        }
+
+        private static void ValidateRemoteProperties(IContextualResourceModel resource, DsfActivity d)
+        {
+            if (Application.Current != null && Application.Current.Dispatcher.CheckAccess() && Application.Current.MainWindow != null)
+            {
+                dynamic mvm = Application.Current.MainWindow.DataContext;
+                if (mvm != null && mvm.ActiveItem != null)
+                {
+                    WorkflowDesignerUtils.CheckIfRemoteWorkflowAndSetProperties(d, resource, mvm.ActiveItem.Environment);
+                }
+            }
         }
 
         public bool DoDrop(IDataObject dataObject)

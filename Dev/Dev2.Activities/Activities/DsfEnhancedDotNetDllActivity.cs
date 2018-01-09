@@ -9,6 +9,7 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -27,7 +28,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("DotNetDll", "DotNet DLL", ToolType.Native, "6AEB1038-6332-46F9-8BDD-641DE4EA038D", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Resources", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Resources_Dot_net_DLL")]
-    public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity
+    public class DsfEnhancedDotNetDllActivity : DsfMethodBasedActivity, IEquatable<DsfEnhancedDotNetDllActivity>, IEnhancedPlugin
     {
         List<IDebugState> _childStatesToDispatch;
 
@@ -459,7 +460,7 @@ namespace Dev2.Activities
 
                                 if (debugState.AssertResultList != null)
                                 {
-                                    bool addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+                                    var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
 
                                     if (addItem)
                                     {
@@ -649,5 +650,34 @@ namespace Dev2.Activities
             return enFindMissingType.DataGridActivity;
         }
 
+        public bool Equals(DsfEnhancedDotNetDllActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var comparer = new EnhancedPluginComparer();
+            var @equals = comparer.Equals(this, other);
+            return base.Equals(other) && @equals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfEnhancedDotNetDllActivity)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Namespace != null ? Namespace.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Constructor != null ? Constructor.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (MethodsToRun != null ? MethodsToRun.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ConstructorInputs != null ? ConstructorInputs.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

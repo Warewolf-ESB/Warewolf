@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -43,7 +43,7 @@ namespace Dev2.Runtime.WebServer
             var TotalPassed = TestResults.FindAll((result) => { return result != null && result.TestPassed; }).Count;
             var TotalFailed = TestResults.FindAll((result) => { return result != null && result.TestFailing; }).Count + TestResults.FindAll((result) => { return result != null && result.TestInvalid; }).Count;
 
-            XmlDocument TRXFile = new XmlDocument();
+            var TRXFile = new XmlDocument();
             TRXFile.AppendChild(TRXFile.CreateXmlDeclaration("1.0", "utf-8", null));
             var testRunElement = TRXFile.CreateElement("TestRun");
             testRunElement.SetAttribute("id", Guid.NewGuid().ToString());
@@ -78,7 +78,7 @@ namespace Dev2.Runtime.WebServer
             resultsSummaryElement.AppendChild(countersElement);
             testRunElement.AppendChild(resultsSummaryElement);
             var testDefinitionsElement = TRXFile.CreateElement("TestDefinitions");
-            int testIDIndex = 0;
+            var testIDIndex = 0;
             foreach (var TestResult in TestResults.FindAll((result) => { return result != null; }))
             {
                 var unitTestDefinitionElement = TRXFile.CreateElement("UnitTest");

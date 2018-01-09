@@ -262,7 +262,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             else
             {
                 SetSelectedSource(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
             var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;

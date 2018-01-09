@@ -23,6 +23,8 @@ using Warewolf.UI.Tests.EmailSource.EmailSourceUIMapClasses;
 using Warewolf.UI.Tests.ExchangeSource.ExchangeSourceUIMapClasses;
 using Warewolf.UI.Tests.Deploy.DeployUIMapClasses;
 using Warewolf.UI.Tests.DependencyGraph.DependencyGraphUIMapClasses;
+using Warewolf.UI.Tests.Merge.MergeConflictsUIMapClasses;
+using Warewolf.UI.Tests.Merge.MergeDialogUIMapClasses;
 
 namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
 {
@@ -232,7 +234,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.StartDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, new Point(94, 11));
             Mouse.StopDragging(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.SecondItem, new Point(90, 7));
         }
-        
+
         [When(@"I Select Remote Connection Integration From Explorer")]
         public void Select_RemoteConnectionIntegration_From_Explorer()
         {
@@ -309,7 +311,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.FirstRemoteServer.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
         }
-        
+
         [When(@"I RightClick Explorer Localhost First Item")]
         public void RightClick_Explorer_Localhost_FirstItem()
         {
@@ -484,7 +486,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ConnectControl.NewServerButton, new Point(11, 10));
         }
-        
+
         [When(@"I Click Edit Server Button From Explorer Connect Control")]
         public void Click_EditServerButton_From_ExplorerConnectControl()
         {
@@ -566,7 +568,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         {
             Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost);
         }
-        
+
         [When(@"I Filter the Explorer with ""(.*)""")]
         public void Filter_Explorer(string FilterText)
         {
@@ -576,7 +578,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         [When(@"I validate and delete the existing resource with ""(.*)""")]
         public void WhenIValidateAndDeleteTheExistingResourceWith(string resourceName)
         {
-            string resourcePath =  @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
+            string resourcePath = @"\\TST-CI-REMOTE\C$\ProgramData\Warewolf\Resources\" + resourceName;
 
             if (File.Exists(resourcePath))
             {
@@ -891,6 +893,15 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(WorkflowServiceTestingUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.TestsTab.Exists, "Workflow service tests tab is not open after clicking Tests context menu item in the explorer context menu.");
         }
 
+        [Given(@"I Open Explorer First Item Merge With Context Menu")]
+        [When(@"I Open Explorer First Item Merge With Context Menu")]
+        [Then(@"I Open Explorer First Item Merge With Context Menu")]
+        public void Open_ExplorerFirstItemMerge_With_ExplorerContextMenu()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem, MouseButtons.Right, ModifierKeys.None, new Point(107, 9));
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
+        }
+
         [Given(@"I Open Explorer First Item Version History From Explorer Context Menu")]
         [When(@"I Open Explorer First Item Version History From Explorer Context Menu")]
         [Then(@"I Open Explorer First Item Version History From Explorer Context Menu")]
@@ -966,7 +977,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.Exists, "Message box does not exist");
             Assert.IsTrue(DialogsUIMap.MessageBoxWindow.YesButton.Exists, "Message box Yes button does not exist");
         }
-        
+
         [When(@"I Select Deploy From Explorer Context Menu")]
         public void Select_Deploy_From_ExplorerContextMenu()
         {
@@ -1132,7 +1143,7 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Delete, new Point(61, 15));
             Mouse.Click(DialogsUIMap.MessageBoxWindow.YesButton, new Point(7, 12));
         }
-        
+
         [When(@"I Collapse Localhost")]
         public void Collapse_Localhost()
         {
@@ -1145,7 +1156,39 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
             MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.Expanded = true;
         }
 
+        [Given(@"I Click Merge From Context Menu")]
+        [When(@"I Click Merge From Context Menu")]
+        [Then(@"I Click Merge From Context Menu")]
+        public void Click_Merge_From_Context_Menu()
+        {
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
+            Assert.IsTrue(MergeDialogUIMap.MergeDialogWindow.Exists, "Merge Popup window did not Open after clicking merge.");
+        }
+
+        [When(@"I Open Context Menu For ""(.*)"" Service")]
+        public void Open_Context_Menu_For_Service(string serviceName)
+        {
+            Filter_Explorer(serviceName);
+            RightClick_Explorer_Localhost_First_Item_First_SubItem();
+            Mouse.Click(UIMap.MainStudioWindow.ExplorerContextMenu.Merge);
+            Assert.IsTrue(MergeDialogUIMap.MergeDialogWindow.Exists, "Merge Popup window did not Open after clicking merge.");
+        }
+
         #region UIMaps
+        public MergeConflictsUIMap MergeConflictsUIMap
+        {
+            get
+            {
+                if (_MergeConflictsUIMap == null)
+                {
+                    _MergeConflictsUIMap = new MergeConflictsUIMap();
+                }
+
+                return _MergeConflictsUIMap;
+            }
+        }
+
+        private MergeConflictsUIMap _MergeConflictsUIMap;
         WorkflowTabUIMap WorkflowTabUIMap
         {
             get
@@ -1310,6 +1353,21 @@ namespace Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses
         }
 
         private DependencyGraphUIMap _DependencyGraphUIMap;
+
+        public MergeDialogUIMap MergeDialogUIMap
+        {
+            get
+            {
+                if (_MergeDialogUIMap == null)
+                {
+                    _MergeDialogUIMap = new MergeDialogUIMap();
+                }
+
+                return _MergeDialogUIMap;
+            }
+        }
+
+        private MergeDialogUIMap _MergeDialogUIMap;
 
         #endregion
     }

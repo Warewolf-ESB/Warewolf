@@ -75,7 +75,7 @@ namespace Warewolf.Studio.CustomControls
             }
 
             double tolerance = 60;
-            double verticalPos = e.GetPosition(container).Y;
+            var verticalPos = e.GetPosition(container).Y;
             double offset = 20;
 
             if (verticalPos < tolerance) // Top of visible list? 

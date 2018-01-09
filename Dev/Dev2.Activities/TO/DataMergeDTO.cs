@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -168,7 +168,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool CanAdd()
         {
-            bool result = true;
+            var result = true;
             if (MergeType == MergeTypeIndex || MergeType == MergeTypeChars)
             {
                 if (string.IsNullOrEmpty(InputVariable) && string.IsNullOrEmpty(At))

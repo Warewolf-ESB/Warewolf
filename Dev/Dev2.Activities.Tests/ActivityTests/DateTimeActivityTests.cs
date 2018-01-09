@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -153,7 +153,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
-            DateTime actualdt = DateTime.Parse(actual);
+            var actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");

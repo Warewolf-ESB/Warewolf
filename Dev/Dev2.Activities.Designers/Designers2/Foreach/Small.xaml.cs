@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,8 +24,6 @@ namespace Dev2.Activities.Designers2.Foreach
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        ForeachDesignerViewModel ViewModel => DataContext as ForeachDesignerViewModel;
-
         void DoDrop(object sender, DragEventArgs e)
         {
             var dataObject = e.Data;
@@ -40,14 +38,14 @@ namespace Dev2.Activities.Designers2.Foreach
                 }
                 else
                 {
-                    if (ViewModel.MultipleItemsToSequence(dataObject))
+                    if (ForeachDesignerViewModel.MultipleItemsToSequence(dataObject))
                     {
                         e.Effects = DragDropEffects.None;
                         e.Handled = true;
                     }
                 }
             }
-            bool multipleItemsToSequence = ViewModel.MultipleItemsToSequence(dataObject);
+            var multipleItemsToSequence = ForeachDesignerViewModel.MultipleItemsToSequence(dataObject);
             if (multipleItemsToSequence)
             {
                 e.Effects = DragDropEffects.None;

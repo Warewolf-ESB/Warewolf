@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,8 +39,8 @@ namespace Dev2.Core.Tests
     {
         #region Locals
 
-        DataListViewModel _dataListViewModel;
-        Mock<IContextualResourceModel> _mockResourceModel;
+        public static DataListViewModel _dataListViewModel;
+        public static Mock<IContextualResourceModel> _mockResourceModel;
 
         #endregion
 
@@ -52,7 +52,7 @@ namespace Dev2.Core.Tests
             AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
-        void Setup()
+        public static void Setup()
         {
             _mockResourceModel = Dev2MockFactory.SetupResourceModelMock();
 
@@ -276,11 +276,11 @@ namespace Dev2.Core.Tests
 
             //Juries 8810 TODO
             _dataListViewModel.AddMissingDataListItems(parts);
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
             _dataListViewModel.RemoveUnusedDataListItems();
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
         }
 
@@ -309,7 +309,7 @@ namespace Dev2.Core.Tests
             //-------------------------Execute Test ------------------------------------------
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
             //-------------------------Assert Resule------------------------------------------
-            int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && !string.IsNullOrEmpty(model.DisplayName));
+            var actual = _dataListViewModel.DataList.Count(model => !model.IsUsed && !string.IsNullOrEmpty(model.DisplayName));
             Assert.AreEqual(2, actual);
         }
 
@@ -415,7 +415,7 @@ namespace Dev2.Core.Tests
             //-------------------------Execute Test ------------------------------------------
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
             //-------------------------Assert Resule------------------------------------------
-            int actual = _dataListViewModel.DataList.Count(model => !model.IsUsed);
+            var actual = _dataListViewModel.DataList.Count(model => !model.IsUsed);
             Assert.AreEqual(2, actual);
         }
 
@@ -437,11 +437,11 @@ namespace Dev2.Core.Tests
             parts.Add(part.Object);
 
             _dataListViewModel.AddMissingDataListItems(parts);
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
             _dataListViewModel.RemoveUnusedDataListItems();
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
         }
 
@@ -459,14 +459,14 @@ namespace Dev2.Core.Tests
             parts.Add(part.Object);
 
             _dataListViewModel.AddMissingDataListItems(parts);
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
 
             var canExec = _dataListViewModel.FindUnusedAndMissingCommand.CanExecute(_dataListViewModel);
             Assert.IsTrue(canExec);
             _dataListViewModel.FindUnusedAndMissingCommand.Execute(_dataListViewModel);
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(beforeCount > afterCount);
         }
 
@@ -521,7 +521,7 @@ namespace Dev2.Core.Tests
             parts.Add(part.Object);
 
             _dataListViewModel.AddMissingDataListItems(parts);
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
             _dataListViewModel.ComplexObjectCollection[0].IsUsed = false;
@@ -529,7 +529,7 @@ namespace Dev2.Core.Tests
             var canExec = _dataListViewModel.FindUnusedAndMissingCommand.CanExecute(_dataListViewModel);
             Assert.IsTrue(canExec);
             _dataListViewModel.FindUnusedAndMissingCommand.Execute(_dataListViewModel);
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
             Assert.AreEqual(beforeCount, afterCount);
         }
 
@@ -547,14 +547,14 @@ namespace Dev2.Core.Tests
             parts.Add(part.Object);
 
             _dataListViewModel.AddMissingDataListItems(parts);
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             parts.Add(part.Object);
             _dataListViewModel.SetIsUsedDataListItems(parts, false);
 
             var canExec = _dataListViewModel.FindUnusedAndMissingCommand.CanExecute(_dataListViewModel);
             Assert.IsFalse(canExec);
             _dataListViewModel.FindUnusedAndMissingCommand.Execute(_dataListViewModel);
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
             Assert.AreEqual(beforeCount, afterCount);
         }
 
@@ -649,11 +649,11 @@ namespace Dev2.Core.Tests
         {
             Setup();
             _dataListViewModel.AddBlankRow(new DataListItemModel("Test"));
-            int beforeCount = _dataListViewModel.ScalarCollection.Count;
+            var beforeCount = _dataListViewModel.ScalarCollection.Count;
             _dataListViewModel.ScalarCollection[0].Description = string.Empty;
             _dataListViewModel.ScalarCollection[0].DisplayName = string.Empty;
             _dataListViewModel.RemoveBlankRows(_dataListViewModel.ScalarCollection[0]);
-            int afterCount = _dataListViewModel.ScalarCollection.Count;
+            var afterCount = _dataListViewModel.ScalarCollection.Count;
 
             Assert.IsTrue(beforeCount > afterCount);
         }
@@ -669,9 +669,9 @@ namespace Dev2.Core.Tests
         public void AddRowIfAllCellsHaveData_AllDataListRowsContainingData_Expected_RowAdded()
         {
             Setup();
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             _dataListViewModel.AddBlankRow(_dataListViewModel.ScalarCollection[0]);
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
             Assert.IsTrue(afterCount >= beforeCount);
         }
 
@@ -683,9 +683,9 @@ namespace Dev2.Core.Tests
         {
             Setup();
             _dataListViewModel.AddBlankRow(_dataListViewModel.ScalarCollection[0]);
-            int beforeCount = _dataListViewModel.DataList.Count;
+            var beforeCount = _dataListViewModel.DataList.Count;
             _dataListViewModel.AddBlankRow(_dataListViewModel.ScalarCollection[0]);
-            int afterCount = _dataListViewModel.DataList.Count;
+            var afterCount = _dataListViewModel.DataList.Count;
 
             Assert.AreEqual(beforeCount, afterCount);
         }
@@ -1273,7 +1273,7 @@ namespace Dev2.Core.Tests
             _dataListViewModel.ComplexObjectCollection.Add(complexObjectDataModel);
         }
 
-        void SortCleanup()
+        public static void SortCleanup()
         {
             _dataListViewModel.ScalarCollection.Clear();
             _dataListViewModel.RecsetCollection.Clear();
@@ -1397,31 +1397,6 @@ namespace Dev2.Core.Tests
             Assert.AreEqual("ttt", _dataListViewModel.RecsetCollection[1].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("Car", _dataListViewModel.RecsetCollection[2].DisplayName, "Sort datalist left recset list unsorted");
             Assert.AreEqual("aaa", _dataListViewModel.RecsetCollection[3].DisplayName, "Sort datalist left recset list unsorted");
-
-            SortCleanup();
-        }
-
-        [TestMethod]
-        public void SortLargeListOfScalarsExpectedLessThan500Milliseconds()
-        {
-            //Initialize
-            Setup();
-            for (var i = 2500; i > 0; i--)
-            {
-                _dataListViewModel.ScalarCollection.Add(DataListItemModelFactory.CreateScalarItemModel("testVar" + i.ToString(CultureInfo.InvariantCulture).PadLeft(4, '0')));
-            }
-            var timeBefore = DateTime.Now;
-
-            //Execute
-            _dataListViewModel.SortCommand.Execute(null);
-
-            var endTime = DateTime.Now.Subtract(timeBefore);
-            //Assert
-            Assert.AreEqual("Country", _dataListViewModel.ScalarCollection[0].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar1000", _dataListViewModel.ScalarCollection[1000].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar1750", _dataListViewModel.ScalarCollection[1750].DisplayName, "Sort datalist with large list failed");
-            Assert.AreEqual("testVar2500", _dataListViewModel.ScalarCollection[2500].DisplayName, "Sort datalist with large list failed");
-            Assert.IsTrue(endTime < TimeSpan.FromMilliseconds(500), $"Sort datalist took longer than 500 milliseconds to sort 2500 variables. Took {endTime}");
 
             SortCleanup();
         }
@@ -1908,7 +1883,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var dataListViewModel = new DataListViewModel();
             //------------Execute Test---------------------------
-            bool canSortItems = dataListViewModel.CanSortItems;
+            var canSortItems = dataListViewModel.CanSortItems;
             //------------Assert Results-------------------------
             Assert.IsFalse(canSortItems);
         }

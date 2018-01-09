@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,6 +20,8 @@ using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
+using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
@@ -91,7 +93,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!errors.HasErrors())
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (ActivityDTO t in FieldsCollection)
                     {
                         try
@@ -459,6 +461,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     select new DsfForEachItem { Name = item.FieldValue, Value = item.FieldName }).ToList();
         }
 
+        public bool Equals(DsfMultiAssignActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var sequenceEqual = FieldsCollection.SequenceEqual(other.FieldsCollection, new ActivityDtoComparer());
+            return base.Equals(other) && sequenceEqual
+                && UpdateAllOccurrences == other.UpdateAllOccurrences
+                && CreateBookmark == other.CreateBookmark 
+                && string.Equals(ServiceHost, other.ServiceHost)
+                && string.Equals(DisplayName, other.DisplayName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfMultiAssignActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsCollection != null ? FieldsCollection.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ UpdateAllOccurrences.GetHashCode();
+                hashCode = (hashCode * 397) ^ CreateBookmark.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServiceHost != null ? ServiceHost.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
 }

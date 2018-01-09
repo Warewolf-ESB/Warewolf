@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -13,7 +13,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
@@ -41,8 +40,6 @@ namespace Dev2.Studio.Core.Models
 {
     public class ResourceModel : ValidationController, IDataErrorInfo, IContextualResourceModel
     {
-        #region Class Members
-
         bool _allowCategoryEditing = true;
         string _category;
         string _comment;
@@ -71,10 +68,7 @@ namespace Dev2.Studio.Core.Models
         Permissions _userPermissions;
         IVersionInfo _versionInfo;
 
-        #endregion Class Members
-
-        #region Constructors
-
+        public ResourceModel() { }
         public ResourceModel(IServer environment)
             : this(environment, EventPublishers.Aggregator)
         {
@@ -94,20 +88,13 @@ namespace Dev2.Studio.Core.Models
             IsWorkflowSaved = true;
         }
 
-        #endregion Constructors
-
-        #region Properties
-
         public string Inputs { get; set; }
 
         public string Outputs { get; set; }
 
         public bool IsValid
         {
-            get
-            {
-                return _isValid;
-            }
+            get => _isValid;
             set
             {
                 _isValid = value;
@@ -120,10 +107,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsWorkflowSaved
         {
-            get
-            {
-                return _isWorkflowSaved;
-            }
+            get => _isWorkflowSaved;
             set
             {
                 _isWorkflowSaved = value;
@@ -133,7 +117,7 @@ namespace Dev2.Studio.Core.Models
 
         public IServer Environment
         {
-            get { return _environment; }
+            get => _environment;
             private set
             {
                 _environment = value;
@@ -144,18 +128,15 @@ namespace Dev2.Studio.Core.Models
                     _validationService.Subscribe(_environment.EnvironmentID, ReceiveEnvironmentValidation);
                 }
                 NotifyOfPropertyChange(nameof(Environment));
-                
                 NotifyOfPropertyChange("CanExecute");
-                
             }
         }
-
 
         public Guid ServerID { get; set; }
 
         public bool IsDatabaseService
         {
-            get { return _isDatabaseService; }
+            get => _isDatabaseService;
             set
             {
                 _isDatabaseService = value;
@@ -165,7 +146,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsPluginService
         {
-            get { return _isPluginService; }
+            get => _isPluginService;
             set
             {
                 _isPluginService = value;
@@ -175,7 +156,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsResourceService
         {
-            get { return _isResourceService; }
+            get => _isResourceService;
             set
             {
                 _isResourceService = value;
@@ -185,7 +166,7 @@ namespace Dev2.Studio.Core.Models
 
         public Guid ID
         {
-            get { return _id; }
+            get => _id;
             set
             {
                 _id = value;
@@ -195,7 +176,7 @@ namespace Dev2.Studio.Core.Models
 
         public Permissions UserPermissions
         {
-            get { return _userPermissions; }
+            get => _userPermissions;
             set
             {
                 if (value == _userPermissions)
@@ -214,7 +195,7 @@ namespace Dev2.Studio.Core.Models
 
         public Version Version
         {
-            get { return _version; }
+            get => _version;
             set
             {
                 _version = value;
@@ -224,7 +205,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool AllowCategoryEditing
         {
-            get { return _allowCategoryEditing; }
+            get => _allowCategoryEditing;
             set
             {
                 _allowCategoryEditing = value;
@@ -235,7 +216,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter a name for this resource")]
         public string ResourceName
         {
-            get { return _resourceName; }
+            get => _resourceName;
             set
             {
                 _resourceName = value.Trim();
@@ -261,10 +242,9 @@ namespace Dev2.Studio.Core.Models
             }
         }
 
-
         public string UnitTestTargetWorkflowService
         {
-            get { return _unitTestTargetWorkflowService; }
+            get => _unitTestTargetWorkflowService;
             set
             {
                 _unitTestTargetWorkflowService = value;
@@ -276,7 +256,7 @@ namespace Dev2.Studio.Core.Models
 
         public string DataList
         {
-            get { return _dataList; }
+            get => _dataList;
             set
             {
                 if (value != _dataList)
@@ -285,13 +265,12 @@ namespace Dev2.Studio.Core.Models
                     NotifyOfPropertyChange(nameof(DataList));
                     OnDataListChanged?.Invoke();
                 }
-
             }
         }
 
         public ResourceType ResourceType
         {
-            get { return _resourceType; }
+            get => _resourceType;
             set
             {
                 _resourceType = value;
@@ -302,7 +281,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter a Category for this resource")]
         public string Category
         {
-            get { return _category; }
+            get => _category;
             set
             {
                 _category = value;
@@ -312,7 +291,7 @@ namespace Dev2.Studio.Core.Models
 
         public string Tags
         {
-            get { return _tags; }
+            get => _tags;
             set
             {
                 _tags = value;
@@ -323,7 +302,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter the Comment for this resource")]
         public string Comment
         {
-            get { return _comment; }
+            get => _comment;
             set
             {
                 _comment = value;
@@ -333,10 +312,7 @@ namespace Dev2.Studio.Core.Models
 
         public StringBuilder WorkflowXaml
         {
-            get
-            {
-                return _workflowXaml;
-            }
+            get => _workflowXaml;
             set
             {
                 _workflowXaml = value;
@@ -350,7 +326,7 @@ namespace Dev2.Studio.Core.Models
 
         public string DataTags
         {
-            get { return _dataTags; }
+            get => _dataTags;
             set
             {
                 _dataTags = value;
@@ -361,7 +337,7 @@ namespace Dev2.Studio.Core.Models
         [Required(ErrorMessage = @"Please enter a valid help link")]
         public string HelpLink
         {
-            get { return _helpLink; }
+            get => _helpLink;
             set
             {
                 _helpLink = value;
@@ -371,7 +347,7 @@ namespace Dev2.Studio.Core.Models
 
         public bool IsDebugMode
         {
-            get { return _isDebugMode; }
+            get => _isDebugMode;
             set
             {
                 _isDebugMode = value;
@@ -385,10 +361,7 @@ namespace Dev2.Studio.Core.Models
 
         public IVersionInfo VersionInfo
         {
-            get
-            {
-                return _versionInfo;
-            }
+            get => _versionInfo;
             set
             {
                 if (Equals(value, _versionInfo))
@@ -402,10 +375,6 @@ namespace Dev2.Studio.Core.Models
 
         public event Action<IContextualResourceModel> OnResourceSaved;
         public event System.Action OnDataListChanged;
-
-        #endregion Properties
-
-        #region Methods
 
         public event EventHandler<DesignValidationMemo> OnDesignValidationReceived;
 
@@ -443,14 +412,14 @@ namespace Dev2.Studio.Core.Models
             _errors.Clear();
             NotifyOfPropertyChange(() => Errors);
             NotifyOfPropertyChange(() => IsValid);
-        }      
+        }
 
         void ReceiveEnvironmentValidation(DesignValidationMemo memo)
         {
             foreach (var error in memo.Errors)
             {
                 _errors.Add(error);
-            }            
+            }
         }
 
         public IList<IErrorInfo> GetErrors(Guid instanceId)
@@ -537,13 +506,13 @@ namespace Dev2.Studio.Core.Models
             if (ResourceType == ResourceType.WorkflowService)
             {
                 var xaml = WorkflowXaml;
-                if (xaml==null || xaml.Length==0)
+                if (xaml == null || xaml.Length == 0)
                 {
                     var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, false);
                     if (msg?.Message != null)
                     {
                         xaml = msg.Message;
-                    }                    
+                    }
                 }
                 if (xaml != null && xaml.Length != 0)
                 {
@@ -560,20 +529,20 @@ namespace Dev2.Studio.Core.Models
                 var msg = Environment.ResourceRepository.FetchResourceDefinition(Environment, GlobalConstants.ServerWorkspaceID, ID, prepairForDeployment);
                 result = msg.Message;
 
-                if(result == null || result.Length == 0)
+                if (result == null || result.Length == 0)
                 {
                     result = WorkflowXaml;
                 }
 
-                if(result != null)
+                if (result != null)
                 {
                     var startNode = result.IndexOf("<Category>", 0, true) + "<Category>".Length;
                     var endNode = result.IndexOf("</Category>", 0, true);
-                    if(endNode > startNode)
+                    if (endNode > startNode)
                     {
                         var len = endNode - startNode;
                         var oldCategory = result.Substring(startNode, len);
-                        if(oldCategory != Category)
+                        if (oldCategory != Category)
                         {
                             result = result.Replace(oldCategory, Category);
                         }
@@ -640,10 +609,7 @@ namespace Dev2.Studio.Core.Models
 
             return errorElements;
         }
-        #endregion Methods
-
-        #region IDataErrorInfo Members
-
+        
         public string Error => null;
 
         public string this[string columnName]
@@ -653,7 +619,6 @@ namespace Dev2.Studio.Core.Models
                 var prop = GetType().GetProperty(columnName);
                 var validationMap = prop.GetCustomAttributes(typeof(ValidationAttribute), true).Cast<ValidationAttribute>();
                 string errMsg;
-
 
                 foreach (ValidationAttribute v in validationMap)
                 {
@@ -665,7 +630,6 @@ namespace Dev2.Studio.Core.Models
                     catch (Exception)
                     {
                         AddError(columnName, v.ErrorMessage);
-
                         return v.ErrorMessage;
                     }
                 }
@@ -694,8 +658,6 @@ namespace Dev2.Studio.Core.Models
                 return null;
             }
         }
-
-        #endregion
 
         public string GetSavePath()
         {

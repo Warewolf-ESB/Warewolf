@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,9 +54,9 @@ namespace Dev2.Core.Tests.UtilsTests
         public void CanFunctionNormallyWithMixedAddRemoveOdd()
         {
             var workflowNames = new NewWorkflowNames();
-            int cnt = 1;
+            var cnt = 1;
 
-            for(int i = cnt; i < 10; i++)
+            for (int i = cnt; i < 10; i++)
             {
                 var name = "Unsaved " + i;
                 workflowNames.Add(name);
@@ -77,9 +77,9 @@ namespace Dev2.Core.Tests.UtilsTests
         public void CanFunctionNormallyWithMixedAddRemoveEven()
         {
             var workflowNames = new NewWorkflowNames();
-            int cnt = 1;
+            var cnt = 1;
 
-            for(int i = cnt; i < 10; i++)
+            for (int i = cnt; i < 10; i++)
             {
                 var name = "Unsaved " + i;
                 workflowNames.Add(name);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,7 +37,7 @@ namespace Dev2.CustomControls.Progress
         static IProgressNotifier DialogViewModel(Window owner, Action cancelAction)
         {
             var dialog = new ProgressDialog(owner);
-            dialog.Closed += (sender, args) => cancelAction();
+            dialog.Closed += (sender, args) => cancelAction?.Invoke();
             var dialogViewModel = new ProgressDialogViewModel(cancelAction, dialog.Show, dialog.Close);
             dialog.DataContext = dialogViewModel;
             return dialogViewModel;
@@ -49,7 +49,7 @@ namespace Dev2.CustomControls.Progress
             VerifyArgument.IsNotNull("file", file);
             _webClient = webClient;
 
-            ProgressDialog = GetProgressDialogViewModel(_owner, Cancel);
+            ProgressDialog = GetProgressDialogViewModel?.Invoke(_owner, Cancel);
             _file = file;
             _webClient.DownloadProgressChanged += OnDownloadProgressChanged;
             ShutDownAction = ShutdownAndInstall;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             var path = new XmlPath("Company.Departments().Department:Name", "Company.Departments.Department:Name");
 
             const int expected = 4;
-            int actual = path.GetSegements().Count();
+            var actual = path.GetSegements().Count();
 
             Assert.AreEqual(expected, actual);
         }
@@ -60,7 +60,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             var segment = path.CreatePathSegment(element);
 
             const bool expected = true;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -73,7 +73,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             var segment = path.CreatePathSegment(element);
 
             const bool expected = false;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -85,7 +85,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             var segment = path.CreatePathSegment("Departments()");
 
             const bool expected = true;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }
@@ -97,7 +97,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.StringTests.XmlTests
             var segment = path.CreatePathSegment("Name");
 
             const bool expected = false;
-            bool actual = segment.IsEnumarable;
+            var actual = segment.IsEnumarable;
 
             Assert.AreEqual(expected, actual);
         }

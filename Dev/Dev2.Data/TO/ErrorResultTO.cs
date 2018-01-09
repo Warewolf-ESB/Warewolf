@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -133,8 +133,8 @@ namespace Dev2.Data.TO
                 result.Append("\"errors\": [ ");
             }
 
-            int errCnt = 0;
-            foreach(StringBuilder e in _errorList)
+            var errCnt = 0;
+            foreach (StringBuilder e in _errorList)
             {
                 var formattedMsg = FormatErrorMessage(e.ToString());
                 if(asXml)

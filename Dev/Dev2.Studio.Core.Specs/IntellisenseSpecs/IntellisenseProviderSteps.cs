@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -198,7 +198,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var provider = new Dev2TrieSugggestionProvider();
             provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
             var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.All;
-            int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
             var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
             var selected = p0.Split(new char[] { ',' });
              if(p0=="" && !options.Any())
@@ -206,8 +206,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
                 return;
             }
 
-            bool all = true;
-            foreach(var a in selected)
+            var all = true;
+            foreach (var a in selected)
             {
                 if(!String.IsNullOrEmpty(a)&& !options.Contains(a))
                 {
@@ -244,7 +244,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => !i.IsError).Select(i => i.Name).ToArray();
             Assert.AreEqual(expectedList.Length, actualist.Length);
-            bool all = true;
+            var all = true;
             foreach (var a in expectedList)
             {
                 if (!String.IsNullOrEmpty(a) && !actualist.Contains(a))
@@ -286,8 +286,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         public void WhenISelectTheFollowingStringOption(string option)
         { 
             var originalText =ScenarioContext.Current["inputText"].ToString();
-            int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
-            if(option=="")
+            var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            if (option=="")
             {
                 ScenarioContext.Current["stringResult"] = new IntellisenseStringResult(originalText,caretpos) ;
                 return;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -701,7 +701,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
-            bool called = false;
+            var called = false;
 
             var workSurfaceContextViewModel = new WorkSurfaceContextViewModel(new Mock<IEventAggregator>().Object, workSurfaceKey, workSurfaceViewModel.Object, popup.Object, (a, b,c) => { called = true; });
             var mockResourceModel = new Mock<IContextualResourceModel>();
@@ -741,7 +741,7 @@ namespace Dev2.Core.Tests
             mockWorkSurfaceViewModel.Setup(m => m.BindToModel()).Verifiable();
             var workSurfaceViewModel = mockWorkSurfaceViewModel.As<IWorkSurfaceViewModel>();
             var popup = new Mock<IPopupController>();
-            bool called = false;
+            var called = false;
             var mockResourceModel = new Mock<IContextualResourceModel>();
             mockResourceModel.SetupGet(p => p.Environment).Returns(environmentModel);
             mockResourceModel.Setup(m => m.UserPermissions).Returns(Permissions.Contribute);
@@ -1133,6 +1133,10 @@ namespace Dev2.Core.Tests
 
         #endregion
 
+        public void UpdateModelItem(ModelItem modelItem)
+        {
+
+        }
         public object SelectedModelItem
         {
             get { throw new NotImplementedException(); }
@@ -1165,6 +1169,8 @@ namespace Dev2.Core.Tests
         public Action<ModelItem> ItemSelectedAction { get; set; }
         public bool IsTestView { get; set; }
         public ModelItem SelectedItem { get; set; }
+
+        public bool CanViewWorkflowLink { get; set; }
 
         public void UpdateWorkflowLink(string newLink)
         {
@@ -1200,10 +1206,37 @@ namespace Dev2.Core.Tests
             throw new NotImplementedException();
         }
 
-        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel)
+        public void CreateBlankWorkflow()
         {
             throw new NotImplementedException();
         }
+
+        public void RemoveItem(IMergeToolModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void AddItem(IMergeToolModel model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void LinkTools(string sourceUniqueId, string destionationUniqueId, string key)
+        {
+
+        }
+
+        public void RemoveStartNodeConnection()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateModelItem(ModelItem modelItem, IMergeToolModel modelTool)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void UpdateWorkflowInputDataViewModel(IContextualResourceModel resourceModel) => throw new NotImplementedException();
 
         public IServer Server
         {

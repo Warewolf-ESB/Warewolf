@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -43,13 +43,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
-
+using System.Activities.Statements;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IDev2Activity, IEquatable<DsfNativeActivity<T>>
+    public abstract class DsfNativeActivity<T> : NativeActivity<T>, IDev2ActivityIOMapping, IEquatable<DsfNativeActivity<T>>
     {
-        protected ErrorResultTO errorsTo;
+        protected ErrorResultTO _errorsTo;
         [GeneralSettings("IsSimulationEnabled")]
         public bool IsSimulationEnabled { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
@@ -80,7 +80,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string OnErrorWorkflow { get; set; }
         public bool IsEndedOnError { get; set; }
+#pragma warning disable IDE1006 // Naming Styles
         protected Variable<Guid> DataListExecutionID = new Variable<Guid>();
+#pragma warning restore IDE1006 // Naming Styles
         protected List<DebugItem> _debugInputs = new List<DebugItem>(10000);
         protected List<DebugItem> _debugOutputs = new List<DebugItem>(10000);
 
@@ -189,7 +191,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
             if (dataObject.Environment.HasErrors() && !(this is DsfFlowDecisionActivity))
             {
-                string errorString = "";
+                var errorString = "";
                 if (dataObject.Environment.AllErrors.Count > 0)
                 {
                     errorString = string.Join(Environment.NewLine, dataObject.Environment.AllErrors.Last());
@@ -236,6 +238,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
+        public virtual string GetDisplayName()
+        {
+            return DisplayName;
+        }
         void PerformStopWorkflow(IDSFDataObject dataObject)
         {
             dataObject.StopExecution = true;
@@ -322,7 +328,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public void DispatchDebugState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? startTime, DateTime? endTime, bool decision)
         {
-            bool clearErrors = false;
+            var clearErrors = false;
             try
             {
                 Guid.TryParse(dataObject.RemoteInvokerID, out Guid remoteID);
@@ -402,7 +408,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         bool DispatchForAfterState(IDSFDataObject dataObject, StateType stateType, int update, DateTime? endTime, Guid remoteID)
         {
-            bool hasError = dataObject.Environment.Errors.Any();
+            var hasError = dataObject.Environment.Errors.Any();
             var clearErrors = hasError;
             var errorMessage = string.Empty;
             if (hasError)
@@ -857,7 +863,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var msg = DecisionDisplayHelper.GetFailureMessage(decisionType);
                     var actMsg = string.Format(msg, val2, variable, variableValue, val3);
                     testResult.Message = new StringBuilder(testResult.Message).AppendLine(actMsg).ToString();
-                    if (testResult.Message.EndsWith(Environment.NewLine))
+                    if (testResult.Message.EndsWith(Environment.NewLine, StringComparison.CurrentCulture))
                     {
                         testResult.Message = testResult.Message.Replace(Environment.NewLine, "").Replace("\r", "");
                     }
@@ -1063,6 +1069,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public IEnumerable<IDev2Activity> NextNodes { get; set; }
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public Guid ActivityId { get; set; }
+
+
+        public virtual FlowNode GetFlowNode()
+        {
+            var flowStep = new FlowStep { Action = this as Activity };
+            return flowStep;
+        }
+                                     
+        public virtual IEnumerable<IDev2Activity> GetNextNodes()
+        {
+            return NextNodes ?? new List<IDev2Activity>();
+        }
+
+        public virtual List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            foreach(var next in GetNextNodes())
+            {
+                armConnectors.Add(($"{GetDisplayName()} -> {next.GetDisplayName()}", null, UniqueID, next.UniqueID));
+            }
+            return armConnectors;
+        }
+
+        public virtual IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var nextNodes = new List<IDev2Activity>();            
+            return nextNodes;
+        }
 
         protected void AddDebugInputItem(DebugOutputBase parameters)
         {

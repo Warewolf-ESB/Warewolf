@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -173,9 +173,9 @@ namespace Unlimited.UnitTest.Framework.Parsing
             var builder = new SyntaxTreeBuilder();
             builder.RegisterGrammer(grammer = new TestGrammer(3));
             builder.Build("5");
-            int present = 0;
+            var present = 0;
 
-            for(int i = 0; i < grammer.Tokenizer.Handlers.Count; i++)
+            for (int i = 0; i < grammer.Tokenizer.Handlers.Count; i++)
             {
                 if (grammer.Tokenizer.Handlers[i] is UnaryTokenizationHandler<Token, TokenKind>)
                 {

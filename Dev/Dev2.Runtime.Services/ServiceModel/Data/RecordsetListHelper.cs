@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -102,8 +102,8 @@ namespace Dev2.Runtime.ServiceModel.Data
             var indexOf = path.ActualPath.LastIndexOf("()", StringComparison.InvariantCultureIgnoreCase);
             if(indexOf != -1)
             {
-                int length = path.ActualPath.Length;
-                if(indexOf + 2 == length) // This means we have a primitive array as property
+                var length = path.ActualPath.Length;
+                if (indexOf + 2 == length) // This means we have a primitive array as property
                 {
                     var upperRecsetName = path.ActualPath.LastIndexOf(".", StringComparison.InvariantCultureIgnoreCase);
                     if(upperRecsetName == -1)
