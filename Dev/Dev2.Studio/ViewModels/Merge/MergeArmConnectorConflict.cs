@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,6 +24,8 @@ namespace Dev2.ViewModels.Merge
         public string Key { get; set; }
         bool _isChecked;
         bool _isArmSelectionAllowed;
+
+        public string Grouping => SourceUniqueId + Key ?? "";
 
         public event Action<IArmConnectorConflict, bool> OnChecked;
 

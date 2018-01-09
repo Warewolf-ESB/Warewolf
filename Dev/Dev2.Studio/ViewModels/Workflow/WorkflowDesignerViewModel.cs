@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -3014,6 +3014,7 @@ namespace Dev2.Studio.ViewModels.Workflow
             {
                 var parentNodeProperty = switchItem.Properties["Cases"];
                 var cases = parentNodeProperty?.Dictionary;
+                cases.Remove(key);
                 cases.Add(key, nodeItem);
                 parentNodeProperty.SetValue(cases);
             }

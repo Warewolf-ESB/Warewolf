@@ -23,10 +23,6 @@ Param(
   [string]$Category,
   [string]$ProjectName,
   [string]$TestList="",
-  [switch]$RunAllUnitTests,
-  [switch]$RunAllServerTests,
-  [switch]$RunAllReleaseResourcesTests,
-  [switch]$RunAllCodedUITests,
   [switch]$RunWarewolfServiceTests,
   [string]$MergeDotCoverSnapshotsInDirectory="",
   [switch]${Startmy.warewolf.io}
@@ -34,6 +30,7 @@ Param(
 $JobSpecs = @{}
 #Unit Tests
 $JobSpecs["Other Unit Tests"] 				 	= "Dev2.*.Tests,Warewolf.*.Tests"
+$JobSpecs["Server Proxy Layer Tests"] 			= "Warewolf.Studio.ServerProxyLayer.Tests"
 $JobSpecs["Infrastructure Unit Tests"] 			= "Dev2.Infrastructure.Tests"
 $JobSpecs["Runtime Unit Tests"] 				= "Dev2.Runtime.Tests"
 $JobSpecs["Core Unit Tests"] 					= "Dev2.Core.Tests"
@@ -68,10 +65,10 @@ $JobSpecs["Recordset Tools Specs"]		 		= "Warewolf.Tools.Specs", "Recordset"
 $JobSpecs["Resource Tools Specs"]		 		= "Warewolf.Tools.Specs", "Resources"
 $JobSpecs["UI Binding Tests"] 				 	= "Warewolf.UIBindingTests.*"
 #Server Tests
-$JobSpecs["Integration Tests"]				 									= "Dev2.Integration.Tests"
-$JobSpecs["Load Tests"]				 											= "Dev2.Integration.Tests", "Load Tests"
+$JobSpecs["Integration Tests"]				 									= "Dev2.IntegrationTests"
 $JobSpecs["Other Specs"]		 												= "Dev2.*.Specs,Warewolf.*.Specs"
 $JobSpecs["Other Activities Specs"]		 										= "Dev2.Activities.Specs"
+$JobSpecs["Workflow Merging Specs"]		 										= "Dev2.Activities.Specs", "WorkflowMerging"
 $JobSpecs["Example Workflow Execution Specs"] 									= "Dev2.Activities.Specs", "ExampleWorkflowExecution"
 $JobSpecs["Subworkflow Execution Specs"]										= "Dev2.Activities.Specs", "SubworkflowExecution"
 $JobSpecs["Workflow Execution Specs"]		 									= "Dev2.Activities.Specs", "WorkflowExecution"
@@ -98,76 +95,65 @@ $JobSpecs["Server Permissions Security Specs"]									= "Warewolf.Security.Spec
 $JobSpecs["Other Web UI Tests"]													= "Warewolf.Web.UI.Tests"
 $JobSpecs["Execution Logging Web UI Tests"]										= "Warewolf.Web.UI.Tests", "ExecutionLogging"
 $JobSpecs["No Warewolf Server Web UI Tests"]									= "Warewolf.Web.UI.Tests", "NoWarewolfServer"
-#UI Tests
-$JobSpecs["Other UI Tests"]					    = "Warewolf.UI.Tests"
-$JobSpecs["Other UI Specs"]					    = "Warewolf.UI.Specs"
-$JobSpecs["Assign Tool UI Tests"]				= "Warewolf.UI.Tests", "Assign Tool"
-$JobSpecs["Control Flow Tools UI Tests"]		= "Warewolf.UI.Tests", "Control Flow Tools"
-$JobSpecs["Database Sources UI Tests"]			= "Warewolf.UI.Tests", "Database Sources"
-$JobSpecs["Database Tools UI Tests"]			= "Warewolf.UI.Tests", "Database Tools"
-$JobSpecs["Data Tools UI Tests"]				= "Warewolf.UI.Tests", "Data Tools"
-$JobSpecs["DB Connector UI Specs"]				= "Warewolf.UI.Specs", "DBConnector"
-$JobSpecs["Debug Input UI Tests"]				= "Warewolf.UI.Tests", "Debug Input"
-$JobSpecs["Default Layout UI Tests"]			= "Warewolf.UI.Tests", "Default Layout"
-$JobSpecs["Studio Shutdown UI Tests"]			= "Warewolf.UI.Tests", "Studio Shutdown"
-$JobSpecs["Dependency Graph UI Tests"]			= "Warewolf.UI.Tests", "Dependency Graph"
-$JobSpecs["Deploy UI Specs"]					= "Warewolf.UI.Specs", "Deploy"
-$JobSpecs["Deploy Security UI Specs"]			= "Warewolf.UI.Specs", "DeploySecurity"
-$JobSpecs["Deploy UI Tests"]					= "Warewolf.UI.Tests", "Deploy"
-$JobSpecs["Deploy from Explorer UI Tests"]		= "Warewolf.UI.Tests", "Deploy from Explorer"
-$JobSpecs["Deploy from Remote UI Tests"]		= "Warewolf.UI.Tests", "Deploy from Remote"
-$JobSpecs["Deploy Filtering UI Tests"]			= "Warewolf.UI.Tests", "Deploy Filtering"
-$JobSpecs["Deploy Hello World UI Tests"]		= "Warewolf.UI.Tests", "Deploy Hello World"
-$JobSpecs["Deploy Select Dependencies UI Tests"]= "Warewolf.UI.Tests", "Deploy Select Dependencies"
-$JobSpecs["DotNet Connector Mocking UI Tests"]	= "Warewolf.UI.Tests", "DotNet Connector Mocking Tests"
-$JobSpecs["DotNet Connector Tool UI Tests"]	    = "Warewolf.UI.Tests", "DotNet Connector Tool"
-$JobSpecs["Dropbox Tools UI Tests"]			    = "Warewolf.UI.Tests", "Dropbox Tools"
-$JobSpecs["Email Tools UI Tests"]				= "Warewolf.UI.Tests", "Email Tools"
-$JobSpecs["Explorer UI Specs"]					= "Warewolf.UI.Specs", "Explorer"
-$JobSpecs["Explorer UI Tests"]					= "Warewolf.UI.Tests", "Explorer"
-$JobSpecs["File Tools UI Tests"]				= "Warewolf.UI.Tests", "File Tools"
-$JobSpecs["Hello World Mocking UI Tests"]		= "Warewolf.UI.Tests", "Hello World Mocking Tests"
-$JobSpecs["HTTP Tools UI Tests"]				= "Warewolf.UI.Tests", "HTTP Tools"
-$JobSpecs["Plugin Sources UI Tests"]			= "Warewolf.UI.Tests", "Plugin Sources"
-$JobSpecs["Recordset Tools UI Tests"]			= "Warewolf.UI.Tests", "Recordset Tools"
-$JobSpecs["Resource Tools UI Tests"]			= "Warewolf.UI.Tests", "Resource Tools"
-$JobSpecs["Save Dialog UI Specs"]				= "Warewolf.UI.Specs", "SaveDialog"
-$JobSpecs["Save Dialog UI Tests"]				= "Warewolf.UI.Tests", "Save Dialog"
-$JobSpecs["Server Sources UI Tests"]			= "Warewolf.UI.Tests", "Server Sources"
-$JobSpecs["Settings UI Tests"]					= "Warewolf.UI.Tests", "Settings"
-$JobSpecs["Sharepoint Tools UI Tests"]			= "Warewolf.UI.Tests", "Sharepoint Tools"
-$JobSpecs["Shortcut Keys UI Tests"]			    = "Warewolf.UI.Tests", "Shortcut Keys"
-$JobSpecs["Source Wizards UI Tests"]			= "Warewolf.UI.Tests", "Source Wizards"
-$JobSpecs["Tabs And Panes UI Tests"]			= "Warewolf.UI.Tests", "Tabs and Panes"
-$JobSpecs["Tools UI Tests"]					    = "Warewolf.UI.Tests", "Tools"
-$JobSpecs["Utility Tools UI Tests"]			    = "Warewolf.UI.Tests", "Utility Tools"
-$JobSpecs["Variables UI Tests"]				    = "Warewolf.UI.Tests", "Variables"
-$JobSpecs["Web Connector UI Specs"]			    = "Warewolf.UI.Specs", "WebConnector"
-$JobSpecs["Web Sources UI Tests"]				= "Warewolf.UI.Tests", "Web Sources"
-$JobSpecs["Workflow Mocking Tests UI Tests"]	= "Warewolf.UI.Tests", "Workflow Mocking Tests"
-$JobSpecs["Workflow Testing UI Tests"]			= "Warewolf.UI.Tests", "Workflow Testing"
-$JobSpecs["Workflow Merging UI Tests"]			= "Warewolf.UI.Tests", "Merge"
-#UI Load Spec
-$JobSpecs["UI Load Spec"]						= "Warewolf.UI.Load.Specs"
-
-
-$UnitTestJobNames = "Other Unit Tests,COMIPC Unit Tests,Studio View Models Unit Tests,Activity Designers Unit Tests,Activities Unit Tests,UI Binding Tests,Runtime Unit Tests,Studio Core Unit Tests"
-$ServerTestJobNames = "Other Specs,Subworkflow Execution Specs,Workflow Execution Specs,Integration Tests,Other Activities Specs,Execution Logging Web UI Tests,No Warewolf Server Web UI Tests,Scripting Tools Specs,Storage Tools Specs,Utility Tools Specs,ControlFlow Tools Specs,Data Tools Specs,Database Tools Specs,Email Tools Specs,File And Folder Copy Tool Specs,File And Folder Create Tool Specs,File And Folder Delete Tool Specs,File And Folder Move Tool Specs,Folder Read Tool Specs,File Read Tool Specs,File And Folder Rename Tool Specs,Unzip Tool Specs,Write File Tool Specs,Zip Tool Specs,FileAndFolder Tools Specs,LoopConstructs Tools Specs,Recordset Tools Specs,Resources Tools Specs"
-$ReleaseResourcesJobNames = "Example Workflow Execution Specs,Conflicting Contribute View And Execute Permissions Security Specs,Conflicting Execute Permissions Security Specs,Conflicting View And Execute Permissions Security Specs,Conflicting View Permissions Security Specs,No Conflicting Permissions Security Specs,Overlapping User Groups Permissions Security Specs,Resource Permissions Security Specs,Server Permissions Security Specs"
-$UITestJobNames = "Other UI Tests,Other UI Specs,Assign Tool UI Tests,Control Flow Tools UI Tests,Database Sources UI Tests,Database Tools UI Tests,Data Tools UI Tests,DB Connector UI Specs,Debug Input UI Tests,Default Layout UI Tests,Dependency Graph UI Tests,Deploy UI Specs,Deploy UI Tests,DotNet Connector Mocking UI Tests,DotNet Connector Tool UI Tests,Dropbox Tools UI Tests,Email Tools UI Tests,Explorer UI Specs,Explorer UI Tests,File Tools UI Tests,Hello World Mocking UI Tests,HTTP Tools UI Tests,Plugin Sources UI Tests,Recordset Tools UI Tests,Resource Tools UI Tests,Save Dialog UI Specs,Save Dialog UI Tests,Server Sources UI Tests,Settings UI Tests,Sharepoint Tools UI Tests,Shortcut Keys UI Tests,Source Wizards UI Tests,Tabs And Panes UI Tests,Tools UI Tests,Utility Tools UI Tests,Variables UI Tests,Web Connector UI Specs,Web Sources UI Tests,Workflow Mocking Tests UI Tests,Workflow Testing UI Tests"
-
-if ($RunAllUnitTests.IsPresent) {
-    $JobName = $UnitTestJobNames
-}
-if ($RunAllServerTests.IsPresent) {
-    $JobName = $ServerTestJobNames
-}
-if ($RunAllReleaseResourcesTests.IsPresent) {
-    $JobName = $ReleaseResourcesJobNames
-}
-if ($RunAllCodedUITests.IsPresent) {
-    $JobName = $UITestJobNames
-}
+#UI Tests                                               	
+$JobSpecs["Other UI Tests"]					    			= "Warewolf.UI.Tests"
+$JobSpecs["Other UI Specs"]					    			= "Warewolf.UI.Specs"
+$JobSpecs["Assign Tool UI Tests"]							= "Warewolf.UI.Tests", "Assign Tool"
+$JobSpecs["Control Flow Tools UI Tests"]					= "Warewolf.UI.Tests", "Control Flow Tools"
+$JobSpecs["Database Sources UI Tests"]						= "Warewolf.UI.Tests", "Database Sources"
+$JobSpecs["Database Tools UI Tests"]						= "Warewolf.UI.Tests", "Database Tools"
+$JobSpecs["Data Tools UI Tests"]							= "Warewolf.UI.Tests", "Data Tools"
+$JobSpecs["DB Connector UI Specs"]							= "Warewolf.UI.Specs", "DBConnector"
+$JobSpecs["Debug Input UI Tests"]							= "Warewolf.UI.Tests", "Debug Input"
+$JobSpecs["Default Layout UI Tests"]						= "Warewolf.UI.Tests", "Default Layout"
+$JobSpecs["Studio Shutdown UI Tests"]						= "Warewolf.UI.Tests", "Studio Shutdown"
+$JobSpecs["Dependency Graph UI Tests"]						= "Warewolf.UI.Tests", "Dependency Graph"
+$JobSpecs["Deploy UI Specs"]								= "Warewolf.UI.Specs", "Deploy"
+$JobSpecs["Deploy Security UI Specs"]						= "Warewolf.UI.Specs", "DeploySecurity"
+$JobSpecs["Deploy UI Tests"]								= "Warewolf.UI.Tests", "Deploy"
+$JobSpecs["Deploy from Explorer UI Tests"]					= "Warewolf.UI.Tests", "Deploy from Explorer"
+$JobSpecs["Deploy from Remote UI Tests"]					= "Warewolf.UI.Tests", "Deploy from Remote"
+$JobSpecs["Deploy Filtering UI Tests"]						= "Warewolf.UI.Tests", "Deploy Filtering"
+$JobSpecs["Deploy Hello World UI Tests"]					= "Warewolf.UI.Tests", "Deploy Hello World"
+$JobSpecs["Deploy Select Dependencies UI Tests"]			= "Warewolf.UI.Tests", "Deploy Select Dependencies"
+$JobSpecs["DotNet Connector Mocking UI Tests"]				= "Warewolf.UI.Tests", "DotNet Connector Mocking Tests"
+$JobSpecs["DotNet Connector Tool UI Tests"]	    			= "Warewolf.UI.Tests", "DotNet Connector Tool"
+$JobSpecs["Dropbox Tools UI Tests"]			    			= "Warewolf.UI.Tests", "Dropbox Tools"
+$JobSpecs["Email Tools UI Tests"]							= "Warewolf.UI.Tests", "Email Tools"
+$JobSpecs["Explorer UI Specs"]								= "Warewolf.UI.Specs", "Explorer"
+$JobSpecs["Explorer UI Tests"]								= "Warewolf.UI.Tests", "Explorer"
+$JobSpecs["File Tools UI Tests"]							= "Warewolf.UI.Tests", "File Tools"
+$JobSpecs["Hello World Mocking UI Tests"]					= "Warewolf.UI.Tests", "Hello World Mocking Tests"
+$JobSpecs["HTTP Tools UI Tests"]							= "Warewolf.UI.Tests", "HTTP Tools"
+$JobSpecs["Plugin Sources UI Tests"]						= "Warewolf.UI.Tests", "Plugin Sources"
+$JobSpecs["Recordset Tools UI Tests"]						= "Warewolf.UI.Tests", "Recordset Tools"
+$JobSpecs["Resource Tools UI Tests"]						= "Warewolf.UI.Tests", "Resource Tools"
+$JobSpecs["Save Dialog UI Specs"]							= "Warewolf.UI.Specs", "SaveDialog"
+$JobSpecs["Save Dialog UI Tests"]							= "Warewolf.UI.Tests", "Save Dialog"
+$JobSpecs["Server Sources UI Tests"]						= "Warewolf.UI.Tests", "Server Sources"
+$JobSpecs["Settings UI Tests"]								= "Warewolf.UI.Tests", "Settings"
+$JobSpecs["Sharepoint Tools UI Tests"]						= "Warewolf.UI.Tests", "Sharepoint Tools"
+$JobSpecs["Shortcut Keys UI Tests"]			    			= "Warewolf.UI.Tests", "Shortcut Keys"
+$JobSpecs["Source Wizards UI Tests"]						= "Warewolf.UI.Tests", "Source Wizards"
+$JobSpecs["Tabs And Panes UI Tests"]						= "Warewolf.UI.Tests", "Tabs and Panes"
+$JobSpecs["Tools UI Tests"]					    			= "Warewolf.UI.Tests", "Tools"
+$JobSpecs["Utility Tools UI Tests"]			    			= "Warewolf.UI.Tests", "Utility Tools"
+$JobSpecs["Variables UI Tests"]				    			= "Warewolf.UI.Tests", "Variables"
+$JobSpecs["Web Connector UI Specs"]			    			= "Warewolf.UI.Specs", "WebConnector"
+$JobSpecs["Web Sources UI Tests"]							= "Warewolf.UI.Tests", "Web Sources"
+$JobSpecs["Workflow Mocking Tests UI Tests"]				= "Warewolf.UI.Tests", "Workflow Mocking Tests"
+$JobSpecs["Workflow Testing UI Tests"]						= "Warewolf.UI.Tests", "Workflow Testing"
+$JobSpecs["Workflow Merge with All Tools Conflicting"]		= "Warewolf.UI.Tests", "Merge All Tools Conflicts"
+$JobSpecs["Workflow Merge with Assign Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Assign Conflicts"
+$JobSpecs["Workflow Merge with Decision Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Decision Conflicts"
+$JobSpecs["Workflow Merge with Foreach Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Foreach"
+$JobSpecs["Workflow Merge with Sequence Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Sequence Conflicts"
+$JobSpecs["Workflow Merge with Simple Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Simple Tools Conflicts"
+$JobSpecs["Workflow Merge with Switch Tools Conflicting"]	= "Warewolf.UI.Tests", "Merge Switch Conflicts"
+$JobSpecs["Workflow Merge with Variables Conflicting"]		= "Warewolf.UI.Tests", "Merge Variable Conflicts"
+#Load Tests
+$JobSpecs["UI Load Specs"]	= "Warewolf.UI.Load.Specs"
+$JobSpecs["Load Tests"]		= "Dev2.IntegrationTests", "Load Tests"
 
 $ServerExeName = "Warewolf Server.exe"
 $ServerPathSpecs = @()
@@ -1391,7 +1377,7 @@ if ($RunAllJobs.IsPresent) {
     Invoke-Expression -Command ("&'$PSCommandPath' -JobName '$RunAllCodedUITests' -StartStudio -ResourcesType UITests")
 }
 
-if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and !$RunAllUnitTests.IsPresent -and !$RunAllServerTests.IsPresent -and !$RunAllCodedUITests.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
+if (!$RunAllJobs.IsPresent -and !$Cleanup.IsPresent -and !$AssemblyFileVersionsTest.IsPresent -and $JobName -eq "" -and !$RunWarewolfServiceTests.IsPresent -and $MergeDotCoverSnapshotsInDirectory -eq "") {
     Start-my.warewolf.io
     if (!${Startmy.warewolf.io}.IsPresent) {
         $ServerPath,$ResourcesType = Install-Server $ServerPath $ResourcesType

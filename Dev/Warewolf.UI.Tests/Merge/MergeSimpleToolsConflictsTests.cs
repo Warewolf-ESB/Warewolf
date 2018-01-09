@@ -13,7 +13,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeAllConflicting = "MergeAllConflicting";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Merge_From_MergeWfWithVersion_ContextMenu_Show_Merge_PopUp()
         {
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.Exists);
@@ -21,7 +21,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Assign_From_The_Difference_List_Adds_Assign_To_The_Workflow()
         {
             Assert.IsTrue(MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.ConflictsTree.MergeTreeItem2.MergeItemExpander.MergeButton.NoConflicts.Exists);
@@ -32,7 +32,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Simple Tools Conflicts")]
         public void Click_On_Assign_From_The_Current_List_Removes_Assign_On_The_Workflow()
         {
             MergeConflictsUIMap.MainWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.MergeTab.WorkSurfaceContext.ContentDockManager.MergeWorkflowView.ScrollViewerPane.VariablesExpander.VariablesHeader.DifferenceVariableRadioButton.Selected = true;

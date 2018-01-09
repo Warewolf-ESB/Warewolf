@@ -15,7 +15,8 @@
              xmlns:help="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance interfaces1:IMergeWorkflowViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             x:Name="MergeWorkflowUserControl">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -204,7 +205,7 @@
                                         </Style>
                                     </RadioButton.Style>
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentWorkflowNameRBHelp}" DataContext="{Binding}" />
+                                        <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentWorkflowNameRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
                             </StackPanel>
@@ -235,7 +236,7 @@
                                              Style="{StaticResource MergeRadioButtonStyle}"
                                              AutomationProperties.AutomationId="UI_DifferenceWorkflowRB_AutoID">
                                     <i:Interaction.Behaviors>
-                                        <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceWorkflowNameRBHelp}" DataContext="{Binding}" />
+                                        <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceWorkflowNameRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                     </i:Interaction.Behaviors>
                                 </RadioButton>
                                 <TextBlock x:Name="DifferenceWorkflowText" 
@@ -316,7 +317,7 @@
                                                             </Style>
                                                         </RadioButton.Style>
                                                         <i:Interaction.Behaviors>
-                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentVariablesRBHelp}" DataContext="{Binding}" />
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentVariablesRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                         </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                 </StackPanel>
@@ -353,7 +354,7 @@
                                                                  Style="{StaticResource MergeRadioButtonStyle}"
                                                                  AutomationProperties.AutomationId="UI_DifferenceVariablesRB_AutoID">
                                                         <i:Interaction.Behaviors>
-                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceVariablesRBHelp}" DataContext="{Binding}" />
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceVariablesRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                         </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                     <TextBlock x:Name="DifferenceVariablesText" 
@@ -512,7 +513,7 @@
                                                                             </Style>
                                                                         </RadioButton.Style>
                                                                         <i:Interaction.Behaviors>
-                                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentConflictRBHelp}" DataContext="{Binding}" />
+                                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentConflictRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                                         </i:Interaction.Behaviors>
                                                                     </RadioButton>
                                                                 </StackPanel>
@@ -549,7 +550,7 @@
                                                                                  Visibility="{Binding IsContained, Converter={StaticResource BoolToVisibilityConverterNegative}}"
                                                                                  AutomationProperties.AutomationId="UI_TreeViewExpanderDifferenceHeaderRB_AutoID">
                                                                         <i:Interaction.Behaviors>
-                                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceConflictRBHelp}" DataContext="{Binding}" />
+                                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceConflictRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                                         </i:Interaction.Behaviors>
                                                                     </RadioButton>
 
@@ -726,7 +727,7 @@
                                                                  IsChecked="{Binding IsChecked}" 
                                                                  HorizontalAlignment="Right"
                                                                  Margin="0,0,5,0"
-                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
+                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
                                                                  ToolTip="{x:Static languages:Tooltips.MergeCurrentArmRBTooltip}"
                                                                  AutomationProperties.AutomationId="UI_CurrentNodeArmRB_AutoID">
                                                         <RadioButton.Style>
@@ -742,7 +743,7 @@
                                                             </Style>
                                                         </RadioButton.Style>
                                                         <i:Interaction.Behaviors>
-                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentArmRBHelp}" DataContext="{Binding}" />
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeCurrentArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                         </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                 </StackPanel>
@@ -787,13 +788,13 @@
                                                     <RadioButton x:Name="DifferenceNodeArmRB" 
                                                                  IsChecked="{Binding IsChecked}" 
                                                                  HorizontalAlignment="Left"
-                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=SourceUniqueId}"
+                                                                 GroupName="{Binding StringFormat=MergeArm{0}, Path=Grouping}"
                                                                  ToolTip="{x:Static languages:Tooltips.MergeDifferenceArmRBTooltip}"
                                                                  Margin="5,0,5,0"
                                                                  Style="{StaticResource MergeRadioButtonStyle}"
                                                                  AutomationProperties.AutomationId="UI_DifferenceNodeArmRB_AutoID">
                                                         <i:Interaction.Behaviors>
-                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceArmRBHelp}" DataContext="{Binding}" />
+                                                            <help:HelpSetter Text="{x:Static languages:HelpText.MergeDifferenceArmRBHelp}" DataContext="{Binding DataContext, ElementName=MergeWorkflowUserControl}" />
                                                         </i:Interaction.Behaviors>
                                                     </RadioButton>
                                                     <TextBlock x:Name="DifferenceNodeArmText" 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -182,7 +182,7 @@ namespace Dev2.Studio.ViewModels
             var serverRepo = CustomContainer.Get<IServerRepository>();
             if (singleResource == null)
             {
-                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, fileName, PopupProvider, this, _file, _filePath, serverRepo);
+                _contextualResourceModel = await ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(e, PopupProvider, this, _file, _filePath, serverRepo);
                 if (_contextualResourceModel != null)
                 {
                     var ctResourceModel = _contextualResourceModel;
