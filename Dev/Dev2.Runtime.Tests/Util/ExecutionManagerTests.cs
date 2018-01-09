@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Threading;
+﻿using System.Threading;
 using Dev2.Runtime.ESB.Execution;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Util
 {
@@ -20,15 +17,15 @@ namespace Dev2.Tests.Runtime.Util
 
 
             //------------Execute Test---------------------------
-            var executionManager = ExecutionManager.Instance;
+            var executionManager =  new ExecutionManager();
             //------------Assert Results-------------------------
             Assert.IsNotNull(executionManager);
             Assert.IsFalse(executionManager.IsRefreshing);
         }
 
-        private ExecutionManager GetConstructedExecutionManager()
+        public static ExecutionManager GetConstructedExecutionManager()
         {
-            return (ExecutionManager)Activator.CreateInstance(typeof(ExecutionManager), true);
+            return new ExecutionManager();
         }
 
         [TestMethod]
@@ -66,7 +63,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
+            var p = new PrivateObject(executionManager);
             //------------Execute Test---------------------------
             executionManager.AddExecution();
             //------------Assert Results-------------------------
@@ -83,7 +80,7 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
+            var p = new PrivateObject(executionManager);
             //------------PreExecution Asserts-------------------
             executionManager.AddExecution();
             var currentExecutionsValue = p.GetFieldOrProperty("_currentExecutions");
@@ -95,25 +92,7 @@ namespace Dev2.Tests.Runtime.Util
             //------------Assert Results-------------------------
             Assert.AreEqual(0, updatedCurrentExecutionsValue);
         }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExecutionManager_AddWaitHandle")]
-        public void ExecutionManager_AddWaitHandle_ShouldAddToWaitHandles()
-        {
-            //------------Setup for test--------------------------
-            var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
-            var autoResetEvent = new AutoResetEvent(false);
-            //------------Execute Test---------------------------
-            executionManager.AddWait(autoResetEvent);
-            //------------Assert Results-------------------------
-            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<AutoResetEvent>;
-            Assert.IsNotNull(waitHandles);
-            Assert.AreEqual(1,waitHandles.Count);
-            Assert.AreEqual(autoResetEvent,waitHandles[0]);
-        }
-
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionManager_StopExecution")]
@@ -121,13 +100,11 @@ namespace Dev2.Tests.Runtime.Util
         {
             //------------Setup for test--------------------------
             var executionManager = GetConstructedExecutionManager();
-            PrivateObject p = new PrivateObject(executionManager);
-            var autoResetEvent = new AutoResetEvent(false);
-            executionManager.AddWait(autoResetEvent);
+            var p = new PrivateObject(executionManager);
             var _threadTracker = false;
             var t = new Thread(()=>
             {
-                autoResetEvent.WaitOne();
+                executionManager.Wait();
                 _threadTracker = true;
             });
             t.Start();
@@ -135,32 +112,7 @@ namespace Dev2.Tests.Runtime.Util
             executionManager.StopRefresh();
             Thread.Sleep(1000);
             //------------Assert Results-------------------------
-            var waitHandles = p.GetFieldOrProperty("_waitHandles") as List<AutoResetEvent>;
-            Assert.IsNotNull(waitHandles);
-            Assert.AreEqual(0, waitHandles.Count);
             Assert.IsTrue(_threadTracker);
-        }
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("ExecutionManager_StopExecution")]
-        public void ExecutionManager_StartRefresh_WaitsForCurrentExecutions()
-        {
-            //------------Setup for test--------------------------
-            var executionManager = GetConstructedExecutionManager();
-            executionManager.AddExecution();
-            var stopwatch = new Stopwatch();
-            var t = new Thread(()=>
-            {
-                stopwatch.Start();
-                Thread.Sleep(2000);
-                executionManager.CompleteExecution();
-            });
-            t.Start();
-            //------------Execute Test---------------------------
-            executionManager.StartRefresh();
-            stopwatch.Stop();
-            //------------Assert Results-------------------------
-            Assert.IsTrue(stopwatch.ElapsedMilliseconds>2000,stopwatch.ElapsedMilliseconds.ToString());
         }
     }
 }

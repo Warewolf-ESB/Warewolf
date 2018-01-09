@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class UnZipTests : BaseActivityUnitTest
     {
 
@@ -59,10 +59,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var guid = Guid.NewGuid();
             fileNames.Add(Path.Combine(TestContext.TestRunDirectory, guid + "Dev2.txt"));
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
-            foreach(string fileName in fileNames)
+            foreach (string fileName in fileNames)
             {
                 File.Delete(fileName);
             }
@@ -82,7 +79,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
 
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                       ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+                                                       ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");

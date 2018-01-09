@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests
             var rep = new ServerExplorerClientProxy(env.Object, comFactory.Object);
             var com = new Mock<ICommunicationController>();
             var item = new Mock<IExplorerItem>();
-            // ReSharper disable MaximumChainedReferences
+            
             comFactory.Setup(a => a.CreateController("FetchExplorerItemsService")).Returns(com.Object).Verifiable();
      
             com.Setup(a => a.ExecuteCommand<IExplorerItem>(env.Object, Guid.Empty)).Returns(item.Object).Verifiable();
@@ -176,7 +176,7 @@ namespace Dev2.Core.Tests
 
         }
 
-        // ReSharper restore MaximumChainedReferences
+        
         
     }
 }

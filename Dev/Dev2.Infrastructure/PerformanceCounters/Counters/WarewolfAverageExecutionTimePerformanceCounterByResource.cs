@@ -6,13 +6,13 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfAverageExecutionTimePerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfAverageExecutionTimePerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
-        private PerformanceCounter _counter;
-        private PerformanceCounter _baseCounter;
-        private bool _started;
-        private readonly WarewolfPerfCounterType _perfCounterType;
+        PerformanceCounter _counter;
+        PerformanceCounter _baseCounter;
+        bool _started;
+        readonly WarewolfPerfCounterType _perfCounterType;
 
         public WarewolfAverageExecutionTimePerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
@@ -27,11 +27,7 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-
-
-
-
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
@@ -39,7 +35,7 @@ namespace Dev2.PerformanceCounters.Counters
 
 
             };
-            CounterCreationData avgDurationBase = new CounterCreationData
+            var avgDurationBase = new CounterCreationData
             {
                 CounterName = "average time per operation base",
                 CounterHelp = "Average duration per operation execution base",
@@ -122,6 +118,12 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _baseCounter.RawValue = 0;
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
+            _baseCounter.Dispose();
         }
         #endregion
 

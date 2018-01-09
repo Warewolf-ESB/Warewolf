@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Activities.DropBox2016.Result;
 using Dev2.Common.Interfaces.Wrappers;
@@ -11,10 +10,10 @@ using Moq;
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropBoxDownloadTests
     {
-        private Mock<IDropboxDownload> CreateDropboxDownloadMock()
+        Mock<IDropboxDownload> CreateDropboxDownloadMock()
         {
             var mock = new Mock<IDropboxDownload>();
             var successResult = new DropboxDownloadSuccessResult(It.IsAny<IDownloadResponse<FileMetadata>>());
@@ -22,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
                  .Returns(successResult);
             return mock;
         }
-        
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
@@ -68,11 +67,26 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.Download
         public void CreateNewDropboxDownload_GivenMissingToPath_ShouldBeValid()
         {
             //---------------Set up test pack-------------------
-            var dropBoxDownLoad = new DropBoxDownLoad( "a.file");
+            var dropBoxDownLoad = new DropBoxDownLoad("a.file");
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             //---------------Test Result -----------------------
             Assert.IsNotNull(dropBoxDownLoad);
-        } 
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        public void ExecuteDropboxDownload_Throws_ShouldReturnFailedResult()
+        {
+            //---------------Set up test pack-------------------
+            var dropBoxDownLoad = new DropBoxDownLoad("a.file");
+            var mockDropboxClient = new Mock<IDropboxClientWrapper>();
+            mockDropboxClient.Setup(client => client.DownloadAsync(It.IsAny<DownloadArg>())).Throws(new Exception());
+            //---------------Assert Precondition----------------
+            //---------------Execute Test ----------------------
+            var result = dropBoxDownLoad.ExecuteTask(mockDropboxClient.Object);
+            //---------------Test Result -----------------------
+            Assert.IsInstanceOfType(result, typeof(DropboxFailureResult), "Dropbox failure result not returned after exception");
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ using Dev2.Common.Interfaces.Studio;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.AppResources;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.Administration
 {
 
@@ -27,13 +27,13 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Members
 
-        public ClosedOperationEventHandler OnOkClick;
-        private ICommand _okClicked;
-        private ICommand _hyperLink;
-        private ImageSource _imageSource;
-        private string _description;
-        private string _title;
-        private string _descriptionTitleText;
+        readonly ClosedOperationEventHandler OnOkClick;
+        ICommand _okClicked;
+        ICommand _hyperLink;
+        ImageSource _imageSource;
+        string _description;
+        string _title;
+        string _descriptionTitleText;
 
         #endregion Members
 
@@ -83,7 +83,9 @@ namespace Dev2.Studio.ViewModels.Administration
             Process.Start(new Uri(Hyperlink).AbsoluteUri);
         }
 
-        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink = null, string linkText = null)
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText) => SetupDialogue(title, description, imageSourceuri, descriptionTitleText, null, null);
+
+        public void SetupDialogue(string title, string description, string imageSourceuri, string descriptionTitleText, string hyperlink, string linkText)
         {
             SetTitle(title);
             SetDescription(description);
@@ -96,28 +98,27 @@ namespace Dev2.Studio.ViewModels.Administration
 
         #region Private Methods
 
-        private void SetTitle(string title)
+        void SetTitle(string title)
         {
             _title = string.IsNullOrEmpty(title) ? string.Empty : title;
         }
 
-        private void SetDescription(string description)
+        void SetDescription(string description)
         {
             _description = string.IsNullOrEmpty(description) ? string.Empty : description;
         }
 
-        private void SetImage(string imageSource)
+        void SetImage(string imageSource)
         {
-            if(string.IsNullOrEmpty(imageSource))
+            if (string.IsNullOrEmpty(imageSource))
             {
                 _imageSource = null;
             }
             else
             {
-                Uri imageUri;
-                bool validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out imageUri);
+                var validUri = Uri.TryCreate(imageSource, UriKind.RelativeOrAbsolute, out Uri imageUri);
 
-                if(validUri)
+                if (validUri)
                 {
 
                     // Once initialized, the image must be released so that it is usable by other resources
@@ -138,14 +139,14 @@ namespace Dev2.Studio.ViewModels.Administration
 
 
 
-        private void SetDescriptionTitleText(string text)
+        void SetDescriptionTitleText(string text)
         {
             _descriptionTitleText = string.IsNullOrEmpty(text) ? string.Empty : text;
         }
 
-        private void SetHyperlink(string link, string text)
+        void SetHyperlink(string link, string text)
         {
-            if(!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text) && !string.IsNullOrEmpty(text))
             {
                 Hyperlink = link;
                 HyperlinkText = text;
@@ -156,15 +157,6 @@ namespace Dev2.Studio.ViewModels.Administration
         }
 
         #endregion Private Methods
-
-        #region Events
-
-        //event ClosedOperationEventHandler IDialogueViewModel.OnOkClick {
-        //    add { this.OnOkClick += value; }
-        //    remove { this.OnOkClick -= value; }
-        //}
-
-        #endregion Events
 
         #region IDisposable Implementaton
 

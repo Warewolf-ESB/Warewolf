@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,7 +8,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-// ReSharper disable InconsistentNaming
+
 
 using System;
 using System.Text;
@@ -33,7 +33,7 @@ namespace Dev2.Common.Utils
 
                 if (stringToScrub.EndsWith("\""))
                 {
-                    int indexTORemoveFrom = stringToScrub.Length - 1;
+                    var indexTORemoveFrom = stringToScrub.Length - 1;
                     stringToScrub = stringToScrub.Remove(indexTORemoveFrom, 1);
                 }
             }
@@ -42,22 +42,39 @@ namespace Dev2.Common.Utils
 
         public static string Format(string text)
         {
-            if (String.IsNullOrEmpty(text)) return String.Empty;
-            text = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
+            if (String.IsNullOrEmpty(text))
+            {
+                return String.Empty;
+            }
+
+            var cleanText = text.Replace(Environment.NewLine, String.Empty).Replace("\t", String.Empty);
 
             var offset = 0;
             var output = new StringBuilder();
-            Action<StringBuilder, int> tabs = (sb, pos) => { for (var i = 0; i < pos; i++) { sb.Append("\t"); } };
+            Action<StringBuilder, int> tabs = (sb, pos) => 
+            {
+                for (var i = 0; i < pos; i++)
+                {
+                    sb.Append("\t");
+                }
+            };
             Func<string, int, char?> previousNotEmpty = (s, i) =>
             {
-                if (string.IsNullOrEmpty(s) || i <= 0) return null;
+                if (string.IsNullOrEmpty(s) || i <= 0)
+                {
+                    return null;
+                }
 
                 char? prev = null;
 
                 while (i > 0 && prev == null)
                 {
                     prev = s[i - 1];
-                    if (prev.ToString() == " ") prev = null;
+                    if (prev.ToString() == " ")
+                    {
+                        prev = null;
+                    }
+
                     i--;
                 }
 
@@ -65,7 +82,10 @@ namespace Dev2.Common.Utils
             };
             Func<string, int, char?> nextNotEmpty = (s, i) =>
             {
-                if (String.IsNullOrEmpty(s) || i >= (s.Length - 1)) return null;
+                if (String.IsNullOrEmpty(s) || i >= (s.Length - 1))
+                {
+                    return null;
+                }
 
                 char? next = null;
                 i++;
@@ -73,15 +93,18 @@ namespace Dev2.Common.Utils
                 while (i < (s.Length - 1) && next == null)
                 {
                     next = s[i++];
-                    if (next.ToString() == " ") next = null;
+                    if (next.ToString() == " ")
+                    {
+                        next = null;
+                    }
                 }
 
                 return next;
             };
 
-            for (var i = 0; i < text.Length; i++)
+            for (var i = 0; i < cleanText.Length; i++)
             {
-                var chr = text[i];
+                var chr = cleanText[i];
 
                 if (chr.ToString() == "{")
                 {
@@ -107,7 +130,7 @@ namespace Dev2.Common.Utils
                 {
                     output.Append(chr);
 
-                    var next = nextNotEmpty(text, i);
+                    var next = nextNotEmpty(cleanText, i);
 
                     if (next != null && next.ToString() != "]")
                     {
@@ -118,7 +141,7 @@ namespace Dev2.Common.Utils
                 }
                 else if (chr.ToString() == "]")
                 {
-                    var prev = previousNotEmpty(text, i);
+                    var prev = previousNotEmpty(cleanText, i);
 
                     if (prev != null && prev.ToString() != "[")
                     {
@@ -130,7 +153,9 @@ namespace Dev2.Common.Utils
                     output.Append(chr);
                 }
                 else
+                {
                     output.Append(chr);
+                }
             }
 
             return output.ToString().Trim();

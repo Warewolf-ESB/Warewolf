@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,8 +12,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 
-// ReSharper disable InconsistentNaming
-
 namespace Dev2.Activities.Designers2.MultiAssignObject
 {
     public partial class Large
@@ -24,12 +22,9 @@ namespace Dev2.Activities.Designers2.MultiAssignObject
             DataGrid = LargeDataGrid;
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return DataGrid.GetFocusElement(0);
-        }
+        protected override IInputElement GetInitialFocusElement() => DataGrid.GetFocusElement(0);
 
-        private void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
+        void DataGrid_LoadingRow(Object sender, DataGridRowEventArgs e)
         {
             e.Row.Tag = e.Row.GetIndex();
         }

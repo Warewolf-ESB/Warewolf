@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
     [ExcludeFromCodeCoverage]
     public class DbServiceTests
     {
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -34,11 +34,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
 
         [TestMethod]
         [TestCategory("DbService_Constructor")]
-        // ReSharper disable InconsistentNaming
+        
         public void DbService_Constructor_CorrectDbService()
-        // ReSharper restore InconsistentNaming
+
         {
-            // ReSharper disable InconsistentNaming
+            
             const string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Name=""TravsTestService"" ResourceType=""DbService"">
   <Actions>
     <Action Name=""dbo.InsertDummyUser"" Type=""InvokeStoredProc"" SourceID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" SourceName=""testingDBSrc"" SourceMethod=""dbo.InsertDummyUser"">
@@ -65,9 +65,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <TypeOf>InvokeStoredProc</TypeOf>
   <DisplayName>TravsTestService</DisplayName>
 </Service>";
-            // ReSharper restore InconsistentNaming
-            XElement testElm = XElement.Parse(xmlDataString);
-            DbService dbService = new DbService(testElm);
+    
+            var testElm = XElement.Parse(xmlDataString);
+            var dbService = new DbService(testElm);
 
             Assert.AreEqual("TravsTestService", dbService.ResourceName);
             Assert.AreEqual("DbService", dbService.ResourceType);
@@ -77,9 +77,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DbService_Constructor")]
-        // ReSharper disable InconsistentNaming
+        
         public void DbService_Constructor_BlankRecordsetName_UsesMethodName()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             const string ExpectedName = "TestMethod";
@@ -99,9 +99,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
         [TestCategory("DbService_Create")]
-        // ReSharper disable InconsistentNaming
+        
         public void DbService_Create_ReturnsEmpty()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
 
@@ -126,9 +126,9 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DbService_ToXml")]
-        // ReSharper disable InconsistentNaming
+        
         public void DbService_ToXml_WhenRecordSetHasBlankFields_ExpectNotPartOfOutputDescription()
-        // ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
             var dbService = new DbService();
@@ -143,7 +143,7 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
             recordset.Fields.Add(recordsetField);
             dbService.Recordset = recordset;
 
-            // ReSharper disable InconsistentNaming
+            
             const string expected = @"<Service ID=""00000000-0000-0000-0000-000000000000"" Name="""" ResourceType=""DbService"" IsValid=""false"">
   <Actions>
     <Action Name=""SomeRecSet"" Type=""InvokeStoredProc"" SourceID=""{0}"" SourceName=""Source"" ExecuteAction="""" SourceMethod=""Method"">
@@ -166,24 +166,24 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <AuthorRoles></AuthorRoles>
   <ErrorMessages />
 </Service>";
-            // ReSharper restore InconsistentNaming
+    
 
             //------------Execute Test---------------------------
             var xElement = dbService.ToXml();
             //------------Assert Results-------------------------
-            string expectedResult = string.Format(expected, resourceId);
+            var expectedResult = string.Format(expected, resourceId);
             var actual = xElement.ToString();
             FixBreaks(ref expectedResult, ref actual);
             Assert.AreEqual(expectedResult, actual);
         }
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void DbService_ToXml_CorrectXml()
-        // ReSharper restore InconsistentNaming
+
         {
-            // ReSharper disable InconsistentNaming
-            string xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Name=""TravsTestService"" ResourceType=""DbService"" IsValid=""true"">
+            
+            var xmlDataString = @"<Service ID=""af8d2d38-22b5-4599-8357-adce196beb83"" Name=""TravsTestService"" ResourceType=""DbService"" IsValid=""true"">
   <Actions>
     <Action Name=""dbo.InsertDummyUser"" Type=""InvokeStoredProc"" SourceID=""ebba47dc-e5d4-4303-a203-09e2e9761d16"" SourceName=""testingDBSrc"" ExecuteAction=""dbo.InsertDummyUser"" SourceMethod=""dbo.InsertDummyUser"">
       <Inputs>
@@ -211,11 +211,11 @@ namespace Dev2.Tests.Runtime.ServiceModel.Data
   <AuthorRoles></AuthorRoles>
   <ErrorMessages />
 </Service>";
-            // ReSharper restore InconsistentNaming
-            XElement testElm = XElement.Parse(xmlDataString);
-            DbService dbService = new DbService(testElm);
-            XElement returnedXelm = dbService.ToXml();
-            string actual = returnedXelm.ToString();
+
+            var testElm = XElement.Parse(xmlDataString);
+            var dbService = new DbService(testElm);
+            var returnedXelm = dbService.ToXml();
+            var actual = returnedXelm.ToString();
             FixBreaks(ref xmlDataString, ref actual);
             Assert.AreEqual(xmlDataString, actual);
         }

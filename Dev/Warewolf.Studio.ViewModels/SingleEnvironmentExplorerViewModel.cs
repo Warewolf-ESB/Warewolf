@@ -14,7 +14,7 @@ namespace Warewolf.Studio.ViewModels
         {
             _selectedId = selectedId;
             environmentViewModel.SetPropertiesForDialog();
-            // ReSharper disable once VirtualMemberCallInContructor
+            
             Environments = new ObservableCollection<IEnvironmentViewModel>
             {
                 environmentViewModel
@@ -40,27 +40,27 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private bool FilterByType { get; set; }
+        bool FilterByType { get; set; }
 
-        protected override async Task Refresh(bool refresh)
+        protected override async Task RefreshAsync(bool refresh)
         {
             IsRefreshing = true;
             foreach (var environmentViewModel in Environments)
             {
                 if (environmentViewModel.IsConnected)
                 {
-                    await environmentViewModel.LoadDialog(_selectedId);
+                    await environmentViewModel.LoadDialogAsync(_selectedId).ConfigureAwait(true);
                 }
             }
             Filter();
             IsRefreshing = false;
         }
 
-        private void Filter()
+        void Filter()
         {
-            if(!string.IsNullOrEmpty(SearchText))
+            if (!string.IsNullOrEmpty(SearchText))
             {
-                if(FilterByType)
+                if (FilterByType)
                 {
                     Environments.First().Filter(a => a.ResourceName.ToUpper().Contains(SearchText.ToUpper()) && (a.ResourceType == "Folder" || a.ResourceType == "WorkflowService"));
                 }
@@ -71,8 +71,10 @@ namespace Warewolf.Studio.ViewModels
             }
             else
             {
-                if(FilterByType)
+                if (FilterByType)
+                {
                     Environments.First().Filter(a => a.ResourceType == "Folder" || a.ResourceType == "WorkflowService");
+                }
             }
         }
     }

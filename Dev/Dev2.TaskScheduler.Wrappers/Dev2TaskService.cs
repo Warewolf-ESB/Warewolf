@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,13 +10,14 @@
 
 using Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers;
 using Microsoft.Win32.TaskScheduler;
+using System;
 
 namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskService : IDev2TaskService
     {
-        private readonly TaskService _nativeService;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TaskService _nativeService;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskService(ITaskServiceConvertorFactory taskServiceConvertorFactory, TaskService service)
         {
@@ -41,6 +42,13 @@ namespace Dev2.TaskScheduler.Wrappers
         public void Dispose()
         {
             _nativeService.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         public bool Connected => _nativeService.Connected;

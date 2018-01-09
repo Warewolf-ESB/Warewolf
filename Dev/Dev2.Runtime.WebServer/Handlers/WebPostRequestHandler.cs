@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,9 +56,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     requestTO.Variables.Add(key, variables[key]);
                 }
             }
-            // Execute in its own thread to give proper context ;)
             Thread.CurrentPrincipal = ctx.Request.User;
-            // requestTO.Variables.Add(ctx.Request.BoundVariables);
             var responseWriter = CreateForm(requestTO, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
             ctx.Send(responseWriter);
 

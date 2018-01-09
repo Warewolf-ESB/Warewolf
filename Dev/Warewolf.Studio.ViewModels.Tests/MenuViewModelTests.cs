@@ -17,17 +17,17 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IShellViewModel> _mainViewModelMock;
-        private AuthorizeCommand<string> _newCommand;
-        private Mock<ICommand> _deployCommandMock;
-        private AuthorizeCommand _saveCommand;
-        private AuthorizeCommand _openSchedulerCommand;
-        private AuthorizeCommand _openSettingsCommand;
-        private AuthorizeCommand _executeServiceCommand;
-        private Mock<ICommand> _startPageCommandMock;
-        private List<string> _changedProperties;
+        Mock<IShellViewModel> _mainViewModelMock;
+        AuthorizeCommand<string> _newCommand;
+        Mock<ICommand> _deployCommandMock;
+        AuthorizeCommand _saveCommand;
+        AuthorizeCommand _openSchedulerCommand;
+        AuthorizeCommand _openSettingsCommand;
+        AuthorizeCommand _executeServiceCommand;
+        Mock<ICommand> _startPageCommandMock;
+        List<string> _changedProperties;
 
-        private MenuViewModel _target;
+        MenuViewModel _target;
 
         #endregion Fields
 
@@ -45,7 +45,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _executeServiceCommand = new AuthorizeCommand(new AuthorizationContext(), obj => { }, obj => true);
             _startPageCommandMock = new Mock<ICommand>();
 
-            _mainViewModelMock.Setup(it => it.CheckForNewVersion()).ReturnsAsync(true);
+            _mainViewModelMock.Setup(it => it.CheckForNewVersionAsync()).ReturnsAsync(true);
             _mainViewModelMock.SetupGet(it => it.NewServiceCommand).Returns(_newCommand);
             _mainViewModelMock.SetupGet(it => it.DeployCommand).Returns(_deployCommandMock.Object);
             _mainViewModelMock.SetupGet(it => it.SaveCommand).Returns(_saveCommand);
@@ -82,7 +82,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void MenuViewModel_ShowStartPage_Execute_Result()
         {
             //------------Setup for test--------------------------
-            bool call = false;
+            var call = false;
             var x = new DelegateCommand(() => { call = true; });
             _mainViewModelMock.Setup(a => a.ShowStartPageCommand).Returns(x);
             _target = new MenuViewModel(_mainViewModelMock.Object);
@@ -772,12 +772,12 @@ namespace Warewolf.Studio.ViewModels.Tests
 
         #region Private helper methods
 
-        private void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        void _target_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             _changedProperties.Add(e.PropertyName);
         }
 
-        private void VerifyUpdateProperties()
+        void VerifyUpdateProperties()
         {
             Assert.IsTrue(_changedProperties.Contains("NewLabel"));
             Assert.IsTrue(_changedProperties.Contains("SaveLabel"));

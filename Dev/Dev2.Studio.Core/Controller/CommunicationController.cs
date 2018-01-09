@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,9 +22,9 @@ using Dev2.Communication;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable UnusedParameter.Local
-// ReSharper disable UnusedMemberInSuper.Global
-// ReSharper disable CheckNamespace
+
+
+
 
 namespace Dev2.Controller
 {
@@ -104,7 +104,7 @@ namespace Dev2.Controller
             ServicePayload.AddArgument(key, value);
         }
 
-        private static string ContainsAuthorizationError(string authorizationError, out bool containsAuthorization)
+        static string ContainsAuthorizationError(string authorizationError, out bool containsAuthorization)
         {
             var authorizationErrors = new List<string>
             {
@@ -126,7 +126,7 @@ namespace Dev2.Controller
             return authorizationError;
         }
 
-        private static void ShowAuthorizationErrorPopup(string ex)
+        static void ShowAuthorizationErrorPopup(string ex)
         {
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(ex, ErrorResource.ServiceNotAuthorizedExceptionHeader, MessageBoxButton.OK,
@@ -156,8 +156,8 @@ namespace Dev2.Controller
                 }
 
                 ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                StringBuilder payload = connection.ExecuteCommand(toSend, workspaceId);
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
+                var payload = connection.ExecuteCommand(toSend, workspaceId);
                 ValidatePayload(connection, payload, popupController);
                 var executeCommand = serializer.Deserialize<T>(payload);
                 if (executeCommand == null)
@@ -181,12 +181,11 @@ namespace Dev2.Controller
         }
 
 
-        private static T CheckAuthorization<T>(ExecuteMessage message) where T : class
+        static T CheckAuthorization<T>(ExecuteMessage message) where T : class
         {
             if (message != null)
             {
-                bool containsAuthorization;
-                var s = ContainsAuthorizationError(message.Message.ToString(), out containsAuthorization);
+                var s = ContainsAuthorizationError(message.Message.ToString(), out bool containsAuthorization);
                 if (containsAuthorization)
                 {
                     ShowAuthorizationErrorPopup(s);
@@ -216,19 +215,22 @@ namespace Dev2.Controller
             return default(T);
         }
 
-        private static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
+        static void ValidatePayload(IEnvironmentConnection connection, StringBuilder payload, IPopupController popupController)
         {
             if (payload == null || payload.Length == 0)
             {
                 if (connection.HubConnection != null && popupController != null && connection.HubConnection.State == ConnectionStateWrapped.Disconnected)
                 {
-                    popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
+                    Application.Current.Dispatcher.Invoke(() =>
+                    {
+                        popupController.Show(ErrorResource.ServerconnectionDropped + Environment.NewLine + ErrorResource.EnsureConnectionToServerWorking
                         , ErrorResource.ServerDroppedErrorHeading, MessageBoxButton.OK, MessageBoxImage.Information, "", false, false, true, false, false, false);
+                    });
                 }
             }
         }
 
-        private static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
+        static void IsConnectionValid(IEnvironmentConnection connection, IPopupController popupController)
         {
             if (connection != null)
             {
@@ -243,7 +245,7 @@ namespace Dev2.Controller
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error("Error popup", e);
+                    Dev2Logger.Error("Error popup", e, "Warewolf Error");
                 }
             }
         }
@@ -287,8 +289,8 @@ namespace Dev2.Controller
                     }
 
                     ServicePayload.ServiceName = ServiceName;
-                    StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+                    var toSend = serializer.SerializeToBuilder(ServicePayload);
+                    var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
                     var executeCommand = serializer.Deserialize<T>(payload);
                     if (executeCommand == null)
                     {
@@ -349,16 +351,14 @@ namespace Dev2.Controller
             }
             else
             {
-
-                // now bundle it up into a nice string builder ;)
                 if (ServicePayload == null)
                 {
                     ServicePayload = new EsbExecuteRequest();
                 }
 
                 ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
-                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId);
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
+                var payload = await connection.ExecuteCommandAsync(toSend, workspaceId).ConfigureAwait(true);
 
                 try
                 {
@@ -367,9 +367,10 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e);
-                    return serializer.Deserialize<T>(payload);
 
+                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
+                    var val = serializer.Deserialize<T>(payload);
+                    return val;
                 }
             }
             return default(T);
@@ -378,7 +379,6 @@ namespace Dev2.Controller
 
         public T ExecuteCompressedCommand<T>(IEnvironmentConnection connection, Guid workspaceId) where T : class
         {
-            // build the service request payload ;)
             var serializer = new Dev2JsonSerializer();
 
             if (connection == null)
@@ -399,7 +399,7 @@ namespace Dev2.Controller
                 }
 
                 ServicePayload.ServiceName = ServiceName;
-                StringBuilder toSend = serializer.SerializeToBuilder(ServicePayload);
+                var toSend = serializer.SerializeToBuilder(ServicePayload);
                 var payload = connection.ExecuteCommand(toSend, workspaceId);
                 try
                 {
@@ -412,7 +412,7 @@ namespace Dev2.Controller
                 }
                 catch (NullReferenceException e)
                 {
-                    Dev2Logger.Debug("fallback to non compressed", e);
+                    Dev2Logger.Debug("fallback to non compressed", e, "Warewolf Debug");
                     return serializer.Deserialize<T>(payload);
 
                 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,7 +21,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class PathDeleteTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -41,15 +41,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfPathDelete_Execution_FileNotFound_DebugOutputErrorMessageRelevant()
         {
             var dsfPathDelete = new DsfPathDelete { InputPath = TestContext.TestRunDirectory + "\\some file that doesnt exist.txt", Result = "[[res]]" };
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-            string actual;
-            string error;
 
             //------------Execute Test---------------------------
             var result = CheckPathOperationActivityDebugInputOutput(dsfPathDelete, "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>",
-                                                                "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>", out inRes, out outRes);
-            GetScalarValueFromEnvironment(result.Environment, "Dev2System.Dev2Error", out actual, out error);
+                                                                "<ADL><FileNames><Name></Name></FileNames><res></res></ADL>", out List<DebugItem> inRes, out List<DebugItem> outRes);
+            GetScalarValueFromEnvironment(result.Environment, "Dev2System.Dev2Error", out string actual, out string error);
 
             // Assert Debug Output Error Message Relevant
             Assert.IsTrue(string.IsNullOrEmpty(actual) || !actual.Contains("null reference"), "Irrelevent error displayed for file not found.");

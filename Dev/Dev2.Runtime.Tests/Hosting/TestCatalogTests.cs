@@ -11,8 +11,8 @@ using Dev2.Data;
 using Dev2.DataList.Contract;
 using Dev2.Runtime;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable ObjectCreationAsStatement
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Tests.Runtime.Hosting
 {
@@ -104,7 +104,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(test2FilePath, testFiles[1]);
 
             var test1String = File.ReadAllText(test1FilePath);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
             Assert.AreEqual("Test 1", test1.TestName);
             Assert.IsTrue(test1.Enabled);
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(test1FilePath, testFiles[0]);
           
             var test1String = File.ReadAllText(test1FilePath);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
             Assert.AreEqual("Test 1", test1.TestName);
             Assert.IsFalse(test1.Enabled);
@@ -181,7 +181,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(test2FilePath, testFiles[1]);
           
             var test2String = File.ReadAllText(test2FilePath);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test2String);
             Assert.AreEqual("Test 2", test1.TestName);
             Assert.IsFalse(test1.Enabled);
@@ -227,7 +227,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(test2FilePath, testFiles[1]);
 
             var test1String = File.ReadAllText(test2FilePath);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var test2 = serializer.Deserialize<IServiceTestModelTO>(test1String);
             Assert.AreEqual("Test 2", test2.TestName);
             Assert.IsFalse(test2.Enabled);
@@ -289,7 +289,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var modelTO = testCatalog.Tests.Select(pair => pair.Value.Single(to => to.TestName == "Test 2")).Single();
             Assert.IsNotNull(modelTO);
             var test1String = File.ReadAllText(test1FilePath);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
             Assert.AreEqual("Test 1", test1.TestName);
             Assert.IsTrue(test1.Enabled);
@@ -340,7 +340,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var modelTO = testCatalog.Tests.Select(pair => pair.Value.Single(to => to.TestName == "Test 2")).Single();
             Assert.IsNotNull(modelTO);
             var test1String = File.ReadAllText(test1FilePath);
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var test1 = serializer.Deserialize<IServiceTestModelTO>(test1String);
             Assert.AreEqual("Test 1", test1.TestName);
             Assert.IsTrue(test1.Enabled);

@@ -1,7 +1,7 @@
 
 /*
 *  Warewolf - The Easy Service Bus
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -46,16 +46,6 @@ namespace Dev2
             return false;
         }
 
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> enumerable)
-        {
-            var col = new ObservableCollection<T>();
-            foreach(var cur in enumerable)
-            {
-                col.Add(cur);
-            }
-            return col;
-        }
-
         public static string ToBase64String(this Stream stream)
         {
             return Convert.ToBase64String(GetByteArray(stream));
@@ -68,8 +58,8 @@ namespace Dev2
 
         public static byte[] GetByteArray(Stream stream)
         {
-            byte[] buffer = new byte[16 * 1024];
-            using(MemoryStream ms = new MemoryStream())
+            var buffer = new byte[16 * 1024];
+            using (MemoryStream ms = new MemoryStream())
             {
                 int read;
                 while((read = stream.Read(buffer, 0, buffer.Length)) > 0)
@@ -93,7 +83,7 @@ namespace Dev2
 
         public static string GetPropertyName<T, TReturn>(this Expression<Func<T, TReturn>> expression)
         {
-            MemberExpression body = (MemberExpression)expression.Body;
+            var body = (MemberExpression)expression.Body;
             return body.Member.Name;
         }
     }

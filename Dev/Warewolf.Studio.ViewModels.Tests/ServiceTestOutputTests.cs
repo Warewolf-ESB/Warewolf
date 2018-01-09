@@ -5,8 +5,8 @@ using Dev2.Common.Interfaces;
 using Dev2.DataList;
 using Dev2.DataList.Contract;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {

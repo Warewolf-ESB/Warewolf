@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,19 +33,16 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Commands;
 using Warewolf.Core;
 
-
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
 namespace Dev2.Activities.Designers2.MySqlDatabase
 {
     public class MySqlDatabaseDesignerViewModel : CustomToolWithRegionBase, IDatabaseServiceViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDatabaseInputRegion _inputArea;
-        private ISourceToolRegion<IDbSource> _sourceRegion;
-        private IActionToolRegion<IDbAction> _actionRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDatabaseInputRegion _inputArea;
+        ISourceToolRegion<IDbSource> _sourceRegion;
+        IDbActionToolRegion<IDbAction> _actionRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -53,10 +50,11 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         readonly string _sourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.DatabaseServiceSourceNotFound;
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var server = shellViewModel.ActiveServer;
             var model = CustomContainer.CreateInstance<IDbServiceModel>(server.UpdateRepository, server.QueryProxy, shellViewModel, server);
@@ -69,7 +67,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel(new ManageDatabaseServiceInputViewModel(this, Model));
@@ -85,7 +83,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
+        void InitialiseViewModel(IManageDatabaseInputViewModel manageServiceInputViewModel)
         {
             ManageServiceInputViewModel = manageServiceInputViewModel;
 
@@ -108,7 +106,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             OutputsRegion.OutputMappingEnabled = true;
             TestInputCommand = new DelegateCommand(TestProcedure);
 
-            InitializeProperties();
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
 
             if (OutputsRegion != null && OutputsRegion.IsEnabled)
             {
@@ -164,15 +162,15 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             UpdateWorstError();
         }
 
-        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker)
+        public MySqlDatabaseDesignerViewModel(ModelItem modelItem, IDbServiceModel model, IAsyncWorker worker, IViewPropertyBuilder propertyBuilder)
             : base(modelItem)
         {
             Model = model;
             _worker = worker;
+            _propertyBuilder = propertyBuilder;
             SetupCommonProperties();
         }
 
-        #region Overrides of ActivityDesignerViewModel
 
         public override void Validate()
         {
@@ -196,7 +194,8 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                 ClearValidationMemoWithNoFoundError();
             }
             UpdateWorstError();
-            InitializeProperties();
+
+            Properties = _propertyBuilder.BuildProperties(ActionRegion, SourceRegion, Type);
         }
 
         void UpdateWorstError()
@@ -216,42 +215,24 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
                     break;
                 }
             }
-            WorstDesignError = worstError[0];
+            SetWorstDesignError(worstError[0]);
         }
 
-        IErrorInfo WorstDesignError
+        void SetWorstDesignError(IErrorInfo value)
         {
-            // ReSharper disable once UnusedMember.Local
-            get { return _worstDesignError; }
-            set
+            if (_worstDesignError != value)
             {
-                if (_worstDesignError != value)
-                {
-                    _worstDesignError = value;
-                    IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
-                    WorstError = value?.ErrorType ?? ErrorType.None;
-                }
+                _worstDesignError = value;
+                IsWorstErrorReadOnly = value == null || value.ErrorType == ErrorType.None || value.FixType == FixType.None || value.FixType == FixType.Delete;
+                WorstError = value?.ErrorType ?? ErrorType.None;
             }
         }
 
         public int LabelWidth { get; set; }
 
         public List<KeyValuePair<string, string>> Properties { get; private set; }
-        void InitializeProperties()
-        {
-            Properties = new List<KeyValuePair<string, string>>();
-            AddProperty("Source :", SourceRegion.SelectedSource == null ? "" : SourceRegion.SelectedSource.Name);
-            AddProperty("Type :", Type);
-            AddProperty("Procedure :", ActionRegion.SelectedAction == null ? "" : ActionRegion.SelectedAction.Name);
-        }
 
-        void AddProperty(string key, string value)
-        {
-            if (!string.IsNullOrEmpty(value))
-            {
-                Properties.Add(new KeyValuePair<string, string>(key, value));
-            }
-        }
+
 
         public IManageDatabaseInputViewModel ManageServiceInputViewModel { get; set; }
 
@@ -272,7 +253,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -295,13 +276,14 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(MySqlDatabaseDesignerViewModel), new PropertyMetadata(ErrorType.None));
 
         bool _generateOutputsVisible;
-        private readonly IAsyncWorker _worker;
+        readonly IAsyncWorker _worker;
+        readonly IViewPropertyBuilder _propertyBuilder;
 
         public DelegateCommand TestInputCommand { get; set; }
 
-        private string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
-        
+        string Type => GetProperty<string>();
+
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
@@ -319,7 +301,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
         }
 
-        #endregion
+
 
         #region Overrides of CustomToolWithRegionBase
 
@@ -328,12 +310,12 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             IList<IToolRegion> regions = new List<IToolRegion>();
             if (SourceRegion == null)
             {
-                SourceRegion = new DatabaseSourceRegion(Model, ModelItem,enSourceType.MySqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
+                SourceRegion = new DatabaseSourceRegion(Model, ModelItem, enSourceType.MySqlDatabase) { SourceChangedAction = () => { OutputsRegion.IsEnabled = false; } };
                 regions.Add(SourceRegion);
-                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion,_worker);
+                ActionRegion = new DbActionRegion(Model, ModelItem, SourceRegion, _worker);
                 ActionRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
@@ -363,7 +345,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
 
         #region Implementation of IDatabaseServiceViewModel
 
-        public IActionToolRegion<IDbAction> ActionRegion
+        public IDbActionToolRegion<IDbAction> ActionRegion
         {
             get
             {
@@ -444,7 +426,9 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
         {
             Errors = new List<IActionableErrorInfo>();
             if (hasError)
+            {
                 Errors = new List<IActionableErrorInfo> { new ActionableErrorInfo(new ErrorInfo() { ErrorType = ErrorType.Critical, FixData = "", FixType = FixType.None, Message = exception.Message, StackTrace = exception.StackTrace }, () => { }) };
+            }
         }
 
         public void SetDisplayName(string outputFieldName)
@@ -468,7 +452,7 @@ namespace Dev2.Activities.Designers2.MySqlDatabase
             }
         }
 
-        private IDbServiceModel Model { get; set; }
+        IDbServiceModel Model { get; set; }
 
         void SetRegionVisibility(bool value)
         {

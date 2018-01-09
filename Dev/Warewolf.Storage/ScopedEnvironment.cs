@@ -9,10 +9,10 @@ namespace Warewolf.Storage
 {
     public class ScopedEnvironment : IExecutionEnvironment
     {
-        private readonly IExecutionEnvironment _inner;
-        private string _datasource;
-        private readonly string _alias;
-        private readonly Func<string, int, string, string> _doReplace;
+        readonly IExecutionEnvironment _inner;
+        string _datasource;
+        readonly string _alias;
+        readonly Func<string, int, string, string> _doReplace;
         public ScopedEnvironment(IExecutionEnvironment inner, string datasource, string alias)
         {
             _inner = inner;
@@ -23,7 +23,11 @@ namespace Warewolf.Storage
 
         #region Implementation of IExecutionEnvironment
 
-        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists = false,bool shouldEscape=false)
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update) => Eval(exp, update, false, false);
+
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists) => Eval(exp, update, throwsifnotexists, false);
+
+        public CommonFunctions.WarewolfEvalResult Eval(string exp, int update, bool throwsifnotexists, bool shouldEscape)
         {
             return _inner.Eval(UpdateDataSourceWithIterativeValue(_datasource, update, exp), update, throwsifnotexists,shouldEscape);
         }
@@ -40,12 +44,12 @@ namespace Warewolf.Storage
             _inner.Assign(UpdateDataSourceWithIterativeValue(_datasource, update, exp), UpdateDataSourceWithIterativeValue(_datasource, update, value), 0);
         }
 
-        private string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
+        string UpdateDataSourceWithIterativeValueFunction(string datasource, int update, string exp)
         {
             return exp.Replace(_alias, datasource);
         }
 
-        private string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
+        string UpdateDataSourceWithIterativeValue(string datasource, int update, string exp)
         {
             var magic = _doReplace(datasource, update, exp);
             return magic;
@@ -132,7 +136,9 @@ namespace Warewolf.Storage
             return _inner.ToStar(expression.Replace(_alias, _datasource));
         }
 
-        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists = false)
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update) => EvalAsList(searchCriteria, update, false);
+
+        public IEnumerable<DataStorage.WarewolfAtom> EvalAsList(string searchCriteria, int update, bool throwsifnotexists)
         {
 
             return _inner.EvalAsList(UpdateDataSourceWithIterativeValue(_datasource, update, searchCriteria), 0, throwsifnotexists);
@@ -152,8 +158,7 @@ namespace Warewolf.Storage
                 var res = _inner.Eval(s, 0);
                 if (res.IsWarewolfAtomResult)
                 {
-                    var atom = res as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                    if (atom != null)
+                    if (res is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
                     {
                         var resClause = clause.Invoke(atom.Item);
                         _inner.AssignJson(new AssignValue(s, resClause.ToString()), 0);
@@ -203,11 +208,12 @@ namespace Warewolf.Storage
 
         public void AssignUnique(IEnumerable<string> distinctList, IEnumerable<string> valueList, IEnumerable<string> resList, int update)
         {
-            // consider not allow unique bob bob bob in select and apply
             _inner.AssignUnique(distinctList, valueList, resList, update);
         }
 
-        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp,bool shouldEscape=false)
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp) => EvalForJson(exp, false);
+
+        public CommonFunctions.WarewolfEvalResult EvalForJson(string exp, bool shouldEscape)
         {
             return _inner.EvalForJson(exp.Replace(_alias, _datasource), shouldEscape);
         }

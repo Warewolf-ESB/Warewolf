@@ -6,12 +6,11 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter
+    public class WarewolfNumberOfErrorsByResource : IResourcePerformanceCounter, IDisposable
     {
-
-        private PerformanceCounter _counter;
-        private bool _started;
-        private readonly WarewolfPerfCounterType _perfCounterType;
+        PerformanceCounter _counter;
+        bool _started;
+        readonly WarewolfPerfCounterType _perfCounterType;
 
         public WarewolfNumberOfErrorsByResource(Guid resourceId, string categoryInstanceName)
         {
@@ -26,7 +25,7 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
@@ -43,15 +42,17 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
                 if (IsActive)
-                    _counter.Increment();
-
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
         {
           if(IsActive)
+            {
                 _counter.IncrementBy(ticks);
-     
+            }
         }
 
         public void Setup()
@@ -72,8 +73,9 @@ namespace Dev2.PerformanceCounters.Counters
         {
    
             if (IsActive)
-                    _counter.Decrement();
-         
+            {
+                _counter.Decrement();
+            }
         }
 
         public string Category => GlobalConstants.WarewolfServices;
@@ -87,6 +89,11 @@ namespace Dev2.PerformanceCounters.Counters
             {
                 _counter.RawValue = 0;
             }
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         #region Implementation of IResourcePerformanceCounter

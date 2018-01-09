@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Controls;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
-// ReSharper disable HeapView.ObjectAllocation.Evident
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
+
 
 namespace Dev2.Runtime.Configuration.Tests
 {

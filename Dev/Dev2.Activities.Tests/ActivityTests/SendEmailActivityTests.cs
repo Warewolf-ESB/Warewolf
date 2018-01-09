@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,11 +21,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class SendEmailActivityTests : BaseActivityUnitTest
     {
         [TestMethod]
@@ -530,7 +530,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         static Mock<IEsbChannel> CreateMockEsbChannel()
         {
-            Mock<IEsbChannel> esbChannelMock = new Mock<IEsbChannel>();
+            var esbChannelMock = new Mock<IEsbChannel>();
             return esbChannelMock;
         }
 

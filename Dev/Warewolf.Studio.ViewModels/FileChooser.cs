@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,16 +17,17 @@ using Dev2.Common.Interfaces;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.Core;
+using Dev2.Common;
 
 namespace Warewolf.Studio.ViewModels
 {
     public class FileChooser : BindableBase, IFileChooser
     {
         readonly Action _closeAction;
-        private bool _allowMultipleSelection;
-        private string _selectedDriveName;
-        private string _filesTooltip;
-        private string _selectTooltip;
+        bool _allowMultipleSelection;
+        string _selectedDriveName;
+        string _filesTooltip;
+        string _selectTooltip;
 
         public MessageBoxResult Result { get; private set; }
 
@@ -68,7 +69,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (name.Contains("\\"))
             {
-                string node = name.Contains(":") ? name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal) + 1) : name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal));
+                var node = name.Contains(":") ? name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal) + 1) : name.Substring(0, name.IndexOf("\\", StringComparison.Ordinal));
                 var toExpand = model.FirstOrDefault(a => a.Name == node);
                 if (toExpand != null)
                 {
@@ -114,11 +115,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 var driveName = string.Join(";", Drives.SelectMany(a => a.FilterSelected(new List<string>())).ToList());
                 return driveName;
-            }
-            // ReSharper disable once ValueParameterNotUsed
+            }            
             set
             {
                 OnPropertyChanged(() => DriveName);
+                Dev2Logger.Info("File Chooser Drive Name set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
         public string FilesTooltip

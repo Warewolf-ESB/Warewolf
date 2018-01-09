@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,6 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Studio.Core.Helpers
 {
-    /// <summary>
-    ///     NO TEST COVERAGE!!!!
-    /// </summary>
     public static class TypeSwitch
     {
         public static void Do(object source, params CaseInfo[] cases)
@@ -29,7 +26,9 @@ namespace Dev2.Studio.Core.Helpers
             if (source == null)
             {
                 if (!cases.ToList().Any(c => c.IsDefault))
+                {
                     throw new Exception(ErrorResource.CannotDoSwitchOnNullType);
+                }
 
                 foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault))
                 {
@@ -39,7 +38,7 @@ namespace Dev2.Studio.Core.Helpers
             }
             else
             {
-                Type type = source.GetType();
+                var type = source.GetType();
                 foreach (CaseInfo entry in cases.Where(entry => entry.IsDefault || entry.Target.IsAssignableFrom(type)))
                 {
                     entry.Action(source);
@@ -52,7 +51,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             return new CaseInfo
             {
-                Action = x => action(),
+                Action = x => action?.Invoke(),
                 Target = typeof (T)
             };
         }
@@ -61,7 +60,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             return new CaseInfo
             {
-                Action = x => action((T) x),
+                Action = x => action?.Invoke((T)x),
                 Target = typeof (T)
             };
         }
@@ -70,7 +69,7 @@ namespace Dev2.Studio.Core.Helpers
         {
             return new CaseInfo
             {
-                Action = x => action(),
+                Action = x => action?.Invoke(),
                 IsDefault = true
             };
         }

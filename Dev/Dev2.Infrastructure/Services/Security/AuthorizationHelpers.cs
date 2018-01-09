@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,9 @@ namespace Dev2.Services.Security
 {
     public static class AuthorizationHelpers
     {
-        public static string ToReason(this AuthorizationContext value, bool isAuthorized = false)
+        public static string ToReason(this AuthorizationContext value) => value.ToReason(false);
+
+        public static string ToReason(this AuthorizationContext value, bool isAuthorized)
         {
             //
             // MUST return null and NOT empty string as the result is used as TargetNullValue in bindings!
@@ -52,7 +54,7 @@ namespace Dev2.Services.Security
             {
                 return Permissions.None;
             }
-            Permissions permission = Permissions.Administrator;
+            var permission = Permissions.Administrator;
 
             if (context.HasFlag(AuthorizationContext.DeployTo))
             {
@@ -72,7 +74,7 @@ namespace Dev2.Services.Security
             }
             if (context.HasFlag(AuthorizationContext.View))
             {
-                permission |= Permissions.View | Permissions.Contribute;;
+                permission |= Permissions.View | Permissions.Contribute;
             }
             if (context.HasFlag(AuthorizationContext.Any))
             {
@@ -89,13 +91,11 @@ namespace Dev2.Services.Security
                 return true;
             }
 
-            Guid resourceId;
-            if(Guid.TryParse(resource, out resourceId))
+            if (Guid.TryParse(resource, out Guid resourceId))
             {
                 return permission.ResourceID == resourceId;
             }
-
-            // ResourceName is in the format: {categoryName}\{resourceName}
+            
             resource = resource?.Replace('/', '\\');
             if(string.IsNullOrEmpty(resource))
             {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,10 +23,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isError = new IsError();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
-            bool result = isError.Invoke(cols);
+            var result = isError.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -38,10 +38,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isError = new IsError();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "";
             //------------Execute Test---------------------------
-            bool result = isError.Invoke(cols);
+            var result = isError.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

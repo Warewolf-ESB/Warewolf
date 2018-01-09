@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -254,8 +254,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var serviceDef = JsonResource.Fetch("PrimitivePluginReturningBool");
 
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = pluginServices.Test(serviceDef, out serializedResult);
+            var result = pluginServices.Test(serviceDef, out string serializedResult);
             ////------------Assert Results-------------------------
             Assert.AreEqual(1, result[0].Fields.Count);
             StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
@@ -281,8 +280,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var serviceDef = JsonResource.Fetch("PrimitivePluginReturningDouble");
 
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = pluginServices.Test(serviceDef, out serializedResult);
+            var result = pluginServices.Test(serviceDef, out string serializedResult);
             ////------------Assert Results-------------------------
             Assert.AreEqual(1, result[0].Fields.Count);
             StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
@@ -308,8 +306,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var serviceDef = JsonResource.Fetch("PrimitivePluginReturningPlainString");
 
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = pluginServices.Test(serviceDef, out serializedResult);
+            var result = pluginServices.Test(serviceDef, out string serializedResult);
             ////------------Assert Results-------------------------
             Assert.AreEqual(1, result[0].Fields.Count);
             StringAssert.Contains(result[0].Fields[0].Alias, "PrimitiveReturnValue");
@@ -335,8 +332,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var serviceDef = JsonResource.Fetch("PrimitivePluginReturningXmlString");
 
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = pluginServices.Test(serviceDef, out serializedResult);
+            var result = pluginServices.Test(serviceDef, out string serializedResult);
             ////------------Assert Results-------------------------
             Assert.AreEqual(1, result[0].Fields.Count);
             StringAssert.Contains(result[0].Fields[0].Alias, "Message");
@@ -362,8 +358,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             var serviceDef = JsonResource.Fetch("PrimitivePluginReturningJsonString");
 
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = pluginServices.Test(serviceDef, out serializedResult);
+            var result = pluginServices.Test(serviceDef, out string serializedResult);
             ////------------Assert Results-------------------------
             Assert.AreEqual(1, result[0].Fields.Count);
             StringAssert.Contains(result[0].Fields[0].Alias, "message");
@@ -378,8 +373,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new PluginServicesMock();
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = services.Test(null, out serializedResult);
+            var result = services.Test(null, out string serializedResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }
@@ -390,8 +384,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
             //------------Setup for test--------------------------
             var services = new PluginServicesMock();
             //------------Execute Test---------------------------
-            string serializedResult;
-            var result = services.Test("xxx", out serializedResult);
+            var result = services.Test("xxx", out string serializedResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result[0].HasErrors);
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,9 +10,9 @@
 
 using System;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core.Helpers
-// ReSharper restore CheckNamespace
+
 {
     // PBI 9512 - 2013.06.07 - TWR: added
     public interface ILatestGetter

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -61,16 +61,14 @@ namespace Dev2.Tests
         [TestMethod]
         public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumber()
         {
-            int res;
-            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 100, 5), out res);
+            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 100, 5), out int res);
             Assert.IsTrue(res >= 5 && res <= 100, "Did not generate the right random number.");
         }
 
         [TestMethod]
         public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumberForZeroFrom()
         {
-            int res;
-            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0, 5), out res);
+            int.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0, 5), out int res);
             Assert.IsTrue(res >= 0 && res <= 5, "Did not generate the right random number.");
         }
 
@@ -78,16 +76,14 @@ namespace Dev2.Tests
         public void GenerateWithGuidExpectedValidGuid()
         {
             var result = _dev2Random.GetRandom(enRandomType.Guid, -1, -1, -1);
-            Guid tryParse;
-            Assert.IsTrue(Guid.TryParse(result, out tryParse), "Did not generate a valid guid");
+            Assert.IsTrue(Guid.TryParse(result, out Guid tryParse), "Did not generate a valid guid");
             Assert.AreNotEqual(Guid.Empty, tryParse, "Generated an empty Guid");
         }
 
         [TestMethod]
         public void GenerateNumsWithFromIsGreaterThanToExpectedValidNumbersWithDecimalRange()
         {
-            double res;
-            double.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0.01, 0.1), out res);
+            double.TryParse(_dev2Random.GetRandom(enRandomType.Numbers, -1, 0.01, 0.1), out double res);
             Assert.IsTrue(res >= 0.01 && res <= 0.1, "Did not generate the right random number.");
         }
 
@@ -106,7 +102,7 @@ namespace Dev2.Tests
         {
             const double MoreThanMaxInt = (double)int.MaxValue + 1;
             const double LessThanMaxDouble = double.MaxValue - 1;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MoreThanMaxInt, LessThanMaxDouble));
+            var result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MoreThanMaxInt, LessThanMaxDouble));
             Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MoreThanMaxInt, "Dev2Random generated a number below the specified range");
         }
@@ -116,7 +112,7 @@ namespace Dev2.Tests
         {
             const double LessThanMinInt = (double)int.MinValue - 1;
             const double LessThanMaxDouble = double.MaxValue - 1;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, LessThanMinInt, LessThanMaxDouble));
+            var result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, LessThanMinInt, LessThanMaxDouble));
             Assert.IsTrue(result <= LessThanMaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= LessThanMinInt, "Dev2Random generated a number below the specified range");
         }
@@ -148,7 +144,7 @@ namespace Dev2.Tests
         {
             const double MinDouble = 0d;
             const double MaxDouble = double.MaxValue;
-            double result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
+            var result = double.Parse(_dev2Random.GetRandom(enRandomType.Numbers, -1, MinDouble, MaxDouble));
             Assert.IsTrue(result <= MaxDouble, "Dev2Random generated a number above the specified range");
             Assert.IsTrue(result >= MinDouble, "Dev2Random generated a number below the specified range");
         }

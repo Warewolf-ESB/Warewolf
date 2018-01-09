@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Core.Graph;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Framework.Converters.Graph.Poco;
 using Unlimited.UnitTest.Framework.ConverterTests.GraphTests;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 {
@@ -24,7 +24,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
     {
         internal PocoTestData Given()
         {
-            PocoTestData testData = new PocoTestData
+            var testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
@@ -35,7 +35,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData1 = new PocoTestData
+            var nestedTestData1 = new PocoTestData
             {
                 Name = "Mo",
                 Age = 30,
@@ -46,7 +46,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData2 = new PocoTestData
+            var nestedTestData2 = new PocoTestData
             {
                 Name = "Trav",
                 Age = 30,
@@ -64,7 +64,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
         internal PocoTestData GivenWithNoEnumerableData()
         {
-            PocoTestData testData = new PocoTestData
+            var testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
@@ -80,7 +80,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
         internal PocoTestData GivenWithParallelAndNestedEnumerables()
         {
-            PocoTestData testData = new PocoTestData
+            var testData = new PocoTestData
             {
                 Name = "Brendon",
                 Age = 30,
@@ -91,7 +91,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData1 = new PocoTestData
+            var nestedTestData1 = new PocoTestData
             {
                 Name = "Mo",
                 Age = 30,
@@ -102,7 +102,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData2 = new PocoTestData
+            var nestedTestData2 = new PocoTestData
             {
                 Name = "Trav",
                 Age = 30,
@@ -113,7 +113,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData3 = new PocoTestData
+            var nestedTestData3 = new PocoTestData
             {
                 Name = "Jayd",
                 Age = 30,
@@ -124,7 +124,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData4 = new PocoTestData
+            var nestedTestData4 = new PocoTestData
             {
                 Name = "Dan",
                 Age = 30,
@@ -135,7 +135,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData5 = new PocoTestData
+            var nestedTestData5 = new PocoTestData
             {
                 Name = "Mark",
                 Age = 30,
@@ -146,7 +146,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData6 = new PocoTestData
+            var nestedTestData6 = new PocoTestData
             {
                 Name = "Warren",
                 Age = 30,
@@ -157,7 +157,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
                 },
             };
 
-            PocoTestData nestedTestData7 = new PocoTestData
+            var nestedTestData7 = new PocoTestData
             {
                 Name = "Wallis",
                 Age = 30,
@@ -184,9 +184,9 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             IPath path = new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol);
 
-            PocoNavigator pocoNavigator = new PocoNavigator(1);
+            var pocoNavigator = new PocoNavigator(1);
 
-            object data = pocoNavigator.SelectScalar(path);
+            var data = pocoNavigator.SelectScalar(path);
 
             Assert.AreEqual(data, "1");
         }
@@ -201,12 +201,12 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             IPath path = new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol);
 
-            PocoNavigator pocoNavigator = new PocoNavigator(1);
+            var pocoNavigator = new PocoNavigator(1);
 
-            IEnumerable<object> data = pocoNavigator.SelectEnumerable(path);
+            var data = pocoNavigator.SelectEnumerable(path);
 
             const string expected = "1";
-            string actual = string.Join("", data.Select(o => o.ToString()));
+            var actual = string.Join("", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }
@@ -220,14 +220,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             Given();
 
             IPath path = new PocoPath(PocoPath.SeperatorSymbol, PocoPath.SeperatorSymbol);
-            List<IPath> paths = new List<IPath> { path };
+            var paths = new List<IPath> { path };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(1);
+            var pocoNavigator = new PocoNavigator(1);
 
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
             const string expected = "1";
-            string actual = string.Join("|", data[path]);
+            var actual = string.Join("|", data[path]);
 
             Assert.AreEqual(expected, actual);
         }
@@ -239,14 +239,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectScalarValueUsingRootPathFromEnumerableContainingOnlyPrimitives_Expected_LastScalarValueInEnumeration()
         {
-            List<int> testData = new List<int> { 1, 2, 3 };
+            var testData = new List<int> { 1, 2, 3 };
 
             IPath namePath = new PocoPath("().", "().");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
             const string expected = "3";
-            string actual = pocoNavigator.SelectScalar(namePath).ToString();
+            var actual = pocoNavigator.SelectScalar(namePath).ToString();
 
             Assert.AreEqual(expected, actual);
         }
@@ -258,17 +258,17 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingRootPathFromEnumerableContainingOnlyPrimitives_Expected_ValuesForEachValueInEnumeration()
         {
-            List<int> testData = new List<int> { 1, 2, 3 };
+            var testData = new List<int> { 1, 2, 3 };
 
             IPath path = new PocoPath("().", "().");
-            List<IPath> paths = new List<IPath> { path };
+            var paths = new List<IPath> { path };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = string.Join("|", testData.Select(e => e));
-            string actual = string.Join("|", data[path]);
+            var expected = string.Join("|", testData.Select(e => e));
+            var actual = string.Join("|", data[path]);
 
             Assert.AreEqual(expected, actual);
         }
@@ -280,16 +280,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedUsingRootPathFromEnumerableContainingOnlyPrimitives_Expected_ValuesForEachValueInEnumeration()
         {
-            List<int> testData = new List<int> { 1, 2, 3 };
+            var testData = new List<int> { 1, 2, 3 };
 
             IPath path = new PocoPath("().", "().");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            IEnumerable<object> data = pocoNavigator.SelectEnumerable(path);
+            var data = pocoNavigator.SelectEnumerable(path);
 
-            string expected = string.Join("|", testData.Select(e => e));
-            string actual = string.Join("|", data.Select(o => o.ToString()));
+            var expected = string.Join("|", testData.Select(e => e));
+            var actual = string.Join("|", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }
@@ -300,13 +300,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectScalarValueUsingScalarPathFromEnumerable_Expected_ScalarValue()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath path = new PocoPath("EnumerableData.Count", "EnumerableData.Count");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            object data = pocoNavigator.SelectScalar(path);
+            var data = pocoNavigator.SelectScalar(path);
 
             Assert.AreEqual(data, testData.EnumerableData.Count);
         }
@@ -317,13 +317,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectScalarValueUsingScalarPathFromReferenceType_Expected_ScalarValue()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath namePath = new PocoPath("Name", "Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            object data = pocoNavigator.SelectScalar(namePath);
+            var data = pocoNavigator.SelectScalar(namePath);
 
             Assert.AreEqual(data, testData.Name);
         }
@@ -335,13 +335,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectScalarValueUsingEnumerablePathFromReferenceType_Expected_ScalarValueFromLastItemInEnumerableCollection()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath namePath = new PocoPath("EnumerableData().NestedData.Name", "EnumerableData.NestedData.Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            object data = pocoNavigator.SelectScalar(namePath);
+            var data = pocoNavigator.SelectScalar(namePath);
 
             Assert.AreEqual(data, testData.EnumerableData.ElementAt(testData.EnumerableData.Count - 1).NestedData.Name);
         }
@@ -352,13 +352,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectScalarValueUsingEnumerablePathFromReferenceType_Where_EnumerableDataIsNull_Expected_Null()
         {
-            PocoTestData testData = GivenWithNoEnumerableData();
+            var testData = GivenWithNoEnumerableData();
 
             IPath namePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            object data = pocoNavigator.SelectScalar(namePath);
+            var data = pocoNavigator.SelectScalar(namePath);
 
             Assert.AreEqual(data, null);
         }
@@ -370,16 +370,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromReferenceType_Expected_ValuesFromEachItemInEnumeration()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath namePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            IEnumerable<object> data = pocoNavigator.SelectEnumerable(namePath);
+            var data = pocoNavigator.SelectEnumerable(namePath);
 
-            string expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
-            string actual = string.Join("|", data.Select(o => o.ToString()));
+            var expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
+            var actual = string.Join("|", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }      
@@ -391,16 +391,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerableReferenceType_Expected_ValuesFromEachItemInEnumeration()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath namePath = new PocoPath("UnnamedArray().Name", "UnnamedArray.Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData.EnumerableData);
+            var pocoNavigator = new PocoNavigator(testData.EnumerableData);
 
-            IEnumerable<object> data = pocoNavigator.SelectEnumerable(namePath);
+            var data = pocoNavigator.SelectEnumerable(namePath);
 
-            string expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
-            string actual = string.Join("|", data.Select(o => o.ToString()));
+            var expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
+            var actual = string.Join("|", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }
@@ -412,13 +412,13 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingEnumerablePathFromReferenceType_Where_EnumerableDataIsNull_Expected_Null()
         {
-            PocoTestData testData = GivenWithNoEnumerableData();
+            var testData = GivenWithNoEnumerableData();
 
             IPath namePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            object data = pocoNavigator.SelectScalar(namePath);
+            var data = pocoNavigator.SelectScalar(namePath);
 
             Assert.AreEqual(data, null);
         }
@@ -429,16 +429,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingScalarPathFromEnumerable_Expected_SingleValueInEnumeration()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath namePath = new PocoPath("EnumerableData.Count", "EnumerableData.Count");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            IEnumerable<object> data = pocoNavigator.SelectEnumerable(namePath);
+            var data = pocoNavigator.SelectEnumerable(namePath);
 
-            string expected = testData.EnumerableData.Count.ToString();
-            string actual = string.Join("", data.Select(o => o.ToString()));
+            var expected = testData.EnumerableData.Count.ToString();
+            var actual = string.Join("", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }
@@ -449,16 +449,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesUsingScalarPathFromReferenceType_Expected_SingleValueInEnumeration()
         {
-            PocoTestData testData = Given();
+            var testData = Given();
 
             IPath namePath = new PocoPath("NestedData.Name", "NestedData.Name");
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
+            var pocoNavigator = new PocoNavigator(testData);
 
-            IEnumerable<object> data = pocoNavigator.SelectEnumerable(namePath);
+            var data = pocoNavigator.SelectEnumerable(namePath);
 
-            string expected = testData.NestedData.Name;
-            string actual = string.Join("", data.Select(o => o.ToString()));
+            var expected = testData.NestedData.Name;
+            var actual = string.Join("", data.Select(o => o.ToString()));
 
             Assert.AreEqual(expected, actual);
         }
@@ -470,17 +470,17 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainAScalarPath_Expected_FlattenedDataWithValueFromScalarPathRepeatingForEachEnumeration()
         {
-            PocoTestData testData = GivenWithParallelAndNestedEnumerables();
+            var testData = GivenWithParallelAndNestedEnumerables();
 
-            PocoPath namePath = new PocoPath("Name", "Name");
-            PocoPath enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
-            List<IPath> paths = new List<IPath> { namePath, enumerableNamePath };
+            var namePath = new PocoPath("Name", "Name");
+            var enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
+            var paths = new List<IPath> { namePath, enumerableNamePath };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var pocoNavigator = new PocoNavigator(testData);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = string.Join("|", testData.EnumerableData.Select(e => testData.Name));
-            string actual = string.Join("|", data[namePath]);
+            var expected = string.Join("|", testData.EnumerableData.Select(e => testData.Name));
+            var actual = string.Join("|", data[namePath]);
 
             Assert.AreEqual(expected, actual);
         }
@@ -492,17 +492,17 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainUnrelatedEnumerablePaths_Expected_FlattenedDataWithValuesFromUnrelatedEnumerablePathsAtMatchingIndexes()
         {
-            PocoTestData testData = GivenWithParallelAndNestedEnumerables();
+            var testData = GivenWithParallelAndNestedEnumerables();
 
-            PocoPath enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
-            PocoPath parallelEnumerableNamePath = new PocoPath("EnumerableData1().Name", "EnumerableData1.Name");
+            var enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
+            var parallelEnumerableNamePath = new PocoPath("EnumerableData1().Name", "EnumerableData1.Name");
             //PocoPath nestedEnumerableNamePath = new PocoPath("EnumerableData().EnumerableData().Name", "EnumerableData.EnumerableData.Name");
-            List<IPath> paths = new List<IPath> { enumerableNamePath, parallelEnumerableNamePath };
+            var paths = new List<IPath> { enumerableNamePath, parallelEnumerableNamePath };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var pocoNavigator = new PocoNavigator(testData);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            int maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
+            var maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
 
             #region Complex Setup for Expected
 
@@ -511,12 +511,15 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             // It can't be reused for other tests and can't be made generic
             // without replicating the funcationality being tested.
             //
-            string tmpExpected = "";
-            string tmpExpected1 = "";
-            string separator = "|";
+            var tmpExpected = "";
+            var tmpExpected1 = "";
+            var separator = "|";
             for (int i = 0; i < maxCount; i++)
             {
-                if (i == maxCount - 1) separator = "";
+                if (i == maxCount - 1)
+                {
+                    separator = "";
+                }
 
                 if (i < testData.EnumerableData.Count)
                 {
@@ -539,8 +542,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             #endregion Complex Setup for Expected
 
-            string expected = tmpExpected + "^" + tmpExpected1;
-            string actual = string.Join("|", data[enumerableNamePath]);
+            var expected = tmpExpected + "^" + tmpExpected1;
+            var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[parallelEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
@@ -554,14 +557,14 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainNestedEnumerablePaths_Expected_FlattenedDataWithValuesFromOuterEnumerablePathRepeatingForEveryValueFromNestedEnumerablePath()
         {
-            PocoTestData testData = GivenWithParallelAndNestedEnumerables();
+            var testData = GivenWithParallelAndNestedEnumerables();
 
-            PocoPath enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
-            PocoPath nestedEnumerableNamePath = new PocoPath("EnumerableData().EnumerableData().Name", "EnumerableData.EnumerableData.Name");
-            List<IPath> paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
+            var enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
+            var nestedEnumerableNamePath = new PocoPath("EnumerableData().EnumerableData().Name", "EnumerableData.EnumerableData.Name");
+            var paths = new List<IPath> { enumerableNamePath, nestedEnumerableNamePath };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var pocoNavigator = new PocoNavigator(testData);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
             #region Complex Setup for Expected
 
@@ -570,15 +573,19 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             // It can't be reused for other tests and can't be made generic
             // without replicating the funcationality being tested.
             //
-            string tmpExpected = "";
-            string tmpExpected1 = "";
-            string separator = "|";
+            var tmpExpected = "";
+            var tmpExpected1 = "";
+            var separator = "|";
 
             for (int outerCount = 0; outerCount < testData.EnumerableData.Count; outerCount++)
             {
                 for (int innerCount = 0; innerCount < testData.EnumerableData[outerCount].EnumerableData.Count; innerCount++)
                 {
-                    if (outerCount == testData.EnumerableData.Count - 1 && innerCount == testData.EnumerableData[outerCount].EnumerableData.Count - 1) separator = "";
+                    if (outerCount == testData.EnumerableData.Count - 1 && innerCount == testData.EnumerableData[outerCount].EnumerableData.Count - 1)
+                    {
+                        separator = "";
+                    }
+
                     if (outerCount < testData.EnumerableData.Count)
                     {
                         tmpExpected += testData.EnumerableData[outerCount].Name + separator;
@@ -601,8 +608,8 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
 
             #endregion Complex Setup for Expected
 
-            string expected = tmpExpected + "^" + tmpExpected1;
-            string actual = string.Join("|", data[enumerableNamePath]);
+            var expected = tmpExpected + "^" + tmpExpected1;
+            var actual = string.Join("|", data[enumerableNamePath]);
             actual += "^" + string.Join("|", data[nestedEnumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
@@ -615,16 +622,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainASinglePathWhichIsEnumerable_Expected_FlattenedDataWithValuesFromEnumerablePath()
         {
-            PocoTestData testData = GivenWithParallelAndNestedEnumerables();
+            var testData = GivenWithParallelAndNestedEnumerables();
 
-            PocoPath enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
-            List<IPath> paths = new List<IPath> { enumerableNamePath };
+            var enumerableNamePath = new PocoPath("EnumerableData().Name", "EnumerableData.Name");
+            var paths = new List<IPath> { enumerableNamePath };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var pocoNavigator = new PocoNavigator(testData);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
-            string actual = string.Join("|", data[enumerableNamePath]);
+            var expected = string.Join("|", testData.EnumerableData.Select(e => e.Name));
+            var actual = string.Join("|", data[enumerableNamePath]);
 
             Assert.AreEqual(expected, actual);
         }
@@ -636,16 +643,16 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
         [TestMethod]
         public void SelectEnumerableValuesAsRelatedFromReferenceType_Where_PathsContainASinglePathWhichIsScalar_Expected_FlattenedDataWithValueFromScalarPath()
         {
-            PocoTestData testData = GivenWithParallelAndNestedEnumerables();
+            var testData = GivenWithParallelAndNestedEnumerables();
 
-            PocoPath namePath = new PocoPath("Name", "Name");
-            List<IPath> paths = new List<IPath> { namePath };
+            var namePath = new PocoPath("Name", "Name");
+            var paths = new List<IPath> { namePath };
 
-            PocoNavigator pocoNavigator = new PocoNavigator(testData);
-            Dictionary<IPath, IList<object>> data = pocoNavigator.SelectEnumerablesAsRelated(paths);
+            var pocoNavigator = new PocoNavigator(testData);
+            var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            string expected = testData.Name;
-            string actual = string.Join("|", data[namePath]);
+            var expected = testData.Name;
+            var actual = string.Join("|", data[namePath]);
 
             Assert.AreEqual(expected, actual);
         }

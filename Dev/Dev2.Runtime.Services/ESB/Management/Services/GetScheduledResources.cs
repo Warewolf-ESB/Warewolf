@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,14 +11,10 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.Security;
@@ -28,33 +24,18 @@ using Newtonsoft.Json;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class GetScheduledResources : IEsbManagementEndpoint
+    public class GetScheduledResources : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        private IServerSchedulerFactory _schedulerFactory;
+        IServerSchedulerFactory _schedulerFactory;
         ISecurityWrapper _securityWrapper;
-        private IResourceCatalog _catalog;
+        IResourceCatalog _catalog;
 
-        public string HandlesType()
-        {
-            return "GetScheduledResources";
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
 
-                Dev2Logger.Info("Get Scheduled Resources");
+                Dev2Logger.Info("Get Scheduled Resources", GlobalConstants.WarewolfInfo);
                 ObservableCollection<IScheduledResource> resources;
                 using(var model = SchedulerFactory.CreateModel(GlobalConstants.SchedulerFolderId, SecurityWrapper))
                 {
@@ -64,48 +45,36 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var sb = new StringBuilder(JsonConvert.SerializeObject(resources, Formatting.Indented, new JsonSerializerSettings
                 {
                     TypeNameHandling = TypeNameHandling.Objects,
-                    TypeNameAssemblyFormat = FormatterAssemblyStyle.Simple
+                    TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Simple
                 }));
                 return sb;
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 throw;
             }
         }
         public IServerSchedulerFactory SchedulerFactory
         {
-            get { return _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(GlobalConstants.ServerWorkspaceID, a.ResourceId)); }
-            set { _schedulerFactory = value; }
+            get => _schedulerFactory ?? new ServerSchedulerFactory(a => ResourceCatalogue.GetResourcePath(GlobalConstants.ServerWorkspaceID, a.ResourceId));
+            set => _schedulerFactory = value;
         }
 
         public IResourceCatalog ResourceCatalogue
         {
-            get { return _catalog ?? ResourceCatalog.Instance; }
-            set { _catalog = value; }
+            get => _catalog ?? ResourceCatalog.Instance;
+            set => _catalog = value;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService getScheduledResourcesService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList></DataList>") };
-
-            ServiceAction getScheduledResourcesAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceName = HandlesType(), SourceMethod = HandlesType() };
-
-            getScheduledResourcesService.Actions.Add(getScheduledResourcesAction);
-
-            return getScheduledResourcesService;
-        }
         public ISecurityWrapper SecurityWrapper
         {
-            get
-            {
-                return _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
-            }
-            set
-            {
-                _securityWrapper = value;
-            }
+            get => _securityWrapper ?? new SecurityWrapper(ServerAuthorizationService.Instance);
+            set => _securityWrapper = value;
         }
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList></DataList>");
+
+        public override string HandlesType() => "GetScheduledResources";
     }
 }

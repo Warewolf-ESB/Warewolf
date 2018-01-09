@@ -180,4 +180,7 @@
   <data name="Dev2BinaryConverterPayloadToSmallException" xml:space="preserve">
     <value>Binary value must be greater than 8 characters</value>
   </data>
+  <data name="ConnectionError" xml:space="preserve">
+    <value>Connection Error :</value>
+  </data>
 </root>

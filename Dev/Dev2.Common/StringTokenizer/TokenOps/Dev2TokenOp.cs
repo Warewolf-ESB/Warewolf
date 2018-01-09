@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,15 +13,15 @@ using System;
 using System.Text;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Common
 {
-    internal class Dev2TokenOp : IDev2SplitOp
+    class Dev2TokenOp : IDev2SplitOp
     {
-        private readonly string _escapeChar;
-        private readonly bool _include;
-        private readonly char[] _tokenParts;
+        readonly string _escapeChar;
+        readonly bool _include;
+        readonly char[] _tokenParts;
 
         internal Dev2TokenOp(string token, bool includeToken)
             : this(token, includeToken, "")
@@ -42,7 +42,7 @@ namespace Dev2.Common
 
         public bool CanUseEnumerator(bool isReversed)
         {
-            return isReversed != true && _tokenParts.Length == 1;
+            return !isReversed && _tokenParts.Length == 1;
         }
 
         public string ExecuteOperation(char[] candidate, int startIdx, bool isReversed)
@@ -53,7 +53,7 @@ namespace Dev2.Common
             {                
                 if (_tokenParts.Length == 1)
                 {
-                    int pos = startIdx;
+                    var pos = startIdx;
                     while (pos < candidate.Length &&
                            (candidate[pos] != _tokenParts[0] || SkipDueToEscapeChar(candidate, pos)))
                     {
@@ -63,7 +63,7 @@ namespace Dev2.Common
                 }
                 else
                 {
-                    int pos = startIdx;                   
+                    var pos = startIdx;
                     while (pos < candidate.Length && !IsMultiTokenMatch(candidate, pos, false))
                     {                        
                         result.Append(candidate[pos]);
@@ -82,7 +82,7 @@ namespace Dev2.Common
                 // reverse order
                 if (_tokenParts.Length == 1)
                 {
-                    int pos = startIdx;
+                    var pos = startIdx;
                     if (pos > candidate.Length)
                     {
                         pos = candidate.Length - 1;
@@ -95,7 +95,7 @@ namespace Dev2.Common
                 }
                 else
                 {
-                    int pos = startIdx;
+                    var pos = startIdx;
                     while (pos >= 0 && !IsMultiTokenMatch(candidate, pos, true))
                     {
                         result.Insert(0, candidate[pos]);
@@ -146,7 +146,7 @@ namespace Dev2.Common
 
         public int OpLength()
         {
-            int result = _tokenParts.Length;
+            var result = _tokenParts.Length;
 
             if (_include)
             {
@@ -158,13 +158,13 @@ namespace Dev2.Common
 
         #region Private Method
 
-        private bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
+        bool IsMultiTokenMatch(char[] canidate, int fromIndex, bool isReversed)
         {
-           bool result = true;
+            var result = true;
 
-            int cnt = 0;
-            int canidateIdx = fromIndex;
-            
+            var cnt = 0;
+            var canidateIdx = fromIndex;
+
             if (isReversed)
             {
                 cnt = _tokenParts.Length - 1;
@@ -177,7 +177,7 @@ namespace Dev2.Common
                     if (canidate[canidateIdx] != _tokenParts[cnt])
                     {
                         result = false;
-                    }                  
+                    }
                     if (!isReversed)
                     {
                         canidateIdx++;
@@ -200,7 +200,7 @@ namespace Dev2.Common
 
         #endregion Private Method
 
-        private bool SkipDueToEscapeChar(char[] candidate, int pos)
+        bool SkipDueToEscapeChar(char[] candidate, int pos)
         {
             if (pos > 0 && !String.IsNullOrEmpty(_escapeChar))
             {
@@ -209,7 +209,7 @@ namespace Dev2.Common
             return false;
         }
 
-        private bool SkipDueToEscapeChar(string word)
+        bool SkipDueToEscapeChar(string word)
         {
             if (!String.IsNullOrEmpty(_escapeChar))
             {

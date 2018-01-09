@@ -10,17 +10,17 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable UnusedMember.Local
+
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
     public class ExchangeSourceRegion : ISourceToolRegion<IExchangeSource>
     {
-        private Guid _sourceId;
-        private readonly ModelItem _modelItem;
-        private Action _sourceChangedAction;
-        private IExchangeSource _selectedSource;
-        private ICollection<IExchangeSource> _sources;
+        Guid _sourceId;
+        readonly ModelItem _modelItem;
+        Action _sourceChangedAction;
+        IExchangeSource _selectedSource;
+        ICollection<IExchangeSource> _sources;
         public ICommand EditSourceCommand { get; set; }
         public ICommand NewSourceCommand { get; set; }
 
@@ -74,7 +74,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             Sources = sources.Where(source => source != null && source.ResourceType == type).ToObservableCollection();
             IsEnabled = true;
             _modelItem = modelItem;
-            SourceId = modelItem.GetProperty<Guid>("SourceId");
+            SetSourceId(modelItem.GetProperty<Guid>("SourceId"));
 
             if (SavedSource != null)
             {
@@ -87,24 +87,17 @@ namespace Dev2.Activities.Designers2.Core.Source
             return SelectedSource != null;
         }
 
-        Guid SourceId
+        void SetSourceId(Guid value)
         {
-            get
-            {
-                return _sourceId;
-            }
-            set
-            {
-                _sourceId = value;
-                _modelItem?.SetProperty("SourceId", value);
-            }
+            _sourceId = value;
+            _modelItem?.SetProperty("SourceId", value);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public string ToolRegionName { get; set; }
         public bool IsEnabled { get; set; }
         public IList<IToolRegion> Dependants { get; set; }
-        // ReSharper disable once UnassignedGetOnlyAutoProperty
+        
         public IList<string> Errors { get; set; }
 
         public IToolRegion CloneRegion()
@@ -117,8 +110,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ExchangeSourceRegion;
-            if (region != null)
+            if (toRestore is ExchangeSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
             }
@@ -151,22 +143,22 @@ namespace Dev2.Activities.Designers2.Core.Source
             set
             {
                 SetSelectedSource(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
             }
         }
 
-        private void SetSelectedSource(IExchangeSource value)
+        void SetSelectedSource(IExchangeSource value)
         {
             if (value != null)
             {
                 _selectedSource = value;
                 SavedSource = value;
-                SourceId = value.ResourceID;
+                SetSourceId(value.ResourceID);
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+
             OnPropertyChanged("SelectedSource");
         }
 

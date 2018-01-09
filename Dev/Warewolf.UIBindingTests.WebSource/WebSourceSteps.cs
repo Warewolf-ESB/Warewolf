@@ -17,19 +17,23 @@ using Warewolf.UIBindingTests.Core;
 using Warewolf.Studio.Core.Infragistics_Prism_Region_Adapter;
 using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.WebSource
 {
     [Binding]
     public class WebSourceSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
         string illegalCharactersInPath = "Illegal characters in path.";
 
         public WebSourceSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 

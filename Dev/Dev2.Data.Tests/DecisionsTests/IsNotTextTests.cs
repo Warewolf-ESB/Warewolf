@@ -13,10 +13,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isNotText = new IsNotText();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "9";
             //------------Execute Test---------------------------
-            bool result = isNotText.Invoke(cols);
+            var result = isNotText.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
             //------------Execute Test---------------------------
@@ -33,10 +33,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var notStartsWith = new IsNotText();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Text";
             //------------Execute Test---------------------------
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

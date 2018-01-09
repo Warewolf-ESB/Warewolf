@@ -11,10 +11,10 @@ namespace Warewolf.Studio.Models.Help.Tests
     {
         #region Fields
 
-        private Mock<IEventAggregator> _eventAggregatorMock;
+        Mock<IEventAggregator> _eventAggregatorMock;
 
-        private HelpChangedEvent _helpChangedEvent;
-        private HelpModel _target;
+        HelpChangedEvent _helpChangedEvent;
+        HelpModel _target;
 
         #endregion Fields
 

@@ -6,7 +6,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -354,10 +354,10 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.AreEqual(true, serviceTestOutput.IsSearchCriteriaVisible);
         }
 
-       
 
 
-        private static ServiceTestStep CreateDecisionMock()
+
+        static ServiceTestStep CreateDecisionMock()
         {
             return new ServiceTestStep(Guid.NewGuid(), typeof(DsfDecision).Name, new ObservableCollection<IServiceTestOutput>(), StepType.Mock);
         }

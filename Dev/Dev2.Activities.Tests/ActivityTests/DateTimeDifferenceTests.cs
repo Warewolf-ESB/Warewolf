@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,16 +16,16 @@ using Dev2.Interfaces;
 using Dev2.Tests.Activities;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Common;
 
-// ReSharper disable CheckNamespace
 namespace ActivityUnitTests.ActivityTests
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+
     public class DateTimeDifferenceTests : BaseActivityUnitTest
     {
         /// <summary>
@@ -49,11 +49,9 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[Result]]"
                          );
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "209";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual(expected, actual);
@@ -72,10 +70,8 @@ namespace ActivityUnitTests.ActivityTests
                          , "[[resCol(*).res]]"
                          );
 
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            IList<string> results;
-            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out results, out error);
+            var result = ExecuteProcess();
+            GetRecordSetFieldValueFromDataList(result.Environment, "resCol", "res", out IList<string> results, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("8847", results[0]);
@@ -83,7 +79,6 @@ namespace ActivityUnitTests.ActivityTests
             Assert.AreEqual("9090", results[2]);
         }
 
-        //2013.03.11: Ashley Lewis - PBI 9167 Moved to positive tests
         [TestMethod]
         public void Blank_InputFormat_Expected_Error()
         {
@@ -96,23 +91,21 @@ namespace ActivityUnitTests.ActivityTests
                             , "Days"
                             , "[[Result]]"
                             );
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "209";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Result", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Result", out string actual, out string error);
 
             // remove test datalist ;)
 
-            Assert.AreEqual(expected, actual);
+            Assert.AreEqual(expected, actual,error);
         }
 
         [TestMethod]
         [TestCategory("DateTimeDifferenceUnitTest")]
         [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
+
         public void DateTimeDifference_DateTimeDifferenceUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-        // ReSharper restore InconsistentNaming
+
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -123,11 +116,8 @@ namespace ActivityUnitTests.ActivityTests
                          , "Seconds"
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             Assert.AreEqual("0", actual);
         }
@@ -154,7 +144,7 @@ namespace ActivityUnitTests.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
+        void SetupArguments(string currentDL, string testData, string input1, string input2, string inputFormat, string outputType, string result)
         {
             TestStartNode = new FlowStep
             {

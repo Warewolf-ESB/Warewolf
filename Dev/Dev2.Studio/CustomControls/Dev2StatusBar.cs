@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.CustomControls
 {
     /// <author>Massimo.Guerrera</author>
@@ -19,10 +19,10 @@ namespace Dev2.Studio.CustomControls
     [TemplatePart(Name = PART_Label, Type = typeof(Label))]
     public class Dev2StatusBar : TextBox
     {
-        // ReSharper disable once InconsistentNaming
-        private const string PART_Label = "StatusBarLabel";
 
-        private Label _label;
+        const string PART_Label = "StatusBarLabel";
+
+        Label _label;
 
         public Label StatusBarLabel => _label;
 

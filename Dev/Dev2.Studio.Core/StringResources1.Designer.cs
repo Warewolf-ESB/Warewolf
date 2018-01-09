@@ -19,7 +19,7 @@ namespace Dev2.Studio.Core {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class StringResources {
@@ -66,6 +66,15 @@ namespace Dev2.Studio.Core {
         public static string App_Data_Directory {
             get {
                 return ResourceManager.GetString("App_Data_Directory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unsaved changes.
+        /// </summary>
+        public static string CloseHeader {
+            get {
+                return ResourceManager.GetString("CloseHeader", resourceCulture);
             }
         }
         
@@ -370,6 +379,19 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to There are incomplete changes.
+        ///Would you like to complete the changes? 
+        ///-----------------------------------------------------------------
+        ///Yes - Complete your changes.
+        ///No - Discard your changes..
+        /// </summary>
+        public static string ItemSource_HasChanged_NotTested {
+            get {
+                return ResourceManager.GetString("ItemSource_HasChanged_NotTested", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Your changes have not been saved.
         ///Would you like to save? 
         ///-----------------------------------------------------------------
@@ -380,6 +402,15 @@ namespace Dev2.Studio.Core {
         public static string ItemSource_NotSaved {
             get {
                 return ResourceManager.GetString("ItemSource_NotSaved", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Network Error.
+        /// </summary>
+        public static string NetworkSettingErrorPrefix {
+            get {
+                return ResourceManager.GetString("NetworkSettingErrorPrefix", resourceCulture);
             }
         }
         
@@ -425,6 +456,15 @@ namespace Dev2.Studio.Core {
         public static string Ribbon_StopExecution {
             get {
                 return ResourceManager.GetString("Ribbon_StopExecution", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Save Error.
+        /// </summary>
+        public static string SaveSettingErrorHeader {
+            get {
+                return ResourceManager.GetString("SaveSettingErrorHeader", resourceCulture);
             }
         }
         
@@ -497,11 +537,61 @@ namespace Dev2.Studio.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to LOGGING.
+        /// </summary>
+        public static string SettingsLogging {
+            get {
+                return ResourceManager.GetString("SettingsLogging", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to PERFORMANCE COUNTERS.
+        /// </summary>
+        public static string SettingsPerformanceCounters {
+            get {
+                return ResourceManager.GetString("SettingsPerformanceCounters", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to SECURITY.
+        /// </summary>
+        public static string SettingsSecurity {
+            get {
+                return ResourceManager.GetString("SettingsSecurity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Settings.
+        /// </summary>
+        public static string SettingsTitle {
+            get {
+                return ResourceManager.GetString("SettingsTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Source server permission Deploy From not allowed..
         /// </summary>
         public static string SourcePermission_Error {
             get {
                 return ResourceManager.GetString("SourcePermission_Error", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Your changes have not been saved.
+        ///Would you like to save? 
+        ///-----------------------------------------------------------------
+        ///Yes - Save your changes.
+        ///No - Discard your changes.
+        ///Cancel - Do not close the studio..
+        /// </summary>
+        public static string Unsaved_Changes {
+            get {
+                return ResourceManager.GetString("Unsaved_Changes", resourceCulture);
             }
         }
         

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,31 +29,31 @@ using Newtonsoft.Json;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable FieldCanBeMadeReadOnly.Local
+
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class ManageComPluginServiceInputViewModel : IManageComPluginServiceInputViewModel
     {
-        IGenerateOutputArea _generateOutputArea;
-        IGenerateInputArea _generateInputArea;
+        readonly IGenerateOutputArea _generateOutputArea;
+        readonly IGenerateInputArea _generateInputArea;
         bool _isEnabled;
         bool _pasteResponseAvailable;
-        IComViewModel _viewmodel;
-        IComPluginServiceModel _serverModel;
+        readonly IComViewModel _viewmodel;
+        readonly IComPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
-        private bool _okSelected;
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private IComPluginService _model;
-        private bool _pasteResponseVisible;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
+        bool _okSelected;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        IComPluginService _model;
+        bool _pasteResponseVisible;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
 
         public ManageComPluginServiceInputViewModel(IComViewModel model, IComPluginServiceModel serviceModel)
         {
@@ -185,13 +185,13 @@ namespace Dev2.Activities.Designers2.Core
                         throw new Exception(errorMessage);
                     }
                     Description = responseService.Description;
-                    // ReSharper disable MaximumChainedReferences
+                    
                     var outputMapping = _recordsetList.SelectMany(recordset => recordset.Fields, (recordset, recordsetField) =>
                     {
                         var serviceOutputMapping = new ServiceOutputMapping(recordsetField.Name, recordsetField.Alias, recordset.Name) { Path = recordsetField.Path };
                         return serviceOutputMapping;
                     }).Cast<IServiceOutputMapping>().ToList();
-                    // ReSharper restore MaximumChainedReferences
+                    
                     _generateOutputArea.IsEnabled = true;
                     _generateOutputArea.Outputs = outputMapping;
                 }
@@ -272,7 +272,7 @@ namespace Dev2.Activities.Designers2.Core
         #region Implementation of IManageServiceInputViewModel<IPluginService>
 
         public Action TestAction { get; set; }
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public ICommand TestCommand { get; private set; }
 
         public bool TestPassed
@@ -333,9 +333,9 @@ namespace Dev2.Activities.Designers2.Core
         }
 
         public ImageSource TestIconImageSource { get; set; }
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public ICommand CloseCommand { get; private set; }
-        // ReSharper disable once AutoPropertyCanBeMadeGetOnly.Local
+        
         public ICommand OkCommand { get; private set; }
         public Action OkAction { get; set; }
         public Action CloseAction { get; set; }
@@ -387,10 +387,6 @@ namespace Dev2.Activities.Designers2.Core
             {
                 return _generateOutputArea;
             }
-            set
-            {
-                
-            }
         }
         public IOutputDescription Description { get; set; }
         public IGenerateInputArea InputArea
@@ -398,10 +394,6 @@ namespace Dev2.Activities.Designers2.Core
             get
             {
                 return _generateInputArea;
-            }
-            set
-            {
-                
             }
         }
         public bool PasteResponseVisible

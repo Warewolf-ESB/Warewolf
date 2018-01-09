@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Core.Tests
     {
 
         public static readonly object DataListSingletonTestGuard = new object();
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -63,7 +63,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void SetDataList_Expected_CurrentDataListSetInSingleton()
         {
-            Mock<IDataListViewModel> mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
+            var mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
             Assert.AreEqual(DataListSingleton.ActiveDataList, mockdataListViewModel.Object);
         }
@@ -75,9 +75,9 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void UpdateActiveDataList_Expected_NewActiveDataList()
         {
-            Mock<IDataListViewModel> mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
+            var mockdataListViewModel = Dev2MockFactory.SetupDataListViewModel();
             DataListSingleton.SetDataList(mockdataListViewModel.Object);
-            Mock<IDataListViewModel> mock_newDataListViewModel = new Mock<IDataListViewModel>();
+            var mock_newDataListViewModel = new Mock<IDataListViewModel>();
             mock_newDataListViewModel.Setup(dataList => dataList.Resource).Returns(Dev2MockFactory.SetupResourceModelMock().Object);
             DataListSingleton.SetDataList(mock_newDataListViewModel.Object);
             Assert.AreNotEqual(DataListSingleton.ActiveDataList, mockdataListViewModel);

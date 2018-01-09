@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,8 +27,8 @@ namespace Dev2.Providers.Validation.Rules
         {
             var value = GetValue();
 
-            string[] fields = value.Split(',');
-            for(int i = 0; i < fields.Length; i++)
+            var fields = value.Split(',');
+            for (int i = 0; i < fields.Length; i++)
             {
                 if(!string.IsNullOrEmpty(ExtractIndexRegionFromRecordset(fields[i])))
                 {
@@ -46,13 +46,13 @@ namespace Dev2.Providers.Validation.Rules
         /// <returns></returns>
         public static string ExtractIndexRegionFromRecordset(string rs)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
-            int start = rs.IndexOf("(", StringComparison.Ordinal);
-            if(start > 0)
+            var start = rs.IndexOf("(", StringComparison.Ordinal);
+            if (start > 0)
             {
-                int end = rs.LastIndexOf(")", StringComparison.Ordinal);
-                if(end < 0)
+                var end = rs.LastIndexOf(")", StringComparison.Ordinal);
+                if (end < 0)
                 {
                     end = rs.Length;
                 }

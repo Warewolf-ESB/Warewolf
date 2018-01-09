@@ -4,7 +4,7 @@ using Dev2.Common.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 using WarewolfParserInterop;
-// ReSharper disable InconsistentNaming
+
 
 namespace WarewolfParsingTest
 {
@@ -125,10 +125,10 @@ namespace WarewolfParsingTest
             Assert.AreEqual(res, "1,2,3");
         }
 
-        private static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
+        static DataStorage.WarewolfEnvironment CreateEnvironmentWithData()
         {
 
-            ExecutionEnvironment env = new ExecutionEnvironment();
+            var env = new ExecutionEnvironment();
             env.Assign("[[Rec(1).a]]", "1", 0);
             env.Assign("[[Rec(2).a]]", "2", 0);
             env.Assign("[[Rec(3).a]]", "3", 0);
@@ -150,7 +150,7 @@ namespace WarewolfParsingTest
             env.AssignJson(new AssignValue("[[array(1)]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(1).Name]]", "bob"), 0);
             env.AssignJson(new AssignValue("[[arrayObj(2).Name]]", "bobe"), 0);
-            PrivateObject p = new PrivateObject(env);
+            var p = new PrivateObject(env);
             return (DataStorage.WarewolfEnvironment)p.GetFieldOrProperty("_env");
         }
     }

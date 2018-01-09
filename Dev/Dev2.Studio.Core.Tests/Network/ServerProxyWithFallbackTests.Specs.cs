@@ -39,7 +39,7 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new ServerProxy(new Uri("http://bob"));
             var serverGuid = Guid.NewGuid();
-            PrivateObject p = new PrivateObject(serverProxy);
+            var p = new PrivateObject(serverProxy);
             var wrapped = new Mock<IEnvironmentConnection>();
             var fallback = new Mock<IEnvironmentConnection>();
             wrapped.Setup(a => a.Connect(It.IsAny<Guid>())).Throws(new FallbackException());
@@ -48,9 +48,9 @@ namespace Dev2.Core.Tests.Network
             {
                 serverProxy.Connect(serverGuid);
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
 
             }
@@ -71,7 +71,7 @@ namespace Dev2.Core.Tests.Network
             //------------Setup for test--------------------------
             var serverProxy = new ServerProxy(new Uri("http://bob"));
             var serverGuid = Guid.NewGuid();
-            PrivateObject p = new PrivateObject(serverProxy);
+            var p = new PrivateObject(serverProxy);
             var wrapped = new Mock<IEnvironmentConnection>();
             var fallback = new Mock<IEnvironmentConnection>();
             wrapped.Setup(a => a.Connect(It.IsAny<Guid>())).Throws(new Exception());
@@ -82,9 +82,9 @@ namespace Dev2.Core.Tests.Network
                 serverProxy.Connect(serverGuid);
 
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
 
 

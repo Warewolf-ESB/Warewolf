@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,9 +9,11 @@
 */
 
 using System;
+using System.Linq;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
+using System.Xml.Linq;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
@@ -30,13 +32,13 @@ namespace Dev2.Runtime.WebServer.Handlers
 {
     public class InternalServiceRequestHandler : AbstractWebRequestHandler
     {
-        private readonly IResourceCatalog _catalog;
-        private readonly IAuthorizationService _authorizationService;
+        readonly IResourceCatalog _catalog;
+        readonly IAuthorizationService _authorizationService;
         public IPrincipal ExecutingUser { private get; set; }
 
         public InternalServiceRequestHandler()
-            :this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
-        {            
+            : this(ResourceCatalog.Instance, ServerAuthorizationService.Instance)
+        {
         }
         public InternalServiceRequestHandler(IResourceCatalog catalog, IAuthorizationService authorizationService)
         {
@@ -50,7 +52,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             var instanceId = GetInstanceID(ctx);
             var bookmark = GetBookmark(ctx);
             GetDataListID(ctx);
-            var workspaceID = GetWorkspaceID(ctx);
+            var workspaceId = GetWorkspaceID(ctx);
             var formData = new WebRequestTO();
 
             var xml = GetPostData(ctx);
@@ -78,7 +80,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     Thread.CurrentPrincipal = ExecutingUser;
 
-                    var responseWriter = CreateForm(formData, serviceName, workspaceID, ctx.FetchHeaders(), ctx.Request.User);
+                    var responseWriter = CreateForm(formData, serviceName, workspaceId, ctx.FetchHeaders(), ctx.Request.User);
                     ctx.Send(responseWriter);
                 });
 
@@ -88,19 +90,37 @@ namespace Dev2.Runtime.WebServer.Handlers
             }
             catch (Exception e)
             {
-                // ReSharper disable InvokeAsExtensionMethod
-                Dev2Logger.Error(this, e);
-                // ReSharper restore InvokeAsExtensionMethod
+                Dev2Logger.Error(this, e, GlobalConstants.WarewolfError);
             }
         }
 
-        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceID, Guid dataListID, string connectionId)
+        string BuildStudioUrl(string payLoad)
+        {
+            try
+            {
+                var xElement = XDocument.Parse(payLoad);
+                xElement.Descendants().Where(e => e.Name == "BDSDebugMode" || e.Name == "DebugSessionID" || e.Name == "EnvironmentID").Remove();
+                var s = xElement.ToString(SaveOptions.DisableFormatting);
+                var buildStudioUrl = s.Replace(Environment.NewLine, string.Empty).Replace(" ", "%20");
+                return buildStudioUrl;
+            }
+            catch (Exception e)
+            {
+                Dev2Logger.Error(e, "BuildStudioUrl(string payLoad)");
+                return string.Empty;
+            }
+
+        }
+
+        public StringBuilder ProcessRequest(EsbExecuteRequest request, Guid workspaceId, Guid dataListId, string connectionId)
         {
             var channel = new EsbServicesEndpoint();
             var xmlData = string.Empty;
+            var queryString = "";
             if (request.Args != null && request.Args.ContainsKey("DebugPayload"))
             {
                 xmlData = request.Args["DebugPayload"].ToString();
+                queryString = BuildStudioUrl(xmlData);
                 xmlData = xmlData.Replace("<DataList>", "<XmlData>").Replace("</DataList>", "</XmlData>");
             }
 
@@ -118,7 +138,13 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
             }
             var serializer = new Dev2JsonSerializer();
-            IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListID);
+            IDSFDataObject dataObject = new DsfDataObject(xmlData, dataListId);
+            if (!dataObject.ExecutionID.HasValue)
+            {
+                dataObject.ExecutionID = Guid.NewGuid();
+            }
+            dataObject.QueryString = queryString;
+
             if (isDebug)
             {
                 dataObject.IsDebug = true;
@@ -126,8 +152,8 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.StartTime = DateTime.Now;
             dataObject.EsbChannel = channel;
             dataObject.ServiceName = request.ServiceName;
-            
-            var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceID, request.ResourceID) : _catalog.GetResource(workspaceID, request.ServiceName);
+
+            var resource = request.ResourceID != Guid.Empty ? _catalog.GetResource(workspaceId, request.ResourceID) : _catalog.GetResource(workspaceId, request.ServiceName);
             var isManagementResource = false;
             if (!string.IsNullOrEmpty(request.TestName))
             {
@@ -153,16 +179,12 @@ namespace Dev2.Runtime.WebServer.Handlers
             dataObject.ExecutingUser = ExecutingUser;
             if (!dataObject.Environment.HasErrors())
             {
-                ErrorResultTO errors;
-
                 if (ExecutingUser == null)
                 {
                     throw new Exception(ErrorResource.NullExecutingUser);
                 }
-
                 try
                 {
-                    // Execute in its own thread to give proper context ;)
                     var t = new Thread(() =>
                     {
                         Thread.CurrentPrincipal = ExecutingUser;
@@ -172,10 +194,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                             ExecutingUser = Common.Utilities.ServerUser;
                             dataObject.ExecutingUser = Common.Utilities.ServerUser;
                         }
-                        else if (dataObject.IsServiceTestExecution)
+                        else
                         {
-                            
-                            if (_authorizationService != null)
+                            if (dataObject.IsServiceTestExecution && _authorizationService != null)
                             {
                                 var authorizationService = _authorizationService;
                                 var hasContribute =
@@ -189,7 +210,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                             }
                         }
 
-                        channel.ExecuteRequest(dataObject, request, workspaceID, out errors);
+                        channel.ExecuteRequest(dataObject, request, workspaceId, out ErrorResultTO errors);
                     });
 
                     t.Start();
@@ -198,7 +219,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e.Message, e);
+                    Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                 }
 
 

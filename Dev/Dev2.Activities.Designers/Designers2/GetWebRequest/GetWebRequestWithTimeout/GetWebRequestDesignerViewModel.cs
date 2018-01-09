@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -64,13 +64,13 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                                         new PropertyMetadata(false));
 
         // DO NOT bind to these properties - these are here for convenience only!!!
-        private string Url
+        string Url
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
         }
 
-        private string Headers
+        string Headers
         {
             get { return GetProperty<string>(); }
             set { SetProperty(value); }
@@ -90,8 +90,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
             if (TimeOutText.Length > 0)
             {
-                int res;
-                if (!int.TryParse(TimeOutText, out res))
+                if (!int.TryParse(TimeOutText, out int res))
                 {
                     if (!DataListUtil.IsValueRecordset(TimeOutText) && !DataListUtil.IsValueScalar(TimeOutText))
                     {
@@ -113,30 +112,21 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private string TimeOutText
-        {
-            get { return GetProperty<string>(); }
-            // ReSharper disable UnusedMember.Local
-            set { SetProperty(value); }
-            // ReSharper restore UnusedMember.Local
-        }
+        string TimeOutText => GetProperty<string>();
 
         #region Overrides of ActivityDesignerViewModel
 
         protected override void OnModelItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            switch (e.PropertyName)
+            if (e.PropertyName == "Url" || e.PropertyName == "Headers")
             {
-                case "Url":
-                case "Headers":
-                    ExtractVariables();
-                    break;
+                ExtractVariables();
             }
         }
 
         #endregion
 
-        private void ExtractVariables()
+        void ExtractVariables()
         {
             PreviewViewModel.Output = string.Empty;
             var urlVariables = DataListCleaningUtils
@@ -153,17 +143,17 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             {
                 PreviewViewModel.InputsVisibility = Visibility.Visible;
 
-                // ReSharper disable MaximumChainedReferences
+
                 var mustRemainKeys = PreviewViewModel.Inputs
                                                      .Where(i => variableList.Contains(i.Key))
                                                      .ToList();
-                // ReSharper restore MaximumChainedReferences
 
-                // ReSharper disable MaximumChainedReferences
+
+
                 var mustRemove = PreviewViewModel.Inputs
                                                  .Where(i => !variableList.Contains(i.Key))
                                                  .ToList();
-                // ReSharper restore MaximumChainedReferences
+
 
                 mustRemove.ForEach(r => PreviewViewModel.Inputs.Remove(r));
 
@@ -178,7 +168,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private void DoPreview(object sender, PreviewRequestedEventArgs args)
+        void DoPreview(object sender, PreviewRequestedEventArgs args)
         {
             Errors = null;
             PreviewViewModel.Output = string.Empty;
@@ -194,7 +184,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        private string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
+        string GetUrl(ObservableCollection<ObservablePair<string, string>> inputs = null)
         {
             var url = Url;
 
@@ -249,7 +239,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             return url;
         }
 
-        private void ValidateUrl(string urlValue)
+        void ValidateUrl(string urlValue)
         {
             if (string.IsNullOrWhiteSpace(urlValue))
             {
@@ -264,8 +254,7 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
             else
             {
-                Uri uriResult;
-                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out uriResult) &&
+                var isValid = Uri.TryCreate(urlValue, UriKind.Absolute, out Uri uriResult) &&
                               (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
                 if (!isValid)
                 {
@@ -281,13 +270,13 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
             }
         }
 
-        public Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
+        internal Func<string, string, List<Tuple<string, string>>, string> WebInvoke = (method, url, headers) =>
             {
                 var webInvoker = new WebRequestInvoker();
                 return webInvoker.ExecuteRequest(method, url, headers);
             };
 
-        private string GetPreviewOutput(string url)
+        string GetPreviewOutput(string url)
         {
             Errors = null;
             var result = string.Empty;
@@ -297,14 +286,14 @@ namespace Dev2.Activities.Designers2.GetWebRequest.GetWebRequestWithTimeout
                                   ? new string[0]
                                   : Headers.Split(new[] { '\n', '\r', ';' }, StringSplitOptions.RemoveEmptyEntries);
 
-                // ReSharper disable MaximumChainedReferences
+
                 var headersEntries = headers.Select(header => header.Split(':')).Select(headerSegments => new Tuple<string, string>(headerSegments[0], headerSegments[1])).ToList();
-                // ReSharper restore MaximumChainedReferences
+
 
                 url = PreviewViewModel.Inputs.Aggregate(url,
                                                         (current, previewInput) =>
                                                         current.Replace(previewInput.Key, previewInput.Value));
-                result = WebInvoke("GET", url, headersEntries);
+                result = WebInvoke?.Invoke("GET", url, headersEntries);
                 return result;
             }
             catch (Exception ex)

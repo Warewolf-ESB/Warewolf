@@ -822,13 +822,13 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igDp:DataRecordCellArea}">
                     <ControlTemplate.Resources>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="TimelineIsActive">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Active" Storyboard.TargetProperty="(UIElement.Opacity)">
                                 <SplineDoubleKeyFrame KeyTime="00:00:00.1000000" Value="1"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="TimelineIsActiveOff">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="Active" Storyboard.TargetProperty="(UIElement.Opacity)">
                                 <SplineDoubleKeyFrame KeyTime="00:00:00.4000000" Value="0"/>
@@ -1491,7 +1491,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igDp:GroupByRecordPresenter}">
                     <ControlTemplate.Resources>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="SbDisplayNested">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ncpVisual" Storyboard.TargetProperty="Opacity" FillBehavior="HoldEnd">
                                 <DiscreteDoubleKeyFrame Value="0" KeyTime="00:00:00"/>
@@ -1507,7 +1507,7 @@
                                 <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="00:00:0.75"/>
                             </ObjectAnimationUsingKeyFrames>
                         </Storyboard>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="SbHideNested">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="NestedContentPresenter" Storyboard.TargetProperty="Opacity" FillBehavior="HoldEnd">
                                 <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.15"/>
@@ -1670,7 +1670,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type igDp:GroupByRecordPresenter}">
                     <ControlTemplate.Resources>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="SbDisplayNested">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="ncpVisual" Storyboard.TargetProperty="Opacity" FillBehavior="HoldEnd">
                                 <DiscreteDoubleKeyFrame Value="0" KeyTime="00:00:00"/>
@@ -1686,7 +1686,7 @@
                                 <DiscreteObjectKeyFrame Value="{x:Static Visibility.Collapsed}" KeyTime="00:00:0.75"/>
                             </ObjectAnimationUsingKeyFrames>
                         </Storyboard>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="SbHideNested">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="NestedContentPresenter" Storyboard.TargetProperty="Opacity" FillBehavior="HoldEnd">
                                 <SplineDoubleKeyFrame KeySpline="0.5,0.5,0.5,0.5" Value="1" KeyTime="00:00:00.15"/>
@@ -1862,14 +1862,14 @@
                                 <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.4"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="SigmaFadeInFilterButton">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FilterButton" Storyboard.TargetProperty="(UIElement.Opacity)">
                                 <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
                                 <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="1"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="SigmaFadeOutFilterButton">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="FilterButton" Storyboard.TargetProperty="(UIElement.Opacity)" FillBehavior="Stop">
                                 <SplineDoubleKeyFrame KeyTime="00:00:00" Value="1"/>
@@ -1886,12 +1886,12 @@
                         <Border x:Name="background" Width="Auto" Height="Auto" RenderTransformOrigin="0.5,0.5" SnapsToDevicePixels="True" Background="{TemplateBinding Background}"
                                     CornerRadius="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type igDp:XamDataGrid}, ResourceId=LabelCornerRadius}}" />
                         <!-- Highlight -->
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Border x:Name="highlight" Opacity="0" Width="Auto" Height="Auto" CornerRadius="0" Background="Transparent" SnapsToDevicePixels="True"/>
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Border x:Name="lineOuter" BorderBrush="{TemplateBinding OuterBorderBrush}" BorderThickness="0,0,0,0" CornerRadius="1.55015910897703" Background="Transparent" 
                                     Margin="0,0,0,0" Width="Auto" Height="Auto" SnapsToDevicePixels="True"/>
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Border x:Name="lineInner" BorderBrush="{TemplateBinding InnerBorderBrush}" BorderThickness="0" CornerRadius="0.550159108977027" Background="Transparent"
                                     Margin="1,1,1,1" Width="Auto" Height="Auto" SnapsToDevicePixels="True"/>
                         <Path x:Name="fishHeadOuterStroke" SnapsToDevicePixels="True" Visibility="Collapsed" Fill="{TemplateBinding OuterBorderBrush}" Grid.Column="1" 
@@ -1902,7 +1902,7 @@
                                   Stretch="Fill" Data="M 0,20 C0,20 8,12 8,12 9,11 9,9 8,8 8,8 0,0 0,0 0,0 0,20 0,20 z"/>
                         <Path x:Name="fishHeadInnerStroke" SnapsToDevicePixels="True" Visibility="Collapsed"  Fill="{TemplateBinding InnerBorderBrush}" Grid.Column="1" Margin="-1,1,1,1"
                                   Stretch="Fill" Data="M 0,20 C0,20 8,12 8,12 9,11 9,9 8,8 8,8 0,0 0,0 0,0 0,1 0,1 0,1 7,8 7,8 8,9 8,11 7,12 7,12 0,19 0,19 0,19 0,20 0,20 z"/>
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Grid Margin="{TemplateBinding Padding}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" x:Name="sortIndicatorAndLabel">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>
@@ -2115,7 +2115,7 @@
                                 <SplineDoubleKeyFrame KeyTime="00:00:00.2000000" Value="0.4"/>
                             </DoubleAnimationUsingKeyFrames>
                         </Storyboard>
-                        <!-- ReSharper disable once Xaml.RedundantResource -->
+                        
                         <Storyboard x:Key="HideSelector">
                             <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Duration="00:00:00.0010000" Storyboard.TargetName="selectors" Storyboard.TargetProperty="(UIElement.Opacity)">
                                 <SplineDoubleKeyFrame KeyTime="00:00:00" Value="0"/>
@@ -2142,7 +2142,7 @@
                         </Grid.ColumnDefinitions>
                         <Border x:Name="errorBd" Width="2"  Grid.ColumnSpan="4" Visibility="Collapsed" HorizontalAlignment="Right" />
                         <!-- Selector Arrows -->
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Grid x:Name="selectors" Height="16" Width="16" Opacity="1">
                             <Path x:Name="selectorArrow"
                                       RenderTransformOrigin="0.5,0.5"
@@ -2203,7 +2203,7 @@
                                         Style="{DynamicResource {x:Static igDp:DataPresenterBase.FilterRecordClearButtonStyleKey}}"
                                         Visibility="{TemplateBinding FilterClearButtonVisibility}"/>
                         </Grid>
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Grid x:Name="icons" Height="16" Width="16" d:LayoutOverrides="Width, Height" HorizontalAlignment="Center" Margin="0,0,0,0" VerticalAlignment="Center">
                             <Path x:Name="addRecordOuter"
                                       Margin="3,3,0,0"
@@ -2293,7 +2293,7 @@
                                                     IsFixedOnTopAllowed="{TemplateBinding IsFixedOnTopAllowed}"
                                                     IsFixedOnBottomAllowed="{TemplateBinding IsFixedOnBottomAllowed}"
                                                     Visibility="{TemplateBinding FixedButtonVisibility}" VerticalAlignment="Center" />
-                        <!-- ReSharper disable once Xaml.MissingGridIndex -->
+                        
                         <Rectangle x:Name="OrientationHorizontalSep" Width="1" Fill="#FFE7E7E7" HorizontalAlignment="Right" Visibility="Collapsed" Grid.ColumnSpan="4"/>
                         <controls:AutomationControl x:Name="errorIcon" Grid.Column="3" Visibility="Collapsed" Margin="2,0,4,0"
                                                         Style="{DynamicResource {x:Static igDp:DataPresenterBase.DataErrorIconStyleKey}}" />
@@ -3207,7 +3207,7 @@
         <!--</Border>-->
     </DataTemplate>
 
-    <!-- ReSharper disable once Xaml.RedundantResource -->
+    
     <DataTemplate x:Key="{x:Static igDp:DataPresenterBase.FilterDropDownLoadingTemplateKey}" >
         <Border Padding="5" BorderThickness="0,1,0,0" BorderBrush="#FFCCCCCC">
             <ContentPresenter ContentTemplate="{StaticResource BaseFilterDropDownLoadingTemplate}" />
@@ -3505,7 +3505,7 @@
     <Style BasedOn="{StaticResource OfficeAeroSharedFieldSplitterStyle}" TargetType="{x:Type igDp:FixedFieldSplitter}" />
 
     <!-- Define Shared Luna Template -->
-    <!-- ReSharper disable once Xaml.RedundantResource -->
+    
     <ControlTemplate x:Key="LunaFixedFieldSplitterTemplate" TargetType="{x:Type igDp:FixedFieldSplitter}">
         <ControlTemplate.Resources>
             <Storyboard x:Key="SplitterHoverIn">

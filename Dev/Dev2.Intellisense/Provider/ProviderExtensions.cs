@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,83 +19,69 @@ namespace Dev2.Intellisense.Provider
         public static string FindTextToSearch(this IntellisenseProviderContext context)
         {
             VerifyArgument.IsNotNull("context",context);
-            string searchString = string.Empty;
-            int foundMinimum = -1;
-            int foundLength = 0;
-            string inputText = context.InputText ?? string.Empty;
-            int caretPosition = context.CaretPosition;
+            var searchString = string.Empty;
+            var foundMinimum = -1;
+            var foundLength = 0;
+            var inputText = context.InputText ?? string.Empty;
+            var caretPosition = context.CaretPosition;
 
-            int maxStringLength = Math.Min(caretPosition, inputText.Length);
-            
-            bool closedBraceFound = false;
+            var maxStringLength = Math.Min(caretPosition, inputText.Length);
 
-            for(int i = maxStringLength - 1; i >= 0; i--)
+            var closedBraceFound = false;
+            var i = maxStringLength - 1;
+            while (i >= 0)
             {
-                char currentChar = inputText[i];
-
-                if(currentChar == ')')
+                var currentChar = inputText[i];
+                if (currentChar == ')')
                 {
                     closedBraceFound = true;
                 }
-
                 if(Char.IsWhiteSpace(currentChar))
                 {
                     i = -1;
                 }
                 else
                 {
-                    
-                    if(currentChar == '[' && i>0 && inputText[i - 1] == '[')
+                    if (currentChar == '[' && i > 0 && inputText[i - 1] == '[')
                     {
                         foundMinimum = i - 1;
                         foundLength = maxStringLength - foundMinimum;
                         i = -1;
                     }
-                    else if(currentChar == ']')
+                    else
                     {
-                        i = -1;
-                    }
-                    else if (Char.IsSymbol(currentChar))
-                    {
-                        i = -1;
-                    }
-                    else if(currentChar == '(' && !closedBraceFound)
-                    {
-                        i = -1;
-                    }
-                    else if(currentChar == '(')
-                    {
-                        if(inputText.Length > i && i < inputText.Length &&  inputText[i + 1] == ')')
+                        if (currentChar == ']' || Char.IsSymbol(currentChar) || (currentChar == '(' && !closedBraceFound) || (currentChar == '(' && inputText.Length > i && i < inputText.Length && inputText[i + 1] == ')'))
                         {
                             i = -1;
                         }
-                    }
-                    else
-                    {
-                        if(!Char.IsLetterOrDigit(currentChar))
+                        else
                         {
-                            if(currentChar == '(' ||
-                                currentChar == ')' ||
-                                currentChar == '[' ||
-                                currentChar == ']' ||
-                                currentChar == '_' ||
-                                currentChar == '.')
+                            if (!Char.IsLetterOrDigit(currentChar))
+                            {
+                                if (currentChar == '(' ||
+                                    currentChar == ')' ||
+                                    currentChar == '[' ||
+                                    currentChar == ']' ||
+                                    currentChar == '_' ||
+                                    currentChar == '.')
+                                {
+                                    foundMinimum = i;
+                                    foundLength = maxStringLength - i;
+                                }
+                                else
+                                {
+                                    i = -1;
+                                }
+                            }
+                            else
                             {
                                 foundMinimum = i;
                                 foundLength = maxStringLength - i;
                             }
-                            else
-                            {
-                                i = -1;
-                            }
-                        }
-                        else
-                        {
-                            foundMinimum = i;
-                            foundLength = maxStringLength - i;
                         }
                     }
                 }
+                i--;
             }
 
             if(foundMinimum != -1)

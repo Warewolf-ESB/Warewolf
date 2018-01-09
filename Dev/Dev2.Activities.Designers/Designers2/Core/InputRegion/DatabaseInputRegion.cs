@@ -14,25 +14,22 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism;
 using Warewolf.Core;
 
-// ReSharper disable ExplicitCallerInfoArgument
-
 namespace Dev2.Activities.Designers2.Core.InputRegion
 {
     public sealed class DatabaseInputRegion : IDatabaseInputRegion
     {
-        private readonly IActionInputDatatalistMapper _datatalistMapper;
-        private readonly ModelItem _modelItem;
-        private readonly IActionToolRegion<IDbAction> _action;
+        readonly IActionInputDatatalistMapper _datatalistMapper;
+        readonly ModelItem _modelItem;
+        readonly IActionToolRegion<IDbAction> _action;
         bool _isEnabled;
-        // ReSharper disable once NotAccessedField.Local
-        private ICollection<IServiceInput> _inputs;
-        private bool _isInputsEmptyRows;
+
+        ICollection<IServiceInput> _inputs;
+        bool _isInputsEmptyRows;
 
         public DatabaseInputRegion()
         {
             ToolRegionName = "DatabaseInputRegion";
         }
-
 
         public DatabaseInputRegion(ModelItem modelItem, IActionToolRegion<IDbAction> action)
             : this(new ActionInputDatatalistMapper())
@@ -48,19 +45,26 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             inputs.AddRange(serviceInputs);
             Inputs = inputs;
             if (inputsFromModel == null)
+            {
                 UpdateOnActionSelection();
+            }
+
             IsEnabled = _action?.SelectedAction != null;
         }
 
-        private void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void InputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -70,15 +74,18 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Inputs", Inputs);
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -88,21 +95,19 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
         public DatabaseInputRegion(IActionInputDatatalistMapper datatalistMapper)
         {
             _datatalistMapper = datatalistMapper;
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
             try
             {
                 Errors.Clear();
 
-                // ReSharper disable once ExplicitCallerInfoArgument
                 UpdateOnActionSelection();
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 OnPropertyChanged(@"Inputs");
                 OnPropertyChanged(@"IsEnabled");
             }
@@ -116,22 +121,29 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
             }
         }
 
-        private void CallErrorsEventHandler()
+        void CallErrorsEventHandler()
         {
             ErrorsHandler?.Invoke(this, new List<string>(Errors));
         }
 
-        private void UpdateOnActionSelection()
+        void UpdateOnActionSelection()
         {
-            IsEnabled = false;
+            IsEnabled = _action?.SelectedAction != null;
+            var inputCopy = Inputs.ToArray().Clone() as ICollection<IServiceInput>;
+            Inputs = new List<IServiceInput>();
             if (_action?.SelectedAction != null)
             {
                 var selectedActionInputs = _action.SelectedAction.Inputs;
                 var selectedAction = ((DbAction)_action.SelectedAction).Name;
-                var isTheSameActionWithPrevious = Inputs.All(input => input.ActionName?.Equals(selectedAction) ?? false);
-                if (Inputs.Any() && isTheSameActionWithPrevious)
+                var isTheSameActionWithPrevious = inputCopy.All(input => input.ActionName?.Equals(selectedAction) ?? false);
+                if (inputCopy.Any() && isTheSameActionWithPrevious)
                 {
-                    InputsFromSameAction(selectedActionInputs);
+
+                    var newInputs = InputsFromSameAction(selectedActionInputs);
+                    var removedInputs = inputCopy.Except(selectedActionInputs, new ServiceInputNameComparer()).ToList();
+                    var union = inputCopy.Union(newInputs, new ServiceInputNameComparer()).ToList();
+                    union.RemoveAll(a => removedInputs.Any(k => a.Equals(k)));
+                    Inputs = union;
                 }
                 else
                 {
@@ -140,23 +152,20 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
                     IsInputsEmptyRows = Inputs.Count < 1;
                     IsEnabled = true;
                 }
-
             }
             OnPropertyChanged("Inputs");
         }
 
-        private void InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
+        ICollection<IServiceInput> InputsFromSameAction(IList<IServiceInput> selectedActionInputs)
         {
             if (!Inputs.SequenceEqual(selectedActionInputs, new ServiceInputNameValueComparer()))
             {
                 var newInputs = selectedActionInputs.Except(Inputs, new ServiceInputNameComparer());
                 var serviceInputs = newInputs as IServiceInput[] ?? newInputs.ToArray();
                 _datatalistMapper.MapInputsToDatalist(serviceInputs);
-                foreach (var serviceInput in serviceInputs)
-                {
-                    Inputs.Add(serviceInput);
-                }
+                return serviceInputs;
             }
+            return new List<IServiceInput>();
         }
 
         public bool IsInputsEmptyRows
@@ -202,8 +211,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as DatabaseInputRegionClone;
-            if (region != null)
+            if (toRestore is DatabaseInputRegionClone region)
             {
                 Inputs.Clear();
                 if (region.Inputs != null)
@@ -240,7 +248,7 @@ namespace Dev2.Activities.Designers2.Core.InputRegion
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

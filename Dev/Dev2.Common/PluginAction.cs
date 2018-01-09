@@ -2,13 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Dev2.Common.Annotations;
 using Dev2.Common.Interfaces.DB;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Common.Interfaces
 {
-    // ReSharper disable once ClassWithVirtualMembersNeverInherited.Global
+    
     public class PluginAction : IPluginAction, INotifyPropertyChanged, IEquatable<PluginAction>
     {
         public string FullName { get; set; }
@@ -26,7 +25,7 @@ namespace Dev2.Common.Interfaces
         public bool HasError { get; set; }
         public bool IsProperty { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
-        [NotifyPropertyChangedInvocator]
+
         protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
@@ -42,7 +41,9 @@ namespace Dev2.Common.Interfaces
                 return true;
             }
             if (GetHashCode() == other.GetHashCode())
+            {
                 return true;
+            }
 
             return string.Equals(Method, other.Method);
         }

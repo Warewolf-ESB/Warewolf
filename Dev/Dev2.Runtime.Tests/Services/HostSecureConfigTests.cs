@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,13 +54,13 @@ namespace Dev2.Tests.Runtime.Services
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        // ReSharper disable InconsistentNaming
+        
         public void HostSecureConfig_WithoutConfig_Expected_ThrowsArgumentNullException()
-        // ReSharper restore InconsistentNaming
+
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new HostSecureConfig(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +75,7 @@ namespace Dev2.Tests.Runtime.Services
         //}
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming
+        
         public void HostSecureConfig_WithDefaultSettings_Expected_LoadsDefaultValues()
         {
             TestConfig(DefaultServerID, DefaultServerKey, DefaultSystemKeyPublic, false);
@@ -136,7 +136,7 @@ namespace Dev2.Tests.Runtime.Services
 
         #endregion
 
-        // ReSharper restore InconsistentNaming
+
 
     }
 }

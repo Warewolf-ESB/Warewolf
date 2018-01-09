@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,14 +27,14 @@ namespace Warewolf.Studio.Views
 
         DispatcherTimer _timer;
 
-        private void StartTimer()
+        void StartTimer()
         {
             _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(18) };
             _timer.Tick += TimerElapsed;
             _timer.Start();
         }
 
-        private void TimerElapsed(object sender, EventArgs e)
+        void TimerElapsed(object sender, EventArgs e)
         {
             _timer.Stop();
 

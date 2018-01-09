@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -16,10 +16,9 @@ using Dev2.TO;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
+using Dev2.Common;
 
-// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
 {
     public class FindRecordsTO : ValidatedObject, IDev2TOFn
     {
@@ -40,9 +39,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
         }
 
-        // TODO: Remove WhereOptionList property - DO NOT USE FOR BINDING, USE VIEWMODEL PROPERTY INSTEAD!
         public IList<string> WhereOptionList { get; set; }
-        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "")
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum)
+            : this(searchCriteria, searchType, indexNum, false, "", "")
+        {
+        }
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(searchCriteria, searchType, indexNum, inserted, "", "")
+        {
+        }
+
+        public FindRecordsTO(string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to)
         {
             Inserted = inserted;
             SearchCriteria = searchCriteria;
@@ -58,10 +67,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         [FindMissing]
         public string From
         {
-            get
-            {
-                return _from;
-            }
+            get => _from;
             set
             {
                 _from = value;
@@ -70,15 +76,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsFromFocused { get { return _isFromFocused; } set { OnPropertyChanged(ref _isFromFocused, value); } }
+        public bool IsFromFocused { get => _isFromFocused; set => OnPropertyChanged(ref _isFromFocused, value); }
 
         [FindMissing]
         public string To
         {
-            get
-            {
-                return _to;
-            }
+            get => _to;
             set
             {
                 _to = value;
@@ -87,19 +90,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-
-
-        public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
-
-
+        public bool IsToFocused { get => _isToFocused; set => OnPropertyChanged(ref _isToFocused, value); }
 
         [FindMissing]
         public string SearchCriteria
         {
-            get
-            {
-                return _searchCriteria;
-            }
+            get => _searchCriteria;
             set
             {
                 _searchCriteria = value;
@@ -108,14 +104,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsSearchCriteriaFocused { get { return _isSearchCriteriaFocused; } set { OnPropertyChanged(ref _isSearchCriteriaFocused, value); } }
+        public bool IsSearchCriteriaFocused { get => _isSearchCriteriaFocused; set => OnPropertyChanged(ref _isSearchCriteriaFocused, value); }
 
         public string SearchType
         {
-            get
-            {
-                return _searchType;
-            }
+            get => _searchType;
             set
             {
                 if (value != null)
@@ -127,22 +120,17 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        public bool IsSearchTypeFocused { get { return _isSearchTypeFocused; } set { OnPropertyChanged(ref _isSearchTypeFocused, value); } }
+        public bool IsSearchTypeFocused { get => _isSearchTypeFocused; set => OnPropertyChanged(ref _isSearchTypeFocused, value); }
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public bool IsSearchCriteriaEnabled
         {
-            get
-            {
-                return _isSearchCriteriaEnabled;
-            }
+            get => _isSearchCriteriaEnabled;
             set
             {
                 _isSearchCriteriaEnabled = value;
@@ -152,10 +140,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public bool IsSearchCriteriaVisible
         {
-            get
-            {
-                return _isSearchCriteriaVisible;
-            }
+            get => _isSearchCriteriaVisible;
             set
             {
                 _isSearchCriteriaVisible = value;
@@ -165,10 +150,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNum;
-            }
+            get => _indexNum;
             set
             {
                 _indexNum = value;
@@ -205,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -216,26 +198,29 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     if (SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchType));
-                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "From":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => From));
-                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "To":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => To));
-                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "SearchCriteria":
-     
-                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
+
+                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1", new VariableUtils()));
+                    break;
+                default:
+                    Dev2Logger.Info("No Rule Set for the Find Records TO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
                     break;
             }
 

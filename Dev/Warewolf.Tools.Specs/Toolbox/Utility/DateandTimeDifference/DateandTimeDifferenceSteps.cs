@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,21 +24,24 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
     [Binding]
     public class DateandTimeDifferenceSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DateandTimeDifferenceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -47,20 +50,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string resVar;
-            if (!scenarioContext.TryGetValue("resultVar", out resVar))
+            if (!scenarioContext.TryGetValue("resultVar", out string resVar))
             {
                 resVar = ResultVariable;
             }
 
-            string inputFormat;
-            scenarioContext.TryGetValue("inputFormat", out inputFormat);
-            string input1;
-            scenarioContext.TryGetValue("input1", out input1);
-            string input2;
-            scenarioContext.TryGetValue("input2", out input2);
-            string outputIn;
-            scenarioContext.TryGetValue("outputIn", out outputIn);
+            scenarioContext.TryGetValue("inputFormat", out string inputFormat);
+            scenarioContext.TryGetValue("input1", out string input1);
+            scenarioContext.TryGetValue("input2", out string input2);
+            scenarioContext.TryGetValue("outputIn", out string outputIn);
 
             var dateTimeDifference = new DsfDateTimeDifferenceActivity
                 {
@@ -105,8 +103,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         [Given(@"I have date time difference variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveDateTimeDifferenceVariableWithValue(string name, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -126,10 +123,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
         [Given(@"I have a DateAndTimeDifference variable ""(.*)"" equal to (.*)")]
         public void GivenIHaveADateAndTimeDifferenceVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -144,24 +140,21 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTimeDifference
             Thread.CurrentThread.CurrentCulture = currentCulture;
             Thread.CurrentThread.CurrentUICulture = currentCulture;
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the difference should be ""(.*)""")]
         public void ThenTheDifferenceShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            string resVar;
-            if (!scenarioContext.TryGetValue("resultVar", out resVar))
+            if (!scenarioContext.TryGetValue("resultVar", out string resVar))
             {
                 resVar = ResultVariable;
             }
             GetScalarValueFromEnvironment(result.Environment, resVar,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

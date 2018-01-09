@@ -1,7 +1,7 @@
 ﻿
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using Dev2.Activities.Designers2.Core;
 using Dev2.Threading;
 
 namespace Dev2.Activities.Designers2.Oracle
@@ -22,7 +23,7 @@ namespace Dev2.Activities.Designers2.Oracle
 
         protected override OracleDatabaseDesignerViewModel CreateViewModel()
         {
-            return new OracleDatabaseDesignerViewModel(ModelItem,new AsyncWorker());
+            return new OracleDatabaseDesignerViewModel(ModelItem,new AsyncWorker(), new ViewPropertyBuilder());
         }
 
     }

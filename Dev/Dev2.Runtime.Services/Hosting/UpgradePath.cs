@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,11 +33,13 @@ namespace Dev2.Runtime.Hosting
             var version = GetVersionFromXML(sourceVersion);
             return version.CompareTo(UpgradesFrom) < 0 || version.CompareTo(new Version()) ==0 && UpgradesFrom.CompareTo(version)==0 ;
         }
-        private Version GetVersionFromXML(XElement resource)
+        Version GetVersionFromXML(XElement resource)
         {
             if (resource.Attribute("ServerVersion") == null)
+            {
                 return new Version();
-            // ReSharper disable once PossibleNullReferenceException
+            }
+
             return Version.Parse(resource.Attribute("ServerVersion").Value);
         }
         public IResourceUpgrade Upgrade { get; }

@@ -13,10 +13,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {            
             //------------Setup for test--------------------------
             var isNotXml = new IsNotXml();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "Eight";
             //------------Execute Test---------------------------
-            bool result = isNotXml.Invoke(cols);
+            var result = isNotXml.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -43,10 +43,10 @@ Procedure:
 
             //------------Setup for test--------------------------
             var notStartsWith = new IsNotXml();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = xmlFragment;
             //------------Execute Test---------------------------
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
             Assert.IsFalse(result);
         }
 

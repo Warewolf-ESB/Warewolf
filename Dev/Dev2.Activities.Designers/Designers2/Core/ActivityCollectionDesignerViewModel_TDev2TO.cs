@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,10 +22,6 @@ using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable MemberCanBePrivate.Global
-
-//using Dev2.Interfaces;
 
 namespace Dev2.Activities.Designers2.Core
 {
@@ -40,8 +36,7 @@ namespace Dev2.Activities.Designers2.Core
         where TDev2TOFn : class, IDev2TOFn, IPerformsValidation, new()
     {
         TDev2TOFn _initialDto = new TDev2TOFn();
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        object _syncLock = new object();
+        readonly object _syncLock = new object();
 
         protected ActivityCollectionDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
@@ -75,6 +70,8 @@ namespace Dev2.Activities.Designers2.Core
                 case 1:
                     AddDto(2);
                     break;
+                default:
+                    break;
             }
 
             AddBlankRow();
@@ -94,8 +91,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public override void OnSelectionChanged(ModelItem oldItem, ModelItem newItem)
         {
-            var dto = oldItem?.GetCurrentValue() as TDev2TOFn;
-            if (dto != null && dto.CanRemove())
+            if (oldItem?.GetCurrentValue() is TDev2TOFn dto && dto.CanRemove())
             {
                 // old row is blank so remove
                 if (ModelItemCollection != null)
@@ -199,7 +195,9 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var lastPopulated = ModelItemCollection?.LastOrDefault(p => !string.IsNullOrWhiteSpace(p.GetProperty("At").ToString()));
                 if (lastPopulated != null)
+                {
                     _initialDto = (TDev2TOFn)lastPopulated.GetCurrentValue();
+                }
             }
             var indexNumber = GetIndexForAdd(overwrite);
 
@@ -227,7 +225,9 @@ namespace Dev2.Activities.Designers2.Core
         {
             var indexNumber = 1;
             if(overwrite)
+            {
                 ModelItemCollection?.Clear();
+            }
             else
             {
                 var lastDto = GetLastDto();
@@ -284,10 +284,15 @@ namespace Dev2.Activities.Designers2.Core
             {
                 var lastIndex = index + 1;
                 if (overwrite)
+                {
                     _initialDto = new TDev2TOFn();
+                }
+
                 AddDto(lastIndex);
                 if (GetType() == typeof(DataMergeDesignerViewModel))
+                {
                     RunValidation(ModelItemCount - 1);
+                }
             }
             UpdateDisplayName();
         }
@@ -306,7 +311,7 @@ namespace Dev2.Activities.Designers2.Core
             var idx = indexNumber - 1;
             if (ModelItemCollection != null && idx >= ModelItemCollection.Count)
             {
-                ModelItem modelItem = ModelItemUtils.CreateModelItem(dto);
+                var modelItem = ModelItemUtils.CreateModelItem(dto);
                 ModelItemCollection.Add(modelItem);
 
             }
@@ -347,19 +352,14 @@ namespace Dev2.Activities.Designers2.Core
                 return;
             }
 
-            bool canAdd = true;
+            var canAdd = true;
             var parent = ModelItemCollection.Parent;
             if (parent != null)
             {
-                DesignerView parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
+                var parentContentPane = FindDependencyParent.FindParent<DesignerView>(parent.View);
                 var dataContext = parentContentPane?.DataContext;
-                if (dataContext != null)
-                {
-                    if (dataContext.GetType().Name == "ServiceTestViewModel")
-                    {
-                        canAdd = false;
-                    }
-                }
+                if (dataContext != null && (dataContext.GetType().Name == "ServiceTestViewModel"))
+                    canAdd = false;
             }
 
             if (canAdd)
@@ -395,8 +395,7 @@ namespace Dev2.Activities.Designers2.Core
         {
             ProcessModelItemCollection(startIndex, mi =>
             {
-                var dto = mi.GetCurrentValue() as TDev2TOFn;
-                if (dto != null)
+                if (mi.GetCurrentValue() is TDev2TOFn dto)
                 {
                     AttachEvents(dto);
                 }
@@ -419,7 +418,7 @@ namespace Dev2.Activities.Designers2.Core
                 startIndex = Math.Max(startIndex, 0);
                 for (var i = startIndex; i < ModelItemCollection.Count; i++)
                 {
-                    processModelItem(ModelItemCollection[i]);
+                    processModelItem?.Invoke(ModelItemCollection[i]);
                 }
             }
         }
@@ -434,8 +433,7 @@ namespace Dev2.Activities.Designers2.Core
 
             ProcessModelItemCollection(0, mi =>
               {
-                  var dto = mi.GetCurrentValue() as TDev2TOFn;
-                  if (dto != null)
+                  if (mi.GetCurrentValue() is TDev2TOFn dto)
                   {
                       CEventHelper.RemoveAllEventHandlers(dto);
                   }

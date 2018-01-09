@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,15 +25,9 @@ namespace Dev2.Runtime.Hosting
 
     public class ServiceMetaData
     {
-        /// <summary>
-        /// Extracts the meta data.
-        /// </summary>
-        /// <param name="xe">The executable.</param>
-        /// <param name="obj">The object.</param>
-        /// <returns></returns>
         public static ServiceMetaData ExtractMetaData(XElement xe, ref DynamicServiceObjectBase obj)
         {
-            ServiceMetaData result = new ServiceMetaData();
+            var result = new ServiceMetaData();
 
             var tmp = ExtractValue(xe, "Category");
             obj.Category = tmp;
@@ -58,14 +52,9 @@ namespace Dev2.Runtime.Hosting
             return result;
         }
 
-        /// <summary>
-        /// Extracts the value.
-        /// </summary>
-        /// <param name="xe">The executable.</param>
-        /// <param name="elementName">Name of the element.</param>
-        /// <param name="useElementSafe">if set to <c>true</c> [use element safe].</param>
-        /// <returns></returns>
-        public static string ExtractValue(XElement xe, string elementName,bool useElementSafe = false)
+        public static string ExtractValue(XElement xe, string elementName) => ExtractValue(xe, elementName, false);
+        
+        public static string ExtractValue(XElement xe, string elementName,bool useElementSafe)
         {
             var tmp = xe.Element(elementName);
 
@@ -85,7 +74,7 @@ namespace Dev2.Runtime.Hosting
 
         public static Guid SetID(ref XElement xe)
         {
-            Guid id = new Guid();
+            var id = new Guid();
 
             var tmpId = xe.AttributeSafe("ID");
 
@@ -113,28 +102,20 @@ namespace Dev2.Runtime.Hosting
             {
                 throw new ArgumentException("serviceData");
             }
-            Dev2Logger.Debug("Generating Service Graph");
-            List<DynamicServiceObjectBase> result = new List<DynamicServiceObjectBase>();
+            var result = new List<DynamicServiceObjectBase>();
             var xe = serviceData.ToXElement();
 
             if(IsSource(serviceData))
             {
-                Source src = new Source();
+                var src = new Source();
                 var tmp = src as DynamicServiceObjectBase;
                 ServiceMetaData.ExtractMetaData(xe, ref tmp);
 
                 var typeOf = xe.AttributeSafe("ResourceType");
 
-                enSourceType sourceType;
-                src.Type = !Enum.TryParse(typeOf, out sourceType) ? enSourceType.Unknown : sourceType;
+                src.Type = !Enum.TryParse(typeOf, out enSourceType sourceType) ? enSourceType.Unknown : sourceType;
 
                 src.ConnectionString = xe.AttributeSafe("ConnectionString");
-                var tmpUri = xe.AttributeSafe("Uri");
-                if(!string.IsNullOrEmpty(tmpUri))
-                {
-                    src.WebServiceUri = new Uri(tmpUri);
-                }
-
                 src.AssemblyName = xe.AttributeSafe("AssemblyName");
                 src.AssemblyLocation = xe.AttributeSafe("AssemblyLocation");
 
@@ -148,7 +129,7 @@ namespace Dev2.Runtime.Hosting
             }
             else
             {
-                DynamicService ds = new DynamicService();
+                var ds = new DynamicService();
                 var tmp = ds as DynamicServiceObjectBase;
                 ServiceMetaData.ExtractMetaData(xe, ref tmp);
 
@@ -156,16 +137,15 @@ namespace Dev2.Runtime.Hosting
                 ds.ResourceDefinition = serviceData;
 
                 var actions = xe.Element("Actions");
-                XElement action = actions != null ? actions.Element("Action") : xe.Element("Action");
+                var action = actions != null ? actions.Element("Action") : xe.Element("Action");
 
-                if(action != null)
+                if (action != null)
                 {
-                    ServiceAction sa = new ServiceAction { Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData };
+                    var sa = new ServiceAction { Name = action.AttributeSafe("Name"), ResourceDefinition = serviceData };
 
                     // Set service action ;)
-                    enActionType actionType;
                     var typeOf = action.AttributeSafe("Type");
-                    if(Enum.TryParse(typeOf, out actionType))
+                    if (Enum.TryParse(typeOf, out enActionType actionType))
                     {
                         sa.ActionType = actionType;
                     }
@@ -202,8 +182,7 @@ namespace Dev2.Runtime.Hosting
                     {
                         if(sa.ActionType == enActionType.InvokeStoredProc)
                         {
-                            int timeout;
-                            Int32.TryParse(action.AttributeSafe("CommandTimeout"), out timeout);
+                            Int32.TryParse(action.AttributeSafe("CommandTimeout"), out int timeout);
                             sa.CommandTimeout = timeout;
                         }
 
@@ -222,10 +201,9 @@ namespace Dev2.Runtime.Hosting
 
                             foreach(var inputItem in inputCollection)
                             {
-                                bool emptyToNull;
-                                bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out emptyToNull);
+                                bool.TryParse(inputItem.AttributeSafe("EmptyToNull"), out bool emptyToNull);
 
-                                ServiceActionInput sai = new ServiceActionInput
+                                var sai = new ServiceActionInput
                                 {
                                     Name = inputItem.AttributeSafe("Name"),
                                     Source = inputItem.AttributeSafe("Source"),
@@ -234,7 +212,7 @@ namespace Dev2.Runtime.Hosting
                                     NativeType = inputItem.AttributeSafe("NativeType")
                                 };
 
-                                if(string.IsNullOrEmpty(sai.NativeType))
+                                if (string.IsNullOrEmpty(sai.NativeType))
                                 {
                                     sai.NativeType = "object";
                                 }
@@ -243,10 +221,9 @@ namespace Dev2.Runtime.Hosting
                                 var validators = inputItem.Elements("Validator");
                                 foreach(var validator in validators)
                                 {
-                                    Validator v = new Validator();
+                                    var v = new Validator();
 
-                                    enValidationType validatorType;
-                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out validatorType) ? enValidationType.Required : validatorType;
+                                    v.ValidatorType = !Enum.TryParse(validator.AttributeSafe("Type"), out enValidationType validatorType) ? enValidationType.Required : validatorType;
 
                                     sai.Validators.Add(v);
                                 }
@@ -262,7 +239,6 @@ namespace Dev2.Runtime.Hosting
                 }
 
             }
-            Dev2Logger.Debug("Generated Service Graph");
             return result;
         }
 

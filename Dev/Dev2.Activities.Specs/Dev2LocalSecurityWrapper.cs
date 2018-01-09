@@ -2,16 +2,16 @@
 using System.Runtime.InteropServices;
 using System.Text;
 using Dev2.Common;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Specs
 {
-    internal class Dev2LocalSecurityWrapper
+    class Dev2LocalSecurityWrapper
     {
         // Import the LSA functions
 
         [DllImport("advapi32.dll", PreserveSig = true)]
-        private static extern UInt32 LsaOpenPolicy(
+        static extern UInt32 LsaOpenPolicy(
             ref LSA_UNICODE_STRING SystemName,
             ref LSA_OBJECT_ATTRIBUTES ObjectAttributes,
             Int32 DesiredAccess,
@@ -29,20 +29,20 @@ namespace Dev2.Activities.Specs
         public static extern void FreeSid(IntPtr pSid);
 
         [DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true, PreserveSig = true)]
-        private static extern bool LookupAccountName(
+        static extern bool LookupAccountName(
             string lpSystemName, string lpAccountName,
             IntPtr psid,
             ref int cbsid,
             StringBuilder domainName, ref int cbdomainLength, ref int use);
 
         [DllImport("advapi32.dll")]
-        private static extern bool IsValidSid(IntPtr pSid);
+        static extern bool IsValidSid(IntPtr pSid);
 
         [DllImport("advapi32.dll")]
-        private static extern long LsaClose(IntPtr ObjectHandle);
+        static extern long LsaClose(IntPtr ObjectHandle);
 
         [DllImport("kernel32.dll")]
-        private static extern int GetLastError();
+        static extern int GetLastError();
 
         //[DllImport("advapi32.dll")]
         //private static extern long LsaNtStatusToWinError(long status);
@@ -51,7 +51,7 @@ namespace Dev2.Activities.Specs
 
         // define the structures
 
-        private enum LSA_AccessPolicy : long
+        enum LSA_AccessPolicy : long
         {
             POLICY_VIEW_LOCAL_INFORMATION = 0x00000001L,
             POLICY_VIEW_AUDIT_INFORMATION = 0x00000002L,
@@ -69,7 +69,7 @@ namespace Dev2.Activities.Specs
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct LSA_OBJECT_ATTRIBUTES
+        struct LSA_OBJECT_ATTRIBUTES
         {
             public int Length;
             public IntPtr RootDirectory;
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs
         }
 
         [StructLayout(LayoutKind.Sequential)]
-        private struct LSA_UNICODE_STRING
+        struct LSA_UNICODE_STRING
         {
             public UInt16 Length;
             public UInt16 MaximumLength;
@@ -94,17 +94,17 @@ namespace Dev2.Activities.Specs
         /// The windows error code returned by LsaAddAccountRights
         public long SetRight(String accountName, String privilegeName)
         {
-            // ReSharper disable once RedundantAssignment
+            
             long winErrorCode = 0; //contains the last error
 
             //pointer an size for the SID
-            IntPtr sid = IntPtr.Zero;
-            int sidSize = 0;
+            var sid = IntPtr.Zero;
+            var sidSize = 0;
             //StringBuilder and size for the domain name
             var domainName = new StringBuilder();
-            int nameSize = 0;
+            var nameSize = 0;
             //account-type variable for lookup
-            int accountType = 0;
+            var accountType = 0;
 
             //get required buffer size
             LookupAccountName(String.Empty, accountName, sid, ref sidSize, domainName, ref nameSize, ref accountType);
@@ -114,18 +114,18 @@ namespace Dev2.Activities.Specs
             sid = Marshal.AllocHGlobal(sidSize);
 
             //lookup the SID for the account
-            bool result = LookupAccountName(String.Empty, accountName, sid, ref sidSize, domainName, ref nameSize,
+            var result = LookupAccountName(String.Empty, accountName, sid, ref sidSize, domainName, ref nameSize,
                                             ref accountType);
 
             //say what you're doing
-            Dev2Logger.Info("LookupAccountName result = " + result);
-            Dev2Logger.Info("IsValidSid: " + IsValidSid(sid));
-            Dev2Logger.Info("LookupAccountName domainName: " + domainName);
+            Dev2Logger.Info("LookupAccountName result = " + result, "Warewolf Info");
+            Dev2Logger.Info("IsValidSid: " + IsValidSid(sid), "Warewolf Info");
+            Dev2Logger.Info("LookupAccountName domainName: " + domainName, "Warewolf Info");
 
             if (!result)
             {
                 winErrorCode = GetLastError();
-                Dev2Logger.Info("LookupAccountName failed: " + winErrorCode);
+                Dev2Logger.Info("LookupAccountName failed: " + winErrorCode, "Warewolf Info");
             }
             else
             {
@@ -148,8 +148,8 @@ namespace Dev2.Activities.Specs
                                         LSA_AccessPolicy.POLICY_VIEW_LOCAL_INFORMATION
                                     );
                 //initialize a pointer for the policy handle
-                // ReSharper disable once RedundantAssignment
-                IntPtr policyHandle = IntPtr.Zero;
+                
+                var policyHandle = IntPtr.Zero;
 
                 //these attributes are not used, but LsaOpenPolicy wants them to exists
                 var ObjectAttributes = new LSA_OBJECT_ATTRIBUTES();
@@ -160,12 +160,12 @@ namespace Dev2.Activities.Specs
                 ObjectAttributes.SecurityQualityOfService = IntPtr.Zero;
 
                 //get a policy handle
-                uint resultPolicy = LsaOpenPolicy(ref systemName, ref ObjectAttributes, access, out policyHandle);
+                var resultPolicy = LsaOpenPolicy(ref systemName, ref ObjectAttributes, access, out policyHandle);
                 winErrorCode = LsaNtStatusToWinError(resultPolicy);
 
                 if (winErrorCode != 0)
                 {
-                    Dev2Logger.Info("OpenPolicy failed: " + winErrorCode);
+                    Dev2Logger.Info("OpenPolicy failed: " + winErrorCode, "Warewolf Info");
                 }
                 else
                 {
@@ -185,7 +185,7 @@ namespace Dev2.Activities.Specs
                     winErrorCode = LsaNtStatusToWinError(status);
                     if (winErrorCode != 0)
                     {
-                        Dev2Logger.Info("LsaAddAccountRights failed: " + winErrorCode);
+                        Dev2Logger.Info("LsaAddAccountRights failed: " + winErrorCode, "Warewolf Info");
                     }
 
                     LsaClose(policyHandle);

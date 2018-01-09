@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,15 +12,12 @@ using Caliburn.Micro;
 using Dev2.Studio.Core.ViewModels.Base;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable once CheckNamespace
 namespace Dev2.Studio.ViewModels.WorkSurface
 {
     public class BaseWorkSurfaceViewModel : BaseViewModel,
         IWorkSurfaceViewModel
     {
-        private WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
-        private bool _hasVariables;
-        private bool _hasDebugOutput;
+        WorkSurfaceContext _workSurfaceContext = WorkSurfaceContext.Unknown;
 
         public BaseWorkSurfaceViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
@@ -32,33 +29,14 @@ namespace Dev2.Studio.ViewModels.WorkSurface
             get { return _workSurfaceContext; }
             set
             {
-                if(_workSurfaceContext == value)
-                    return;
-
                 _workSurfaceContext = value;
                 NotifyOfPropertyChange(() => WorkSurfaceContext);
             }
         }
 
-        public virtual bool HasVariables
-        {
-            get { return _hasVariables; }
-            set
-            {
-                _hasVariables = value; 
-                NotifyOfPropertyChange(() => HasVariables);
-            }
-        }
+        public virtual bool HasVariables => false;
 
-        public virtual bool HasDebugOutput
-        {
-            get { return _hasDebugOutput; }
-            set
-            {
-                _hasDebugOutput = value; 
-                NotifyOfPropertyChange(() => HasDebugOutput);
-            }
-        }
+        public virtual bool HasDebugOutput => false;
 
         public virtual bool CanSave => true;
     }

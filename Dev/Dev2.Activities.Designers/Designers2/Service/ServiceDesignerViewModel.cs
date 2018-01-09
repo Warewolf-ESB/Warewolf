@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -41,25 +41,20 @@ using Warewolf.Resource.Errors;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Common.Common;
-// ReSharper disable NonLocalizedString
-// ReSharper disable UnusedAutoPropertyAccessor.Local
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
 
 namespace Dev2.Activities.Designers2.Service
 {
     public class ServiceDesignerViewModel : ActivityDesignerViewModel, IHandle<UpdateResourceMessage>, INotifyPropertyChanged
     {
-        private readonly IEventAggregator _eventPublisher;
+        readonly IEventAggregator _eventPublisher;
 
-        private bool _isDisposed;
-        private const string DoneText = "Done";
-        private const string FixText = "Fix";
+        bool _isDisposed;
+        const string DoneText = "Done";
+        const string FixText = "Fix";
 
         [ExcludeFromCodeCoverage]
         public ServiceDesignerViewModel(ModelItem modelItem, IContextualResourceModel rootModel)
-            : this(modelItem, rootModel, ServerRepository.Instance, EventPublishers.Aggregator, new AsyncWorker())
+            : this(modelItem, rootModel, CustomContainer.Get<IServerRepository>(), EventPublishers.Aggregator, new AsyncWorker())
         {
         }
 
@@ -74,7 +69,7 @@ namespace Dev2.Activities.Designers2.Service
         {
             ValidationMemoManager = new ValidationMemoManager(this);
             MappingManager = new MappingManager(this);
-            if (modelItem.ItemType != typeof(DsfDatabaseActivity) && modelItem.ItemType != typeof(DsfPluginActivity) && modelItem.ItemType != typeof(DsfWebserviceActivity))
+            if (modelItem.ItemType != typeof(DsfDatabaseActivity) && modelItem.ItemType != typeof(DsfPluginActivity))
             {
                 AddTitleBarEditToggle();
             }
@@ -118,7 +113,7 @@ namespace Dev2.Activities.Designers2.Service
                 var environment = serverRepository.FindSingle(c => c.EnvironmentID == EnvironmentID);
                 if (environment == null)
                 {
-                    IList<IServer> environments = ServerRepository.Instance.LookupEnvironments(activeEnvironment);
+                    var environments = ServerRepository.Instance.LookupEnvironments(activeEnvironment);
                     environment = environments.FirstOrDefault(model => model.EnvironmentID == EnvironmentID);
                 }
                 _environment = environment;
@@ -140,7 +135,7 @@ namespace Dev2.Activities.Designers2.Service
             }, CanViewComplexObjects);
         }
 
-        private void UpdateDesignerAfterResourceLoad(IServerRepository serverRepository)
+        void UpdateDesignerAfterResourceLoad(IServerRepository serverRepository)
         {
 
             if (!IsDeleted)
@@ -163,7 +158,9 @@ namespace Dev2.Activities.Designers2.Service
                 var servUri = new Uri(environmentModel.Connection.WebServerUri.ToString());
                 var host = servUri.Host;
                 if (!host.Equals(FriendlySourceName, StringComparison.InvariantCultureIgnoreCase))
+                {
                     FriendlySourceName = host;
+                }
             }
 
             InitializeProperties();
@@ -177,10 +174,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -188,13 +182,13 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private static bool CanViewComplexObjects(Object itemx)
+        static bool CanViewComplexObjects(Object itemx)
         {
             var item = itemx as IDataListItemModel;
             return item != null && !item.IsComplexObject;
         }
 
-        private static void ViewJsonObjects(IComplexObjectItemModel item, JsonObjectsView window)
+        static void ViewJsonObjects(IComplexObjectItemModel item, JsonObjectsView window)
         {
             if (item != null && window != null)
             {
@@ -210,7 +204,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
+        void OnEnvironmentOnAuthorizationServiceSet(object sender, EventArgs args)
         {
             if (_environment?.AuthorizationService != null)
             {
@@ -218,7 +212,7 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
+        void AuthorizationServiceOnPermissionsChanged(object sender, EventArgs eventArgs)
         {
             ValidationMemoManager.RemovePermissionsError();
 
@@ -241,18 +235,18 @@ namespace Dev2.Activities.Designers2.Service
             }
         }
 
-        private bool HasNoPermission()
+        bool HasNoPermission()
         {
             var hasNoPermission = ResourceModel != null && ResourceModel.UserPermissions == Permissions.None;
             return hasNoPermission;
         }
 
-        private void DoneCompleted()
+        void DoneCompleted()
         {
             IsFixed = true;
         }
 
-        private void Done()
+        void Done()
         {
             if (!IsWorstErrorReadOnly)
             {
@@ -262,27 +256,23 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsFixed
         {
-            get { return (bool)GetValue(IsFixedProperty); }
+            get => (bool)GetValue(IsFixedProperty);
             set { SetValue(IsFixedProperty, value); }
         }
 
         public static readonly DependencyProperty IsFixedProperty = DependencyProperty.Register("IsFixed", typeof(bool), typeof(ServiceDesignerViewModel), new PropertyMetadata(true));
 
-
         public ICommand FixErrorsCommand { get; private set; }
 
         public ICommand DoneCommand { get; private set; }
 
-        private RelayCommand ViewComplexObjectsCommand { get; set; }
+        RelayCommand ViewComplexObjectsCommand { get; set; }
 
         public ICommand DoneCompletedCommand { get; private set; }
 
         public List<KeyValuePair<string, string>> Properties
         {
-            get
-            {
-                return _properties;
-            }
+            get => _properties;
             private set
             {
                 _properties = value;
@@ -299,7 +289,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsWorstErrorReadOnly
         {
-            get { return (bool)GetValue(IsWorstErrorReadOnlyProperty); }
+            get => (bool)GetValue(IsWorstErrorReadOnlyProperty);
             set
             {
                 if (value)
@@ -334,8 +324,12 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsDeleted
         {
-            get { return (bool)GetValue(IsDeletedProperty); }
-            set { if (!(bool)GetValue(IsDeletedProperty)) SetValue(IsDeletedProperty, value); }
+            get => (bool)GetValue(IsDeletedProperty);
+            set { if (!(bool)GetValue(IsDeletedProperty))
+                {
+                    SetValue(IsDeletedProperty, value);
+                }
+            }
         }
 
         public static readonly DependencyProperty IsDeletedProperty =
@@ -343,13 +337,13 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool IsEditable
         {
-            get { return (bool)GetValue(IsEditableProperty); }
+            get => (bool)GetValue(IsEditableProperty);
             set { SetValue(IsEditableProperty, value); }
         }
 
         public bool IsAsyncVisible
         {
-            get { return (bool)GetValue(IsAsyncVisibleProperty); }
+            get => (bool)GetValue(IsAsyncVisibleProperty);
             private set { SetValue(IsAsyncVisibleProperty, value); }
         }
 
@@ -358,10 +352,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool RunWorkflowAsync
         {
-            get
-            {
-                return GetProperty<bool>();
-            }
+            get => GetProperty<bool>();
             set
             {
                 _runWorkflowAsync = value;
@@ -372,7 +363,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool OutputMappingEnabled
         {
-            get { return (bool)GetValue(OutputMappingEnabledProperty); }
+            get => (bool)GetValue(OutputMappingEnabledProperty);
             private set { SetValue(OutputMappingEnabledProperty, value); }
         }
 
@@ -384,7 +375,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public string ImageSource
         {
-            get { return (string)GetValue(ImageSourceProperty); }
+            get => (string)GetValue(ImageSourceProperty);
             private set { SetValue(ImageSourceProperty, value); }
         }
 
@@ -393,7 +384,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public bool ShowParent
         {
-            get { return (bool)GetValue(ShowParentProperty); }
+            get => (bool)GetValue(ShowParentProperty);
             set { SetValue(ShowParentProperty, value); }
         }
 
@@ -415,8 +406,7 @@ namespace Dev2.Activities.Designers2.Service
         public string ServiceName => GetProperty<string>();
         string ActionName => GetProperty<string>();
 
-
-        private string FriendlySourceName
+        string FriendlySourceName
         {
             get
             {
@@ -435,7 +425,7 @@ namespace Dev2.Activities.Designers2.Service
         public IDataMappingViewModel DataMappingViewModel => MappingManager.DataMappingViewModel;
 
         public string Type => GetProperty<string>();
-        // ReSharper disable InconsistentNaming
+
         Guid EnvironmentID => GetProperty<Guid>();
 
         public Guid ResourceID => GetProperty<Guid>();
@@ -445,16 +435,16 @@ namespace Dev2.Activities.Designers2.Service
 
         public string ButtonDisplayValue
         {
-            get { return (string)GetValue(ButtonDisplayValueProperty); }
+            get => (string)GetValue(ButtonDisplayValueProperty);
             set { SetValue(ButtonDisplayValueProperty, value); }
         }
 
         public static readonly DependencyProperty ButtonDisplayValueProperty = DependencyProperty.Register("ButtonDisplayValue", typeof(string), typeof(ServiceDesignerViewModel), new PropertyMetadata(default(string)));
         readonly IServer _environment;
         bool _runWorkflowAsync;
-        private readonly IAsyncWorker _worker;
-        private bool _isLoading;
-        private List<KeyValuePair<string, string>> _properties;
+        readonly IAsyncWorker _worker;
+        bool _isLoading;
+        List<KeyValuePair<string, string>> _properties;
 
         public override void Validate()
         {
@@ -511,15 +501,13 @@ namespace Dev2.Activities.Designers2.Service
             return true;
         }
 
-        // ReSharper disable InconsistentNaming
         void OnEnvironmentModel_ResourcesLoaded(object sender, ResourcesLoadedEventArgs e)
-        // ReSharper restore InconsistentNaming
         {
             _worker.Start(() => GetResourceModel(e.Model), () => MappingManager.CheckVersions(this));
             e.Model.ResourcesLoaded -= OnEnvironmentModel_ResourcesLoaded;
         }
 
-        private void GetResourceModel(IServer server)
+        void GetResourceModel(IServer server)
         {
             var resourceId = ResourceID;
 
@@ -532,7 +520,7 @@ namespace Dev2.Activities.Designers2.Service
 
         public IContextualResourceModel NewModel { get; set; }
 
-        private bool InitializeResourceModelFromRemoteServer(IServer server)
+        bool InitializeResourceModelFromRemoteServer(IServer server)
         {
             var resourceId = ResourceID;
             if (!server.IsConnected)
@@ -568,12 +556,11 @@ namespace Dev2.Activities.Designers2.Service
                 }
                 catch (XmlException xe)
                 {
-                    Dev2Logger.Error(xe);
+                    Dev2Logger.Error(xe, "Warewolf Error");
                     srcId = workflowXml.ExtractXmlAttributeFromUnsafeXml("SourceID=\"");
                 }
 
-                Guid sourceId;
-                if (Guid.TryParse(srcId, out sourceId))
+                if (Guid.TryParse(srcId, out Guid sourceId))
                 {
                     SourceId = sourceId;
                     var sourceResource = _environment.ResourceRepository.LoadContextualResourceModel(sourceId);
@@ -584,7 +571,6 @@ namespace Dev2.Activities.Designers2.Service
                     }
                 }
             }
-
             return true;
         }
 
@@ -609,7 +595,7 @@ namespace Dev2.Activities.Designers2.Service
 
         void InitializeImageSource()
         {
-            Common.Interfaces.Core.DynamicServices.enActionType actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
+            var actionType = ActivityTypeToActionTypeConverter.ConvertToActionType(Type);
             ImageSource = GetIconPath(actionType);
         }
 
@@ -637,20 +623,39 @@ namespace Dev2.Activities.Designers2.Service
                 case Common.Interfaces.Core.DynamicServices.enActionType.RemoteService:
                     ResourceType = "Server";
                     return "RemoteWarewolf-32";
-
+                case Common.Interfaces.Core.DynamicServices.enActionType.BizRule:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeStoredProc:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeWebService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeDynamicService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.InvokeServiceMethod:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Plugin:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.ComPlugin:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Switch:
+                    break;
+                case Common.Interfaces.Core.DynamicServices.enActionType.Unknown:
+                    break;
+                default:
+                    break;
             }
             return "ToolService-32";
         }
 
         void AddTitleBarEditToggle()
         {
-            // ReSharper disable RedundantArgumentName
             var toggle = ActivityDesignerToggle.Create("ServicePropertyEdit", "Edit", "ServicePropertyEdit", "Edit", "ShowParentToggle",
                 autoReset: true,
                 target: this,
                 dp: ShowParentProperty
                 );
-            // ReSharper restore RedundantArgumentName
             TitleBarToggles.Add(toggle);
         }
 
@@ -673,7 +678,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 if (SourceId != Guid.Empty && SourceId == message.ResourceModel.ID)
                 {
-                    IErrorInfo sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
+                    var sourceNotAvailableMessage = ValidationMemoManager.DesignValidationErrors.FirstOrDefault(info => info.Message == ValidationMemoManager.SourceNotFoundMessage);
                     if (sourceNotAvailableMessage != null)
                     {
                         ValidationMemoManager.RemoveError(sourceNotAvailableMessage);
@@ -726,8 +731,3 @@ namespace Dev2.Activities.Designers2.Service
         }
     }
 }
-
-
-
-
-

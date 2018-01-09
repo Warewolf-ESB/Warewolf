@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,6 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Dev2.Common.Interfaces;
@@ -23,18 +22,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable UnusedMethodReturnValue.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
-
-
 namespace Dev2.Studio.Interfaces
 {
     public interface IResourceRepository : IDisposable
     {
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
-        ExecuteMessage DeleteResource(IResourceModel resource);
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+        ExecuteMessage DeleteResource(IResourceModel resource);    
         void Add(IResourceModel resource);
         void ForceLoad();
         void UpdateServer(IServer server);
@@ -56,9 +50,11 @@ namespace Dev2.Studio.Interfaces
         bool HasDependencies(IContextualResourceModel resourceModel);
         ExecuteMessage StopExecution(IContextualResourceModel resourceModel);
         ICollection<IResourceModel> All();
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         ICollection<IResourceModel> Find(Expression<Func<IResourceModel, bool>> expression);
-        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition = false, bool prepairForDeployment = false);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition);
+        IResourceModel FindSingle(Expression<Func<IResourceModel, bool>> expression, bool fetchDefinition, bool prepairForDeployment);
         ExecuteMessage Save(IResourceModel instanceObj);
         void Load();
         ExecuteMessage DeleteResourceFromWorkspace(IResourceModel resource);

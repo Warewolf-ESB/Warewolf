@@ -10,7 +10,7 @@ namespace Dev2.Activities.Designers2.Core
     public class GenerateOutputsRegion : IGenerateOutputArea
     {
         ICollection<IServiceOutputMapping> _outputs;
-        private bool _textResults;
+        bool _textResults;
 
         public GenerateOutputsRegion()
         {

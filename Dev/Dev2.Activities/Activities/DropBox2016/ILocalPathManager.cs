@@ -8,7 +8,7 @@ namespace Dev2.Activities.DropBox2016
 {
     public class LocalPathManager : ILocalPathManager
     {
-        private readonly string _fileName;
+        readonly string _fileName;
 
         public LocalPathManager(string fileName)
         {
@@ -17,7 +17,7 @@ namespace Dev2.Activities.DropBox2016
 
         #region Implementation of ILocalPathManager
 
-        private bool IsValid()
+        bool IsValid()
         {
             var directoryName = GetDirectoryName();
             return !string.IsNullOrEmpty(directoryName);
@@ -25,12 +25,15 @@ namespace Dev2.Activities.DropBox2016
         public string CreateValidFolder()
         {
             if (DirectoryExists())
+            {
                 return GetDirectoryName();
+            }
+
             var directoryInfo = Directory.CreateDirectory(GetDirectoryName());
             return directoryInfo.FullName;
         }
 
-        private bool DirectoryExists()
+        bool DirectoryExists()
         {
             return IsValid() && Directory.Exists(GetDirectoryName());
         }

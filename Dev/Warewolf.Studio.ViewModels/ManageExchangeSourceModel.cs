@@ -10,7 +10,7 @@ namespace Warewolf.Studio.ViewModels
     public class ManageExchangeSourceModel : IManageExchangeSourceModel
     {
         readonly IStudioUpdateManager _updateRepository;
-        // ReSharper disable once NotAccessedField.Local
+        
         readonly IQueryManager _queryProxy;
 
         public ManageExchangeSourceModel(IStudioUpdateManager updateRepository, IQueryManager queryProxy, string serverName)
@@ -42,7 +42,16 @@ namespace Warewolf.Studio.ViewModels
             var xaml = _queryProxy.FetchResourceXaml(exchangeSourceResourceID);
             var db = new ExchangeSource(xaml.ToXElement());
 
-            var def = new ExchangeSourceDefinition(db);
+            var def = new ExchangeSourceDefinition
+            {
+                AutoDiscoverUrl = db.AutoDiscoverUrl,
+                Id = db.ResourceID,
+                Password = db.Password,
+                UserName = db.UserName,
+                Path = "",
+                Timeout = db.Timeout,
+                ResourceName = db.ResourceName,
+            };
             return def;
         }
 

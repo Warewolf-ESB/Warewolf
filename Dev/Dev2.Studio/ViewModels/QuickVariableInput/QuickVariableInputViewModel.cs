@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,23 +29,23 @@ namespace Dev2.ViewModels.QuickVariableInput
     {
         #region Fields
 
-        private string _variableListString;
-        private string _prefix;
-        private string _suffix;
-        private string _splitType;
-        private string _splitToken;
-        private bool _overwrite;
-        private string _previewText;
-        private bool _showPreview;
-        private bool _canAdd;
+        string _variableListString;
+        string _prefix;
+        string _suffix;
+        string _splitType;
+        string _splitToken;
+        bool _overwrite;
+        string _previewText;
+        bool _showPreview;
+        bool _canAdd;
 
-        private DelegateCommand _cancelCommand;
-        private DelegateCommand _previewCommand;
-        private DelegateCommand _addCommand;
-        private List<string> _splitTypeList;
-        private readonly List<KeyValuePair<ErrorType, string>> _errorColletion;
+        DelegateCommand _cancelCommand;
+        DelegateCommand _previewCommand;
+        DelegateCommand _addCommand;
+        List<string> _splitTypeList;
+        readonly List<KeyValuePair<ErrorType, string>> _errorColletion;
 
-        private readonly QuickVariableInputModel _model;
+        readonly QuickVariableInputModel _model;
 
         #endregion
 
@@ -105,7 +105,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private string Suffix
+        string Suffix
         {
             get
             {
@@ -144,7 +144,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private bool Overwrite
+        bool Overwrite
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private string PreviewText
+        string PreviewText
         {
             get
             {
@@ -170,7 +170,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private bool ShowPreview
+        bool ShowPreview
         {
             get
             {
@@ -238,7 +238,7 @@ namespace Dev2.ViewModels.QuickVariableInput
         /// </summary>
         public event EventHandler CloseAdornersRequested;
 
-        private void OnClose()
+        void OnClose()
         {
             CloseAdornersRequested?.Invoke(this, new EventArgs());
         }
@@ -247,7 +247,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Clear
 
-        private void ClearData()
+        void ClearData()
         {
             SplitType = "Chars";
             SplitToken = string.Empty;
@@ -264,7 +264,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Methods
 
-        private void AddToActivity()
+        void AddToActivity()
         {
             if (!ValidateFields())
             {
@@ -273,7 +273,7 @@ namespace Dev2.ViewModels.QuickVariableInput
                 ShowPreview = true;
                 return;
             }
-            List<string> listToAdd = MakeDataListReady(Split());
+            var listToAdd = MakeDataListReady(Split());
             if (_errorColletion.Count > 0)
             {
                 PreviewText = _errorColletion[0].Value;
@@ -287,7 +287,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             ClearData();
         }
 
-        private void Preview()
+        void Preview()
         {
             if (!ValidateFields())
             {
@@ -298,7 +298,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
 
             PreviewText = string.Empty;
-            int count = 1;
+            var count = 1;
             if (!Overwrite)
             {
                 count = _model.GetCollectionCount();
@@ -306,7 +306,7 @@ namespace Dev2.ViewModels.QuickVariableInput
 
             }
             IList<string> previewList = MakeDataListReady(Split());
-            int previewAmount = previewList.Count;
+            var previewAmount = previewList.Count;
             if (previewAmount > 3)
             {
                 for (int i = 0; i < 3; i++)
@@ -339,17 +339,17 @@ namespace Dev2.ViewModels.QuickVariableInput
             }
         }
 
-        private List<string> Split()
+        List<string> Split()
         {
-            List<string> results = new List<string>();
+            var results = new List<string>();
             try
             {
-                IDev2Tokenizer tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
+                var tokenizer = CreateSplitPattern(VariableListString, SplitType, SplitToken);
 
                 while (tokenizer.HasMoreOps())
                 {
 
-                    string tmp = tokenizer.NextToken();
+                    var tmp = tokenizer.NextToken();
                     if (!string.IsNullOrEmpty(tmp))
                     {
                         results.Add(tmp);
@@ -376,17 +376,16 @@ namespace Dev2.ViewModels.QuickVariableInput
 
         #region Private Methods
 
-        private IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
+        IDev2Tokenizer CreateSplitPattern(string stringToSplit, string splitType, string at)
         {
-            Dev2TokenizerBuilder dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
+            var dtb = new Dev2TokenizerBuilder { ToTokenize = stringToSplit };
 
             switch (splitType)
             {
                 case "Index":
                     if (!string.IsNullOrEmpty(at))
                     {
-                        int indexNum;
-                        if (int.TryParse(at, out indexNum) && indexNum > 0)
+                        if (int.TryParse(at, out int indexNum) && indexNum > 0)
                         {
                             dtb.AddIndexOp(indexNum);
                         }
@@ -410,9 +409,12 @@ namespace Dev2.ViewModels.QuickVariableInput
                     {
                         dtb.AddTokenOp("\n", false);
                     }
-                    else if (stringToSplit.Contains("\r"))
+                    else
                     {
-                        dtb.AddTokenOp("\r", false);
+                        if (stringToSplit.Contains("\r"))
+                        {
+                            dtb.AddTokenOp("\r", false);
+                        }
                     }
                     break;
 
@@ -422,28 +424,28 @@ namespace Dev2.ViewModels.QuickVariableInput
                         dtb.AddTokenOp(at, false);
                     }
                     break;
+                default:
+                    break;
             }
 
 
             return dtb.Generate();
         }
 
-        private bool ValidateFields()
+        bool ValidateFields()
         {
             _errorColletion.Clear();
 
             if (SplitType == "Index")
             {
-                int indexToSplitOn;
                 if (!SplitToken.IsWholeNumber())
                 {
                     _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
-                if (!int.TryParse(SplitToken, out indexToSplitOn))
+                if (!int.TryParse(SplitToken, out int indexToSplitOn))
                 {
-                    double doubleToSplitOn;
-                    _errorColletion.Add(double.TryParse(SplitToken, out doubleToSplitOn) ? new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split") : new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
+                    _errorColletion.Add(double.TryParse(SplitToken, out double doubleToSplitOn) ? new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a number less then 2,147,483,647 for an Index split") : new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a whole positive number for an Index split"));
                     return false;
                 }
 
@@ -454,12 +456,15 @@ namespace Dev2.ViewModels.QuickVariableInput
                 }
 
             }
-            else if (SplitType == "Chars")
+            else
             {
-                if (string.IsNullOrEmpty(SplitToken))
+                if (SplitType == "Chars")
                 {
-                    _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
-                    return false;
+                    if (string.IsNullOrEmpty(SplitToken))
+                    {
+                        _errorColletion.Add(new KeyValuePair<ErrorType, string>(ErrorType.Critical, "Please supply a value for a Character split"));
+                        return false;
+                    }
                 }
             }
 
@@ -485,16 +490,16 @@ namespace Dev2.ViewModels.QuickVariableInput
             return true;
         }
 
-        private bool ValidateRecordsetPrefix(string value)
+        bool ValidateRecordsetPrefix(string value)
         {
 
             if (value.Contains("(") && value.Contains(")."))
             {
-                int startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
-                int endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
+                var startIndex = value.IndexOf("(", StringComparison.Ordinal) + 1;
+                var endIndex = value.LastIndexOf(").", StringComparison.Ordinal);
 
-                string tmp = value.Substring(startIndex, endIndex - startIndex);
-                int idxNum = 1;
+                var tmp = value.Substring(startIndex, endIndex - startIndex);
+                var idxNum = 1;
                 if (tmp != "*" && !string.IsNullOrEmpty(tmp) && !int.TryParse(tmp, out idxNum))
                 {
                     return false;
@@ -508,7 +513,7 @@ namespace Dev2.ViewModels.QuickVariableInput
             return ValidateName(value);
         }
 
-        private bool ValidateName(string value)
+        bool ValidateName(string value)
         {
             if (!string.IsNullOrWhiteSpace(value) && !value.Contains("."))
             {

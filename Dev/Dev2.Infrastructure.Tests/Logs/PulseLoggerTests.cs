@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,6 +11,7 @@
 using System.Threading;
 using Dev2.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Dev2.Common;
 
 namespace Dev2.Infrastructure.Tests.Logs
 {
@@ -18,38 +19,29 @@ namespace Dev2.Infrastructure.Tests.Logs
     public class PulseLoggerTests
     {
         bool _elapsed;
+
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PulseLogger_Ctor")]
-// ReSharper disable InconsistentNaming
         public void PulseLogger_Ctor_CheckValues_ExpectInitialised()
-// ReSharper restore InconsistentNaming
         {
             //------------Setup for test--------------------------
             var pulseLogger = new PulseLogger(25);
-            Assert.AreEqual(pulseLogger.Interval,25);
-            PrivateObject pvt = new PrivateObject(pulseLogger);
-            System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
-            Assert.AreEqual(false,timer.Enabled);
-            
-            //------------Execute Test---------------------------
-
-            //------------Assert Results-------------------------
+            Assert.AreEqual(pulseLogger.Interval, 25);
+            var timer = pulseLogger._timer;
+            Assert.AreEqual(false, timer.Enabled);
         }
 
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("PulseLogger_Ctor")]
-// ReSharper disable InconsistentNaming
         public void PulseLogger_Ctor_Start_ExpectInitialised()
-// ReSharper restore InconsistentNaming
+
         {
             //------------Setup for test--------------------------
-            var pulseLogger = new PulseLogger(2000);
-            
+            var pulseLogger = new PulseLogger(2000);            
             Assert.AreEqual(pulseLogger.Interval, 2000);
-            PrivateObject pvt = new PrivateObject(pulseLogger);
-            System.Timers.Timer timer = (System.Timers.Timer)pvt.GetField("_timer");
+            var timer = pulseLogger._timer;
             timer.Elapsed += (sender, e) =>
                 {
                     _elapsed = true;
@@ -63,5 +55,19 @@ namespace Dev2.Infrastructure.Tests.Logs
             Assert.IsTrue(_elapsed);
         }
 
+        [TestMethod]
+        [Owner("Leon Rajindrapersadh")]
+        [TestCategory("PulseLogger_Ctor")]
+        public void PulseTracker_Ctor_TimeoutElapse_ExpectResetExecutionWatcher()
+        {
+            //------------Setup for test--------------------------
+            var pulseTracker = new PulseTracker(2000);
+            WorkflowExecutionWatcher.HasAWorkflowBeenExecuted = true;
+            //------------Execute Test---------------------------
+            pulseTracker.Start();
+            Thread.Sleep(6000);
+            //------------Assert Results-------------------------
+            Assert.IsFalse(WorkflowExecutionWatcher.HasAWorkflowBeenExecuted, "Execution Watcher not reset after pulse tracker execute.");
+        }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,7 @@
 
 using Dev2.Data.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.Tests
 {
@@ -46,11 +46,7 @@ Procedure:
    at Dev2.Services.Sql.SqlServer.ExecuteReader[T](SqlCommand command, CommandBehavior commandBehavior, Func`2 handler) in c:\Development\Dev\Dev2.Services.Sql\SqlServer.cs:line 121
    at Dev2.Services.Sql.SqlServer.FetchDataTable(SqlParameter[] parameters) in c:\Development\Dev\Dev2.Services.Sql\SqlServer.cs:line 61
    at Dev2.Services.Execution.DatabaseServiceExecution.SqlExecution(ErrorResultTO errors, Object& executeService) in c:\Development\Dev\Dev2.Services.Execution\DatabaseServiceExecution.cs:line 118</InnerError>";
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            bool isHtml;
-            bool isFragment;
-            var isXml = XmlHelper.IsXml(XmlFragment, out isFragment, out isHtml);
+            var isXml = XmlHelper.IsXml(XmlFragment, out bool isFragment, out bool isHtml);
             //---------------Test Result -----------------------
             Assert.IsTrue(isXml);
         }
@@ -62,11 +58,7 @@ Procedure:
             //---------------Set up test pack-------------------
 
             const string XmlFragment = @"HHHHHHH";
-            //---------------Assert Precondition----------------
-            //---------------Execute Test ----------------------
-            bool isHtml;
-            bool isFragment;
-            var isXml = XmlHelper.IsXml(XmlFragment, out isFragment, out isHtml);
+            var isXml = XmlHelper.IsXml(XmlFragment, out bool isFragment, out bool isHtml);
             //---------------Test Result -----------------------
             Assert.IsFalse(isXml);
         }

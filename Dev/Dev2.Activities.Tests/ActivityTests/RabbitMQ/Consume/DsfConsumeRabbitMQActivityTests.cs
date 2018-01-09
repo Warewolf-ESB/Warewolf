@@ -17,7 +17,7 @@ using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 using System.Reflection;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
 {
@@ -110,7 +110,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 Prefetch = null,
                 IsObject = true
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -135,7 +135,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 IsObject = true,
                 ObjectName = "a"
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -162,7 +162,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 IsObject = true,
                 ObjectName = "a"
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
@@ -180,7 +180,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             mock.SetupProperty(manager => manager.ObjectName);
 
             var dstaObj = new Mock<IDSFDataObject>();
-            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object)).Verifiable();
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
             {
                 RabbitMQSourceResourceId = Guid.Empty,
@@ -190,13 +190,13 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 ObjectName = "a",
                 _messages = new List<string>(new[] { "a" })
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
             privateObject.Invoke("AssignResult", dstaObj.Object, 1);
             //---------------Test Result -----------------------
-            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Once);
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object), Times.Once);
         }
 
         [TestMethod]
@@ -208,7 +208,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             mock.SetupProperty(manager => manager.ObjectName);
 
             var dstaObj = new Mock<IDSFDataObject>();
-            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>())).Verifiable();
+            mock.Setup(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object)).Verifiable();
             var dsfConsumeRabbitMQActivity = new DsfConsumeRabbitMQActivity(mock.Object)
             {
                 RabbitMQSourceResourceId = Guid.Empty,
@@ -218,13 +218,13 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
                 ObjectName = "a",
                 _messages = new List<string>(new[] { "a", "b" })
             };
-            PrivateObject privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
+            var privateObject = new PrivateObject(dsfConsumeRabbitMQActivity);
             //---------------Assert Precondition----------------
             Assert.IsTrue(dsfConsumeRabbitMQActivity.IsObject);
             //---------------Execute Test ----------------------
             privateObject.Invoke("AssignResult", dstaObj.Object, 1);
             //---------------Test Result -----------------------
-            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object, It.IsAny<bool>()), Times.Exactly(2));
+            mock.Verify(manager => manager.PushResponseIntoEnvironment(It.IsAny<string>(), 1, dstaObj.Object), Times.Exactly(2));
         }
 
 
@@ -325,10 +325,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            if (result != null)
+            if (privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) is List<string> result)
             {
                 Assert.AreEqual(result[0], "Failure: Source has been deleted.");
             }
@@ -351,10 +350,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            if (result != null)
+            if (privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) is List<string> result)
             {
                 Assert.AreEqual(result[0], "Failure: Queue Name is required.");
             }
@@ -380,10 +378,9 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.SetProperty("ResourceCatalog", resourceCatalog.Object);
 
             //------------Execute Test---------------------------
-            var result = privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) as List<string>;
 
             //------------Assert Results-------------------------
-            if (result != null)
+            if (privateObject.Invoke("PerformExecution", new Dictionary<string, string>()) is List<string> result)
             {
                 Assert.AreEqual(result[0], "Failure: Queue Name is required.");
             }
@@ -405,9 +402,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var p = new PrivateObject(dsfConsumeRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
             //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) as List<string>;
             //------------Assert Results-------------------------
-            if (result != null)
+            if (p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) is List<string> result)
             {
                 Assert.AreEqual(result[0], "Failure: Queue Name is required.");
             }
@@ -432,9 +428,8 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             var p = new PrivateObject(dsfConsumeRabbitMQActivity);
             p.SetProperty("ResourceCatalog", resourceCatalog.Object);
             //------------Execute Test---------------------------
-            var result = p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) as List<string>;
             //------------Assert Results-------------------------
-            if (result != null)
+            if (p.Invoke("PerformExecution", new Dictionary<string, string> { { "Param1", "Blah1" }, { "Param2", "Blah2" } }) is List<string> result)
             {
                 Assert.AreEqual(result[0], "Failure: Queue Name is required.");
             }
@@ -837,10 +832,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
-            //------------Assert Results-------------------------  
-            IList<string> actualRecset;
-            string error;
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out IList<string> actualRecset, out string error);
             Assert.AreEqual(1, actualRecset.Count);
         }
 
@@ -878,10 +870,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
             privateObject.Invoke("ExecuteTool", dataObj, 0);
-            //------------Assert Results-------------------------  
-            IList<string> actualRecset;
-            string error;
-            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out actualRecset, out error);
+            GetRecordSetFieldValueFromDataList(dataObj.Environment, "msgs", "message", out IList<string> actualRecset, out string error);
             Assert.AreEqual(1, actualRecset.Count);
         }
 
@@ -954,7 +943,7 @@ namespace Dev2.Tests.Activities.ActivityTests.RabbitMQ.Consume
             {
                 Assert.AreEqual("Queue Q1 not found", ex.Message);
             }
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             //------------Execute Test---------------------------
             try

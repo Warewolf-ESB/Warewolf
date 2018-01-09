@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,21 +25,24 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
     [Binding]
     public class DateandTimeSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DateandTimeSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -48,37 +51,32 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string inputDate;
-            scenarioContext.TryGetValue("inputDate", out inputDate);
-            string inputFormat;
-            scenarioContext.TryGetValue("inputFormat", out inputFormat);
-            string outputFormat;
-            scenarioContext.TryGetValue("outputFormat", out outputFormat);
-            string timeModifierType;
-            scenarioContext.TryGetValue("timeModifierType", out timeModifierType);
-            string timeModifierAmount;
-            scenarioContext.TryGetValue("timeModifierAmount", out timeModifierAmount);
+            scenarioContext.TryGetValue("inputDate", out string inputDate);
+            scenarioContext.TryGetValue("inputFormat", out string inputFormat);
+            scenarioContext.TryGetValue("outputFormat", out string outputFormat);
+            scenarioContext.TryGetValue("timeModifierType", out string timeModifierType);
+            scenarioContext.TryGetValue("timeModifierAmount", out string timeModifierAmount);
 
             //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
-            if(Environment.OSVersion.ToString() == "Microsoft Windows NT 6.0.6002 Service Pack 2")
+            if (Environment.OSVersion.ToString() == "Microsoft Windows NT 6.0.6002 Service Pack 2")
             {
                 inputDate = inputDate.Replace("(UTC+", "(GMT+").Replace("(UTC-", "(GMT-");
             }
 
             var dateTime = new DsfDateTimeActivity
-                {
-                    Result = ResultVariable,
-                    DateTime = inputDate,
-                    InputFormat = inputFormat,
-                    OutputFormat = outputFormat,
-                    TimeModifierType = timeModifierType,
-                    TimeModifierAmountDisplay = timeModifierAmount
-                };
+            {
+                Result = ResultVariable,
+                DateTime = inputDate,
+                InputFormat = inputFormat,
+                OutputFormat = outputFormat,
+                TimeModifierType = timeModifierType,
+                TimeModifierAmountDisplay = timeModifierAmount
+            };
 
             TestStartNode = new FlowStep
-                {
-                    Action = dateTime
-                };
+            {
+                Action = dateTime
+            };
 
             scenarioContext.Add("activity", dateTime);
         }
@@ -92,8 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Given(@"I have a Date time variable ""(.*)"" with value ""(.*)""")]
         public void GivenIHaveADateTimeVariableWithValue(string name, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -129,41 +126,37 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         public void WhenTheDatetimeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the datetime result should be a ""(.*)""")]
         public void ThenTheDatetimeResultShouldBeA(string type)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
-            // ReSharper disable AssignNullToNotNullAttribute
-            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            // ReSharper restore AssignNullToNotNullAttribute
+                                       out string actualValue, out string error);
+
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
+
             converter.ConvertFrom(actualValue);
         }
 
         [Then(@"the datetime result should be ""(.*)""")]
         public void ThenTheDatetimeResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
-            if(actualValue != null)
+                                       out string actualValue, out string error);
+            if (actualValue != null)
             {
                 //Ashley: Windows Server 2008 is too outdated to know GMT was renamed to UTC.
                 actualValue = actualValue.Replace("(GMT+", "(UTC+").Replace("(GMT-", "(UTC-");
-                if(expectedResult.Contains("A.D.") || expectedResult.Contains("AD"))
+                if (expectedResult.Contains("A.D.") || expectedResult.Contains("AD"))
                 {
                     var eraValue = CultureInfo.InvariantCulture.DateTimeFormat.GetEra("A.D.");
-                    if(eraValue == -1) //The Era value does not use punctuation
+                    if (eraValue == -1) //The Era value does not use punctuation
                     {
                         actualValue = actualValue.Replace("A.D.", "AD");
                         expectedResult = expectedResult.Replace("A.D.", "AD");
@@ -196,7 +189,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
             }
             else
             {
-                if(actualValue != null)
+                if (actualValue != null)
                 {
                     actualValue = actualValue.Replace('"', ' ').Trim();
                     Assert.AreEqual(expectedResult, actualValue);
@@ -207,17 +200,28 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.DateandTime
         [Then(@"the datetime result should contain milliseconds")]
         public void ThenTheDatetimeResultShouldContainMilliseconds()
         {
-
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.IsTrue(actualValue.Contains("."));
-            
+
 
         }
+
+        [Then(@"the datetime result should contain milliseconds Standard Format")]
+        public void ThenTheDatetimeResultShouldContainMillisecondsStandardFormat()
+        {
+            var result = scenarioContext.Get<IDSFDataObject>("result");
+
+            GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
+                                       out string actualValue, out string error);
+
+            var parsed = DateTime.Parse(actualValue, CultureInfo.InvariantCulture);
+            var milliseconds = parsed.Millisecond;
+            Assert.AreEqual(0, milliseconds);
+        }
+
 
     }
 }

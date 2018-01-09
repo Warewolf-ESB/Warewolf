@@ -21,19 +21,22 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
     [Binding]
     public class ExchangeEmailSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ExchangeEmailSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -44,16 +47,11 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string body;
-            scenarioContext.TryGetValue("body", out body);
-            string subject;
-            scenarioContext.TryGetValue("subject", out subject);
-            string password;
-            scenarioContext.TryGetValue("password", out password);
-            string simulationOutput;
-            scenarioContext.TryGetValue("simulationOutput", out simulationOutput);
-            string to;
-            scenarioContext.TryGetValue("to", out to);
+            scenarioContext.TryGetValue("body", out string body);
+            scenarioContext.TryGetValue("subject", out string subject);
+            scenarioContext.TryGetValue("password", out string password);
+            scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
+            scenarioContext.TryGetValue("to", out string to);
 
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
@@ -80,7 +78,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
-            // ReSharper disable once RedundantAssignment
+            
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
@@ -115,8 +113,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
 
         protected  void BuildDataList(string result)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -127,16 +124,11 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string body;
-            scenarioContext.TryGetValue("body", out body);
-            string subject;
-            scenarioContext.TryGetValue("subject", out subject);
-            string password;
-            scenarioContext.TryGetValue("password", out password);
-            string simulationOutput;
-            scenarioContext.TryGetValue("simulationOutput", out simulationOutput);
-            string to;
-            scenarioContext.TryGetValue("to", out to);
+            scenarioContext.TryGetValue("body", out string body);
+            scenarioContext.TryGetValue("subject", out string subject);
+            scenarioContext.TryGetValue("password", out string password);
+            scenarioContext.TryGetValue("simulationOutput", out string simulationOutput);
+            scenarioContext.TryGetValue("to", out string to);
 
             var server = SimpleSmtpServer.Start(25);
             scenarioContext.Add("server", server);
@@ -162,7 +154,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
             };
             ResourceCatalog.Instance.SaveResource(Guid.Empty, emailSource, "");
             var emailSender = new Mock<IDev2EmailSender>();
-            // ReSharper disable once RedundantAssignment
+            
             var eR = new ErrorResultTO();
             emailSender
                 .Setup(sender => sender.SendEmail(It.IsAny<IExchange>(), It.IsAny<IWarewolfListIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), It.IsAny<IWarewolfIterator>(), out eR))
@@ -199,8 +191,7 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         [Given(@"I have an exchange email variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAnExchangEmailVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -233,14 +224,14 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         public void WhenTheExchangeEmailToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
         [When(@"the exchange email tool is executed ""(.*)""")]
         public void WhenTheExchangeEmailToolIsExecuted(string p0)
         {
             BuildDataList(p0);
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -248,12 +239,10 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         [Then(@"the exchange email result will be ""(.*)""")]
         public void ThenTheExchangeEmailResultWillBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));
@@ -267,12 +256,12 @@ namespace Dev2.Activities.Specs.Toolbox.Exchange.Email
         [Then(@"the exchange execution has ""(.*)"" error")]
         public void ThenTheExchangeExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
-            string fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
-            bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
+            var fetchErrors = string.Join(Environment.NewLine, result.Environment.AllErrors);
+            var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
+            var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
             var hasAnError = expectedError == actuallyHasErrors;

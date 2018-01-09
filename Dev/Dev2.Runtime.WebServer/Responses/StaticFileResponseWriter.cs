@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,12 @@ namespace Dev2.Runtime.WebServer.Responses
         readonly MediaTypeHeaderValue _contentType;
         readonly int _chunkSize;
 
-        public StaticFileResponseWriter(string file, string contentType, int chunkSize = 1024)
+        public StaticFileResponseWriter(string file, string contentType)
+            : this(file, contentType, 1024)
+        {
+        }
+
+        public StaticFileResponseWriter(string file, string contentType, int chunkSize)
         {
             VerifyArgument.IsNotNull("file", file);
             VerifyArgument.IsNotNull("contentType", contentType);
@@ -33,7 +38,6 @@ namespace Dev2.Runtime.WebServer.Responses
         {
             var stream = new HttpFileStream(OpenFileStream, context.ResponseMessage, _contentType, _chunkSize);
             stream.Write();
-
         }
 
         protected virtual Stream OpenFileStream()

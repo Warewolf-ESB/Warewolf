@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,7 +8,6 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Interfaces;
 
 namespace Dev2.PathOperations
@@ -21,7 +20,7 @@ namespace Dev2.PathOperations
     /// </summary>
     public class Dev2PutOperationTOFactory
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public IFileWrite CreateDev2PutOperationTO(bool append, string content, bool overwrite)
         {
             return new Dev2PutOperationTO(append, content, overwrite);

@@ -1,7 +1,7 @@
 ﻿using System;
 using Dev2.Common.ExtMethods;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.ExtMethods
 {
@@ -9,7 +9,7 @@ namespace Dev2.Tests.ExtMethods
     public class ObjExtTests
     {
         [Serializable]
-        private class Person
+        class Person
         {
             public string name { get; set; }
             public string name1 { get; set; }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable UnusedMember.Local
 
 namespace Dev2.Activities
 {
@@ -23,25 +22,30 @@ namespace Dev2.Activities
         public static Boolean IsWaitingForUserInput(Process process)
         {
             if(process == null)
+            {
                 throw new Exception(ErrorResource.NoProcessFound);
-            // for thread safety
-            if(process.HasExited) return false;
-            ModalChecker checker = new ModalChecker(process);
+            }
+            if (process.HasExited)
+            {
+                return false;
+            }
+
+            var checker = new ModalChecker(process);
             return checker.WaitingForUserInput;
         }
 
         #region Native Windows Stuff
-        // ReSharper disable InconsistentNaming
-        private const int WS_EX_DLGMODALFRAME = 0x00000001;
-        private const int GWL_EXSTYLE = -20;
+
+        const int WS_EX_DLGMODALFRAME = 0x00000001;
+        const int GWL_EXSTYLE = -20;
         public delegate bool EnumThreadDelegate(IntPtr hWnd, IntPtr lParam);
-        private delegate int EnumWindowsProc(IntPtr hWnd, int lParam);
+        delegate int EnumWindowsProc(IntPtr hWnd, int lParam);
         [DllImport("user32")]
-        private static extern int EnumWindows(EnumWindowsProc lpEnumFunc, int lParam);
+        static extern int EnumWindows(EnumWindowsProc lpEnumFunc, int lParam);
         [DllImport("user32", CharSet = CharSet.Auto)]
-        private static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
+        static extern uint GetWindowLong(IntPtr hWnd, int nIndex);
         [DllImport("user32")]
-        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
+        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out IntPtr lpdwProcessId);
         [DllImport("user32")]
         static extern bool EnumThreadWindows(int dwThreadId, EnumThreadDelegate lpfn, IntPtr lParam);
         [DllImport("user32")]
@@ -58,27 +62,21 @@ namespace Dev2.Activities
         static extern int GetWindowTextLength(IntPtr handle);
         #endregion
 
-        private readonly Process _process;
-        private Boolean _waiting;
+        readonly Process _process;
+        Boolean _waiting;
 
-        private ModalChecker(Process process)
+        ModalChecker(Process process)
         {
             _process = process;
             _waiting = false;
         }
 
-        /// <summary>
-        /// Gets a value indicating whether [waiting for user input].
-        /// </summary>
-        /// <value>
-        /// <c>true</c> if [waiting for user input]; otherwise, <c>false</c>.
-        /// </value>
-        private Boolean WaitingForUserInput
+        Boolean WaitingForUserInput
         {
             get
             {
-                WindowEnum(_process.MainWindowHandle, 0);
-                if(!_waiting)
+                WindowEnum(_process.MainWindowHandle);
+                if (!_waiting)
                 {
                     _waiting = ThreadWindows(_process.MainWindowHandle);
                 }
@@ -86,9 +84,9 @@ namespace Dev2.Activities
             }
         }
 
-        private static bool ThreadWindows(IntPtr handle)
+        static bool ThreadWindows(IntPtr handle)
         {
-            if(IsWindowVisible(handle))
+            if (IsWindowVisible(handle))
             {
                 var length = GetWindowTextLength(handle);
                 var caption = new StringBuilder(length + 1);
@@ -96,24 +94,21 @@ namespace Dev2.Activities
                 return true;
             }
             return false;
-
         }
 
-        // ReSharper disable UnusedMethodReturnValue.Local
-        // ReSharper disable UnusedParameter.Local
-        private int WindowEnum(IntPtr hWnd, int lParam)
-        // ReSharper restore UnusedMethodReturnValue.Local
+        int WindowEnum(IntPtr hWnd)
         {
-            IntPtr processId;
-
-            GetWindowThreadProcessId(hWnd, out processId);
-            if(processId.ToInt32() != _process.Id)
+            GetWindowThreadProcessId(hWnd, out IntPtr processId);
+            if (processId.ToInt32() != _process.Id)
+            {
                 return 1;
-            uint style = GetWindowLong(hWnd, GWL_EXSTYLE);
-            if((style & WS_EX_DLGMODALFRAME) != 0)
+            }
+
+            var style = GetWindowLong(hWnd, GWL_EXSTYLE);
+            if ((style & WS_EX_DLGMODALFRAME) != 0)
             {
                 _waiting = true;
-                return 0; // stop searching further
+                return 0;
             }
             return 1;
         }

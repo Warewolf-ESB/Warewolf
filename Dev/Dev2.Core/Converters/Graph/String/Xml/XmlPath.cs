@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,9 +21,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
     {
         #region Class Members
 
-        private const string _nodeSeperatorSymbol = ".";
-        private const string _attributeSeperatorSymbol = ":";
-        private const string _enumerableSymbol = "()";
+        const string _nodeSeperatorSymbol = ".";
+        const string _attributeSeperatorSymbol = ":";
+        const string _enumerableSymbol = "()";
 
         #endregion Class Members
 
@@ -63,7 +63,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
             foreach (string segment in ActualPath.Split(NodeSeperatorSymbol.ToCharArray()))
             {
-                string[] nestedSegments = segment.Split(AttributeSeperatorSymbol.ToCharArray());
+                var nestedSegments = segment.Split(AttributeSeperatorSymbol.ToCharArray());
 
                 if (nestedSegments.Length >= 1)
                 {
@@ -82,14 +82,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         public override IPathSegment CreatePathSegment(string pathSegmentString)
         {
             XmlPathSegment xmlPathSegment;
-            if (pathSegmentString.EndsWith(EnumerableSymbol))
-            {
-                xmlPathSegment = new XmlPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true);
-            }
-            else
-            {
-                xmlPathSegment = new XmlPathSegment(pathSegmentString, false);
-            }
+            xmlPathSegment = pathSegmentString.EndsWith(EnumerableSymbol) ? new XmlPathSegment(pathSegmentString.TrimEnd(EnumerableSymbol.ToArray()), true) : new XmlPathSegment(pathSegmentString, false);
             return xmlPathSegment;
         }
 

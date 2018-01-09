@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,8 +19,6 @@ using Dev2.Data.Util;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Services.Sql;
 using Unlimited.Framework.Converters.Graph;
-// ReSharper disable UnusedMemberHierarchy.Global
-// ReSharper disable UnusedParameter.Global
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 {
@@ -28,24 +26,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         where TDbServer : class, IDbServer, new()
     {
         #region TheCache
-
-        // ReSharper disable StaticFieldInGenericType
-        //
-        // This means that the values of 
-        //      AbstractDatabaseBroker<DbServer1>.TheCache 
-        //      AbstractDatabaseBroker<DbServer2>.TheCache 
-        // will have completely different, independent values.
-        //
-        public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
-        //
-        // ReSharper restore StaticFieldInGenericType
-
-        #endregion
         
+        public static ConcurrentDictionary<string, ServiceMethodList> TheCache = new ConcurrentDictionary<string, ServiceMethodList>();
+        
+        #endregion
+
         public virtual List<string> GetDatabases(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-            using(var server = CreateDbServer(dbSource))
+            using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 return server.FetchDatabases();
@@ -55,56 +44,41 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         public virtual ServiceMethodList GetServiceMethods(DbSource dbSource)
         {
             VerifyArgument.IsNotNull("dbSource", dbSource);
-
-            // Check the cache for a value ;)
             ServiceMethodList cacheResult;
-            if(!dbSource.ReloadActions)
+            if (!dbSource.ReloadActions)
             {
-                if(GetCachedResult(dbSource, out cacheResult))
+                if (GetCachedResult(dbSource, out cacheResult))
                 {
                     return cacheResult;
                 }
             }
-            // else reload actions ;)
 
             var serviceMethods = new ServiceMethodList();
-
-            //
-            // Function to handle procedures returned by the data broker
-            //
+            
             Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> procedureFunc = (command, parameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-
-            //
-            // Function to handle functions returned by the data broker
-            //
-            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText,executeAction) =>
+            
+            Func<IDbCommand, IList<IDbDataParameter>, string, string, bool> functionFunc = (command, parameters, helpText, executeAction) =>
             {
                 var serviceMethod = CreateServiceMethod(command, parameters, helpText, executeAction);
                 serviceMethods.Add(serviceMethod);
                 return true;
             };
-
-            //
-            // Get stored procedures and functions for this database source
-            //
-            using(var server = CreateDbServer(dbSource))
+            
+            using (var server = CreateDbServer(dbSource))
             {
                 server.Connect(dbSource.ConnectionString);
                 server.FetchStoredProcedures(procedureFunc, functionFunc);
             }
-
-            // Add to cache ;)
-            TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods,(s, list) => serviceMethods);
-
+            TheCache.AddOrUpdate(dbSource.ConnectionString, serviceMethods, (s, list) => serviceMethods);
             return GetCachedResult(dbSource, out cacheResult) ? cacheResult : serviceMethods;
         }
 
-    
+
         protected bool GetCachedResult(DbSource dbSource, out ServiceMethodList cacheResult)
         {
             TheCache.TryGetValue(dbSource.ConnectionString, out cacheResult);
@@ -121,21 +95,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             VerifyArgument.IsNotNull("dbService.Source", dbService.Source);
 
             IOutputDescription result;
-            using(var server = CreateDbServer(dbService.Source as DbSource))
+            using (var server = CreateDbServer(dbService.Source as DbSource))
             {
                 server.Connect(((DbSource)dbService.Source).ConnectionString);
                 server.BeginTransaction();
                 try
                 {
-                    //
-                    // Execute command and normalize XML
-                    //
                     var command = CommandFromServiceMethod(server, dbService.Method);
                     var dataTable = server.FetchDataTable(command);
                     
-                    //
-                    // Map shape of XML
-                    //
                     result = OutputDescriptionFactory.CreateOutputDescription(OutputFormats.ShapedXML);
                     var dataSourceShape = DataSourceShapeFactory.CreateDataSourceShape();
                     result.DataSourceShapes.Add(dataSourceShape);
@@ -163,15 +131,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
 
         protected virtual string NormalizeXmlPayload(string payload)
         {
-            //
-            // Unescape '<>' characters delimiting
-            //
             return payload.Replace("&lt;", "<").Replace("&gt;", ">");
         }
 
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode,string executeAction)
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, string sourceCode, string executeAction)
         {
-            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null,executeAction);
+            return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction);
         }
 
         protected static MethodParameter MethodParameterFromDataParameter(IDataParameter parameter)
@@ -187,7 +152,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             var command = server.CreateCommand();
 
             command.CommandText = serviceMethod.ExecuteAction;
-            command.CommandType = serviceMethod.ExecuteAction.Contains("select") ? CommandType.Text : CommandType.StoredProcedure;
+            command.CommandType = serviceMethod.ExecuteAction?.Contains("select") ?? true ? CommandType.Text : CommandType.StoredProcedure;
             if (server.GetType() != typeof(ODBCServer))
             {
                 foreach (var methodParameter in serviceMethod.Parameters)
@@ -207,12 +172,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
         static IDbDataParameter DataParameterFromMethodParameter(IDbCommand command, MethodParameter methodParameter)
         {
             var parameter = command.CreateParameter();
-
             parameter.ParameterName = $"@{methodParameter.Name.Replace("`", "")}";
             parameter.Value = methodParameter.Value;
-
             return parameter;
         }
-
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,8 +28,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         public static IDev2MethodInfo InvokePlugin(Isolated<PluginRuntimeHandler> appDomain, PluginExecutionDto dto,IDev2MethodInfo dev2MethodInfo,out string objString)
         {
-            string objectString;
-            var invokePlugin = appDomain.Value.Run(dev2MethodInfo,dto,out objectString);
+            var invokePlugin = appDomain.Value.Run(dev2MethodInfo, dto, out string objectString);
             objString = objectString;
             return invokePlugin;
         }

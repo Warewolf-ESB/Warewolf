@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Data.ServiceModel.Messages
     /// Send compile time messages to the studio ;)
     /// </summary>
     [Serializable]
-    // ReSharper disable InconsistentNaming
+    
     public class CompileMessageTO : ICompileMessageTO
     {
         public Guid UniqueID { get; set; }
@@ -68,7 +68,7 @@ namespace Dev2.Data.ServiceModel.Messages
 
         public FixType ToFixType()
         {
-            switch(MessageType)
+            switch (MessageType)
             {
                 case CompileMessageType.MappingChange:
                     return FixType.ReloadMapping;
@@ -80,6 +80,8 @@ namespace Dev2.Data.ServiceModel.Messages
                     break;
 
                 case CompileMessageType.ResourceSaved:
+                    break;
+                default:
                     break;
             }
             return FixType.None;

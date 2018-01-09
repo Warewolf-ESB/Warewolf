@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class PathCopyTests : BaseActivityUnitTest
     {
 
@@ -173,15 +173,12 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             foreach(string fileName in fileNames)
             {
-                // ReSharper disable LocalizableElement
+                
                 File.WriteAllText(fileName, "TestData");
-                // ReSharper restore LocalizableElement
+                
             }
 
-            string dataListWithData;
-            string dataListShape;
-
-            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out dataListShape, out dataListWithData);
+            CreateDataListWithRecsetAndCreateShape(fileNames, "FileNames", "Name", out string dataListShape, out string dataListWithData);
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
@@ -197,11 +194,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                     GetOperationBroker = () => activityOperationBrokerMock
                 };
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
             CheckPathOperationActivityDebugInputOutput(act, dataListShape,
-                                                                dataListWithData, out inRes, out outRes);
+                                                                dataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");

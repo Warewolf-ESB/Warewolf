@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,21 +15,22 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Activities.Specs.BaseTypes;
 using Dev2.Interfaces;
-using Dev2.Data.PathOperations;
-using Dev2.Data.Interfaces;
-using Dev2.PathOperations;
 
 namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
 {
     [Binding]
     public class ZipSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ZipSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -49,7 +50,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Zip
         public void WhenTheZipFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

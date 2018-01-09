@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 
 namespace Dev2.Common
 {
-    public class DebugStateTreeBuilder
+    public static class DebugStateTreeBuilder
     {
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
+
         public static IEnumerable<IDebugState> BuildTree(IEnumerable<IDebugState> source)
         {
             var groups = source?.GroupBy(i => i.ParentID) ?? new List<IGrouping<Guid?, IDebugState>>();
@@ -22,7 +21,9 @@ namespace Dev2.Common
             {
                 var dict = groups.Where(g => g.Key.HasValue).ToDictionary(g => g.Key.Value, g => g.ToList());
                 for (var i = 0; i < roots.Count(); i++)
+                {
                     AddChildren(roots[i], dict);
+                }
             }
             var debugStates = roots?.DistinctBy(state => new { state.ID, state.StateType, state.Children }).ToList();
 
@@ -30,7 +31,7 @@ namespace Dev2.Common
 
         }
 
-        private static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
+        static void AddChildren(IDebugState node, IDictionary<Guid, List<IDebugState>> source)
         {
             if (source.ContainsKey(node.ID)
                 && (!node.IsAdded || (node.ActualType?.Contains("DsfForEachActivity") ?? false))
@@ -56,7 +57,9 @@ namespace Dev2.Common
                 node.Children = debugStates ?? new List<IDebugState>();
                 node.IsAdded = true;
                 foreach (var state in node.Children)
+                {
                     AddChildren(state, source);
+                }
             }
             else
             {

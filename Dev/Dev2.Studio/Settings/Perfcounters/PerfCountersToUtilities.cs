@@ -6,8 +6,8 @@ using System.Linq;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Monitoring;
 using Dev2.PerformanceCounters.Counters;
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
-// ReSharper disable ReturnTypeCanBeEnumerable.Global
+
+
 
 namespace Dev2.Settings.Perfcounters
 {
@@ -29,7 +29,6 @@ namespace Dev2.Settings.Perfcounters
 
         public static IList<IPerformanceCountersByResource> GetResourceCountersTo(this IPerformanceCounterTo to)
         {
-
             var res = new List<IPerformanceCountersByResource>();
             var ids = to.ResourceCounters;
             foreach(var resourcePerformanceCounter in ids)
@@ -40,13 +39,22 @@ namespace Dev2.Settings.Perfcounters
                     current = new PerformanceCountersByResource { ResourceId = resourcePerformanceCounter.ResourceId, CounterName = resourcePerformanceCounter.CategoryInstanceName };
                     res.Add(current);
                 }
-                switch(resourcePerformanceCounter.PerfCounterType)
+                switch (resourcePerformanceCounter.PerfCounterType)
                 {
-                    case WarewolfPerfCounterType.AverageExecutionTime: current.AverageExecutionTime = true; break;
-                    case WarewolfPerfCounterType.ExecutionErrors: current.TotalErrors = true; break;
-                    case WarewolfPerfCounterType.ConcurrentRequests: current.ConcurrentRequests = true; break;
-                    case WarewolfPerfCounterType.RequestsPerSecond: current.RequestPerSecond = true; break;
-
+                    case WarewolfPerfCounterType.AverageExecutionTime:
+                        current.AverageExecutionTime = true;
+                        break;
+                    case WarewolfPerfCounterType.ExecutionErrors:
+                        current.TotalErrors = true;
+                        break;
+                    case WarewolfPerfCounterType.ConcurrentRequests:
+                        current.ConcurrentRequests = true;
+                        break;
+                    case WarewolfPerfCounterType.RequestsPerSecond:
+                        current.RequestPerSecond = true;
+                        break;
+                    default:
+                        break;
                 }
             }
 
@@ -170,6 +178,8 @@ namespace Dev2.Settings.Perfcounters
                     break;
                 case "TotalErrors":
                     result = px.TotalErrors.CompareTo(py.RequestPerSecond);
+                    break;
+                default:
                     break;
             }
             return _direction * result;

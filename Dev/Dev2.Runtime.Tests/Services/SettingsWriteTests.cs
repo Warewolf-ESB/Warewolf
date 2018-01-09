@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ using Dev2.Services.Security;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Runtime.Services
 {
     [TestClass]
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.Services
 
         ExecuteMessage ToMsg(StringBuilder sb)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.Deserialize<ExecuteMessage>(sb);
         }
 
@@ -99,7 +99,7 @@ namespace Dev2.Tests.Runtime.Services
             var serializeObject = JsonConvert.SerializeObject(settings);
             var settingsWrite = new SettingsWrite();
             //------------Execute Test---------------------------
-            StringBuilder execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder(serializeObject) } }, null);
+            var execute = settingsWrite.Execute(new Dictionary<string, StringBuilder> { { "Settings", new StringBuilder(serializeObject) } }, null);
             //------------Assert Results-------------------------
             var serverSecuritySettingsFile = EnvironmentVariables.ServerSecuritySettingsFile;
             Assert.IsTrue(File.Exists(serverSecuritySettingsFile));

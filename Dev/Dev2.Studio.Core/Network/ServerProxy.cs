@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ using Dev2.Services.Security;
 using Dev2.SignalR.Wrappers;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Network
 {
@@ -47,7 +47,7 @@ namespace Dev2.Network
             _wrappedConnection.NetworkStateChanged += (sender, args) => OnNetworkStateChanged(args);           
         }
 
-        // ReSharper disable MemberCanBeProtected.Global
+        
         public ServerProxy(string serverUri, ICredentials credentials, IAsyncWorker worker)
         {
             _wrappedConnection = new ServerProxyWithoutChunking(serverUri,credentials,worker);
@@ -59,18 +59,6 @@ namespace Dev2.Network
             _wrappedConnection = new ServerProxyWithoutChunking(webAddress, userName, password);
             SetupPassthroughEvents();
         }
-
-        #region Implementation of IDisposable
-
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
-        public void Dispose()
-        {
-            _wrappedConnection.Dispose();
-        }
-
-        #endregion
 
         #region Implementation of IEnvironmentConnection
 
@@ -120,7 +108,7 @@ namespace Dev2.Network
 
         public async Task<StringBuilder> ExecuteCommandAsync(StringBuilder xmlRequest, Guid workspaceId)
         {
-            return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId);
+            return await _wrappedConnection.ExecuteCommandAsync(xmlRequest, workspaceId).ConfigureAwait(true);
         }
         public IHubProxyWrapper EsbProxy => _wrappedConnection.EsbProxy;
 
@@ -160,7 +148,7 @@ namespace Dev2.Network
            
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
             }
         }
         
@@ -168,11 +156,11 @@ namespace Dev2.Network
         {
             try
             {
-                return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID);
+                return await _wrappedConnection.ConnectAsync(_wrappedConnection.ID).ConfigureAwait(true);
             }
              catch( FallbackException)
             {
-                Dev2Logger.Info("Falling Back to previous signal r client");
+                Dev2Logger.Info("Falling Back to previous signal r client", "Warewolf Info");
                 var name = _wrappedConnection.DisplayName;
                 
                 SetupPassthroughEvents();
@@ -181,7 +169,7 @@ namespace Dev2.Network
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, "Warewolf Error");
                 throw;
             }
             return false;
@@ -193,7 +181,9 @@ namespace Dev2.Network
             _wrappedConnection.Disconnect();
         }
 
-        public void Verify(Action<ConnectResult> callback, bool wait = true)
+        public void Verify(Action<ConnectResult> callback) => Verify(callback, true);
+
+        public void Verify(Action<ConnectResult> callback, bool wait)
         {
             _wrappedConnection.Verify(callback,wait);
         }
@@ -252,19 +242,8 @@ namespace Dev2.Network
         {
             if (PermissionsModified != null)
             {
-                Dev2Logger.Debug("Permissions Modified: "+args);
+                Dev2Logger.Debug("Permissions Modified: "+args, "Warewolf Debug");
                 PermissionsModified(this, args);
-            }
-        }
-
-        // ReSharper disable UnusedMember.Local
-        void UpdateIsAuthorized(bool isAuthorized)
-            // ReSharper restore UnusedMember.Local
-        {
-            if (IsAuthorized != isAuthorized)
-            {
-                _wrappedConnection.IsAuthorized = isAuthorized;
-                RaisePermissionsChanged();
             }
         }
 

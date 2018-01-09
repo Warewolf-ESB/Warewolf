@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,9 +17,13 @@ namespace Dev2.Runtime.WebServer.Responses.Streams
 {
     public class HttpFileStream : HttpPushContentStream
     {
-        readonly Func<Stream> _openInputStream;    
+        readonly Func<Stream> _openInputStream;
+        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType)
+            : this(openInputStream, response, contentType, DefaultChunkSize)
+        {
+        }
 
-        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize = DefaultChunkSize)
+        public HttpFileStream(Func<Stream> openInputStream, HttpResponseMessage response, MediaTypeHeaderValue contentType, int chunkSize)
             : base(response, contentType, chunkSize)
         {
             VerifyArgument.IsNotNull("openInputStream", openInputStream);

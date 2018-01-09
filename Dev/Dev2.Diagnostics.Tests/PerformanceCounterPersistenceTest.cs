@@ -1,7 +1,7 @@
 ﻿// 
 // /*
 // *  Warewolf - Once bitten, there's no going back
-// *  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+// *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 // *  Licensed under GNU Affero General Public License 3.0 or later. 
 // *  Some rights reserved.
 // *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ using Dev2.Communication;
 using Dev2.PerformanceCounters.Management;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Diagnostics.Test
 {
@@ -85,7 +85,7 @@ namespace Dev2.Diagnostics.Test
         [TestCategory("PerformanceCounterPersistence_Load")]
         public void CtorTest()
         {
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( new Mock<IFile>().Object);
+            var obj = new PerformanceCounterPersistence( new Mock<IFile>().Object);
             Assert.IsNotNull(obj);
         }
         [TestMethod]
@@ -94,13 +94,13 @@ namespace Dev2.Diagnostics.Test
         public void PerformanceCounterPersistence_SaveEmpty_ExpectCountersSaved()
         {
         
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( new FileWrapper());
+            var obj = new PerformanceCounterPersistence( new FileWrapper());
 
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             var fileName = Path.GetTempFileName();
             obj.Save(counters, fileName);
             var saved =  File.ReadAllText(fileName);
-            Dev2JsonSerializer  serialiser = new Dev2JsonSerializer();
+            var  serialiser = new Dev2JsonSerializer();
             var persisted = serialiser.Deserialize<IList<IPerformanceCounter>>(saved);
             Assert.IsNotNull(persisted);
 
@@ -114,13 +114,13 @@ namespace Dev2.Diagnostics.Test
         public void PerformanceCounterPersistence_Save_ExpectCountersSaved()
         {
 
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( new FileWrapper());
+            var obj = new PerformanceCounterPersistence( new FileWrapper());
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             counters.Add(new TestCounter());
             var fileName = Path.GetTempFileName();
             obj.Save(counters, fileName);
             var saved = File.ReadAllText(fileName);
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             var persisted = serialiser.Deserialize<IList<IPerformanceCounter>>(saved);
             Assert.AreEqual(persisted.Count,1);
             Assert.IsTrue(persisted.First() is TestCounter);
@@ -138,7 +138,7 @@ namespace Dev2.Diagnostics.Test
         public void PerformanceCounterPersistence_Load_ExpectCountersLoadedForExistingFile()
         {
             var _file = new Mock<IFile>();
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( _file.Object);
+            var obj = new PerformanceCounterPersistence( _file.Object);
 
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             counters.Add(new TestCounter());
@@ -146,7 +146,7 @@ namespace Dev2.Diagnostics.Test
             _file.Setup(a => a.Exists(fileName)).Returns(true);
             obj.Save(counters, fileName);
 
-            Dev2JsonSerializer serialiser = new Dev2JsonSerializer();
+            var serialiser = new Dev2JsonSerializer();
             File.WriteAllText(fileName,serialiser.Serialize(counters));
             _file.Setup(a => a.ReadAllText(fileName)).Returns(File.ReadAllText(fileName));
             var persisted = obj.LoadOrCreate(fileName);
@@ -165,7 +165,7 @@ namespace Dev2.Diagnostics.Test
             var _file = new Mock<IFile>();
             var register = new Mock<IWarewolfPerformanceCounterRegister>();
 
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence( _file.Object);
+            var obj = new PerformanceCounterPersistence( _file.Object);
 
             IList<IPerformanceCounter> counters = new List<IPerformanceCounter>();
             counters.Add(new TestCounter());
@@ -188,7 +188,7 @@ namespace Dev2.Diagnostics.Test
             var _file = new Mock<IFile>();
             var register = new Mock<IWarewolfPerformanceCounterRegister>();
 
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence(_file.Object);
+            var obj = new PerformanceCounterPersistence(_file.Object);
 
             IList<IResourcePerformanceCounter> counters = new List<IResourcePerformanceCounter>();
             counters.Add(new TestResourceCounter());
@@ -214,7 +214,7 @@ namespace Dev2.Diagnostics.Test
             var _file = new Mock<IFile>();
             var register = new Mock<IWarewolfPerformanceCounterRegister>();
 
-            PerformanceCounterPersistence obj = new PerformanceCounterPersistence(_file.Object);
+            var obj = new PerformanceCounterPersistence(_file.Object);
 
             IList<IResourcePerformanceCounter> counters = new List<IResourcePerformanceCounter>();
             counters.Add(new TestResourceCounter());

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,13 +9,12 @@
 */
 
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Win32.TaskScheduler;
 
 namespace Dev2.Common.Interfaces.WindowsTaskScheduler.Wrappers
 {
-    public interface ITaskCollection : IDisposable, IWrappedObject<TaskCollection>, IEnumerable<IDev2Task>, IEnumerable
+    public interface ITaskCollection : IDisposable, IWrappedObject<TaskCollection>, IEnumerable<IDev2Task>
     {
         new IEnumerator<IDev2Task> GetEnumerator();
     }

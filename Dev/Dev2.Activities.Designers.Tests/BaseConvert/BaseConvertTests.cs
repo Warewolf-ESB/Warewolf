@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,8 +20,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System;
 
-// ReSharper disable InconsistentNaming 
 namespace Dev2.Activities.Designers.Tests.BaseConvert
 {
     [TestClass]
@@ -41,7 +41,6 @@ namespace Dev2.Activities.Designers.Tests.BaseConvert
 
             //------------Execute Test---------------------------
             var viewModel = new BaseConvertDesignerViewModel(CreateModelItem(items));
-            viewModel.Validate();
             //------------Assert Results-------------------------
             Assert.IsNotNull(viewModel.ModelItem);
             Assert.IsNotNull(viewModel.ModelItemCollection);
@@ -77,19 +76,60 @@ namespace Dev2.Activities.Designers.Tests.BaseConvert
             mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
         }
 
+        [TestMethod]
+        [Owner("Trevor Williams-Ros")]
+        [TestCategory("BaseConvertDesignerViewModel_ValidateCollectionItem")]
+        public void BaseConvertDesignerViewModel_ValidateCollectionItem_ValidatesPropertiesOfDTO()
+        {
+            //------------Setup for test--------------------------
+            var mi = ModelItemUtils.CreateModelItem(new DsfBaseConvertActivity());
+            mi.SetProperty("DisplayName", "Case Convert");
+
+            var dto = new BaseConvertTO("a&]]", "Text", "Base64","",1, true);
+
+
+            var miCollection = mi.Properties["ConvertCollection"].Collection;
+            var dtoModelItem = miCollection.Add(dto);
+
+
+            var viewModel = new BaseConvertDesignerViewModel(mi);
+            viewModel._getDatalistString = () =>
+            {
+                const string trueString = "True";
+                const string noneString = "None";
+                var datalist = string.Format("<DataList><var Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><a Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><b Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><h Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><r Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /><rec Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" ><set Description=\"\" IsEditable=\"{0}\" ColumnIODirection=\"{1}\" /></rec></DataList>", trueString, noneString);
+                return datalist;
+            };
+
+            //------------Execute Test---------------------------
+            viewModel.Validate();
+
+            //------------Assert Results-------------------------
+            Assert.AreEqual(1, viewModel.Errors.Count);
+
+            StringAssert.Contains(viewModel.Errors[0].Message, Warewolf.Resource.Errors.ErrorResource.BaseConvertInputInvalidExpressionErrorTest);
+            Verify_IsFocused(dtoModelItem, viewModel.Errors[0].Do, "IsFromExpressionFocused");
+        }
+
+        void Verify_IsFocused(ModelItem modelItem, Action doError, string isFocusedPropertyName)
+        {
+            Assert.IsFalse(modelItem.GetProperty<bool>(isFocusedPropertyName));
+            doError.Invoke();
+            Assert.IsTrue(modelItem.GetProperty<bool>(isFocusedPropertyName));
+        }
 
         static ModelItem CreateModelItem(IEnumerable<BaseConvertTO> items, string displayName = "Base Convert")
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfBaseConvertActivity());
             modelItem.SetProperty("DisplayName", displayName);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var modelItemCollection = modelItem.Properties["ConvertCollection"].Collection;
             foreach(var dto in items)
             {
                 modelItemCollection.Add(dto);
             }
-            // ReSharper restore PossibleNullReferenceException
+            
 
             return modelItem;
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,9 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Tests.Runtime.XML;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Tests.Runtime.ServiceModel
-// ReSharper restore CheckNamespace
+
 {
     // BUG 9500 - 2013.05.31 - TWR : added proper testing
     [TestClass]

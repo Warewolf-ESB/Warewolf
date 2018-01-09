@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Dev2.Studio.ViewModels.Workflow;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Views.Workflow
 {
     /// <summary>
@@ -43,7 +43,7 @@ namespace Dev2.Studio.Views.Workflow
             }
             if (e.ChangedButton == MouseButton.Right)
             {
-                DependencyObject node = e.OriginalSource as DependencyObject;
+                var node = e.OriginalSource as DependencyObject;
                 while (node != null)
                 {
                     if (node is ActivityDesigner)
@@ -64,13 +64,16 @@ namespace Dev2.Studio.Views.Workflow
 
                             }
                         }
-                        else if (rect != null)
+                        else
                         {
-                            rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
-                            if (rect.ContextMenu != null)
+                            if (rect != null)
                             {
-                                rect.ContextMenu.IsOpen = true;
-                                rect.ContextMenu.DataContext = DataContext;
+                                rect.ContextMenu = WorkflowDesigner.Resources["StartNodeContextMenu"] as ContextMenu;
+                                if (rect.ContextMenu != null)
+                                {
+                                    rect.ContextMenu.IsOpen = true;
+                                    rect.ContextMenu.DataContext = DataContext;
+                                }
                             }
                         }
                         break;
@@ -103,8 +106,7 @@ namespace Dev2.Studio.Views.Workflow
             }
             else if (e.OriginalSource.GetType() == typeof(Grid))
             {
-                var grid = e.OriginalSource as Grid;
-                if (grid != null && grid.DataContext.GetType() == typeof (WorkflowDesignerViewModel))
+                if (e.OriginalSource is Grid grid && grid.DataContext.GetType() == typeof(WorkflowDesignerViewModel))
                 {
                     e.Effects = DragDropEffects.None;
                     e.Handled = true;
@@ -115,10 +117,13 @@ namespace Dev2.Studio.Views.Workflow
                 e.Effects = DragDropEffects.None;
                 e.Handled = true;
             }
-            else if (_dragDropHelpers.PreventDrop(dataObject))
+            else
             {
-                e.Effects = DragDropEffects.None;
-                e.Handled = true;
+                if (_dragDropHelpers.PreventDrop(dataObject))
+                {
+                    e.Effects = DragDropEffects.None;
+                    e.Handled = true;
+                }
             }
         }
     }

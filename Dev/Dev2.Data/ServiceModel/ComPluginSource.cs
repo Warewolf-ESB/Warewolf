@@ -3,9 +3,9 @@ using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-// ReSharper disable NonLocalizedString
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Runtime.ServiceModel.Data
 {
     [Serializable]
@@ -25,8 +25,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             ResourceType = typeof(ComPluginSource).Name;
 
             ClsId = xml.AttributeSafe("ClsId");
-            bool is32Bit;
-            bool.TryParse(xml.AttributeSafe("Is32Bit"),out is32Bit);
+            bool.TryParse(xml.AttributeSafe("Is32Bit"), out bool is32Bit);
             Is32Bit = is32Bit;
             ComName = xml.AttributeSafe("ComName");
         }

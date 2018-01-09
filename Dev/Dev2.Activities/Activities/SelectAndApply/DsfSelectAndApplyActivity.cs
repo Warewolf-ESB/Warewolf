@@ -8,6 +8,7 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Common.Interfaces;
+using Dev2.Comparer;
 using Dev2.Data.TO;
 using Dev2.Diagnostics.Debug;
 using Dev2.Interfaces;
@@ -18,17 +19,13 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
-
-// ReSharper disable MemberCanBePrivate.Global
-
 namespace Dev2.Activities.SelectAndApply
 {
    
     [ToolDescriptorInfo("SelectApply", "Select and apply", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8FA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Loop Constructs", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_LoopConstruct_Select_and_Apply")]
-    public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>
+    public class DsfSelectAndApplyActivity : DsfActivityAbstract<bool>, IEquatable<DsfSelectAndApplyActivity>
     {
-        private class NullDataSource : Exception
+        class NullDataSource : Exception
         {
 
         }
@@ -38,8 +35,19 @@ namespace Dev2.Activities.SelectAndApply
             ApplyActivityFunc = new ActivityFunc<string, bool>
             {
                 DisplayName = "Data Action",
-                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now.ToString("yyyyMMddhhmmss")}")
+                Argument = new DelegateInArgument<string>($"explicitData_{DateTime.Now:yyyyMMddhhmmss}")
             };
+        }
+
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var act = ApplyActivityFunc.Handler as IDev2ActivityIOMapping;
+            if(act==null)
+            {
+                return new List<IDev2Activity>();
+            }
+            var nextNodes = new List<IDev2Activity> { act };
+            return nextNodes;
         }
 
         public override List<string> GetOutputs()
@@ -60,9 +68,9 @@ namespace Dev2.Activities.SelectAndApply
         public string Alias { get; set; }
         public ActivityFunc<string, bool> ApplyActivityFunc { get; set; }
 
-        private string _previousParentId;
-        private Guid _originalUniqueID;
-        private string _childUniqueID;
+        string _previousParentId;
+        Guid _originalUniqueID;
+        string _childUniqueID;
 
         /// <summary>
         /// When overridden runs the activity's execution logic
@@ -130,7 +138,7 @@ namespace Dev2.Activities.SelectAndApply
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
 
             if (string.IsNullOrEmpty(DataSource))
@@ -157,7 +165,7 @@ namespace Dev2.Activities.SelectAndApply
 
             dataObject.ForEachNestingLevel++;
 
-            List<string> expressions = new List<string>();
+            var expressions = new List<string>();
             try
             {
                 string ds;
@@ -203,8 +211,7 @@ namespace Dev2.Activities.SelectAndApply
                     //Assign the warewolfAtom to Alias using new environment
                     scopedEnvironment.SetDataSource(exp);
 
-                    var exeAct = ApplyActivityFunc.Handler as IDev2Activity;
-                    if (exeAct != null)
+                    if (ApplyActivityFunc.Handler is IDev2Activity exeAct)
                     {
                         _childUniqueID = exeAct.UniqueID;
                         exeAct.Execute(dataObject, 0);
@@ -213,11 +220,11 @@ namespace Dev2.Activities.SelectAndApply
             }
             catch (NullDataSource e)
             {
-                Dev2Logger.Error("DSFSelectAndApply", e);
+                Dev2Logger.Error("DSFSelectAndApply", e, GlobalConstants.WarewolfError);
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFSelectAndApply", e);
+                Dev2Logger.Error("DSFSelectAndApply", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -241,7 +248,7 @@ namespace Dev2.Activities.SelectAndApply
                             var debugStates = debugItems.LastOrDefault();
 
                             var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(serviceTestStep.Result.Message, serviceTestStep.Result.RunTestResult == RunResult.TestFailed);
-                            DebugItem itemToAdd = new DebugItem();
+                            var itemToAdd = new DebugItem();
                             itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                             debugStates?.AssertResultList?.Add(itemToAdd);
 
@@ -275,9 +282,10 @@ namespace Dev2.Activities.SelectAndApply
                         {
                             if (data.IsWarewolfAtomResult)
                             {
-                                var atom = data as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                                if (atom != null)
+                                if (data is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult atom)
+                                {
                                     AddDebugOutputItem(new DebugItemWarewolfAtomResult(atom.Item.ToString(), expression, ""));
+                                }
                             }
                         }
                     }
@@ -288,7 +296,7 @@ namespace Dev2.Activities.SelectAndApply
             }
         }
 
-        private void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult, IDSFDataObject dataObject)
+        void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult, IDSFDataObject dataObject)
         {
             RegularActivityAssertion(dataObject, serviceTestStep);
             var nonPassingSteps = serviceTestStep.Children?.Where(step => step.Result?.RunTestResult != RunResult.TestPassed).ToList();
@@ -322,10 +330,47 @@ namespace Dev2.Activities.SelectAndApply
         }
         #endregion Overrides of DsfNativeActivity<bool>
 
-        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
+        void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, _childUniqueID);
 
+        }
+
+        public bool Equals(DsfSelectAndApplyActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var activityFuncComparer = new ActivityFuncComparer();
+            return base.Equals(other) 
+                && string.Equals(_previousParentId, other._previousParentId)
+                && Equals(_originalUniqueID,other._originalUniqueID)
+                && string.Equals(_childUniqueID, other._childUniqueID)
+                && string.Equals(DataSource, other.DataSource) 
+                && string.Equals(Alias, other.Alias) 
+                && activityFuncComparer.Equals(ApplyActivityFunc, other.ApplyActivityFunc);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfSelectAndApplyActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_previousParentId != null ? _previousParentId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_childUniqueID != null ? _childUniqueID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DataSource != null ? DataSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Alias != null ? Alias.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ApplyActivityFunc != null ? ApplyActivityFunc.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 

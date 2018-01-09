@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Core.Tests.Factories
     [TestClass]
     public class DsfActivityFactoryTests
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [TestCategory("DsfActivityFactory_CreateDsfActivity")]
@@ -202,23 +202,23 @@ namespace Dev2.Core.Tests.Factories
         static IServerRepository SetupEnvironmentRepo(Guid environmentId)
         {
             var mockResourceRepository = new Mock<IResourceRepository>();
-            Mock<IServer> mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
+            var mockEnvironment = EnviromentRepositoryTest.CreateMockEnvironment(mockResourceRepository.Object, "localhost");
             mockEnvironment.Setup(model => model.EnvironmentID).Returns(environmentId);
             return GetEnvironmentRepository(mockEnvironment);
         }
 
-        private static IServerRepository GetEnvironmentRepository(Mock<IServer> mockEnvironment)
+        static IServerRepository GetEnvironmentRepository(Mock<IServer> mockEnvironment)
         {
 
             var repo = new TestLoadServerRespository(mockEnvironment.Object) { IsLoaded = true };
-            // ReSharper disable ObjectCreationAsStatement
+
             new ServerRepository(repo);
-            // ReSharper restore ObjectCreationAsStatement
+
             repo.ActiveServer = mockEnvironment.Object;
 
             return repo;
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

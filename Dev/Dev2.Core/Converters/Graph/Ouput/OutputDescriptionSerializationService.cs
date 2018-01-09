@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,10 +18,10 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Core.Graph;
 using Unlimited.Framework.Converters.Graph.Ouput;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Unlimited.Framework.Converters.Graph.Output
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     ///     A serialization service which uses the DataContractSerializer to serialize to XML
@@ -31,7 +31,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
     {
         #region Class Members
 
-        private static readonly List<Type> _knownTypes;
+        static readonly List<Type> _knownTypes;
 
         #endregion Class Members
 
@@ -95,7 +95,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
                         }
                         catch (Exception ex)
                         {
-                            Dev2Logger.Error(ex);
+                            Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                             // we want to return null                    
                         }
                     }
@@ -109,13 +109,13 @@ namespace Unlimited.Framework.Converters.Graph.Output
 
         #region Private Methods
 
-        private static IEnumerable<Type> GetKnownTypes()
+        static IEnumerable<Type> GetKnownTypes()
         {
-            Type pathType = typeof (IPath);
-            Type outputDescriptionType = typeof (IOutputDescription);
-            Type dataSourceShapeType = typeof (IDataSourceShape);
+            var pathType = typeof(IPath);
+            var outputDescriptionType = typeof(IOutputDescription);
+            var dataSourceShapeType = typeof(IDataSourceShape);
 
-            List<Type> knownTypes = typeof (OutputDescription).Assembly.GetTypes()
+            var knownTypes = typeof(OutputDescription).Assembly.GetTypes()
                 .Where(t => pathType.IsAssignableFrom(t) && t != pathType ||
                             outputDescriptionType.IsAssignableFrom(t) && t != outputDescriptionType ||
                             dataSourceShapeType.IsAssignableFrom(t) && t != dataSourceShapeType).ToList();
@@ -123,7 +123,7 @@ namespace Unlimited.Framework.Converters.Graph.Output
             return knownTypes;
         }
 
-        private static string StripKnownLegacyTags(string data)
+        static string StripKnownLegacyTags(string data)
         {
             return data.Replace("<Dev2XMLResult>", null).Replace("</Dev2XMLResult>", null).Replace("<JSON />", null);
         }

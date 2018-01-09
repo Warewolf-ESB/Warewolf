@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,23 +34,18 @@ using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 
-// ReSharper disable UnusedMember.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable CyclomaticComplexity
-// ReSharper disable FunctionComplexityOverflow
-
-// ReSharper disable CheckNamespace
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
 
-    public class DsfActivity : DsfActivityAbstract<bool>
+    public class DsfActivity : DsfActivityAbstract<bool>,IEquatable<DsfActivity>
     {
         #region Fields
-        private InArgument<string> _iconPath = string.Empty;
+        InArgument<string> _iconPath = string.Empty;
         string _previousInstanceId;
-        private ICollection<IServiceInput> _inputs;
-        private ICollection<IServiceOutputMapping> _outputs;
+        ICollection<IServiceInput> _inputs;
+        ICollection<IServiceOutputMapping> _outputs;
         #endregion
 
         #region Constructors
@@ -91,9 +86,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The friendly name of the source.
         /// </value>
-        // ReSharper disable ConvertToAutoProperty
+        
         public InArgument<string> FriendlySourceName
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -105,11 +100,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        // ReSharper disable ConvertToAutoProperty
-        // ReSharper disable InconsistentNaming
+        
+        
         public InArgument<Guid> EnvironmentID
-        // ReSharper restore InconsistentNaming
-        // ReSharper restore ConvertToAutoProperty
+
+        
         {
             get
             {
@@ -121,9 +116,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        // ReSharper disable InconsistentNaming
+        
         public InArgument<Guid> ResourceID { get; set; }
-        // ReSharper restore InconsistentNaming
+
 
         /// <summary>
         /// Gets or sets the type.
@@ -171,9 +166,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <value>
         /// The service URI.
         /// </value>
-        // ReSharper disable ConvertToAutoProperty
+        
         public string ServiceUri
-        // ReSharper restore ConvertToAutoProperty
+        
         {
             get
             {
@@ -220,9 +215,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         string _serviceUri;
         InArgument<string> _friendlySourceName;
-        // ReSharper disable InconsistentNaming
+        
         InArgument<Guid> _environmentID;
-        // ReSharper restore InconsistentNaming
+
         [NonSerialized]
         IAuthorizationService _authorizationService;
         public override void UpdateDebugParentID(IDSFDataObject dataObject)
@@ -238,21 +233,21 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             // ???? Why is this here....
             context.Properties.ToObservableCollection();
 
-            IEsbChannel esbChannel = DataObject.EsbChannel;
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var esbChannel = DataObject.EsbChannel;
+            var dataObject = context.GetExtension<IDSFDataObject>();
             dataObject.EnvironmentID = context.GetValue(EnvironmentID);
-            Guid datalistId = DataListExecutionID.Get(context);
+            var datalistId = DataListExecutionID.Get(context);
             ParentWorkflowInstanceId = context.WorkflowInstanceId.ToString();
             dataObject.RemoteServiceType = context.GetValue(Type);
             var resourceId = context.GetValue(ResourceID);
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
 
             ParentServiceName = dataObject.ServiceName;
 
 
-            string parentServiceName = string.Empty;
-            string serviceName = string.Empty;
+            var parentServiceName = string.Empty;
+            var serviceName = string.Empty;
 
             var isRemote = dataObject.IsRemoteWorkflow();
 
@@ -302,7 +297,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 if (!DeferExecution)
                 {
                     // In all cases the ShapeOutput will have merged the execution data up into the current
-                    ErrorResultTO tmpErrors = new ErrorResultTO();
+                    var tmpErrors = new ErrorResultTO();
 
                     if (esbChannel == null)
                     {
@@ -451,15 +446,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             dataObject.EnvironmentID = EnvironmentID?.Expression == null ? Guid.Empty : Guid.Parse(EnvironmentID.Expression.ToString());
             dataObject.RemoteServiceType = Type?.Expression?.ToString() ?? "";
             ParentServiceName = dataObject.ServiceName;
 
 
-            string parentServiceName = string.Empty;
-            string serviceName = string.Empty;
+            var parentServiceName = string.Empty;
+            var serviceName = string.Empty;
             var isRemote = dataObject.IsRemoteWorkflow();
 
             if ((isRemote || dataObject.IsRemoteInvokeOverridden) && dataObject.EnvironmentID == Guid.Empty)
@@ -479,7 +474,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 
                 dataObject.RunWorkflowAsync = RunWorkflowAsync;
-                Guid resourceId = dataObject.ResourceID;
+                var resourceId = dataObject.ResourceID;
                 if (resourceId != Guid.Empty)
                 {
                     dataObject.ResourceID = resourceId;
@@ -496,9 +491,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (!DeferExecution)
                 {
-                    ErrorResultTO tmpErrors = new ErrorResultTO();
+                    var tmpErrors = new ErrorResultTO();
 
-                    IEsbChannel esbChannel = dataObject.EsbChannel;
+                    var esbChannel = dataObject.EsbChannel;
                     if (esbChannel == null)
                     {
                         throw new Exception(ErrorResource.NullESBChannel);
@@ -582,8 +577,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     return new List<string> { ObjectName };
                 }
-                IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-                IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                var parser = DataListFactory.CreateOutputParser();
+                var outputs = parser.Parse(OutputMapping);
                 return outputs.Select(definition => definition.RawValue).ToList();
             }
             return Outputs.Select(mapping => mapping.MappedTo).ToList();
@@ -602,7 +597,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         #region Debug IO
         public override List<DebugItem> GetDebugInputs(IExecutionEnvironment env, int update)
         {
-            IDev2LanguageParser parser = DataListFactory.CreateInputParser();
+            var parser = DataListFactory.CreateInputParser();
             return GetDebugInputs(env, parser, update).Select(a => (DebugItem)a).ToList();
 
         }
@@ -618,11 +613,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         continue;
                     }
                     var tmpEntry = env.Eval(serviceInput.Value, update);
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     if (tmpEntry.IsWarewolfAtomResult)
                     {
-                        var warewolfAtomResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (warewolfAtomResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
                         {
                             var variableName = serviceInput.Value;
                             if (DataListUtil.IsEvaluated(variableName))
@@ -638,8 +632,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        var warewolfAtomListResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (warewolfAtomListResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
                         {
                             var variableName = serviceInput.Value;
                             if (DataListUtil.IsValueRecordset(variableName))
@@ -659,7 +652,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
             else
             {
-                IList<IDev2Definition> inputs = parser.Parse(InputMapping);
+                var inputs = parser.Parse(InputMapping);
 
 
                 foreach (IDev2Definition dev2Definition in inputs)
@@ -670,12 +663,11 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     var tmpEntry = env.Eval(dev2Definition.RawValue, update);
 
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     if (tmpEntry.IsWarewolfAtomResult)
                     {
 
-                        var warewolfAtomResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (warewolfAtomResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult warewolfAtomResult)
                         {
                             var variableName = dev2Definition.Name;
                             if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
@@ -689,8 +681,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     else
                     {
 
-                        var warewolfAtomListResult = tmpEntry as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (warewolfAtomListResult != null)
+                        if (tmpEntry is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListResult)
                         {
                             var variableName = dev2Definition.Name;
                             if (!string.IsNullOrEmpty(dev2Definition.RecordSetName))
@@ -734,7 +725,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             {
                 if (!string.IsNullOrEmpty(ObjectName) && !(this is DsfEnhancedDotNetDllActivity))
                 {
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     AddDebugItem(new DebugEvalResult(ObjectName, "", environment, update), itemToAdd);
                     results.Add(itemToAdd);
                 }
@@ -747,31 +738,31 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         try
                         {
-                            DebugItem itemToAdd = new DebugItem();
+                            var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugEvalResult(serviceOutputMapping.MappedTo, "", environment, update), itemToAdd);
                             results.Add(itemToAdd);
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error(e.Message, e);
+                            Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                         }
                     }
                 }
                 else
                 {
-                    IDev2LanguageParser parser = DataListFactory.CreateOutputParser();
-                    IList<IDev2Definition> outputs = parser.Parse(OutputMapping);
+                    var parser = DataListFactory.CreateOutputParser();
+                    var outputs = parser.Parse(OutputMapping);
                     foreach (IDev2Definition dev2Definition in outputs)
                     {
                         try
                         {
-                            DebugItem itemToAdd = new DebugItem();
+                            var itemToAdd = new DebugItem();
                             AddDebugItem(new DebugEvalResult(dev2Definition.RawValue, "", environment, update), itemToAdd);
                             results.Add(itemToAdd);
                         }
                         catch (Exception e)
                         {
-                            Dev2Logger.Error(e.Message, e);
+                            Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
                         }
                     }
                 }
@@ -799,5 +790,45 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var inputsEqual = CommonEqualityOps.CollectionEquals(Inputs, other.Inputs, new ServiceInputComparer());
+            var outputsEqual = CommonEqualityOps.CollectionEquals(Outputs, other.Outputs, new ServiceOutputMappingComparer());
+            return base.Equals(other)
+                && inputsEqual
+                && outputsEqual
+                && string.Equals(ServiceUri, other.ServiceUri)
+                && string.Equals(ServiceName, other.ServiceName)
+                && string.Equals(Category, other.Category)
+                && RunWorkflowAsync == other.RunWorkflowAsync
+                && IsObject == other.IsObject;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Inputs != null ? Inputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Outputs != null ? Outputs.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ServiceUri != null ? ServiceUri.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ServiceName != null ? ServiceName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Category != null ? Category.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ RunWorkflowAsync.GetHashCode();                
+                hashCode = (hashCode * 397) ^ IsObject.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

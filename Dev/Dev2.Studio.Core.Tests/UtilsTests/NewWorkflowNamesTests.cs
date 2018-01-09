@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -53,18 +53,18 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void CanFunctionNormallyWithMixedAddRemoveOdd()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            int cnt = 1;
+            var workflowNames = new NewWorkflowNames();
+            var cnt = 1;
 
-            for(int i = cnt; i < 10; i++)
+            for (int i = cnt; i < 10; i++)
             {
-                string name = "Unsaved " + i;
+                var name = "Unsaved " + i;
                 workflowNames.Add(name);
             }
 
             for(int i = 1; i < 10; i += 2)
             {
-                string name = "Unsaved " + i;
+                var name = "Unsaved " + i;
                 workflowNames.Remove(name);
             }
 
@@ -76,18 +76,18 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void CanFunctionNormallyWithMixedAddRemoveEven()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            int cnt = 1;
+            var workflowNames = new NewWorkflowNames();
+            var cnt = 1;
 
-            for(int i = cnt; i < 10; i++)
+            for (int i = cnt; i < 10; i++)
             {
-                string name = "Unsaved " + i;
+                var name = "Unsaved " + i;
                 workflowNames.Add(name);
             }
 
             for(int i = 2; i < 10; i += 2)
             {
-                string name = "Unsaved " + i;
+                var name = "Unsaved " + i;
                 workflowNames.Remove(name);
             }
 
@@ -103,8 +103,8 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesAddNewNameToHashSetExpectedNameToBeAdded()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
+            var workflowNames = new NewWorkflowNames();
+            var name = "Unsaved 1";
             workflowNames.Add(name);
             Assert.IsTrue(workflowNames.Contains(name));
         }
@@ -118,8 +118,8 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesRemoveExistingNameFromHashSetExpectedNameToBeRemoved()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
+            var workflowNames = new NewWorkflowNames();
+            var name = "Unsaved 1";
             workflowNames.Add(name);
             workflowNames.Remove(name);
             Assert.IsFalse(workflowNames.Contains(name));
@@ -128,8 +128,8 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesRemoveNonExistingNameFromHashSetExpectedReturnOfFalse()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
+            var workflowNames = new NewWorkflowNames();
+            var name = "Unsaved 1";
 
             Assert.IsFalse(workflowNames.Remove(name));
         }
@@ -141,8 +141,8 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesContainsNameWhenNameExistsInHashSetExpectedReturnOfTrue()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
+            var workflowNames = new NewWorkflowNames();
+            var name = "Unsaved 1";
             workflowNames.Add(name);
             Assert.IsTrue(workflowNames.Contains(name));
         }
@@ -150,8 +150,8 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesContainsNameWhenNameDoesntExistsInHashSetExpectedReturnOfFalse()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
+            var workflowNames = new NewWorkflowNames();
+            var name = "Unsaved 1";
             Assert.IsFalse(workflowNames.Contains(name));
         }
 
@@ -162,8 +162,8 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesGetNextNameWhenOneExistsInHashSetExpectedReturnNewWorkflow2()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            string name = "Unsaved 1";
+            var workflowNames = new NewWorkflowNames();
+            var name = "Unsaved 1";
             workflowNames.Add(name);
 
             Assert.AreEqual("Unsaved 2", workflowNames.GetNext());
@@ -172,10 +172,10 @@ namespace Dev2.Core.Tests.UtilsTests
         [TestMethod]
         public void NewWorkflowNamesGetNextNameWhenManyExistInHashSetAndGapAtTeoExpectedReturnNewWorkflow2()
         {
-            NewWorkflowNames workflowNames = new NewWorkflowNames();
-            for(int i = 0; i < 5; i++)
+            var workflowNames = new NewWorkflowNames();
+            for (int i = 0; i < 5; i++)
             {
-                string name = "Unsaved " + i;
+                var name = "Unsaved " + i;
                 workflowNames.Add(name);
             }
             workflowNames.Remove("Unsaved 2");

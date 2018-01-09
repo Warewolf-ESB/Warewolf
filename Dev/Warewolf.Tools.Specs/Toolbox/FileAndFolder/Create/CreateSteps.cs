@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,12 +21,16 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
     [Binding]
     public class CreateSteps : FileToolsBase
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CreateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -34,7 +38,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         public void WhenTheCreateFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -44,8 +48,7 @@ namespace Dev2.Activities.Specs.Toolbox.FileAndFolder.Create
         {
             BuildShapeAndTestData();
 
-            string privateKeyFile;
-            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile,out privateKeyFile);
+            scenarioContext.TryGetValue(CommonSteps.DestinationPrivateKeyFile, out string privateKeyFile);
             var create = new DsfPathCreate
             {
                 OutputPath = scenarioContext.Get<string>(CommonSteps.DestinationHolder),

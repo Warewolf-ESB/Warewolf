@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,8 +28,7 @@ namespace Dev2.AppResources.Converters
         /// <param name="value">The value produced by the binding source.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DataGridRow row = value as DataGridRow;
-            if(row != null)
+            if (value is DataGridRow row)
             {
                 return row.GetIndex() + 1;
             }

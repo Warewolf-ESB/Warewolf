@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
@@ -17,36 +15,25 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once UnusedMember.Global
     public class TestComPluginService : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
+                Dev2Logger.Info("Test ComPlugin Service", GlobalConstants.WarewolfInfo);
 
-                Dev2Logger.Info("Test ComPlugin Service");
-                StringBuilder resourceDefinition;
+                values.TryGetValue("ComPluginService", out StringBuilder resourceDefinition);
+                var src = serializer.Deserialize<IComPluginService>(resourceDefinition);
 
-                values.TryGetValue("ComPluginService", out resourceDefinition);
-                IComPluginService src = serializer.Deserialize<IComPluginService>(resourceDefinition);
-
-                // ReSharper disable MaximumChainedReferences
                 var parameters = src.Inputs?.Select(a => new MethodParameter { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value, TypeName = a.TypeName }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var pluginsrc = ResourceCatalog.Instance.GetResource<ComPluginSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id);
                 var res = new ComPluginService
                 {
@@ -57,14 +44,13 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = pluginsrc
                 };
 
-                string serializedResult;
-                var result = _pluginServices.Value.Test(serializer.SerializeToBuilder(res).ToString(), out serializedResult);
+                var result = _pluginServices.Value.Test(serializer.SerializeToBuilder(res).ToString(), out string serializedResult);
 
                 if (serializedResult.StartsWith("Exception: "))
                 {
                     msg.HasError = true;
                     msg.Message = new StringBuilder(serializedResult);
-                    Dev2Logger.Error(serializedResult);
+                    Dev2Logger.Error(serializedResult, GlobalConstants.WarewolfError);
                 }
                 else
                 {
@@ -76,26 +62,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 
             return serializer.SerializeToBuilder(msg);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ComPluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ComPluginService ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
+        readonly Lazy<IComPluginServices> _pluginServices = new Lazy<IComPluginServices>(() => new ComPluginServices());
 
-        private readonly Lazy<IComPluginServices> _pluginServices =new Lazy<IComPluginServices>(()=> new ComPluginServices());
-
-        public string HandlesType()
-        {
-            return "TestComPluginService";
-        }
+        public string HandlesType() => "TestComPluginService";
     }
 }

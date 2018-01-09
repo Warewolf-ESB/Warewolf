@@ -12,9 +12,14 @@ namespace Dev2.Activities.Debug
         readonly string _labelText;
         string _operand;
         readonly string _variable;
-        private readonly bool _mockSelected;
+        readonly bool _mockSelected;
 
-        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand, bool mockSelected = false)
+        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand)
+            : this(warewolfRecordset, variable, labelText, operand, false)
+        {
+        }
+
+        public DebugItemWarewolfRecordset(DataStorage.WarewolfRecordset warewolfRecordset, string variable, string labelText, string operand, bool mockSelected)
         {
             _warewolfRecordset = warewolfRecordset;
             _labelText = labelText;
@@ -55,7 +60,7 @@ namespace Dev2.Activities.Debug
                     var index = _warewolfRecordset.Data["WarewolfPositionColumn"][grpIdx];
                     var position = ExecutionEnvironment.WarewolfAtomToString(index);
                     grpIdx++;
-                    string displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable),item.Key,position));
+                    var displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable),item.Key,position));
                     var debugType = DebugItemResultType.Value;
                     if (DataListUtil.IsEvaluated(displayExpression))
                     {

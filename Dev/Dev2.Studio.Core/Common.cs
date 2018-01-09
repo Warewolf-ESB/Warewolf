@@ -4,7 +4,7 @@ using Dev2.Data.Interfaces.Enums;
 
 namespace Dev2.Studio.Core
 {
-    internal static class Common
+    static class Common
     {
         public const string RootTag = "DataList";
         public const string Description = "Description";
@@ -32,11 +32,11 @@ namespace Dev2.Studio.Core
             }
             return result;
         }
-        // ReSharper disable InconsistentNaming
+        
         public static enDev2ColumnArgumentDirection ParseColumnIODirection(XmlAttribute attr)
-            // ReSharper restore InconsistentNaming
+    
         {
-            enDev2ColumnArgumentDirection result = enDev2ColumnArgumentDirection.None;
+            var result = enDev2ColumnArgumentDirection.None;
 
             if (attr == null)
             {

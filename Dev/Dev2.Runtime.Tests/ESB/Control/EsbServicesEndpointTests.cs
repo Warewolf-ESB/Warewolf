@@ -19,7 +19,7 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.Control
 {
@@ -144,11 +144,11 @@ namespace Dev2.Tests.Runtime.ESB.Control
             dataObj.Setup(o => o.Clone()).Returns(dataObjClon.Object);
             var mapManager = new Mock<IEnvironmentOutputMappingManager>();
             var esbServicesEndpoint = new EsbServicesEndpoint();
-            PrivateObject privateObject = new PrivateObject(esbServicesEndpoint);
+            var privateObject = new PrivateObject(esbServicesEndpoint);
             var invokerMock = new Mock<IEsbServiceInvoker>();
             var remoteWorkflowExecutionContainer = new RemoteWorkflowExecutionContainer(new ServiceAction(), dataObj.Object, new Mock<IWorkspace>().Object, new Mock<IEsbChannel>().Object);
             invokerMock.Setup(invoker => invoker.GenerateInvokeContainer(It.IsAny<IDSFDataObject>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<Guid>())).Returns(remoteWorkflowExecutionContainer);
-            ErrorResultTO err = new ErrorResultTO();
+            var err = new ErrorResultTO();
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
             object[] args = { dataObj.Object, "inputs", invokerMock.Object, false, Guid.Empty, err, 0 };
@@ -182,8 +182,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Assert Precondition----------------
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
-            ErrorResultTO err;
-            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out err, 1, true);
+            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out ErrorResultTO err, 1, true);
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
@@ -214,8 +213,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             Assert.IsNotNull(esbServicesEndpoint);
             //---------------Execute Test ----------------------
 
-            ErrorResultTO err;
-            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out err, 1, true);
+            esbServicesEndpoint.ExecuteSubRequest(dataObj.Object, Guid.NewGuid(), "", "", out ErrorResultTO err, 1, true);
 
             //---------------Test Result -----------------------
             dataObj.Verify(o => o.IsRemoteWorkflow(), Times.Once);
@@ -243,8 +241,7 @@ namespace Dev2.Tests.Runtime.ESB.Control
             //---------------Execute Test ----------------------
             try
             {
-                ErrorResultTO err;
-                esbServicesEndpoint.ExecuteLogErrorRequest(dataObj.Object, It.IsAny<Guid>(), "http://example.com/", out err, 1);
+                esbServicesEndpoint.ExecuteLogErrorRequest(dataObj.Object, It.IsAny<Guid>(), "http://example.com/", out ErrorResultTO err, 1);
             }
             catch (Exception ex)
             {

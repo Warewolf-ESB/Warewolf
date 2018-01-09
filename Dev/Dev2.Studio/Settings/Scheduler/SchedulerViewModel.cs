@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,7 +37,6 @@ using Dev2.Providers.Events;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Services.Events;
 using Dev2.Studio.Controller;
-using Dev2.Studio.Core;
 using Dev2.Studio.Core.Messages;
 using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces;
@@ -46,39 +45,39 @@ using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Threading;
 using Warewolf.Studio.Resources.Languages;
 using Warewolf.Studio.ViewModels;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Settings.Scheduler
 {
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
-        private ICommand _saveCommand;
-        private ICommand _newCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editTriggerCommand;
-        private ICommand _addWorkflowCommand;
+        ICommand _saveCommand;
+        ICommand _newCommand;
+        ICommand _deleteCommand;
+        ICommand _editTriggerCommand;
+        ICommand _addWorkflowCommand;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
-        private IScheduledResource _selectedTask;
-        private readonly IPopupController _popupController;
-        private readonly IAsyncWorker _asyncWorker;
+        IScheduledResource _selectedTask;
+        readonly IPopupController _popupController;
+        readonly IAsyncWorker _asyncWorker;
 
-        private IResourceHistory _selectedHistory;
-        private IList<IResourceHistory> _history;
-        private TabItem _activeItem;
-        private bool _isProgressBarVisible;
-        private bool _isHistoryTabVisible;
-        private string _helpText;
-        private bool _isLoading;
-        private string _connectionError;
-        private bool _hasConnectionError;
-        private IServer _currentEnvironment;
-        private IScheduledResourceModel _scheduledResourceModel;
-        private Func<IServer, IServer> _toEnvironmentModel;
-        private bool _errorShown;
-        private DebugOutputViewModel _debugOutputViewModel;
-        private string _displayName;
+        IResourceHistory _selectedHistory;
+        IList<IResourceHistory> _history;
+        TabItem _activeItem;
+        bool _isProgressBarVisible;
+        bool _isHistoryTabVisible;
+        string _helpText;
+        bool _isLoading;
+        string _connectionError;
+        bool _hasConnectionError;
+        IServer _currentEnvironment;
+        IScheduledResourceModel _scheduledResourceModel;
+        Func<IServer, IServer> _toEnvironmentModel;
+        bool _errorShown;
+        DebugOutputViewModel _debugOutputViewModel;
+        string _displayName;
 
-        // ReSharper disable once MemberCanBeProtected.Global
+
         public SchedulerViewModel()
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
@@ -89,12 +88,17 @@ namespace Dev2.Settings.Scheduler
         {
         }
 
-        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker = null)
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel)
+            : this(eventPublisher, directoryObjectPicker, popupController, asyncWorker, server, toEnvironmentModel, null)
+        {
+        }
+
+        public SchedulerViewModel(IEventAggregator eventPublisher, DirectoryObjectPickerDialog directoryObjectPicker, IPopupController popupController, IAsyncWorker asyncWorker, IServer server, Func<IServer, IServer> toEnvironmentModel, Task<IResourcePickerDialog> getResourcePicker)
             : base(eventPublisher)
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
-            DirectoryObjectPickerDialog directoryObjectPicker1 = directoryObjectPicker;
+            var directoryObjectPicker1 = directoryObjectPicker;
 
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
@@ -113,15 +117,13 @@ namespace Dev2.Settings.Scheduler
             directoryObjectPicker1.ShowAdvancedView = false;
 
             InitializeHelp();
-            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), ServerRepository.Instance, new DebugOutputFilterStrategy());
+            var serverRepository = CustomContainer.Get<IServerRepository>();
+            DebugOutputViewModel = new DebugOutputViewModel(new EventPublisher(), serverRepository, new DebugOutputFilterStrategy());
 
             Server = server;
             SetupServer(server);
             SetDisplayName(false);
         }
-
-        public override bool HasVariables => false;
-        public override bool HasDebugOutput => true;
 
         public override string DisplayName
         {
@@ -350,8 +352,7 @@ namespace Dev2.Settings.Scheduler
                     }
                     else
                     {
-                        int val;
-                        if (value.IsWholeNumber(out val))
+                        if (value.IsWholeNumber(out int val))
                         {
                             SelectedTask.NumberOfHistoryToKeep = val;
                             NotifyOfPropertyChange(() => IsDirty);
@@ -544,7 +545,10 @@ namespace Dev2.Settings.Scheduler
             private set
             {
                 if (_selectedTask != null)
+                {
                     _selectedTask.Errors = value;
+                }
+
                 NotifyOfPropertyChange(() => Errors);
             }
         }
@@ -597,7 +601,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        private bool IsHistoryTab
+        bool IsHistoryTab
         {
             get
             {
@@ -635,7 +639,11 @@ namespace Dev2.Settings.Scheduler
                        (_deleteCommand = new DelegateCommand(param =>
                        {
                            var taskToBeDeleted = param as IScheduledResource;
-                           if (taskToBeDeleted == null) return;
+                           if (taskToBeDeleted == null)
+                           {
+                               return;
+                           }
+
                            SelectedTask = taskToBeDeleted;
                            SchedulerTaskManager.DeleteTask();
                        }));
@@ -654,13 +662,13 @@ namespace Dev2.Settings.Scheduler
         public ICommand AddWorkflowCommand => _addWorkflowCommand ??
                                               (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
 
-        private void InitializeHelp()
+        void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.SchedulerSettingsHelpTextSettingsView;
         }
 
-        private static ActivityDesignerToggle CreateHelpToggle()
+        static ActivityDesignerToggle CreateHelpToggle()
         {
             var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", "HelpToggle");
 
@@ -669,12 +677,13 @@ namespace Dev2.Settings.Scheduler
 
         void SetupServer(IServer tmpEnv)
         {
-            CurrentEnvironment = ToEnvironmentModel(tmpEnv);
+            CurrentEnvironment = ToEnvironmentModel?.Invoke(tmpEnv);
 
             if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected && tmpEnv.Permissions.Any(a => a.Administrator))
             {
                 ClearConnectionError();
-                var server = CurrentEnvironment ?? ServerRepository.Instance.ActiveServer;
+                var serverRepository = CustomContainer.Get<IServerRepository>();
+                var server = CurrentEnvironment ?? serverRepository.ActiveServer;
 
                 if (server.Permissions == null)
                 {
@@ -706,7 +715,7 @@ namespace Dev2.Settings.Scheduler
                 {
                     if (!_errorShown)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, "Warewolf Error");
                         _errorShown = true;
                     }
                 }
@@ -724,7 +733,7 @@ namespace Dev2.Settings.Scheduler
             HasConnectionError = false;
         }
 
-        private void ClearViewModel()
+        void ClearViewModel()
         {
             Name = string.Empty;
             WorkflowName = string.Empty;
@@ -778,7 +787,7 @@ namespace Dev2.Settings.Scheduler
                     if (!_errorShown)
                     {
                         _popupController.ShowCorruptTaskResult(ex.Message);
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, "Warewolf Error");
                         _errorShown = true;
                     }
                 }
@@ -786,9 +795,9 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        private void SetDisplayName(bool dirty)
+        void SetDisplayName(bool dirty)
         {
-            string baseName = "Scheduler";
+            var baseName = "Scheduler";
             if (Server != null)
             {
                 baseName = baseName + " - " + Server.DisplayName;
@@ -816,7 +825,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if (SelectedTask != null && SelectedTask.IsDirty)
                 {
-                    MessageBoxResult showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
+                    var showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
                     switch (showSchedulerCloseConfirmation)
                     {
                         case MessageBoxResult.Cancel:
@@ -824,12 +833,21 @@ namespace Dev2.Settings.Scheduler
                             return false;
                         case MessageBoxResult.No:
                             return true;
+                        case MessageBoxResult.OK:
+                            break;
+                        case MessageBoxResult.Yes:
+                            break;
+                        default:
+                            break;
                     }
                     return SchedulerTaskManager.SaveTasks();
                 }
             }
             if (SelectedTask != null && !showMessage)
+            {
                 return SchedulerTaskManager.SaveTasks();
+            }
+
             return true;
         }
 
@@ -847,7 +865,10 @@ namespace Dev2.Settings.Scheduler
             set
             {
                 if (value == _helpText)
+                {
                     return;
+                }
+
                 _helpText = value;
                 NotifyOfPropertyChange(() => HelpText);
             }
@@ -885,8 +906,7 @@ namespace Dev2.Settings.Scheduler
     {
         public static IServer ToEnvironmentModel(this IServer server)
         {
-            var resource = server as Server;
-            if (resource != null)
+            if (server is Server resource)
             {
                 return resource;
             }

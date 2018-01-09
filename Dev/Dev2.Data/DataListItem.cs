@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,14 +20,14 @@ namespace Dev2.DataList.Contract.Binary_Objects
     {
         #region Fields
 
-        private string _field;
-        private string _recordset;
-        private string _displayValue;
-        private bool _canHaveMutipleRows;
-        private string _index;
-        private string _value;
-        private enRecordsetIndexType _recordsetIndexType;
-        private bool _isObject;
+        string _field;
+        string _recordset;
+        string _displayValue;
+        bool _canHaveMutipleRows;
+        string _index;
+        string _value;
+        enRecordsetIndexType _recordsetIndexType;
+        bool _isObject;
 
         #endregion Fields
 

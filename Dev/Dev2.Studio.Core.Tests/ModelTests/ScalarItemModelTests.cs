@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Data.Interfaces.Enums;
 using Dev2.Studio.Core.Models.DataList;
 using Dev2.Studio.Interfaces.DataList;
@@ -7,18 +6,18 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.ModelTests
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class ScalarItemModelTests
     {
         #region Test Fields
 
-        private IScalarItemModel _scalarItemModel;
+        IScalarItemModel _scalarItemModel;
 
         #endregion Test Fields
 
         #region Private Test Methods
 
-        private void TestScalarItemModelSet(string name, bool populateAllFields = false)
+        void TestScalarItemModelSet(string name, bool populateAllFields = false)
         {
             if (populateAllFields)
             {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,8 +21,7 @@ using PopupController = Dev2.Studio.Controller.PopupController;
 
 namespace Dev2.Core.Tests
 {
-    [TestClass]
-    // ReSharper disable InconsistentNaming
+    [TestClass]    
     public class PopupControllerTests
     {
         [TestMethod]
@@ -32,9 +31,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
 
             var popupController = new PopupController
                 {
@@ -68,9 +67,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNo;
 
             var popupController = new PopupController
             {
@@ -104,9 +103,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OKCancel;
 
             var popupController = new PopupController
             {
@@ -124,17 +123,17 @@ namespace Dev2.Core.Tests
             };
             
             //------------Execute Test---------------------------
-            int conflictCount = 1;
+            var conflictCount = 1;
 
             popupController.ShowDeployConflict(conflictCount);
 
-            string correctDesc = String.Empty;
+            var correctDesc = String.Empty;
             if (conflictCount == 1)
             {
                 correctDesc = "There is [ " + conflictCount + " ] conflict that occurs";
             }
 
-            string Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
+            var Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
@@ -149,14 +148,14 @@ namespace Dev2.Core.Tests
 
         [TestMethod]
         [Owner("Pieter Terblanche")]
-        [TestCategory("PopupController_ShowDeployConflict")]
-        public void PopupController_ShowDeployConflictTwo_SetProperties_AllPropertiesDisplayed()
+        [TestCategory("PopupController_ShowDeployEmptyServer")]
+        public void PopupController_ShowDeployEmptyServer_SetProperties_AllPropertiesDisplayed()
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -174,17 +173,97 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            int conflictCount = 2;
+            var Description = Warewolf.Studio.Resources.Languages.Core.DeployEmptyServerDescription;
+            var Header = Warewolf.Studio.Resources.Languages.Core.DeployEmptyServerHeader;
+
+            popupController.ShowDeployNoResourcesToDeploy(Header, Description);
+            
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual(Header, header);
+            Assert.AreEqual(Description, description);
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployEmptyFolder")]
+        public void PopupController_ShowDeployEmptyFolder_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            var Description = Warewolf.Studio.Resources.Languages.Core.DeployEmptyFolderDescription;
+            var Header = Warewolf.Studio.Resources.Languages.Core.DeployEmptyFolderHeader;
+
+            popupController.ShowDeployNoResourcesToDeploy(Header, Description);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(popupWasCalled);
+            Assert.AreEqual(MessageBoxButton.OK, buttons);
+            Assert.AreEqual(Header, header);
+            Assert.AreEqual(Description, description);
+        }
+
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("PopupController_ShowDeployConflict")]
+        public void PopupController_ShowDeployConflictTwo_SetProperties_AllPropertiesDisplayed()
+        {
+            //------------Setup for test--------------------------
+            var popupWasCalled = false;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OKCancel;
+
+            var popupController = new PopupController
+            {
+                ShowDev2MessageBox = (desc, hdr, btn, img, dntShwAgKy, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll) =>
+                {
+                    description = desc;
+                    header = hdr;
+                    buttons = btn;
+                    popupWasCalled = true;
+                    return new MessageBoxViewModel(desc, hdr, btn, FontAwesomeIcon.Adn, isDependBtnVisible, isErr, isInf, isQuest, duplicates, isDeleteAnywayBtnVisible, applyToAll)
+                    {
+                        Result = MessageBoxResult.OK
+                    };
+                }
+            };
+
+            //------------Execute Test---------------------------
+            var conflictCount = 2;
 
             popupController.ShowDeployConflict(conflictCount);
 
-            string correctDesc = String.Empty;
+            var correctDesc = String.Empty;
             if (conflictCount > 1)
             {
                 correctDesc = "There are [ " + conflictCount + " ] conflicts that occur";
             }
 
-            string Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
+            var Description = correctDesc + " in this deploy." + Environment.NewLine + "Click OK to override the conflicts or Cancel to view the conflicting resources." + Environment.NewLine +
                           "--------------------------------------------------------------------------------" +
                               Environment.NewLine +
                           "OK - Continue to deploy resources." + Environment.NewLine +
@@ -204,9 +283,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OKCancel;
 
             var popupController = new PopupController
             {
@@ -224,7 +303,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string message = "Workflow1 already exists";
+            var message = "Workflow1 already exists";
             popupController.ShowDeployNameConflict(message);
 
             //------------Assert Results-------------------------
@@ -245,9 +324,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -265,10 +344,10 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string conflictResourceName = "Workflow1";
+            var conflictResourceName = "Workflow1";
             popupController.ShowDeployResourceNameConflict(conflictResourceName);
 
-            string message = "There is a conflict between the two resources in this deploy." +
+            var message = "There is a conflict between the two resources in this deploy." +
                 Environment.NewLine + "Conflict Resource Name: " + conflictResourceName +
                 Environment.NewLine + "Click OK and rename the conflicting resource/s." +
                 Environment.NewLine +
@@ -294,9 +373,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OKCancel;
 
             var popupController = new PopupController
             {
@@ -314,11 +393,11 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string sourceServerVersion = "0.0.0.9";
-            string destinationServerVersion = "1.0.0.0";
+            var sourceServerVersion = "0.0.0.9";
+            var destinationServerVersion = "1.0.0.0";
             popupController.ShowDeployServerMinVersionConflict(sourceServerVersion, destinationServerVersion);
 
-            string message = "There is a conflict between the two versions in this deploy." +
+            var message = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Minimum supported version: " + destinationServerVersion +
                 Environment.NewLine + "The destination server does not support all the same features as the source server and your deployment is not guaranteed to work. " +
@@ -347,9 +426,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OKCancel;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OKCancel;
 
             var popupController = new PopupController
             {
@@ -367,11 +446,11 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string sourceServerVersion = "0.0.0.9";
-            string destinationServerVersion = "1.0.0.0";
+            var sourceServerVersion = "0.0.0.9";
+            var destinationServerVersion = "1.0.0.0";
             popupController.ShowDeployServerVersionConflict(sourceServerVersion, destinationServerVersion);
 
-            string message = "There is a conflict between the two versions in this deploy." +
+            var message = "There is a conflict between the two versions in this deploy." +
                 Environment.NewLine + "Source Server Version: " + sourceServerVersion +
                 Environment.NewLine + "Destination Server Version: " + destinationServerVersion +
                 Environment.NewLine + "Click OK to continue or Cancel to return." +
@@ -399,9 +478,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNo;
 
             var popupController = new PopupController
             {
@@ -419,7 +498,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string displayName = "DisplayName";
+            var displayName = "DisplayName";
             popupController.ShowRollbackVersionMessage(displayName);
 
             var message = $"{displayName} will become the current version.{Environment.NewLine}Do you want to proceed ?";
@@ -444,7 +523,7 @@ namespace Dev2.Core.Tests
             var popupController = new PopupController();
 
             //------------Execute Test---------------------------
-            string displayName = "DisplayName";
+            var displayName = "DisplayName";
             var popup = popupController.GetDeleteConfirmation(displayName);
 
             var message = string.Format(Warewolf.Studio.Resources.Languages.Core.DeleteConfirmation, displayName);
@@ -468,7 +547,7 @@ namespace Dev2.Core.Tests
             var popupController = new PopupController();
 
             //------------Execute Test---------------------------
-            string displayName = "DisplayName";
+            var displayName = "DisplayName";
             var popup = popupController.GetDuplicateMessage(displayName);
 
             var message = $"The name {displayName} already exists. Please choose a different name.";
@@ -490,10 +569,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
+            var description = string.Empty;
             var duplicateResources = new List<string>();
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -512,7 +591,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            List<string> duplicateList = new List<string> {"test1", "test2"};
+            var duplicateList = new List<string> {"test1", "test2"};
             popupController.ShowResourcesConflict(duplicateList);
 
             var message = "Duplicate resources found. Please resolve the files on File Explorer. \nTo view the resource, click on the individual items below.";
@@ -539,9 +618,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -559,7 +638,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string server = "localhost";
+            var server = "localhost";
             popupController.ShowServerNotConnected(server);
 
             var message = "The server " + server + " is unreachable. \n \nPlease make sure the Warewolf Server service is running on that machine.";
@@ -582,9 +661,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -602,11 +681,11 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string selectedServerVersion = "0.0.0.9";
-            string currentServerVersion = "1.0.0.0";
+            var selectedServerVersion = "0.0.0.9";
+            var currentServerVersion = "1.0.0.0";
             popupController.ShowConnectServerVersionConflict(selectedServerVersion, currentServerVersion);
 
-            string message = "There is a version conflict with the current selected server." + Environment.NewLine +
+            var message = "There is a version conflict with the current selected server." + Environment.NewLine +
                 Environment.NewLine + "Selected Server Version: " + selectedServerVersion +
                 Environment.NewLine + "Current Server Version: " + currentServerVersion + Environment.NewLine +
                 Environment.NewLine + "Please make sure that the server you are trying to connect to has the latest version.";
@@ -629,9 +708,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNo;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNo;
 
             var popupController = new PopupController
             {
@@ -649,7 +728,7 @@ namespace Dev2.Core.Tests
             };
 
             //------------Execute Test---------------------------
-            string server = "localhost";
+            var server = "localhost";
             popupController.ShowConnectionTimeoutConfirmation(server);
 
             var message = " Unable to reach " + server + ": Connection timed out." + Environment.NewLine
@@ -675,9 +754,9 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -725,16 +804,16 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            string errorMessage = string.Empty;
+            var description = string.Empty;
+            var header = string.Empty;
+            var errorMessage = string.Empty;
 
-            string expectedDescription = "Unable to retrieve tasks." + Environment.NewLine +
+            var expectedDescription = "Unable to retrieve tasks." + Environment.NewLine +
                                          "ERROR: " + errorMessage + ". " + Environment.NewLine +
                                          "Please check that there a no corrupt files." + Environment.NewLine +
                                         @"C:\Windows\System32\Tasks\Warewolf";
 
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -767,13 +846,13 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
+            var description = string.Empty;
+            var header = string.Empty;
 
-            string expectedDescription = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
+            var expectedDescription = "Thank you for taking the time to log it. Follow the issue " + Environment.NewLine +
                 "in the Community to keep updated on the progress.";
 
-            MessageBoxButton buttons = MessageBoxButton.OK;
+            var buttons = MessageBoxButton.OK;
 
             var popupController = new PopupController
             {
@@ -806,19 +885,19 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            string oldName = string.Empty;
-            string newName = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            string expectedDescription = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
+            var description = string.Empty;
+            var header = string.Empty;
+            var oldName = string.Empty;
+            var newName = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var expectedDescription = "The following task has been renamed " + oldName + " -> " + newName + ". You will lose the history for the old task." + Environment.NewLine +
                           " Would you like to save the new name?" + Environment.NewLine +
                           "-----------------------------------------------------------------" +
                               Environment.NewLine +
                           "Yes - Save with the new name." + Environment.NewLine +
                           "No - Save with the old name." + Environment.NewLine +
                           "Cancel - Returns you to Scheduler.";
-            MessageBoxImage imageType = MessageBoxImage.Error;
+            var imageType = MessageBoxImage.Error;
 
 
             var popupController = new PopupController
@@ -855,10 +934,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage imageType = MessageBoxImage.Error;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
 
             var popupController = new PopupController
             {
@@ -894,11 +973,11 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage imageType = MessageBoxImage.Error;
-            string errorMessage = string.Empty;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
+            var errorMessage = string.Empty;
 
             var popupController = new PopupController
             {
@@ -933,10 +1012,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage imageType = MessageBoxImage.Error;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
             var expectedDesc = "Scheduler Task has not been saved." + Environment.NewLine
                               + "Would you like to save the Task? " + Environment.NewLine +
                               "-----------------------------------------------------------------" +
@@ -978,10 +1057,10 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage imageType = MessageBoxImage.Error;
+            var description = string.Empty;
+            var header = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
             var expectedDesc = "Settings have not been saved." + Environment.NewLine
                               + "Would you like to save the settings? " + Environment.NewLine +
                               "-----------------------------------------------------------------" +
@@ -1023,11 +1102,11 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            string dontShowAgainKey = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.YesNoCancel;
-            MessageBoxImage imageType = MessageBoxImage.Error;
+            var description = string.Empty;
+            var header = string.Empty;
+            var dontShowAgainKey = string.Empty;
+            var buttons = MessageBoxButton.YesNoCancel;
+            var imageType = MessageBoxImage.Error;
             var expectedDesc = "You can pass variables into your workflow" + Environment.NewLine
                               + "by selecting the Input checkbox" + Environment.NewLine +
                               "in the Variables window.";
@@ -1067,11 +1146,11 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             var popupWasCalled = false;
-            string description = string.Empty;
-            string header = string.Empty;
-            string dontShowAgainKey = string.Empty;
-            MessageBoxButton buttons = MessageBoxButton.OK;
-            MessageBoxImage imageType = MessageBoxImage.Error;
+            var description = string.Empty;
+            var header = string.Empty;
+            var dontShowAgainKey = string.Empty;
+            var buttons = MessageBoxButton.OK;
+            var imageType = MessageBoxImage.Error;
             const string expectedDesc = "some invalid text is invalid. Warewolf only supports latin characters";
 
             var popupController = new PopupController

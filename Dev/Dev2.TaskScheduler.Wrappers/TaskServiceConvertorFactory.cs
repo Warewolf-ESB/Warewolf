@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -75,8 +75,11 @@ namespace Dev2.TaskScheduler.Wrappers
                 new TaskService(targetServer, userName, accountDomain, password, forceV1));
         }
 
+        public IExecAction CreateExecAction(string path) => CreateExecAction(path, null, null);
 
-        public IExecAction CreateExecAction(string path, string arguments = null, string workingDirectory = null)
+        public IExecAction CreateExecAction(string path, string arguments) => CreateExecAction(path, arguments, null);
+
+        public IExecAction CreateExecAction(string path, string arguments, string workingDirectory)
         {
             return new Dev2ExecAction(this, new ExecAction(path, arguments, workingDirectory));
         }
@@ -106,7 +109,7 @@ namespace Dev2.TaskScheduler.Wrappers
         public ITrigger SanitiseTrigger(ITrigger resource)
         {
             ITrigger trigger = new Dev2Trigger(this, resource.Instance);
-            Trigger serialisedTrigger = resource.Instance;
+            var serialisedTrigger = resource.Instance;
             switch (resource.Instance.TriggerType)
             {
                 case TaskTriggerType.Boot:
@@ -118,20 +121,17 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     break;
                 case TaskTriggerType.Daily:
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2DailyTrigger(this,
                         new DailyTrigger((serialisedTrigger as DailyTrigger).DaysInterval));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.Event:
                     var evt = resource.Instance as EventTrigger;
                     if (evt != null)
                     {
-                        int? eventId;
-                        string source;
-                        string log;
-                        evt.GetBasic(out log, out source, out eventId);
+                        evt.GetBasic(out string log, out string source, out int? eventId);
 
                         trigger = new Dev2EventTrigger(this, new EventTrigger(log, source, eventId));
                     }
@@ -145,23 +145,25 @@ namespace Dev2.TaskScheduler.Wrappers
                 case TaskTriggerType.Logon:
                     var logonTrigger = resource.Instance as LogonTrigger;
                     if (logonTrigger != null)
+                    {
                         trigger = new Dev2LogonTrigger(this, new LogonTrigger {UserId = logonTrigger.UserId});
+                    }
 
                     break;
                 case TaskTriggerType.Monthly:
                     var a = serialisedTrigger as MonthlyTrigger;
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2MonthlyTrigger(this, new MonthlyTrigger(a.DaysOfMonth.First(), a.MonthsOfYear));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.MonthlyDOW:
                     var b = serialisedTrigger as MonthlyDOWTrigger;
                     trigger = new Dev2MonthlyDowTrigger(this,
-// ReSharper disable PossibleNullReferenceException
+
                         new MonthlyDOWTrigger(b.DaysOfWeek, b.MonthsOfYear,
                             b.WeeksOfMonth));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.Registration:
@@ -173,25 +175,28 @@ namespace Dev2.TaskScheduler.Wrappers
 
                     var sessionStateChangeTrigger = resource.Instance as SessionStateChangeTrigger;
                     if (sessionStateChangeTrigger != null)
+                    {
                         trigger = new Dev2Trigger(this,
                             new SessionStateChangeTrigger
                             {
                                 UserId = sessionStateChangeTrigger.UserId,
                                 StateChange = sessionStateChangeTrigger.StateChange
                             });
+                    }
+
                     break;
                 case TaskTriggerType.Time:
                     var y = serialisedTrigger as TimeTrigger;
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2TimeTrigger(this, new TimeTrigger(y.StartBoundary));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 case TaskTriggerType.Weekly:
                     var z = serialisedTrigger as WeeklyTrigger;
-// ReSharper disable PossibleNullReferenceException
+
                     trigger = new Dev2WeeklyTrigger(this, new WeeklyTrigger(z.DaysOfWeek, z.WeeksInterval));
-// ReSharper restore PossibleNullReferenceException
+
 
                     break;
                 default:
@@ -212,10 +217,10 @@ namespace Dev2.TaskScheduler.Wrappers
             return trigger;
         }
 
-        private static void ExtractDelay(ITriggerDelay resource, ITriggerDelay trigger)
+        static void ExtractDelay(ITriggerDelay resource, ITriggerDelay trigger)
         {
-            ITriggerDelay daily = trigger;
-            ITriggerDelay dailyr = resource;
+            var daily = trigger;
+            var dailyr = resource;
             if (daily != null && dailyr != null)
             {
                 daily.Delay = dailyr.Delay;

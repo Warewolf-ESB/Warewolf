@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,12 +15,12 @@ using System.Reflection;
 
 namespace Dev2.Utilities
 {
-    public class StringAttributeRefectionUtils
+    public static class StringAttributeRefectionUtils
     {
         public static IEnumerable<PropertyInfo> ExtractAdornedProperties<T>(object objectToReflect)
         {
-            Type sourceType = objectToReflect.GetType();
-            IEnumerable<PropertyInfo> properties = sourceType.GetProperties().Where(c => c.GetCustomAttributes(typeof(T), true).Any());
+            var sourceType = objectToReflect.GetType();
+            var properties = sourceType.GetProperties().Where(c => c.GetCustomAttributes(typeof(T), true).Any());
             return properties;
         }    
     }

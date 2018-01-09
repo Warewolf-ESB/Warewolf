@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -107,9 +107,9 @@ namespace Dev2.Tests.Runtime.Services
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("FetchDebugItemFile_Execute")]
-// ReSharper disable InconsistentNaming
+
         public void FetchDebugItemFile_Execute_FileHasMultiLines_ReturnedMessageWillBeMultiLines()
-// ReSharper restore InconsistentNaming
+
         {
             var multiLines = new StringBuilder();
             multiLines.AppendLine("Line One");

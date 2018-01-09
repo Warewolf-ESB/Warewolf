@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,11 +20,10 @@ using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.DataList;
 using Dev2.Studio.ViewModels.Diagnostics;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.WorkSurface
-// ReSharper restore CheckNamespace
 {
-    public interface IWorkSurfaceContextViewModel
+    public interface IWorkSurfaceContextViewModel : IDisposable
     {
         WorkSurfaceKey WorkSurfaceKey { get; }
         IServer Environment { get; }
@@ -41,24 +40,18 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         AuthorizeCommand QuickDebugCommand { get; }
         IEventAggregator EventPublisher { get; }
         ValidationController ValidationController { get; set; }
-        /// <summary>
-        /// Indicates if a close has been requested
-        /// </summary>
         bool CloseRequested { get; }
         ViewModelDialogResults DialogResult { get; set; }
         object Parent { get; set; }
         string DisplayName { get; set; }
         bool IsNotifying { get; set; }
 
-        void Handle(DebugResourceMessage message);
-
         void Handle(ExecuteResourceMessage message);
 
         void Handle(SaveResourceMessage message);
 
         void Handle(UpdateWorksurfaceDisplayName message);
-
-
+        
         void SetDebugStatus(DebugStatus debugStatus);
 
         void Debug(IContextualResourceModel resourceModel, bool isDebug);
@@ -75,15 +68,13 @@ namespace Dev2.Studio.ViewModels.WorkSurface
 
         void ShowSaveDialog(IContextualResourceModel resourceModel, bool addToTabManager);
 
-        bool Save(bool isLocalSave = false, bool isStudioShutdown = false);
+        bool Save(bool isLocalSave, bool isStudioShutdown);
 
         bool IsEnvironmentConnected();
 
         void FindMissing();
 
         void Debug();
-
-        void Dispose();
 
         /// <summary>
         /// Requests tha the view bound to this view model closes

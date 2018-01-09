@@ -20,8 +20,6 @@ using Moq;
 using Warewolf.Core;
 using Warewolf.Testing;
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
 
 namespace Dev2.Activities.Designers.Tests.ComDll
 {
@@ -168,7 +166,6 @@ namespace Dev2.Activities.Designers.Tests.ComDll
             Assert.AreEqual(vm.DesignValidationErrors[0].Message, String.Empty);
         }
 
-
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [TestCategory("ComDllViewModel_SetDisplayName")]
@@ -185,7 +182,7 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
             //------------Assert Results-------------------------
             vm.SetDisplayName("dsfbob_builer");
-            PrivateObject p = new PrivateObject(vm);
+            var p = new PrivateObject(vm);
             Assert.AreEqual(p.GetProperty("DisplayName"), "Com DLLdsfbob_builer");
         }
 
@@ -264,9 +261,9 @@ namespace Dev2.Activities.Designers.Tests.ComDll
 
             var vm = new ComDllViewModel(CreateModelItemWithValues(), ps.Object);
             vm.DesignValidationErrors.Add(new ErrorInfo() { Message = "bob error", ErrorType = ErrorType.Critical });
-            PrivateObject p = new PrivateObject(vm);
+            var p = new PrivateObject(vm);
             p.Invoke("UpdateWorstError");
-            var inf = p.GetProperty("WorstDesignError") as ErrorInfo;
+            var inf = vm.WorstDesignError as ErrorInfo;
             //------------Assert Results-------------------------
 
             Assert.IsNotNull(inf);
@@ -316,8 +313,8 @@ namespace Dev2.Activities.Designers.Tests.ComDll
             Assert.AreEqual(buildRegions.Single(region => region is INamespaceToolRegion<INamespaceItem>).Errors.Count, 1);
         }
 
-        private static readonly Guid id = Guid.NewGuid();
-        private static Mock<IComPluginServiceModel> SetupEmptyMockSource()
+        static readonly Guid id = Guid.NewGuid();
+        static Mock<IComPluginServiceModel> SetupEmptyMockSource()
         {
             var ps = new Mock<IComPluginServiceModel>();
             ps.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IComPluginSource>() { new ComPluginSourceDefinition() { Id = id } });

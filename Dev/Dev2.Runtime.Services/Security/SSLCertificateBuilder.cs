@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Runtime.Security
         static string _location;
         static string Location => _location ?? (_location = Assembly.GetExecutingAssembly().Location);
 
-        private const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
+        const string MakeCertPath = @"\SSL Generation\CreateCertificate.bat";
 
         public bool EnsureSslCertificate(string certPath, IPEndPoint endPoint)
         {
@@ -56,7 +56,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
             finally
             {

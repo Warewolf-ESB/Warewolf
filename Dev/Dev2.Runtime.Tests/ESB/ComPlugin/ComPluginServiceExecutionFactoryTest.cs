@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,7 +16,7 @@ using Dev2.Runtime.ServiceModel.Esb.Brokers.ComPlugin;
 using DummyNamespaceForTest;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.ESB.ComPlugin
 {
@@ -84,8 +84,8 @@ namespace Dev2.Tests.Runtime.ESB.ComPlugin
 
         static ComPluginSource CreatePluginSource(bool invalidResourceID = false)
         {
-            Guid resourceID = Guid.Empty;
-            if(!invalidResourceID)
+            var resourceID = Guid.Empty;
+            if (!invalidResourceID)
             {
                 resourceID = Guid.NewGuid();
             }

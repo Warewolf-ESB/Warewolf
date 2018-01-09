@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,9 +20,9 @@ namespace Dev2.Infrastructure.Tests.Communication
         [Description("Constructor must initialize Errors list and set IsValid to true.")]
         [TestCategory("UnitTest")]
         [Owner("Trevor Williams-Ros")]
-        // ReSharper disable InconsistentNaming
+        
         public void DesignValidationMemoConstructor_UnitTest_Intialization_ErrorsNotNullAndIsValidTrue()
-        // ReSharper restore InconsistentNaming
+
         {
             var memo = new DesignValidationMemo();
             Assert.IsNotNull(memo.Errors);

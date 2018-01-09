@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,10 +25,10 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable VirtualMemberCallInContructor
-// ReSharper disable UnusedMember.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
+
+
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -36,27 +36,27 @@ namespace Warewolf.Studio.ViewModels
     {
         public IAsyncWorker AsyncWorker { get; set; }
         ISharepointServerSource _sharePointServiceSource;
-        private readonly IServer _environment;
-        private readonly ISharePointSourceModel _updateManager;
-        private string _serverName;
-        private bool _isWindows;
-        private bool _isUser;
-        private string _userName;
-        private string _password;
-        private string _testResult;
-        private IContextualResourceModel _resource;
-        private AuthenticationType _authenticationType;
-        private CancellationTokenSource _token;
-        private bool _testComplete;
-        private bool _isLoading;
-        private bool _testPassed;
-        private string _resourceName;
-        private bool _testing;
-        private string _headerText;
-        private string _testMessage;
-        private bool _testFailed;
-        private string _path;
-        private bool _isDisposed;
+        readonly IServer _environment;
+        readonly ISharePointSourceModel _updateManager;
+        string _serverName;
+        bool _isWindows;
+        bool _isUser;
+        string _userName;
+        string _password;
+        string _testResult;
+        IContextualResourceModel _resource;
+        AuthenticationType _authenticationType;
+        CancellationTokenSource _token;
+        bool _testComplete;
+        bool _isLoading;
+        bool _testPassed;
+        string _resourceName;
+        bool _testing;
+        string _headerText;
+        string _testMessage;
+        bool _testFailed;
+        string _path;
+        bool _isDisposed;
         readonly Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
 
         public SharepointServerSourceViewModel(ISharePointSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker, IServer environment)
@@ -155,7 +155,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(ServerName))
             {
                 return false;
@@ -223,7 +226,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Item = src;
                     _sharePointServiceSource = src;
                     SetupHeaderTextFromExisting();
@@ -296,6 +302,7 @@ namespace Warewolf.Studio.ViewModels
         ISharepointServerSource ToSource()
         {
             if (_sharePointServiceSource == null)
+            {
                 return new SharePointServiceSourceDefinition
                 {
                     AuthenticationType = AuthenticationType,
@@ -306,7 +313,7 @@ namespace Warewolf.Studio.ViewModels
                     IsSharepointOnline = IsSharepointOnline,
                     Id = _sharePointServiceSource?.Id ?? Guid.NewGuid()
                 };
-            // ReSharper disable once RedundantIfElseBlock
+            }
             else
             {
                 _sharePointServiceSource.AuthenticationType = AuthenticationType;
@@ -348,7 +355,7 @@ namespace Warewolf.Studio.ViewModels
                 {
                     return _requestServiceNameViewModel.Result;
                 }
-                // ReSharper disable once RedundantIfElseBlock
+                
                 else
                 {
                     throw _requestServiceNameViewModel.Exception;

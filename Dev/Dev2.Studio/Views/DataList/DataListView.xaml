@@ -27,9 +27,6 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
         </ResourceDictionary>
     </UserControl.Resources>
-    <i:Interaction.Behaviors>
-        <behaviors:UserControlFocusNextAndPreviousBehaviour />
-    </i:Interaction.Behaviors>
     <Grid x:Name="MainGrid"
           LostKeyboardFocus="UIElement_OnLostKeyboardFocus" 
           Margin="{StaticResource ElementBorder}">
@@ -123,7 +120,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -210,7 +206,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -297,7 +292,6 @@
                                                                 IsTabStop="True"
                                                                 MaxWidth="{Binding ElementName=varsScrolBar,Path=ActualWidth}"
                                                                 DeleteCommand="{Binding DataContext.DeleteCommand,ElementName=DataListViewControl}"
-                                                                aprop:FocusAttachedProperty.IsFocused="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsSelected,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 ToolTip="{x:Static languages:Tooltips.DataListVariableInputTooltip}"
                                                                 Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.DisplayName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                                 IsEnabled="{Binding RelativeSource={RelativeSource AncestorType={x:Type TreeViewItem}}, Path=DataContext.IsEditable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"

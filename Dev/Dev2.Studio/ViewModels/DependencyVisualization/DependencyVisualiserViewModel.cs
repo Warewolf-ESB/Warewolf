@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,25 +25,25 @@ using Dev2.Studio.Views.DependencyVisualization;
 using Microsoft.Practices.Prism.Mvvm;
 using Warewolf.Studio.ViewModels;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.ViewModels.DependencyVisualization
-// ReSharper restore CheckNamespace
+
 {
     public class DependencyVisualiserViewModel : BaseWorkSurfaceViewModel
     {
         readonly DependencyVisualiserView _view;
-        private IContextualResourceModel _resourceModel;
+        IContextualResourceModel _resourceModel;
         public string ResourceType { get; set; }
-        private double _availableWidth;
-        private double _availableHeight;
+        double _availableWidth;
+        double _availableHeight;
         ObservableCollection<IExplorerItemNodeViewModel> _allNodes;
         bool _getDependsOnMe;
         bool _getDependsOnOther;
         string _nestingLevel;
         public Guid EnvironmentId { get; set; }
-        private readonly IServer _server;
-        private readonly IPopupController _popupController;
-        private readonly IDependencyGraphGenerator _graphGenerator;
+        readonly IServer _server;
+        readonly IPopupController _popupController;
+        readonly IDependencyGraphGenerator _graphGenerator;
 
         public DependencyVisualiserViewModel(IDependencyGraphGenerator generator, IEventAggregator aggregator, IServer server)
             : this(aggregator)
@@ -57,7 +57,12 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             _popupController = new PopupController();
         }
 
-        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe = false)
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server)
+            : this(view, server, false)
+        {
+        }
+
+        public DependencyVisualiserViewModel(DependencyVisualiserView view, IServer server, bool getDependsOnMe)
             : base(EventPublishers.Aggregator)
         {
             _view = view;
@@ -112,13 +117,18 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
             }
             set
             {
-                if (_resourceModel == value) return;
+                if (_resourceModel == value)
+                {
+                    return;
+                }
 
                 _resourceModel = value;
                 BuildGraphs();
                 NotifyOfPropertyChange(() => ResourceModel);
                 if (value != null)
+                {
                     NotifyOfPropertyChange(() => DisplayName);
+                }
             }
         }
 
@@ -173,7 +183,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
         public override string DisplayName => string.Format(GetDependsOnMe ? "Dependency - {0}" : "{0}*Dependencies", ResourceModel.ResourceName);
 
         // NOTE: This method is invoked from DependencyVisualiser.xaml
-        private async void BuildGraphs()
+        async void BuildGraphs()
         {
             var repo = ResourceModel.Environment.ResourceRepository;
             var graphData = await repo.GetDependenciesXmlAsync(ResourceModel, GetDependsOnMe);
@@ -183,7 +193,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "GetDependenciesXml"));
             }
 
-            int nestingLevel = int.Parse(NestingLevel ?? "0");
+            var nestingLevel = int.Parse(NestingLevel ?? "0");
             var graphGenerator = _graphGenerator ?? new DependencyGraphGenerator();
             var graph = graphGenerator.BuildGraph(graphData.Message, ResourceModel.ResourceName, AvailableWidth, AvailableHeight, nestingLevel);
 
@@ -192,14 +202,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 var seenResource = new List<Guid>();
                 var acc = new List<ExplorerItemNodeViewModel>();
                 GetItems(new List<IDependencyVisualizationNode> { graph.Nodes.FirstOrDefault() }, null, acc, seenResource);
-                if (acc.Count == 0 || acc.LastOrDefault() == null)
-                {
-                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>();
-                }
-                else
-                {
-                    AllNodes = new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
-                }
+                AllNodes = acc.Count == 0 || acc.LastOrDefault() == null ? new ObservableCollection<IExplorerItemNodeViewModel>() : new ObservableCollection<IExplorerItemNodeViewModel>(acc.Last().AsNodeList());
             }
         }
 
@@ -224,7 +227,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
         public ICollection<ExplorerItemNodeViewModel> GetItems(List<IDependencyVisualizationNode> nodes, IExplorerItemNodeViewModel parent, List<ExplorerItemNodeViewModel> acc, List<Guid> seenResource)
         {
-            List<ExplorerItemNodeViewModel> items = new List<ExplorerItemNodeViewModel>(nodes.Count);
+            var items = new List<ExplorerItemNodeViewModel>(nodes.Count);
             foreach (var node in nodes)
             {
                 if (!seenResource.Contains(Guid.Parse(node.ID)))
@@ -235,7 +238,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                     var exploreritem = env?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren).FirstOrDefault(model => model.ResourceId == Guid.Parse(node.ID));
                     if (exploreritem != null)
                     {
-                        ExplorerItemNodeViewModel item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
+                        var item = new ExplorerItemNodeViewModel(_server, parent, _popupController)
                         {
                             ResourceName = exploreritem.ResourceName,
                             TextVisibility = true,
@@ -269,8 +272,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
 
         protected override void OnViewLoaded(object view)
         {
-            var loadedView = view as IView;
-            if (loadedView != null)
+            if (view is IView loadedView)
             {
                 base.OnViewLoaded(loadedView);
             }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,7 +35,7 @@ namespace Dev2.Core.Tests.Environments
         [TestInitialize]
         public void MyTestInitialize()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
         }
 
         #endregion
@@ -82,8 +82,9 @@ namespace Dev2.Core.Tests.Environments
             var targetEnv = EnviromentRepositoryTest.CreateMockEnvironment(EnviromentRepositoryTest.Server1Source);
             var repository = new Mock<IServerRepository>();
             repository.Setup(r => r.All()).Returns(new[] { targetEnv.Object });
-
-            if(useParameterless)
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(repository.Object);
+            if (useParameterless)
             {
                 
                 ServerRepository.Instance.IsLoaded = true;  // so that we don't connect to a server!

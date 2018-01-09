@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -8,44 +7,35 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class SaveEmailServiceSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
         IResourceCatalog _resourceCatalogue;
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Save Email Service Source");
-                StringBuilder resourceDefinition;
+                Dev2Logger.Info("Save Email Service Source", GlobalConstants.WarewolfInfo);
 
-                values.TryGetValue("EmailServiceSource", out resourceDefinition);
+                values.TryGetValue("EmailServiceSource", out StringBuilder resourceDefinition);
 
-                IEmailServiceSource src = serializer.Deserialize<IEmailServiceSource>(resourceDefinition);
-                EmailSource con = new EmailSource
+                var src = serializer.Deserialize<IEmailServiceSource>(resourceDefinition);
+                var con = new EmailSource
                 {
                     Host = src.HostName,
                     UserName = src.UserName,
@@ -65,40 +55,26 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
 
             return serializer.SerializeToBuilder(msg);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><EmailServiceSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = Common.Interfaces.Core.DynamicServices.enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-
-            return newDs;
-        }
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
-        }
-        public IResourceCatalog ResourceCatalogue
-        {
-            get
-            {
-                return _resourceCatalogue?? ResourceCatalog.Instance;
-            }
-            set
-            {
-                _resourceCatalogue = value;
-            }
+            get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
+            set => _serverExplorerRepository = value;
         }
 
-        public string HandlesType()
+        public IResourceCatalog ResourceCatalogue
         {
-            return "SaveEmailServiceSource";
+            get => _resourceCatalogue ?? ResourceCatalog.Instance;
+            set => _resourceCatalogue = value;
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><EmailServiceSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "SaveEmailServiceSource";
     }
 }

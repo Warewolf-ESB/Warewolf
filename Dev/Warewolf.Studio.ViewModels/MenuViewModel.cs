@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,7 @@ using Dev2.Studio.Interfaces;
 using FontAwesome.WPF;
 using Microsoft.Practices.Prism.Commands;
 using Microsoft.Practices.Prism.Mvvm;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -35,11 +35,7 @@ namespace Warewolf.Studio.ViewModels
 
         public MenuViewModel(IShellViewModel mainViewModel)
         {
-            if (mainViewModel == null)
-            {
-                throw new ArgumentNullException(nameof(mainViewModel));
-            }
-            _viewModel = mainViewModel;
+            _viewModel = mainViewModel ?? throw new ArgumentNullException(nameof(mainViewModel));
             _isOverLock = false;
             NewServiceCommand = _viewModel.NewServiceCommand;
             DeployCommand = _viewModel.DeployCommand;
@@ -67,7 +63,7 @@ namespace Warewolf.Studio.ViewModels
             });
             SlideClosedCommand = new DelegateCommand(() =>
             {
-                // ReSharper disable CompareOfFloatsByEqualityOperator
+                
                 if (_viewModel.MenuPanelWidth >= 80 && !_isOverLock)
                 {
                     SlideClosed(_viewModel);
@@ -134,7 +130,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (IsPanelLockedOpen)
+                {
                     return @"UnlockAlt";
+                }
+
                 return @"Lock";
             }
         }
@@ -172,9 +171,14 @@ namespace Warewolf.Studio.ViewModels
             else
             {
                 if (!IsPanelOpen && ButtonWidth == 125)
+                {
                     ButtonWidth = 35;
+                }
+
                 if (IsPanelOpen && ButtonWidth == 35)
+                {
                     ButtonWidth = 125;
+                }
 
                 IsPanelLockedOpen = false;
             }
@@ -201,11 +205,14 @@ namespace Warewolf.Studio.ViewModels
                 ButtonWidth = 35;
                 IsPanelOpen = !IsPanelOpen;
             }
-            else if (IsPanelLockedOpen && IsPanelOpen)
+            else
             {
-                mainViewModel.MenuExpanded = !IsPanelOpen;
-                ButtonWidth = 125;
-                IsPanelOpen = !IsPanelOpen;
+                if (IsPanelLockedOpen && IsPanelOpen)
+                {
+                    mainViewModel.MenuExpanded = !IsPanelOpen;
+                    ButtonWidth = 125;
+                    IsPanelOpen = !IsPanelOpen;
+                }
             }
 
             UpdateProperties();
@@ -215,7 +222,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if(mainViewModel != null)
             {
-                HasNewVersion = await mainViewModel.CheckForNewVersion();
+                HasNewVersion = await mainViewModel.CheckForNewVersionAsync().ConfigureAwait(true);
             }
         }
 
@@ -256,7 +263,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogNewLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -265,7 +275,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogSaveLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -274,7 +287,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogDeployLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -283,7 +299,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogTaskLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -302,7 +321,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return IsProcessing ? Resources.Languages.Core.MenuDialogStopDebugLabel : Resources.Languages.Core.MenuDialogDebugLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -311,7 +333,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogSettingsLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -320,7 +345,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogSupportLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -329,7 +357,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (ButtonWidth == 125)
+                {
                     return Resources.Languages.Core.MenuDialogNewVersionLabel;
+                }
+
                 return string.Empty;
             }
         }
@@ -338,7 +369,10 @@ namespace Warewolf.Studio.ViewModels
             get
             {
                 if (IsPanelLockedOpen)
+                {
                     return Resources.Languages.Core.MenuDialogLockLabel;
+                }
+
                 return Resources.Languages.Core.MenuDialogUnLockLabel;
             }
         }

@@ -10,17 +10,17 @@ using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
-// ReSharper disable NotAccessedField.Local
+
 
 namespace Dev2.Activities.Designers2.Core
 {
     public class WebGetInputRegion : IWebGetInputArea
     {
-        private readonly ModelItem _modelItem;
-        private readonly ISourceToolRegion<IWebServiceSource> _source;
-        private string _queryString;
-        private string _requestUrl;
-        private ObservableCollection<INameValue> _headers;
+        readonly ModelItem _modelItem;
+        readonly ISourceToolRegion<IWebServiceSource> _source;
+        string _queryString;
+        string _requestUrl;
+        ObservableCollection<INameValue> _headers;
         bool _isEnabled;
 
         public WebGetInputRegion()
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers2.Core
             ToolRegionName = "GetInputRegion";
         }
 
-        private void SetupHeaders(ModelItem modelItem)
+        void SetupHeaders(ModelItem modelItem)
         {
             var existing = modelItem.GetProperty<IList<INameValue>>("Headers");
             var headerCollection = new ObservableCollection<INameValue>(existing ?? new List<INameValue>());
@@ -57,9 +57,9 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void HeaderCollectionOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            _modelItem.SetProperty("Headers", _headers.Select(a=>new NameValue(a.Name,a.Value) as INameValue).ToList());
+            _modelItem.SetProperty("Headers", _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
         }
 
         public WebGetInputRegion(ModelItem modelItem, ISourceToolRegion<IWebServiceSource> source)
@@ -77,9 +77,9 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void SourceOnSomethingChanged(object sender, IToolRegion args)
+        void SourceOnSomethingChanged(object sender, IToolRegion args)
         {
-            // ReSharper disable once ExplicitCallerInfoArgument
+
             if (_source?.SelectedSource != null)
             {
                 RequestUrl = _source.SelectedSource.HostName;
@@ -92,7 +92,7 @@ namespace Dev2.Activities.Designers2.Core
                 }));
                 IsEnabled = true;
             }
-            // ReSharper disable once ExplicitCallerInfoArgument
+
             OnPropertyChanged(@"IsEnabled");
         }
 
@@ -158,8 +158,6 @@ namespace Dev2.Activities.Designers2.Core
 
         public IToolRegion CloneRegion()
         {
-            //var ser = new Dev2JsonSerializer();
-            //return ser.Deserialize<IToolRegion>(ser.SerializeToBuilder(this));
             var headers2 =  new ObservableCollection<INameValue>();
             foreach (var nameValue in Headers)
             {
@@ -176,8 +174,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebGetInputRegionClone;
-            if (region != null)
+            if (toRestore is WebGetInputRegionClone region)
             {
                 IsEnabled = region.IsEnabled;
                 QueryString = region.QueryString;
@@ -196,7 +193,8 @@ namespace Dev2.Activities.Designers2.Core
                         {
                             _modelItem.SetProperty("Headers",
                                 _headers.Select(a => new NameValue(a.Name, a.Value) as INameValue).ToList());
-                        }) {Name = nameValue.Name, Value = nameValue.Value});
+                        })
+                        { Name = nameValue.Name, Value = nameValue.Value });
                     }
                     Headers.Remove(Headers.First());
                 }

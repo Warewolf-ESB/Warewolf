@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests
 {
 
-    // ReSharper disable InconsistentNaming
+    
 
     /// <summary>
     ///This is a test class for DataListItemViewModelTest and is intended
@@ -145,7 +145,7 @@ namespace Dev2.Core.Tests
         public void DataItemNameUpdate_ExpectedDataItemNameUpdated()
         {
             const string expected = "testItem";
-            string actual = _dataListItemModel.DisplayName;
+            var actual = _dataListItemModel.DisplayName;
             Assert.AreEqual(expected, actual);
         }
 

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
-// ReSharper disable InconsistentNaming
+using Dev2.Data.Util;
 
 namespace Warewolf.Storage.Tests
 {
@@ -16,16 +16,16 @@ namespace Warewolf.Storage.Tests
     [TestClass]
     public class ExecutionEnvironmentTest
     {
-        private ExecutionEnvironment _environment;
+        ExecutionEnvironment _environment;
 
-        private const string OutOfBoundExpression = "[[rec(0).a]]";
-        private const string InvalidScalar = "[[rec(0).a]";
-        private const string PersonNameExpression = "[[@Person().Name]]";
-        private const string ChildNameExpression = "[[@Person.Child().Name]]";
-        private const string VariableA = "[[a]]";
+        const string OutOfBoundExpression = "[[rec(0).a]]";
+        const string InvalidScalar = "[[rec(0).a]";
+        const string PersonNameExpression = "[[@Person().Name]]";
+        const string ChildNameExpression = "[[@Person.Child().Name]]";
+        const string VariableA = "[[a]]";
 
 
-        private readonly CommonFunctions.WarewolfEvalResult _warewolfEvalNothingResult =
+        readonly CommonFunctions.WarewolfEvalResult _warewolfEvalNothingResult =
             CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
 
         [TestInitialize]
@@ -100,7 +100,7 @@ namespace Warewolf.Storage.Tests
             _environment.SortRecordSet("[[rec().a]]", true, 0);
         }
 
-        private static DataStorage.WarewolfEnvironment EvalMultiAssign()
+        static DataStorage.WarewolfEnvironment EvalMultiAssign()
         {
             var assigns = new List<IAssignValue>
             {
@@ -133,6 +133,26 @@ namespace Warewolf.Storage.Tests
             Assert.AreEqual("mary", list[3].ToString());
         }
 
+        [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ExecutionEnvironment_EvalAsList")]
+        public void ExecutionEnvironment_EvalAsList_WhenRecSet_ShouldReturnListOfAllValues_PadLeft()
+        {
+            //------------Setup for test--------------------------
+            _environment.Assign("[[rec(1).a]]", "27     ", 0);
+            _environment.Assign("[[rec(1).b]]", "bob    ", 0);
+            _environment.Assign("[[rec(2).a]]", "31 ", 0);
+            _environment.Assign("[[rec(2).b]]", "mary", 0);
+            //------------Execute Test---------------------------
+            var list = _environment.EvalAsList("[[rec(*)]]", 0).ToList();
+            //------------Assert Results-------------------------
+            Assert.IsNotNull(list);
+            Assert.AreEqual("27     ", list[0].ToString());
+            Assert.AreEqual("31 ", list[1].ToString());
+            Assert.AreEqual("bob    ", list[2].ToString());
+            Assert.AreEqual("mary", list[3].ToString());
+        }
+        
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ExecutionEnvironment_EvalAsList")]
@@ -307,8 +327,7 @@ namespace Warewolf.Storage.Tests
         public void GivenValidExpression_ExecutionEnvironmentIsValidVariableExpression_ShouldReturnTrue()
         {
             Assert.IsNotNull(_environment);
-            string message;
-            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(VariableA, out message, 0);
+            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(VariableA, out string message, 0);
             Assert.IsTrue(isValidVariableExpression);
         }
 
@@ -317,9 +336,8 @@ namespace Warewolf.Storage.Tests
         public void GivenInValidExpressionOrEmptyString_ExecutionEnvironmentIsValidVariableExpression_ShouldReturnFalse()
         {
             Assert.IsNotNull(_environment);
-            string message;
             //Given Invalid Scalar
-            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(InvalidScalar, out message, 0);
+            var isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(InvalidScalar, out string message, 0);
             Assert.IsFalse(isValidVariableExpression);
             //Given Empty Strign
             isValidVariableExpression = ExecutionEnvironment.IsValidVariableExpression(string.Empty, out message, 0);
@@ -354,6 +372,17 @@ namespace Warewolf.Storage.Tests
             _environment.Assign(VariableA, "SomeValue", 0);
             var evalToExpression = _environment.EvalToExpression(VariableA, 0);
             Assert.AreEqual("[[a]]", evalToExpression);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ExecutionEnvironmentEvalComplexCalcExpression_ShouldNotReplaceSpaces()
+        {
+            Assert.IsNotNull(_environment);
+            _environment.Assign("[[FirstNames]]", "Bob", 0);
+            var calcExpr = "!~calculation~!FIND(\" \",[[FirstNames]],1)!~~calculation~!";
+            var evalResult = _environment.Eval(calcExpr, 0);
+            Assert.AreEqual("!~calculation~!FIND(\" \",\"Bob\",1)!~~calculation~!", ExecutionEnvironment.WarewolfEvalResultToString(evalResult));
         }
 
         [TestMethod]
@@ -479,7 +508,11 @@ namespace Warewolf.Storage.Tests
             var var = EvaluationFunctions.parseLanguageExpressionWithoutUpdate(ChildNameExpression);
             var jsonIdentifierExpression = var as LanguageAST.LanguageExpression.JsonIdentifierExpression;
             var obj = new JArray(ChildNameExpression);
-            if (jsonIdentifierExpression == null) return;
+            if (jsonIdentifierExpression == null)
+            {
+                return;
+            }
+
             var mapItems = new List<string>();
             object[] args = { jsonIdentifierExpression.Item, "", mapItems, obj };
             privateObj.Invoke("BuildIndexMap", args);
@@ -804,7 +837,7 @@ namespace Warewolf.Storage.Tests
 
         #region Private Methods
 
-        private ExecutionEnvironment CreateEnvironmentWithErrors()
+        ExecutionEnvironment CreateEnvironmentWithErrors()
         {
             _environment.Errors.Add("SomeError");
             return _environment;

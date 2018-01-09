@@ -30,6 +30,8 @@ namespace Warewolf.Studio.Views
                 case "Save":
                     var viewModel = DataContext as ManageEmailSourceViewModel;
                     return viewModel != null && viewModel.OkCommand.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }

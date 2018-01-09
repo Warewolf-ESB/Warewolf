@@ -10,7 +10,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberWeekOfYear(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -30,7 +30,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberDayOfYear(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData) && numericData >= 1 && numericData <= 365)
@@ -47,7 +47,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberDayOfWeek(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -82,7 +82,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberDay(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -102,7 +102,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberMonth(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -122,7 +122,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumber12H(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -142,7 +142,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumber24H(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (data.Length == 2 && int.TryParse(data, out numericData))
@@ -162,7 +162,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberMinutes(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -182,7 +182,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberMilliseconds(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))
@@ -202,7 +202,7 @@ namespace Dev2.Common.DateAndTime
 
         public bool IsNumberSeconds(string data, bool treatAsTime)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             int numericData;
             if (int.TryParse(data, NumberStyles.None, null, out numericData))

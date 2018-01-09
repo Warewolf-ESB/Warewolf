@@ -1,13 +1,12 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using Dev2.Activities.DropBox2016.Result;
+﻿using Dev2.Activities.DropBox2016.Result;
 using Dropbox.Api.Files;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
-   [TestClass]
-        [SuppressMessage("ReSharper", "InconsistentNaming")]
+    [TestClass]
+
         public class DropboxListFolderResultShould
         {
             [TestMethod]

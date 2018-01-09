@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Activities.Designers.Tests.Create
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class CreateDesignerViewModelTests
     {
         [TestMethod]
@@ -48,8 +48,8 @@ namespace Dev2.Activities.Designers.Tests.Create
         public void CreateDesignerViewModel_Validate_CorrectFieldsAreValidated()
         {
             //------------Setup for test-------------------------
-            Mock<IDataListViewModel> mockDataListViewModel = new Mock<IDataListViewModel>();
-            Mock<IResourceModel> mockResourceModel = new Mock<IResourceModel>();
+            var mockDataListViewModel = new Mock<IDataListViewModel>();
+            var mockResourceModel = new Mock<IResourceModel>();
             mockResourceModel.Setup(model => model.DataList).Returns("<DataList><a></a></DataList>");
             mockDataListViewModel.Setup(model => model.Resource).Returns(mockResourceModel.Object);
             DataListSingleton.SetDataList(mockDataListViewModel.Object);

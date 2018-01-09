@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Dev2.Common.Interfaces.DB;
@@ -15,7 +16,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Database", "Oracle", ToolType.Native, "8999E59B-38A3-43BB-A98F-6090C5C9EA10", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Database", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Database_Oracle")]
-    public class DsfOracleDatabaseActivity : DsfActivity
+    public class DsfOracleDatabaseActivity : DsfActivity,IEquatable<DsfOracleDatabaseActivity>
     {
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         public IServiceExecution ServiceExecution { get; protected set; }
@@ -38,8 +39,7 @@ namespace Dev2.Activities
                 errors.AddError(ErrorResource.NoActionsInSelectedDB);
                 return;
             }
-            var databaseServiceExecution = ServiceExecution as DatabaseServiceExecution;
-            if (databaseServiceExecution != null)
+            if (ServiceExecution is DatabaseServiceExecution databaseServiceExecution)
             {
                 databaseServiceExecution.Inputs = Inputs.Select(a => new ServiceInput { EmptyIsNull = a.EmptyIsNull, Name = a.Name, RequiredField = a.RequiredField, Value = a.Value, TypeName = a.TypeName } as IServiceInput).ToList();
                 databaseServiceExecution.Outputs = Outputs;
@@ -65,7 +65,7 @@ namespace Dev2.Activities
             {
                 foreach (var serviceInput in Inputs)
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(serviceInput.Value, serviceInput.Name, env, update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -92,6 +92,34 @@ namespace Dev2.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.DataGridActivity;
+        }
+
+        public bool Equals(DsfOracleDatabaseActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other)
+                && string.Equals(SourceId.ToString(), other.SourceId.ToString())
+                && string.Equals(ProcedureName, other.ProcedureName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfOracleDatabaseActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SourceId != null ? SourceId.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ProcedureName != null ? ProcedureName.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

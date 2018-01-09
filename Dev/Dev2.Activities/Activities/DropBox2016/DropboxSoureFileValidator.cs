@@ -8,20 +8,17 @@ namespace Dev2.Activities.DropBox2016
 {
     public class DropboxSoureFileValidator : IFilenameValidator
     {
-        private readonly string _dropBoxSource;
+        readonly string _dropBoxSource;
 
         public DropboxSoureFileValidator(string dropBoxSource)
         {
             _dropBoxSource = dropBoxSource;
         }
 
-        #region Implementation of IFilenameValidator
-
         public void Validate()
         {
             try
             {
-                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
                 Path.GetFullPath(_dropBoxSource);
             }
             catch (ArgumentException)
@@ -41,7 +38,5 @@ namespace Dev2.Activities.DropBox2016
                 throw new SecurityException(ErrorResource.DropBoxCallerHasNoPermission);
             }
         }
-
-        #endregion
     }
 }

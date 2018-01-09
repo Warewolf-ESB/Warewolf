@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,8 +10,7 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
-// ReSharper disable UnusedMemberInSuper.Global
+
 
 namespace Dev2.Common.Interfaces.Diagnostics.Debug
 {
@@ -26,7 +25,7 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         ///     Removes the specified workspace from the dispatcher.
         /// </summary>
         /// <param name="workspaceId">The ID of workspace to be removed.</param>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(Guid workspaceId);
 
         /// <summary>
@@ -35,8 +34,9 @@ namespace Dev2.Common.Interfaces.Diagnostics.Debug
         /// <param name="workspaceId">The workspace ID to be queried.</param>
         /// <returns>The <see cref="IDebugWriter" /> with the specified ID, or <code>null</code> if not found.</returns>
         IDebugWriter Get(Guid workspaceId);
-
-        void Write(IDebugState debugState, bool isTestExecution = false, bool isDebugFromWeb = false, string testName = "", bool isRemoteInvoke = false, string remoteInvokerId = null,
-            string parentInstanceId = null, IList<IDebugState> remoteDebugItems = null);
+        void Write(IDebugState debugState);
+        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName);
+        void Write(IDebugState debugState, bool isTestExecution, bool isDebugFromWeb, string testName, bool isRemoteInvoke, string remoteInvokerId,
+            string parentInstanceId, IList<IDebugState> remoteDebugItems);
     }
 }

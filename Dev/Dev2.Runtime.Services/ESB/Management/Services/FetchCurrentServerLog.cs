@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,16 +13,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    public class FetchCurrentServerLog : IEsbManagementEndpoint
+    public class FetchCurrentServerLog : DefaultEsbManagementEndpoint
     {
         readonly string _serverLogPath;
 
@@ -38,12 +35,12 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public string ServerLogPath => _serverLogPath;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
 
-                Dev2Logger.Info("Fetch Server Log Started");
+                Dev2Logger.Info("Fetch Server Log Started", GlobalConstants.WarewolfInfo);
                 var result = new ExecuteMessage { HasError = false };
                 if (File.Exists(_serverLogPath))
                 {
@@ -56,49 +53,18 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                 }
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
             catch (Exception err)
             {
-                Dev2Logger.Error("Fetch Server Log Error", err);
+                Dev2Logger.Error("Fetch Server Log Error", err, GlobalConstants.WarewolfError);
                 throw;
             }
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var findDirectoryService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var findDirectoryServiceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
-        }
-
-        public string HandlesType()
-        {
-            return "FetchCurrentServerLogService";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "FetchCurrentServerLogService";
     }
 }

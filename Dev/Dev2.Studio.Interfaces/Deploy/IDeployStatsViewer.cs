@@ -31,6 +31,6 @@ namespace Dev2.Studio.Interfaces.Deploy
 
         void ReCalculate();
 
-        void CheckDestinationPersmisions();
+        void CheckDestinationPermissions();
     }
 }

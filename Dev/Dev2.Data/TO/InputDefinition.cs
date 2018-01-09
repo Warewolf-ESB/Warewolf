@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,13 +15,13 @@ namespace Dev2.DataList.Contract
     public class InputDefinition : IInputLanguageDefinition {
 
         #region Properties
-        private readonly string _name;
-        private readonly string _mapsTo;
-        private readonly string _startTagSearch;
-        private readonly string _endTagSearch;
-        private readonly string _startTagReplace;
-        private readonly string _endTagReplace;
-        private readonly bool _isEvaluated;
+        readonly string _name;
+        readonly string _mapsTo;
+        readonly string _startTagSearch;
+        readonly string _endTagSearch;
+        readonly string _startTagReplace;
+        readonly string _endTagReplace;
+        readonly bool _isEvaluated;
 
         #endregion
 

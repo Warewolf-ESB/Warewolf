@@ -12,13 +12,13 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
 using WarewolfParserInterop;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2
 {
     public class TestMockStep : DsfActivityAbstract<string>
     {
-        private readonly IDev2Activity _originalActivity;
+        readonly IDev2Activity _originalActivity;
 
         public TestMockStep()
         {
@@ -88,9 +88,12 @@ namespace Dev2
                     {
                         dataObject.Environment.AssignJson(new AssignValue(variable, value), update);
                     }
-                    else if (!DataListUtil.IsValueRecordset(output.Variable))
+                    else
                     {
-                        dataObject.Environment.Assign(variable, value, 0);
+                        if (!DataListUtil.IsValueRecordset(output.Variable))
+                        {
+                            dataObject.Environment.Assign(variable, value, 0);
+                        }
                     }
                     if (dataObject.IsServiceTestExecution)
                     {
@@ -123,9 +126,9 @@ namespace Dev2
 
         #endregion
 
-        private static void AddRecordsetsOutputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
+        static void AddRecordsetsOutputs(IEnumerable<IServiceTestOutput> recSets, IExecutionEnvironment environment)
         {
-            if(recSets != null)
+            if (recSets != null)
             {
                 var groupedRecsets = recSets.GroupBy(item => DataListUtil.ExtractRecordsetNameFromValue(item.Variable));
                 foreach (var groupedRecset in groupedRecsets)
@@ -133,7 +136,7 @@ namespace Dev2
                     var dataListItems = groupedRecset.GroupBy(item => DataListUtil.ExtractIndexRegionFromRecordset(item.Variable));
                     foreach (var dataListItem in dataListItems)
                     {
-                        List<IServiceTestOutput> recSetsToAssign = new List<IServiceTestOutput>();
+                        var recSetsToAssign = new List<IServiceTestOutput>();
                         var empty = true;
                         foreach (var listItem in dataListItem)
                         {

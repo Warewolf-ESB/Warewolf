@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.MultiAssignTests
 {
     [TestClass]
@@ -105,9 +105,9 @@ namespace Dev2.Activities.Designers.Tests.MultiAssignTests
         [TestMethod]
         [TestCategory("MultiAssignActivityViewModel_Constructor")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void MultiAssignActivityViewModel_Constructor_CollectionNameInitialized()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             const string ExpectedCollectionName = "FieldsCollection";

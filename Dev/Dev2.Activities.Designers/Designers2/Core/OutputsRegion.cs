@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Dev2.Common;
@@ -20,18 +19,21 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Designers2.Core
 {
-    // ReSharper disable ClassWithVirtualMembersNeverInherited.Global
     public class OutputsRegion : IOutputsToolRegion
     {
-        private readonly ModelItem _modelItem;
-        private bool _isEnabled;
-        private ICollection<IServiceOutputMapping> _outputs;
-        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed = false)
+        readonly ModelItem _modelItem;
+        bool _isEnabled;
+        ICollection<IServiceOutputMapping> _outputs;
+
+        public OutputsRegion(ModelItem modelItem)
+            : this(modelItem, false)
+        {
+        }
+
+        public OutputsRegion(ModelItem modelItem, bool isObjectOutputUsed)
         {
             ToolRegionName = "OutputsRegion";
             Dependants = new List<IToolRegion>();
@@ -63,19 +65,12 @@ namespace Dev2.Activities.Designers2.Core
             ObjectResult = _modelItem.GetProperty<string>("ObjectResult");
             ObjectName = _modelItem.GetProperty<string>("ObjectName");
             IsObjectOutputUsed = isObjectOutputUsed;
-            if (!IsObject)
-            {
-                IsOutputsEmptyRows = Outputs.Count == 0;
-            }
-            else
-            {
-                IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-            }
+            IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
           
         }
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         //Needed for Deserialization
         public OutputsRegion()
         {
@@ -85,17 +80,21 @@ namespace Dev2.Activities.Designers2.Core
 
         void OutputsCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             OnPropertyChanged("IsOutputsEmptyRows");
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
-            // ReSharper restore ExplicitCallerInfoArgument
+            
         }
 
 
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.NewItems == null) return;
+            if (args.NewItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.NewItems)
             {
                 if (item != null)
@@ -105,14 +104,18 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             _modelItem.SetProperty("Outputs", _outputs.ToList());
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
-            if (args.OldItems == null) return;
+            if (args.OldItems == null)
+            {
+                return;
+            }
+
             foreach (INotifyPropertyChanged item in args.OldItems)
             {
                 if (item != null)
@@ -123,17 +126,17 @@ namespace Dev2.Activities.Designers2.Core
         }
 
 
-        private bool _outputMappingEnabled;
-        private string _recordsetName;
-        private IOutputDescription _description;
-        private bool _isOutputsEmptyRows;
-        private bool _outputCountExpandAllowed;
-        private bool _isObject;
-        private string _objectName;
-        private string _objectResult;
-        private bool _isObjectOutputUsed;
-        private IShellViewModel _shellViewModel;
-        private RelayCommand _viewObjectResult;
+        bool _outputMappingEnabled;
+        string _recordsetName;
+        IOutputDescription _description;
+        bool _isOutputsEmptyRows;
+        bool _outputCountExpandAllowed;
+        bool _isObject;
+        string _objectName;
+        string _objectResult;
+        bool _isObjectOutputUsed;
+        IShellViewModel _shellViewModel;
+        RelayCommand _viewObjectResult;
 
         #region Implementation of IToolRegion
 
@@ -173,8 +176,7 @@ namespace Dev2.Activities.Designers2.Core
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as OutputsRegion;
-            if (region != null)
+            if (toRestore is OutputsRegion region)
             {
                 Outputs = region.Outputs;
                 RecordsetName = region.RecordsetName;
@@ -182,7 +184,7 @@ namespace Dev2.Activities.Designers2.Core
                 ObjectResult = region.ObjectResult;
                 ObjectName = region.ObjectName;
                 IsObject = region.IsObject;
-                // ReSharper disable once ExplicitCallerInfoArgument
+
                 OnPropertyChanged("IsOutputsEmptyRows");
             }
         }
@@ -209,14 +211,7 @@ namespace Dev2.Activities.Designers2.Core
                 {
                     _outputs = value;
                     _modelItem.SetProperty("Outputs", value.ToList());
-                    if (!IsObject)
-                    {
-                        IsOutputsEmptyRows = Outputs.Count == 0;
-                    }
-                    else
-                    {
-                        IsOutputsEmptyRows = !string.IsNullOrWhiteSpace(ObjectResult);
-                    }
+                    IsOutputsEmptyRows = !IsObject ? Outputs.Count == 0 : !string.IsNullOrWhiteSpace(ObjectResult);
                     OnPropertyChanged();
                 }
                 else
@@ -322,17 +317,17 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private bool CanRunCommand(object obj)
+        bool CanRunCommand(object obj)
         {
             return true;
         }
 
-        private void ViewJsonObjects()
+        void ViewJsonObjects()
         {
             JsonObjectsView?.ShowJsonString(JSONUtils.Format(ObjectResult));
         }
 
-        
+
 
         public string ObjectName
         {

@@ -8,7 +8,7 @@ namespace Dev2.PerformanceCounters.Counters
 {
     public class SafeCounter:IPerformanceCounter
     {
-        private readonly IPerformanceCounter _counter;
+        readonly IPerformanceCounter _counter;
 
         #region Implementation of IPerformanceCounter
 
@@ -30,7 +30,7 @@ namespace Dev2.PerformanceCounters.Counters
             catch(Exception e)
             {
                 
-               Dev2Logger.Error(e);
+               Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Dev2.PerformanceCounters.Counters
             catch (Exception e)
             {
 
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -60,7 +60,7 @@ namespace Dev2.PerformanceCounters.Counters
             catch (Exception e)
             {
 
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Dev2.PerformanceCounters.Counters
             return _counter.CreationData();
         }
 
-        public bool IsActive { get { return _counter.IsActive; } set { _counter.IsActive = value; } }
+        public bool IsActive { get => _counter.IsActive; set => _counter.IsActive = value; }
         public IPerformanceCounter InnerCounter => _counter;
 
         public void Setup()

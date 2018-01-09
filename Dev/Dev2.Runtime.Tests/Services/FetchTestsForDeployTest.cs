@@ -10,7 +10,7 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -69,7 +69,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTestsForDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(null, null);
+            var jsonResult = fetchTests.Execute(null, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTestsForDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -101,7 +101,7 @@ namespace Dev2.Tests.Runtime.Services
             var fetchTests = new FetchTestsForDeploy();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = fetchTests.Execute(values, null);
+            var jsonResult = fetchTests.Execute(values, null);
             var result = serializer.Deserialize<CompressedExecuteMessage>(jsonResult);
             //------------Assert Results-------------------------
             Assert.IsTrue(result.HasError);
@@ -122,7 +122,8 @@ namespace Dev2.Tests.Runtime.Services
                 {
                     AuthenticationType = AuthenticationType.Public,
                     Enabled = true,
-                    TestName = "Test MyWF"
+                    TestName = "Test MyWF",
+                    Password = "Password"
                 }
             };
             var repo = new Mock<ITestCatalog>();

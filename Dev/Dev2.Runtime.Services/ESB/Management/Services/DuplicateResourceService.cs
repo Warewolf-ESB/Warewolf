@@ -4,30 +4,24 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.ExtMethods;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // ReSharper disable once UnusedMember.Global
     public class DuplicateResourceService : IEsbManagementEndpoint
     {
-
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("ResourceID", out tmp);
+            requestArgs.TryGetValue("ResourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -36,38 +30,27 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        private readonly IResourceCatalog _catalog;
+        readonly IResourceCatalog _catalog;
 
-        public DuplicateResourceService(IResourceCatalog catalog)
-        {
-            _catalog = catalog;
-        }
-
-        // ReSharper disable once MemberCanBeInternal
+        public DuplicateResourceService(IResourceCatalog catalog) => _catalog = catalog;
+        
         public DuplicateResourceService()
         {
 
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-
-            StringBuilder tmp;
-            StringBuilder newResourceName;
-            StringBuilder destinationPath;
-            values.TryGetValue("ResourceID", out tmp);
-            values.TryGetValue("NewResourceName", out newResourceName);
-            values.TryGetValue("destinationPath", out destinationPath);
+            var serializer = new Dev2JsonSerializer();
+            values.TryGetValue("ResourceID", out StringBuilder tmp);
+            values.TryGetValue("NewResourceName", out StringBuilder newResourceName);
+            values.TryGetValue("destinationPath", out StringBuilder destinationPath);
 
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     if (!string.IsNullOrEmpty(newResourceName?.ToString()))
                     {
@@ -84,7 +67,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                         catch (Exception x)
                         {
-                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x);
+                            Dev2Logger.Error(x.Message + " DuplicateResourceService", x, GlobalConstants.WarewolfError);
                             var result = new ExecuteMessage { HasError = true, Message = x.Message.ToStringBuilder() };
                             return serializer.SerializeToBuilder(result);
                         }
@@ -96,29 +79,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder(success);
         }
 
-        public string HandlesType()
-        {
-            return "DuplicateResourceService";
-        }
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public DynamicService CreateServiceEntry()
-        {
-            var deleteResourceService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceName ColumnIODirection=\"Input\"/><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var deleteResourceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            deleteResourceService.Actions.Add(deleteResourceAction);
-
-            return deleteResourceService;
-        }
+        public string HandlesType() => "DuplicateResourceService";
     }
 }

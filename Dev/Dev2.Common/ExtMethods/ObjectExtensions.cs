@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters;
 using System.Text;
 using Dev2.Common.Common;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Serialization;
 
 namespace Dev2.Common.ExtMethods
 {
-    public class KnownTypesBinder : SerializationBinder
+    public class KnownTypesBinder : ISerializationBinder
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="T:System.Runtime.Serialization.SerializationBinder"/> class.
@@ -22,12 +21,12 @@ namespace Dev2.Common.ExtMethods
 
         public IList<Type> KnownTypes { get; set; }
 
-        public override Type BindToType(string assemblyName, string typeName)
+        public Type BindToType(string assemblyName, string typeName)
         {
             return KnownTypes.SingleOrDefault(t => t.FullName == typeName);
         }
 
-        public override void BindToName(Type serializedType, out string assemblyName, out string typeName)
+        public void BindToName(Type serializedType, out string assemblyName, out string typeName)
         {
             assemblyName = null;
             typeName = serializedType.FullName;
@@ -35,36 +34,36 @@ namespace Dev2.Common.ExtMethods
     }
     public static class ObjectExtensions
     {
-        // ReSharper disable RedundantNameQualifier
+        
         const Formatting Formatting = Newtonsoft.Json.Formatting.Indented;
-        // ReSharper restore RedundantNameQualifier
+        
         static readonly JsonSerializerSettings SerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Objects,
-            TypeNameAssemblyFormat = FormatterAssemblyStyle.Full,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects
         };
         static readonly JsonSerializerSettings DeSerializerSettings = new JsonSerializerSettings
         {
             TypeNameHandling = TypeNameHandling.Auto,
-            TypeNameAssemblyFormat = FormatterAssemblyStyle.Full,
+            TypeNameAssemblyFormatHandling = TypeNameAssemblyFormatHandling.Full,
             ReferenceLoopHandling = ReferenceLoopHandling.Serialize,
             PreserveReferencesHandling = PreserveReferencesHandling.Objects,
 
         };
 
-        private static T Deserialize<T>(string message)
+        static T Deserialize<T>(string message)
         {
             return JsonConvert.DeserializeObject<T>(message, DeSerializerSettings);
         }
 
-        private static T Deserialize<T>(StringBuilder message)
+        static T Deserialize<T>(StringBuilder message)
         {
             return JsonConvert.DeserializeObject<T>(message.ToString(), DeSerializerSettings);
         }
 
-        private static string Serialize<T>(T message)
+        static string Serialize<T>(T message)
         {
             return JsonConvert.SerializeObject(message, Formatting, SerializerSettings);
         }
@@ -76,7 +75,7 @@ namespace Dev2.Common.ExtMethods
                 var deserialize = Deserialize<T>(serialize);
                 return deserialize;
             }
-            // ReSharper disable once UnusedVariable
+            
             catch (Exception)
             {
 
@@ -85,9 +84,9 @@ namespace Dev2.Common.ExtMethods
 
         }
 
-        public static string SerializeToJsonString<T>(this T objectToSerialize, SerializationBinder binder) where T : class, new()
+        public static string SerializeToJsonString<T>(this T objectToSerialize, ISerializationBinder binder) where T : class, new()
         {
-            SerializerSettings.Binder = binder;
+            SerializerSettings.SerializationBinder = binder;
             var serialize = Serialize(objectToSerialize);
             return serialize;
         }
@@ -103,9 +102,9 @@ namespace Dev2.Common.ExtMethods
             return serialize;
         }
 
-        public static object DeserializeToObject(this string objectToSerialize, Type type, SerializationBinder binder) 
+        public static object DeserializeToObject(this string objectToSerialize, Type type, ISerializationBinder binder) 
         {
-            DeSerializerSettings.Binder = binder;
+            DeSerializerSettings.SerializationBinder = binder;
             var deserializeObject = JsonConvert.DeserializeObject(objectToSerialize, type, DeSerializerSettings);
             return deserializeObject;
         }
@@ -123,9 +122,9 @@ namespace Dev2.Common.ExtMethods
             var serialize = Deserialize<T>(objectToSerialize);
             return serialize;
         }
-        public static T DeserializeToObject<T>(this StringBuilder objectToSerialize, SerializationBinder binder) 
+        public static T DeserializeToObject<T>(this StringBuilder objectToSerialize, ISerializationBinder binder) 
         {
-            DeSerializerSettings.Binder = binder;
+            DeSerializerSettings.SerializationBinder = binder;
             var serialize = Deserialize<T>(objectToSerialize);
             return serialize;
         }

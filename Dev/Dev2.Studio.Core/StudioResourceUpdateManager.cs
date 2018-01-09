@@ -12,7 +12,7 @@ using Dev2.ConnectionHelpers;
 using Dev2.Controller;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Studio.Core
 {
@@ -36,7 +36,8 @@ namespace Dev2.Studio.Core
             UpdateManagerProxy = new UpdateProxy(controllerFactory, environmentConnection);
         }
 
-        public void FireServerSaved(Guid savedServerID, bool isDeleted = false)
+        public void FireServerSaved(Guid savedServerID) => FireServerSaved(savedServerID, false);
+        public void FireServerSaved(Guid savedServerID, bool isDeleted)
         {
             if (ServerSaved != null)
             {
@@ -45,7 +46,7 @@ namespace Dev2.Studio.Core
             }
         }
 
-        private IUpdateManager UpdateManagerProxy { get; set; }
+        IUpdateManager UpdateManagerProxy { get; set; }
 
         public void Save(IServerSource serverSource)
         {
@@ -74,7 +75,7 @@ namespace Dev2.Studio.Core
             UpdateManagerProxy.SaveEmailServiceSource(emailServiceSource, GlobalConstants.ServerWorkspaceID);
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public void Save(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             UpdateManagerProxy.SaveRabbitMQServiceSource(rabbitMqServiceSource, GlobalConstants.ServerWorkspaceID);
@@ -94,7 +95,7 @@ namespace Dev2.Studio.Core
             return UpdateManagerProxy.TestEmailServiceSource(emailServiceSource);
         }
 
-        // ReSharper disable once InconsistentNaming
+
         public string TestConnection(IRabbitMQServiceSourceDefinition rabbitMqServiceSource)
         {
             return UpdateManagerProxy.TestRabbitMQServiceSource(rabbitMqServiceSource);

@@ -10,11 +10,11 @@ namespace Dev2.Studio.AppResources.Comparers
     /// <date>2/27/2013</date>
     public class WorkSurfaceKeyEqualityComparerWithContextKey : IEqualityComparer<WorkSurfaceKey>
     {
-        // ReSharper disable once InconsistentNaming
-        private static readonly Lazy<WorkSurfaceKeyEqualityComparerWithContextKey> _current
+
+        static readonly Lazy<WorkSurfaceKeyEqualityComparerWithContextKey> _current
             = new Lazy<WorkSurfaceKeyEqualityComparerWithContextKey>(() => new WorkSurfaceKeyEqualityComparerWithContextKey());
 
-        private WorkSurfaceKeyEqualityComparerWithContextKey()
+        WorkSurfaceKeyEqualityComparerWithContextKey()
         {
 
         }
@@ -23,7 +23,7 @@ namespace Dev2.Studio.AppResources.Comparers
 
         public bool Equals(WorkSurfaceKey x, WorkSurfaceKey y)
         {
-            bool res = false;
+            var res = false;
             if (x.EnvironmentID != null && y.EnvironmentID != null)
             {
                 if (x.ResourceID == y.ResourceID

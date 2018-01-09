@@ -3,7 +3,7 @@ using Dev2.Common.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using WarewolfParserInterop;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Data.Tests
 {
     [TestClass]
@@ -12,7 +12,7 @@ namespace Dev2.Data.Tests
         [TestMethod]
         public void WarewolfIterator_Should()
         {
-            CommonFunctions.WarewolfEvalResult listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
+            var listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             var atomIterator = new WarewolfIterator(listResult);
             Assert.IsNotNull(atomIterator);
             var privateObj = new PrivateObject(atomIterator);
@@ -24,7 +24,7 @@ namespace Dev2.Data.Tests
         [TestMethod]
         public void WarewolfIterator_SetupForWarewolfRecordSetResult_Should()
         {
-            CommonFunctions.WarewolfEvalResult listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
+            var listResult = CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
             var atomIterator = new WarewolfIterator(listResult);
             Assert.IsNotNull(atomIterator);
             var privateObj = new PrivateObject(atomIterator);

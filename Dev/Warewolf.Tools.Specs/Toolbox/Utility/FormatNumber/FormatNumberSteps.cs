@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,43 +23,41 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
     [Binding]
     public class FormatNumberSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public FormatNumberSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
             }
 
             var resultVariable = ResultVariable;
-            string resVar;
-            if (scenarioContext.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out string resVar))
             {
                 resultVariable = resVar;
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
-            string number;
-            scenarioContext.TryGetValue("number", out number);
-            string roundingType;
-            scenarioContext.TryGetValue("rounding", out roundingType);
-            string roundingDecimalPlaces;
-            scenarioContext.TryGetValue("to", out roundingDecimalPlaces);
-            string decimalToShow;
-            scenarioContext.TryGetValue("decimalToShow", out decimalToShow);
+            scenarioContext.TryGetValue("number", out string number);
+            scenarioContext.TryGetValue("rounding", out string roundingType);
+            scenarioContext.TryGetValue("to", out string roundingDecimalPlaces);
+            scenarioContext.TryGetValue("decimalToShow", out string decimalToShow);
 
             var numberFormat = new DsfNumberFormatActivity
                 {
@@ -105,10 +103,9 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         [Given(@"I have a formatnumber variable ""(.*)"" equal to (.*)")]
         public void GivenIHaveAFormatnumberVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
             variable = variable.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if(variableList == null)
             {
@@ -122,19 +119,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.FormatNumber
         public void WhenTheFormatNumberIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the result (.*) will be returned")]
         public void ThenTheResultWillBeReturned(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             if(string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

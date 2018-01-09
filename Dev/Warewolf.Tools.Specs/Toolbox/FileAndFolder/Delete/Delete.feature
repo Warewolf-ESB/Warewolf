@@ -20,14 +20,14 @@ Scenario Outline: Delete file at location
 		|                        |
 		| <resultVar> = <result> |
 	Examples: 
-	| Name       | source   | sourceLocation                                                                                 | username                     | password | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
-	| Local      | [[path]] | c:\filetodelete.txt                                                                            | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\filetodelete.txt       | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt| dev2.local\IntegrationTester | I73573r0 | [[result]] | "Success" | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORTESTING/filetodelete.txt                                            | ""                           | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodelet.txt                                             | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
-	| SFTP       | [[path]] | sftp://rsaklfsvrdev/filetodelete.txt                                                           | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
-	| SFTP PK    | [[path]] | sftp://rsaklfsvrdev/filetodelete1.txt                                                          | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
+	| Name       | source   | sourceLocation                                                                                  | username                     | password | resultVar  | result    | errorOccured | sourcePrivateKeyFile |
+	| Local      | [[path]] | c:\filetodelete.txt                                                                             | ""                           | ""       | [[result]] | "Success" | NO           |                      |
+	| UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\filetodelete.txt        | ""                           | ""       | [[result]] | "Success" | NO           |                      |
+	| UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt | dev2.local\IntegrationTester | I73573r0 | [[result]] | "Success" | NO           |                      |
+	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORDELETEFILETESTING/filetodelete.txt                                   | ""                           | ""       | [[result]] | "Success" | NO           |                      |
+	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORDELETEFILETESTING/filetodelet.txt                                    | IntegrationTester            | I73573r0 | [[result]] | "Success" | NO           |                      |
+	| SFTP       | [[path]] | sftp://rsaklfsvrdev/filetodelete.txt                                                            | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           |                      |
+	| SFTP PK    | [[path]] | sftp://rsaklfsvrdev/filetodelete1.txt                                                           | dev2                         | Q/ulw&]  | [[result]] | "Success" | NO           | C:\\Temp\\key.opk    |
 
 Scenario Outline: Delete file at location Null
 	Given I have a source path "<source>" with value "<sourceLocation>"
@@ -43,8 +43,8 @@ Scenario Outline: Delete file at location Null
 	| Local      | [[path]] | G:\filetodelete                                                                                | ""                          | ""       | [[result]] | "Failure" | NO           |                      |
 	| UNC        | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Memo.txt               | ""                          | ""       | [[result]] | "Success" | NO           |                      |
 	| UNC Secure | [[path]] | \\\\RSAKLFSVRPDC\FileSystemShareTestingSite\FileDeleteSharedTestingSite\Secure\filetodelete.txt| dev2.local\IntegrationTester| password | [[result]] | "Failure" | NO           |                      |
-	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORTESTING/filetodelete.xtx                                            | ""                          | ""       | [[result]] | "Success" | NO           |                      |
-	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORTESTING/filetodelet.txt                                             | IntegrationTester           | I73573r0 | [[result]] | ""        | NO           |                      |
+	| FTP        | [[path]] | ftp://rsaklfsvrpdc:1001/FORDELETEFILETESTING/filetodelete.xtx                                  | ""                          | ""       | [[result]] | "Success" | NO           |                      |
+	| FTPS       | [[path]] | ftp://rsaklfsvrpdc:1002/FORDELETEFILETESTING/filetodelet.txt                                   | IntegrationTester           | I73573r0 | [[result]] | ""        | NO           |                      |
 	| SFTP       | [[path]] | sftp://rsaklfsvrdev/Memo.txt                                                                   | dev2.local                  | Q/ulw&]  | [[result]] | ""        | NO           |                      |
 
 Scenario Outline: Delete file Validation

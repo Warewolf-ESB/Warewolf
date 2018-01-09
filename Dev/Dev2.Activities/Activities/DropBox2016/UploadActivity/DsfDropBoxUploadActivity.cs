@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
@@ -19,24 +20,21 @@ using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-
 namespace Dev2.Activities.DropBox2016.UploadActivity
 {
     [ToolDescriptorInfo("Dropbox", "Upload", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C8C9EA2E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_Upload")]
-    public class DsfDropBoxUploadActivity : DsfBaseActivity
+    public class DsfDropBoxUploadActivity : DsfBaseActivity,IEquatable<DsfDropBoxUploadActivity>, IDisposable
     {
-        private IDropboxClientWrapper _clientWrapper;
-        private DropboxClient _client;
-        private bool _addMode;
-        private bool _overWriteMode;
+        IDropboxClientWrapper _clientWrapper;
+        DropboxClient _client;
+        bool _addMode;
+        bool _overWriteMode;
         protected FileMetadata FileMetadata;
         protected Exception Exception;
         protected IDropboxSingleExecutor<IDropboxResult> DropboxSingleExecutor;
 
         public DsfDropBoxUploadActivity()
-        {
-            // ReSharper disable once VirtualMemberCallInContructor
+        {            
             DisplayName = "Upload to Dropbox";
             OverWriteMode = true;
         }
@@ -46,16 +44,13 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         {
             _clientWrapper = clientWrapper;
         }
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+                
         public OauthSource SelectedSource { get; set; }
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+                
         [Inputs("Local File Path")]
         [FindMissing]
         public string FromPath { get; set; }
-
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+                
         [Inputs("Path in the user's Dropbox")]
         [FindMissing]
         public string ToPath { get; set; }
@@ -84,9 +79,7 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
                 _overWriteMode = !value;
                 _addMode = value;
             }
-        }
-
-        // ReSharper disable once MemberCanBeProtected.Global
+        }              
 
         protected virtual DropboxClient GetClient()
         {
@@ -133,14 +126,12 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             DropboxSingleExecutor = new DropBoxUpload(writeMode, evaluatedValues["ToPath"], evaluatedValues["FromPath"]);
             _clientWrapper = _clientWrapper ?? new DropboxClientWrapper(GetClient());
             var dropboxExecutionResult = DropboxSingleExecutor.ExecuteTask(_clientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxUploadSuccessResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxUploadSuccessResult dropboxSuccessResult)
             {
                 FileMetadata = dropboxSuccessResult.GerFileMetadata();
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
@@ -152,7 +143,10 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
         public WriteMode GetWriteMode()
         {
             if (OverWriteMode)
+            {
                 return WriteMode.Overwrite.Instance;
+            }
+
             return WriteMode.Add.Instance;
         }
 
@@ -164,9 +158,9 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
             }
             base.GetDebugInputs(env, update);
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "OverWrite"), debugItem);
-            string value = OverWriteMode ? "True" : "False";
+            var value = OverWriteMode ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -178,6 +172,47 @@ namespace Dev2.Activities.DropBox2016.UploadActivity
            
             return _debugInputs;
 
+        }
+
+        public bool Equals(DsfDropBoxUploadActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource,other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && string.Equals(FromPath, other.FromPath) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && Equals(OverWriteMode,other.OverWriteMode)
+                && Equals(AddMode,other.AddMode)
+                && string.Equals(ToPath, other.ToPath);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDropBoxUploadActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FromPath != null ? FromPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ OverWriteMode.GetHashCode();
+                hashCode = (hashCode * 397) ^ AddMode.GetHashCode();
+                return hashCode;
+            }
+        }
+
+        public void Dispose()
+        {
+            _client.Dispose();
         }
     }
 

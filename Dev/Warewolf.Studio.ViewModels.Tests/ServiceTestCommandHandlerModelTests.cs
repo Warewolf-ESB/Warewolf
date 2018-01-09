@@ -20,8 +20,8 @@ using Dev2.Studio.ViewModels.DataList;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseObjectOrCollectionInitializer
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -630,7 +630,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             }
             catch (TargetInvocationException ex)
             {
-                // ReSharper disable once PossibleNullReferenceException
+                
                 var b = ex.InnerException.GetType() == typeof(NullReferenceException);
                 //---------------Test Result -----------------------
                 Assert.IsTrue(b);
@@ -826,7 +826,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             mock.Verify(model => model.Environment.ResourceRepository.StopExecution(It.IsAny<IContextualResourceModel>()), Times.Once);
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarInput()
+        IResourceModel CreateResourceModelWithSingleScalarInput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
@@ -838,7 +838,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarInputAndRecordSetInput()
+        IResourceModel CreateResourceModelWithSingleScalarInputAndRecordSetInput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
@@ -854,7 +854,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithSingleScalarOutput()
+        IResourceModel CreateResourceModelWithSingleScalarOutput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();
@@ -866,7 +866,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             return resourceModel;
         }
 
-        private IResourceModel CreateResourceModelWithNoInput()
+        IResourceModel CreateResourceModelWithNoInput()
         {
             var moqModel = new Mock<IResourceModel>();
             moqModel.SetupAllProperties();

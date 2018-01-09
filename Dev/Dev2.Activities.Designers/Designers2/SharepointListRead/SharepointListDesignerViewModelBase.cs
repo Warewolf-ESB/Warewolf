@@ -19,7 +19,7 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Studio.Interfaces;
 using Dev2.TO;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Activities.Designers2.SharepointListRead
 {
@@ -114,9 +114,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
         public static readonly DependencyProperty ListItemsProperty =
             DependencyProperty.Register("ListItems", typeof(List<SharepointReadListTo>), typeof(SharepointListDesignerViewModelBase), new PropertyMetadata(new List<SharepointReadListTo>()));
 
-        private bool _isFileTool;
-        public bool IsSelectedSharepointServerFocused { get { return (bool)GetValue(IsSelectedSharepointServerFocusedProperty); } set { SetValue(IsSelectedSharepointServerFocusedProperty, value); } }
-        public bool IsSelectedListFocused { get { return (bool)GetValue(IsSelectedListFocusedProperty); } set { SetValue(IsSelectedListFocusedProperty, value); } }
+        readonly bool _isFileTool;
+        public bool IsSelectedSharepointServerFocused { get => (bool)GetValue(IsSelectedSharepointServerFocusedProperty); set => SetValue(IsSelectedSharepointServerFocusedProperty, value); }
+        public bool IsSelectedListFocused { get => (bool)GetValue(IsSelectedListFocusedProperty); set => SetValue(IsSelectedListFocusedProperty, value); }
         public SharepointSource SelectedSharepointServer
         {
             get
@@ -129,7 +129,7 @@ namespace Dev2.Activities.Designers2.SharepointListRead
                 EditSharepointServerCommand.RaiseCanExecuteChanged();
             }
         }
-        public bool IsRefreshing { get { return (bool)GetValue(IsRefreshingProperty); } set { SetValue(IsRefreshingProperty, value); } }
+        public bool IsRefreshing { get => (bool)GetValue(IsRefreshingProperty); set => SetValue(IsRefreshingProperty, value); }
         public Guid SharepointServerResourceId
         {
             get
@@ -362,7 +362,11 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             SharepointServers.Remove(SelectSharepointSource);
             SharepointServerResourceId = SelectedSharepointServer.ResourceID;
-            if (_isFileTool) return;
+            if (_isFileTool)
+            {
+                return;
+            }
+
             IsRefreshing = true;
             // Save selection
             var listName = GetListName(SelectedList);
@@ -408,9 +412,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
 
             var selectedSharepointServer = SelectedSharepointServer;
             var selectedList = SelectedList;
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             _asyncWorker.Start(() => GetListFields(selectedSharepointServer, selectedList), columnList =>
-                // ReSharper restore ImplicitlyCapturedClosure
+                
             {
                 if(columnList != null)
                 {
@@ -485,7 +489,9 @@ namespace Dev2.Activities.Designers2.SharepointListRead
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var activeServer = shellViewModel.ActiveServer;
             if (activeServer != null)
+            {
                 shellViewModel.OpenResource(SelectedSharepointServer.ResourceID,activeServer.EnvironmentID, activeServer);
+            }
         }
 
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -41,9 +41,9 @@ namespace Dev2.Activities.Designers2.Core
             }
             set
             {
-                // ReSharper disable PossibleUnintendedReferenceComparison
+                
                 if(_dataGrid != value)
-                // ReSharper restore PossibleUnintendedReferenceComparison
+                
                 {
                     if(_dataGrid != null)
                     {
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
+        void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
         {
             CallWorkflowUpdateEvent();
         }
@@ -84,14 +84,13 @@ namespace Dev2.Activities.Designers2.Core
 
         void OnSelectionChanged(object sender, SelectionChangedEventArgs args)
         {
-            var viewModel = DataGrid.DataContext as ActivityCollectionDesignerViewModel;
-            if(viewModel != null)
+            if (DataGrid.DataContext is ActivityCollectionDesignerViewModel viewModel)
             {
                 var oldItem = args.RemovedItems != null && args.RemovedItems.Count > 0 ? args.RemovedItems[0] : null;
                 var newItem = args.AddedItems != null && args.AddedItems.Count > 0 ? args.AddedItems[0] : null;
 
                 // basic null checks ppl - 3 days of crap for this  ;) 
-                if(newItem != null)
+                if (newItem != null)
                 {
                     viewModel.OnSelectionChanged(oldItem as ModelItem, newItem as ModelItem);
                     CallWorkflowUpdateEvent();
@@ -99,7 +98,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private static void CallWorkflowUpdateEvent()
+        static void CallWorkflowUpdateEvent()
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var workflowDesignerViewModel = shellViewModel?.GetWorkflowDesigner();

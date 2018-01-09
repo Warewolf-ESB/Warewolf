@@ -1,9 +1,8 @@
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Common.Interfaces.Hosting;
 
 namespace Dev2.Runtime.Hosting
 {
-    internal static class ResourceCatalogResultBuilder
+    static class ResourceCatalogResultBuilder
     {
         public static ResourceCatalogResult CreateSuccessResult(string msg)
         {
@@ -21,7 +20,7 @@ namespace Dev2.Runtime.Hosting
                 Message = msg
             };
         }
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static ResourceCatalogResult CreateAccessViolationResult(string msg)
         {
             return new ResourceCatalogResult()

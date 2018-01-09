@@ -21,25 +21,22 @@ using Dev2.Studio.Interfaces;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
-// ReSharper disable ObjectCreationAsStatement
+
+
 
 namespace Dev2.Core.Tests.Settings
 {
-    /// <summary>
-    /// Summary description for PerfCounterViewModelTests
-    /// </summary>
     [TestClass]
     public class PerfCounterViewModelTests
     {
-        private Mock<IServer> _mockEnvironment;
-        private Mock<IEnvironmentConnection> _mockConnection;
+        Mock<IServer> _mockEnvironment;
+        Mock<IEnvironmentConnection> _mockConnection;
 
         [TestInitialize]
         public void Setup()
         {
 
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             _mockEnvironment = new Mock<IServer>();
             _mockConnection = new Mock<IEnvironmentConnection>();
             _mockConnection.Setup(connection => connection.ID).Returns(Guid.Empty);
@@ -524,7 +521,7 @@ namespace Dev2.Core.Tests.Settings
             var mockResourcePicker = new Mock<IResourcePickerDialog>();
             mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IServer>())).Returns(true);
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            Guid newGuid = Guid.NewGuid();
+            var newGuid = Guid.NewGuid();
             mockExplorerTreeItem.Setup(item => item.ResourceId).Returns(newGuid);
             mockExplorerTreeItem.Setup(item => item.ResourcePath).Returns("Hello World");
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("Hello World");
@@ -554,7 +551,7 @@ namespace Dev2.Core.Tests.Settings
             var mockResourcePicker = new Mock<IResourcePickerDialog>();
             mockResourcePicker.Setup(dialog => dialog.ShowDialog(It.IsAny<IServer>())).Returns(false);
             var mockExplorerTreeItem = new Mock<IExplorerTreeItem>();
-            Guid newGuid = Guid.NewGuid();
+            var newGuid = Guid.NewGuid();
             mockExplorerTreeItem.Setup(item => item.ResourceId).Returns(newGuid);
             mockExplorerTreeItem.Setup(item => item.ResourcePath).Returns("Hello World");
             mockExplorerTreeItem.Setup(item => item.ResourceName).Returns("Hello World");

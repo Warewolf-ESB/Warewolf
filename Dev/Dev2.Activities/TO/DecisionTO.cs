@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -22,12 +22,13 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Util;
 using Dev2.Utilities;
 using Dev2.Validation;
+using Dev2.Common;
 
 namespace Dev2.TO
 {
     public class DecisionTO : ValidatedObject, IDev2TOFn
     {
-        public Action<DecisionTO> UpdateDisplayAction { get;  set; }
+        public Action<DecisionTO> UpdateDisplayAction { get; set; }
         int _indexNum;
         string _searchType;
         bool _isSearchCriteriaEnabled;
@@ -43,17 +44,27 @@ namespace Dev2.TO
         bool _isBetweenCriteriaVisible;
         public static readonly IList<IFindRecsetOptions> Whereoptions = FindRecsetOptions.FindAllDecision();
         bool _isLast;
-        private readonly bool _isInitializing;
-        public RelayCommand DeleteCommand { get;  set; }
+        readonly bool _isInitializing;
+        public RelayCommand DeleteCommand { get; set; }
 
         public DecisionTO()
             : this("Match", "Match On", "Equal", 0)
         {
         }
 
-        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted = false, string from = "", string to = "", Action<DecisionTO> updateDisplayAction = null, Action<DecisionTO> delectAction = null)
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum)
+            : this(matchValue, searchCriteria, searchType, indexNum, false, "", "", null, null)
         {
-            UpdateDisplayAction = updateDisplayAction??(a=>{});
+        }
+
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted)
+            : this(matchValue, searchCriteria, searchType, indexNum, inserted, "", "", null, null)
+        {
+        }
+
+        public DecisionTO(string matchValue, string searchCriteria, string searchType, int indexNum, bool inserted, string from, string to, Action<DecisionTO> updateDisplayAction, Action<DecisionTO> delectAction)
+        {
+            UpdateDisplayAction = updateDisplayAction ?? (a => { });
             Inserted = inserted;
             _isInitializing = true;
             From = "";
@@ -63,12 +74,12 @@ namespace Dev2.TO
             SearchType = searchType;
             IndexNumber = indexNum;
             IsSearchCriteriaEnabled = true;
-     
+
             From = @from;
             To = to;
             IsSearchTypeFocused = false;
             DeleteAction = delectAction;
-            DeleteCommand = new RelayCommand(a=>
+            DeleteCommand = new RelayCommand(a =>
             {
                 DeleteAction?.Invoke(this);
             }, CanDelete);
@@ -77,7 +88,12 @@ namespace Dev2.TO
 
         public Action<DecisionTO> DeleteAction { get; set; }
 
-        public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction = null,Action<DecisionTO> deleteAction = null)
+        public DecisionTO(Dev2Decision a, int ind)
+            : this(a, ind, null, null)
+        {
+        }
+
+        public DecisionTO(Dev2Decision a, int ind, Action<DecisionTO> updateDisplayAction, Action<DecisionTO> deleteAction)
         {
             UpdateDisplayAction = updateDisplayAction ?? (x => { });
             _isInitializing = true;
@@ -96,21 +112,18 @@ namespace Dev2.TO
             DeleteCommand = new RelayCommand(x =>
             {
                 DeleteAction?.Invoke(this);
-            },CanDelete);
+            }, CanDelete);
             _isInitializing = false;
         }
 
-       public bool CanDelete(object obj)
+        public bool CanDelete(object obj)
         {
             return !IsLast;
         }
 
         public bool IsLast
         {
-            get
-            {
-                return _isLast;
-            }
+            get => _isLast;
             set
             {
                 _isLast = value;
@@ -122,10 +135,7 @@ namespace Dev2.TO
         [FindMissing]
         public string From
         {
-            get
-            {
-                return _from;
-            }
+            get => _from;
             set
             {
                 if (_from == value)
@@ -139,15 +149,12 @@ namespace Dev2.TO
             }
         }
 
-        public bool IsFromFocused { get { return _isFromFocused; } set { OnPropertyChanged(ref _isFromFocused, value); } }
+        public bool IsFromFocused { get => _isFromFocused; set => OnPropertyChanged(ref _isFromFocused, value); }
 
         [FindMissing]
         public string To
         {
-            get
-            {
-                return _to;
-            }
+            get => _to;
             set
             {
                 if (_to == value)
@@ -160,16 +167,13 @@ namespace Dev2.TO
                 UpdateDisplay();
             }
         }
-        
-        public bool IsToFocused { get { return _isToFocused; } set { OnPropertyChanged(ref _isToFocused, value); } }
-        
+
+        public bool IsToFocused { get => _isToFocused; set => OnPropertyChanged(ref _isToFocused, value); }
+
         [FindMissing]
         public string SearchCriteria
         {
-            get
-            {
-                return _searchCriteria;
-            }
+            get => _searchCriteria;
             set
             {
                 if (_searchCriteria == value)
@@ -185,19 +189,16 @@ namespace Dev2.TO
 
         void UpdateDisplay()
         {
-            if(!_isInitializing)
+            if (!_isInitializing)
             {
-                UpdateDisplayAction(this);
+                UpdateDisplayAction?.Invoke(this);
             }
         }
 
         [FindMissing]
         public string MatchValue
         {
-            get
-            {
-                return _matchValue;
-            }
+            get => _matchValue;
             set
             {
                 if (_matchValue == value)
@@ -205,7 +206,7 @@ namespace Dev2.TO
                     return;
                 }
                 _matchValue = value;
-               
+
                 OnPropertyChanged();
                 RaiseCanAddRemoveChanged();
                 UpdateDisplay();
@@ -214,10 +215,7 @@ namespace Dev2.TO
 
         public string SearchType
         {
-            get
-            {
-                return _searchType;
-            }
+            get => _searchType;
             set
             {
                 if (value != null)
@@ -233,28 +231,23 @@ namespace Dev2.TO
                         return;
                     }
                     OnPropertyChanged();
-                    RaiseCanAddRemoveChanged();                   
+                    RaiseCanAddRemoveChanged();
                     UpdateDisplay();
                 }
             }
         }
 
-        public bool IsSearchTypeFocused { get { return _isSearchTypeFocused; } set { OnPropertyChanged(ref _isSearchTypeFocused, value); } }
+        public bool IsSearchTypeFocused { get => _isSearchTypeFocused; set => OnPropertyChanged(ref _isSearchTypeFocused, value); }
 
         void RaiseCanAddRemoveChanged()
         {
-            // ReSharper disable ExplicitCallerInfoArgument
             OnPropertyChanged("CanRemove");
             OnPropertyChanged("CanAdd");
-            // ReSharper restore ExplicitCallerInfoArgument
         }
 
         public bool IsSearchCriteriaEnabled
         {
-            get
-            {
-                return _isSearchCriteriaEnabled;
-            }
+            get => _isSearchCriteriaEnabled;
             set
             {
                 _isSearchCriteriaEnabled = value;
@@ -264,10 +257,7 @@ namespace Dev2.TO
 
         public bool IsSearchCriteriaVisible
         {
-            get
-            {
-                return _isSearchCriteriaVisible;
-            }
+            get => _isSearchCriteriaVisible;
             set
             {
                 _isSearchCriteriaVisible = value;
@@ -277,10 +267,7 @@ namespace Dev2.TO
 
         public int IndexNumber
         {
-            get
-            {
-                return _indexNum;
-            }
+            get => _indexNum;
             set
             {
                 _indexNum = value;
@@ -318,7 +305,7 @@ namespace Dev2.TO
 
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
-            RuleSet ruleSet = new RuleSet();
+            var ruleSet = new RuleSet();
             if (IsEmpty())
             {
                 return ruleSet;
@@ -329,27 +316,33 @@ namespace Dev2.TO
                     if (SearchType == "Starts With" || SearchType == "Ends With" || SearchType == "Doesn't Start With" || SearchType == "Doesn't End With")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchType));
-                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => SearchType, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "From":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => From));
-                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => From, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "To":
                     if (SearchType == "Is Between" || SearchType == "Is Not Between")
                     {
                         ruleSet.Add(new IsStringEmptyRule(() => To));
-                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1"));
+                        ruleSet.Add(new IsValidExpressionRule(() => To, datalist, "1", new VariableUtils()));
                     }
                     break;
                 case "SearchCriteria":
                     if (string.IsNullOrEmpty(SearchCriteria))
+                    {
                         ruleSet.Add(new IsStringEmptyRule(() => SearchCriteria));
-                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1"));
+                    }
+
+                    ruleSet.Add(new IsValidExpressionRule(() => SearchCriteria, datalist, "1", new VariableUtils()));
+                    break;
+                default:
+                    Dev2Logger.Info("No Rule Set for the Decision TO Property Name: " + propertyName, GlobalConstants.WarewolfInfo);
                     break;
             }
 
@@ -358,10 +351,7 @@ namespace Dev2.TO
 
         public bool IsSinglematchCriteriaVisible
         {
-            get
-            {
-                return _isSinglematchCriteriaVisible;
-            }
+            get => _isSinglematchCriteriaVisible;
             set
             {
                 _isSinglematchCriteriaVisible = value;
@@ -370,10 +360,7 @@ namespace Dev2.TO
         }
         public bool IsBetweenCriteriaVisible
         {
-            get
-            {
-                return _isBetweenCriteriaVisible;
-            }
+            get => _isBetweenCriteriaVisible;
             set
             {
                 _isBetweenCriteriaVisible = value;
@@ -405,7 +392,8 @@ namespace Dev2.TO
                         to.IsBetweenCriteriaVisible = true;
                         to.IsSinglematchCriteriaVisible = false;
                         break;
-
+                    default:
+                        break;
                 }
             }
         }

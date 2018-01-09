@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Dev2.MathOperations;
 using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.MathOperationTest
 {
@@ -59,19 +59,19 @@ namespace Dev2.Tests.MathOperationTest
         public void Function_AllInputsValid_Expected_ValidFunctionCreated()
         {
             const string functionName = "Test Function";
-            List<string> arguments = new List<string>();
-            List<string> argumentDescriptions = new List<string>();
+            var arguments = new List<string>();
+            var argumentDescriptions = new List<string>();
             const string description = "Some Test Function";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
+            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             Assert.IsNotNull(func);
         }
 
         [TestMethod]
         public void Function_NullFunctionName_Expected_ExceptionReturned()
         {
-            List<string> arguments = new List<string>();
-            List<string> argumentDescriptions = new List<string>();
+            var arguments = new List<string>();
+            var argumentDescriptions = new List<string>();
             const string description = "Some Test Function";
             try
             {
@@ -90,7 +90,7 @@ namespace Dev2.Tests.MathOperationTest
             const string functionName = "Test Function";
             const string description = "Some Test Function";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, null, null, description);
+            var func = MathOpsFactory.CreateFunction(functionName, null, null, description);
             Assert.AreEqual(0, func.arguments.Count);
         }
 
@@ -98,10 +98,10 @@ namespace Dev2.Tests.MathOperationTest
         public void Function_NullDescription_Expected_EmptyDescription()
         {
             const string functionName = "Test Function";
-            List<string> arguments = new List<string> { "arg1" };
-            List<string> argumentDescriptions = new List<string> { "the first argument" };
+            var arguments = new List<string> { "arg1" };
+            var argumentDescriptions = new List<string> { "the first argument" };
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, null);
+            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, null);
             Assert.IsTrue(func.Description.Equals(string.Empty));
         }
 
@@ -110,7 +110,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string functionName = "Test Function";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, null, null, null);
+            var func = MathOpsFactory.CreateFunction(functionName, null, null, null);
             Assert.IsNotNull(func);
         }
 
@@ -123,16 +123,16 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_AllValidValues_Expected_CustomFunctionCreatedAndRegisteredWithCalcManager()
         {
             const string functionName = "TestFunction";
-            List<string> arguments = new List<string> { "x", "y" };
-            List<string> argumentDescriptions = new List<string> { "the first argument", "the second argument" };
+            var arguments = new List<string> { "x", "y" };
+            var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
             const string description = "My TestFunction";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
+            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             IDev2CalculationManager manager = new Dev2CalculationManager();
             Func<double[], double> function = AddAbs;
 
             func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, function, manager);
-            CalculationValue value = manager.CalculateFormula("TestFunction(1)");
+            var value = manager.CalculateFormula("TestFunction(1)");
             Assert.AreEqual(123123423423, value.ToDouble());
         }
 
@@ -140,11 +140,11 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_NullXamCalculationManager_Expected_ExceptionReturned()
         {
             const string functionName = "TestFunction";
-            List<string> arguments = new List<string> { "x", "y" };
-            List<string> argumentDescriptions = new List<string> { "the first argument", "the second argument" };
+            var arguments = new List<string> { "x", "y" };
+            var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
             const string description = "My TestFunction";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
+            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             Func<double[], double> function = AddAbs;
             try
             {
@@ -161,11 +161,11 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_NullFunc_Expected_ExceptionReturned()
         {
             const string functionName = "TestFunction";
-            List<string> arguments = new List<string> { "x", "y" };
-            List<string> argumentDescriptions = new List<string> { "the first argument", "the second argument" };
+            var arguments = new List<string> { "x", "y" };
+            var argumentDescriptions = new List<string> { "the first argument", "the second argument" };
             const string description = "My TestFunction";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
+            var func = MathOpsFactory.CreateFunction(functionName, arguments, argumentDescriptions, description);
             IDev2CalculationManager manager = new Dev2CalculationManager();
             func.CreateCustomFunction(functionName, arguments, argumentDescriptions, description, null, manager);
 
@@ -178,10 +178,10 @@ namespace Dev2.Tests.MathOperationTest
         public void CreateCustomFunction_NullArgumentDescription_Expected_ExceptionReturned()
         {
             const string functionName = "TestFunction";
-            List<string> arguments = new List<string> { "x", "y" };
+            var arguments = new List<string> { "x", "y" };
             const string description = "My TestFunction";
 
-            IFunction func = MathOpsFactory.CreateFunction(functionName, arguments, null, description);
+            var func = MathOpsFactory.CreateFunction(functionName, arguments, null, description);
             IDev2CalculationManager manager = new Dev2CalculationManager();
             func.CreateCustomFunction(functionName, arguments, null, description, null, manager);
 
@@ -193,7 +193,7 @@ namespace Dev2.Tests.MathOperationTest
 
         #region Private Test Methods
 
-        private static double AddAbs(double[] x)
+        static double AddAbs(double[] x)
         {
             return 123123423423;
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,11 +26,11 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DataSplitActivityTest
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class XPathActivityTests : BaseActivityUnitTest
     {
         IList<XPathDTO> _resultsCollection = new List<XPathDTO>();
-        private const string Source = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
+        const string Source = "<excludelist>" + "<namespace name=\"Unlimited.Applications.BusinessDesignStudio.Activities\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.Behaviors\" />" + "<namespace name=\"Dev2.Studio.Core.AppResources.WindowManagers\" />" + "<namespace name=\"Dev2.Studio.ActivityDesigners\" />" + "<namespace name=\"Dev2.Studio.Views.Workflow\" />" + "<type name=\"Dev2.Activities.DsfExecuteCommandLineActivity\" />" + "<type name=\"Dev2.Activities.DsfForEachItem\" />" + "<type name=\"Dev2.Activities.DsfGatherSystemInformationActivity\" />" + "<type name=\"Dev2.Activities.DsfRandomActivity\" />" + "<type name=\"Dev2.DynamicServices.DsfDataObject\" excludetype=\"false\">" + "<method name=\"ExtractInMergeDataFromRequest\" signature=\"void(object)\" />" + "<method name=\"ExtractOutMergeDataFromRequest\" signature=\"void(object)\" />" + "</type>" + "<type name=\"Dev2.Runtime.Hosting.DynamicObjectHelper\" excludetype=\"false\">" + "<method name=\"SetID\" signature=\"void(Dev2.DynamicServices.IDynamicServiceObject, object)\" />" + "</type>" + "<type name=\"Dev2.CommandLineParameters\">" + "<method name=\"&lt;GetUsage&gt;b__0\" signature=\"void(CommandLine.Text.HelpText)\" />" + "<method name=\"GetUsage\" signature=\"string()\" />" + "<field name=\"&lt;Install&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;IntegrationTestMode&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StartService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;StopService&gt;k__BackingField\" signature=\"bool\" />" + "<field name=\"&lt;Uninstall&gt;k__BackingField\" signature=\"bool\" />" + "<propertymember name=\"Install\" />" + "<propertymember name=\"IntegrationTestMode\" />" + "<propertymember name=\"StartService\" />" + "<propertymember name=\"StopService\" />" + "<propertymember name=\"Uninstall\" />" + "</type>" + "<type name=\"Dev2.WebServer\" excludetype=\"false\">" + "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />" + "</type>" + "</excludelist>";
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -78,12 +78,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, "", _resultsCollection);
 
             //------------Execute Test---------------------------
-            IDSFDataObject result = ExecuteProcess();
-
-            //------------Assert Results-------------------------
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("", actual);
@@ -96,11 +92,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataList + "</root>", dataSplitPreDataList, "", _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
             Assert.AreEqual("", actual);
@@ -111,15 +104,13 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method", 1));
             SetUpActivityArguments();
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
 
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(Expected, actual, "Got " + actual + " expected " + Expected);
             }
@@ -136,14 +127,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string dataSplitPreDataList = "<ADL><xmlData/><xpath/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpath>//type/method</xpath><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "<method name=\"CreateForm\" signature=\"Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)\" />";
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actual, out string error);
             // remove test datalist ;)
 
-            if(string.IsNullOrEmpty(error))
+            if (string.IsNullOrEmpty(error))
             {
                 Assert.AreEqual(expected, actual, "Got " + actual + " expected " + expected);
             }
@@ -162,23 +151,21 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[OutVar1]]", "//type/method/@name", 1));
             _resultsCollection.Add(new XPathDTO("[[OutVar2]]", "//type/method/@signature", 2));
             SetUpActivityArguments();
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "CreateForm", 
+            var expected = new List<string> { "CreateForm", 
                                                        "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
-            List<string> actual = new List<string>();
+            var actual = new List<string>();
 
-            for(int i = 1; i <= 2; i++)
+            for (int i = 1; i <= 2; i++)
             {
-                string returnVal;
-                string error;
-                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out string returnVal, out string error);
 
                 actual.Add(returnVal.Trim());
             }
             // remove test datalist ;)
 
-            ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -192,22 +179,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
-            List<string> actual = new List<string>();
+            var expected = new List<string> { "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
+            var actual = new List<string>();
 
-            for(int i = 1; i <= 1; i++)
+            for (int i = 1; i <= 1; i++)
             {
-                string returnVal;
-                string error;
-                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out returnVal, out error);
+                GetScalarValueFromEnvironment(result.Environment, "OutVar" + i, out string returnVal, out string error);
                 actual.Add(returnVal.Trim());
             }
 
             // remove test datalist ;)
 
-            ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -219,14 +204,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string dataSplitPreDataList = "<ADL><xmlData/><xpaths><path/></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             const string dataSplitPreDataListWithData = "<ADL><xmlData/><xpaths><path>//type/method/@name</path></xpaths><xpaths><path>//type/method/@signature</path></xpaths><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root>" + dataSplitPreDataListWithData + "</root>", dataSplitPreDataList, Source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "void(object)", "void(object)", "void(Dev2.DynamicServices.IDynamicServiceObject, object)", "void(CommandLine.Text.HelpText)", "string()", "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            var expected = new List<string> { "void(object)", "void(object)", "void(Dev2.DynamicServices.IDynamicServiceObject, object)", "void(CommandLine.Text.HelpText)", "string()", "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)" };
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
             // remove test datalist ;)
 
-            ActivityUnitTests.Utils.StringComparer comparer = new ActivityUnitTests.Utils.StringComparer();
+            var comparer = new ActivityUnitTests.Utils.StringComparer();
             CollectionAssert.AreEqual(expected, actual, comparer);
         }
 
@@ -240,23 +224,20 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetUpActivityArguments();
 
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { @"" 
+            var result = ExecuteProcess();
+            var expected = new List<string> { @"" 
                 , "Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
             };
-            string actualScalar;
-            string error;
-            IList<string> actualRecordSet;
 
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
 
             Assert.AreEqual("CreateForm", actualScalar);
 
-            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out actualRecordSet, out error);
+            GetRecordSetFieldValueFromDataList(result.Environment, "recset1", "field1", out IList<string> actualRecordSet, out error);
 
             // remove test datalist ;)
 
-            List<string> actual = actualRecordSet.Select(entry => entry).ToList();
+            var actual = actualRecordSet.Select(entry => entry).ToList();
             var comparer = new ActivityUnitTests.Utils.StringComparer();
 
             CollectionAssert.AreEqual(expected, actual, comparer);
@@ -274,15 +255,13 @@ namespace Dev2.Tests.Activities.ActivityTests
             const string dataSplitPreDataList = "<ADL><xmlData/><recset1><field1/></recset1><recset2><field2/></recset2><OutVar1/><OutVar2/><OutVar3/><OutVar4/><OutVar5/></ADL>";
             SetupArguments("<root></root>", dataSplitPreDataList, Source, _resultsCollection);
 
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { "void(object)","void(object)",
+            var result = ExecuteProcess();
+            var expected = new List<string> { "void(object)","void(object)",
                                                         "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                          "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
-            List<string> actual = new List<string>();
-            string actualScalar;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out actualScalar, out error);
+            var actual = new List<string>();
+            GetScalarValueFromEnvironment(result.Environment, "OutVar1", out string actualScalar, out string error);
 
 
             Assert.AreEqual("CreateForm", actualScalar);
@@ -291,7 +270,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             // remove test datalist ;)
 
-            string[] foo = actual.ToArray();
+            var foo = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(foo.Select(s => s.Trim()));
@@ -306,21 +285,20 @@ namespace Dev2.Tests.Activities.ActivityTests
             _resultsCollection.Add(new XPathDTO("[[recset1().field1]]", "//type/method/@signature", 2));
 
             SetupArguments("<root></root>", "<ADL><xmlData/><recset1>\r\n\t\t<field1/>\r\n\t\t<rec1/>\r\n\t</recset1>\r\n\t<recset2>\r\n\t\t<field2/>\r\n\t</recset2>\r\n\t<OutVar1/>\r\n\t<OutVar2/>\r\n\t<OutVar3/>\r\n\t<OutVar4/>\r\n\t<OutVar5/>\r\n</ADL>", Source, _resultsCollection);
-            IDSFDataObject result = ExecuteProcess();
-            List<string> expected = new List<string> { "ExtractInMergeDataFromRequest","ExtractOutMergeDataFromRequest",
+            var result = ExecuteProcess();
+            var expected = new List<string> { "ExtractInMergeDataFromRequest","ExtractOutMergeDataFromRequest",
                                                     "SetID","<GetUsage>b__0","GetUsage","CreateForm",
                                                     "void(object)","void(object)",
                                                     "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                     "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                                         
             };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "rec1", out string error);
             actual.AddRange(RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error));
 
             // remove test datalist ;)
 
-            string[] foo = actual.ToArray();
+            var foo = actual.ToArray();
             actual.Clear();
 
             actual.AddRange(foo.Select(s => s.Trim()));
@@ -336,18 +314,17 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             SetUpActivityArguments();
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "void(object)","void(object)",
+            var expected = new List<string> { "void(object)","void(object)",
                                                         "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                         "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
-            string[] foo = actual.ToArray();
+            var foo = actual.ToArray();
             actual.Clear();
             actual.AddRange(foo.Select(f => f.Trim()));
 
@@ -389,18 +366,17 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
 
-            List<string> expected = new List<string> { "void(object)","void(object)",
+            var expected = new List<string> { "void(object)","void(object)",
                                                         "void(Dev2.DynamicServices.IDynamicServiceObject, object)","void(CommandLine.Text.HelpText)",
                                                         "string()","Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)"
                                 };
-            string error;
 
-            for(int i = 1; i < 4; i++)
+            for (int i = 1; i < 4; i++)
             {
                 act.Execute(dataObject, i);
             }
 
-            List<string> actual = RetrieveAllRecordSetFieldValues(dataObject.Environment, "recset1", "field1", out error);
+            var actual = RetrieveAllRecordSetFieldValues(dataObject.Environment, "recset1", "field1", out string error);
             Assert.IsNotNull(actual);
             Assert.AreEqual(3,actual.Count);
             Assert.AreEqual("Unlimited.Applications.WebServer.Responses.CommunicationResponseWriter(object, string, string)", actual[0]);
@@ -420,9 +396,8 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments("<root><recset1><field1/></recset1></root>", "<root><recset1><field1/></recset1></root>", "<x><a>1</a></x>", _resultsCollection);
 
             //exe
-            IDSFDataObject result = ExecuteProcess();
-            string error;
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out error);
+            var result = ExecuteProcess();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset1", "field1", out string error);
 
             // remove test datalist ;)
 
@@ -587,7 +562,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
 
 
-        private void SetupArguments(string currentDL, string testData, string sourceString, IList<XPathDTO> resultCollection)
+        void SetupArguments(string currentDL, string testData, string sourceString, IList<XPathDTO> resultCollection)
         {
             TestStartNode = new FlowStep
             {

@@ -61,7 +61,7 @@ namespace Dev2.Runtime.ESB.Control
             return innerEnvironment;
         }
 
-        private static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
+        static void OutputsToEnvironment(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, string outputDefs, int update)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace Dev2.Runtime.ESB.Control
 
         }
 
-        private static void EvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IEnumerable<IDev2Definition> outputComplexObjectList)
+        static void EvalAssignComplexObjects(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, IEnumerable<IDev2Definition> outputComplexObjectList)
         {
             foreach (var dev2Definition in outputComplexObjectList)
             {
@@ -95,7 +95,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        private static void EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
+        static void EvalAssignScalars(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IEnumerable<IDev2Definition> outputScalarList)
         {
             foreach (var dev2Definition in outputScalarList)
             {
@@ -104,16 +104,14 @@ namespace Dev2.Runtime.ESB.Control
                     var warewolfEvalResult = innerEnvironment.Eval(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Name), update);
                     if (warewolfEvalResult.IsWarewolfAtomListresult)
                     {
-                        var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
-                        if (data != null && data.Item.Any())
+                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult data && data.Item.Any())
                         {
                             environment.Assign("[[" + dev2Definition.Value + "]]", ExecutionEnvironment.WarewolfAtomToString(data.Item.Last()), update);
                         }
                     }
                     else
                     {
-                        var data = warewolfEvalResult as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                        if (data != null)
+                        if (warewolfEvalResult is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult data)
                         {
                             environment.Assign(DataListUtil.AddBracketsToValueIfNotExist(dev2Definition.Value), ExecutionEnvironment.WarewolfAtomToString(data.Item), update);
                         }
@@ -122,7 +120,7 @@ namespace Dev2.Runtime.ESB.Control
             }
         }
 
-        private static void EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
+        static void EvalAssignRecordSets(IExecutionEnvironment innerEnvironment, IExecutionEnvironment environment, int update, IRecordSetCollection outputRecSets, IList<IDev2Definition> outputs)
         {
             foreach (var recordSetDefinition in outputRecSets.RecordSets)
             {

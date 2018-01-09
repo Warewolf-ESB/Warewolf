@@ -9,7 +9,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for CaseConvertActivityTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class DecisionActivityTests : BaseActivityUnitTest
     {
         [TestMethod]

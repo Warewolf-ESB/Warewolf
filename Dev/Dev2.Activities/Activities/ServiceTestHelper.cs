@@ -21,7 +21,7 @@ namespace Dev2.Activities
 {
     public static class ServiceTestHelper
     {
-        private static IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
+        static IEnumerable<TestRunResult> GetTestRunResults(IDSFDataObject dataObject, IServiceTestOutput output, Dev2DecisionFactory factory, IDebugState debugState)
         {
             if (output == null)
             {
@@ -31,7 +31,7 @@ namespace Dev2.Activities
                 };
                 return new List<TestRunResult> { testResult };
             }
-            if(string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))
+            if (string.IsNullOrEmpty(output.Variable) && string.IsNullOrEmpty(output.Value))
             {
                 var testResult = new TestRunResult
                 {
@@ -55,13 +55,13 @@ namespace Dev2.Activities
                 if (dataObject.IsDebugMode())
                 {
                     var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(testResult.Message, true);
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
                     debugState.AssertResultList.Add(itemToAdd);
                 }
                 return new List<TestRunResult> { testResult };
             }
-            IFindRecsetOptions opt = FindRecsetOptions.FindMatch(output.AssertOp);
+            var opt = FindRecsetOptions.FindMatch(output.AssertOp);
             var decisionType = DecisionDisplayHelper.GetValue(output.AssertOp);
             var value = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.Value) };
             var from = new List<DataStorage.WarewolfAtom> { DataStorage.WarewolfAtom.NewDataString(output.From) };
@@ -109,12 +109,12 @@ namespace Dev2.Activities
                     var hasError = testResult.RunTestResult == RunResult.TestFailed;
 
                     var debugItemStaticDataParams = new DebugItemServiceTestStaticDataParams(msg, hasError);
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugItemStaticDataParams.GetDebugItemResult());
 
                     if (debugState.AssertResultList != null)
                     {
-                        bool addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
+                        var addItem = debugState.AssertResultList.Select(debugItem => debugItem.ResultsList.Where(debugItemResult => debugItemResult.Value == Messages.Test_PassedResult)).All(debugItemResults => !debugItemResults.Any());
 
                         if (addItem)
                         {
@@ -141,7 +141,7 @@ namespace Dev2.Activities
             }
         }
 
-        private static void GetStepOutputResults(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
+        static void GetStepOutputResults(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted)
         {
             if (stepToBeAsserted?.StepOutputs != null && stepToBeAsserted.StepOutputs.Count > 0)
             {
@@ -172,9 +172,9 @@ namespace Dev2.Activities
             }
         }
 
-        private static void UpdateDebugStateWithAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted, IDebugState debugState)
+        static void UpdateDebugStateWithAssertion(IDSFDataObject dataObject, IServiceTestStep stepToBeAsserted, IDebugState debugState)
         {
-            if(debugState != null)
+            if (debugState != null)
             {
                 var factory = Dev2DecisionFactory.Instance();
                 var res = stepToBeAsserted.StepOutputs.SelectMany(output => GetTestRunResults(dataObject, output, factory, debugState));

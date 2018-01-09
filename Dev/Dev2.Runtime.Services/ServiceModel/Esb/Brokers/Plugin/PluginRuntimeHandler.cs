@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ServiceStack.Common.Extensions;
 
-// ReSharper disable UnusedMember.Global
+
 
 namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 {
@@ -35,10 +35,11 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         public PluginExecutionDto CreateInstance(PluginInvokeArgs setupInfo)
         {
             VerifyArgument.IsNotNull("setupInfo", setupInfo);
-            Assembly loadedAssembly;
-            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out loadedAssembly);
+            var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(setupInfo.AssemblyLocation, setupInfo.AssemblyName, out Assembly loadedAssembly);
             if (!tryLoadAssembly)
+            {
                 throw new Exception(setupInfo.AssemblyName + "Not found");
+            }
 
             var constructorArgs = new List<object>();
             var type = loadedAssembly.GetType(setupInfo.Fullname);
@@ -48,7 +49,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
             if (setupInfo.PluginConstructor.Inputs != null)
             {
-                // ReSharper disable once LoopCanBeConvertedToQuery
+                
                 foreach (var constructorArg in setupInfo.PluginConstructor.Inputs)
                 {
                     var setupValuesForParameters = SetupValuesForParameters(constructorArg.Value, constructorArg.TypeName, constructorArg.EmptyToNull, loadedAssembly);
@@ -61,7 +62,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
             var instance = BuildInstance(setupInfo, type, constructorArgs, loadedAssembly);
             var serializeToJsonString = instance.SerializeToJsonString(new KnownTypesBinder() { KnownTypes = new List<Type>() { type } });
-            // ReSharper disable once PossibleNullReferenceException
+            
             setupInfo.PluginConstructor.ReturnObject = serializeToJsonString;
             return new PluginExecutionDto(serializeToJsonString)
             {
@@ -69,9 +70,9 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             };
         }
 
-        private static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
+        static object BuildInstance(PluginInvokeArgs setupInfo, Type type, List<object> constructorArgs, Assembly loadedAssembly)
         {
-            object instance = new object();
+            var instance = new object();
             if (setupInfo.PluginConstructor?.Inputs != null && (setupInfo.PluginConstructor == null || setupInfo.PluginConstructor.Inputs.Any()))
             {
                 try
@@ -107,10 +108,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             try
             {
                 var args = dto.Args;
-                Assembly loadedAssembly;
-                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out loadedAssembly);
+                var tryLoadAssembly = _assemblyLoader.TryLoadAssembly(args.AssemblyLocation, args.AssemblyName, out Assembly loadedAssembly);
                 if (!tryLoadAssembly)
+                {
                     throw new Exception(args.AssemblyName + "Not found");
+                }
+
                 ExecutePlugin(dto, args, loadedAssembly, dev2MethodInfo);
                 objectString = dto.ObjectString;
                 return dev2MethodInfo;
@@ -121,13 +124,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 {
                     dev2MethodInfo.HasError = true;
                     dev2MethodInfo.ErrorMessage = e.InnerException.Message;
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                     objectString = dto.ObjectString;
                     return dev2MethodInfo;
                 }
                 dev2MethodInfo.HasError = true;
                 dev2MethodInfo.ErrorMessage = e.Message;
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -143,7 +146,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
 
-        private void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
+        void ExecutePlugin(PluginExecutionDto objectToRun, PluginInvokeArgs setupInfo, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
         {
 
             VerifyArgument.IsNotNull("objectToRun", objectToRun);
@@ -162,7 +165,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             objectToRun.ObjectString = instance.SerializeToJsonString(knownBinder);//
         }
 
-        private object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
+        object InvokeMethodsAction(MethodInfo methodToRun, object instance, List<object> valuedTypeList, Type type)
         {
             if (instance != null)
             {
@@ -183,13 +186,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private void ExecuteSingleMethod(Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
+        void ExecuteSingleMethod(Type type, object instance, Func<MethodInfo, object, List<object>, Type, object> invokeMethodsAction, Assembly loadedAssembly, IDev2MethodInfo dev2MethodInfo)
         {
             if (dev2MethodInfo.Parameters != null)
             {
                 var typeList = BuildTypeList(dev2MethodInfo.Parameters, loadedAssembly);
                 var valuedTypeList = new List<object>();
-                // ReSharper disable once LoopCanBeConvertedToQuery
+
                 foreach (var methodParameter in dev2MethodInfo.Parameters)
                 {
                     var valuesForParameters = SetupValuesForParameters(methodParameter.Value, methodParameter.TypeName, methodParameter.EmptyToNull, loadedAssembly);
@@ -217,7 +220,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     methodToRun = type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
                 }
 
-                var methodsActionResult = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                var methodsActionResult = invokeMethodsAction?.Invoke(methodToRun, instance, valuedTypeList, type);
                 var knownBinder = new KnownTypesBinder();
                 knownBinder.KnownTypes.Add(type);
                 knownBinder.KnownTypes.Add(methodsActionResult?.GetType());
@@ -225,7 +228,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             }
         }
 
-        private static List<object> SetupValuesForParameters(string value, string typeName, bool emptyIsNull, Assembly loadedAssembly)
+        static List<object> SetupValuesForParameters(string value, string typeName, bool emptyIsNull, Assembly loadedAssembly)
         {
             var valuedTypeList = new List<object>();
             try
@@ -234,7 +237,10 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                 try
                 {
                     type = Type.GetType(typeName);
-                    if (type == null) throw new TypeLoadException();
+                    if (type == null)
+                    {
+                        throw new TypeLoadException();
+                    }
                 }
                 catch (Exception)
                 {
@@ -263,7 +269,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return valuedTypeList;
         }
 
-        private static Type GetTypeFromLoadedAssembly(string typeName, Assembly loadedAssembly)
+        static Type GetTypeFromLoadedAssembly(string typeName, Assembly loadedAssembly)
         {
             var typeFromLoadedAssembly = loadedAssembly.ExportedTypes.FirstOrDefault(p => p.AssemblyQualifiedName != null && p.AssemblyQualifiedName.Equals(typeName, StringComparison.InvariantCultureIgnoreCase)) ?? Type.GetType(typeName);
             if (typeFromLoadedAssembly == null)//Cater for assembly version change
@@ -283,9 +289,8 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceConstructorList ListConstructors(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceConstructorList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var constructors = type.GetConstructors();
@@ -325,14 +330,13 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
         /// <returns></returns>
         public ServiceMethodList ListMethodsWithReturns(string assemblyLocation, string assemblyName, string fullName)
         {
-            Assembly assembly;
             var serviceMethodList = new ServiceMethodList();
-            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out assembly))
+            if (_assemblyLoader.TryLoadAssembly(assemblyLocation, assemblyName, out Assembly assembly))
             {
                 var type = assembly.GetType(fullName);
                 var methodInfos = type.GetMethods();
 
-                // ReSharper disable once CyclomaticComplexity
+                
                 methodInfos.ToList().ForEach(info =>
                 {
                     var serviceMethod = new ServiceMethod
@@ -404,7 +408,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
             return serviceMethodList;
         }
 
-        private static void BuildParameter(Type parameterType, IMethodParameter methodParameter)
+        static void BuildParameter(Type parameterType, IMethodParameter methodParameter)
         {
             if (parameterType.IsPrimitive || parameterType == typeof(decimal) || parameterType == typeof(string))
             {
@@ -439,7 +443,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
 
 
-        private static JObject GetPropertiesJObject(Type returnType)
+        static JObject GetPropertiesJObject(Type returnType)
         {
             try
             {
@@ -463,15 +467,15 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
                 return jObject;
             }
-            // ReSharper disable once RedundantCatchClause
+
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
 
-        private static JArray GetPropertiesJArray(Type returnType)
+        static JArray GetPropertiesJArray(Type returnType)
         {
             var properties = returnType.GetProperties()
                 .Where(propertyInfo => propertyInfo.CanWrite)
@@ -486,7 +490,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
 
         static Type GetEnumerableType(Type type)
         {
-            // ReSharper disable once LoopCanBeConvertedToQuery
+            
             foreach (var intType in type.GetInterfaces())
             {
                 if (intType.IsGenericType

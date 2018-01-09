@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,8 +26,8 @@ namespace Dev2.Core.Tests.Settings
 {
     public class TestSettingsViewModel : SettingsViewModel
     {
-        private SecurityViewModel _theSecurityViewModel;
-        private PerfcounterViewModel _thePerfcounterViewModel;
+        SecurityViewModel _theSecurityViewModel;
+        PerfcounterViewModel _thePerfcounterViewModel;
 
         public TestSettingsViewModel()
         {
@@ -45,9 +45,6 @@ namespace Dev2.Core.Tests.Settings
             ShowErrorHitCount++;
             base.ShowError(header, description);
         }
-
-        public override bool HasVariables => false;
-        public override bool HasDebugOutput => true;
 
         public SecurityViewModel TheSecurityViewModel
         {

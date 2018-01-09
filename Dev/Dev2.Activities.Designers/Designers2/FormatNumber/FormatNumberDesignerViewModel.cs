@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,15 +32,18 @@ namespace Dev2.Activities.Designers2.FormatNumber
 
         public List<string> RoundingTypes { get; set; }
 
-        public string SelectedRoundingType { get { return (string)GetValue(SelectedRoundingTypeProperty); } set { SetValue(SelectedRoundingTypeProperty, value); } }
+        public string SelectedRoundingType { get => (string)GetValue(SelectedRoundingTypeProperty); set => SetValue(SelectedRoundingTypeProperty, value); }
         public static readonly DependencyProperty SelectedRoundingTypeProperty =
         DependencyProperty.Register("SelectedRoundingType", typeof(string), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(null, OnSelectedRoundingTypeChanged));
+        
+        string RoundingType { set => SetProperty(value); get => GetProperty<string>(); }
 
-        // DO NOT bind to these properties - these are here for convenience only!!!
-        string RoundingType { set { SetProperty(value); } get { return GetProperty<string>(); } }
-        string RoundingDecimalPlaces { set { SetProperty(value); } }
+        void SetRoundingDecimalPlaces(string value)
+        {
+            SetProperty(value);
+        }
 
-        public bool IsRoundingEnabled { get { return (bool)GetValue(IsRoundingEnabledProperty); } set { SetValue(IsRoundingEnabledProperty, value); } }
+        public bool IsRoundingEnabled { get => (bool)GetValue(IsRoundingEnabledProperty); set => SetValue(IsRoundingEnabledProperty, value); }
 
         public static readonly DependencyProperty IsRoundingEnabledProperty =
            DependencyProperty.Register("IsRoundingEnabled", typeof(bool), typeof(FormatNumberDesignerViewModel), new PropertyMetadata(false));
@@ -50,12 +53,11 @@ namespace Dev2.Activities.Designers2.FormatNumber
             var viewModel = (FormatNumberDesignerViewModel)d;
             var value = e.NewValue as string;
 
-            enRoundingType roundingType;
-            if(Enum.TryParse(value, out roundingType))
+            if (Enum.TryParse(value, out enRoundingType roundingType))
             {
-                if(roundingType == enRoundingType.None)
+                if (roundingType == enRoundingType.None)
                 {
-                    viewModel.RoundingDecimalPlaces = string.Empty;
+                    viewModel.SetRoundingDecimalPlaces(string.Empty);
                     viewModel.IsRoundingEnabled = false;
                 }
                 else

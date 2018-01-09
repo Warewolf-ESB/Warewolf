@@ -14,7 +14,7 @@ using Dev2.Interfaces;
 using Unlimited.Framework.Converters.Graph;
 using Unlimited.Framework.Converters.Graph.String.Json;
 using WarewolfParserInterop;
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
 
 namespace Dev2.Activities
 {
@@ -24,8 +24,8 @@ namespace Dev2.Activities
         public string ObjectName { get; set; }
         public IOutputDescription OutputDescription { get; set; }
         public ICollection<IServiceOutputMapping> Outputs { get; set; }
-
-        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj, bool formatResult = true)
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj) => PushResponseIntoEnvironment(input, update, dataObj, true);
+        public void PushResponseIntoEnvironment(string input, int update, IDSFDataObject dataObj, bool formatResult)
         {
             if (dataObj == null)
             {
@@ -48,7 +48,7 @@ namespace Dev2.Activities
                     if (OutputDescription != null)
                     {
 
-                        int i = 0;
+                        var i = 0;
                         foreach (var serviceOutputMapping in Outputs)
                         {
                             OutputDescription.DataSourceShapes[0].Paths[i].OutputExpression = DataListUtil.AddBracketsToValueIfNotExist(serviceOutputMapping.MappedTo);
@@ -74,11 +74,11 @@ namespace Dev2.Activities
             catch (Exception e)
             {
                 dataObj.Environment.AddError(e.Message);
-                Dev2Logger.Error(e.Message, e);
+                Dev2Logger.Error(e.Message, e, GlobalConstants.WarewolfError);
             }
         }
 
-        private void AssignObject(string input, int update, IDSFDataObject dataObj)
+        void AssignObject(string input, int update, IDSFDataObject dataObj)
         {
 
             try
@@ -87,12 +87,12 @@ namespace Dev2.Activities
             }
             catch (Exception ex1)
             {
-                Dev2Logger.Error(ex1);
+                Dev2Logger.Error(ex1, GlobalConstants.WarewolfError);
             }
 
         }
 
-        private void FormatForOutput(string input, int update, IDSFDataObject dataObj, bool formatResult, IOutputFormatter formater)
+        void FormatForOutput(string input, int update, IDSFDataObject dataObj, bool formatResult, IOutputFormatter formater)
         {
             var formattedInput = input;
             if (formater != null && formatResult)
@@ -100,13 +100,13 @@ namespace Dev2.Activities
                 formattedInput = formater.Format(input).ToString();
             }
 
-            XmlDocument xDoc = new XmlDocument();
+            var xDoc = new XmlDocument();
             formattedInput = string.Format("<Tmp{0}>{1}</Tmp{0}>", Guid.NewGuid().ToString("N"), formattedInput);
             xDoc.LoadXml(formattedInput);
 
             if (xDoc.DocumentElement != null)
             {
-                XmlNodeList children = xDoc.DocumentElement.ChildNodes;
+                var children = xDoc.DocumentElement.ChildNodes;
                 IDictionary<string, int> indexCache = new Dictionary<string, int>();
                 var outputDefs =
                     Outputs.Select(
@@ -126,7 +126,9 @@ namespace Dev2.Activities
             return innerXml;
         }
 
-        public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level = 0)
+        public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj) => TryConvert(children, outputDefs, indexCache, update, dataObj, 0);
+
+        public void TryConvert(XmlNodeList children, IList<IDev2Definition> outputDefs, IDictionary<string, int> indexCache, int update, IDSFDataObject dataObj, int level)
         {
             foreach (XmlNode c in children)
             {
@@ -137,8 +139,7 @@ namespace Dev2.Activities
                     var dev2Definitions = recSetName as IDev2Definition[] ?? recSetName.ToArray();
                     if (dev2Definitions.Length != 0)
                     {
-                        int fetchIdx;
-                        var idx = indexCache.TryGetValue(c.Name, out fetchIdx) ? fetchIdx : 1;
+                        var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1;
                         var nl = c.ChildNodes;
                         foreach (XmlNode subc in nl)
                         {
@@ -172,7 +173,7 @@ namespace Dev2.Activities
             }
         }
 
-        private void MapScalarValue(IList<IDev2Definition> outputDefs, int update, IDSFDataObject dataObj, XmlNode c1)
+        void MapScalarValue(IList<IDev2Definition> outputDefs, int update, IDSFDataObject dataObj, XmlNode c1)
         {
             var scalarName = outputDefs.FirstOrDefault(definition => definition.Name == c1.Name);
             if (scalarName != null)

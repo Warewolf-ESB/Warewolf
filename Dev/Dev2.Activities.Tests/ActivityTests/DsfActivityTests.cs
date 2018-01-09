@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// <summary>
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
-    // ReSharper disable InconsistentNaming
+    
     [TestClass]
     public class DsfActivityTests : BaseActivityUnitTest
     {
@@ -47,12 +47,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfActivity_BeforeExecutionStart_NullResourceID_DoesNothing()
         {
             //------------Setup for test--------------------------
-            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = null };
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
+            var act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = null };
             //------------Execute Test---------------------------
             CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
-                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
+                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             // remove test datalist ;)
 
@@ -156,12 +154,10 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfActivity_BeforeExecutionStart_EmptyResourceID_DoesNothing()
         {
             //------------Setup for test--------------------------
-            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(Guid.Empty) };
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
+            var act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(Guid.Empty) };
             //------------Execute Test---------------------------
             CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
-                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes);
+                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             // remove test datalist ;)
 
@@ -177,18 +173,15 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
-            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
+            var act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = new InArgument<Guid>(resourceID) };
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
 
-            PrivateObject p = new PrivateObject(act);
+            var p = new PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
-
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
             //------------Execute Test---------------------------
             CheckPathOperationActivityDebugInputOutput(act, @"<ADL><scalar></scalar><Numeric><num></num></Numeric><CompanyName></CompanyName><Customer><FirstName></FirstName></Customer></ADL>",
-                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out inRes, out outRes, new Mock<IPrincipal>().Object);
+                                                               "<ADL><scalar>scalarData</scalar><Numeric><num>1</num></Numeric><Numeric><num>2</num></Numeric><Numeric><num>3</num></Numeric><Numeric><num>4</num></Numeric><CompanyName>Dev2</CompanyName><Customer><FirstName>Wallis</FirstName></Customer></ADL>", out List<DebugItem> inRes, out List<DebugItem> outRes, new Mock<IPrincipal>().Object);
 
             // remove test datalist ;)
             //------------Assert Results-------------------------
@@ -203,7 +196,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var resourceID = Guid.NewGuid();
             var environmentID = Guid.Empty;
-            DsfActivity act = new DsfActivity
+            var act = new DsfActivity
             {
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = Guid.Empty
@@ -211,7 +204,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
 
-            PrivateObject p = new PrivateObject(act);
+            var p = new PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
 
             //------------Execute Test---------------------------
@@ -225,10 +218,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             User = new Mock<IPrincipal>().Object;
             var result = ExecuteProcess(null, true, null, false, true, false, environmentID);
 
-            // ReSharper disable PossibleNullReferenceException
+            
             var resultEnvironmentID = result.EnvironmentID;
             var isRemoteOverridden = result.IsRemoteInvokeOverridden;
-            // ReSharper restore PossibleNullReferenceException
+            
 
             //------------Assert Results-------------------------
             Assert.AreEqual(environmentID, resultEnvironmentID);
@@ -237,9 +230,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -249,7 +242,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsDebug = true,
             };
 
-            DsfActivity act = new DsfActivity();
+            var act = new DsfActivity();
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -262,9 +255,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -273,7 +266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ForEachNestingLevel = 1
             };
 
-            DsfActivity act = new DsfActivity();
+            var act = new DsfActivity();
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -338,9 +331,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("DsfActivity_ExecuteTool")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_ExecuteTool_DataObjectWithNullChannel_ShouldError()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject(CurrentDl, Guid.NewGuid())
             {
@@ -349,7 +342,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ForEachNestingLevel = 1
             };
 
-            DsfActivity act = new DsfActivity();
+            var act = new DsfActivity();
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.Execute(dataObject, 0);
@@ -362,7 +355,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfActivity_GetOutputs_NotObjectAndOutputMapping_GetsOutputs()
         {
             //------------Setup for test--------------------------
-            DsfActivity act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = null };
+            var act = new DsfActivity { InputMapping = ActivityStrings.DsfActivityInputMapping, OutputMapping = ActivityStrings.DsfActivityOutputMapping, ResourceID = null };
             //------------Execute Test---------------------------
             var outputs = act.GetOutputs();
             //------------Assert Results-------------------------
@@ -375,7 +368,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfActivity_GetOutptus_ObjectAndOutputMapping_GetsObjectName()
         {
             //------------Setup for test--------------------------
-            DsfActivity act = new DsfActivity
+            var act = new DsfActivity
             {
                 InputMapping = ActivityStrings.DsfActivityInputMapping,
                 OutputMapping = ActivityStrings.DsfActivityOutputMapping,
@@ -412,7 +405,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             };
             var resourceID = Guid.NewGuid();
             
-            DsfActivity act = new DsfActivity
+            var act = new DsfActivity
             {
                 ResourceID = new InArgument<Guid>(resourceID),
                 EnvironmentID = Guid.Empty
@@ -420,7 +413,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var mockAutorizationService = new Mock<IAuthorizationService>();
             mockAutorizationService.Setup(service => service.IsAuthorized(It.IsAny<IPrincipal>(), AuthorizationContext.Execute, resourceID.ToString())).Returns(true);
 
-            PrivateObject p = new PrivateObject(act);
+            var p = new PrivateObject(act);
             p.SetProperty("AuthorizationService", mockAutorizationService.Object);
 
             //------------Execute Test---------------------------

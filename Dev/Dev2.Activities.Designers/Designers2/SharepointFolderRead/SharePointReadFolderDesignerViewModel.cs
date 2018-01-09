@@ -11,10 +11,10 @@ using Dev2.Studio.Interfaces;
 using Dev2.Threading;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable ArrangeTypeMemberModifiers
-// ReSharper disable UnusedMember.Local
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
+
+
+
 
 namespace Dev2.Activities.Designers2.SharepointFolderRead
 {
@@ -42,12 +42,12 @@ namespace Dev2.Activities.Designers2.SharepointFolderRead
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
         
-        public bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        public bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        public bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        public bool IsFilesAndFoldersSelected { set => SetProperty(value); get => GetProperty<bool>(); }
+        public bool IsFoldersSelected { set => SetProperty(value); get => GetProperty<bool>(); }
+        public bool IsFilesSelected { set => SetProperty(value); get => GetProperty<bool>(); }
         public string ServerInputPath => GetProperty<string>();
 
         protected override IEnumerable<IActionableErrorInfo> ValidateThis()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,14 +26,14 @@ namespace Dev2.Activities.Designers.Tests.Email
 
         public EmailSource SelectedEmailSourceModelItemValue
         {
-            // ReSharper disable ExplicitCallerInfoArgument
+            
             get { return GetProperty<EmailSource>("SelectedEmailSource"); }
-            // ReSharper restore ExplicitCallerInfoArgument
+            
             set
             {
-                // ReSharper disable ExplicitCallerInfoArgument
+                
                 SetProperty(value, "SelectedEmailSource");
-                // ReSharper restore ExplicitCallerInfoArgument
+                
             }
         }
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Data.TO;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 using Dev2.Data.TO;
 using Newtonsoft.Json;
-// ReSharper disable NonLocalizedString
+using Dev2.Common;
 
 namespace Dev2.Scheduler
 {
@@ -25,17 +25,17 @@ namespace Dev2.Scheduler
         string _workflowName;
         SchedulerStatus _status;
 
-        private bool _runAsapIfScheduleMissed;
-        private bool _allowMultipleIstances;
+        bool _runAsapIfScheduleMissed;
+        bool _allowMultipleIstances;
         int _numberOfHistoryToKeep;
         IScheduleTrigger _trigger;
         bool _isDirty;
-        private string _userName;
-        private string _password;
+        string _userName;
+        string _password;
         string _oldName;
-        private IErrorResultTO _errors;
+        IErrorResultTO _errors;
         DateTime _nextRunDate;
-        private bool _isNew;
+        bool _isNew;
 
         public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger, string workflowName, string resourceId)
         {
@@ -49,7 +49,10 @@ namespace Dev2.Scheduler
             _status = status;
             Name = history.First();
             if(history.Length == 2)
+            {
                 NumberOfHistoryToKeep = int.Parse(history[1]);
+            }
+
             IsDirty = false;
             _errors = new ErrorResultTO();
             if(!String.IsNullOrEmpty(resourceId) )
@@ -136,6 +139,7 @@ namespace Dev2.Scheduler
                 OnPropertyChanged("StatusAlt");
             }
         }
+
         [JsonIgnore]
         public SchedulerStatus StatusAlt
         {
@@ -143,15 +147,13 @@ namespace Dev2.Scheduler
             {
                 return _status;
             }
-            // ReSharper disable once ValueParameterNotUsed
             set
             {
-            
-                    IsDirty = true;
-               
-                _status = _status ==SchedulerStatus.Disabled?SchedulerStatus.Enabled : SchedulerStatus.Disabled;
+                IsDirty = true;
+                _status = _status==SchedulerStatus.Disabled?SchedulerStatus.Enabled:SchedulerStatus.Disabled;
                 OnPropertyChanged("StatusAlt");
                 OnPropertyChanged("Status");
+                Dev2Logger.Info("Scheduled Resource Alt Status set to " + value, GlobalConstants.WarewolfInfo);
             }
         }
 
@@ -307,13 +309,13 @@ namespace Dev2.Scheduler
                     && runAsapIfMissedEqual && allowMultipleInstancesEqual && userNameEqual;
         }
 
-        private bool TriggerEqual(IScheduleTrigger otherTrigger, IScheduleTrigger trigger)
+        bool TriggerEqual(IScheduleTrigger otherTrigger, IScheduleTrigger trigger)
         {
             if (otherTrigger.State != trigger.State)
             {
                 return false;
             }
-            if (otherTrigger.Trigger == null && trigger.Trigger!=null)
+            if (otherTrigger.Trigger == null && trigger.Trigger != null)
             {
                 return false;
             }

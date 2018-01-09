@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,15 +10,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
-// ReSharper disable CheckNamespace
+
 namespace Dev2.DataList
 {
     /// <summary>
     /// Class for the "=" recordset search option 
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public class RsOpEqual : AbstractRecsetSearchValidation
     {
         #region Overrides of AbstractRecsetSearchValidation
@@ -26,7 +25,10 @@ namespace Dev2.DataList
         public override Func<DataStorage.WarewolfAtom, bool> CreateFunc(IEnumerable<DataStorage.WarewolfAtom> values, IEnumerable<DataStorage.WarewolfAtom> warewolfAtoms, IEnumerable<DataStorage.WarewolfAtom> to, bool all)
         {
             if (all)
+            {
                 return a => values.All(x => DataStorage.CompareAtoms(a,x)==0);
+            }
+
             return a => values.Any(x =>  DataStorage.CompareAtoms(a, x) == 0);
 
         }

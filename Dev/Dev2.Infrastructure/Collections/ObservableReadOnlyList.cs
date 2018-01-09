@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -118,7 +118,10 @@ namespace Dev2.Collections
             _list.RemoveAt(index);
         }
 
-        public T this[int index] { get { return _list[index]; } set { _list[index] = value; } }
+        public T this[int index] {
+            get => _list[index];
+            set => _list[index] = value;
+        }
 
         #endregion
 
@@ -162,6 +165,5 @@ namespace Dev2.Collections
         }
 
         #endregion
-
     }
 }

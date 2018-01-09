@@ -11,12 +11,11 @@ namespace Dev2.Activities.Designers2.Core
         {
             const string Separator = @";";
             var chooserMessage = new FileChooserMessage();
-            
             if (includeFile == null)
             {
                 includeFile = "";
             }
-            chooserMessage.SelectedFiles = includeFile.Split(Separator.ToCharArray());
+            chooserMessage.SelectedFiles = includeFile?.Split(Separator.ToCharArray());
             chooserMessage.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == @"SelectedFiles")
@@ -27,9 +26,13 @@ namespace Dev2.Activities.Designers2.Core
                     }
                     else
                     {
-                        if (chooserMessage.SelectedFiles != null)
+                        if (string.IsNullOrEmpty(includeFile))
                         {
                             includeFile = string.Join(Separator, chooserMessage.SelectedFiles);
+                        }
+                        else
+                        {
+                            includeFile += Separator + string.Join(Separator, chooserMessage.SelectedFiles);
                         }
                     }
                 }

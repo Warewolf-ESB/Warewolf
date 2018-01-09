@@ -20,7 +20,7 @@ namespace Warewolf.Studio.Core
         {
             if (value != null)
             {
-                string resourceType = value.ToString();
+                var resourceType = value.ToString();
                 if (resourceType != "Folder")
                 {
                     return Visibility.Visible;

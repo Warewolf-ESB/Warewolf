@@ -11,14 +11,14 @@ using Dev2.Common.Interfaces.Threading;
 using Dev2.Data;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
-// ReSharper disable CyclomaticComplexity
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
     public sealed class ServiceTestCommandHandlerModel : IServiceTestCommandHandler
     {
-        private readonly DataListConversionUtils _dataListConversionUtils;
+        readonly DataListConversionUtils _dataListConversionUtils;
 
         public ServiceTestCommandHandlerModel()
         {
@@ -26,9 +26,11 @@ namespace Warewolf.Studio.ViewModels
             _dataListConversionUtils = new DataListConversionUtils();
         }
 
-        private DataListModel DataList { get; set; }
+        DataListModel DataList { get; set; }
 
-        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug = false)
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber) => CreateTest(resourceModel, testNumber, false);
+
+        public IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug)
         {
             var testModel = new ServiceTestModel(resourceModel.ID)
             {
@@ -86,7 +88,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static void ShowRunAllUnsavedError()
+        static void ShowRunAllUnsavedError()
         {
             var popupController = CustomContainer.Get<IPopupController>();
             popupController?.Show(Resources.Languages.Core.ServiceTestRunAllUnsavedTestsMessage,
@@ -149,7 +151,10 @@ namespace Warewolf.Studio.ViewModels
                                 foreach (var serviceTestStep in serviceTestSteps)
                                 {
                                     var resServiceTestStep = serviceTestStep as ServiceTestStep;
-                                    if (resServiceTestStep == null) continue;
+                                    if (resServiceTestStep == null)
+                                    {
+                                        continue;
+                                    }
 
                                     UpdateTestStepResult(resServiceTestStep, resTestStep);
 
@@ -182,7 +187,7 @@ namespace Warewolf.Studio.ViewModels
                 });
         }
 
-        private static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
+        static void UpdateTestStepResult(ServiceTestStep resServiceTestStep, IServiceTestStep resTestStep)
         {
             resServiceTestStep.Result = resTestStep.Result;
 
@@ -195,7 +200,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
+        static void UpdateTestStatus(IServiceTestModel selectedServiceTest, IServiceTestModelTO res)
         {
             selectedServiceTest.TestFailing = res.Result.RunTestResult == RunResult.TestFailed;
             selectedServiceTest.TestPassed = res.Result.RunTestResult == RunResult.TestPassed;
@@ -208,7 +213,7 @@ namespace Warewolf.Studio.ViewModels
                                               res.Result.RunTestResult != RunResult.TestResourcePathUpdated;
         }
 
-        private void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
+        void SetChildrenTestResult(ObservableCollection<IServiceTestStep> resTestStepchildren, ObservableCollection<IServiceTestStep> serviceTestStepChildren)
         {
             foreach (var child in resTestStepchildren)
             {
@@ -227,7 +232,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
+        ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromResult(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)

@@ -1,0 +1,7 @@
+www.mozilla.org:HSTS	0	17401	1535010438087,1,0
+normandy-cloudfront.cdn.mozilla.net:HPKP	0	17401	1503561979245,1,0,WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18=r/mIkG3eEpVdm+u/ko/cwxzOMo1bk4TyHIlByibiA5E=YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=sRHdihwgkaib1P1gxX8HFszlD+7/gTfNvuAybgLPNis=
+shavar.services.mozilla.com^firstPartyDomain=safebrowsing.86868755-6b82-4842-b301-72671a0db32e.mozilla:HSTS	0	17401	1535011807041,1,1
+normandy.cdn.mozilla.net:HPKP	0	17401	1503561979604,1,0,WoiWRyIOVNa9ihaBciRSC7XHjliYS9VwUGOIud4PB18=r/mIkG3eEpVdm+u/ko/cwxzOMo1bk4TyHIlByibiA5E=YLh1dUR9y6Kja30RrAn7JKnbQG/uEtLMkBgFF2Fuihg=sRHdihwgkaib1P1gxX8HFszlD+7/gTfNvuAybgLPNis=
+normandy-cloudfront.cdn.mozilla.net:HSTS	0	17401	1535011579245,1,1
+normandy.cdn.mozilla.net:HSTS	0	17401	1535011579604,1,1
+aus5.mozilla.org:HSTS	0	17401	1535011842944,1,0

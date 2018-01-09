@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using Caliburn.Micro;
-using Dev2.Runtime.Configuration.Services;
 
 namespace Dev2.Runtime.Configuration.ViewModels
 {
@@ -17,7 +16,7 @@ namespace Dev2.Runtime.Configuration.ViewModels
     {
         #region Fields
 
-        private object _object;
+        object _object;
 
         #endregion
 
@@ -48,8 +47,6 @@ namespace Dev2.Runtime.Configuration.ViewModels
                 OnUnderlyingObjectChanged();
             }
         }
-
-        public ICommunicationService CommunicationService { get; set; }
 
         #endregion
 
