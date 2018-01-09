@@ -18,6 +18,8 @@ namespace Dev2.ViewModels.Merge
     public class MergeArmConnectorConflict : BindableBase, IMergeArmConnectorConflict
     {
         public string ArmDescription { get; set; }
+        public string LeftArmDescription { get; set; }
+        public string RightArmDescription { get; set; }
         public string SourceUniqueId { get; set; }
         public string DestinationUniqueId { get; set; }
         public IArmConnectorConflict Container { get; set; }
@@ -63,6 +65,8 @@ namespace Dev2.ViewModels.Merge
         public MergeArmConnectorConflict(string armDescription, string sourceUniqueId, string destinationUniqueId,string key, IArmConnectorConflict container)
         {
             ArmDescription = armDescription;
+            LeftArmDescription = "Left";
+            RightArmDescription = "Right";
             SourceUniqueId = sourceUniqueId;
             DestinationUniqueId = destinationUniqueId;
             Key = key;
@@ -104,6 +108,7 @@ namespace Dev2.ViewModels.Merge
 
         public void DisableEvents()
         {
+            WorkflowDesignerViewModel?.DeLinkTools(SourceUniqueId, DestinationUniqueId, Key);
             IsArmSelectionAllowed = false;
             IsChecked = false;
         }

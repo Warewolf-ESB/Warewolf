@@ -710,10 +710,20 @@
                                                             DockPanel.Dock="Left" 
                                                             Orientation="Horizontal" 
                                                             AutomationProperties.AutomationId="UI_CurrentNodeArmSP_AutoID">
-                                                    <TextBlock x:Name="CurrentNodeArmText" 
+                                                    <TextBlock x:Name="CurrentNodeLeftArmText" 
                                                                Margin="20,0,0,0" 
-                                                               Text="{Binding ArmDescription}" 
-                                                               ToolTip="{Binding ArmDescription}"
+                                                               Text="{Binding LeftArmDescription}" 
+                                                               ToolTip="{Binding LeftArmDescription}"
+                                                               FontWeight="Bold" 
+                                                               AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
+                                                               HorizontalAlignment="Stretch"/>
+
+                                                    <fa:FontAwesome Margin="10,2,0,0" Icon="LongArrowRight" FontSize="18" Foreground="Gray"/>
+
+                                                    <TextBlock x:Name="CurrentNodeRightArmText" 
+                                                               Margin="10,0,0,0" 
+                                                               Text="{Binding RightArmDescription}" 
+                                                               ToolTip="{Binding RightArmDescription}"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
@@ -799,10 +809,20 @@
                                                     </RadioButton>
                                                     <TextBlock x:Name="DifferenceNodeArmText" 
                                                                Margin="30,0,0,0" 
-                                                               Text="{Binding ArmDescription}" 
-                                                               ToolTip="{Binding ArmDescription}"
+                                                               Text="{Binding LeftArmDescription}" 
+                                                               ToolTip="{Binding LeftArmDescription}"
                                                                FontWeight="Bold" 
                                                                AutomationProperties.AutomationId="UI_DifferenceNodeArmText_AutoID"
+                                                               HorizontalAlignment="Stretch"/>
+
+                                                    <fa:FontAwesome Margin="10,2,0,0" Icon="LongArrowRight" FontSize="18" Foreground="Gray"/>
+
+                                                    <TextBlock x:Name="DifferenceNodeRightArmText" 
+                                                               Margin="10,0,0,0" 
+                                                               Text="{Binding RightArmDescription}" 
+                                                               ToolTip="{Binding RightArmDescription}"
+                                                               FontWeight="Bold" 
+                                                               AutomationProperties.AutomationId="UI_CurrentNodeArmText_AutoID"
                                                                HorizontalAlignment="Stretch"/>
                                                 </StackPanel>
                                             </DockPanel>
