@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
 *  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -26,10 +26,8 @@ namespace Dev2.Intellisense.Helper
     public enum ShareType
     {
         Disk,
-        Device ,
-
+        Device,
         IPC,
-
         Special = -2147483648
     }
 
@@ -55,7 +53,7 @@ namespace Dev2.Intellisense.Helper
 
         public Share(string server, string netName, ShareType shareType)
         {
-            if(ShareType.Special == shareType && "IPC$" == netName)
+            if (ShareType.Special == shareType && "IPC$" == netName)
             {
                 shareType |= ShareType.IPC;
             }
@@ -73,17 +71,17 @@ namespace Dev2.Intellisense.Helper
         {
             get
             {
-                if(0 != (ShareType & ShareType.Device))
+                if (0 != (ShareType & ShareType.Device))
                 {
                     return false;
                 }
 
-                if(0 != (ShareType & ShareType.IPC))
+                if (0 != (ShareType & ShareType.IPC))
                 {
                     return false;
                 }
 
-                if(0 == (ShareType & ShareType.Special))
+                if (0 == (ShareType & ShareType.Special))
                 {
                     return true;
                 }
@@ -98,9 +96,7 @@ namespace Dev2.Intellisense.Helper
 
         public override string ToString()
         {
-            return string.Format(@"\\{0}\{1}", string.IsNullOrEmpty(_shareServer) 
-                    ? Environment.MachineName 
-                    : _shareServer, _networkName);
+            return $@"\\{(string.IsNullOrEmpty(_shareServer) ? Environment.MachineName : _shareServer)}\{_networkName}";
         }
     }
 
@@ -153,7 +149,6 @@ namespace Dev2.Intellisense.Helper
 
 
         static void EnumerateSharesNT(string server, ShareCollection shares)
-
         {
             var level = 2;
             var hResume = 0;
@@ -161,17 +156,15 @@ namespace Dev2.Intellisense.Helper
 
             try
             {
-                var nRet = NetShareEnum(server, level, out pBuffer, -1,
-                    out int entriesRead, out int totalEntries, ref hResume);
+                var nRet = NetShareEnum(server, level, out pBuffer, -1, out int entriesRead, out int totalEntries, ref hResume);
 
                 if (ErrorAccessDenied == nRet)
                 {
                     level = 1;
-                    nRet = NetShareEnum(server, level, out pBuffer, -1,
-                        out entriesRead, out totalEntries, ref hResume);
+                    nRet = NetShareEnum(server, level, out pBuffer, -1, out entriesRead, out totalEntries, ref hResume);
                 }
 
-                if(NoError == nRet && entriesRead > 0)
+                if (NoError == nRet && entriesRead > 0)
                 {
                     var t = 2 == level ? typeof(ShareInfo2) : typeof(ShareInfo1);
                     var offset = Marshal.SizeOf(t);
@@ -182,19 +175,19 @@ namespace Dev2.Intellisense.Helper
                         if (1 == level)
                         {
                             var si = (ShareInfo1)Marshal.PtrToStructure(pItem, t);
-                            shares.Add(si.NetName, string.Empty, si.ShareType, si.Remark);
+                            shares.Add(si.NetName, si.ShareType);
                         }
                         else
                         {
                             var si = (ShareInfo2)Marshal.PtrToStructure(pItem, t);
-                            shares.Add(si.NetName, si.Path, si.ShareType, si.Remark);
+                            shares.Add(si.NetName, si.ShareType);
                         }
                     }
                 }
             }
             finally
             {
-                if(IntPtr.Zero != pBuffer)
+                if (IntPtr.Zero != pBuffer)
                 {
                     NetApiBufferFree(pBuffer);
                 }
@@ -212,13 +205,11 @@ namespace Dev2.Intellisense.Helper
 
         #region Functions
 
-        /// <summary>Enumerate shares (NT)</summary>
         [DllImport("netapi32", CharSet = CharSet.Unicode)]
         protected static extern int NetShareEnum(string lpServerName, int dwLevel,
                                                  out IntPtr lpBuffer, int dwPrefMaxLen, out int entriesRead,
                                                  out int totalEntries, ref int hResume);
 
-        /// <summary>Free the buffer (NT)</summary>
         [DllImport("netapi32")]
         protected static extern int NetApiBufferFree(IntPtr lpBuffer);
 
@@ -226,7 +217,7 @@ namespace Dev2.Intellisense.Helper
 
         #region Add
 
-        protected void Add(string netName, string path, ShareType shareType, string remark)
+        protected void Add(string netName, ShareType shareType)
         {
             InnerList.Add(new Share(_server, netName, shareType));
         }
@@ -246,9 +237,6 @@ namespace Dev2.Intellisense.Helper
             public readonly string NetName;
 
             public readonly ShareType ShareType;
-
-            [MarshalAs(UnmanagedType.LPWStr)]
-            public readonly string Remark;
         }
 
         /// <summary>Share information, NT, level 2</summary>
@@ -265,7 +253,9 @@ namespace Dev2.Intellisense.Helper
 
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Remark;
-
+            public int Permissions;
+            public int MaxUsers;
+            public int CurrentUsers;
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Path;
 
@@ -275,6 +265,5 @@ namespace Dev2.Intellisense.Helper
 
         #endregion
     }
-
     #endregion
 }
