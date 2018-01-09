@@ -1381,7 +1381,7 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Copyright © 2017 Warewolf, All rights reserved..
+        ///   Looks up a localized string similar to Copyright © {0} Warewolf, All rights reserved..
         /// </summary>
         public static string WarewolfCopyright {
             get {

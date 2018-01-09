@@ -14,7 +14,7 @@ namespace Warewolf.UI.Tests.Merge
         public const string MergeAssign = "MergeAssign";
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Assign Conflicts")]
         public void Click_Same_Radio_Button_Manytimes_Studio_Freezing()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -30,7 +30,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Assign Conflicts")]
         public void Open_AssignMerge_Has_Conflicts()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -41,7 +41,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Assign Conflicts")]
         public void Click_Keyboard_Delete_On_AssignTool_On_Design_Surface_Is_Disabled()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
@@ -53,7 +53,7 @@ namespace Warewolf.UI.Tests.Merge
         }
 
         [TestMethod]
-        [TestCategory("Merge")]
+        [TestCategory("Merge Assign Conflicts")]
         public void Open_MergeAssign_Then_Select_Current_Variables_Auto_Adds_Non_Conflicting_Tools()
         {
             MergeDialogUIMap.MergeDialogWindow.MergeResourceVersionList.WarewolfStudioViewMoListItem.ItemRadioButton.Selected = true;
