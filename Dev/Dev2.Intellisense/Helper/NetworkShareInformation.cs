@@ -16,12 +16,6 @@ using System.Runtime.InteropServices;
 
 namespace Dev2.Intellisense.Helper
 {
-
-    #region Share Type
-
-    /// <summary>
-    ///     Type of share
-    /// </summary>
     [Flags]
     public enum ShareType
     {
@@ -31,25 +25,11 @@ namespace Dev2.Intellisense.Helper
         Special = -2147483648
     }
 
-    #endregion
-
-    #region Share
-
-    /// <summary>
-    ///     Information about a local share
-    /// </summary>
     public class Share
     {
-        #region Private data
-
         readonly string _networkName;
         readonly string _shareServer;
         readonly ShareType _shareType;
-
-        #endregion
-
-        #region Constructor
-
 
         public Share(string server, string netName, ShareType shareType)
         {
@@ -62,10 +42,6 @@ namespace Dev2.Intellisense.Helper
             _networkName = netName;
             _shareType = shareType;
         }
-
-        #endregion
-
-        #region Properties
 
         public bool IsFileSystem
         {
@@ -92,34 +68,19 @@ namespace Dev2.Intellisense.Helper
 
         public ShareType ShareType => _shareType;
 
-        #endregion
-
         public override string ToString()
         {
             return $@"\\{(string.IsNullOrEmpty(_shareServer) ? Environment.MachineName : _shareServer)}\{_networkName}";
         }
     }
 
-    #endregion
-
-    #region Share Collection
-
-    /// <summary>
-    ///     A collection of shares
-    /// </summary>
     public class ShareCollection : ReadOnlyCollectionBase
     {
-        #region Constants
-
         const int NoError = 0;
         const int ErrorAccessDenied = 5;
 
-        #endregion
-
         /// <summary>The name of the server this collection represents</summary>
         readonly string _server;
-
-        #region Constructor
 
         /// <summary>
         ///     Default constructor - local machine
@@ -140,13 +101,6 @@ namespace Dev2.Intellisense.Helper
         {
             InnerList.AddRange(shares.ToArray());
         }
-
-        #endregion
-
-        #region Interop
-
-        #region Enumerate shares
-
 
         static void EnumerateSharesNT(string server, ShareCollection shares)
         {
@@ -199,12 +153,6 @@ namespace Dev2.Intellisense.Helper
             EnumerateSharesNT(server, shares);
         }
 
-        #endregion
-
-        #endregion
-
-        #region Functions
-
         [DllImport("netapi32", CharSet = CharSet.Unicode)]
         protected static extern int NetShareEnum(string lpServerName, int dwLevel,
                                                  out IntPtr lpBuffer, int dwPrefMaxLen, out int entriesRead,
@@ -213,18 +161,10 @@ namespace Dev2.Intellisense.Helper
         [DllImport("netapi32")]
         protected static extern int NetApiBufferFree(IntPtr lpBuffer);
 
-        #endregion
-
-        #region Add
-
         protected void Add(string netName, ShareType shareType)
         {
             InnerList.Add(new Share(_server, netName, shareType));
         }
-
-        #endregion
-
-        #region Structures
 
         /// <summary>Share information, NT, level 1</summary>
         /// <remarks>
@@ -262,8 +202,5 @@ namespace Dev2.Intellisense.Helper
             [MarshalAs(UnmanagedType.LPWStr)]
             public readonly string Password;
         }
-
-        #endregion
     }
-    #endregion
 }
