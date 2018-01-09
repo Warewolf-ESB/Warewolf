@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -146,9 +146,9 @@ namespace Dev2.Activities.Designers2.Core
 
             var errors = new List<IActionableErrorInfo>();
 
-            RuleSet fileActivityRuleSet = new RuleSet();
+            var fileActivityRuleSet = new RuleSet();
             var variableUtils = new VariableUtils();
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList, variableUtils);
+            var isValidExpressionRule = new IsValidExpressionRule(() => path, DataListSingleton.ActiveDataList.Resource.DataList, variableUtils);
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
@@ -197,7 +197,7 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
             var fileActivityRuleSet = new RuleSet();
 
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => content, DataListSingleton.ActiveDataList.Resource.DataList,new VariableUtils());
+            var isValidExpressionRule = new IsValidExpressionRule(() => content, DataListSingleton.ActiveDataList.Resource.DataList,new VariableUtils());
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 
@@ -224,7 +224,7 @@ namespace Dev2.Activities.Designers2.Core
             var errors = new List<IActionableErrorInfo>();
             var fileActivityRuleSet = new RuleSet();
 
-            IsValidExpressionRule isValidExpressionRule = new IsValidExpressionRule(() => password, DataListSingleton.ActiveDataList.Resource.DataList, new VariableUtils());
+            var isValidExpressionRule = new IsValidExpressionRule(() => password, DataListSingleton.ActiveDataList.Resource.DataList, new VariableUtils());
             fileActivityRuleSet.Add(isValidExpressionRule);
             errors.AddRange(fileActivityRuleSet.ValidateRules(label, onError));
 

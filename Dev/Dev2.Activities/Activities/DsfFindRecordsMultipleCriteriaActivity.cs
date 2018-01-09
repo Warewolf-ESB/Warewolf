@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage.Interfaces;
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
@@ -40,7 +40,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Activity for finding records accoring to a search criteria that the user specifies
     /// </New>
     [ToolDescriptorInfo("RecordSet-FindRecords", "Find Records", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Find_Records")]
-    public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfFindRecordsMultipleCriteriaActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfFindRecordsMultipleCriteriaActivity>
     {
         #region Properties
 
@@ -132,7 +132,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputValues(dataObject, toSearch, ref allErrors, update);
                 }
 
-                bool hasEvaled = false;
+                var hasEvaled = false;
                 foreach (var searchvar in toSearch)
                 {
                     Func<DataStorage.WarewolfAtom, bool> func = null;
@@ -143,7 +143,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                         {
                             throw new Exception(ErrorResource.FROMAndTORequired);
                         }
-                        ValidateRequiredFields(to, out errorsTo);
+                        ValidateRequiredFields(to, out _errorsTo);
                         var right = env.EvalAsList(to.SearchCriteria, update);
                         IEnumerable<DataStorage.WarewolfAtom> from = new List<DataStorage.WarewolfAtom>();
                         IEnumerable<DataStorage.WarewolfAtom> tovalue = new List<DataStorage.WarewolfAtom>();
@@ -518,5 +518,44 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfFindRecordsMultipleCriteriaActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var resultsCollectionsAreEqual = CommonEqualityOps.CollectionEquals(ResultsCollection, other.ResultsCollection, new FindRecordsTOComparer());
+            return base.Equals(other)
+                && string.Equals(FieldsToSearch, other.FieldsToSearch)
+                && string.Equals(Result, other.Result)
+                && string.Equals(StartIndex, other.StartIndex)
+                && MatchCase == other.MatchCase
+                && RequireAllTrue == other.RequireAllTrue
+                && RequireAllFieldsToMatch == other.RequireAllFieldsToMatch
+                && resultsCollectionsAreEqual;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFindRecordsMultipleCriteriaActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FieldsToSearch != null ? FieldsToSearch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (StartIndex != null ? StartIndex.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ MatchCase.GetHashCode();
+                hashCode = (hashCode * 397) ^ RequireAllTrue.GetHashCode();
+                hashCode = (hashCode * 397) ^ RequireAllFieldsToMatch.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ResultsCollection != null ? ResultsCollection.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

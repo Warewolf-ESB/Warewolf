@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -220,7 +220,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers.Plugin
                     methodToRun = type.GetMethod(dev2MethodInfo.Method, typeList.ToArray());
                 }
 
-                var methodsActionResult = invokeMethodsAction(methodToRun, instance, valuedTypeList, type);
+                var methodsActionResult = invokeMethodsAction?.Invoke(methodToRun, instance, valuedTypeList, type);
                 var knownBinder = new KnownTypesBinder();
                 knownBinder.KnownTypes.Add(type);
                 knownBinder.KnownTypes.Add(methodsActionResult?.GetType());

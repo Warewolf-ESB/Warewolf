@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -524,7 +524,7 @@ namespace Dev2.Activities.Designers.Tests.Email
                 .Callback((string method, string url, string data, List<Tuple<string, string>> headers, Action<string> asyncCallback) =>
                 {
                     postData = data;
-                    asyncCallback(new Dev2JsonSerializer().Serialize(result));
+                    asyncCallback?.Invoke(new Dev2JsonSerializer().Serialize(result));
                 }).Returns(string.Empty)
                 .Verifiable();
 

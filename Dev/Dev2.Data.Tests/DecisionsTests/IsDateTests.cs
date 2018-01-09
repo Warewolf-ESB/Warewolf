@@ -16,7 +16,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "Yersteday";            
             //------------Execute Test---------------------------
-            bool result = isDate.Invoke(cols);
+            var result = isDate.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }
@@ -31,7 +31,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "01/12/2000";
             //------------Execute Test---------------------------
-            bool result = notStartsWith.Invoke(cols);
+            var result = notStartsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }

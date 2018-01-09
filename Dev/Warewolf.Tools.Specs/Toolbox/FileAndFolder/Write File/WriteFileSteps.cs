@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -87,7 +87,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             var fileContents = broker.Get(sourceEndPoint);
 
-            bool does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
+            var does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
             Assert.IsTrue(does);
         }
 

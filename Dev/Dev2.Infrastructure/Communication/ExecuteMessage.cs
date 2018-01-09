@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -96,7 +96,7 @@ namespace Dev2.Communication
             var gzBuffer = Convert.FromBase64String(compressedText);
             using (MemoryStream ms = new MemoryStream())
             {
-                int msgLength = BitConverter.ToInt32(gzBuffer, 0);
+                var msgLength = BitConverter.ToInt32(gzBuffer, 0);
                 ms.Write(gzBuffer, 4, gzBuffer.Length - 4);
 
                 var buffer = new byte[msgLength];

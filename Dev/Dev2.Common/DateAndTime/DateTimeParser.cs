@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -84,7 +84,7 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         public bool TryParseDateTime(string dateTime, string inputFormat, out IDateTimeResultTO result, out string error)
         {
-            bool nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
+            var nothingDied = TryParse(dateTime, inputFormat, false, out result, out error);
 
             return nothingDied;
         }
@@ -136,7 +136,7 @@ namespace Dev2.Common.DateAndTime
         List<IDateTimeFormatPartTO> ReplaceToken(List<IDateTimeFormatPartTO> currentPartList,
             string findTokenValue, string describeReplaceWith)
         {
-            int mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
+            var mPart = currentPartList.FindIndex(part => part.Value == findTokenValue);
             while (mPart > -1 && mPart < currentPartList.Count)
             {
                 currentPartList[mPart] =
@@ -162,20 +162,20 @@ namespace Dev2.Common.DateAndTime
         /// </summary>
         bool TryGetDateTimeFormatParts(string format, Dictionary<char, List<int>> dateTimeFormatForwardLookups, Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             formatParts = new List<IDateTimeFormatPartTO>();
             error = "";
 
             var formatArray = format.ToArray();
             var literalRegionState = LiteralRegionStates.OutsideLiteralRegion;
-            int count = 0;
+            var count = 0;
 
             var currentValue = "";
             while (count < formatArray.Length && nothingDied)
             {
-                int forwardLookupLength = 0;
-                char currentChar = formatArray[count];
+                var forwardLookupLength = 0;
+                var currentChar = formatArray[count];
 
                 if (literalRegionState == LiteralRegionStates.OutsideLiteralRegion)
                 {
@@ -222,13 +222,13 @@ namespace Dev2.Common.DateAndTime
         bool TryParse(string data, string inputFormat, bool parseAsTime, out IDateTimeResultTO result,
             out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             result = new DateTimeResultTO();
             error = "";
             var originalInputFormat = inputFormat;
-            string originalData = data;
-            int culturesTried = 0;
+            var originalData = data;
+            var culturesTried = 0;
             const int MaxAttempts = 8;
             if (string.IsNullOrWhiteSpace(data))
             {
@@ -247,8 +247,8 @@ namespace Dev2.Common.DateAndTime
             }
             while (culturesTried <= MaxAttempts)
             {
-                char[] dateTimeArray = originalData.ToArray();
-                int position = 0;
+                var dateTimeArray = originalData.ToArray();
+                var position = 0;
 
 
                 nothingDied = TryGetDateTimeFormatParts(originalInputFormat, _dateTimeFormatForwardLookups, _dateTimeFormatPartOptions, out List<IDateTimeFormatPartTO> formatParts, out error);
@@ -259,10 +259,10 @@ namespace Dev2.Common.DateAndTime
                 if (nothingDied)
                 {
 
-                    int count = 0;
+                    var count = 0;
                     while (count < formatParts.Count && nothingDied && position < dateTimeArray.Length)
                     {
-                        IDateTimeFormatPartTO formatPart = formatParts[count];
+                        var formatPart = formatParts[count];
 
                         if (TryGetDataFromDateTime(dateTimeArray, position, formatPart, result, parseAsTime,
                             out int resultLength, out error))
@@ -320,7 +320,7 @@ namespace Dev2.Common.DateAndTime
 
         string MatchInputFormatToCulture(ref string error, int culturesTried)
         {
-            string inputFormat = "";
+            var inputFormat = "";
             switch (culturesTried)
             {
                 case 0:
@@ -369,9 +369,9 @@ namespace Dev2.Common.DateAndTime
                     break;
 
                 case 7:
-                    string shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
-                    string longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
-                    string finalPattern = shortPattern + " " + longPattern;
+                    var shortPattern = CultureInfo.CurrentCulture.DateTimeFormat.ShortDatePattern;
+                    var longPattern = CultureInfo.CurrentCulture.DateTimeFormat.LongTimePattern;
+                    var finalPattern = shortPattern + " " + longPattern;
                     if (finalPattern.Contains("ss"))
                     {
                         finalPattern =
@@ -406,12 +406,12 @@ namespace Dev2.Common.DateAndTime
 
         bool TryGetDataFromDateTime(char[] dateTimeArray, int startPosition, IDateTimeFormatPartTO part, IDateTimeResultTO result, bool passAsTime, out int resultLength, out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             error = "";
             resultLength = 0;
 
-            bool dataFound = false;
+            var dataFound = false;
 
             if (part.Isliteral)
             {
@@ -454,7 +454,7 @@ namespace Dev2.Common.DateAndTime
 
                 if (nothingDied)
                 {
-                    int partOptionsCount = 0;
+                    var partOptionsCount = 0;
 
                     //
                     // Try get a value for each option
@@ -539,7 +539,7 @@ namespace Dev2.Common.DateAndTime
         public static string ForwardLookup(char[] formatArray, int startPosition, int lookupLength)
         {
             var result = "";
-            int position = startPosition;
+            var position = startPosition;
 
             while (position >= 0 && position < formatArray.Length && position < startPosition + lookupLength)
             {

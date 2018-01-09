@@ -213,7 +213,7 @@ namespace Dev2.Runtime.WebServer
             }
             if (localResource == null)
             {
-                var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".json", "");
+                var stringDynaResourceId = serviceName.Replace(".xml", "").Replace(".bite", "").Replace(".json", "");
                 if (Guid.TryParse(stringDynaResourceId, out resourceID))
                 {
                     localResource = catalog.GetResource(dataObject.WorkspaceID, resourceID);
@@ -251,7 +251,7 @@ namespace Dev2.Runtime.WebServer
                                                                          IResourceCatalog catalog, ITestCatalog testCatalog,
                                                                          ref string executePayload)
         {
-            List<IServiceTestModelTO> testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
+            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             var objArray = (from testRunResult in testResults
                             where testRunResult != null
@@ -273,7 +273,7 @@ namespace Dev2.Runtime.WebServer
                                                                         IResourceCatalog catalog, ITestCatalog testCatalog,
                                                                         ref string executePayload)
         {
-            List<IServiceTestModelTO> testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
+            var testResults = RunListOfTests(dataObject, userPrinciple, workspaceGuid, serializer, catalog, testCatalog);
             formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(dataObject.ServiceName, testResults);
             return formatter;
@@ -281,7 +281,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunSingleTestBatchAndReturnJSON(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, DataListFormat formatter, string serviceName, ITestCatalog testCatalog, ref string executePayload)
         {
-            List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
+            var testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
 
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             var objArray = (from testRunResult in testResults
@@ -294,7 +294,7 @@ namespace Dev2.Runtime.WebServer
 
         public static DataListFormat RunSingleTestBatchAndReturnTRX(this IDSFDataObject dataObject, IPrincipal userPrinciple, Guid workspaceGuid, Dev2JsonSerializer serializer, DataListFormat formatter, string serviceName, ITestCatalog testCatalog, ref string executePayload)
         {
-            List<IServiceTestModelTO> testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
+            var testResults = RunAllTestsForWorkflow(dataObject, serviceName, userPrinciple, workspaceGuid, serializer, testCatalog);
 
             formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             executePayload = ServiceTestModelTRXResultBuilder.BuildTestResultTRX(serviceName, testResults);

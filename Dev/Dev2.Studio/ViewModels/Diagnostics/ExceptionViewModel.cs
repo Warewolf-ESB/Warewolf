@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -72,24 +72,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string OutputPath { get; set; }
 
-        public IAsyncWorker AsyncWorker
-        {
-            get
-            {
-                if (_asyncWorker == null)
-                {
-                    _asyncWorker = new AsyncWorker();
-                }
-                return _asyncWorker;
-            }
-        }
+        public IAsyncWorker AsyncWorker => _asyncWorker ?? (_asyncWorker = new AsyncWorker());
 
         public bool Testing
         {
-            get
-            {
-                return _testing;
-            }
+            get => _testing;
             set
             {
                 _testing = value;
@@ -107,10 +94,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/01/15</date>
         public BindableCollection<ExceptionUiModel> Exception
         {
-            get
-            {
-                return _exception ?? (_exception = new BindableCollection<ExceptionUiModel>());
-            }
+            get => _exception ?? (_exception = new BindableCollection<ExceptionUiModel>());
             set
             {
                 _exception = value;
@@ -120,10 +104,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string StackTrace
         {
-            get
-            {
-                return _stackTrace;
-            }
+            get => _stackTrace;
             set
             {
                 if (_stackTrace == value)
@@ -138,10 +119,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string ServerLogFile
         {
-            get
-            {
-                return _serverLogFile;
-            }
+            get => _serverLogFile;
             set
             {
                 if (_serverLogFile == value)
@@ -156,10 +134,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string StudioLogFile
         {
-            get
-            {
-                return _studioLogFile;
-            }
+            get => _studioLogFile;
             set
             {
                 if (_studioLogFile == value)
@@ -199,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string EmailAddress
         {
-            get { return _emailAddress; }
+            get => _emailAddress;
             set
             {
                 _emailAddress = value;
@@ -207,7 +182,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public string ServerVersion
+        private string ServerVersion
         {
             get
             {
@@ -216,7 +191,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public string StudioVersion
+        private string StudioVersion
         {
             get
             {
@@ -227,7 +202,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string StepsToFollow
         {
-            get { return _stepsToFollow; }
+            get => _stepsToFollow;
             set
             {
                 _stepsToFollow = value;
@@ -243,7 +218,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             RequestClose();
         }
 
-        public void SendError()
+        private void SendError()
         {
             var messageList = new List<string>();
 

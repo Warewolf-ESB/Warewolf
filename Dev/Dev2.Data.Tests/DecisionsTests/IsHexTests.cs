@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[1];
             cols[0] = "01";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -41,7 +41,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[1];
             cols[0] = "0x01";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -56,7 +56,7 @@ namespace Dev2.Data.Tests.DecisionsTests
             var cols = new string[2];
             cols[0] = "TestData";
             //------------Execute Test---------------------------
-            bool result = endsWith.Invoke(cols);
+            var result = endsWith.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

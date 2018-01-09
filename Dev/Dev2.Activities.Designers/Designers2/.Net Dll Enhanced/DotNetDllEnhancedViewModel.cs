@@ -443,7 +443,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     {
                         methodRegion.SelectedMethod.ID = Guid.NewGuid();
                     }
-                    bool hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
+                    var hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
                     if (!hasUnselectedValue)
                     {
                         CreateMethodRegion();

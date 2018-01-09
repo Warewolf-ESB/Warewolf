@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -69,7 +69,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             else
             {
                 var pathSegments = new List<XmlPathSegment>(xmlPath.GetSegements().OfType<XmlPathSegment>());
-                int segmentIndex = 0;
+                var segmentIndex = 0;
 
                 while (currentElement != null && segmentIndex < pathSegments.Count)
                 {
@@ -240,7 +240,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             foreach (IPath path in paths)
             {
                 var indexedPathSegmentTreeNode = rootIndexedValueTreeNode;
-                int pathSegmentCount = 0;
+                var pathSegmentCount = 0;
 
                 while (pathSegmentCount < indexedPathSegments[path].Count)
                 {
@@ -397,7 +397,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
                     previousPathSegment = i > 0 ? pathSegments[i - 1] as XmlPathSegment : parentPathSegment as XmlPathSegment;
 
-                    bool lastSegment = i == pathSegments.Count - 1;
+                    var lastSegment = i == pathSegments.Count - 1;
 
                     if (previousPathSegment != null && previousPathSegment.IsEnumarable)
                     {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,10 +16,11 @@ using Dev2.Providers.Validation.Rules;
 using Dev2.TO;
 using Dev2.Util;
 using Dev2.Validation;
+using System;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    public class XPathDTO : ValidatedObject, IDev2TOFn
+    public class XPathDTO : ValidatedObject, IDev2TOFn, IEquatable<XPathDTO>
     {
         string _outputVariable;
         string _xPath;
@@ -160,6 +161,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     break;
             }
             return ruleSet;
+        }
+
+        public bool Equals(XPathDTO other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return string.Equals(XPath, other.XPath)
+                && string.Equals(OutputVariable, other.OutputVariable)
+                && IndexNumber == other.IndexNumber
+                && Inserted == other.Inserted
+                && IsXpathVariableFocused == other.IsXpathVariableFocused
+                && IsOutputVariableFocused == other.IsOutputVariableFocused
+                && string.Equals(WatermarkTextVariable, other.WatermarkTextVariable);                
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((ActivityDTO)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (XPath != null ? XPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputVariable != null ? OutputVariable.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IndexNumber.GetHashCode();
+                hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsXpathVariableFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsOutputVariableFocused.GetHashCode();
+                hashCode = (hashCode * 397) ^ (WatermarkTextVariable != null ? WatermarkTextVariable.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

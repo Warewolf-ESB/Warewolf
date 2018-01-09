@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,14 +29,13 @@ using Newtonsoft.Json.Linq;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage.Interfaces;
-
-
+using Dev2.Comparer;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Scripting-CreateJSON", "Create JSON", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Create_JSON")]
-    public class DsfCreateJsonActivity : DsfActivityAbstract<string>
+    public class DsfCreateJsonActivity : DsfActivityAbstract<string>,IEquatable<DsfCreateJsonActivity>
     {
         /// <summary>
         ///     Gets or sets the Warewolf source scalars, lists or record sets, and the destination JSON names of the resulting
@@ -114,7 +113,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
                 if (dataObject.IsDebugMode())
                 {
-                    int j = 0;
+                    var j = 0;
 
                     foreach (JsonMappingTo a in JsonMappings.Where(to => !String.IsNullOrEmpty(to.SourceName)))
 
@@ -188,7 +187,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             finally
             {
                 // Handle Errors
-                bool hasErrors = allErrors.HasErrors();
+                var hasErrors = allErrors.HasErrors();
                 if (hasErrors)
                 {
                     DisplayAndWriteError("DsfCreateJsonActivity", allErrors);
@@ -246,6 +245,35 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override enFindMissingType GetFindMissingType()
         {
             return enFindMissingType.MixedActivity;
+        }
+
+        public bool Equals(DsfCreateJsonActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var jsonMappingsAreEqual = Dev2.Common.CommonEqualityOps.CollectionEquals(JsonMappings, other.JsonMappings, new JsonMappingToComparer());
+            return base.Equals(other) 
+                && jsonMappingsAreEqual
+                && string.Equals(JsonString, other.JsonString);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfCreateJsonActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (JsonMappings != null ? JsonMappings.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (JsonString != null ? JsonString.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

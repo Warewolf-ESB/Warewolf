@@ -224,8 +224,8 @@ namespace Dev2.Tests.Runtime.WF
 
             }
             //---------------Test Result -----------------------
-        } 
-        
+        }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void DispatchDebugState_GivenValidParamsAndIntergoateInputs_ShouldWriteUsingDebugDispactcher()
@@ -268,11 +268,11 @@ namespace Dev2.Tests.Runtime.WF
             {
                 DataList = new StringBuilder()
             });
-      
+
             IResource dropBoxSource = new DropBoxSource() { AppKey = "Key", AccessToken = "token" };
             dropBoxSource.DataList = new StringBuilder("<DataList></DataList>");
             catLog.Setup(catalog => catalog.GetResource(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(dropBoxSource);
-          
+
             var wfApplicationUtils = new WfApplicationUtils();
             var envMock = new Mock<IExecutionEnvironment>();
             var debugDispatcher = new Mock<IDebugDispatcher>();

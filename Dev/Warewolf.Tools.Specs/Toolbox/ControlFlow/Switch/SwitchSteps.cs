@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,8 +52,8 @@ namespace Dev2.Activities.Specs.Toolbox.ControlFlow.Switch
             var sw = new FlowSwitch<string>();
             sw.Expression = flowSwitch;
             var multiAssign = new DsfMultiAssignActivity();
-            int row = 1;
-            foreach(var variable in variableList)
+            var row = 1;
+            foreach (var variable in variableList)
             {
                 multiAssign.FieldsCollection.Add(new ActivityDTO(variable.Item1, variable.Item2, row, true));
                 row++;

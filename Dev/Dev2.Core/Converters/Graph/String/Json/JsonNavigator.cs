@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -78,7 +78,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             else
             {
                 var pathSegments = jsonPath.GetSegements().ToList();
-                int segmentIndex = 0;
+                var segmentIndex = 0;
 
                 while (currentData != null && segmentIndex < pathSegments.Count)
                 {
@@ -221,7 +221,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
             for (int i = 0; i < pathSegments.Count; i++)
             {
                 var pathSegment = pathSegments[i];
-                bool lastSegment = i == pathSegments.Count - 1;
+                var lastSegment = i == pathSegments.Count - 1;
 
                 if (pathSegment.IsEnumarable)
                 {
@@ -296,7 +296,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Json
                     }
                     else
                     {
-                        bool isPrimitiveArray = false;
+                        var isPrimitiveArray = false;
                         if (data is JObject jObject)
                         {
                             var property = jObject.Property(pathSegment.ActualSegment);

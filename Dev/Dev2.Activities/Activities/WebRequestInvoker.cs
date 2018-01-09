@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,7 +56,7 @@ namespace Dev2.Activities
                         {
                             return webClient.DownloadString(uri);
                         }
-                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
@@ -64,7 +64,7 @@ namespace Dev2.Activities
                         {
                             return webClient.UploadString(uri, data);
                         }
-                        webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.UploadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.UploadStringAsync(uri, data);
                         break;
                     default:
@@ -102,7 +102,7 @@ namespace Dev2.Activities
                         {
                             return webClient.DownloadString(uri);
                         }
-                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.DownloadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.DownloadStringAsync(uri, null);
                         break;
                     case "POST":
@@ -110,7 +110,7 @@ namespace Dev2.Activities
                         {
                             return webClient.UploadString(uri, data);
                         }
-                        webClient.UploadStringCompleted += (sender, args) => asyncCallback(args.Result);
+                        webClient.UploadStringCompleted += (sender, args) => asyncCallback?.Invoke(args.Result);
                         webClient.UploadStringAsync(uri, data);
                         break;
                     default:

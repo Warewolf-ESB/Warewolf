@@ -189,7 +189,7 @@ namespace Dev2.Activities.Designers2.Core.ActionRegion
             else
             {
                 SetSelectedAction(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
             var delegateCommand = RefreshActionsCommand as DelegateCommand;

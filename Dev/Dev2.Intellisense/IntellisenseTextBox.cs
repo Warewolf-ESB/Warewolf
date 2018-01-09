@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -55,7 +55,7 @@ namespace Dev2.UI
 
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
         {
-            bool isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
+            var isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
             if (!isText)
             {
                 return;
@@ -83,12 +83,12 @@ namespace Dev2.UI
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
-            bool isOpen = IsDropDownOpen;
+            var isOpen = IsDropDownOpen;
 
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 const bool isInsert = false;
-                bool expand = false;
+                var expand = false;
 
                 object appendText = HandleMultiLine(e, isOpen, ref expand);
 
@@ -177,10 +177,10 @@ namespace Dev2.UI
 
         public void InsertItem(object item, bool force)
         {
-            bool isOpen = IsDropDownOpen;
+            var isOpen = IsDropDownOpen;
             string appendText = null;
-            bool isInsert = false;
-            int index = CaretIndex;
+            var isInsert = false;
+            var index = CaretIndex;
             IIntellisenseProvider currentProvider = new DefaultIntellisenseProvider();
 
             if (isOpen || force)
@@ -192,7 +192,7 @@ namespace Dev2.UI
             {
                 var currentText = Text;
 
-                int foundLength = 0;
+                var foundLength = 0;
                 if (isInsert)
                 {
                     if (currentProvider.HandlesResultInsertion)
@@ -219,7 +219,7 @@ namespace Dev2.UI
                     }
                     else
                     {
-                        int foundMinimum = -1;
+                        var foundMinimum = -1;
 
                         for (int i = index - 1; i >= 0; i--)
                         {
@@ -352,7 +352,7 @@ namespace Dev2.UI
 
         public bool CheckHasUnicodeInText(string inputText)
         {
-            bool hasUnicode = inputText.ContainsUnicodeCharacter();
+            var hasUnicode = inputText.ContainsUnicodeCharacter();
             if (hasUnicode)
             {
                 var previousInput = inputText;
@@ -473,7 +473,7 @@ namespace Dev2.UI
             }
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                bool calculateMode = false;
+                var calculateMode = false;
 
                 if (AllowUserCalculateMode)
                 {

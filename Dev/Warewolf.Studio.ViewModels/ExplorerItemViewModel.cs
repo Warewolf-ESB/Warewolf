@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -137,42 +137,44 @@ namespace Warewolf.Studio.ViewModels
         bool? _isResource;
         readonly IPopupController _popupController;
         IVersionInfo _versionInfo;
-        IServer _server;
-        readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
-        bool _forcedRefresh;
-        string _deployResourceCheckboxTooltip;
-        bool _isService;
-        bool _isFolder;
-        bool _canDuplicate;
-        bool _canCreateTest;
-        bool _canViewRunAllTests;
-        bool _canCreateSource;
-        bool _canViewSwagger;
-        bool _canViewApisJson;
-        bool _canCreateWorkflowService;
-        bool _canDebugInputs;
-        bool _canDebugStudio;
-        bool _canDebugBrowser;
-        bool _canCreateSchedule;
-        bool _isVersion;
-        bool _isDependenciesVisible;
-        bool _isDebugBrowserVisible;
-        bool _isDebugStudioVisible;
-        bool _isDebugInputsVisible;
-        bool _isViewJsonApisVisible;
-        bool _isRunAllTestsVisible;
-        bool _isCreateTestVisible;
-        bool _isNewFolderVisible;
-        bool _isOpenVersionVisible;
-        bool _isRollbackVisible;
-        bool _isShowVersionHistoryVisible;
-        bool _isViewSwaggerVisible;
-        bool _isSource;
-        bool _isScheduleVisible;
-        bool _isDuplicateVisible;
-        bool _isNewFolder;
-        bool _isSaveDialog;
-        bool _isServer;
+        private IServer _server;
+        private readonly ExplorerItemViewModelCommandController _explorerItemViewModelCommandController;
+        private bool _forcedRefresh;
+        private string _deployResourceCheckboxTooltip;
+        private bool _isService;
+        private bool _isFolder;
+        private bool _canDuplicate;
+        private bool _canCreateTest;
+        private bool _canViewRunAllTests;
+        private bool _canCreateSource;
+        private bool _canViewSwagger;
+        private bool _canViewApisJson;
+        private bool _canCreateWorkflowService;
+        private bool _canDebugInputs;
+        private bool _canDebugStudio;
+        private bool _canDebugBrowser;
+        private bool _canCreateSchedule;
+        private bool _isVersion;
+        private bool _isDependenciesVisible;
+        private bool _isDebugBrowserVisible;
+        private bool _isDebugStudioVisible;
+        private bool _isDebugInputsVisible;
+        private bool _isViewJsonApisVisible;
+        private bool _isRunAllTestsVisible;
+        private bool _isCreateTestVisible;
+        private bool _isNewFolderVisible;
+        private bool _isOpenVersionVisible;
+        private bool _isRollbackVisible;
+        private bool _isShowVersionHistoryVisible;
+        private bool _isViewSwaggerVisible;
+        private bool _isSource;
+        private bool _isScheduleVisible;
+        private bool _isDuplicateVisible;
+        private bool _isNewFolder;
+        private bool _isSaveDialog;
+        private bool _isServer;
+        private bool _canMerge;
+        private bool _isMergeVisible;
 
         public ExplorerItemViewModel(IServer server, IExplorerTreeItem parent, Action<IExplorerItemViewModel> selectAction, IShellViewModel shellViewModel, IPopupController popupController)
         {
@@ -209,6 +211,7 @@ namespace Warewolf.Studio.ViewModels
             _candrop = true;
             _canDrag = true;
             CanViewSwagger = false;
+            CanMerge = false;
         }
 
         void SetupCommands()
@@ -232,6 +235,10 @@ namespace Warewolf.Studio.ViewModels
             ViewSwaggerCommand = new DelegateCommand(o =>
             {
                 _explorerItemViewModelCommandController.ViewSwaggerCommand(ResourceId, Server);
+            });
+            MergeCommand = new DelegateCommand(o =>
+            {
+                _explorerItemViewModelCommandController.MergeCommand(this, Server);
             });
             ViewApisJsonCommand = new DelegateCommand(o =>
             {
@@ -474,6 +481,7 @@ namespace Warewolf.Studio.ViewModels
             IsCreateTestVisible = _isService;
             IsRunAllTestsVisible = _isService || _isFolder;
             IsViewSwaggerVisible = _isService;
+            IsMergeVisible = _isService;
             IsViewJsonApisVisible = _isService || _isFolder;
 
             IsDebugInputsVisible = _isService;
@@ -489,6 +497,7 @@ namespace Warewolf.Studio.ViewModels
 
             CanViewApisJson = (_isFolder || _isService) && _canView;
             CanViewSwagger = _isService && _canView;
+            CanMerge = _isService && _canView;
         }
 
         public bool IsService
@@ -573,7 +582,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 if (!string.IsNullOrEmpty(ResourceName) && !IsResourceVersion)
                 {
-                    IsVisible = filter(this);
+                    IsVisible = filter?.Invoke(this) ?? default(bool);
                 }
             }
             OnPropertyChanged(() => Children);
@@ -638,10 +647,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 CanEdit = true;
                 CanExecute = false;
-                if (isDeploy || IsVersion)
-                {
-                    CanEdit = false;
-                }
+                CanEdit &= (!isDeploy && !IsVersion);
             }
         }
 
@@ -650,10 +656,7 @@ namespace Warewolf.Studio.ViewModels
         {
             SetNonePermissions();
 
-            if (Server.CanDeployFrom)
-            {
-                CanDeploy = true;
-            }
+            CanDeploy |= Server.CanDeployFrom;
             if (permission.HasFlag(Permissions.View))
             {
                 SetViewPermissions(isDeploy);
@@ -677,6 +680,7 @@ namespace Warewolf.Studio.ViewModels
             CanExecute = IsService && !isDeploy;
             CanViewApisJson = true;
             CanViewSwagger = true;
+            CanMerge = true;
             CanDebugInputs = true;
             CanContribute = false;
             CanDebugStudio = true;
@@ -691,6 +695,7 @@ namespace Warewolf.Studio.ViewModels
             CanShowVersions = true;
             CanViewApisJson = true;
             CanViewSwagger = true;
+            CanMerge = true;
         }
 
         void SetNonePermissions()
@@ -716,6 +721,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewApisJson = false;
             CanMove = false;
             CanViewSwagger = false;
+            CanMerge = false;
             CanShowVersions = false;
         }
 
@@ -736,6 +742,7 @@ namespace Warewolf.Studio.ViewModels
             CanViewApisJson = true;
             CanMove = true;
             CanViewSwagger = true;
+            CanMerge = true;
             CanShowVersions = true;
             CanShowDependencies = true;
             CanDebugInputs = true;
@@ -763,6 +770,7 @@ namespace Warewolf.Studio.ViewModels
             CanMove = true;
             CanViewApisJson = true;
             CanViewSwagger = true;
+            CanMerge = true;
             CanDebugInputs = true;
             CanDebugStudio = true;
             CanDebugBrowser = true;
@@ -902,7 +910,7 @@ namespace Warewolf.Studio.ViewModels
             return hasDuplicate;
         }
 
-        string NewName(string value)
+        static string NewName(string value)
         {
             return value;
         }
@@ -948,6 +956,7 @@ namespace Warewolf.Studio.ViewModels
             set;
         }
         public ICommand ViewSwaggerCommand { get; set; }
+        public ICommand MergeCommand { get; set; }
         public bool CanViewExecutionLogging { get; set; }
         public ICommand ViewApisJsonCommand { get; set; }
         public ICommand ViewExecutionLoggingCommand { get; set; }
@@ -1153,6 +1162,18 @@ namespace Warewolf.Studio.ViewModels
                 _canViewSwagger = value;
                 ExplorerTooltips.ViewSwaggerTooltip = _canViewSwagger ? Resources.Languages.Tooltips.ViewSwaggerToolTip : Resources.Languages.Tooltips.NoPermissionsToolTip;
                 OnPropertyChanged(() => CanViewSwagger);
+            }
+        }
+
+        public bool CanMerge
+        {
+            get => _canMerge && !IsSaveDialog && Server.IsLocalHost;
+            set
+            {
+                _canMerge = value;
+
+                ExplorerTooltips.MergeTooltip = _canMerge ? Resources.Languages.Tooltips.ViewMergeTooltip : Resources.Languages.Tooltips.NoPermissionsToolTip;
+                OnPropertyChanged(() => CanMerge);
             }
         }
 
@@ -1395,6 +1416,19 @@ namespace Warewolf.Studio.ViewModels
 
         public IShellViewModel ShellViewModel => _shellViewModel;
 
+        private ICollection<IVersionInfo> GetVersionHistory()
+        {
+            var versionInfos = _explorerRepository.GetVersions(ResourceId);
+            if (versionInfos?.Count <= 0)
+            {
+                _areVersionsVisible = false;
+                VersionHeader = "Show Version History";
+                return null;
+            }
+
+            return versionInfos;
+        }
+
         public bool AreVersionsVisible
         {
             get => _areVersionsVisible;
@@ -1404,20 +1438,41 @@ namespace Warewolf.Studio.ViewModels
                 VersionHeader = !value ? Resources.Languages.Core.ShowVersionHistoryLabel : Resources.Languages.Core.HideVersionHistoryLabel;
                 if (value)
                 {
-                    var versionInfos = _explorerRepository.GetVersions(ResourceId);
-                    if (versionInfos.Count <= 0)
+                    var versionInfos = GetVersionHistory();
+                    if (versionInfos == null)
                     {
-                        _areVersionsVisible = false;
-                        VersionHeader = Resources.Languages.Core.ShowVersionHistoryLabel;
+                        return;
                     }
-                    else
+                    _children =
+                        new ObservableCollection<IExplorerItemViewModel>(
+                            versionInfos.Select(
+                                a => new VersionViewModel(Server, this, null, _shellViewModel, _popupController)
+                                {
+                                    ResourceName =
+                                        "v." + a.VersionNumber + " " +
+                                        a.DateTimeStamp.ToString(CultureInfo.InvariantCulture) + " " +
+                                        a.Reason.Replace(".xml", "").Replace(".bite", ""),
+                                    VersionNumber = a.VersionNumber,
+                                    VersionInfo = a,
+                                    ResourceId = ResourceId,
+                                    IsVersion = true,
+                                    IsMergeVisible = true,
+                                    CanEdit = false,
+                                    CanCreateWorkflowService = false,
+                                    ShowContextMenu = true,
+                                    CanCreateSource = false,
+                                    IsResourceVersion = true,
+                                    AllowResourceCheck = false,
+                                    IsResourceChecked = false,
+                                    CanDelete = CanDelete,
+                                    ResourceType = "Version"
+                                }
+                            ));
+
+                    OnPropertyChanged(() => Children);
+                    if (Children.Count > 0)
                     {
-                        _children = new ObservableCollection<IExplorerItemViewModel>(versionInfos.Select(a => CreateNewVersion(a)));
-                        OnPropertyChanged(() => Children);
-                        if (Children.Count > 0)
-                        {
-                            UpdateResourceVersions();
-                        }
+                        UpdateResourceVersions();
                     }
                 }
                 else
@@ -1705,10 +1760,7 @@ namespace Warewolf.Studio.ViewModels
         public IServer Server
         {
             get => _server ?? CustomContainer.Get<IServerRepository>().FindSingle(model => model.EnvironmentID == Server.EnvironmentID);
-            set
-            {
-                _server = value;
-            }
+            set => _server = value;
         }
 
         public void Dispose()
@@ -1759,6 +1811,16 @@ namespace Warewolf.Studio.ViewModels
             {
                 _isViewSwaggerVisible = value;
                 OnPropertyChanged(() => IsViewSwaggerVisible);
+            }
+        }
+
+        public bool IsMergeVisible
+        {
+            get => _isMergeVisible && !IsSaveDialog && GetVersionHistory() != null;
+            set
+            {
+                _isMergeVisible = value;
+                OnPropertyChanged(() => IsMergeVisible);
             }
         }
 

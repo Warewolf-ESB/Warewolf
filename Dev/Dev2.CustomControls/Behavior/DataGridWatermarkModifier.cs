@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -131,7 +131,7 @@ namespace Dev2.Studio.AppResources.Behaviors
 
                     if (list[i] is ModelItem mi)
                     {
-                        int watermarkIndex = WatermarkIndexes.IndexOf(i);
+                        var watermarkIndex = WatermarkIndexes.IndexOf(i);
                         WatermarkSential.IsWatermarkBeingApplied = true;
                         var modelProperty = mi.Properties[WatermarkPropertyName];
                         modelProperty?.SetValue(watermarkIndex != -1 ? WatermarkText[watermarkIndex] : "");

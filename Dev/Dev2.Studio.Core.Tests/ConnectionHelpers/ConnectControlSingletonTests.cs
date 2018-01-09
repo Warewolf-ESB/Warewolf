@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -104,7 +104,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
 
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -167,7 +167,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = true;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
 
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -202,7 +202,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -237,7 +237,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = true;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -305,7 +305,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             var selectedIndex = -1;
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -350,7 +350,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             var selectedIndex = -1;
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -482,7 +482,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = false;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
@@ -517,7 +517,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             selectedServer.IsConnected = true;
 
             var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
+            var actualDoCallback = false;
             var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>

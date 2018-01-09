@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -97,16 +97,16 @@ namespace Dev2.Activities.Designers2.DataMerge
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("Input", _getDatalistString()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
+            foreach (var error in dto.GetRuleSet("Input", _getDatalistString?.Invoke()).ValidateRules("'Input'", () => mi.SetProperty("IsFieldNameFocused", true)))
             {
                 yield return error;
             }
 
-            foreach(var error in dto.GetRuleSet("At", _getDatalistString()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
+            foreach(var error in dto.GetRuleSet("At", _getDatalistString?.Invoke()).ValidateRules("'Using'", () => mi.SetProperty("IsAtFocused", true)))
             {
                 yield return error;
             }
-            foreach(var error in dto.GetRuleSet("Padding", _getDatalistString()).ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
+            foreach(var error in dto.GetRuleSet("Padding", _getDatalistString?.Invoke()).ValidateRules("'Padding'", () => mi.SetProperty("IsPaddingFocused", true)))
             {
                 yield return error;
             }

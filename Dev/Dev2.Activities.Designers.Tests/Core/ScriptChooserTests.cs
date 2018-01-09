@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var tempFileName = Path.GetTempFileName();
             var chooseScriptSources = scriptChooser.ChooseScriptSources(tempFileName);
 
-            bool wasCalled = false;
+            var wasCalled = false;
             chooseScriptSources.PropertyChanged += (sender, args) =>
              {
                  if(args.PropertyName == "SelectedFiles")
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var tempFileName = Path.GetTempFileName();
             var chooseScriptSources = scriptChooser.ChooseScriptSources(tempFileName);
 
-            bool wasCalled = false;
+            var wasCalled = false;
             chooseScriptSources.PropertyChanged += (sender, args) =>
              {
                  if(args.PropertyName == "SelectedFiles")
@@ -82,7 +82,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             var tempFileName = Path.GetTempFileName();
             var chooseScriptSources = scriptChooser.ChooseScriptSources(string.Empty);
 
-            bool wasCalled = false;
+            var wasCalled = false;
             chooseScriptSources.PropertyChanged += (sender, args) =>
              {
                  if(args.PropertyName == "SelectedFiles")

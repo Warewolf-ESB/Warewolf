@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,8 +52,8 @@ namespace Dev2.Data.Binary_Objects
 
         public int GetMaxIndex()
         {
-            int result = MaxValue;
-            while(Gaps.Contains(result) && result >= 1)
+            var result = MaxValue;
+            while (Gaps.Contains(result) && result >= 1)
             {
                 result--;
             }
@@ -71,7 +71,7 @@ namespace Dev2.Data.Binary_Objects
             }
 
             // Travis.Frisinger - Count bug change
-            int result = MaxValue - Gaps.Count;
+            var result = MaxValue - Gaps.Count;
 
             return result;
         }
