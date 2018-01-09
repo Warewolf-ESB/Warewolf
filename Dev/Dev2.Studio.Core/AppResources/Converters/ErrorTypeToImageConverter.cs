@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,7 +13,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Errors;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
     public class ErrorTypeToImageConverter : IValueConverter
@@ -25,7 +25,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
         {
             var errorType = value as ErrorType?;
 
-            switch(errorType)
+            switch (errorType)
             {
                 case ErrorType.Critical:
                     ImagePath = @"\Images\ServiceStatusError-32.png";
@@ -35,6 +35,8 @@ namespace Dev2.Studio.Core.AppResources.Converters
                     break;
                 case ErrorType.None:
                     ImagePath = @"\Images\ServiceStatusOK-32.png";
+                    break;
+                default:
                     break;
             }
             return ImagePath;

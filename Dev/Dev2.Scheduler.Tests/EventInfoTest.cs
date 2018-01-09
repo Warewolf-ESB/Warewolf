@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ namespace Dev2.Scheduler.Test
         public void TaskSheduler_EventInfo_ShouldconstructCorrectly()
         {
 
-            EventInfo ie = new EventInfo(new DateTime(2000, 1, 1), TimeSpan.MaxValue, new DateTime(2001, 1, 1),ScheduleRunStatus.Error, 
+            var ie = new EventInfo(new DateTime(2000, 1, 1), TimeSpan.MaxValue, new DateTime(2001, 1, 1),ScheduleRunStatus.Error, 
                                          "12345");
             Assert.AreEqual(new DateTime(2000, 1, 1), ie.StartDate);
             Assert.AreEqual(new DateTime(2001, 1, 1), ie.EndDate);

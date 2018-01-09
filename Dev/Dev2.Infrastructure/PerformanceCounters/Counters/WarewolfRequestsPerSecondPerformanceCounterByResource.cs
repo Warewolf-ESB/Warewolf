@@ -6,14 +6,14 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfRequestsPerSecondPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
-        private PerformanceCounter _counter;
-        private Stopwatch _stopwatch;
+        PerformanceCounter _counter;
+        Stopwatch _stopwatch;
 
-        // ReSharper disable once InconsistentNaming
-        private const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
+
+        const WarewolfPerfCounterType _perfCounterType = WarewolfPerfCounterType.RequestsPerSecond;
         public WarewolfRequestsPerSecondPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
             ResourceId = resourceId;
@@ -50,16 +50,17 @@ namespace Dev2.PerformanceCounters.Counters
         public void Increment()
         {
             if (IsActive)
-
-                    _counter.Increment();
-  
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
         {
             if (IsActive)
-                    _counter.IncrementBy(ticks);
-  
+            {
+                _counter.IncrementBy(ticks);
+            }
         }
 
         public void Decrement()
@@ -79,13 +80,18 @@ namespace Dev2.PerformanceCounters.Counters
 
         public IList<CounterCreationData> CreationData()
         {
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
                 CounterType = PerformanceCounterType.RateOfCountsPerSecond32
             };
             return new[] { totalOps };
+        }
+
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public bool IsActive { get; set; }

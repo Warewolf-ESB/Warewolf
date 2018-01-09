@@ -13,28 +13,28 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Common.Interfaces.WebService;
 using Dev2.Studio.Core.Activities.Utils;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
+
+
+
+
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
     public class WebSourceRegion : ISourceToolRegion<IWebServiceSource>
     {
-        private IWebServiceSource _selectedSource;
-        private ICollection<IWebServiceSource> _sources;
-        private readonly ModelItem _modelItem;
+        IWebServiceSource _selectedSource;
+        ICollection<IWebServiceSource> _sources;
+        readonly ModelItem _modelItem;
         readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
-        private Guid _sourceId;
-        private Action _sourceChangedAction;
-        private double _labelWidth;
-        private string _newSourceHelpText;
-        private string _editSourceHelpText;
-        private string _sourcesHelpText;
-        private string _newSourceToolText;
-        private string _editSourceToolText;
-        private string _sourcesToolText;
+        Guid _sourceId;
+        Action _sourceChangedAction;
+        double _labelWidth;
+        string _newSourceHelpText;
+        string _editSourceHelpText;
+        string _sourcesHelpText;
+        string _newSourceToolText;
+        string _editSourceToolText;
+        string _sourcesToolText;
 
         public WebSourceRegion(IWebServiceModel model, ModelItem modelItem)
         {
@@ -204,8 +204,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as WebSourceRegion;
-            if (region != null)
+            if (toRestore is WebSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
             }
@@ -232,13 +231,14 @@ namespace Dev2.Activities.Designers2.Core.Source
                 if (!Equals(value, _selectedSource) && _selectedSource != null)
                 {
                     if (!string.IsNullOrEmpty(_selectedSource.HostName))
+                    {
                         StorePreviousValues(_selectedSource.Id);
+                    }
                 }
                 if (Dependants != null)
                 {
                     var outputs = Dependants.FirstOrDefault(a => a is IOutputsToolRegion);
-                    var region = outputs as OutputsRegion;
-                    if (region != null)
+                    if (outputs is OutputsRegion region)
                     {
                         region.Outputs = new ObservableCollection<IServiceOutputMapping>();
                         region.RecordsetName = string.Empty;
@@ -252,7 +252,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void RestoreIfPrevious(IWebServiceSource value)
+        void RestoreIfPrevious(IWebServiceSource value)
         {
             if (IsAPreviousValue(value) && _selectedSource != null)
             {
@@ -262,7 +262,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             else
             {
                 SetSelectedSource(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
             }
             var delegateCommand = EditSourceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;
@@ -271,7 +271,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             _selectedSource = value;
         }
 
-        private void SetSelectedSource(IWebServiceSource value)
+        void SetSelectedSource(IWebServiceSource value)
         {
             if (value != null)
             {
@@ -282,13 +282,13 @@ namespace Dev2.Activities.Designers2.Core.Source
             OnPropertyChanged("SelectedSource");
         }
 
-        private void StorePreviousValues(Guid id)
+        void StorePreviousValues(Guid id)
         {
             _previousRegions.Remove(id);
             _previousRegions[id] = new List<IToolRegion>(Dependants.Select(a => a.CloneRegion()));
         }
 
-        private void RestorePreviousValues(IWebServiceSource value)
+        void RestorePreviousValues(IWebServiceSource value)
         {
             var toRestore = _previousRegions[value.Id];
             foreach (var toolRegion in Dependants.Zip(toRestore, (a, b) => new Tuple<IToolRegion, IToolRegion>(a, b)))
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private bool IsAPreviousValue(IWebServiceSource value)
+        bool IsAPreviousValue(IWebServiceSource value)
         {
             return _previousRegions.Keys.Any(a => a == value.Id);
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,21 +39,16 @@ using Dev2.Services.Security;
 using Dev2.Web;
 using Dev2.Workspaces;
 
-// ReSharper disable MemberCanBeProtected.Global
-// ReSharper disable FunctionComplexityOverflow
-// ReSharper disable LoopCanBeConvertedToQuery
-// ReSharper disable MemberCanBePrivate.Global
-
 namespace Dev2.Runtime.WebServer.Handlers
 {
     public abstract class AbstractWebRequestHandler : IRequestHandler
     {
         string _location;
-        private static IResourceCatalog _resourceCatalog;
-        private static ITestCatalog _testCatalog;
-        private static IDSFDataObject _dataObject;
-        private static IAuthorizationService _authorizationService;
-        private static IWorkspaceRepository _repository;
+        static IResourceCatalog _resourceCatalog;
+        static ITestCatalog _testCatalog;
+        static IDSFDataObject _dataObject;
+        static IAuthorizationService _authorizationService;
+        static IWorkspaceRepository _repository;
         public string Location => _location ?? (_location = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
         public abstract void ProcessRequest(ICommunicationContext ctx);
@@ -62,11 +57,6 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
         }
 
-        protected AbstractWebRequestHandler(IResourceCatalog catalog, ITestCatalog testCatalog,IAuthorizationService authorizationService)
-            :this(catalog,testCatalog)
-        {
-            _authorizationService = authorizationService;
-        }
         protected AbstractWebRequestHandler(IResourceCatalog catalog
                                             , ITestCatalog testCatalog
                                             , IDSFDataObject dataObject
@@ -74,6 +64,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                                             , IWorkspaceRepository repository)
                                             : this(catalog, testCatalog)
         {
+#pragma warning disable S3010 // For testing
             _dataObject = dataObject;
             _authorizationService = authorizationService;
             _repository = repository;
@@ -83,6 +74,7 @@ namespace Dev2.Runtime.WebServer.Handlers
         {
             _resourceCatalog = catalog;
             _testCatalog = testCatalog;
+#pragma warning restore S3010
         }
 
         protected static IResponseWriter CreateForm(WebRequestTO webRequest, string serviceName, string workspaceId, NameValueCollection headers, IPrincipal user = null)
@@ -93,26 +85,20 @@ namespace Dev2.Runtime.WebServer.Handlers
             var workspaceGuid = SetWorkspaceId(workspaceId, workspaceRepository);
 
             var allErrors = new ErrorResultTO();
-            var dataObject = _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
-            {
-                IsFromWebServer = true
-                ,
-                ExecutingUser = user
-                ,
-                ServiceName = serviceName
-                ,
-                WorkspaceID = workspaceGuid
-            };
+            var dataObject = CreateNewDsfDataObject(webRequest, serviceName, user, workspaceGuid);
             dataObject.SetupForWebDebug(webRequest);
             webRequest.BindRequestVariablesToDataObject(ref dataObject);
             dataObject.SetupForRemoteInvoke(headers);
-            dataObject.SetEmitionType(serviceName, headers);
-            dataObject.SetupForTestExecution(webRequest, serviceName, headers);
+            dataObject.SetEmitionType(webRequest, serviceName, headers);
+            dataObject.SetupForTestExecution(serviceName, headers);
             if (dataObject.ServiceName == null)
+            {
                 dataObject.ServiceName = serviceName;
-            IResource resource;
-            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out resource);
+            }
+
+            dataObject.SetResourceNameAndId(_resourceCatalog, serviceName, out IResource resource);
             dataObject.SetTestResourceIds(_resourceCatalog, webRequest, serviceName);
+            dataObject.WebUrl = webRequest.WebServerUrl;
             var serializer = new Dev2JsonSerializer();
             var esbEndpoint = new EsbServicesEndpoint();
             dataObject.EsbChannel = esbEndpoint;
@@ -126,7 +112,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             {
                 esbExecuteRequest.AddArgument(key, new StringBuilder(webRequest.Variables[key]));
             }
-            Dev2Logger.Debug("About to execute web request [ " + serviceName + " ] for User [ " + user?.Identity?.Name + " : " + user?.Identity?.AuthenticationType + " : " + user?.Identity?.IsAuthenticated + " ] with DataObject Payload [ " + dataObject.RawPayload + " ]");
+
             var executionDlid = GlobalConstants.NullDataListID;
             var formatter = DataListFormat.CreateFormat("XML", EmitionTypes.XML, "text/xml");
             if (canExecute && dataObject.ReturnType != EmitionTypes.SWAGGER)
@@ -134,7 +120,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 ErrorResultTO errors = null;
                 Thread.CurrentPrincipal = user;
                 var userPrinciple = user;
-                if (dataObject.ReturnType == EmitionTypes.TEST && dataObject.TestName == "*")
+                if ((dataObject.ReturnType == EmitionTypes.TEST || dataObject.ReturnType == EmitionTypes.TRX) && dataObject.TestName == "*")
                 {
                     formatter = ServiceTestExecutor.ExecuteTests(serviceName, dataObject, formatter, userPrinciple, workspaceGuid, serializer, _testCatalog, _resourceCatalog, ref executePayload);
                     return new StringResponseWriter(executePayload, formatter.ContentType);
@@ -143,15 +129,18 @@ namespace Dev2.Runtime.WebServer.Handlers
                 Common.Utilities.PerformActionInsideImpersonatedContext(userPrinciple, () => { executionDlid = esbEndpoint.ExecuteRequest(dataObject, esbExecuteRequest, workspaceGuid, out errors); });
                 allErrors.MergeErrors(errors);
             }
-            else if (!canExecute)
+            else
             {
-                allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                if (!canExecute)
+                {
+                    allErrors.AddError("Executing a service externally requires View and Execute permissions");
+                }
             }
 
             formatter = DataListFormat.CreateFormat("JSON", EmitionTypes.JSON, "application/json");
             if (dataObject.IsServiceTestExecution)
             {
-                executePayload = ServiceTestExecutor.SetpForTestExecution(serializer, esbExecuteRequest, dataObject);
+                executePayload = ServiceTestExecutor.SetupForTestExecution(serializer, esbExecuteRequest, dataObject);
                 return new StringResponseWriter(executePayload, formatter.ContentType);
             }
             if (dataObject.IsDebugFromWeb)
@@ -187,7 +176,19 @@ namespace Dev2.Runtime.WebServer.Handlers
 
         }
 
-        private static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
+        static IDSFDataObject CreateNewDsfDataObject(WebRequestTO webRequest, string serviceName, IPrincipal user, Guid workspaceGuid)
+        {
+            return _dataObject ?? new DsfDataObject(webRequest.RawRequestPayload, GlobalConstants.NullDataListID, webRequest.RawRequestPayload)
+            {
+                IsFromWebServer = true,
+                ExecutingUser = user,
+                ServiceName = serviceName,
+                WorkspaceID = workspaceGuid,
+                ExecutionID = Guid.NewGuid()
+            };
+        }
+
+        static string SetupForWebExecution(IDSFDataObject dataObject, Dev2JsonSerializer serializer)
         {
             var fetchDebugItems = WebDebugMessageRepo.Instance.FetchDebugItems(dataObject.ClientID, dataObject.DebugSessionID);
             var remoteDebugItems = fetchDebugItems?.Where(state => state.StateType != StateType.Duration).ToArray() ??
@@ -197,7 +198,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return serialize;
         }
 
-        private static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
+        static Guid SetWorkspaceId(string workspaceId, IWorkspaceRepository workspaceRepository)
         {
             Guid workspaceGuid;
             if (workspaceId != null)
@@ -253,7 +254,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                     }
                     catch (Exception ex)
                     {
-                        Dev2Logger.Error("AbstractWebRequestHandler", ex);
+                        Dev2Logger.Error("AbstractWebRequestHandler", ex, GlobalConstants.WarewolfError);
                     }
                 }
             }
@@ -261,7 +262,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return string.Empty;
         }
 
-        private static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
+        static string ExtractKeyValuePairForPostMethod(ICommunicationContext ctx, StreamReader reader)
         {
             var data = reader.ReadToEnd();
             if (DataListUtil.IsXml(data) || DataListUtil.IsJson(data))
@@ -278,9 +279,9 @@ namespace Dev2.Runtime.WebServer.Handlers
                 {
                     pairs.Add(keyValue[0], keyValue[1]);
                 }
-                else if (keyValue.Length == 1)
+                else
                 {
-                    if (keyValue[0].IsXml() || keyValue[0].IsJSON())
+                    if (keyValue.Length == 1 && (keyValue[0].IsXml() || keyValue[0].IsJSON()))
                     {
                         pairs.Add(keyValue[0], keyValue[0]);
                     }
@@ -295,7 +296,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        private static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
+        static string ExtractKeyValuePairForGetMethod(ICommunicationContext ctx, string payload)
         {
             if (payload != null)
             {
@@ -316,7 +317,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ExtractKeyValuePairs(pairs, ctx.Request.BoundVariables);
         }
 
-        private static string CleanupXml(string baseStr)
+        static string CleanupXml(string baseStr)
         {
             if (baseStr.Contains("?"))
             {
@@ -332,14 +333,7 @@ namespace Dev2.Runtime.WebServer.Handlers
                 foreach (var arg in args.AllKeys)
                 {
                     var txt = args[arg];
-                    if (txt.IsXml())
-                    {
-                        results.Add(arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))));
-                    }
-                    else
-                    {
-                        results.Add($"{arg}={txt}");
-                    }
+                    results.Add(txt.IsXml() ? arg + "=" + string.Format(GlobalConstants.XMLPrefix + "{0}", Convert.ToBase64String(Encoding.UTF8.GetBytes(txt))) : $"{arg}={txt}");
                 }
 
                 return url + string.Join("&", results);
@@ -347,7 +341,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return baseStr;
         }
 
-        private static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
+        static string ExtractKeyValuePairs(NameValueCollection pairs, NameValueCollection boundVariables)
         {
             // Extract request keys ;)
             foreach (var key in pairs.AllKeys)
@@ -372,7 +366,7 @@ namespace Dev2.Runtime.WebServer.Handlers
             return ctx.GetServiceName();
         }
 
-        // ReSharper disable InconsistentNaming
+        
         protected static string GetWorkspaceID(ICommunicationContext ctx)
         {
             return ctx.GetWorkspaceID();

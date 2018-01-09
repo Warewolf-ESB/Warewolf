@@ -15,7 +15,7 @@ namespace Dev2.Activities
             {
                 foreach(var sai in inputs)
                 {
-                    string val = sai.Name;
+                    var val = sai.Name;
                     string toInject = null;
 
                     if(val != null)
@@ -28,8 +28,6 @@ namespace Dev2.Activities
                     itrs.Add(paramIterator);
                 }
             }
-            // ReSharper disable once RedundantJumpStatement
-            return;
         }
     }
 }

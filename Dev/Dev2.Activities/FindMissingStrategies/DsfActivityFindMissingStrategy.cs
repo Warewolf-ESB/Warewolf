@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Xml.Linq;
 using Dev2.Interfaces;
@@ -21,7 +20,7 @@ namespace Dev2.FindMissingStrategies
     /// <summary>
     /// Responsible for the find missing logic that applys to the DsfActivity
     /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")] //This is loaded based on SpookyAction implementing IFindMissingStrategy
+ //This is loaded based on SpookyAction implementing IFindMissingStrategy
     class DsfActivityFindMissingStrategy : IFindMissingStrategy
     {
         #region Implementation of ISpookyLoadable<Enum>
@@ -36,13 +35,12 @@ namespace Dev2.FindMissingStrategies
         /// </summary>
         /// <param name="activity">The activity that the fields will be retrieved from</param>
         /// <returns>Returns all the fields in a list of strings</returns>
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+
         public List<string> GetActivityFields(object activity)
         {
-            List<string> results = new List<string>();
-            DsfActivity act = activity as DsfActivity;
+            var results = new List<string>();
 
-            if (act != null)
+            if (activity is DsfActivity act)
             {
                 if (!string.IsNullOrEmpty(act.ServiceName))
                 {
@@ -51,28 +49,28 @@ namespace Dev2.FindMissingStrategies
 
                 if (!string.IsNullOrEmpty(act.InputMapping))
                 {
-                    XElement inputMappingElement = XElement.Parse(act.InputMapping);
+                    var inputMappingElement = XElement.Parse(act.InputMapping);
                     const string InputElement = "Input";
-                    IEnumerable<XElement> inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(InputElement, StringComparison.InvariantCultureIgnoreCase));
-                    // ReSharper disable once PossibleNullReferenceException
+                    var inputs = inputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(InputElement, StringComparison.InvariantCultureIgnoreCase));
+
                     results.AddRange(inputs.Select(element => element.Attribute("Source").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 
                 if (!string.IsNullOrEmpty(act.OutputMapping))
                 {
-                    XElement outputMappingElement = XElement.Parse(act.OutputMapping);
+                    var outputMappingElement = XElement.Parse(act.OutputMapping);
                     const string OutputElement = "Output";
-                    IEnumerable<XElement> inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(OutputElement, StringComparison.InvariantCultureIgnoreCase));
-                    // ReSharper disable once PossibleNullReferenceException
+                    var inputs = outputMappingElement.DescendantsAndSelf().Where(c => c.Name.ToString().Equals(OutputElement, StringComparison.InvariantCultureIgnoreCase));
+
                     results.AddRange(inputs.Select(element => element.Attribute("Value").Value).Where(val => !string.IsNullOrEmpty(val)));
                 }
 
-                if(!string.IsNullOrEmpty(act.OnErrorVariable))
+                if (!string.IsNullOrEmpty(act.OnErrorVariable))
                 {
                     results.Add(act.OnErrorVariable);
                 }
 
-                if(!string.IsNullOrEmpty(act.OnErrorWorkflow))
+                if (!string.IsNullOrEmpty(act.OnErrorWorkflow))
                 {
                     results.Add(act.OnErrorWorkflow);
                 }

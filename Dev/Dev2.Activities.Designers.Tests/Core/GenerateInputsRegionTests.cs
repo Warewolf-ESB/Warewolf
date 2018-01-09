@@ -1,6 +1,5 @@
 ﻿using Dev2.Activities.Designers2.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 
 namespace Dev2.Activities.Designers.Tests.Core
 {
@@ -82,7 +81,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             {
 
             };
-            bool wasInvoked = false;
+            var wasInvoked = false;
             inputRegion.ErrorsHandler += (sender, list) =>
             {
                 wasInvoked = true;

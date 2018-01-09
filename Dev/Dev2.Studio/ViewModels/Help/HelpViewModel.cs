@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,20 +18,17 @@ using Dev2.Studio.Core.Helpers;
 using Dev2.Studio.ViewModels.WorkSurface;
 using Dev2.Studio.Views.Help;
 using Dev2.ViewModels.Help;
-using Dev2.Webs.Callbacks;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable UnusedAutoPropertyAccessor.Local
 
-// ReSharper disable CheckNamespace
+
+
 namespace Dev2.Studio.ViewModels.Help
-// ReSharper restore CheckNamespace
+
 {
     public class HelpViewModel : BaseWorkSurfaceViewModel
     {
-        readonly INetworkHelper _network;
-
         public IHelpViewWrapper HelpViewWrapper { get; private set; }
         public string Uri { get; private set; }
         public string ResourcePath { get; private set; }
@@ -39,10 +36,9 @@ namespace Dev2.Studio.ViewModels.Help
         public bool IsViewAvailable { get; private set; }
 
 
-        public HelpViewModel(INetworkHelper network, IHelpViewWrapper helpViewWrapper, bool isViewAvailable)
+        public HelpViewModel(IHelpViewWrapper helpViewWrapper, bool isViewAvailable)
             : base(EventPublishers.Aggregator)
         {
-            _network = network;
             HelpViewWrapper = helpViewWrapper;
             IsViewAvailable = isViewAvailable;
         }
@@ -55,7 +51,6 @@ namespace Dev2.Studio.ViewModels.Help
         public HelpViewModel(IEventAggregator eventPublisher)
             : base(eventPublisher)
         {
-            _network = new NetworkHelper();
             IsViewAvailable = true;
         }
 
@@ -84,7 +79,7 @@ namespace Dev2.Studio.ViewModels.Help
                 }
                 catch(Exception e)
                 {
-                    Dev2Logger.Error(e.Message,e);
+                    Dev2Logger.Error(e.Message,e, "Warewolf Error");
                 }
             }
         }
@@ -100,24 +95,45 @@ namespace Dev2.Studio.ViewModels.Help
             else
             {
                 IsViewAvailable = true;
-                HelpViewWrapper.WebBrowser.NavigationService.NavigationFailed += (sender, args) =>
-                {
-                    ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
-                    Execute.OnUIThread(() =>
-                    {
-                        HelpViewWrapper.Navigate(ResourcePath);
-                        HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                        HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                    });
-                };
-                HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
-                {
-                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
-                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
-                });
+                SetupFailedNavigationEvent();
+                SetupLoadCompletedEvent();
+                SetupNavigationCompletdEvent();
                 Execute.OnUIThread(() => { HelpViewWrapper.Navigate(Uri); });
             }
             return Task.FromResult(true);
+        }
+
+        void SetupLoadCompletedEvent()
+        {
+            HelpViewWrapper.WebBrowser.LoadCompleted += (sender, args) => Execute.OnUIThread(() =>
+            {
+                HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+            });
+        }
+
+        void SetupNavigationCompletdEvent()
+        {
+            HelpViewWrapper.WebBrowser.Navigated += (sender, args) =>
+            {
+                var navService = HelpViewWrapper.WebBrowser.NavigationService;
+                dynamic browser = navService.GetType().GetField("_webBrowser", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(navService);
+                var iWebBrowser2 = browser.GetType().GetField("_axIWebBrowser2", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance).GetValue(browser);
+                iWebBrowser2.Silent = true;               
+            };
+        }
+        void SetupFailedNavigationEvent()
+        {
+            HelpViewWrapper.WebBrowser.NavigationService.NavigationFailed += (sender, args) =>
+            {
+                ResourcePath = FileHelper.GetFullPath(StringResources.Uri_Studio_PageNotAvailable);
+                Execute.OnUIThread(() =>
+                {
+                    HelpViewWrapper.Navigate(ResourcePath);
+                    HelpViewWrapper.CircularProgressBarVisibility = Visibility.Collapsed;
+                    HelpViewWrapper.WebBrowserVisibility = Visibility.Visible;
+                });
+            };
         }
 
         #region Overrides of Screen

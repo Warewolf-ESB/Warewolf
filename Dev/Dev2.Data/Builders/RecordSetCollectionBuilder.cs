@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,45 +54,45 @@ namespace Dev2.Data.Builders
                     scanRsName = DataListUtil.ExtractRecordsetNameFromValue(tmp.Value);
                 }
 
-                if(tmp.IsRecordSet)
+                if (tmp.IsRecordSet)
                 {
-                    // is already present in the record set?
-                    if(tmpCollections.ContainsKey(scanRsName))
+                    if (tmpCollections.ContainsKey(scanRsName))
                     {
                         tmpCollections[scanRsName].Add(tmp);
                     }
                     else
-                    { // first time adding for this record set
+                    {
                         IList<IDev2Definition> newList = new List<IDev2Definition>();
                         newList.Add(tmp);
                         tmpCollections.Add(scanRsName, newList);
                         tmpNames.Add(scanRsName);
                     }
                 }
-                // Handle scalars that are really recordsets ;)
-                else if(!string.IsNullOrEmpty(scanRsName))
+                else
                 {
-                    // is already present in the record set?
-                    if(tmpCollections.ContainsKey(scanRsName))
+                    if (!string.IsNullOrEmpty(scanRsName))
                     {
-                        tmpCollections[scanRsName].Add(tmp); // ???
-                    }
-                    else
-                    { // first time adding for this record set
-                        IList<IDev2Definition> newList = new List<IDev2Definition>();
-                        newList.Add(tmp);
-                        tmpCollections.Add(scanRsName, newList);
-                        tmpNames.Add(scanRsName);
+                        if (tmpCollections.ContainsKey(scanRsName))
+                        {
+                            tmpCollections[scanRsName].Add(tmp);
+                        }
+                        else
+                        {
+                            IList<IDev2Definition> newList = new List<IDev2Definition>();
+                            newList.Add(tmp);
+                            tmpCollections.Add(scanRsName, newList);
+                            tmpNames.Add(scanRsName);
+                        }
                     }
                 }
             }
             IList<IRecordSetDefinition> tmpDefs = new List<IRecordSetDefinition>();
 
-            // ReSharper disable LoopCanBeConvertedToQuery
+            
             foreach(string setName in tmpNames)
             {
-                // ReSharper restore LoopCanBeConvertedToQuery
-                IList<IDev2Definition> tmpOutput = tmpCollections[setName];
+                
+                var tmpOutput = tmpCollections[setName];
                 tmpDefs.Add(new RecordSetDefinition(setName, tmpOutput));
             }
 

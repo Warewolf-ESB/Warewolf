@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using Dev2.Providers.Errors;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers2.Core.Errors
 {
@@ -39,11 +39,10 @@ namespace Dev2.Activities.Designers2.Core.Errors
             _errorsCounter = 0;
         }
 
-        private void Hyperlink_OnClick(object sender, RoutedEventArgs e)
+        void Hyperlink_OnClick(object sender, RoutedEventArgs e)
         {
             var hyperlink = sender as Hyperlink;
-            var actionableErrorInfo = hyperlink?.DataContext as ActionableErrorInfo;
-            if (actionableErrorInfo != null)
+            if (hyperlink?.DataContext is ActionableErrorInfo actionableErrorInfo)
             {
                 Clipboard.SetText(actionableErrorInfo.Message);
             }

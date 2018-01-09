@@ -8,7 +8,7 @@ namespace Dev2.Common.DateAndTime
 {
     public static class DateTimeLiteralProcessor
     {
-        private const char EscapeCharacter = '\\';
+        const char EscapeCharacter = '\\';
 
         public static DateTimeParser.LiteralRegionStates ProcessInsideEscapedLiteral(ref string error, char currentChar, DateTimeParser.LiteralRegionStates literalRegionState, ref string currentValue, ref bool nothingDied)
         {
@@ -136,7 +136,7 @@ namespace Dev2.Common.DateAndTime
         ///     Performs a forward lookup for the given forwardLookupIndex and checks is the result is a double escaped literal
         ///     character.
         /// </summary>
-        private static bool CheckForDoubleEscapedLiteralCharacter(char[] formatArray, int startPosition,
+        static bool CheckForDoubleEscapedLiteralCharacter(char[] formatArray, int startPosition,
             out string result, out string error)
         {
             error = "";
@@ -148,12 +148,12 @@ namespace Dev2.Common.DateAndTime
         ///     Performs a forward lookup for the given forwardLookupIndex and checks the results against known
         ///     date time format parts. Returns true if part is found otherwise false.
         /// </summary>
-        private static bool TryGetDateTimeFormatPart(char[] formatArray, int startPosition, char forwardLookupIndex,
+        static bool TryGetDateTimeFormatPart(char[] formatArray, int startPosition, char forwardLookupIndex,
             Dictionary<char, List<int>> dateTimeFormatForwardLookups,
             Dictionary<string, List<IDateTimeFormatPartOptionTO>> dateTimeFormatPartOptions, out string result,
             out string error)
         {
-            bool nothingDied = true;
+            var nothingDied = true;
 
             error = "";
             result = "";
@@ -161,13 +161,10 @@ namespace Dev2.Common.DateAndTime
             List<int> lookupLengths;
             if (dateTimeFormatForwardLookups.TryGetValue(forwardLookupIndex, out lookupLengths))
             {
-                //
-                // Perform all forward lookups
-                //
-                List<string> lookupResults =
+                var lookupResults =
                     lookupLengths.Select(i => DateTimeParser.ForwardLookup(formatArray, startPosition, i)).ToList();
 
-                int count = 0;
+                var count = 0;
                 while (count < lookupResults.Count && nothingDied)
                 {
                     //

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,8 +35,6 @@ namespace Dev2.Utils
         /// <returns></returns>
         public IList<string> FormatDsfActivityField(string activityField)
         {
-            //2013.06.10: Ashley Lewis for bug 9306 - handle the case of miss-matched region braces
-
             IList<string> result = new List<string>();
 
             var regions = DataListCleaningUtils.SplitIntoRegionsForFindMissing(activityField);
@@ -45,17 +43,17 @@ namespace Dev2.Utils
                 // Sashen: 09-10-2012 : Using the new parser
                 var intellisenseParser = new SyntaxTreeBuilder();
 
-                Node[] nodes = intellisenseParser.Build(region);
+                var nodes = intellisenseParser.Build(region);
 
                 // No point in continuing ;)
-                if(nodes == null)
+                if (nodes == null)
                 {
                     return result;
                 }
 
                 if(intellisenseParser.EventLog.HasEventLogs)
                 {
-                    IDev2StudioDataLanguageParser languageParser = DataListFactory.CreateStudioLanguageParser();
+                    var languageParser = DataListFactory.CreateStudioLanguageParser();
 
                     try
                     {
@@ -78,24 +76,26 @@ namespace Dev2.Utils
                 {
                     nodes[0].CollectNodes(allNodes);
 
-                    // ReSharper disable once ForCanBeConvertedToForeach
+                    
                     for(int i = 0; i < allNodes.Count; i++)
                     {
-                        if(allNodes[i] is DatalistRecordSetNode)
+                        if (allNodes[i] is DatalistRecordSetNode)
                         {
                             var refNode = allNodes[i] as DatalistRecordSetNode;
-                            string nodeName = refNode.GetRepresentationForEvaluation();
+                            var nodeName = refNode.GetRepresentationForEvaluation();
                             nodeName = nodeName.Substring(2, nodeName.Length - 4);
                             result.Add(nodeName);
                         }
-                        else if(allNodes[i] is DatalistReferenceNode)
+                        else
                         {
-                            var refNode = allNodes[i] as DatalistReferenceNode;
-                            string nodeName = refNode.GetRepresentationForEvaluation();
-                            nodeName = nodeName.Substring(2, nodeName.Length - 4);
-                            result.Add(nodeName);
+                            if (allNodes[i] is DatalistReferenceNode)
+                            {
+                                var refNode = allNodes[i] as DatalistReferenceNode;
+                                var nodeName = refNode.GetRepresentationForEvaluation();
+                                nodeName = nodeName.Substring(2, nodeName.Length - 4);
+                                result.Add(nodeName);
+                            }
                         }
-
                     }
                 }
             }

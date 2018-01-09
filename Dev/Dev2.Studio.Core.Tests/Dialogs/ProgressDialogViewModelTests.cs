@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace Dev2.Core.Tests.Dialogs
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class ProgressDialogViewModelTests
     {
         [TestMethod]
@@ -24,9 +24,9 @@ namespace Dev2.Core.Tests.Dialogs
         [TestCategory("ProgressDialogViewModel_CTOR")]
         public void ProgressDialogViewModel_CTOR_CancelActionIsNull_Exception()
         {
-// ReSharper disable ObjectCreationAsStatement
+
             new ProgressDialogViewModel(null, () => {}, () => {});
-// ReSharper restore ObjectCreationAsStatement
+
         }
 
         [TestMethod]
@@ -35,9 +35,9 @@ namespace Dev2.Core.Tests.Dialogs
         [TestCategory("ProgressDialogViewModel_CTOR")]
         public void ProgressDialogViewModel_CTOR_ShowDialogActionIsNull_Exception()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ProgressDialogViewModel(() => { },null, () => { });
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -46,9 +46,9 @@ namespace Dev2.Core.Tests.Dialogs
         [TestCategory("ProgressDialogViewModel_CTOR")]
         public void ProgressDialogViewModel_CTOR_ClosegActionIsNull_Exception()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new ProgressDialogViewModel(() => { }, () => { }, null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Dev2.Core.Tests.Dialogs
         public void ProgressDialogViewModel_CancelCommand_CancelCommandExecuted_CallsCancelAction()
         {
             //------------Setup for test--------------------------
-            bool cancelActionCalled = false;
+            var cancelActionCalled = false;
             var vm = new ProgressDialogViewModel(() => { cancelActionCalled = true; }, () => { }, () => { });
             //------------Execute Test---------------------------
             vm.CancelCommand.Execute(null);

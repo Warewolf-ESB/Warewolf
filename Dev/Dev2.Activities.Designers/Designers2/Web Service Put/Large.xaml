@@ -6,7 +6,7 @@
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:languages="clr-namespace:Warewolf.Studio.Resources.Languages;assembly=Warewolf.Studio.Resources"
-                               xmlns:customControls1="clr-namespace:Warewolf.Studio.CustomControls;assembly=Warewolf.Studio.CustomControls"
+                               xmlns:customControls1="clr-namespace:Dev2.CustomControls;assembly=Dev2.CustomControls"
                                xmlns:ui="clr-namespace:Dev2.UI;assembly=Dev2.Intellisense"
                                xmlns:interfaces="clr-namespace:Dev2.Common.Interfaces;assembly=Dev2.Common.Interfaces"
                                xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
@@ -92,6 +92,7 @@
                         <controls:Dev2DataGrid x:Name="Headers"
                                    Grid.Row="1" 
                                    ItemsSource="{Binding InputArea.Headers, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                        
                                    Style="{StaticResource ActivityMappingDataGridStyle}"
                                    Height="Auto"
                                    IsEnabled="{Binding InputArea.IsEnabled}"
@@ -114,6 +115,7 @@
                                                     MaxHeight="80"
                                                     Margin="0,0,1,1"
                                                     TextWrapping="Wrap"
+                                                    TextChanged="AutoCompleteBox_OnTextChanged"
                                                     WrapInBrackets="False"
                                                     ToolTip="{x:Static languages:Tooltips.WebRequestToolTipHeader}"
                                                     Text="{Binding Path=Name, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
@@ -194,8 +196,7 @@
                                  VerticalAlignment="Stretch"
                                  VerticalScrollBarVisibility="Auto"
                                  HorizontalScrollBarVisibility="Auto"
-                                 customControls1:WatermarkTextBox.Watermark="Body" 
-                                 SizeChanged="RequestBody_OnSizeChanged"
+                                 customControls1:WatermarkTextBox.Watermark="Body"
                                  ToolTip="{x:Static languages:Tooltips.ManageWebServiceRequestBodyTooltip}">
                             <i:Interaction.Behaviors>
                                 <core1:HelpSetter Text="{x:Static languages:HelpText.WebServiceRequestBodyHelp}" DataContext="{Binding}" />

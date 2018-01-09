@@ -20,7 +20,7 @@ using Unlimited.Framework.Converters.Graph.String.Json;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
     [TestClass]
@@ -529,8 +529,8 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
             var webClient = dsfWebPostActivity.CreateClient(null, String.Empty, webSource);
             //---------------Test Result -----------------------
             Assert.IsNotNull(webClient);
-            NetworkCredential networkCredentialFromWebSource = new NetworkCredential(webSource.UserName, webSource.Password);
-            NetworkCredential webClientCredentials = webClient.Credentials as NetworkCredential;
+            var networkCredentialFromWebSource = new NetworkCredential(webSource.UserName, webSource.Password);
+            var webClientCredentials = webClient.Credentials as NetworkCredential;
             Assert.IsNotNull(webClientCredentials);
             Assert.AreEqual(webClientCredentials.UserName, networkCredentialFromWebSource.UserName);
             Assert.AreEqual(webClientCredentials.Password, networkCredentialFromWebSource.Password);

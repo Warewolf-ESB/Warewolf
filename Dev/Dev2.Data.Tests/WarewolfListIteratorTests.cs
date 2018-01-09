@@ -2,7 +2,7 @@ using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Storage;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Data.Tests
 {
     [TestClass]

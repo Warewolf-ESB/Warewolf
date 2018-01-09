@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -89,16 +89,16 @@ namespace Dev2.Runtime.ESB.Execution
 
         public override Guid Execute(out ErrorResultTO errors, int update)
         {
-            Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            Dev2Logger.Info($"Starting Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
 
             var serviceName = DataObject.ServiceName;
 
             errors = new ErrorResultTO();
 
-            Dev2Logger.Debug("Creating DataList fragment for remote execute");
+            Dev2Logger.Debug("Creating DataList fragment for remote execute", GlobalConstants.WarewolfDebug);
             var dataListFragment = ExecutionEnvironmentUtils.GetXmlInputFromEnvironment(DataObject, DataObject.RemoteInvokeResultShape.ToString(), update);
 
-            string result = string.Empty;
+            var result = string.Empty;
 
             var connection = GetConnection(DataObject.EnvironmentID);
             if (connection == null)
@@ -110,19 +110,19 @@ namespace Dev2.Runtime.ESB.Execution
             try
             {
                 result = ExecutePostRequest(connection, serviceName, dataListFragment);
-                IList<IDebugState> msg = DataObject.IsDebug ? FetchRemoteDebugItems(connection) : new List<IDebugState>();
+                var msg = DataObject.IsDebug ? FetchRemoteDebugItems(connection) : new List<IDebugState>();
                 DataObject.RemoteDebugItems = msg; // set them so they can be acted upon
             }
             catch (Exception e)
             {
                 var errorMessage = e.Message.Contains("Forbidden") ? "Executing a service requires Execute permissions" : e.Message;
                 DataObject.Environment.Errors.Add(errorMessage);
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
 
             // Create tmpDL
             ExecutionEnvironmentUtils.UpdateEnvironmentFromOutputPayload(DataObject, result.ToStringBuilder(), DataObject.RemoteInvokeResultShape.ToString());
-            Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}");
+            Dev2Logger.Info($"Completed Remote Execution. Service Name:{DataObject.ServiceName} Resource Id:{DataObject.ResourceID} Mode:{(DataObject.IsDebug ? "Debug" : "Execute")}", GlobalConstants.WarewolfInfo);
 
             return Guid.Empty;
         }
@@ -132,22 +132,22 @@ namespace Dev2.Runtime.ESB.Execution
             return true;
         }
 
-        private string ExecutePostRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
+        string ExecutePostRequest(Connection connection, string serviceName, string payload, bool isDebugMode = true)
         {
             var result = string.Empty;
 
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var req = BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
-            Dev2Logger.Debug("Executing the remote request.");
+            Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)
                 {
                     if (response != null)
                     {
-                        // ReSharper disable AssignNullToNotNullAttribute
+
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        // ReSharper restore AssignNullToNotNullAttribute
+
                         {
                             result = reader.ReadToEnd();
                         }
@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ESB.Execution
 
             if (data != null)
             {
-                IList<IDebugState> fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
+                var fetchRemoteDebugItems = RemoteDebugItemParser.ParseItems(data);
                 fetchRemoteDebugItems.ForEach(state => state.SessionID = DataObject.DebugSessionID);
                 return fetchRemoteDebugItems;
             }
@@ -209,16 +209,16 @@ namespace Dev2.Runtime.ESB.Execution
             var serviceToExecute = GetServiceToExecute(connection, serviceName);
             var requestUri = serviceToExecute + "?" + payload;
             var req = BuildGetWebRequest(requestUri, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode) ?? BuildPostRequest(serviceToExecute, payload, connection.AuthenticationType, connection.UserName, connection.Password, isDebugMode);
-            Dev2Logger.Debug("Executing the remote request.");
+            Dev2Logger.Debug("Executing the remote request.", GlobalConstants.WarewolfDebug);
             if (req != null)
             {
                 using (var response = req.GetResponse() as HttpWebResponse)
                 {
                     if (response != null)
                     {
-                        // ReSharper disable AssignNullToNotNullAttribute
+                        
                         using (StreamReader reader = new StreamReader(response.GetResponseStream()))
-                        // ReSharper restore AssignNullToNotNullAttribute
+                        
                         {
                             result = reader.ReadToEnd();
                         }
@@ -229,19 +229,19 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        private static string GetServiceToExecute(Connection connection, string serviceName)
+        static string GetServiceToExecute(Connection connection, string serviceName)
         {
             return connection.WebAddress + "Secure/" + serviceName + ".json";
         }
 
-        private WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
+        WebRequest BuildPostRequest(string serviceToExecute, string payload, AuthenticationType authenticationType, string userName, string password, bool isDebug)
         {
             var escapeUriString = Uri.EscapeUriString(serviceToExecute);
             var req = WebRequest.Create(escapeUriString);
             req.Method = "POST";
             UpdateRequest(authenticationType, userName, password, isDebug, req);
 
-            byte[] data = Encoding.ASCII.GetBytes(payload);
+            var data = Encoding.ASCII.GetBytes(payload);
 
             req.ContentType = "application/x-www-form-urlencoded";
             req.ContentLength = data.Length;
@@ -254,7 +254,7 @@ namespace Dev2.Runtime.ESB.Execution
             return req;
         }
 
-        private void UpdateRequest(AuthenticationType authenticationType, string userName, string password, bool isDebug, WebRequest req)
+        void UpdateRequest(AuthenticationType authenticationType, string userName, string password, bool isDebug, WebRequest req)
         {
             if (authenticationType == AuthenticationType.Windows)
             {
@@ -283,7 +283,7 @@ namespace Dev2.Runtime.ESB.Execution
             ServicePointManager.ServerCertificateValidationCallback += (sender, certificate, chain, sslPolicyErrors) => true;
         }
 
-        private WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password, bool isdebug)
+        WebRequest BuildGetWebRequest(string requestUri, AuthenticationType authenticationType, string userName, string password, bool isdebug)
         {
             try
             {
@@ -297,7 +297,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        private WebRequest BuildSimpleGetWebRequest(string requestUri)
+        WebRequest BuildSimpleGetWebRequest(string requestUri)
         {
             try
             {
@@ -312,7 +312,7 @@ namespace Dev2.Runtime.ESB.Execution
             }
         }
 
-        private Connection GetConnection(Guid environmentId)
+        Connection GetConnection(Guid environmentId)
         {
             if (environmentId == Guid.Empty)
             {
@@ -346,7 +346,7 @@ namespace Dev2.Runtime.ESB.Execution
                 var returnData = ExecuteGetRequest(connection, "FindResourceService", $"ResourceType=TypeWorkflowService&ResourceName={serviceName}&ResourceId={serviceId}", isDebugMode);
                 if (!string.IsNullOrEmpty(returnData))
                 {
-                    Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                    var serializer = new Dev2JsonSerializer();
                     var serializableResources = serializer.Deserialize<IList<SerializableResource>>(returnData);
                     return serializableResources.FirstOrDefault(resource => resource.ResourceType == "WorkflowService");
                 }

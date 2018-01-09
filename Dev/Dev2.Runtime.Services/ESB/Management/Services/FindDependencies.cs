@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,11 +14,9 @@ using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Interfaces;
 using Dev2.Workspaces;
 using ServiceStack.Common.Extensions;
@@ -26,10 +24,7 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Find dependencies for a service
-    /// </summary>
-    public class FindDependencies : IEsbManagementEndpoint
+    public class FindDependencies : DefaultEsbManagementEndpoint
     {
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
@@ -41,20 +36,19 @@ namespace Dev2.Runtime.ESB.Management.Services
             return AuthorizationContext.Any;
         }
 
-        private IResourceCatalog _resourceCatalog;
+        IResourceCatalog _resourceCatalog;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             try
             {
-                Dev2Logger.Info("Find Dependencies");
+                Dev2Logger.Info("Find Dependencies", GlobalConstants.WarewolfInfo);
                 var result = new ExecuteMessage { HasError = false };
 
                 string resourceId = null;
                 string dependsOnMeString = null;
-                bool dependsOnMe = false;
-                StringBuilder tmp;
-                values.TryGetValue("ResourceId", out tmp);
+                var dependsOnMe = false;
+                values.TryGetValue("ResourceId", out StringBuilder tmp);
                 if (tmp != null)
                 {
                     resourceId = tmp.ToString();
@@ -68,8 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new InvalidDataContractException(ErrorResource.ResourceIdIsNull);
                 }
-                Guid resId;
-                if (!Guid.TryParse(resourceId, out resId))
+                if (!Guid.TryParse(resourceId, out Guid resId))
                 {
                     throw new InvalidDataContractException(ErrorResource.ResourceIdNotAGUID);
                 }
@@ -95,12 +88,12 @@ namespace Dev2.Runtime.ESB.Management.Services
                     result.Message.Append("</graph>");
                 }
 
-                Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+                var serializer = new Dev2JsonSerializer();
                 return serializer.SerializeToBuilder(result);
             }
             catch (Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -119,10 +112,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         StringBuilder FindWhatDependsOnMe(Guid workspaceId, Guid resourceID, List<Guid> seenResource)
         {
-            if (resourceID == null)
-            {
-                throw new ArgumentNullException("resourceID", ErrorResource.ResourceNotFound);
-            }
             var dependants = ResourceCatalog.GetDependants(Guid.Empty, resourceID) ?? new List<Guid>();
             dependants.AddRange(ResourceCatalog.GetDependants(workspaceId, resourceID) ?? new List<Guid>());
             dependants = dependants.Distinct().ToList();
@@ -150,35 +139,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-        public string HandlesType()
-        {
-            return "FindDependencyService";
-        }
-
-        public DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder(@"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #region Private Methods
 
-
-        private StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
+        StringBuilder FindDependenciesRecursive(Guid resourceGuid, Guid workspaceId, List<Guid> seenResource)
         {
             var sb = new StringBuilder();
 
@@ -187,9 +150,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             if (dependencies != null)
             {
                 sb.Append($"<node id=\"{resource.ResourceID}\" x=\"\" y=\"\" broken=\"false\">");
-                // ReSharper disable ImplicitlyCapturedClosure
+
                 dependencies.ForEach(c => sb.Append($"<dependency id=\"{c.ResourceID}\" />"));
-                // ReSharper restore ImplicitlyCapturedClosure
+
                 sb.Append("</node>");
                 seenResource.Add(resourceGuid);
                 dependencies.ToList().ForEach(c =>
@@ -204,10 +167,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             return sb;
         }
 
-
         #endregion
 
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), @"<DataList><ResourceId ColumnIODirection=""Input""/><GetDependsOnMe ColumnIODirection=""Input""/><Dev2System.ManagmentServicePayload ColumnIODirection=""Both""></Dev2System.ManagmentServicePayload></DataList>");
 
-
+        public override string HandlesType() => "FindDependencyService";
     }
 }

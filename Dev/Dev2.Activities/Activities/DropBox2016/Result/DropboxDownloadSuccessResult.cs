@@ -2,13 +2,13 @@ using Dev2.Common.Interfaces;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
 
-// ReSharper disable ClassWithVirtualMembersNeverInherited.Global
+
 
 namespace Dev2.Activities.DropBox2016.Result
 {
     public class DropboxDownloadSuccessResult : IDropboxResult
     {
-        private readonly IDownloadResponse<FileMetadata> _uploadAsync;
+        readonly IDownloadResponse<FileMetadata> _uploadAsync;
 
         public DropboxDownloadSuccessResult(IDownloadResponse<FileMetadata> uploadAsync)
         {

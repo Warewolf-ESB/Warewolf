@@ -7,9 +7,6 @@ using Dev2.Data.Parsers;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
 using Warewolf.Storage;
-// ReSharper disable ConvertToAutoProperty
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedMember.Global
 
 namespace Dev2.Activities.Debug
 {
@@ -18,7 +15,7 @@ namespace Dev2.Activities.Debug
         readonly CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult _warewolfAtomListresult;
         readonly string _labelText;
         readonly string _operand;
-        private readonly bool _isCalculate;
+        readonly bool _isCalculate;
         readonly string _variable;
         readonly DebugItemResultType _type;
         readonly string _rightLabel;
@@ -26,9 +23,14 @@ namespace Dev2.Activities.Debug
         readonly CommonFunctions.WarewolfEvalResult _oldValue;
         readonly string _assignedToVariableName;
         readonly string _newValue;
-        private readonly bool _mockSelected;
+        readonly bool _mockSelected;
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate = false, bool mockSelected = false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+            : this(warewolfAtomListresult, oldResult, assignedToVariableName, variable, leftLabelText, rightLabelText, operand, false, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, CommonFunctions.WarewolfEvalResult oldResult, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
         {
             _labelText = "";
             _operand = operand;
@@ -43,7 +45,12 @@ namespace Dev2.Activities.Debug
             _mockSelected = mockSelected;
         }
 
-        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand,bool isCalculate=false, bool mockSelected = false)
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand)
+            : this(warewolfAtomListresult, newValue, assignedToVariableName, variable, leftLabelText, rightLabelText, operand, false, false)
+        {
+        }
+
+        public DebugItemWarewolfAtomListResult(CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult, string newValue, string assignedToVariableName, string variable, string leftLabelText, string rightLabelText, string operand, bool isCalculate, bool mockSelected)
         {
             _labelText = "";
             _operand = operand;
@@ -82,11 +89,11 @@ namespace Dev2.Activities.Debug
             return results;
         }
 
-        private void NoLabels(List<IDebugItemResult> results)
+        void NoLabels(List<IDebugItemResult> results)
         {
-            if(string.IsNullOrEmpty(_rightLabel) && string.IsNullOrEmpty(_leftLabel))
+            if (string.IsNullOrEmpty(_rightLabel) && string.IsNullOrEmpty(_leftLabel))
             {
-                if(_warewolfAtomListresult != null)
+                if (_warewolfAtomListresult != null)
                 {
                     AtomListResultNoLabel(results);
                 }
@@ -106,15 +113,15 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private void AtomListResultNoLabel(List<IDebugItemResult> results)
+        void AtomListResultNoLabel(List<IDebugItemResult> results)
         {
             string groupName = null;
-            int grpIdx = 0;
-            foreach(var item in _warewolfAtomListresult.Item)
+            var grpIdx = 0;
+            foreach (var item in _warewolfAtomListresult.Item)
             {
-                string displayExpression = _variable;
-                string rawExpression = _variable;
-                if(displayExpression.Contains("()") || displayExpression.Contains("(*)"))
+                var displayExpression = _variable;
+                var rawExpression = _variable;
+                if (displayExpression.Contains("()") || displayExpression.Contains("(*)"))
                 {
                     grpIdx++;
                     groupName = rawExpression;
@@ -126,9 +133,12 @@ namespace Dev2.Activities.Debug
                         {
                             displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithStar(displayExpression), "");
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            if (DataListUtil.GetRecordsetIndexType(_variable) == enRecordsetIndexType.Blank)
+                            {
+                                displayExpression += _variable.Replace(DataListUtil.ReplaceRecordsetIndexWithBlank(displayExpression), "");
+                            }
                         }
                     }
                     else
@@ -139,14 +149,13 @@ namespace Dev2.Activities.Debug
                 }
                 else
                 {
-                    string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                    int indexForRecset;
-                    int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                    var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                    int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                    if(indexForRecset > 0)
+                    if (indexForRecset > 0)
                     {
-                        int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                        string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                        var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                        var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                         grpIdx++;
                         groupName = @group;
                     }
@@ -154,11 +163,11 @@ namespace Dev2.Activities.Debug
 
                 var debugOperator = "";
                 var debugType = DebugItemResultType.Value;
-                if(DataListUtil.IsEvaluated(displayExpression))
+                if (DataListUtil.IsEvaluated(displayExpression))
                 {
                     debugOperator = "=";
                     debugType = DebugItemResultType.Variable;
-                    if(_isCalculate)
+                    if (_isCalculate)
                     {
                         displayExpression = groupName ?? displayExpression;
                     }
@@ -180,15 +189,15 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private void HasRightLabel(List<IDebugItemResult> results)
+        void HasRightLabel(List<IDebugItemResult> results)
         {
-            if(!string.IsNullOrEmpty(_rightLabel))
+            if (!string.IsNullOrEmpty(_rightLabel))
             {
-                if(_oldValue != null)
+                if (_oldValue != null)
                 {
                     ProcessOldValue(results);
                 }
-                if(_oldValue == null)
+                if (_oldValue == null)
                 {
                     var debugItemResult = new DebugItemResult
                     {
@@ -206,12 +215,11 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private void ProcessOldValue(List<IDebugItemResult> results)
+        void ProcessOldValue(List<IDebugItemResult> results)
         {
-            if(_oldValue.IsWarewolfAtomResult)
+            if (_oldValue.IsWarewolfAtomResult)
             {
-                var scalarResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomResult;
-                if(scalarResult != null)
+                if (_oldValue is CommonFunctions.WarewolfEvalResult.WarewolfAtomResult scalarResult)
                 {
                     results.Add(new DebugItemResult
                     {
@@ -226,32 +234,35 @@ namespace Dev2.Activities.Debug
                     });
                 }
             }
-            else if(_oldValue.IsWarewolfAtomListresult)
+            else
             {
-                OldValueAtomListResult(results);
+                if (_oldValue.IsWarewolfAtomListresult)
+                {
+                    OldValueAtomListResult(results);
+                }
             }
         }
 
-        private void OldValueAtomListResult(List<IDebugItemResult> results)
+        void OldValueAtomListResult(List<IDebugItemResult> results)
         {
             var recSetResult = _oldValue as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult;
             string groupName = null;
-            int grpIdx = 0;
-            if(recSetResult != null)
+            var grpIdx = 0;
+            if (recSetResult != null)
             {
-                foreach(var item in recSetResult.Item)
+                foreach (var item in recSetResult.Item)
                 {
-                    string displayExpression = _assignedToVariableName;
-                    string rawExpression = _assignedToVariableName;
-                    if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+                    var displayExpression = _assignedToVariableName;
+                    var rawExpression = _assignedToVariableName;
+                    if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
                     {
                         grpIdx++;
                         groupName = rawExpression;
-                        Dev2DataLanguageParser dataLanguageParser = new Dev2DataLanguageParser();
+                        var dataLanguageParser = new Dev2DataLanguageParser();
                         var vals = dataLanguageParser.ParseForActivityDataItems(_assignedToVariableName);
-                        if(vals != null)
+                        if (vals != null)
                         {
-                            foreach(var val in vals)
+                            foreach (var val in vals)
                             {
                                 var repVal = DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(val), DataListUtil.ExtractFieldNameFromValue(val), grpIdx.ToString());
                                 displayExpression = _assignedToVariableName.Replace(val, repVal);
@@ -260,14 +271,13 @@ namespace Dev2.Activities.Debug
                     }
                     else
                     {
-                        string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                        int indexForRecset;
-                        int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                        var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
+                        int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                        if(indexForRecset > 0)
+                        if (indexForRecset > 0)
                         {
-                            int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                            string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                            var indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
+                            var group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                             grpIdx++;
                             groupName = @group;
                         }
@@ -275,11 +285,11 @@ namespace Dev2.Activities.Debug
 
                     var debugOperator = "";
                     var debugType = DebugItemResultType.Value;
-                    if(DataListUtil.IsEvaluated(displayExpression))
+                    if (DataListUtil.IsEvaluated(displayExpression))
                     {
                         debugOperator = "=";
                         debugType = DebugItemResultType.Variable;
-                        if(_isCalculate)
+                        if (_isCalculate)
                         {
                             displayExpression = groupName ?? displayExpression;
                         }
@@ -304,28 +314,28 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private void HasLeftLabel(List<IDebugItemResult> results)
+        void HasLeftLabel(List<IDebugItemResult> results)
         {
-            if(!string.IsNullOrEmpty(_leftLabel))
+            if (!string.IsNullOrEmpty(_leftLabel))
             {
                 string groupName = null;
-                int grpIdx = 0;
-                if(_warewolfAtomListresult != null)
+                var grpIdx = 0;
+                if (_warewolfAtomListresult != null)
                 {
-                    foreach(var atomItem in _warewolfAtomListresult.Item)
+                    foreach (var atomItem in _warewolfAtomListresult.Item)
                     {
-                        string displayExpression = _variable;
-                        string rawExpression = _variable;
+                        var displayExpression = _variable;
+                        var rawExpression = _variable;
                         var item = atomItem.ToString();
                         displayExpression = GetGroupName(displayExpression, rawExpression, ref grpIdx, ref item, ref groupName);
 
                         var debugOperator = "";
                         var debugType = DebugItemResultType.Value;
-                        if(DataListUtil.IsEvaluated(displayExpression))
+                        if (DataListUtil.IsEvaluated(displayExpression))
                         {
                             debugOperator = string.IsNullOrEmpty(item) ? "" : "=";
                             debugType = DebugItemResultType.Variable;
-                            if(_isCalculate)
+                            if (_isCalculate)
                             {
                                 displayExpression = groupName ?? displayExpression;
                             }
@@ -364,38 +374,35 @@ namespace Dev2.Activities.Debug
             }
         }
 
-        private string GetGroupName(string displayExpression, string rawExpression, ref int grpIdx, ref string item, ref string groupName)
+        string GetGroupName(string displayExpression, string rawExpression, ref int grpIdx, ref string item, ref string groupName)
         {
-            if(displayExpression.Contains("().") || displayExpression.Contains("(*)."))
+            var expr = displayExpression;
+            if (displayExpression.Contains("().") || displayExpression.Contains("(*)."))
             {
                 grpIdx++;
-                string index = grpIdx.ToString(CultureInfo.InvariantCulture);
-                if(rawExpression.Contains(".WarewolfPositionColumn"))
+                var index = grpIdx.ToString(CultureInfo.InvariantCulture);
+                if (rawExpression.Contains(".WarewolfPositionColumn"))
                 {
                     index = item;
                     item = "";
                 }
                 groupName = rawExpression.Replace(".WarewolfPositionColumn", "");
-                // ReSharper disable EmptyStatement
-                displayExpression = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
-                ;
-                // ReSharper restore EmptyStatement
+                expr = DataListUtil.AddBracketsToValueIfNotExist(DataListUtil.CreateRecordsetDisplayValue(DataListUtil.ExtractRecordsetNameFromValue(_variable), DataListUtil.ExtractFieldNameFromValue(_variable), index)).Replace(".WarewolfPositionColumn", "");
             }
             else
             {
-                string indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(displayExpression);
-                int indexForRecset;
-                int.TryParse(indexRegionFromRecordset, out indexForRecset);
+                var indexRegionFromRecordset = DataListUtil.ExtractIndexRegionFromRecordset(expr);
+                int.TryParse(indexRegionFromRecordset, out int indexForRecset);
 
-                if(indexForRecset > 0)
+                if (indexForRecset > 0)
                 {
-                    int indexOfOpenningBracket = displayExpression.IndexOf("(", StringComparison.Ordinal) + 1;
-                    string group = displayExpression.Substring(0, indexOfOpenningBracket) + "*" + displayExpression.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
+                    var indexOfOpenningBracket = expr.IndexOf("(", StringComparison.Ordinal) + 1;
+                    var group = expr.Substring(0, indexOfOpenningBracket) + "*" + expr.Substring(indexOfOpenningBracket + indexRegionFromRecordset.Length);
                     grpIdx++;
                     groupName = @group;
                 }
             }
-            return displayExpression;
+            return expr;
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Activities;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using Dev2.Common;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
@@ -24,7 +26,7 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.Sharepoint
 {
     [ToolDescriptorInfo("SharepointLogo", "Download File", ToolType.Native, "2246E59B-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Sharepoint", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_SharePoint_Download_File")]
-    public class SharepointFileDownLoadActivity : DsfAbstractFileActivity
+    public class SharepointFileDownLoadActivity : DsfAbstractFileActivity,IEquatable<SharepointFileDownLoadActivity>
     {
         public SharepointFileDownLoadActivity() : base("SharePoint Download File")
         {
@@ -67,7 +69,7 @@ namespace Dev2.Activities.Sharepoint
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -129,28 +131,30 @@ namespace Dev2.Activities.Sharepoint
                     {
                         if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
                         {
-                            string recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
-                            string fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
+                            var recsetName = DataListUtil.ExtractRecordsetNameFromValue(Result);
+                            var fieldName = DataListUtil.ExtractFieldNameFromValue(Result);
 
                             var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
 
-                            int indexToUpsertTo = 1;
+                            var indexToUpsertTo = 1;
 
                             foreach (var file in newPath)
                             {
-                                string fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
+                                var fullRecsetName = DataListUtil.CreateRecordsetDisplayValue(recsetName, fieldName,
                                     indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
                                 outputs.Add(DataListFactory.CreateOutputTO(DataListUtil.AddBracketsToValueIfNotExist(fullRecsetName), file));
                                 indexToUpsertTo++;
                             }
                         }
-                        else if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
+                        else
                         {
-                            var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
-
-                            foreach (var folder in newPath)
+                            if (DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Blank)
                             {
-                                outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
+                                foreach (var folder in newPath)
+                                {
+                                    outputs.Add(DataListFactory.CreateOutputTO(Result, folder));
+                                }
                             }
                         }
                     }
@@ -158,7 +162,7 @@ namespace Dev2.Activities.Sharepoint
                     {
                         var newPath = DownLoadFile(sharepointSource, serverPath, localPath);
 
-                        string xmlList = string.Join(",", newPath.Select(c => c));
+                        var xmlList = string.Join(",", newPath.Select(c => c));
                         outputs.Add(DataListFactory.CreateOutputTO(Result));
                         outputs.Last().OutputStrings.Add(xmlList);
                     }
@@ -174,7 +178,7 @@ namespace Dev2.Activities.Sharepoint
             return outputs;
         }
 
-        private void ValidateRequest()
+        void ValidateRequest()
         {
             if (SharepointServerResourceId == Guid.Empty)
             {
@@ -212,6 +216,41 @@ namespace Dev2.Activities.Sharepoint
                 debugOutput.FlushStringBuilder();
             }
             return _debugOutputs;
+        }
+
+        public bool Equals(SharepointFileDownLoadActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SharepointSource, other.SharepointSource);
+            return base.Equals(other)
+                && string.Equals(ServerInputPath, other.ServerInputPath) 
+                && string.Equals(LocalInputPath, other.LocalInputPath) 
+                && Overwrite == other.Overwrite 
+                && isSourceEqual
+                && SharepointServerResourceId.Equals(other.SharepointServerResourceId);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((SharepointFileDownLoadActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ServerInputPath != null ? ServerInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (LocalInputPath != null ? LocalInputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SharepointSource != null ? SharepointSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ SharepointServerResourceId.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

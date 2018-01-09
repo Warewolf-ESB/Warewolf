@@ -13,30 +13,28 @@ using Microsoft.Practices.Prism.PubSubEvents;
 using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable MergeConditionalExpression
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ManageExchangeSourceViewModel : SourceBaseImpl<IExchangeSource>, IManageExchangeSourceViewModel
     {
-        private string _autoDiscoverUrl;
-        private string _userName;
-        private string _password;
-        private int _timeout;
-        private string _testMessage;
-        private string _emailTo;
+        string _autoDiscoverUrl;
+        string _userName;
+        string _password;
+        int _timeout;
+        string _testMessage;
+        string _emailTo;
         string _resourceName;
 
-        private IExchangeSource _emailServiceSource;
-        private readonly IManageExchangeSourceModel _updateManager;
+        IExchangeSource _emailServiceSource;
+        readonly IManageExchangeSourceModel _updateManager;
         CancellationTokenSource _token;
         bool _testPassed;
         bool _testFailed;
         bool _testing;
         string _headerText;
-        private bool _enableSend;
+        bool _enableSend;
 
-        private bool _isDisposed;
+        bool _isDisposed;
 
         public ManageExchangeSourceViewModel(IManageExchangeSourceModel updateManager, Task<IRequestServiceNameViewModel> requestServiceNameViewModel, IEventAggregator aggregator) : this(updateManager, aggregator)
         {
@@ -59,7 +57,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 _emailServiceSource = source;
                 _emailServiceSource.Path = exchangeSource.Path;
-                // ReSharper disable once VirtualMemberCallInContructor
+                
                 FromModel(_emailServiceSource);
                 SetupHeaderTextFromExisting();
             });
@@ -122,7 +120,10 @@ namespace Warewolf.Studio.ViewModels
         public bool CanTest()
         {
             if (Testing)
+            {
                 return false;
+            }
+
             if (string.IsNullOrEmpty(AutoDiscoverUrl) && string.IsNullOrEmpty(UserName) && string.IsNullOrEmpty(Password))
             {
                 return false;
@@ -133,7 +134,7 @@ namespace Warewolf.Studio.ViewModels
         public override void UpdateHelpDescriptor(string helpText)
         {
             var mainViewModel = CustomContainer.Get<IShellViewModel>();
-            mainViewModel?.HelpViewModel.UpdateHelpText(helpText);
+            mainViewModel?.HelpViewModel?.UpdateHelpText(helpText);
         }
 
         public override void Save()
@@ -158,7 +159,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SaveConnection()
+        void SaveConnection()
         {
             if (_emailServiceSource == null)
             {
@@ -172,7 +173,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = requestServiceNameViewModel.ResourceName.Path ?? requestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (requestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(requestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.ResourceID);
+                    }
+
                     Item = src;
                     _emailServiceSource = src;
                     ResourceName = _emailServiceSource.ResourceName;
@@ -342,6 +346,7 @@ namespace Warewolf.Studio.ViewModels
             t.ContinueWith(a => Application.Current?.Dispatcher.Invoke(() =>
             {
                 if (!_token.IsCancellationRequested)
+                {
                     switch (t.Status)
                     {
                         case TaskStatus.Faulted:
@@ -360,7 +365,23 @@ namespace Warewolf.Studio.ViewModels
                                 Testing = false;
                                 break;
                             }
+
+                        case TaskStatus.Created:
+                            break;
+                        case TaskStatus.WaitingForActivation:
+                            break;
+                        case TaskStatus.WaitingToRun:
+                            break;
+                        case TaskStatus.Running:
+                            break;
+                        case TaskStatus.WaitingForChildrenToComplete:
+                            break;
+                        case TaskStatus.Canceled:
+                            break;
+                        default:
+                            break;
                     }
+                }
             }));
             t.Start();
         }
@@ -397,7 +418,7 @@ namespace Warewolf.Studio.ViewModels
         {
             if (_emailServiceSource == null)
             {
-                var resourceID = _emailServiceSource == null ? Guid.NewGuid() : _emailServiceSource.ResourceID;
+                var resourceID = Guid.NewGuid();
                 return new ExchangeSourceDefinition
                     {
                         AutoDiscoverUrl = AutoDiscoverUrl,
@@ -412,7 +433,7 @@ namespace Warewolf.Studio.ViewModels
                     }
                     ;
             }
-            // ReSharper disable once RedundantIfElseBlock
+            
             else
             {
                 _emailServiceSource.AutoDiscoverUrl = AutoDiscoverUrl;
@@ -474,9 +495,9 @@ namespace Warewolf.Studio.ViewModels
         public string TestMessage
         {
             get { return _testMessage; }
-            // ReSharper disable UnusedMember.Local
+            
             set
-            // ReSharper restore UnusedMember.Local
+            
             {
                 _testMessage = value;
                 OnPropertyChanged(() => TestMessage);
@@ -518,31 +539,17 @@ namespace Warewolf.Studio.ViewModels
                 RequestServiceNameViewModel.Result?.Dispose();
                 RequestServiceNameViewModel.Dispose();
             }
-            Dispose(true);
+            DisposeManageExchangeSourceViewModel(true);
         }
-
-
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+        
+        void DisposeManageExchangeSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
             if (!_isDisposed)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
                 if (disposing)
                 {
-                    // Dispose managed resources.
                     _token?.Dispose();
                 }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

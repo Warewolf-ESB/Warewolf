@@ -6,12 +6,12 @@ using Dev2.Common.Interfaces.Monitoring;
 
 namespace Dev2.PerformanceCounters.Counters
 {
-    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter
+    public class WarewolfCurrentExecutionsPerformanceCounterByResource : IResourcePerformanceCounter, IDisposable
     {
 
-        private PerformanceCounter _counter;
-        private bool _started;
-        private readonly WarewolfPerfCounterType _perfCounterType;
+        PerformanceCounter _counter;
+        bool _started;
+        readonly WarewolfPerfCounterType _perfCounterType;
 
         public WarewolfCurrentExecutionsPerformanceCounterByResource(Guid resourceId, string categoryInstanceName)
         {
@@ -27,7 +27,7 @@ namespace Dev2.PerformanceCounters.Counters
         public IList<CounterCreationData> CreationData()
         {
 
-            CounterCreationData totalOps = new CounterCreationData
+            var totalOps = new CounterCreationData
             {
                 CounterName = Name,
                 CounterHelp = Name,
@@ -51,8 +51,9 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
                 if (IsActive)
-                    _counter.Increment();
-
+            {
+                _counter.Increment();
+            }
         }
 
         public void IncrementBy(long ticks)
@@ -80,12 +81,18 @@ namespace Dev2.PerformanceCounters.Counters
         {
 
             if (IsActive)
-               if (_counter.RawValue > 0)
+            {
+                if (_counter.RawValue > 0)
                     {
                           
                         _counter.Decrement();
                     }
+            }
+        }
 
+        public void Dispose()
+        {
+            _counter.Dispose();
         }
 
         public string Category => GlobalConstants.WarewolfServices;

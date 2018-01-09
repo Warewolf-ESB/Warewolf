@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,16 +11,13 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -28,37 +25,27 @@ using Unlimited.Framework.Converters.Graph.Ouput;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class TestDbService : IEsbManagementEndpoint
     {
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
 
-                Dev2Logger.Info("Test DB Connection Service");
-                StringBuilder resourceDefinition;
+                Dev2Logger.Info("Test DB Connection Service", GlobalConstants.WarewolfInfo);
 
-                values.TryGetValue("DbService", out resourceDefinition);
+                values.TryGetValue("DbService", out StringBuilder resourceDefinition);
 
-                IDatabaseService src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
-                // ReSharper disable MaximumChainedReferences
+                var src = serializer.Deserialize<IDatabaseService>(resourceDefinition);
+
                 var parameters = src.Inputs?.Select(a => new MethodParameter() { EmptyToNull = a.EmptyIsNull, IsRequired = a.RequiredField, Name = a.Name, Value = a.Value }).ToList() ?? new List<MethodParameter>();
-                // ReSharper restore MaximumChainedReferences
+                
                 var source = ResourceCatalog.Instance.GetResource<DbSource>(GlobalConstants.ServerWorkspaceID, src.Source.Id) ?? new DbSource
                              {
                                  DatabaseName = src.Source.DbName,
@@ -75,7 +62,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                     Source = source
                 };
 
-                ServiceModel.Services services = new ServiceModel.Services();
+                var services = new ServiceModel.Services();
                 Recordset output = null;
                 Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
@@ -85,7 +72,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                         msg.HasError = true;
                         var errorMessage = output.ErrorMessage;
                         msg.Message = new StringBuilder(errorMessage);
-                        Dev2Logger.Error(errorMessage);
+                        Dev2Logger.Error(errorMessage, GlobalConstants.WarewolfError);
                     }
                     else
                     {
@@ -99,7 +86,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
                 msg.HasError = true;
                 msg.Message = new StringBuilder(err.Message);
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
 
             }
 
@@ -108,7 +95,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         DataTable ToDataTable(Recordset output)
         {
-            DataTable dt = new DataTable(output.Name);
+            var dt = new DataTable(output.Name);
 
             foreach (var recordsetField in output.Fields)
             {
@@ -124,18 +111,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             return dt;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><DbSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
-
-        public string HandlesType()
-        {
-            return "TestDbService";
-        }
+        public string HandlesType() => "TestDbService";
     }
 }

@@ -40,9 +40,12 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             {
                 res = "<FromXMLPayloads>" + res + "</FromXMLPayloads>";
             }
-            else if (foundXmlFrags == 0)
+            else
             {
-                res = payload;
+                if (foundXmlFrags == 0)
+                {
+                    res = payload;
+                }
             }
 
             return base.NormalizeXmlPayload(res);
@@ -119,7 +122,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
             return new PostgreServer();
         }
 
-        private static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
+        static ServiceMethod CreateServiceMethod(IDbCommand command, IEnumerable<IDataParameter> parameters, IEnumerable<IDataParameter> outParameters, string sourceCode, string executeAction)
         {
             return new ServiceMethod(command.CommandText, sourceCode, parameters.Select(MethodParameterFromDataParameter), null, null, executeAction)
             {
@@ -144,12 +147,16 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 try
                 {
                     var command = CommandFromServiceMethod(server, dbService.Method);
-                    // ReSharper disable PossibleNullReferenceException
+                    
                     var outParams = server.GetProcedureOutParams(command.CommandText);
-                    // ReSharper restore PossibleNullReferenceException
+                    
                     foreach (var dbDataParameter in outParams)
                     {
-                        if (command.Parameters.Contains(dbDataParameter)) continue;
+                        if (command.Parameters.Contains(dbDataParameter))
+                        {
+                            continue;
+                        }
+
                         command.Parameters.Add(dbDataParameter);
                     }
                     var dataTable = server.FetchDataTable(command);
@@ -163,7 +170,7 @@ namespace Dev2.Runtime.ServiceModel.Esb.Brokers
                 }
                 catch (Exception ex)
                 {
-                    Dev2Logger.Error(ex.Message);
+                    Dev2Logger.Error(ex.Message, GlobalConstants.WarewolfError);
                     return new OutputDescription();
                 }
                 finally

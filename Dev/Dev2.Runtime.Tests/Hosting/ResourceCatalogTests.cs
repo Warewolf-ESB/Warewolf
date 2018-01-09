@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -48,10 +48,8 @@ using Moq;
 using Newtonsoft.Json;
 using Unlimited.Framework.Converters.Graph.Ouput;
 using Warewolf.ResourceManagement;
+using System.Collections.Concurrent;
 
-// ReSharper disable PossibleMultipleEnumeration
-
-// ReSharper disable InconsistentNaming
 namespace Dev2.Tests.Runtime.Hosting
 {
     [TestClass]
@@ -59,7 +57,7 @@ namespace Dev2.Tests.Runtime.Hosting
     {
         // Change this if you change the number of resources saved by SaveResources()
         const int SaveResourceCount = 6;
-        static readonly object syncRoot = new object();
+        static readonly object SyncRoot = new object();
 
         static string _testDir;
 
@@ -139,7 +137,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             foreach (var resource in result)
             {
-                IResource currentResource = resource;
+                var currentResource = resource;
                 var expected = resources.First(r => r.ResourceName == currentResource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
@@ -149,9 +147,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void LoadWorkspaceAsyncWithValidWorkspaceIDExpectedReturnsCatalogForWorkspace()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
@@ -161,7 +158,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             foreach (var resource in result)
             {
-                IResource currentResource = resource;
+                var currentResource = resource;
                 var expected = resources.First(r => r.ResourceName == currentResource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
@@ -171,27 +168,25 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceCount_ExpectedReturnsCount()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
 
-            Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));            
+            Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));
         }
 
         [TestMethod]
         public void Reload_ExpectedReturnsCount()
         {
-            List<IResource> resources;
             var workspaceID = GlobalConstants.ServerWorkspaceID;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.Reload();
 
-            Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));            
+            Assert.AreEqual(SaveResourceCount, rc.GetResourceCount(workspaceID));
         }
 
 
@@ -213,7 +208,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             foreach (var resource in result)
             {
-                IResource currentResource = resource;
+                var currentResource = resource;
                 var expected = resources.First(r => r.ResourceName == currentResource.ResourceName);
                 Assert.AreEqual(expected.FilePath, resource.FilePath);
             }
@@ -238,7 +233,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             foreach (var resource in result)
             {
-                IResource currentResource = resource;
+                var currentResource = resource;
                 var expected = resources.First(r => r.ResourceName == currentResource.ResourceName);
                 Assert.AreNotEqual(expected.ResourceID, resource.ResourceID);
             }
@@ -286,7 +281,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".xml"));
+            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -356,9 +351,9 @@ namespace Dev2.Tests.Runtime.Hosting
                 expected.ResourceName = "";
                 catalog.SaveResource(workspaceID, expected.ToStringBuilder(), "", reason: "reason", user: "bob");
             }
-            // ReSharper disable EmptyGeneralCatchClause
+
             catch (Exception)
-            // ReSharper restore EmptyGeneralCatchClause
+
             { }
             var res = catalog.GetResourceContents(workspaceID, expected.ResourceID).ToString();
             Assert.IsFalse(res.Contains("federatedresource"));
@@ -408,7 +403,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".xml"));
+            xml = XElement.Load(Path.Combine(path, resource.ResourceName + ".bite"));
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -434,7 +429,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource, resourcePath);
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + "\\" + resourceName + ".xml");
+            xml = XElement.Load(path + "\\" + resourceName + ".bite");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -492,6 +487,30 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
+        [TestCategory("ResourceCatalog_SaveResource")]
+        public void SaveResource_WithSameResourcePath_ExpectedNotDeleteOfExisting_ReasonDeploy()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = Guid.NewGuid();
+            const string resourcePath = "MyTest\\Folder1\\CitiesDatabase";
+            const string resourceName = "CitiesDatabase";
+            var xml = XmlResource.Fetch(resourceName);
+            var resource = new DbSource(xml);
+            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            //------------Execute Test---------------------------
+            var resource2 = new DbSource(xml) { ResourceID = resource.ResourceID };
+            catalog.SaveResource(workspaceID, resource, resourcePath, GlobalConstants.SaveReasonForDeploy, "");
+            var pathToDelete = resource.FilePath;
+            resource2.FilePath = resource.FilePath.Replace("Folder1", "Foldler1");
+            resource2.ResourceName = "CitiesDatabase";
+            Assert.IsTrue(File.Exists(pathToDelete));
+            catalog.SaveResource(workspaceID, resource2, "MyTest\\FOLDER1\\CitiesDatabase", "", "");
+            //------------Assert Results-------------------------
+            Assert.IsTrue(File.Exists(pathToDelete));
+        }
+
+        [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceCatalog_SaveResource")]
         public void SaveResource_WithSameResourceNameDifferentResourcePath_ExpectedSavedInCorrectFolder()
@@ -511,7 +530,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Execute Test---------------------------
             catalog.SaveResource(workspaceID, resource1, resourcePath1, "", "");
             //------------Assert Results-------------------------
-            xml = XElement.Load(path + "\\" + resourceName + ".xml");
+            xml = XElement.Load(path + "\\" + resourceName + ".bite");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -541,7 +560,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = catalog.SaveResource(workspaceID, resource1, resourcePath, "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.DuplicateMatch, resourceCatalogResult.Status);
-            xml = XElement.Load(path + "\\CitiesDatabase" + ".xml");
+            xml = XElement.Load(path + "\\CitiesDatabase" + ".bite");
             Assert.IsNotNull(xml);
             var idAttr = xml.Attributes("ID").ToList();
             Assert.AreEqual(1, idAttr.Count);
@@ -564,7 +583,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalog.SaveResource(workspaceID, resource, "");
 
-            xml = XElement.Load(Path.Combine(path, "CitiesDatabase" + ".xml"));
+            xml = XElement.Load(Path.Combine(path, "CitiesDatabase" + ".bite"));
             var attr = xml.Attributes("ID").ToList();
 
             Assert.AreEqual(1, attr.Count);
@@ -603,7 +622,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalog.SaveResource(workspaceID, resource1, "");
 
-            var path = Path.Combine(workspacePath, "TestSource" + ".xml");
+            var path = Path.Combine(workspacePath, "TestSource" + ".bite");
             var attributes = File.GetAttributes(path);
             if ((attributes & FileAttributes.ReadOnly) != FileAttributes.ReadOnly)
             {
@@ -685,9 +704,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceWithResourceNameExpectedReturnsResource()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             foreach (var expected in resources)
@@ -780,7 +798,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = catalog.SaveResource(workspaceID, resource, resourcePath, "", "");
             //------------Execute Test---------------------------
             Assert.IsTrue(resourceCatalogResult.Status == ExecStatus.Success);
-            IList<IResource> retrievedResource = catalog.GetResourceList<DbSource>(workspaceID);
+            var retrievedResource = catalog.GetResourceList<DbSource>(workspaceID);
             //------------Assert Results-------------------------
             Assert.IsNotNull(retrievedResource);
             Assert.AreEqual(1, retrievedResource.Count);
@@ -801,7 +819,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = catalog.SaveResource(workspaceID, resource, resourcePath, "", "");
             //------------Execute Test---------------------------
             Assert.IsTrue(resourceCatalogResult.Status == ExecStatus.Success);
-            IList<IResource> retrievedResource = catalog.GetResourceList<DropBoxSource>(workspaceID);
+            var retrievedResource = catalog.GetResourceList<DropBoxSource>(workspaceID);
             //------------Assert Results-------------------------
             Assert.IsNotNull(retrievedResource);
             Assert.AreEqual(0, retrievedResource.Count);
@@ -897,9 +915,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceContentsWithExistingResourceExpectedReturnsResourceContents()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             foreach (var expected in resources)
@@ -943,9 +960,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceContentsWithNonExistentResourceExpectedReturnsEmptyString()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var actual = catalog.GetResourceContents(new Resource { ResourceID = Guid.NewGuid(), FilePath = Path.GetRandomFileName() });
@@ -955,9 +971,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void GetResourceContentsWithNonExistentResourceIDExpectedReturnsEmptyString()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var actual = catalog.GetResourceContents(workspaceID, Guid.NewGuid());
@@ -971,13 +986,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithDeleteIsFalseAndFileDeletedFromSourceExpectedFileNotDeletedInDestination()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -993,13 +1006,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithOverwriteIsTrueExpectedFileInDestinationOverwritten()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1027,13 +1038,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithOverwriteIsFalseExpectedFileInDestinationUnchanged()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources, true);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources, true);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources, true);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources, true);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1062,13 +1071,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotCopied()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1083,13 +1090,11 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithFilesToIgnoreSpecifiedExpectedIgnoredFilesAreNotDeleted()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
-            List<IResource> targetResources;
             var targetWorkspaceID = Guid.NewGuid();
-            var targetWorkspacePath = SaveResources(targetWorkspaceID, out targetResources);
+            var targetWorkspacePath = SaveResources(targetWorkspaceID, out List<IResource> targetResources);
 
             var sourceResource = sourceResources[0];
             var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
@@ -1105,9 +1110,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void SyncToWithNonExistingDestinationDirectoryExpectedDestinationDirectoryCreated()
         {
-            List<IResource> sourceResources;
             var sourceWorkspaceID = Guid.NewGuid();
-            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out sourceResources);
+            var sourceWorkspacePath = SaveResources(sourceWorkspaceID, out List<IResource> sourceResources);
 
             var targetWorkspaceID = Guid.NewGuid();
             var targetWorkspacePath = EnvironmentVariables.GetWorkspacePath(targetWorkspaceID);
@@ -1137,7 +1141,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var sourcesPath = Path.Combine(workspacePath, "Sources");
             Directory.CreateDirectory(sourcesPath);
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            List<IResource> saveResources = SaveResources(sourcesPath, null, false, false, new[] { "ServerConnection1", "ServerConnection2" }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
+            var saveResources = SaveResources(sourcesPath, null, false, false, new[] { "ServerConnection1", "ServerConnection2" }, new[] { Guid.NewGuid(), Guid.NewGuid() }).ToList();
 
             //------------Execute Test---------------------------
 
@@ -1146,62 +1150,9 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Assert Results-------------------------
 
             Assert.IsTrue(payload.ToString().StartsWith("<Source"));
-            XElement payloadElement = XElement.Parse(payload.ToString());
-            string connectionStringattribute = payloadElement.AttributeSafe("ConnectionString");
+            var payloadElement = XElement.Parse(payload.ToString());
+            var connectionStringattribute = payloadElement.AttributeSafe("ConnectionString");
             Assert.IsFalse(string.IsNullOrEmpty(connectionStringattribute));
-        }
-
-        #endregion
-
-        #region CopyResource
-
-        [TestMethod]
-        public void CopyResourceWithNullResourceExpectedDoesNotCopyResourceToTarget()
-        {
-            var targetWorkspaceID = Guid.NewGuid();
-            var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
-            var result = catalog.CopyResource(null, targetWorkspaceID);
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public void CopyResourceWithNonExistingResourceNameExpectedDoesNotCopyResourceToTarget()
-        {
-            List<IResource> sourceResources;
-            var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out sourceResources);
-
-            List<IResource> targetResources;
-            var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out targetResources);
-
-            var result = new ResourceCatalog().CopyResource(Guid.Empty, sourceWorkspaceID, targetWorkspaceID);
-            Assert.IsFalse(result);
-        }
-
-        [TestMethod]
-        public void CopyResourceWithNonExistingResourceFilePathExpectedDoesNotCopyResourceToTarget()
-        {
-            List<IResource> sourceResources;
-            var sourceWorkspaceID = Guid.NewGuid();
-            SaveResources(sourceWorkspaceID, out sourceResources);
-
-            List<IResource> targetResources;
-            var targetWorkspaceID = Guid.NewGuid();
-            SaveResources(targetWorkspaceID, out targetResources);
-
-            var sourceResource = sourceResources[0];
-            var targetResource = targetResources.First(r => r.ResourceID == sourceResource.ResourceID);
-            var sourceFile = new FileInfo(sourceResource.FilePath);
-            var targetFile = new FileInfo(targetResource.FilePath);
-
-            sourceFile.Delete();
-            targetFile.Delete();
-
-            var result = new ResourceCatalog().CopyResource(sourceResource.ResourceID, sourceWorkspaceID, targetWorkspaceID);
-            Assert.IsFalse(result);
-            targetFile.Refresh();
-            Assert.IsFalse(targetFile.Exists);
         }
 
         #endregion
@@ -1268,9 +1219,8 @@ namespace Dev2.Tests.Runtime.Hosting
         [TestMethod]
         public void DeleteResourceWithNonExistingResourceNameExpectedReturnsNoMatch()
         {
-            List<IResource> resources;
             var workspaceID = Guid.NewGuid();
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             var result = catalog.DeleteResource(workspaceID, "xxx", "WorkflowService");
@@ -1292,7 +1242,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(ExecStatus.DuplicateMatch, result.Status);
         }
 
-        
+
 
         #endregion
 
@@ -1336,8 +1286,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void GetDynamicObjectsWithResourceNameExpectedReturnsObjectGraph()
         {
             var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
@@ -1352,8 +1301,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void GetDynamicObjectsWithResourceExpectedReturnsObjectGraph()
         {
             var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
@@ -1368,8 +1316,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void GetDynamicObjectsWithResourcesExpectedReturnsObjectGraphs()
         {
             var workspaceID = Guid.NewGuid();
-            List<IResource> resources;
-            SaveResources(workspaceID, out resources);
+            SaveResources(workspaceID, out List<IResource> resources);
 
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
@@ -1711,17 +1658,17 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
             //------------Assert Precondition--------------------
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName", "TestName");
+            var resourceCatalogResult = rc.RenameResource(workspaceID, Guid.Parse(resourceID), "TestName", "TestName");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("Renamed Resource '" + resourceID + "' to 'TestName'", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            var resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
+            var xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
             var element = xElement.Attribute("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("TestName", element.Value);
@@ -1729,9 +1676,9 @@ namespace Dev2.Tests.Runtime.Hosting
             var actionElem = xElement.Element("Action");
             Assert.IsNotNull(actionElem);
             var xamlElem = actionElem.Element("XamlDefinition");
-            // ReSharper disable PossibleNullReferenceException
+
             Assert.IsTrue(xamlElem.Value.Contains("DisplayName=\"TestName\""));
-            // ReSharper restore PossibleNullReferenceException
+
         }
 
         [TestMethod]
@@ -1751,18 +1698,18 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
             //------------Assert Precondition--------------------
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, null, null);
+            var resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, null, null);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Name");
+            var resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
+            var xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            var element = xElement.Element("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("Bug6619Dep", element.Value);
         }
@@ -1784,21 +1731,21 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceID.ToString() == resourceID);
             //------------Assert Precondition--------------------
             Assert.AreEqual(1, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, "", "");
+            var resourceCatalogResult = rc.RenameResource(workspaceID, oldResource.ResourceID, "", "");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Resource '50fef451-b41e-4bdf-92a1-4a41e254cde2' renamed to ''</CompilerMessage>", resourceCatalogResult.Message);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Name");
+            var resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
+            var xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            var element = xElement.Element("Name");
             Assert.IsNotNull(element);
             Assert.AreEqual("Bug6619Dep", element.Value);
-            XElement elementCat = xElement.Element("Category");
+            var elementCat = xElement.Element("Category");
             Assert.IsNotNull(elementCat);
             Assert.AreEqual("TestCategory\\Bug6619Dep", element.Value);
         }
@@ -1819,12 +1766,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
+            var resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
             Assert.AreEqual("<CompilerMessage>Updated Category from 'Bugs' to 'TestCategory'</CompilerMessage>", resourceCatalogResult.Message);
@@ -1846,7 +1793,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -1880,17 +1827,17 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "SomeNonExistentCategory", "TestCategory");
+            var resourceCatalogResult = rc.RenameCategory(workspaceID, "SomeNonExistentCategory", "TestCategory");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.NoMatch, resourceCatalogResult.Status);
-            string resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
-            XElement xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
-            XElement element = xElement.Element("Category");
+            var resourceContents = rc.GetResourceContents(workspaceID, oldResource.ResourceID).ToString();
+            var xElement = XElement.Load(new StringReader(resourceContents), LoadOptions.None);
+            var element = xElement.Element("Category");
             Assert.IsNotNull(element);
             Assert.AreEqual("Bugs\\Bug6619Dep", element.Value);
         }
@@ -1911,12 +1858,12 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
             //------------Execute Test---------------------------
-            ResourceCatalogResult resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
+            var resourceCatalogResult = rc.RenameCategory(workspaceID, "Bugs", "TestCategory");
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Success, resourceCatalogResult.Status);
 
@@ -1939,7 +1886,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -1964,7 +1911,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -1989,7 +1936,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2013,7 +1960,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2038,8 +1985,8 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
-            IResource resourceToUpdate = result.FirstOrDefault(resource => resource.ResourceName == "Bug6619");
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var resourceToUpdate = result.FirstOrDefault(resource => resource.ResourceName == "Bug6619");
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2068,7 +2015,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2100,7 +2047,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, serverVersionRepository.Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2128,7 +2075,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2156,7 +2103,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var catalog = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalog.SaveResource(workspaceID, resource, "");
             var result = catalog.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(r => r.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(r => r.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -2174,7 +2121,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
         public static string SaveResources(Guid workspaceID, string versionNo, bool injectID, bool signXml, string[] sources, string[] services, out List<IResource> resources, Guid[] sourceIDs, Guid[] serviceIDs, bool loadws = false)
         {
-            lock (syncRoot)
+            lock (SyncRoot)
             {
 
                 var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
@@ -2219,10 +2166,10 @@ namespace Dev2.Tests.Runtime.Hosting
 
         static IEnumerable<IResource> SaveResources(string resourcesPath, string versionNo, bool injectID, bool signXml, IEnumerable<string> resourceNames, Guid[] resourceIDs, bool createWorDef = false)
         {
-            lock (syncRoot)
+            lock (SyncRoot)
             {
                 var result = new List<IResource>();
-                int count = 0;
+                var count = 0;
                 foreach (var resourceName in resourceNames)
                 {
                     var xml = XmlResource.Fetch(resourceName);
@@ -2250,8 +2197,8 @@ namespace Dev2.Tests.Runtime.Hosting
                     }
                     var res = new Resource(xml);
                     var resourceDirectory = resourcesPath + "\\";
-                    res.FilePath = resourceDirectory + res.ResourceName + ".xml";
-                    FileInfo f = new FileInfo(res.FilePath);
+                    res.FilePath = resourceDirectory + res.ResourceName + ".bite";
+                    var f = new FileInfo(res.FilePath);
                     if (f.Directory != null && !f.Directory.Exists)
                     {
                         Directory.CreateDirectory(resourceDirectory);
@@ -2269,7 +2216,7 @@ namespace Dev2.Tests.Runtime.Hosting
                         }
                         File.WriteAllText(
                             Path.Combine(resourcesPath,
-                                $"VersionControl\\{resourceName}.V{versionNo}.xml"),
+                                $"VersionControl\\{resourceName}.V{versionNo}.bite"),
                             contents, Encoding.UTF8);
                     }
                     result.Add(res);
@@ -2332,7 +2279,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(resource);
             var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resourceName).FirstOrDefault();
             Assert.IsNotNull(beforeService);
-            ServiceAction beforeAction = beforeService.Actions.FirstOrDefault();
+            var beforeAction = beforeService.Actions.FirstOrDefault();
             var xElement = rc.GetResourceContents(resource).ToXElement();
             var element = xElement.Element("DataList");
             Assert.IsNotNull(element);
@@ -2390,7 +2337,7 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.IsNotNull(resource);
             var beforeService = rc.GetDynamicObjects<DynamicService>(workspaceID, resourceName).FirstOrDefault();
             Assert.IsNotNull(beforeService);
-            ServiceAction beforeAction = beforeService.Actions.FirstOrDefault();
+            var beforeAction = beforeService.Actions.FirstOrDefault();
 
             var xElement = rc.GetResourceContents(resource).ToXElement();
 
@@ -2546,7 +2493,7 @@ namespace Dev2.Tests.Runtime.Hosting
 
             foreach (var expected in expectedResources)
             {
-                IResource resource = expected;
+                var resource = expected;
                 var actualGraph = actualGraphs.FirstOrDefault(g => g.Name == resource.ResourceName);
                 Assert.IsNotNull(actualGraph);
 
@@ -2753,34 +2700,33 @@ namespace Dev2.Tests.Runtime.Hosting
         {
             //---------------Set up test pack-------------------
 
-            ResourceCatalogPluginContainer catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionarySafe<Guid, List<IResource>>());
+            var catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionary<Guid, List<IResource>>());
             //---------------Assert Precondition----------------
             Assert.IsNotNull(catalogPluginContainer);
             //---------------Execute Test ----------------------
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalogPluginContainer.Build(rc);
             //---------------Test Result -----------------------
-            Assert.IsNotNull(catalogPluginContainer.CopyProvider);
             Assert.IsNotNull(catalogPluginContainer.SaveProvider);
             Assert.IsNotNull(catalogPluginContainer.SyncProvider);
             Assert.IsNotNull(catalogPluginContainer.RenameProvider);
             Assert.IsNotNull(catalogPluginContainer.DeleteProvider);
             Assert.IsNotNull(catalogPluginContainer.LoadProvider);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void ResourceCatalogPluginContainer_GivenVersionAndManagementServices_ShouldCreateInstances()
         {
             //---------------Set up test pack-------------------
             IEnumerable<DynamicService> services = new List<DynamicService>();
-            ResourceCatalogPluginContainer catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionarySafe<Guid, List<IResource>>(), services);
+            var catalogPluginContainer = new ResourceCatalogPluginContainer(new Mock<IServerVersionRepository>().Object, new ConcurrentDictionary<Guid, List<IResource>>(), services);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(catalogPluginContainer);
             //---------------Execute Test ----------------------
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             catalogPluginContainer.Build(rc);
             //---------------Test Result -----------------------
-            Assert.IsNotNull(catalogPluginContainer.CopyProvider);
             Assert.IsNotNull(catalogPluginContainer.SaveProvider);
             Assert.IsNotNull(catalogPluginContainer.SyncProvider);
             Assert.IsNotNull(catalogPluginContainer.RenameProvider);
@@ -2868,12 +2814,14 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
             var mock = new Mock<IResourceActivityCache>();
 
-            _parsers.Add(workspaceID, mock.Object);
+            _parsers.AddOrUpdate(workspaceID, mock.Object,(key,cache)=> {
+                return cache;
+            });
             const string propertyName = "_parsers";
-            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            var fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -2893,7 +2841,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadResourceActivityCache_GivenServiceName_ShouldAddActivityToParserCache()
         {
             //---------------Set up test pack-------------------
-            var workspaceID =GlobalConstants.ServerWorkspaceID;
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
@@ -2905,10 +2853,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
-            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            var fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -2922,7 +2870,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var act1 = resourceActivityCache.GetActivity(actId);
             var act2 = resourceActivityCache.GetActivity(actId2);
             Assert.IsNotNull(act1);
-            Assert.IsNotNull(act2);            
+            Assert.IsNotNull(act2);
         }
 
         [TestMethod]
@@ -2930,7 +2878,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadResourceActivityCache_GivenServiceNameWithActivityInCache_ShouldReturnFromCache()
         {
             //---------------Set up test pack-------------------
-            var workspaceID =GlobalConstants.ServerWorkspaceID;
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
@@ -2942,10 +2890,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
-            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            var fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
             rc.LoadServerActivityCache();
             var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
@@ -2961,7 +2909,7 @@ namespace Dev2.Tests.Runtime.Hosting
         public void LoadResourceActivityCache_GivenServiceName_ShouldPopulateServiceActionRepo()
         {
             //---------------Set up test pack-------------------
-            var workspaceID =GlobalConstants.ServerWorkspaceID;
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
             var workspacePath = EnvironmentVariables.GetWorkspacePath(workspaceID);
             var path = Path.Combine(workspacePath, "Services");
             Directory.CreateDirectory(path);
@@ -2973,10 +2921,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
-            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            var fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
             //---------------Assert Precondition----------------
             //---------------Execute Test ----------------------
@@ -3006,10 +2954,10 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspaceViaBuilder(workspacePath, false, "Workflows");
 
-            Dictionary<Guid, IResourceActivityCache> _parsers = new Dictionary<Guid, IResourceActivityCache>();
+            var _parsers = new ConcurrentDictionary<Guid, IResourceActivityCache>();
 
             const string propertyName = "_parsers";
-            FieldInfo fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
+            var fieldInfo = typeof(ResourceCatalog).GetField(propertyName, BindingFlags.NonPublic | BindingFlags.Static);
             fieldInfo?.SetValue(rc, _parsers);
             rc.LoadServerActivityCache();
             var actId = Guid.Parse("1736ca6e-b870-467f-8d25-262972d8c3e8");
@@ -3080,7 +3028,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -3106,7 +3054,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -3131,7 +3079,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -3145,7 +3093,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var resourceCatalogResult = rc.DuplicateResource(oldResource.ResourceID, oldResource.GetResourcePath(workspaceID), destinationPath);
             //------------Assert Results-------------------------
             result = rc.GetResources(workspaceID);
-            IResource dupResource = result.FirstOrDefault(resource => resource.ResourceName == destinationPath);
+            var dupResource = result.FirstOrDefault(resource => resource.ResourceName == destinationPath);
             Assert.IsNotNull(dupResource);
             var dupXelement = dupResource.ToXml();
             var newNamecontains = dupXelement.ToString(SaveOptions.DisableFormatting).Contains(destinationPath);
@@ -3171,7 +3119,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -3197,7 +3145,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -3260,15 +3208,13 @@ namespace Dev2.Tests.Runtime.Hosting
             Assert.AreEqual(2, resourceList);
 
         }
-     
+
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [ExpectedException(typeof(XmlException))]
         public void ResourceCatalog_UnitTest_GetResourceOfTNotExist_ExpectNull()
         {
             //------------Setup for test--------------------------
-
             var path = EnvironmentVariables.ResourcePath;
             Directory.CreateDirectory(path);
             const string resourceName = "Bug6619Dep";
@@ -3276,14 +3222,12 @@ namespace Dev2.Tests.Runtime.Hosting
 
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
 
-            //------------Assert Precondition-----------------
             //------------Execute Test---------------------------
             var resourceList = rc.GetResource<PluginSource>(Guid.NewGuid(), Guid.NewGuid());
             //------------Assert Results-------------------------
             Assert.IsNull(resourceList);
-
         }
-        
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         [ExpectedException(typeof(ArgumentNullException))]
@@ -3320,7 +3264,7 @@ namespace Dev2.Tests.Runtime.Hosting
             var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
             rc.LoadWorkspace(workspaceID);
             var result = rc.GetResources(workspaceID);
-            IResource oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
+            var oldResource = result.FirstOrDefault(resource => resource.ResourceName == resourceName);
             //------------Assert Precondition-----------------
             Assert.AreEqual(2, result.Count);
             Assert.IsNotNull(oldResource);
@@ -3331,13 +3275,92 @@ namespace Dev2.Tests.Runtime.Hosting
         }
 
 
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_GetXmlResource_UpdatesResource_To_Bite()
+        {
+            //------------Setup for test--------------------------
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "testingExtension";
+            var resourceId = Guid.Parse("aff19795-fafc-43bb-b6a9-c7c88b3cd93c");
+            SaveResources(path, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            var resourceCount = rc.GetResourceCount(workspaceID);
+            var resource = rc.GetResource(workspaceID, resourceId);
+
+            //------------Assert Precondition-----------------            
+            //------------Execute Test--------------------------
+            //------------Assert Results------------------------
+            Assert.AreEqual(1, resourceCount);
+            Assert.IsTrue(resource.FilePath.EndsWith(".bite"));
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_IsWarewolfResource_Given_NonWarewolf_Resource_Retunrs_False()
+        {
+            //------------Setup for test--------------------------
+            var rcBuilder = new ResourceCatalogBuilder();
+            var privateObject = new PrivateObject(rcBuilder);
+            var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
+            var results = privateObject.Invoke("IsWarewolfResource", xml);
+            //------------Assert Precondition-----------------            
+            Assert.IsNotNull(results);
+            //------------Execute Test--------------------------
+            //------------Assert Results------------------------
+            Assert.IsFalse((bool)results);
+
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_Save_Resource_Saves_In_Bite_Extension()
+        {
+            //------------Setup for test--------------------------
+            var rcBuilder = new ResourceCatalogBuilder();
+            var privateObject = new PrivateObject(rcBuilder);
+            var workspaceID = GlobalConstants.ServerWorkspaceID;
+            var path = EnvironmentVariables.ResourcePath;
+            Directory.CreateDirectory(path);
+            const string resourceName = "WarewolfResourceFile";
+            var resourceSaved = SaveResources(path, null, false, false, new[] { resourceName }, new[] { Guid.NewGuid(), Guid.NewGuid() });
+            var paths = new List<string>() { resourceSaved.First().FilePath };
+            var rc = new ResourceCatalog(null, new Mock<IServerVersionRepository>().Object);
+            var result = rc.GetResources(workspaceID);
+            //------------Assert Precondition-----------------
+            var expectedFile = resourceSaved.First().FilePath;
+            Assert.IsTrue(File.Exists(expectedFile));
+            File.Delete(expectedFile);
+        }
+
+        [TestMethod]
+        [Owner("Sanele Mthembu")]
+        public void ResourceCatalog_UnitTest_UpdateExtensions_Given_WW_Resource_Updates_The_Extension()
+        {
+            //------------Setup for test--------------------------
+            var sourcesPath = EnvironmentVariables.GetWorkspacePath(GlobalConstants.ServerWorkspaceID);
+            var rcBuilder = new ResourceCatalogBuilder();
+            var privateObject = new PrivateObject(rcBuilder);
+            var xml = XmlResource.Fetch("fileThatsNotWarewolfResource");
+            var filePath = sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml";
+            var filePathToUpdate = new List<string> { sourcesPath + "\\" + "fileThatsNotWarewolfResource.xml" };
+            File.WriteAllText(filePath, xml.ToString());
+            privateObject.Invoke("UpdateExtensions", filePathToUpdate);
+            //------------Assert Precondition-----------------
+            var expectedFile = Path.ChangeExtension(filePath, ".bite");
+            Assert.IsTrue(File.Exists(expectedFile));
+            File.Delete(expectedFile);
+        }
 
         private ExecuteMessage ConvertToMsg(string payload)
         {
             return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
         }
 
-        private class ResourceSaveProviderMock : ResourceSaveProvider
+        class ResourceSaveProviderMock : ResourceSaveProvider
         {
             public ResourceSaveProviderMock(IResourceCatalog resourceCatalog, IServerVersionRepository serverVersionRepository)
                 : base(resourceCatalog, serverVersionRepository)

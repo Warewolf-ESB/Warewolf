@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces;
@@ -9,7 +8,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Data.ServiceModel
 {
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
+
     public abstract class OauthSource : Resource, IResourceSource, IOAuthSource
     {
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -62,6 +62,10 @@ namespace Dev2.Runtime.Security
                 return _theInstance;
             }
         }
+
+        public RSACryptoServiceProvider SystemKey => _systemKey;
+
+        public RSACryptoServiceProvider ServerKey => _serverKey;
 
         #endregion
 
@@ -168,7 +172,7 @@ namespace Dev2.Runtime.Security
         #region EnsureSSL
         public bool EnsureSsl(string certPath, IPEndPoint endPoint)
         {
-            bool result = false;
+            var result = false;
 
             if (!File.Exists(certPath))
             {
@@ -182,7 +186,7 @@ namespace Dev2.Runtime.Security
                 }
                 catch (Exception e)
                 {
-                    Dev2Logger.Error(e);
+                    Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 }
             }
             else

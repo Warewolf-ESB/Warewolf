@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,16 +13,15 @@ using System.Globalization;
 using System.Windows.Data;
 using Dev2.Common.Interfaces.Scheduler.Interfaces;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Core.AppResources.Converters
 {
-
     [ValueConversion(typeof(bool), typeof(bool))]
     public class InverseScheduleStatusConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
+            var schedulerStatus = (SchedulerStatus?)value;
 
             if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
             {
@@ -31,15 +30,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return true;
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            SchedulerStatus? schedulerStatus = (SchedulerStatus?)value;
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
 
-            if (schedulerStatus != null && schedulerStatus == SchedulerStatus.Enabled)
-            {
-                return false;
-            }
-            return true;
-        }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,7 @@
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Win32.TaskScheduler;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.TaskScheduler.Wrappers.Test
 {
@@ -19,7 +19,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
     public class Dev2TaskFolderTests
     {
         TaskFolder _folder;
-        private TaskService _service;
+        TaskService _service;
         [TestInitialize]
         public void Init()
         {
@@ -54,7 +54,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void TaskShedulerWrapper_TaskFolder_Construct()
         {
             var service = new TaskService();
-            TaskFolder folder = service.RootFolder;
+            var folder = service.RootFolder;
             var df = new Dev2TaskFolder(new TaskServiceConvertorFactory(),folder);
             Assert.AreEqual(df.Instance,folder);
             Assert.AreEqual(df.Name,folder.Name);
@@ -92,9 +92,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         public void TaskShedulerWrapper_TaskFolder_Valid()
         {
             var folder = new Dev2TaskFolder(new TaskServiceConvertorFactory(), _folder);
-
-            Assert.AreEqual(folder.ValidTasks.Count,1);
-
+            Assert.AreEqual(1, folder.ValidTasks.Count);
         }
 
         [TestMethod]
@@ -102,15 +100,11 @@ namespace Dev2.TaskScheduler.Wrappers.Test
         [TestCategory("TaskShedulerWrapper_TaskFolder_Exists")]
         public void TaskShedulerWrapper_TaskFolder_Exists()
         {
-            using (var folder = new Dev2TaskFolder(new TaskServiceConvertorFactory(), _folder))
-            {
-
-                Assert.IsTrue(folder.TaskExists("TestTask"));
-            }
-
+            var folder = new Dev2TaskFolder(new TaskServiceConvertorFactory(), _folder);
+            Assert.IsTrue(folder.TaskExists("TestTask"));
         }
 
-                [TestMethod]
+        [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("TaskShedulerWrapper_TaskFolder_Register")]
         public void TaskShedulerWrapper_TaskFolder_Register()
@@ -120,7 +114,7 @@ namespace Dev2.TaskScheduler.Wrappers.Test
             task.Actions.Add(new ExecAction("b"));
                     folder.RegisterTaskDefinition("newn",
                                                   new Dev2TaskDefinition(new TaskServiceConvertorFactory(), task));
-            Assert.AreEqual(folder.ValidTasks.Count,2);
+            Assert.AreEqual(2, folder.ValidTasks.Count);
 
         }
     }

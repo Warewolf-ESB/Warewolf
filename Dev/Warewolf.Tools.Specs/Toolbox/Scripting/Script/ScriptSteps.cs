@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,12 +24,16 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
     [Binding]
     public class ScriptSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ScriptSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -53,8 +57,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -65,12 +68,9 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
             BuildShapeAndTestData();
 
-            string scriptToExecute;
-            scenarioContext.TryGetValue("scriptToExecute", out scriptToExecute);
-            enScriptType language;
-            scenarioContext.TryGetValue("language", out language);
-            DsfJavascriptActivity javascriptActivity;
-            scenarioContext.TryGetValue("javascript", out javascriptActivity);
+            scenarioContext.TryGetValue("scriptToExecute", out string scriptToExecute);
+            scenarioContext.TryGetValue("language", out enScriptType language);
+            scenarioContext.TryGetValue("javascript", out DsfJavascriptActivity javascriptActivity);
 
             if (javascriptActivity != null)
             {
@@ -85,8 +85,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            DsfPythonActivity pythonActivity;
-            FeatureContext.Current.TryGetValue("pythonActivity", out pythonActivity);
+            FeatureContext.Current.TryGetValue("pythonActivity", out DsfPythonActivity pythonActivity);
 
             if (pythonActivity != null)
             {
@@ -101,8 +100,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            DsfRubyActivity rubyActivity;
-            FeatureContext.Current.TryGetValue("rubyActivity", out rubyActivity);
+            FeatureContext.Current.TryGetValue("rubyActivity", out DsfRubyActivity rubyActivity);
 
             if (rubyActivity != null)
             {
@@ -117,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
                 return;
             }
 
-            DsfScriptingActivity dsfScripting = new DsfScriptingActivity
+            var dsfScripting = new DsfScriptingActivity
             {
                 Script = scriptToExecute,
                 ScriptType = language,
@@ -134,8 +132,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         [Given(@"I have a script variable ""(.*)"" with this value ""(.*)""")]
         public void GivenIHaveAScriptVariableWithThisValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -156,7 +153,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
             }
             else
             {
-                string resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Scripting.Script.testfiles.{0}",
+                var resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Scripting.Script.testfiles.{0}",
                                                     scriptFileName);
                 scriptToExecute = ReadFile(resourceName);
             }
@@ -173,18 +170,16 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Script
         public void WhenIExecuteTheScriptTool()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the script result should be ""(.*)""")]
         public void ThenTheScriptResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            GetScalarValueFromEnvironment(result.Environment, ResultVariable, out actualValue, out error);
+            GetScalarValueFromEnvironment(result.Environment, ResultVariable, out string actualValue, out string error);
             if (string.IsNullOrEmpty(expectedResult))
             {
                 Assert.IsTrue(string.IsNullOrEmpty(actualValue));

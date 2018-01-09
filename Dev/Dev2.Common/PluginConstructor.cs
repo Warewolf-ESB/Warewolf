@@ -41,7 +41,9 @@ namespace Dev2.Common
                 return true;
             }
             if (GetHashCode() == other.GetHashCode())
+            {
                 return true;
+            }
 
             return string.Equals(ConstructorName, other.ConstructorName);
         }

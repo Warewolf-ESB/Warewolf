@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,19 +21,23 @@ using Dev2.Data.Interfaces;
 using Dev2.Interfaces;
 using Dev2.Studio.Core.Activities.Utils;
 
-// ReSharper disable CheckNamespace
+
 namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
-// ReSharper restore CheckNamespace
+
 {
     [Binding]
     public class WriteFileSteps : FileToolsBase
     {
-        private readonly ScenarioContext _scenarioContext;
+        readonly ScenarioContext _scenarioContext;
 
         public WriteFileSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this._scenarioContext = scenarioContext;
         }
 
@@ -53,14 +57,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         public void WhenTheWriteFileToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             _scenarioContext.Add("result", result);
         }
 
         [Given(@"the input contents from a file ""(.*)""")]
         public void GivenTheInputContentsFromAFile(string fileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
+            var resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
                                                 fileName);
             var content = ReadFile(resourceName);
             _scenarioContext.Add("content", content);
@@ -69,21 +73,21 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
         [Then(@"the output contents from a file ""(.*)""")]
         public void ThenTheOutputContentsFromAFile(string fileName)
         {
-            string resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
+            var resourceName = string.Format("Dev2.Activities.Specs.Toolbox.FileAndFolder.Write_File.testfiles.{0}",
                                               fileName);
             var expectedContents = ReadFile(resourceName);
 
             var broker = ActivityIOFactory.CreateOperationsBroker();
-            IActivityIOPath source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
+            var source = ActivityIOFactory.CreatePathFromString(_scenarioContext.Get<string>(CommonSteps.ActualSourceHolder),
                             _scenarioContext.Get<string>(CommonSteps.SourceUsernameHolder),
                             _scenarioContext.Get<string>(CommonSteps.SourcePasswordHolder),
                             true);
 
-            IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+            var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
 
             var fileContents = broker.Get(sourceEndPoint);
 
-            bool does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
+            var does = fileContents.Contains(expectedContents.Replace("\n","\r\n"));
             Assert.IsTrue(does);
         }
 
@@ -96,7 +100,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
             var appendTop = false;
             var appendBottom = false;
 
-            switch(readtype)
+            switch (readtype)
             {
                 case "Overwrite":
                     overwrite = true;
@@ -106,6 +110,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
                     break;
                 case "Append Bottom":
                     appendBottom = true;
+                    break;
+                default:
                     break;
             }
 
@@ -131,7 +137,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.FileAndFolder.Write_File
 
             var viewModel = new WriteFileDesignerViewModel(ModelItemUtils.CreateModelItem(fileWrite));
             if (!_scenarioContext.ContainsKey("viewModel"))
+            {
                 _scenarioContext.Add("viewModel", viewModel);
+            }
         }
     }
 }

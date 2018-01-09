@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,19 +24,22 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
     [Binding]
     public class RandomSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public RandomSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -45,22 +48,17 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
             }
 
             var resultVariable = ResultVariable;
-            string resVar;
-            if (scenarioContext.TryGetValue("resVar", out resVar))
+            if (scenarioContext.TryGetValue("resVar", out string resVar))
             {
                 resultVariable = resVar;
             }
             variableList.Add(new Tuple<string, string>(resultVariable, ""));
             BuildShapeAndTestData();
 
-            enRandomType randomType;
-            scenarioContext.TryGetValue("randomType", out randomType);
-            string length;
-            scenarioContext.TryGetValue("length", out length);
-            string rangeFrom;
-            scenarioContext.TryGetValue("rangeFrom", out rangeFrom);
-            string rangeTo;
-            scenarioContext.TryGetValue("rangeTo", out rangeTo);
+            scenarioContext.TryGetValue("randomType", out enRandomType randomType);
+            scenarioContext.TryGetValue("length", out string length);
+            scenarioContext.TryGetValue("rangeFrom", out string rangeFrom);
+            scenarioContext.TryGetValue("rangeTo", out string rangeTo);
 
             var dsfRandom = new DsfRandomActivity
                 {
@@ -115,21 +113,19 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         public void WhenTheRandomToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the result from the random tool should be of type ""(.*)"" with a length of ""(.*)""")]
         public void ThenTheResultFromTheRandomToolShouldBeOfTypeWithALengthOf(string type, int length)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
-            // ReSharper disable AssignNullToNotNullAttribute
-            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            // ReSharper restore AssignNullToNotNullAttribute
+                                       out string actualValue, out string error);
+            
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
+
             converter.ConvertFrom(actualValue);
             if (length == 0)
             {
@@ -144,15 +140,13 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         [Then(@"the result from the random tool should be of the same type as ""(.*)""")]
         public void ThenTheResultFromTheRandomToolShouldBeOfTheSameTypeAs(string type)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
-            // ReSharper disable AssignNullToNotNullAttribute
-            TypeConverter converter = TypeDescriptor.GetConverter(Type.GetType(type));
-            // ReSharper restore AssignNullToNotNullAttribute
-            if(actualValue != null)
+                                       out string actualValue, out string error);
+            
+            var converter = TypeDescriptor.GetConverter(Type.GetType(type));
+
+            if (actualValue != null)
             {
                 converter.ConvertFrom(actualValue);
             }
@@ -161,34 +155,29 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Random
         [Then(@"the random value will be ""(.*)""")]
         public void ThenTheRandomValueWillBe(string value)
         {
-            string error;
-            string actualValue;
             value = value.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             Assert.AreEqual(value, actualValue);
         }
 
         [Then(@"the random value will be between ""(.*)"" and ""(.*)"" inclusive")]
         public void ThenTheRandomValueWillBeBetweenAndInclusive(Decimal from, Decimal to)
         {
-            string error;
-            string actualValue;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, DataListUtil.RemoveLanguageBrackets(ResultVariable),
-                                       out actualValue, out error);
-            decimal d = decimal.Parse(actualValue);
+                                       out string actualValue, out string error);
+            var d = decimal.Parse(actualValue);
             Assert.IsTrue(d >= from && d <= to);
         }
 
         [Given(@"I have a a random variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveAARandomVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
             variable = variable.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {

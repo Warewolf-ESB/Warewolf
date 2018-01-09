@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,39 +52,32 @@ namespace Dev2.Activities.Designers2.Sequence
         {
         }
 
-        #region Overrides of ActivityDesignerTemplate
+        protected override IInputElement GetInitialFocusElement() => ActivitiesPresenter;
 
-        protected override IInputElement GetInitialFocusElement()
+        void CopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
-            return ActivitiesPresenter;
         }
 
-        #endregion
-
-        private void CopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
-        {            
-        }
-
-        private void CopyCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        void CopyCommandCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
-        private void CopyCommandPreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        void CopyCommandPreviewExecuted(object sender, ExecutedRoutedEventArgs e)
         {
         }
 
-        private void CopyCommandPreviewCanExecute(object sender, CanExecuteRoutedEventArgs e)
+        void CopyCommandPreviewCanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
             e.CanExecute = false;
         }
 
-        private void SapvCopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
+        void SapvCopyCommandExecuted(object sender, ExecutedRoutedEventArgs e)
         {
         }
 
-        private void SapvCopyCommandPreviewExecuted(object sender, ExecutedRoutedEventArgs e)
-        {            
+        void SapvCopyCommandPreviewExecuted(object sender, ExecutedRoutedEventArgs e)
+        {
         }
     }
 }

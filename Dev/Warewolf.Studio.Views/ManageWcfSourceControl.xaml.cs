@@ -19,7 +19,7 @@ namespace Warewolf.Studio.Views
 
         public string GetHeaderText()
         {
-            BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            var be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return HeaderTextBlock.Text;
         }
@@ -30,6 +30,8 @@ namespace Warewolf.Studio.Views
             {
                 case "WCF Endpoint Url":
                     return EndpointUrlTxtBox.Text;
+                default:
+                    break;
             }
             return String.Empty;
         }
@@ -45,6 +47,8 @@ namespace Warewolf.Studio.Views
                 case "Save":
                     var viewModel = DataContext as ManageWcfSourceViewModel;
                     return viewModel != null && viewModel.SaveCommand.CanExecute(null);
+                default:
+                    break;
             }
             return false;
         }

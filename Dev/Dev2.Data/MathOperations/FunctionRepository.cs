@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using Dev2.Common;
@@ -20,7 +19,7 @@ using Infragistics.Calculations.CalcManager;
 using Infragistics.Calculations.Engine;
 using Warewolf.Resource.Errors;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.MathOperations
 {
     // PBI: 1214
@@ -28,9 +27,9 @@ namespace Dev2.MathOperations
     // to perform evaluations on
     public class FunctionRepository : IFrameworkRepository<IFunction>
     {
-        private readonly List<IFunction> _functions;
-        private static readonly IDev2CalculationManager CalcManager = new Dev2CalculationManager();
-        private bool _isDisposed;
+        readonly List<IFunction> _functions;
+        static readonly IDev2CalculationManager CalcManager = new Dev2CalculationManager();
+        bool _isDisposed;
 
         internal FunctionRepository()
         {
@@ -61,9 +60,9 @@ namespace Dev2.MathOperations
             {
                 return _functions.AsQueryable().Where(expression).ToList();
             }
-            // ReSharper disable NotResolvedInText
+            
             throw new ArgumentNullException(ErrorResource.ExpressionCannotBeNull);
-            // ReSharper restore NotResolvedInText
+            
         }
 
         /// <summary>
@@ -82,8 +81,8 @@ namespace Dev2.MathOperations
                 }
                 catch (InvalidOperationException ioex)
                 {
-                    Dev2Logger.Error(ioex);
-                    IFunction func = MathOpsFactory.CreateFunction();
+                    Dev2Logger.Error(ioex, GlobalConstants.WarewolfError);
+                    var func = MathOpsFactory.CreateFunction();
                     return func;
                 }
             }
@@ -96,7 +95,7 @@ namespace Dev2.MathOperations
         /// </summary>
         public void Load()
         {
-            IEnumerable<CalculationFunction> calcFunctions = CalcManager.GetAllFunctions();
+            var calcFunctions = CalcManager.GetAllFunctions();
 
             foreach (CalculationFunction calcFunction in calcFunctions)
             {
@@ -120,9 +119,9 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.CannotRemoveNullListOfFunctions);
-                // ReSharper restore NotResolvedInText
+                
             }
         }
 
@@ -138,9 +137,9 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
-                // ReSharper restore NotResolvedInText
+                
             }
         }
 
@@ -156,9 +155,9 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.CannotSaveNullListOfFunctions);
-                // ReSharper restore NotResolvedInText
+                
             }
         }
         /// <summary>
@@ -173,16 +172,16 @@ namespace Dev2.MathOperations
             }
             else
             {
-                // ReSharper disable NotResolvedInText
+                
                 throw new ArgumentNullException(ErrorResource.FunctionCannotBeNull);
-                // ReSharper restore NotResolvedInText
+                
             }
             return "Saved";
         }
 
         public event EventHandler ItemAdded;
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         protected void OnItemAdded()
         {
             ItemAdded?.Invoke(this, new EventArgs());

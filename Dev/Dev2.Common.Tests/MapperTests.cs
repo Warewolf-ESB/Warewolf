@@ -9,9 +9,9 @@ namespace Dev2.Common.Tests
         public string Surname { get; set; }
         public int Id { get; set; }
 #pragma warning disable 169
-        // ReSharper disable once FieldCanBeMadeReadOnly.Local
-        // ReSharper disable once ConvertToConstant.Local
-        private string _name = "name";
+
+
+        string _name = "name";
 #pragma warning restore 169
 
         #region Overrides of Object
@@ -37,7 +37,7 @@ namespace Dev2.Common.Tests
         public int Id { get; set; }
         public int ParentId { get; set; }
 #pragma warning disable 169
-        private string _name;
+        string _name;
 #pragma warning restore 169
     }
 

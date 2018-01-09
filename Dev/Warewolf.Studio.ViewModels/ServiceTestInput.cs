@@ -7,11 +7,11 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestInput : BindableBase, IServiceTestInput
     {
-        private string _variable;
-        private string _value;
-        private bool _emptyIsNull;
+        string _variable;
+        string _value;
+        bool _emptyIsNull;
 
-        // ReSharper disable once UnusedMember.Global
+
         public ServiceTestInput()
         {
             
@@ -20,7 +20,10 @@ namespace Warewolf.Studio.ViewModels
         public ServiceTestInput(string variableName, string value)
         {
             if (variableName == null)
+            {
                 throw new ArgumentNullException(nameof(variableName));
+            }
+
             EmptyIsNull = false;
             Variable = variableName;
             Value = value;

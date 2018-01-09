@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,6 @@ namespace Dev2.Runtime.ServiceModel
     public class Services : ExceptionManager
     {
         protected readonly IResourceCatalog _resourceCatalog;
-        readonly IAuthorizationService _authorizationService;
 
         #region CTOR
 
@@ -42,15 +41,12 @@ namespace Dev2.Runtime.ServiceModel
             VerifyArgument.IsNotNull("resourceCatalog", resourceCatalog);
             VerifyArgument.IsNotNull("authorizationService", authorizationService);
             _resourceCatalog = resourceCatalog;
-            _authorizationService = authorizationService;
         }
 
         #endregion
 
         #region DbTest
-
-        // POST: Service/Services/DbTest
-        // POST: Service/Services/DbTest
+        
         public Recordset DbTest(DbService args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -88,8 +84,7 @@ namespace Dev2.Runtime.ServiceModel
             {
                 throw new ArgumentNullException(nameof(dbService));
             }
-            var source = dbService.Source as DbSource;
-            if (source != null)
+            if (dbService.Source is DbSource source)
             {
                 switch (source.ServerType)
                 {
@@ -102,14 +97,6 @@ namespace Dev2.Runtime.ServiceModel
                             {
                                 throw new Exception(ErrorResource.ErrorRetrievingShapeFromServiceOutput);
                             }
-
-                            // Clear out the Recordset.Fields list because the sequence and
-                            // number of fields may have changed since the last invocation.
-                            //
-                            // Create a copy of the Recordset.Fields list before clearing it
-                            // so that we don't lose the user-defined aliases.
-                            //
-
                             if (dbService.Recordset != null)
                             {
                                 dbService.Recordset.Name = dbService.Method.ExecuteAction;
@@ -119,7 +106,7 @@ namespace Dev2.Runtime.ServiceModel
                                 }
                                 dbService.Recordset.Fields.Clear();
 
-                                ServiceMappingHelper smh = new ServiceMappingHelper();
+                                var smh = new ServiceMappingHelper();
                                 smh.MapDbOutputs(outputDescription, ref dbService, addFields);
                             }
                             return dbService.Recordset;
@@ -138,7 +125,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
@@ -157,7 +144,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MySqlMapDbOutputs(outputDescription, ref dbService, addFields);
 
@@ -175,10 +162,10 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
-                            
+
                             return dbService.Recordset;
                         }
                     case enSourceType.ODBC:
@@ -193,7 +180,7 @@ namespace Dev2.Runtime.ServiceModel
 
                             dbService.Recordset.Fields.Clear();
 
-                            ServiceMappingHelper smh = new ServiceMappingHelper();
+                            var smh = new ServiceMappingHelper();
 
                             smh.MapDbOutputs(outputDescription, ref dbService, addFields);
                             dbService.Recordset.Name = @"Unnamed";
@@ -204,15 +191,6 @@ namespace Dev2.Runtime.ServiceModel
                 }
             }
             return null;
-
-
-            // Clear out the Recordset.Fields list because the sequence and
-            // number of fields may have changed since the last invocation.
-            //
-            // Create a copy of the Recordset.Fields list before clearing it
-            // so that we don't lose the user-defined aliases.
-            //
-
         }
 
         public virtual RecordsetList FetchRecordset(PluginService pluginService, bool addFields)
@@ -257,7 +235,7 @@ namespace Dev2.Runtime.ServiceModel
                             else
                             {
                                 foundPath.OutputExpression = path.OutputExpression;
-                            }                            
+                            }
 
                         }
                     }
@@ -372,8 +350,6 @@ namespace Dev2.Runtime.ServiceModel
 
         #endregion
 
-        #region FetchMethods
-
         public virtual ServiceMethodList FetchMethods(DbSource dbSource)
         {
             switch (dbSource.ServerType)
@@ -399,24 +375,12 @@ namespace Dev2.Runtime.ServiceModel
                         return broker.GetServiceMethods(dbSource);
                     }
             }
-
         }
-
-        #endregion
-
-
-
+        
         protected virtual SqlDatabaseBroker CreateDatabaseBroker()
         {
-
             return new SqlDatabaseBroker();
         }
-
-        #region DeserializeService
-
-        #endregion
-
-        #region WcfTest
 
         public RecordsetList WcfTest(WcfService args, Guid workspaceId, Guid dataListId)
         {
@@ -432,7 +396,5 @@ namespace Dev2.Runtime.ServiceModel
                 return new RecordsetList { new Recordset { HasErrors = true, ErrorMessage = ex.Message } };
             }
         }
-
-        #endregion WcfTest
     }
 }

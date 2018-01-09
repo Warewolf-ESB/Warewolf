@@ -134,7 +134,6 @@
                                                          SourcePropertyName="ToType"
                                                          SourcePropertyValue="{Binding ToType, UpdateSourceTrigger=PropertyChanged}"
                                                          Target="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
-                                    <behavior:ControlEnterToTabBehavior />
                                 </i:Interaction.Behaviors>
                                 <AutomationProperties.AutomationId>
                                     <MultiBinding StringFormat="UI_{0}_Row{1}_ToTypecbx_AutoID">

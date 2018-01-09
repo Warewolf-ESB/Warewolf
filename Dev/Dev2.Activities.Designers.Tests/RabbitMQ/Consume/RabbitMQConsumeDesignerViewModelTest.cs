@@ -14,7 +14,7 @@ using Dev2.Common.Interfaces.Core;
 using Dev2.Common.Interfaces.Help;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
 {
@@ -43,7 +43,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
 
             //------------Execute Test---------------------------
-            RabbitMQConsumeDesignerViewModel vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
+            var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
             vm.QueueName = "Q1";
             vm.Result = "Success";
             vm.ReQueue = true;
@@ -185,7 +185,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             model.Setup(m => m.RetrieveSources()).Returns(new List<IRabbitMQServiceSourceDefinition>());
 
             //------------Execute Test---------------------------
-            RabbitMQConsumeDesignerViewModel vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
+            var vm = new RabbitMQConsumeDesignerViewModel(CreateModelItem(), model.Object);
             vm.QueueName = "Q1";
             vm.Result = "Success";
             vm.IsRabbitMQSourceFocused = false;
@@ -286,7 +286,7 @@ namespace Dev2.Activities.Designers.Tests.RabbitMQ.Consume
             model.Verify(p => p.EditSource(It.IsAny<IRabbitMQServiceSourceDefinition>()));
         }
 
-        private static ModelItem CreateModelItem()
+        static ModelItem CreateModelItem()
         {
             return ModelItemUtils.CreateModelItem(new DsfConsumeRabbitMQActivity());
         }

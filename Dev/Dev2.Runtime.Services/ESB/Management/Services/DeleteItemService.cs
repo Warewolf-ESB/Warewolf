@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,37 +12,29 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Explorer;
 using Dev2.Common.Interfaces.Hosting;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Explorer;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
-// ReSharper disable MemberCanBePrivate.Global
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
     public class DeleteItemService : IEsbManagementEndpoint
     {
-        private IExplorerServerResourceRepository _serverExplorerRepository;       
-
-        public string HandlesType()
-        {
-            return "DeleteItemService";
-        }
+        IExplorerServerResourceRepository _serverExplorerRepository;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
             if (requestArgs != null)
             {
-                StringBuilder itemBeingDeleted;
-                if (requestArgs.TryGetValue("itemToDelete", out itemBeingDeleted))
+                if (requestArgs.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
                 {
 
                     if (itemBeingDeleted != null)
@@ -58,10 +50,7 @@ namespace Dev2.Runtime.ESB.Management.Services
             return Guid.Empty;
         }
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
@@ -73,9 +62,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 {
                     throw new ArgumentNullException(nameof(values));
                 }
-                StringBuilder itemBeingDeleted;
                 StringBuilder pathBeingDeleted = null;
-                if (!values.TryGetValue("itemToDelete", out itemBeingDeleted))
+                if (!values.TryGetValue("itemToDelete", out StringBuilder itemBeingDeleted))
                 {
                     if (!values.TryGetValue("folderToDelete", out pathBeingDeleted))
                     {
@@ -86,46 +74,39 @@ namespace Dev2.Runtime.ESB.Management.Services
                 IExplorerItem itemToDelete;
                 if (itemBeingDeleted != null)
                 {
-
                     itemToDelete = ServerExplorerRepo.Find(a => a.ResourceId.ToString() == itemBeingDeleted.ToString());
-                    Dev2Logger.Info("Delete Item Service." + itemToDelete);
+                    Dev2Logger.Info("Delete Item Service." + itemToDelete, GlobalConstants.WarewolfInfo);
                     item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
-
                 }
-                else if (pathBeingDeleted != null)
+                else
                 {
-                    itemToDelete = new ServerExplorerItem
+                    if (pathBeingDeleted != null)
                     {
-                        ResourceType = "Folder",
-                        ResourcePath = pathBeingDeleted.ToString()
-
-                    };
-
-                    item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                        itemToDelete = new ServerExplorerItem
+                        {
+                            ResourceType = "Folder",
+                            ResourcePath = pathBeingDeleted.ToString()
+                        };
+                        item = ServerExplorerRepo.DeleteItem(itemToDelete, GlobalConstants.ServerWorkspaceID);
+                    }
                 }
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Delete Item Error", e);
+                Dev2Logger.Error("Delete Item Error", e, GlobalConstants.WarewolfError);
                 item = new ExplorerRepositoryResult(ExecStatus.Fail, e.Message);
             }
             return serializer.SerializeToBuilder(item);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
+            get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
+            set => _serverExplorerRepository = value;
         }
+
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><itemToAdd ColumnIODirection=\"itemToDelete\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "DeleteItemService";
     }
 }

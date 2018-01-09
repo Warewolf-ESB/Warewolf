@@ -17,25 +17,33 @@ namespace Warewolf.Studio.ViewModels
 
         public SplashViewModel(IServer server, IExternalProcessExecutor externalProcessExecutor)
         {
-            if (server == null) throw new ArgumentNullException(nameof(server));
-            if (externalProcessExecutor == null) throw new ArgumentNullException(nameof(externalProcessExecutor));
+            if (server == null)
+            {
+                throw new ArgumentNullException(nameof(server));
+            }
+
+            if (externalProcessExecutor == null)
+            {
+                throw new ArgumentNullException(nameof(externalProcessExecutor));
+            }
+
             Server = server;
             ExternalProcessExecutor = externalProcessExecutor;
 
-            Uri conUri = new Uri(Resources.Languages.Core.ContributorsUrl);
+            var conUri = new Uri(Resources.Languages.Core.ContributorsUrl);
             ContributorsUrl = conUri;
-            Uri comUri = new Uri(Resources.Languages.Core.CommunityUrl);
+            var comUri = new Uri(Resources.Languages.Core.CommunityUrl);
             CommunityUrl = comUri;
-            Uri expUri = new Uri(Resources.Languages.HelpText.ExpertHelpUrl);
+            var expUri = new Uri(Resources.Languages.HelpText.ExpertHelpUrl);
             ExpertHelpUrl = expUri;
-            Uri warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
+            var warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;
-            WarewolfCopyright = Resources.Languages.Core.WarewolfCopyright;
+            WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));
             ExpertHelpCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ExpertHelpUrl));
-            WarewolfUrlCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(WarewolfUrl));            
+            WarewolfUrlCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(WarewolfUrl));
         }
 
         public IServer Server { get; set; }
@@ -46,10 +54,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand WarewolfUrlCommand { get; set; }
         public string ServerVersion
         {
-            get
-            {
-                return _serverVersion;
-            }
+            get => _serverVersion;
             set
             {
                 _serverVersion = value;
@@ -59,10 +64,7 @@ namespace Warewolf.Studio.ViewModels
         [ExcludeFromCodeCoverage]
         public string StudioVersion
         {
-            get
-            {
-                return _studioVersion;
-            }
+            get => _studioVersion;
             set
             {
                 _studioVersion = value;

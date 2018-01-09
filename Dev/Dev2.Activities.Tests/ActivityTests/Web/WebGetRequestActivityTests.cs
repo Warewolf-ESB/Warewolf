@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,11 +19,11 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
 
-// ReSharper disable CheckNamespace
+
+
 namespace ActivityUnitTests.ActivityTest
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// Summary description for CountRecordsTest
@@ -142,7 +142,7 @@ namespace ActivityUnitTests.ActivityTest
             ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, activity.Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
-            string errorString = DataObject.Environment.FetchErrors();
+            var errorString = DataObject.Environment.FetchErrors();
             StringAssert.Contains(errorString, Message);
         }
 
@@ -171,9 +171,7 @@ namespace ActivityUnitTests.ActivityTest
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Never());
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
             Assert.AreNotEqual(ExpectedResult, actual);
             Assert.IsNotNull(error);
         }
@@ -201,9 +199,7 @@ namespace ActivityUnitTests.ActivityTest
             var result = ExecuteProcess();
             //------------Assert Results-------------------------
             mock.Verify(sender => sender.ExecuteRequest(activity.Method, Url, It.IsAny<List<Tuple<string, string>>>(), It.IsAny<int>()), Times.Once());
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "Res", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "Res", out string actual, out string error);
             Assert.AreEqual(ExpectedResult, actual);
         }
 

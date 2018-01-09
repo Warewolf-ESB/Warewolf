@@ -2,6 +2,5 @@
 {
     public interface IPluginProxy
     {
-        // IList<IExplorerItemModel> GetToolDependencies(IToolDescriptor tool);
     }
 }

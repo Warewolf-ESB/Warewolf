@@ -19,7 +19,7 @@ namespace Warewolf.Resource.Errors {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class ErrorResource {
@@ -111,6 +111,15 @@ namespace Warewolf.Resource.Errors {
         public static string BadResource {
             get {
                 return ResourceManager.GetString("BadResource", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;FromExpression&apos; - Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string BaseConvertInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("BaseConvertInputInvalidExpressionErrorTest", resourceCulture);
             }
         }
         
@@ -354,6 +363,15 @@ namespace Warewolf.Resource.Errors {
         public static string CanOnlyExecuteWorkflowsFromWebBrowser {
             get {
                 return ResourceManager.GetString("CanOnlyExecuteWorkflowsFromWebBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to &apos;StringToConvert&apos; - Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string CaseConvertInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("CaseConvertInputInvalidExpressionErrorTest", resourceCulture);
             }
         }
         
@@ -1465,6 +1483,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Result - Invalid expression: opening and closing brackets don&apos;t match.
+        /// </summary>
+        public static string GatherSystemInfoInputInvalidExpressionErrorTest {
+            get {
+                return ResourceManager.GetString("GatherSystemInfoInputInvalidExpressionErrorTest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Gridsplitter only works in grid.
         /// </summary>
         public static string GridsplitterOnlyWorksInGrids {
@@ -2244,6 +2271,15 @@ namespace Warewolf.Resource.Errors {
         public static string NoResourceSelected {
             get {
                 return ResourceManager.GetString("NoResourceSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to No Resources found for Resource ID: {0}.
+        /// </summary>
+        public static string NoResourcesFound {
+            get {
+                return ResourceManager.GetString("NoResourcesFound", resourceCulture);
             }
         }
         
@@ -3038,6 +3074,24 @@ namespace Warewolf.Resource.Errors {
         public static string ScriptingErrorReturningValue {
             get {
                 return ResourceManager.GetString("ScriptingErrorReturningValue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is currently busy. Please try again later..
+        /// </summary>
+        public static string ServerBusyError {
+            get {
+                return ResourceManager.GetString("ServerBusyError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Server is currently busy.
+        /// </summary>
+        public static string ServerBusyHeader {
+            get {
+                return ResourceManager.GetString("ServerBusyHeader", resourceCulture);
             }
         }
         

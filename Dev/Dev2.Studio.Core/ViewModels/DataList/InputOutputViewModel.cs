@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,26 +24,26 @@ using Dev2.Studio.Core.Views;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Warewolf.Storage;
-// ReSharper disable VirtualMemberCallInConstructor
-// ReSharper disable MemberCanBePrivate.Global
 
-// ReSharper disable once CheckNamespace
-// ReSharper disable CheckNamespace
+
+
+
+
 namespace Dev2.Studio.ViewModels.DataList
-// ReSharper restore CheckNamespace
+
 {
     public class InputOutputViewModel : SimpleBaseViewModel, IInputOutputViewModel, ICloneable
     {
-        private string _value;
-        private string _mapsTo;
-        private bool _required;
+        string _value;
+        string _mapsTo;
+        bool _required;
         bool _isNew;
         bool _requiredMissing;
         string _typeName;
         bool _isMapsToFocused;
         bool _isValueFocused;
-        private bool _isObject;
-        private string _jsonString;
+        bool _isObject;
+        string _jsonString;
 
         #region Properties
 
@@ -99,9 +99,9 @@ namespace Dev2.Studio.ViewModels.DataList
         {
             get
             {
-                string result = string.Empty;
+                var result = string.Empty;
 
-                if(DefaultValue == string.Empty)
+                if (DefaultValue == string.Empty)
                 {
                     if(EmptyToNull)
                     {
@@ -163,7 +163,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void UpdateDataListWithJsonObject(string expression)
+        void UpdateDataListWithJsonObject(string expression)
         {
             if (IsObject && !string.IsNullOrEmpty(JsonString))
             {
@@ -214,7 +214,7 @@ namespace Dev2.Studio.ViewModels.DataList
         }
 
         public string RecordSetName { get; set; }
-        private bool EmptyToNull { get; set; }
+        bool EmptyToNull { get; set; }
 
         public bool IsMapsToFocused
         {
@@ -273,7 +273,7 @@ namespace Dev2.Studio.ViewModels.DataList
             }
         }
 
-        private void ViewJsonObjects()
+        void ViewJsonObjects()
         {
             if (!string.IsNullOrEmpty(JsonString))
             {
@@ -281,7 +281,7 @@ namespace Dev2.Studio.ViewModels.DataList
                 var contentPresenter = window.FindChild<TextBox>();
                 if (contentPresenter != null)
                 {
-                    var json=JSONUtils.Format(JsonString);
+                    var json = JSONUtils.Format(JsonString);
                     contentPresenter.Text = json;
                 }
 
@@ -291,7 +291,12 @@ namespace Dev2.Studio.ViewModels.DataList
 
         #endregion
 
-        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName, bool emptyToNull = false)
+        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName)
+            : this(name, value, mapsTo, defaultValue, required, recordSetName, false)
+        {
+        }
+
+        public InputOutputViewModel(string name, string value, string mapsTo, string defaultValue, bool required, string recordSetName, bool emptyToNull)
         {
             Name = name;
             RecordSetName = recordSetName;
@@ -301,14 +306,7 @@ namespace Dev2.Studio.ViewModels.DataList
             DefaultValue = defaultValue;
             EmptyToNull = emptyToNull;
 
-            if(RecordSetName == string.Empty)
-            {
-                DisplayName = Name;
-            }
-            else
-            {
-                DisplayName = RecordSetName + "(*)." + Name;
-            }
+            DisplayName = RecordSetName == string.Empty ? Name : RecordSetName + "(*)." + Name;
             ViewComplexObjectsCommand = new RelayCommand(item =>
             {
                 ViewJsonObjects();
@@ -319,7 +317,7 @@ namespace Dev2.Studio.ViewModels.DataList
         #region Methods
         public IDev2Definition GetGenerationTO()
         {
-            IDev2Definition result = DataListFactory.CreateDefinition(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
+            var result = DataListFactory.CreateDefinition(Name, MapsTo, Value, RecordSetName, false, DefaultValue, Required, Value, EmptyToNull);
             result.IsObject = IsObject;
             return result;
         }

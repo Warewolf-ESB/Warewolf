@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,8 +11,10 @@
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
 
-namespace Dev2.DataList.Contract {
-    public class IntellisenseFactory {
+namespace Dev2.DataList.Contract
+{
+    public static class IntellisenseFactory
+    {
 
         public static IIntellisenseResult CreateErrorResult(int start, int end, IDataListVerifyPart opt, string msg, enIntellisenseErrorCode code, bool isClosed) {
             return new IntellisenseResult(start, end, opt, msg, enIntellisenseResultType.Error, code, isClosed);

@@ -6,7 +6,8 @@ namespace Dev2.Studio.Interfaces
 {
     public interface IServiceTestCommandHandler
     {
-        IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug = false);
+        IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber);
+        IServiceTestModel CreateTest(IResourceModel resourceModel, int testNumber, bool isFromDebug);
         void StopTest(IContextualResourceModel resourceModel);
         void RunAllTestsCommand(bool isDirty, IEnumerable<IServiceTestModel> tests, IContextualResourceModel resourceModel, IAsyncWorker asyncWorker);
         IServiceTestModel DuplicateTest(IServiceTestModel selectedTests, int testNumber);

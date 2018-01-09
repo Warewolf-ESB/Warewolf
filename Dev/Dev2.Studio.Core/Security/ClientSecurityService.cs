@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -48,8 +48,8 @@ namespace Dev2.Security
 
         public override async void Read()
         {
-            Dev2Logger.Debug("Reading Permissions from Server");
-            await ReadAsync();
+            Dev2Logger.Debug("Reading Permissions from Server", "Warewolf Debug");
+            await ReadAsync().ConfigureAwait(true);
         }
 
         public virtual async Task ReadAsync()
@@ -60,15 +60,15 @@ namespace Dev2.Security
                 {
                     ServiceName = "SecurityReadService"
                 };
-                Dev2Logger.Debug("Getting Permissions from Server");
+                Dev2Logger.Debug("Getting Permissions from Server", "Warewolf Debug");
 
-                SecuritySettingsTO securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID);
+                var securitySettingsTo = await communicationController.ExecuteCommandAsync<SecuritySettingsTO>(EnvironmentConnection,EnvironmentConnection.WorkspaceID).ConfigureAwait(true);
                 List<WindowsGroupPermission> newPermissions = null;
                 if (securitySettingsTo != null)
                 {
                     Permissions = securitySettingsTo.WindowsGroupPermissions;
                     newPermissions = securitySettingsTo.WindowsGroupPermissions;
-                    Dev2Logger.Debug("Permissions from Server:" + Permissions);
+                    Dev2Logger.Debug("Permissions from Server:" + Permissions, "Warewolf Debug");
                 }
                 if (newPermissions != null)
                 {

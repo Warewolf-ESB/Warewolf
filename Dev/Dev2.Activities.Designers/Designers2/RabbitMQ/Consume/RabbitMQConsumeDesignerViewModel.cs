@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,23 +26,23 @@ using System.Windows;
 using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ConvertPropertyToExpressionBody
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 {
     public class RabbitMQConsumeDesignerViewModel : ActivityDesignerViewModel, INotifyPropertyChanged
     {
-        private readonly IRabbitMQSourceModel _model;
-        private IShellViewModel _shellViewModel;
+        readonly IRabbitMQSourceModel _model;
+        readonly IShellViewModel _shellViewModel;
         public RabbitMQConsumeDesignerViewModel(ModelItem modelItem)
             : base(modelItem)
         {
             VerifyArgument.IsNotNull("modelItem", modelItem);
 
             _shellViewModel = CustomContainer.Get<IShellViewModel>();
-            IServer server = _shellViewModel.ActiveServer;
+            var server = _shellViewModel.ActiveServer;
             _model = CustomContainer.CreateInstance<IRabbitMQSourceModel>(server.UpdateRepository, server.QueryProxy, _shellViewModel);
             SetupCommonViewModelProperties();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Utility_Rabbit_MQ_Consume;
@@ -58,7 +58,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             SetupCommonViewModelProperties();
         }
 
-        private void SetupCommonViewModelProperties()
+        void SetupCommonViewModelProperties()
         {
             ShowLarge = false;
 
@@ -76,22 +76,22 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
 
         public RelayCommand EditRabbitMQSourceCommand { get; private set; }
 
-        public bool IsRabbitMQSourceFocused { get { return (bool)GetValue(IsRabbitMQSourceFocusedProperty); } set { SetValue(IsRabbitMQSourceFocusedProperty, value); } }
+        public bool IsRabbitMQSourceFocused { get => (bool)GetValue(IsRabbitMQSourceFocusedProperty); set => SetValue(IsRabbitMQSourceFocusedProperty, value); }
         public static readonly DependencyProperty IsRabbitMQSourceFocusedProperty = DependencyProperty.Register("IsRabbitMQSourceFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsQueueNameFocused { get { return (bool)GetValue(IsQueueNameFocusedProperty); } set { SetValue(IsQueueNameFocusedProperty, value); } }
+        public bool IsQueueNameFocused { get => (bool)GetValue(IsQueueNameFocusedProperty); set => SetValue(IsQueueNameFocusedProperty, value); }
         public static readonly DependencyProperty IsQueueNameFocusedProperty = DependencyProperty.Register("IsQueueNameFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsPrefetchFocused { get { return (bool)GetValue(IsPrefetchFocusedProperty); } set { SetValue(IsPrefetchFocusedProperty, value); } }
+        public bool IsPrefetchFocused { get => (bool)GetValue(IsPrefetchFocusedProperty); set => SetValue(IsPrefetchFocusedProperty, value); }
         public static readonly DependencyProperty IsPrefetchFocusedProperty = DependencyProperty.Register("IsPrefetchFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsResponseFocused { get { return (bool)GetValue(IsResponseFocusedProperty); } set { SetValue(IsResponseFocusedProperty, value); } }
+        public bool IsResponseFocused { get => (bool)GetValue(IsResponseFocusedProperty); set => SetValue(IsResponseFocusedProperty, value); }
         public static readonly DependencyProperty IsResponseFocusedProperty = DependencyProperty.Register("IsResponseFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        public bool IsTimeOutFocused { get { return (bool)GetValue(IsTimeOutFocusedProperty); } set { SetValue(IsTimeOutFocusedProperty, value); } }
+        public bool IsTimeOutFocused { get => (bool)GetValue(IsTimeOutFocusedProperty); set => SetValue(IsTimeOutFocusedProperty, value); }
         public static readonly DependencyProperty IsTimeOutFocusedProperty = DependencyProperty.Register("IsTimeOutFocused", typeof(bool), typeof(RabbitMQConsumeDesignerViewModel), new PropertyMetadata(default(bool)));
 
-        private IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
+        IRabbitMQServiceSourceDefinition _selectedRabbitMQSource;
 
         public IRabbitMQServiceSourceDefinition SelectedRabbitMQSource
         {
@@ -116,7 +116,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
         }
 
-        private Guid RabbitMQSourceResourceId
+        Guid RabbitMQSourceResourceId
         {
             get
             {
@@ -198,27 +198,27 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             set { SetProperty(value); }
         }
 
-        private ObservableCollection<IRabbitMQServiceSourceDefinition> LoadRabbitMQSources()
+        ObservableCollection<IRabbitMQServiceSourceDefinition> LoadRabbitMQSources()
         {
-            ICollection<IRabbitMQServiceSourceDefinition> rabbitMQSources = _model.RetrieveSources();
+            var rabbitMQSources = _model.RetrieveSources();
             return rabbitMQSources.ToObservableCollection();
         }
 
-        private void SetSelectedRabbitMQSource(IRabbitMQServiceSourceDefinition rabbitMQSource)
+        void SetSelectedRabbitMQSource(IRabbitMQServiceSourceDefinition rabbitMQSource)
         {
-            IRabbitMQServiceSourceDefinition selectRabbitMQSource = rabbitMQSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
+            var selectRabbitMQSource = rabbitMQSource ?? RabbitMQSources.FirstOrDefault(d => d.ResourceID == RabbitMQSourceResourceId);
             SelectedRabbitMQSource = selectRabbitMQSource;
         }
 
-        private void EditRabbitMQSource()
+        void EditRabbitMQSource()
         {
             _model.EditSource(SelectedRabbitMQSource);
             RabbitMQSources = LoadRabbitMQSources();
-            IRabbitMQServiceSourceDefinition editedRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
+            var editedRabbitMQSources = RabbitMQSources.FirstOrDefault(source => source.ResourceID == RabbitMQSourceResourceId);
             SetSelectedRabbitMQSource(editedRabbitMQSources);
         }
 
-        private void NewRabbitMQSource()
+        void NewRabbitMQSource()
         {
             _model.CreateNewSource();
             RabbitMQSources = LoadRabbitMQSources();
@@ -231,7 +231,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             Errors = result.Count == 0 ? null : result;
         }
 
-        private IEnumerable<IActionableErrorInfo> ValidateThis()
+        IEnumerable<IActionableErrorInfo> ValidateThis()
         {
             foreach (var error in GetRuleSet("RabbitMQSource").ValidateRules("'RabbitMQ Source'", () => IsRabbitMQSourceFocused = true))
             {
@@ -247,7 +247,7 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
             }
         }
 
-        private IRuleSet GetRuleSet(string propertyName)
+        IRuleSet GetRuleSet(string propertyName)
         {
             var ruleSet = new RuleSet();
 
@@ -264,13 +264,15 @@ namespace Dev2.Activities.Designers2.RabbitMQ.Consume
                 case "Prefetch":
                     ruleSet.Add(new IsStringEmptyOrWhiteSpaceRule(() => Prefetch));
                     break;
+                default:
+                    break;
             }
             return ruleSet;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName = null)
+        void OnPropertyChanged(string propertyName = null)
         {
             var handler = PropertyChanged;
             handler?.Invoke(this, new PropertyChangedEventArgs(propertyName));

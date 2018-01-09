@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,19 +23,22 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class CountSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CountSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if (variableList == null)
             {
@@ -45,26 +48,24 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
             variableList.Add(new Tuple<string, string>(ResultVariable, ""));
 
-            string resultVariable;
-            scenarioContext.TryGetValue("resultVariable", out resultVariable);
+            scenarioContext.TryGetValue("resultVariable", out string resultVariable);
 
             BuildShapeAndTestData();
 
-            string recordSetName;
-            scenarioContext.TryGetValue("recordset", out recordSetName);
+            scenarioContext.TryGetValue("recordset", out string recordSetName);
 
             var recordset = scenarioContext.Get<string>("recordset");
-            bool treaNullAsZero;
-            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
-            DsfActivityAbstract<string> count;
-            scenarioContext.TryGetValue("activityMode", out count);
+            scenarioContext.TryGetValue("treaNullAsZero", out bool treaNullAsZero);
+            scenarioContext.TryGetValue("activityMode", out DsfActivityAbstract<string> count);
             if (count != null)
+            {
                 count = new DsfCountRecordsetNullHandlerActivity
                 {
                     RecordsetName = recordset,
                     CountNumber = string.IsNullOrEmpty(resultVariable) ? ResultVariable : resultVariable,
                     TreatNullAsZero = treaNullAsZero
                 };
+            }
             else
             {
                 count = new DsfCountRecordsetActivity
@@ -90,15 +91,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I have a recordset with this shape")]
         public void GivenIHaveARecordsetWithThisShape(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
             if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -109,8 +109,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
             foreach (TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
                 if (variableList == null)
                 {
@@ -125,18 +124,16 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public void WhenTheCountToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the result count should be (.*)")]
         public void ThenTheResultCountShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             GetScalarValueFromEnvironment(DataObject.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             actualValue = string.IsNullOrEmpty(actualValue) ? "0" : actualValue;
             Assert.AreEqual(expectedResult, actualValue);
         }

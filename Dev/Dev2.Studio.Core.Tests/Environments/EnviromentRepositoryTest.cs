@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Core.Tests.Environments
 {
 
@@ -49,7 +49,7 @@ namespace Dev2.Core.Tests.Environments
         [ClassInitialize]
         public static void MyClassInitialize(TestContext testContext)
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             SetupMef();
         }
 
@@ -77,9 +77,9 @@ namespace Dev2.Core.Tests.Environments
         [ExpectedException(typeof(ArgumentNullException))]
         public void EnvironmentRepositoryConstructorWithNullSourceExpectedThrowsArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestServerRespository(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -93,12 +93,19 @@ namespace Dev2.Core.Tests.Environments
         [TestMethod]
         public void EnvironmentRepositoryConstructorWithNoParametersExpectedCreatesAndAddsDefaultSource()
         {
-            var repo = new TestServerRespository();
+            var source = new Mock<IServer>();
+            var con = new Mock<IEnvironmentConnection>();
+            con.Setup(connection => connection.WebServerUri).Returns(new Uri("http://localhost:3142"));
+            source.Setup(server => server.Connection).Returns(con.Object);
+            var mock = new Mock<IServerRepository>();
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(mock.Object);
+            var repo = new TestServerRespository(source.Object);
             var environmentModels = repo.All().ToList();
             Assert.AreEqual(1, environmentModels.Count);
             var localhostEnvironment = environmentModels[0];
             Assert.IsNotNull(localhostEnvironment);
-            StringAssert.Contains(localhostEnvironment.Connection.WebServerUri.Host.ToLower(), Environment.MachineName.ToLower());
+            StringAssert.Contains(localhostEnvironment.Connection.WebServerUri.Host.ToLower(), "localhost");
         }
 
         #endregion
@@ -351,9 +358,9 @@ namespace Dev2.Core.Tests.Environments
             var source = new Mock<IServer>();
             var repo = new TestServerRespository(source.Object);
             IServer e1 = null;
-            // ReSharper disable ExpressionIsAlwaysNull
+            
             var result = repo.Save(e1);
-            // ReSharper restore ExpressionIsAlwaysNull
+            
             Assert.AreEqual(result, "Not Saved");
         }
 
@@ -440,7 +447,7 @@ namespace Dev2.Core.Tests.Environments
             var c1 = CreateMockConnection();
             var e1 = new Server(Guid.NewGuid(), c1.Object);
             var source = new Mock<IServer>();
-            bool _eventFired = false;
+            var _eventFired = false;
             var repo = new TestServerRespository(source.Object);
             repo.ItemAdded += (sender, args) =>
             {
@@ -778,7 +785,7 @@ namespace Dev2.Core.Tests.Environments
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -786,7 +793,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -813,7 +820,7 @@ namespace Dev2.Core.Tests.Environments
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -824,7 +831,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -850,7 +857,7 @@ namespace Dev2.Core.Tests.Environments
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -861,7 +868,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -928,7 +935,7 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
-            ResourceModel rm = new ResourceModel(env.Object)
+            var rm = new ResourceModel(env.Object)
             {
                 WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<TypeOf>Dev2Server</TypeOf>
@@ -943,7 +950,7 @@ namespace Dev2.Core.Tests.Environments
 </Source>")
             };
 
-            List<IResourceModel> models = new List<IResourceModel> { rm };
+            var models = new List<IResourceModel> { rm };
 
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
@@ -967,7 +974,7 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
-            ResourceModel rm = new ResourceModel(env.Object)
+            var rm = new ResourceModel(env.Object)
             {
                 WorkflowXaml = new StringBuilder(@"<Source ID=""7e9eead4-d876-4bc1-a71d-66c76255795f"" Name=""bld"" Type=""Dev2Server"" ConnectionString=""AppServerUri=http://TST-CI-REMOTE:3142/dsf;WebServerPort=3142;AuthenticationType=User;UserName=dev2\hagashen.naidu;Password=hahaha"" Version=""1.0"" ResourceType=""Server"" ServerID=""51a58300-7e9d-4927-a57b-e5d700b11b55"">
 	<TypeOf>Dev2Server</TypeOf>
@@ -982,7 +989,7 @@ namespace Dev2.Core.Tests.Environments
 </Source>")
             };
 
-            List<IResourceModel> models = new List<IResourceModel> { rm };
+            var models = new List<IResourceModel> { rm };
 
             repo.Setup(r => r.FindResourcesByID(It.IsAny<IServer>(), It.IsAny<IEnumerable<string>>(), ResourceType.Source)).Returns(models);
 
@@ -1011,7 +1018,7 @@ namespace Dev2.Core.Tests.Environments
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -1019,7 +1026,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -1049,7 +1056,7 @@ namespace Dev2.Core.Tests.Environments
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -1057,7 +1064,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -1088,7 +1095,7 @@ namespace Dev2.Core.Tests.Environments
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -1096,7 +1103,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -1113,19 +1120,19 @@ namespace Dev2.Core.Tests.Environments
 
             Assert.IsTrue(environmentModel?.Connection.WebServerUri.AbsoluteUri.Contains(Environment.MachineName.ToLowerInvariant()) ?? false);
         }
+
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
         public void CreateEnvironment_GivenLocalHostIsEmpty_ShouldUseMachineName()
         {
-
-            AppSettings.LocalHost = "";
+            AppUsageStats.LocalHost = "";
             var env = new Mock<IServer>();
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
             var id = Guid.NewGuid();
 
-            Connection theCon = new Connection
+            var theCon = new Connection
             {
                 Address = "http://127.0.0.1:1234",
                 ResourceName = "TheConnection",
@@ -1133,7 +1140,7 @@ namespace Dev2.Core.Tests.Environments
                 WebServerPort = 1234
             };
 
-            List<Connection> cons = new List<Connection> { theCon };
+            var cons = new List<Connection> { theCon };
             repo.Setup(r => r.FindSourcesByType<Connection>(It.IsAny<IServer>(), enSourceType.Dev2Server)).Returns(cons);
 
             con.Setup(c => c.IsConnected).Returns(true);
@@ -1163,9 +1170,9 @@ namespace Dev2.Core.Tests.Environments
 
         static string BackupFile(string path)
         {
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             var bakPath = Path.Combine(Path.GetDirectoryName(path), Path.GetFileName(path) + ".bak");
-            // ReSharper restore AssignNullToNotNullAttribute
+            
             if (File.Exists(bakPath))
             {
                 File.Delete(bakPath);
@@ -1217,13 +1224,13 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
-            ResourceModel rm = new ResourceModel(env.Object);
+            var rm = new ResourceModel(env.Object);
 
             if (sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
-                List<IResourceModel> models = new List<IResourceModel> { rm };
+                var models = new List<IResourceModel> { rm };
 
                 repo.Setup(
                     r =>
@@ -1265,13 +1272,13 @@ namespace Dev2.Core.Tests.Environments
             var con = new Mock<IEnvironmentConnection>();
             var repo = new Mock<IResourceRepository>();
 
-            ResourceModel rm = new ResourceModel(env.Object);
+            var rm = new ResourceModel(env.Object);
 
             if (sources != null && sources.Length > 0)
             {
                 rm.WorkflowXaml = new StringBuilder(sources[0]);
 
-                List<IResourceModel> models = new List<IResourceModel> { rm };
+                var models = new List<IResourceModel> { rm };
 
                 repo.Setup(
                     r =>
@@ -1343,7 +1350,7 @@ namespace Dev2.Core.Tests.Environments
 
             env.Setup(e => e.Name).Returns(string.Format("Server_{0}", rand.Next(1, 100)));
 
-            List<IResourceModel> models = new List<IResourceModel>();
+            var models = new List<IResourceModel>();
 
             var repo = new Mock<IResourceRepository>();
 

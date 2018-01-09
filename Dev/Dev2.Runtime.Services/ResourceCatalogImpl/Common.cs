@@ -18,8 +18,8 @@ namespace Dev2.Runtime.ResourceCatalogImpl
 {
     public static  class Common
     {
-        private static readonly ConcurrentDictionary<string, object> FileLocks = new ConcurrentDictionary<string, object>();
-        private static ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
+        static readonly ConcurrentDictionary<string, object> FileLocks = new ConcurrentDictionary<string, object>();
+        static ConcurrentDictionary<Guid, object> WorkspaceLocks { get; } = new ConcurrentDictionary<Guid, object>();
         static readonly object LoadLock = new object();
         public static object GetFileLock(string file)
         {
@@ -33,7 +33,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-        private static  void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
+        static void SetErrors(XElement resourceElement, IList<ICompileMessageTO> compileMessagesTO)
         {
             if (compileMessagesTO == null || compileMessagesTO.Count == 0)
             {
@@ -49,10 +49,10 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             {
                 compileMessagesTO.ForEach(to =>
                 {
-                    IEnumerable<XElement> xElements = errorMessagesElement.Elements("ErrorMessage");
-                    XElement firstOrDefault = xElements.FirstOrDefault(element =>
+                    var xElements = errorMessagesElement.Elements("ErrorMessage");
+                    var firstOrDefault = xElements.FirstOrDefault(element =>
                     {
-                        XAttribute xAttribute = element.Attribute("InstanceID");
+                        var xAttribute = element.Attribute("InstanceID");
                         if (xAttribute != null)
                         {
                             return xAttribute.Value == to.UniqueID.ToString();
@@ -84,7 +84,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             return errorMessagesElement;
         }
 
-        private static void UpdateIsValid(XElement resourceElement)
+        static void UpdateIsValid(XElement resourceElement)
         {
             var isValid = false;
             var isValidAttrib = resourceElement.Attribute("IsValid");
@@ -141,7 +141,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
             }
         }
 
-       private static void UpdateXmlToDisk(IResource resource, IList<ICompileMessageTO> compileMessagesTO, StringBuilder resourceContents)
+        static void UpdateXmlToDisk(IResource resource, IList<ICompileMessageTO> compileMessagesTO, StringBuilder resourceContents)
         {
 
             var resourceElement = resourceContents.ToXElement();
@@ -155,7 +155,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                 UpdateIsValid(resourceElement);
             }
 
-            StringBuilder result = resourceElement.ToStringBuilder();
+            var result = resourceElement.ToStringBuilder();
 
             var signedXml = HostSecurityProvider.Instance.SignXml(result);
 
@@ -169,7 +169,7 @@ namespace Dev2.Runtime.ResourceCatalogImpl
                         signedXml.WriteToFile(resource.FilePath, Encoding.UTF8, fileManager);
                         tx.Complete();
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Transaction.Current.Rollback();
                     }

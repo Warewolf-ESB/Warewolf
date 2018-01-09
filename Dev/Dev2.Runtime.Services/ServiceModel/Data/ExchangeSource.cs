@@ -15,15 +15,14 @@ namespace Dev2.Runtime.ServiceModel.Data
     [Serializable]
     public class ExchangeSource : Resource, IExchange, IResourceSource
     {
-        private ExchangeService _exchangeService;
+        ExchangeService _exchangeService;
 
-        // ReSharper disable once NotAccessedField.Local
-        private IExchangeEmailSender _emailSender;
+        IExchangeEmailSender _emailSender;
 
-        public static int DefaultTimeout = 100000; // (100 seconds)
-        public static int DefaultPort = 25;
-        public static int SslPort = 465;
-        public static int TlsPort = 587;
+        public static readonly int DefaultTimeout = 100000;
+        public static readonly int DefaultPort = 25;
+        public static readonly int SslPort = 465;
+        public static readonly int TlsPort = 587;
 
         public override bool IsSource => true;
 
@@ -106,8 +105,7 @@ namespace Dev2.Runtime.ServiceModel.Data
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            int timeout;
-            Timeout = Int32.TryParse(properties["Timeout"], out timeout) ? timeout : DefaultTimeout;
+            Timeout = Int32.TryParse(properties["Timeout"], out int timeout) ? timeout : DefaultTimeout;
         }
 
         public void Send(IExchangeEmailSender emailSender, ExchangeTestMessage testMessage)
@@ -159,7 +157,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         #endregion CTOR
 
-        private void InitializeService()
+        void InitializeService()
         {
             _exchangeService = new ExchangeServiceFactory().Create();
         }

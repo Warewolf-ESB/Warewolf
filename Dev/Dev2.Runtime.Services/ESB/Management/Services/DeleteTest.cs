@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
@@ -11,26 +10,20 @@ using Dev2.Communication;
 using Dev2.DynamicServices;
 using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
-// ReSharper disable MemberCanBeInternal
+
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
     public class DeleteTest : IEsbManagementEndpoint
     {
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
         public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
         {
-            StringBuilder tmp;
-            requestArgs.TryGetValue("resourceID", out tmp);
+            requestArgs.TryGetValue("resourceID", out StringBuilder tmp);
             if (tmp != null)
             {
-                Guid resourceId;
-                if (Guid.TryParse(tmp.ToString(), out resourceId))
+                if (Guid.TryParse(tmp.ToString(), out Guid resourceId))
                 {
                     return resourceId;
                 }
@@ -49,33 +42,30 @@ namespace Dev2.Runtime.ESB.Management.Services
             var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Delete Test Service");
+                Dev2Logger.Info("Delete Test Service", GlobalConstants.WarewolfInfo);
 
-                StringBuilder resourceIdString;
-                values.TryGetValue("resourceID", out resourceIdString);
+                values.TryGetValue("resourceID", out StringBuilder resourceIdString);
                 if (resourceIdString == null)
                 {
                     throw new InvalidDataContractException("resourceID is missing");
                 }
-                Guid resourceId;
-                if (!Guid.TryParse(resourceIdString.ToString(), out resourceId))
+                if (!Guid.TryParse(resourceIdString.ToString(), out Guid resourceId))
                 {
                     throw new InvalidDataContractException("resourceID is not a valid GUID.");
                 }
-                StringBuilder testName;
-                values.TryGetValue("testName", out testName);
+                values.TryGetValue("testName", out StringBuilder testName);
                 if (string.IsNullOrEmpty(testName?.ToString()))
                 {
                     throw new InvalidDataContractException("testName is missing");
                 }
 
                 TestCatalog.DeleteTest(resourceId,testName.ToString());
-                CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = false };
+                var message = new CompressedExecuteMessage { HasError = false };
                 return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
@@ -95,8 +85,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         public DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService { Name = HandlesType() };
+            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;

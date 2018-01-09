@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,15 +19,15 @@ using Dev2.Common;
 
 namespace Dev2.Studio.AppResources.Converters
 {
-
     public class MessageBoxImageToSystemIconConverter : IValueConverter
     {
-        private static readonly IntPtr Hicon;
+        static readonly IntPtr Hicon;
 
         static MessageBoxImageToSystemIconConverter()
         {
             var emptyBitmap = new Bitmap(1, 1);
             Hicon = emptyBitmap.GetHicon();
+            emptyBitmap.Dispose();
         }
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
@@ -39,10 +39,9 @@ namespace Dev2.Studio.AppResources.Converters
                 return BitmapSourceFromIcon(icon);
             }
 
-            MessageBoxImage messageBoxImage;
-            if(Enum.TryParse(value.ToString(), true, out messageBoxImage))
+            if (Enum.TryParse(value.ToString(), true, out MessageBoxImage messageBoxImage))
             {
-                switch(messageBoxImage)
+                switch (messageBoxImage)
                 {
                     case MessageBoxImage.Error:
                         return CustomIcons.Error;
@@ -54,6 +53,8 @@ namespace Dev2.Studio.AppResources.Converters
                         return CustomIcons.Question;
                     case MessageBoxImage.Warning:
                         return CustomIcons.Warning;
+                    default:
+                        break;
                 }
             }
             return BitmapSourceFromIcon(icon);
@@ -64,7 +65,7 @@ namespace Dev2.Studio.AppResources.Converters
             throw new NotImplementedException();
         }
 
-        private BitmapSource BitmapSourceFromIcon(Icon icon)
+        BitmapSource BitmapSourceFromIcon(Icon icon)
         {
             return Imaging.CreateBitmapSourceFromHIcon(icon.Handle, Int32Rect.Empty, BitmapSizeOptions.FromEmptyOptions());
         }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -11,7 +11,6 @@
 using System;
 using System.Collections.Specialized;
 using System.Configuration;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Security.Cryptography;
 using System.Xml.Linq;
@@ -41,11 +40,16 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
             }
         }
 
-        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig = true)
+        public HostSecureConfig(NameValueCollection settings)
+            : this(settings, true)
+        {
+        }
+
+        public HostSecureConfig(NameValueCollection settings, bool shouldProtectConfig)
         {
             Initialize(settings, shouldProtectConfig);
         }
@@ -81,8 +85,7 @@ namespace Dev2.Runtime.Security
             }
 
             SystemKey = CreateKey(settings["SystemKey"]);
-            Guid serverID;
-            if(Guid.TryParse(settings["ServerID"], out serverID) && serverID != Guid.Empty)
+            if (Guid.TryParse(settings["ServerID"], out Guid serverID) && serverID != Guid.Empty)
             {
                 ServerID = serverID;
                 ServerKey = CreateKey(settings["ServerKey"]);
@@ -105,7 +108,7 @@ namespace Dev2.Runtime.Security
 
                 SaveConfig(newSettings);
 
-                if(shouldProtectConfig)
+                if (shouldProtectConfig)
                 {
                     ProtectConfig();
                 }
@@ -116,13 +119,13 @@ namespace Dev2.Runtime.Security
 
         #region EnsureSecureConfigFileExists
 
-        private void EnsureSecureConfigFileExists()
+        void EnsureSecureConfigFileExists()
         {
             ConfigurationManager.RefreshSection(SectionName);
             // We need to check both the live and development paths ;)
-            if(!File.Exists(FileName))
+            if (!File.Exists(FileName))
             {
-                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName));
+                Dev2Logger.Info(string.Format(ErrorResource.FileNotFound, FileName), GlobalConstants.WarewolfInfo);
                 var newSettings = new NameValueCollection();
                 newSettings["ServerID"] = "";
                 newSettings["ServerKey"] = "";
@@ -182,7 +185,7 @@ namespace Dev2.Runtime.Security
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(e);
+                Dev2Logger.Error(e, GlobalConstants.WarewolfError);
                 throw;
             }
         }
@@ -216,7 +219,7 @@ namespace Dev2.Runtime.Security
         /// <param name="serverKey">The server key.</param>
         /// <param name="systemKey">The system key.</param>
         /// <returns>a <see cref="NameValueCollection"/> configuration.</returns>
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static NameValueCollection CreateSettings(string serverID, string serverKey, string systemKey)
         {
             return new NameValueCollection

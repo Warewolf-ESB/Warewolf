@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Xml.Linq;
@@ -30,9 +29,9 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Dev2.Studio.Interfaces.Enums;
-// ReSharper disable PossibleNullReferenceException
 
-// ReSharper disable InconsistentNaming
+
+
 namespace Dev2.Core.Tests
 {
     [TestClass]
@@ -150,7 +149,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             // Setup();
-            Mock<IServer> testEnvironmentModel = CreateMockEnvironment();
+            var testEnvironmentModel = CreateMockEnvironment();
             var resourceModel = new ResourceModel(testEnvironmentModel.Object);
             var timesFired = 0;
             var dataListFired = 0;
@@ -175,7 +174,7 @@ namespace Dev2.Core.Tests
         {
             //------------Setup for test--------------------------
             Setup();
-            Mock<IServer> testEnvironmentModel = CreateMockEnvironment(EventPublishers.Studio);
+            var testEnvironmentModel = CreateMockEnvironment(EventPublishers.Studio);
             var resourceModel = new ResourceModel(testEnvironmentModel.Object);
             var eventFired = false;
             IContextualResourceModel eventResourceModel = null;
@@ -242,7 +241,7 @@ namespace Dev2.Core.Tests
                 };
             resourceModel.DataList = newDataList;
 
-            string result = resourceModel.DataList;
+            var result = resourceModel.DataList;
 
             var xe = resourceModel.WorkflowXaml.ToXElement();
             var dlElms = xe.Elements("DataList");
@@ -260,7 +259,7 @@ namespace Dev2.Core.Tests
                 Assert.Fail();
             }
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -384,6 +383,8 @@ namespace Dev2.Core.Tests
                         Assert.AreEqual(2, model.Errors.Count);
                         Assert.AreEqual(0, model.FixedErrors.Count);
                         break;
+                    default:
+                        break;
                 }
             };
 
@@ -433,6 +434,8 @@ namespace Dev2.Core.Tests
 
                         Assert.AreEqual(1, model.Errors.Count);
                         Assert.AreEqual(0, model.FixedErrors.Count);
+                        break;
+                    default:
                         break;
                 }
             };
@@ -521,9 +524,9 @@ namespace Dev2.Core.Tests
         {
             const string TestCategory = "Test2";
             const string TestXaml = "current xaml";
-            // ReSharper disable ImplicitlyCapturedClosure
+            
             Verify_ToServiceDefinition_GivenXamlPresent(ResourceType.WorkflowService, TestCategory, TestXaml, true, serviceElement =>
-            // ReSharper restore ImplicitlyCapturedClosure
+            
             {
                 var actionElement = serviceElement.Element("Action");
                 Assert.IsNotNull(actionElement, "actionElement = null");
@@ -569,13 +572,13 @@ namespace Dev2.Core.Tests
             var serviceElement = XElement.Parse(serviceDefinition.ToString());
             Assert.IsNotNull(serviceElement);
 
-            verify(serviceElement);
+            verify?.Invoke(serviceElement);
         }
 
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("ResourceModel_ToServiceDefinition")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+
         public void ResourceModel_ToServiceDefinition_GivenHasMoreThanOneError_ThenThereShouldBeTwoErrorElements()
         {
             //------------Setup for test--------------------------
@@ -591,7 +594,7 @@ namespace Dev2.Core.Tests
             var errorMessagesElement = serviceElement.Element("ErrorMessages");
             Assert.IsNotNull(errorMessagesElement);
             Assert.AreEqual(2, errorMessagesElement.Elements().Count());
-            List<XElement> xElements = errorMessagesElement.Elements().ToList();
+            var xElements = errorMessagesElement.Elements().ToList();
             Assert.AreEqual("Critical error.", xElements[0].Attribute("Message").Value);
             Assert.AreEqual("Warning error.", xElements[1].Attribute("Message").Value);
         }

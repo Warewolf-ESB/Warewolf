@@ -1,7 +1,7 @@
 ﻿using Dev2.Activities.DropBox2016.DownloadActivity;
 using Dev2.Common;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016.ExceptionTests
 {

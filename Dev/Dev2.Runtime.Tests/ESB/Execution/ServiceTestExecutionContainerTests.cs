@@ -72,7 +72,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
 
             var fetch = JsonResource.Fetch("Sequence");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -80,7 +80,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
             var resourceCat = new Mock<IResourceCatalog>();
             var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
+            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(activity.Object);
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
@@ -90,11 +90,10 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors;
             Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
             {
-                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+                var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
                 Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
             });
 
@@ -121,7 +120,6 @@ namespace Dev2.Tests.Runtime.ESB.Execution
 
         [TestMethod]
         [Owner("Nkosinathi Sangweni")]
-        [DeploymentItem("Warewolf.Resource.resources.dll")]
         public void Execute_GivenStopExecutionAndUnAuthorized_ShouldAddFailureMessage()
         {
             //---------------Set up test pack-------------------
@@ -145,7 +143,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
             dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -153,26 +151,23 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             cataLog.Setup(cat => cat.FetchTest(resourceId, TestName)).Returns(testModelTO);
             var resourceCat = new Mock<IResourceCatalog>();
             var activity = new Mock<IDev2Activity>();
-            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>())).Returns(activity.Object);
+            resourceCat.Setup(catalog => catalog.Parse(It.IsAny<Guid>(), It.IsAny<Guid>(), It.IsAny<string>())).Returns(activity.Object);
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainerMock(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest, cataLog.Object, resourceCat.Object);
             //---------------Assert Precondition----------------
             Assert.IsNotNull(serviceTestExecutionContainer, "ServiceTestExecutionContainer is Null.");
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors;
             Thread.CurrentPrincipal = null;
-            GenericIdentity identity = new GenericIdentity("User");
+            var identity = new GenericIdentity("User");
             var currentPrincipal = new GenericPrincipal(identity, new[] { "Role1", "Roll2" });
             Thread.CurrentPrincipal = currentPrincipal;
             Common.Utilities.ServerUser = currentPrincipal;
 
-            var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+            var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
             Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
 
             //---------------Test Result -----------------------
@@ -262,7 +257,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
             dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -274,9 +269,7 @@ namespace Dev2.Tests.Runtime.ESB.Execution
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
             var testObj = new PrivateType(serviceTestExecutionContainer.GetType());
             var test = SetupServiceTestSteps();
             testObj.InvokeStatic("UpdateTestWithStepValues", test.Object);
@@ -322,7 +315,7 @@ Test Failed because of some reasons
             dsfObj.Setup(o => o.Environment.HasErrors()).Returns(true);
             dsfObj.Setup(o => o.Environment.FetchErrors()).Returns("Failed: The user running the test is not authorized to execute resource .");
             var fetch = JsonResource.Fetch("UnAuthorizedHelloWorld");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var cataLog = new Mock<ITestCatalog>();
@@ -334,9 +327,7 @@ Test Failed because of some reasons
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
             var testObj = new PrivateObject(serviceTestExecutionContainer);
             var output = new Mock<IServiceTestOutput>();
             output.Setup(testOutput => testOutput.AssertOp).Returns("There is No Error");
@@ -372,7 +363,7 @@ Test Failed because of some reasons
             dsfObj.Setup(o => o.Environment).Returns(envMock.Object);
             dsfObj.Setup(o => o.Environment.Eval(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<bool>(), false))
                   .Returns(CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.NewDataString("Args")));
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var cataLog = new Mock<ITestCatalog>();
             cataLog.Setup(cat => cat.SaveTest(It.IsAny<Guid>(), It.IsAny<IServiceTestModelTO>())).Verifiable();
             var resourceCat = new Mock<IResourceCatalog>();
@@ -381,9 +372,7 @@ Test Failed because of some reasons
             var workSpace = new Mock<IWorkspace>();
             var channel = new Mock<IEsbChannel>();
             var esbExecuteRequest = new EsbExecuteRequest();
-            var mockImpesinator = new Mock<IImpersonator>();
-            mockImpesinator.Setup(impersonator => impersonator.Impersonate(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())).Returns(false);
-            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(mockImpesinator.Object, serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
+            var serviceTestExecutionContainer = new ServiceTestExecutionContainer(serviceAction, dsfObj.Object, workSpace.Object, channel.Object, esbExecuteRequest);
             var testObj = new PrivateObject(serviceTestExecutionContainer);
             var output = new Mock<IServiceTestOutput>();
             output.Setup(testOutput => testOutput.AssertOp).Returns("There is An Error");
@@ -417,7 +406,7 @@ Test Failed because of some reasons
             dsfObj.Setup(o => o.Environment.AllErrors).Returns(new HashSet<string>());
 
             var fetch = JsonResource.Fetch("AssignWithRecSet");
-            Dev2JsonSerializer s = new Dev2JsonSerializer();
+            var s = new Dev2JsonSerializer();
             var testModelTO = s.Deserialize<ServiceTestModelTO>(fetch);
 
             var testCataLog = new Mock<ITestCatalog>();
@@ -435,11 +424,10 @@ Test Failed because of some reasons
             Assert.IsNull(serviceTestExecutionContainer.InstanceOutputDefinition);
             Assert.IsNull(serviceTestExecutionContainer.InstanceInputDefinition);
             //---------------Execute Test ----------------------
-            ErrorResultTO errors;
             Thread.CurrentPrincipal = GlobalConstants.GenericPrincipal;
             Common.Utilities.PerformActionInsideImpersonatedContext(GlobalConstants.GenericPrincipal, () =>
             {
-                var execute = serviceTestExecutionContainer.Execute(out errors, 1);
+                var execute = serviceTestExecutionContainer.Execute(out ErrorResultTO errors, 1);
                 Assert.IsNotNull(execute, "serviceTestExecutionContainer execute results is Null.");
             });
             //---------------Test Result -----------------------
@@ -459,16 +447,9 @@ Test Failed because of some reasons
                 TstCatalog = catalog;
                 ResourceCat = resourceCatalog;
             }
-
-            public ServiceTestExecutionContainerMock(IImpersonator imp, ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request, ITestCatalog catalog, IResourceCatalog resourceCatalog)
-                : base(imp, sa, dataObj, theWorkspace, esbChannel, request)
-            {
-                TstCatalog = catalog;
-                ResourceCat = resourceCatalog;
-            }
         }
 
-        private static Mock<IServiceTestModelTO> SetupServiceTestSteps()
+        static Mock<IServiceTestModelTO> SetupServiceTestSteps()
         {
             var serviceTestModelTO = new Mock<IServiceTestModelTO>();
             var failingStep = new Mock<IServiceTestStep>();

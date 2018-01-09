@@ -21,7 +21,7 @@ using Warewolf.Studio.ViewModels;
 using Warewolf.Studio.Views;
 using Warewolf.UIBindingTests.Core;
 
-// ReSharper disable RedundantAssignment
+
 
 namespace Warewolf.UIBindingTests.SqlDatabaseSource
 {
@@ -95,7 +95,8 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
         public void GivenIOpen(string name)
         {
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var upd = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager").Object;
+            var mock = FeatureContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
+            var upd = mock.Object;
             var dbsrc = new DbSourceDefinition
             {
                 Name = name,
@@ -103,11 +104,11 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
                 ServerName = "RSAKLFSVRDEV",
                 AuthenticationType = AuthenticationType.Windows
             };
+            mock.Setup(model => model.FetchDbSource(It.IsAny<Guid>())).Returns(dbsrc);
             FeatureContext.Current["dbsrc"] = dbsrc;
             var mockEventAggregator = new Mock<IEventAggregator>();
             var viewModel = new ManageSqlServerSourceViewModel(upd, mockEventAggregator.Object, dbsrc, new SynchronousAsyncWorker());
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageSqlServerSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
             }
@@ -140,9 +141,9 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
             manageDatabaseSourceControl.SetAuthenticationType((AuthenticationType)authp);
-            // ReSharper disable PossibleNullReferenceException
+            
             (manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel).AuthenticationType = (AuthenticationType)authp;
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         [Then(@"Authentication Type is selected as ""(.*)""")]
@@ -154,8 +155,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
 
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
 
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageSqlServerSourceViewModel manageDatabaseSourceViewModel)
             {
                 Assert.AreEqual(manageDatabaseSourceViewModel.AuthenticationType, (AuthenticationType)authp);
             }
@@ -437,7 +437,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             CleanupResources();
         }
 
-        private static void CleanupResources()
+        static void CleanupResources()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel =
@@ -448,8 +448,7 @@ namespace Warewolf.UIBindingTests.SqlDatabaseSource
             var viewModel = new ManageSqlServerSourceViewModel(mockUpdateManager.Object, task, mockEventAggregator.Object,
                 new SynchronousAsyncWorker());
             var manageDatabaseSourceControl = ScenarioContext.Current.Get<ManageDatabaseSourceControl>(Utils.ViewNameKey);
-            var manageDatabaseSourceViewModel = manageDatabaseSourceControl.DataContext as ManageSqlServerSourceViewModel;
-            if (manageDatabaseSourceViewModel != null)
+            if (manageDatabaseSourceControl.DataContext is ManageSqlServerSourceViewModel manageDatabaseSourceViewModel)
             {
                 Utils.ResetViewModel<ManageSqlServerSourceViewModel, IDbSource>(viewModel, manageDatabaseSourceViewModel);
                 manageDatabaseSourceViewModel.DatabaseName = null;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,7 @@ using System.Activities.Presentation.Model;
 using Dev2.Activities.Designers2.Core;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable UnusedMember.Local
+
 
 namespace Dev2.Activities.Designers2.ReadFolder
 {
@@ -37,9 +37,9 @@ namespace Dev2.Activities.Designers2.ReadFolder
             ValidateInputPath();
         }
 
-        bool IsFilesAndFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        bool IsFoldersSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
-        bool IsFilesSelected { set { SetProperty(value); } get { return GetProperty<bool>(); } }
+        bool IsFilesAndFoldersSelected => GetProperty<bool>();
+        bool IsFoldersSelected => GetProperty<bool>();
+        bool IsFilesSelected { set => SetProperty(value); get => GetProperty<bool>(); }
 
         public override void UpdateHelpDescriptor(string helpText)
         {

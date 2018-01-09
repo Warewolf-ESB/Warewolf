@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,52 +21,29 @@ namespace Dev2.Models
     public class ServerExplorerClientProxy : IExplorerResourceRepository
     {
         public ICommunicationControllerFactory CommunicationControllerFactory { get; private set; }
-        private readonly IEnvironmentConnection _connection;
+
+        public IEnvironmentConnection Connection => _connection;
+        readonly IEnvironmentConnection _connection;
 
         public ServerExplorerClientProxy(IEnvironmentConnection connection, ICommunicationControllerFactory communicationControllerFactory)
         {
             CommunicationControllerFactory = communicationControllerFactory;
             _connection = connection;
         }
-        public ServerExplorerClientProxy(IEnvironmentConnection connection)
-        {
-            CommunicationControllerFactory = new CommunicationControllerFactory();
-            _connection = connection;
-        }
-        public IEnvironmentConnection Connection => _connection;
-
-        public IExplorerItem Load(Guid workSpaceId,bool reload=true)
+        
+        public IExplorerItem Load(Guid workSpaceId) => Load(workSpaceId, true);
+        public IExplorerItem Load(Guid workSpaceId, bool reload)
         {
             var controller = CommunicationControllerFactory.CreateController("FetchExplorerItemsService");
-            return controller.ExecuteCommand<IExplorerItem>(Connection, workSpaceId);
-        }
-
-        public IExplorerItem Load(string type, Guid workSpaceId)
-        {
-            var controller =
-                CommunicationControllerFactory.CreateController("Management Services\\FetchExplorerItemsServiceByType");
             return controller.ExecuteCommand<IExplorerItem>(Connection, workSpaceId);
         }
 
         public IExplorerRepositoryResult RenameItem(IExplorerItem itemToRename, string newName, Guid workSpaceId)
         {
             var controller = CommunicationControllerFactory.CreateController("RenameItemService");
-            if(itemToRename.Children != null)
-            {
-                var any = itemToRename.Children.Where(a => a.ResourceType == "Version");
-                itemToRename.Children = itemToRename.Children.Except(any).ToList();
-            }
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("itemToRename", serializer.SerializeToBuilder(itemToRename).ToString());
             controller.AddPayloadArgument("newName", newName);
-            return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
-        }
-
-        public IExplorerRepositoryResult RenameFolder(string path, string newName, Guid workSpaceId)
-        {
-            var controller = CommunicationControllerFactory.CreateController("RenameFolderService");
-            controller.AddPayloadArgument("path", path);
-            controller.AddPayloadArgument("newPath", newName);
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
         }
 
@@ -77,8 +54,6 @@ namespace Dev2.Models
             controller.AddPayloadArgument("itemToDelete", serializer.SerializeToBuilder(itemToRename).ToString());
             return controller.ExecuteCommand<IExplorerRepositoryResult>(Connection, workSpaceId);
         }
-
-
 
         public IExplorerRepositoryResult AddItem(IExplorerItem itemToAdd, Guid workSpaceId)
         {
@@ -91,11 +66,6 @@ namespace Dev2.Models
         public IExplorerRepositoryResult MoveItem(IExplorerItem itemToMove, string newPath, Guid workSpaceId)
         {
             var controller = CommunicationControllerFactory.CreateController("MoveItemService");
-            if (itemToMove.Children != null)
-            {
-                var any = itemToMove.Children.Where(a => a.ResourceType == "Version");
-                itemToMove.Children = itemToMove.Children.Except(any).ToList();
-            }
             var serializer = new Dev2JsonSerializer();
             controller.AddPayloadArgument("itemToMove", serializer.SerializeToBuilder(itemToMove).ToString());
             controller.AddPayloadArgument("newPath", newPath);

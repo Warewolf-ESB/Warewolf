@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,7 @@ namespace Dev2.Tests.Runtime.Util
         [TestMethod]
         [Owner("Travis Frisinger")]
         [TestCategory("FindResourceHelper_SerializeResourceForStudio")]
-// ReSharper disable InconsistentNaming
+
         public void FindResourceHelper_SerializeResourceForStudio_WhenNewResource_ExpectValidResource()
 
         {
@@ -85,7 +85,7 @@ namespace Dev2.Tests.Runtime.Util
                     }
             };
 
-            Resource res = new Resource
+            var res = new Resource
             {
                 Inputs = "inputs",
                 Outputs = "outputs",
@@ -122,5 +122,5 @@ namespace Dev2.Tests.Runtime.Util
         }
 
     }
-    // ReSharper restore InconsistentNaming
+    
 }

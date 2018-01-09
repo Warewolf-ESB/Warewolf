@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ using Moq;
 namespace Dev2.Core.Tests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class FileSystemQueryTest
     {
         [TestMethod]
@@ -138,8 +138,7 @@ namespace Dev2.Core.Tests
 
            //------------Execute Test---------------------------
             var query = new FileSystemQuery();
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare(null, out sServerFolderShare);
+            var res = query.GetServerFolderShare(null, out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
             
@@ -155,8 +154,7 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
             var query = new FileSystemQuery();
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare("bob", out sServerFolderShare);
+            var res = query.GetServerFolderShare("bob", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
 
@@ -171,8 +169,7 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
             var query = new FileSystemQuery();
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare("bobthebuilder", out sServerFolderShare);
+            var res = query.GetServerFolderShare("bobthebuilder", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
 
@@ -188,56 +185,9 @@ namespace Dev2.Core.Tests
 
             //------------Execute Test---------------------------
             var query = new FileSystemQuery();
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare("\\\\bobthebuilder", out sServerFolderShare);
+            var res = query.GetServerFolderShare("\\\\bobthebuilder", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
-
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FileSystemQuery_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FileSystemQuery_Constructor_NullDirectory_ThrowsException()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-// ReSharper disable ObjectCreationAsStatement
-            new FileSystemQuery(null, new DirectoryEntryFactory(), new ShareCollectionFactory());
-// ReSharper restore ObjectCreationAsStatement
-            //------------Assert Results-------------------------
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FileSystemQuery_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FileSystemQuery_Constructor_NullDirectoryEntryFactory_ThrowsException()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
-            new FileSystemQuery(new DirectoryWrapper(), null, new ShareCollectionFactory());
-            // ReSharper restore ObjectCreationAsStatement
-            //------------Assert Results-------------------------
-        }
-
-
-        [TestMethod]
-        [Owner("Leon Rajindrapersadh")]
-        [TestCategory("FileSystemQuery_Constructor")]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void FileSystemQuery_Constructor_NullShareCollectionFactory_ThrowsException()
-        {
-            //------------Setup for test--------------------------
-            //------------Execute Test---------------------------
-            // ReSharper disable ObjectCreationAsStatement
-            new FileSystemQuery(new DirectoryWrapper(), new DirectoryEntryFactory(), null);
-            // ReSharper restore ObjectCreationAsStatement
-            //------------Assert Results-------------------------
         }
 
         [TestMethod]
@@ -250,9 +200,8 @@ namespace Dev2.Core.Tests
             dir.Setup(a => a.Exists("\\\\bobthebuilder\\dave")).Returns(true);
       
             //------------Execute Test---------------------------
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(),new ShareCollectionFactory());
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare("\\\\bobthebuilder\\dave", out sServerFolderShare);
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
+            var res = query.GetServerFolderShare("\\\\bobthebuilder\\dave", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsTrue(res);
 
@@ -268,9 +217,8 @@ namespace Dev2.Core.Tests
             dir.Setup(a => a.Exists("\\\\bobthebuilder\\dave")).Returns(false).Verifiable();
 
             //------------Execute Test---------------------------
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare("\\\\bobthebuilder\\dave", out sServerFolderShare);
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
+            var res = query.GetServerFolderShare("\\\\bobthebuilder\\dave", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
             dir.Verify(a => a.Exists("\\\\bobthebuilder\\dave"));
@@ -287,9 +235,8 @@ namespace Dev2.Core.Tests
             dir.Setup(a => a.Exists("\\\\bobthebuilder\\dave")).Returns(false).Verifiable();
 
             //------------Execute Test---------------------------
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
-            string sServerFolderShare;
-            var res = query.GetServerFolderShare("\\\\bobthebuilder\\dave\\", out sServerFolderShare);
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
+            var res = query.GetServerFolderShare("\\\\bobthebuilder\\dave\\", out string sServerFolderShare);
             //------------Assert Results-------------------------
             Assert.IsTrue(res);
             Assert.AreEqual(@"\\BOBTHEBUILDER\DAVE\",sServerFolderShare);
@@ -306,7 +253,7 @@ namespace Dev2.Core.Tests
             dir.Setup(a => a.Exists("\\\\bobthebuilder\\dave")).Returns(true).Verifiable();
             dir.Setup(a => a.GetFileSystemEntries("\\\\bobthebuilder\\dave")).Returns(new string[0]);
             //------------Execute Test---------------------------
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
 
             var res = query.GetFilesAndFoldersIncludingNetwork("\\\\bobthebuilder\\dave",new List<string>(), '\\');
             //------------Assert Results-------------------------
@@ -429,7 +376,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\\bob\", ref output,ref qs );
             //------------Assert Results-------------------------
             Assert.IsTrue(res);
@@ -444,7 +391,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\bob\", ref output, ref qs);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
@@ -459,7 +406,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\\bob", ref output, ref qs);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
@@ -474,7 +421,7 @@ namespace Dev2.Core.Tests
             //------------Setup for test--------------------------
             var query = GetFileSystemQuery();
             var output = new List<string>();
-            string qs = "mp";
+            var qs = "mp";
             var res = query.GetServerNameFromInput(@"\\bob", ref output, ref qs);
             //------------Assert Results-------------------------
             Assert.IsFalse(res);
@@ -577,7 +524,7 @@ namespace Dev2.Core.Tests
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.GetFileSystemEntries(It.IsAny<string>())).Returns(new[] { "a", "b", "c" });
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
             var files = new List<string>();
 
             files= query.GetFilesAndFoldersFromDrive(@"c:\bob", files, 'o');
@@ -599,7 +546,7 @@ namespace Dev2.Core.Tests
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.GetFileSystemEntries(It.IsAny<string>())).Returns(new[] { "a", "b", "c" });
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
             var files = new List<string>{"non"};
 
             files = query.GetFilesAndFoldersFromDrive(null, files, 'o');
@@ -618,7 +565,7 @@ namespace Dev2.Core.Tests
             var dir = new Mock<IDirectory>();
             dir.Setup(a => a.GetFileSystemEntries(It.IsAny<string>())).Returns(new[] { "a", "b", "c" });
             dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-            var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+            var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
             var files = new List<string> { "non" };
 
             files = query.GetFilesAndFoldersFromDrive("bobo", files, 'o');
@@ -638,7 +585,7 @@ namespace Dev2.Core.Tests
              var dir = new Mock<IDirectory>();
              dir.Setup(a => a.GetFileSystemEntries(It.IsAny<string>())).Returns(new[] { "a", "b", "c" });
              dir.Setup(a => a.Exists(It.IsAny<string>())).Returns(true);
-             var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+             var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
              var files = new List<string> { "non" };
 
              files = query.SearchForFileAndFolders(@"c:", files, '\\');
@@ -678,7 +625,7 @@ namespace Dev2.Core.Tests
              //------------Setup for test--------------------------
              var dir = new Mock<IDirectory>();
              dir.Setup(a => a.GetLogicalDrives()).Returns(new[] { "a", "b", "c" });
-             var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+             var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
 
 
              query.QueryList("");
@@ -698,7 +645,7 @@ namespace Dev2.Core.Tests
              //------------Setup for test--------------------------
              var dir = new Mock<IDirectory>();
              dir.Setup(a => a.GetLogicalDrives()).Returns(new[] { "a", "b", "c" });
-             var query = new FileSystemQuery(dir.Object, new DirectoryEntryFactory(), new ShareCollectionFactory());
+             var query = new FileSystemQuery(dir.Object, null, new ShareCollectionFactory());
 
 
              query.QueryList(null);
@@ -729,7 +676,7 @@ namespace Dev2.Core.Tests
 
          }
 
-        private static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
+        static FileSystemQuery GetFileSystemQuery(bool hasShares = true)
         {
 
             var dirFact = new Mock<IDirectoryEntryFactory>();
@@ -763,13 +710,13 @@ namespace Dev2.Core.Tests
                                            .GetEnumerator());
             actualChildren.First().Setup(a => a.Children).Returns(gChildren.Object);
             gChildren.Setup(a => a.GetEnumerator()).Returns(actualGChildren.Select(a => a.Object).GetEnumerator());
-            IList<Share> shares = hasShares? new List<Share>{new Share("a","b",ShareType.Disk)}  : new List<Share>();
+            IList<Share> shares = hasShares ? new List<Share> { new Share("a", "b", ShareType.Disk) } : new List<Share>();
             var sFact = new Mock<IShareCollectionFactory>();
             sFact.Setup(a => a.CreateShareCollection(It.IsAny<string>())).Returns(new ShareCollection(shares));
 
             //------------Execute Test---------------------------
             var query = new FileSystemQuery(dirLocal.Object, dirFact.Object, sFact.Object);
-         
+
             return query;
         }
     }

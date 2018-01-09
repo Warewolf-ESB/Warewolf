@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
@@ -13,27 +12,23 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-    [SuppressMessage("ReSharper", "UnusedMember.Global")]
-    public class ReloadAllTests : IEsbManagementEndpoint
+    public class ReloadAllTests : DefaultEsbManagementEndpoint
     {
-        private ITestCatalog _testCatalog;
+        ITestCatalog _testCatalog;
 
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             try
             {
-                Dev2Logger.Info("Reload All Tests");
+                Dev2Logger.Info("Reload All Tests", GlobalConstants.WarewolfInfo);
                 TestCatalog.ReloadAllTests();
-                CompressedExecuteMessage message = new CompressedExecuteMessage { HasError = false };
+                var message = new CompressedExecuteMessage { HasError = false };
                 return serializer.SerializeToBuilder(message);
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
                 var res = new CompressedExecuteMessage { HasError = true, Message = new StringBuilder(err.Message) };
                 return serializer.SerializeToBuilder(res);
             }
@@ -51,16 +46,16 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
+        public override DynamicService CreateServiceEntry()
         {
-            DynamicService newDs = new DynamicService { Name = HandlesType() };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
+            var newDs = new DynamicService { Name = HandlesType() };
+            var sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
             newDs.Actions.Add(sa);
 
             return newDs;
         }
 
-        public string HandlesType()
+        public override string HandlesType()
         {
             return "ReloadAllTests";
         }

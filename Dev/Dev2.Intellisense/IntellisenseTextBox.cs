@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,13 +28,13 @@ using Dev2.Data.Interfaces;
 using Dev2.Studio.InterfaceImplementors;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable ForCanBeConvertedToForeach
 
-// ReSharper disable ExplicitCallerInfoArgument
-// ReSharper disable UnusedMember.Global
-// ReSharper disable NonLocalizedString
-// ReSharper disable CheckNamespace
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
+
+
+
+
+
+
 
 namespace Dev2.UI
 {
@@ -55,15 +55,14 @@ namespace Dev2.UI
 
         void OnPaste(object sender, DataObjectPastingEventArgs dataObjectPastingEventArgs)
         {
-            bool isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
+            var isText = dataObjectPastingEventArgs.SourceDataObject.GetDataPresent(DataFormats.Text, true);
             if (!isText)
             {
                 return;
             }
 
-            var text = dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) as string;
 
-            if (text != null && text.Contains("\t"))
+            if (dataObjectPastingEventArgs.SourceDataObject.GetData(DataFormats.Text) is string text && text.Contains("\t"))
             {
                 var args = new RoutedEventArgs(TabInsertedEvent, this);
                 RaiseEvent(args);
@@ -75,8 +74,7 @@ namespace Dev2.UI
         protected override void OnPreviewMouseLeftButtonDown(MouseButtonEventArgs e)
         {
             base.OnPreviewMouseLeftButtonDown(e);
-            var originalSource = e.OriginalSource as TextBlock;
-            if (originalSource != null)
+            if (e.OriginalSource is TextBlock originalSource)
             {
                 InsertItem(originalSource.Text, true);
             }
@@ -85,12 +83,12 @@ namespace Dev2.UI
         protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             base.OnPreviewKeyDown(e);
-            bool isOpen = IsDropDownOpen;
+            var isOpen = IsDropDownOpen;
 
             if (e.Key == Key.Enter || e.Key == Key.Return || e.Key == Key.Tab)
             {
                 const bool isInsert = false;
-                bool expand = false;
+                var expand = false;
 
                 object appendText = HandleMultiLine(e, isOpen, ref expand);
 
@@ -127,12 +125,12 @@ namespace Dev2.UI
             }
         }
 
-        private string HandleMultiLine(KeyEventArgs e, bool isOpen, ref bool expand)
+        string HandleMultiLine(KeyEventArgs e, bool isOpen, ref bool expand)
         {
             string appendText = null;
-            if(AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
+            if (AllowUserInsertLine && !isOpen && e.Key != Key.Tab && e.KeyboardDevice.Modifiers == ModifierKeys.None)
             {
-                if(LineCount < TextBox.MaxLines)
+                if (LineCount < TextBox.MaxLines)
                 {
                     appendText = Environment.NewLine;
                     expand = true;
@@ -141,11 +139,11 @@ namespace Dev2.UI
             return appendText;
         }
 
-        private void HandleSpecialKeys(KeyEventArgs e)
+        void HandleSpecialKeys(KeyEventArgs e)
         {
-            if(e.Key != Key.Tab)
+            if (e.Key != Key.Tab)
             {
-                if((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
+                if ((e.Key == Key.Enter || e.Key == Key.Return) && e.KeyboardDevice.Modifiers != ModifierKeys.Shift && AcceptsReturn)
                 {
                 }
                 else
@@ -155,18 +153,17 @@ namespace Dev2.UI
             }
         }
 
-        private object SetAppendTextBasedOnSelection()
+        object SetAppendTextBasedOnSelection()
         {
             object selectedItem;
             object appendText = null;
-            if(SelectionAdapter != null && (selectedItem = SelectionAdapter.SelectedItem) != null)
+            if (SelectionAdapter != null && (selectedItem = SelectionAdapter.SelectedItem) != null)
             {
-                var verifyPart = selectedItem as IDataListVerifyPart;
-                if(verifyPart != null)
+                if (selectedItem is IDataListVerifyPart verifyPart)
                 {
                     appendText = verifyPart.DisplayValue;
                 }
-                else if(SelectionAdapter.SelectedItem is IntellisenseProviderResult)
+                else if (SelectionAdapter.SelectedItem is IntellisenseProviderResult)
                 {
                     appendText = (IntellisenseProviderResult)SelectionAdapter.SelectedItem;
                 }
@@ -180,10 +177,10 @@ namespace Dev2.UI
 
         public void InsertItem(object item, bool force)
         {
-            bool isOpen = IsDropDownOpen;
+            var isOpen = IsDropDownOpen;
             string appendText = null;
-            bool isInsert = false;
-            int index = CaretIndex;
+            var isInsert = false;
+            var index = CaretIndex;
             IIntellisenseProvider currentProvider = new DefaultIntellisenseProvider();
 
             if (isOpen || force)
@@ -193,9 +190,9 @@ namespace Dev2.UI
 
             if (appendText != null)
             {
-                string currentText = Text;
+                var currentText = Text;
 
-                int foundLength = 0;
+                var foundLength = 0;
                 if (isInsert)
                 {
                     if (currentProvider.HandlesResultInsertion)
@@ -206,9 +203,9 @@ namespace Dev2.UI
                         {
                             Text = currentProvider.PerformResultInsertion(appendText, context);
                         }
-                        // ReSharper disable EmptyGeneralCatchClause
+                        
                         catch
-                        // ReSharper restore EmptyGeneralCatchClause
+                        
                         {
                             //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                             //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -222,7 +219,7 @@ namespace Dev2.UI
                     }
                     else
                     {
-                        int foundMinimum = -1;
+                        var foundMinimum = -1;
 
                         for (int i = index - 1; i >= 0; i--)
                         {
@@ -255,26 +252,24 @@ namespace Dev2.UI
             EnsureErrorStatus();
         }
 
-        private IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
+        IIntellisenseProvider PerformInsertFromDropDown(object item, IIntellisenseProvider currentProvider, ref string appendText, ref bool isInsert)
         {
-            var intellisenseProviderResult = item as IntellisenseProviderResult;
-            if(intellisenseProviderResult != null)
+            if (item is IntellisenseProviderResult intellisenseProviderResult)
             {
                 currentProvider = intellisenseProviderResult.Provider;
             }
 
-            object selectedItem = item;
+            var selectedItem = item;
 
-            if(SelectionAdapter != null)
+            if (SelectionAdapter != null)
             {
-                var verifyPart = selectedItem as IDataListVerifyPart;
-                if(verifyPart != null)
+                if (selectedItem is IDataListVerifyPart verifyPart)
                 {
                     appendText = verifyPart.DisplayValue;
                 }
                 else
                 {
-                    if(selectedItem != null)
+                    if (selectedItem != null)
                     {
                         appendText = selectedItem.ToString();
                     }
@@ -286,9 +281,9 @@ namespace Dev2.UI
             return currentProvider;
         }
 
-        private void AppendText(string currentText, int index, string appendText)
+        void AppendText(string currentText, int index, string appendText)
         {
-            if(currentText.Length == index)
+            if (currentText.Length == index)
             {
                 TextBox?.AppendText(appendText);
                 TextBox?.Select(Text.Length, 0);
@@ -326,7 +321,10 @@ namespace Dev2.UI
         protected void EnsureErrorStatus()
         {
             var currentText = Text;
-            if (string.IsNullOrEmpty(currentText)) return;
+            if (string.IsNullOrEmpty(currentText))
+            {
+                return;
+            }
 
             if (AllowMultipleVariables)
             {
@@ -354,10 +352,10 @@ namespace Dev2.UI
 
         public bool CheckHasUnicodeInText(string inputText)
         {
-            bool hasUnicode = inputText.ContainsUnicodeCharacter();
+            var hasUnicode = inputText.ContainsUnicodeCharacter();
             if (hasUnicode)
             {
-                string previousInput = inputText;
+                var previousInput = inputText;
                 Text = "";
                 CustomContainer.Get<IPopupController>()
                     .ShowInvalidCharacterMessage(previousInput);
@@ -388,7 +386,7 @@ namespace Dev2.UI
             _desiredResultSet = string.IsNullOrEmpty(text) ? IntellisenseDesiredResultSet.EntireSet : IntellisenseDesiredResultSet.ClosestMatch;
         }
 
-        private void ValidateText(string text)
+        void ValidateText(string text)
         {
             if (!HasError)
             {
@@ -411,7 +409,7 @@ namespace Dev2.UI
                 {
                     ToolTip = error.Item2 != string.Empty ? error.Item2 : "Invalid recordset name";
                     HasError = true;
-                }               
+                }
                 else
                 {
                     if (error.Item2 != string.Empty)
@@ -425,7 +423,8 @@ namespace Dev2.UI
                         HasError = false;
                     }
                 }
-            }else
+            }
+            else
             {
                 if (error.Item2 != string.Empty)
                 {
@@ -437,9 +436,9 @@ namespace Dev2.UI
                     ToolTip = _originalToolTip;
                     HasError = false;
                 }
-                
+
             }
-            
+
         }
 
         public static readonly DependencyProperty SelectAllOnGotFocusProperty = DependencyProperty.Register("SelectAllOnGotFocus", typeof(bool), typeof(IntellisenseTextBox), new PropertyMetadata(false));
@@ -456,14 +455,14 @@ namespace Dev2.UI
                 }
             }
 
-        private IEnumerable<IntellisenseProviderResult> IntellisenseResults
+        IEnumerable<IntellisenseProviderResult> IntellisenseResults
         {
             get
             {
-                
-                EnsureIntellisenseResults(Text,true, _desiredResultSet);
+
+                EnsureIntellisenseResults(Text, true, _desiredResultSet);
                 return _intellisenseResults;
-            }            
+            }
         }
 
         public void EnsureIntellisenseResults(string text, bool forceUpdate, IntellisenseDesiredResultSet desiredResultSet)
@@ -474,7 +473,7 @@ namespace Dev2.UI
             }
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                bool calculateMode = false;
+                var calculateMode = false;
 
                 if (AllowUserCalculateMode)
                 {
@@ -493,7 +492,7 @@ namespace Dev2.UI
 
                 if (forceUpdate)
                 {
-                    IIntellisenseProvider provider = IntellisenseProvider;
+                    var provider = IntellisenseProvider;
                     var context = new IntellisenseProviderContext { FilterType = FilterType, DesiredResultSet = desiredResultSet, InputText = text, CaretPosition = CaretIndex };
 
                     if ((context.IsInCalculateMode = calculateMode) && AllowUserCalculateMode)
@@ -511,9 +510,9 @@ namespace Dev2.UI
                         results = provider.GetIntellisenseResults(context);
                         _intellisenseResults = results.ToList();
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                     catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                     {
                         //This try catch is to prevent the intellisense box from ever being crashed from a provider.
                         //This catch is intentionally blanks since if a provider throws an exception the intellisense
@@ -525,21 +524,21 @@ namespace Dev2.UI
             }
         }
 
-        private void ProcessResults(string text, IList<IntellisenseProviderResult> results, bool cleared)
+        void ProcessResults(string text, IList<IntellisenseProviderResult> results, bool cleared)
         {
-            if(results != null && results.Count > 0)
+            if (results != null && results.Count > 0)
             {
                 IntellisenseProviderResult popup = null;
 
-                for(int i = 0; i < results.Count; i++)
+                for (int i = 0; i < results.Count; i++)
                 {
-                    IntellisenseProviderResult currentResult = results[i];
+                    var currentResult = results[i];
 
-                    if(!currentResult.IsError)
+                    if (!currentResult.IsError)
                     {
-                        if(!currentResult.IsPopup)
+                        if (!currentResult.IsPopup)
                         {
-                            if(!cleared)
+                            if (!cleared)
                             {
                                 cleared = true;
                             }
@@ -550,9 +549,9 @@ namespace Dev2.UI
                         }
                     }
                 }
-                if(popup != null)
+                if (popup != null)
                 {
-                    string description = popup.Description;
+                    var description = popup.Description;
 
                     _toolTip.Content = string.IsNullOrEmpty(description) ? "" : description;
                     _toolTip.IsOpen = true;
@@ -562,19 +561,19 @@ namespace Dev2.UI
             else
             {
                 var ttErrorBuilder = new StringBuilder();
-                if(text.Contains("[[") && text.Contains("]]"))
+                if (text.Contains("[[") && text.Contains("]]"))
                 {
-                    if(FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
+                    if (FilterType == enIntellisensePartType.RecordsetFields || FilterType == enIntellisensePartType.RecordsetsOnly)
                     {
-                        if(!(text.Contains("(") && text.Contains(")")))
+                        if (!(text.Contains("(") && text.Contains(")")))
                         {
                             HasError = true;
                             ttErrorBuilder.AppendLine("Scalar is not allowed");
                         }
                     }
-                    else if(FilterType == enIntellisensePartType.ScalarsOnly)
+                    else if (FilterType == enIntellisensePartType.ScalarsOnly)
                     {
-                        if(text.Contains("(") && text.Contains(")"))
+                        if (text.Contains("(") && text.Contains(")"))
                         {
                             HasError = true;
                             ttErrorBuilder.AppendLine("Recordset is not allowed");
@@ -582,7 +581,7 @@ namespace Dev2.UI
                     }
                 }
 
-                string errorText = ttErrorBuilder.ToString();
+                var errorText = ttErrorBuilder.ToString();
                 _toolTip.Content = string.IsNullOrEmpty(errorText) ? "" : errorText;
             }
         }
@@ -724,7 +723,9 @@ namespace Dev2.UI
         protected virtual void OnAllowMultilinePasteChanged(bool oldValue, bool newValue)
         {
             if(TextBox != null)
+            {
                 TextBox.AcceptsReturn = newValue;
+            }
         }
 
         public static readonly DependencyProperty AllowUserCalculateModeProperty =
@@ -828,16 +829,16 @@ namespace Dev2.UI
             }
         }
 
-        private readonly ToolTip _toolTip;
-        private List<IntellisenseProviderResult> _intellisenseResults;
-        private IntellisenseDesiredResultSet _desiredResultSet;
-        private object _originalToolTip;
+        readonly ToolTip _toolTip;
+        List<IntellisenseProviderResult> _intellisenseResults;
+        IntellisenseDesiredResultSet _desiredResultSet;
+        object _originalToolTip;
 
         [ExcludeFromCodeCoverage]
         protected override void OnGotKeyboardFocus(KeyboardFocusChangedEventArgs e)
         {
             base.OnGotKeyboardFocus(e);
-            BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
+            var be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
             if (SelectAllOnGotFocus)
             {
@@ -856,7 +857,7 @@ namespace Dev2.UI
         {
             ExecWrapBrackets();
             //CloseDropDown(true, false);
-            BindingExpression be = BindingOperations.GetBindingExpression(this, TextProperty);
+            var be = BindingOperations.GetBindingExpression(this, TextProperty);
             be?.UpdateSource();
         }
 
@@ -871,7 +872,7 @@ namespace Dev2.UI
 
         public string AddBracketsToExpression(string expression)
         {
-            string result = expression.Trim();
+            var result = expression.Trim();
             if (!result.StartsWith("[["))
             {
                 result = string.Concat(!result.StartsWith("[") ? "[[" : "[", result);

@@ -28,10 +28,10 @@ namespace Dev2.Runtime.Hosting
          
         }
 
-        private IEnumerable<IToolDescriptor> CreateTools(string path)
+        IEnumerable<IToolDescriptor> CreateTools(string path)
         {
             var assembly = Assembly.LoadFile(path);
-            Type basetype = typeof(IDev2Activity);
+            var basetype = typeof(IDev2Activity);
             var types = assembly.ExportedTypes.Where(basetype.IsAssignableFrom);
             return types.Select(CreateTool);
         }
@@ -40,14 +40,17 @@ namespace Dev2.Runtime.Hosting
         {
 
             if (arg.GetCustomAttributes().Any(a => a is ToolDescriptorInfo))
+            {
                 return GetDescriptorFromAttribute(arg);
+            }
+
             return GetDescriptorLegacy(arg);
         }
 
         IToolDescriptor GetDescriptorFromAttribute(Type type)
         {
             var info = type.GetCustomAttributes(typeof(ToolDescriptorInfo)).First() as ToolDescriptorInfo;
-            // ReSharper disable once PossibleNullReferenceException
+            
             return new ToolDescriptor(info.Id, info.Designer, new WarewolfType(type.FullName, type.Assembly.GetName().Version, type.Assembly.Location), info.Name, info.Icon, type.Assembly.GetName().Version, true, info.Category, ToolType.Native, info.IconUri, info.FilterTag, info.ResourceToolTip,info.ResourceHelpText);
         }
 
@@ -64,9 +67,9 @@ namespace Dev2.Runtime.Hosting
 
         public IList<IToolDescriptor> LoadTools()
         {
-            // ReSharper disable MaximumChainedReferences
+            
             return _tools.Where(a => a != null).OrderBy(a => a.Category.ToLower() == "connectors" ?"zzzzzzz":a.Category ).ToList();
-            // ReSharper restore MaximumChainedReferences
+            
         }
 
         #endregion

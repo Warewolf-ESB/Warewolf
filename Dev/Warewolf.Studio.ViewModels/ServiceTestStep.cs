@@ -7,30 +7,30 @@ using Dev2.Data.Interfaces.Enums;
 using Dev2.Data.Util;
 using Microsoft.Practices.Prism.Mvvm;
 using Newtonsoft.Json;
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
+
 
 namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestStep : BindableBase, IServiceTestStep
     {
-        private string _stepDescription;
-        private StepType _type;
-        private string _activityType;
-        private ObservableCollection<IServiceTestOutput> _stepOutputs;
-        private Guid _uniqueId;
-        private IServiceTestStep _parent;
-        private ObservableCollection<IServiceTestStep> _children;
-        private bool _isTestStepExpanded;
-        private bool _isTestStepExpanderEnabled;
-        private bool _assertSelected;
-        private bool _mockSelected;
-        private ImageSource _stepIcon;
-        private bool _testPassed;
-        private bool _testPending;
-        private bool _testInvalid;
-        private bool _testFailing;
-        private TestRunResult _result;
+        string _stepDescription;
+        StepType _type;
+        string _activityType;
+        ObservableCollection<IServiceTestOutput> _stepOutputs;
+        Guid _uniqueId;
+        IServiceTestStep _parent;
+        ObservableCollection<IServiceTestStep> _children;
+        bool _isTestStepExpanded;
+        bool _isTestStepExpanderEnabled;
+        bool _assertSelected;
+        bool _mockSelected;
+        ImageSource _stepIcon;
+        bool _testPassed;
+        bool _testPending;
+        bool _testInvalid;
+        bool _testFailing;
+        TestRunResult _result;
 
         public ServiceTestStep(Guid uniqueId, string activityTypeName, ObservableCollection<IServiceTestOutput> serviceTestOutputs, StepType stepType)
         {
@@ -102,7 +102,6 @@ namespace Warewolf.Studio.ViewModels
                     }
                     SetControlFlowValues(value);
                 }
-                //AddNewEmptyRow();
                 OnPropertyChanged(() => StepOutputs);
                 IsTestStepExpanded = StepOutputs?.Count > 0;
                 IsTestStepExpanderEnabled = StepOutputs?.Count > 0;
@@ -129,9 +128,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
+        void SetControlFlowValues(ObservableCollection<IServiceTestOutput> value)
         {
-            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch") return;
+            if (ActivityType != "DsfDecision" && ActivityType != "DsfSwitch")
+            {
+                return;
+            }
+
             foreach (var testOutput in value.OfType<ServiceTestOutput>())
             {
                 testOutput.AssertOps = new ObservableCollection<string> { "=" };
@@ -188,19 +191,19 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateTestPassed()
+        void UpdateTestPassed()
         {
             var testPassed = _result.RunTestResult == RunResult.TestPassed;
             TestPassed = !MockSelected && testPassed;
         }
 
-        private void UpdateTestFailed()
+        void UpdateTestFailed()
         {
             var testFailed = _result.RunTestResult == RunResult.TestFailed;
             TestFailing = !MockSelected && testFailed;
         }
 
-        private void UpdateTestInvalid()
+        void UpdateTestInvalid()
         {
             var testInvalid = _result.RunTestResult == RunResult.TestInvalid ||
                               _result.RunTestResult == RunResult.TestResourceDeleted ||
@@ -208,7 +211,7 @@ namespace Warewolf.Studio.ViewModels
             TestInvalid = !MockSelected && testInvalid;
         }
 
-        private void UpdateTestPending()
+        void UpdateTestPending()
         {
             var testPending = _result.RunTestResult != RunResult.TestFailed &&
                                   _result.RunTestResult != RunResult.TestPassed &&
@@ -303,7 +306,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        // ReSharper disable once UnusedMember.Global
+        
         public bool IsExpanderVisible => Children.Count > 0;
 
         public bool AssertSelected
@@ -316,11 +319,13 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Type = StepType.Assert;
                     if (StepOutputs != null)
+                    {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
                             var item = serviceTestOutput as ServiceTestOutput;
                             item?.OnSearchTypeChanged();
                         }
+                    }
                 }
                 OnPropertyChanged(() => AssertSelected);
             }
@@ -336,10 +341,10 @@ namespace Warewolf.Studio.ViewModels
                 {
                     Type = StepType.Mock;
                     if (StepOutputs != null)
+                    {
                         foreach (var serviceTestOutput in StepOutputs)
                         {
-                            var item = serviceTestOutput as ServiceTestOutput;
-                            if (item != null)
+                            if (serviceTestOutput is ServiceTestOutput item)
                             {
                                 if (!item.IsSearchCriteriaEnabled)
                                 {
@@ -352,6 +357,7 @@ namespace Warewolf.Studio.ViewModels
                                 }
                             }
                         }
+                    }
                 }
                 OnPropertyChanged(() => MockSelected);
             }
@@ -380,13 +386,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void AddNewRecordsetOutput(string varName)
+        void AddNewRecordsetOutput(string varName)
         {
             if (DataListUtil.GetRecordsetIndexType(varName) == enRecordsetIndexType.Numeric)
             {
                 var extractedIndex = DataListUtil.ExtractIndexRegionFromRecordset(varName);
-                int intIndex;
-                if (int.TryParse(extractedIndex, out intIndex))
+                if (int.TryParse(extractedIndex, out int intIndex))
                 {
                     intIndex++;
                     var blankName = DataListUtil.ReplaceRecordsetIndexWithBlank(varName);

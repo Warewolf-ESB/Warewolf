@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,8 +18,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TriggerCollection : ITriggerCollection
     {
-        private readonly TriggerCollection _nativeInstance;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TriggerCollection _nativeInstance;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TriggerCollection(ITaskServiceConvertorFactory taskServiceConvertorFactory,
             TriggerCollection nativeInstance)
@@ -30,7 +30,7 @@ namespace Dev2.TaskScheduler.Wrappers
 
         public IEnumerator<ITrigger> GetEnumerator()
         {
-            IEnumerator<Trigger> en = Instance.GetEnumerator();
+            var en = Instance.GetEnumerator();
             while (en.MoveNext())
             {
                 yield return _taskServiceConvertorFactory.CreateTrigger(en.Current);
@@ -45,12 +45,19 @@ namespace Dev2.TaskScheduler.Wrappers
         void IDisposable.Dispose()
         {
             Instance.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         public ITrigger Add(ITrigger unboundTrigger)
         {
-            Trigger instance = unboundTrigger.Instance;
-            Trigger trigger = _nativeInstance.Add(instance);
+            var instance = unboundTrigger.Instance;
+            var trigger = _nativeInstance.Add(instance);
             return _taskServiceConvertorFactory.CreateTrigger(trigger);
         }
 

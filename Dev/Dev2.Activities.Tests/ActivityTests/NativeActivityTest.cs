@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,6 @@ using Dev2.DynamicServices;
 using Dev2.Interfaces;
 using Dev2.Runtime.Execution;
 using Dev2.Runtime.Interfaces;
-using Dev2.Simulation;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -36,7 +35,7 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 namespace Dev2.Tests.Activities.ActivityTests
 {
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class NativeActivityTest
     {
 
@@ -56,17 +55,17 @@ namespace Dev2.Tests.Activities.ActivityTests
         [ExpectedException(typeof(ArgumentNullException))]
         public void ConstructorWithNullDebugDispatcher_Expected_ArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestActivity(null);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
         public void ConstructorWithDebugDispatcher_Expected_NoArgumentNullException()
         {
-            // ReSharper disable ObjectCreationAsStatement
+            
             new TestActivity(DebugDispatcher.Instance);
-            // ReSharper restore ObjectCreationAsStatement
+            
         }
 
         [TestMethod]
@@ -102,25 +101,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
-        public void ExecuteWithNoDataObject_Expected_InvokesOnExecute()
-        {
-            VerifyActivityExecuteCount(null, SimulationMode.Never, 1);
-        }
-
-        [TestMethod]
-        public void ExecuteWithIsDebugTrue_Expected_InvokesOnExecute()
-        {
-            VerifyActivityExecuteCount(CreateDataObject(true, false), SimulationMode.Never, 1);
-        }
-
-       
-        [TestMethod]
-        public void ExecuteWithIsDebugFalse_Expected_InvokesOnExecute()
-        {
-            VerifyActivityExecuteCount(CreateDataObject(false, false), SimulationMode.Never, 1);
-        }
-
-        [TestMethod]
         public void ExecuteWithNoDataObject_Expected_DoesNotInvokeDebugDispatcher()
         {
             VerifyDispatcherWriteCount(null, 0);
@@ -138,7 +118,6 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             VerifyDispatcherWriteCount(CreateDataObject(false, false), 0);
         }
-
         
         static void VerifyDispatcherWriteCount(DsfDataObject dataObject, int expectedCount)
         {
@@ -151,19 +130,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                 () => dispatcher.Verify(d => d.Write(It.IsAny<IDebugState>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<string>(), It.IsAny<string>(), It.IsAny<IList<IDebugState>>()), Times.Exactly(expectedCount)));
         }
         
-        static void VerifyActivityExecuteCount(DsfDataObject dataObject, SimulationMode simulationMode, int expectedCount)
-        {
-            var activity = new Mock<TestActivityAbstract>();
-            activity.Object.SimulationMode = simulationMode;
-            activity.Protected().Setup("OnExecute", ItExpr.IsAny<NativeActivityContext>()).Verifiable();
-
-            Run(activity.Object, dataObject,
-                () => activity.Protected().Verify("OnExecute", Times.Exactly(expectedCount), ItExpr.IsAny<NativeActivityContext>()));
-        }
-
         protected static void Run(Activity activity, DsfDataObject dataObject, Action completed)
         {
-            Run(activity, dataObject, null, (ex, outputs) => completed());
+            Run(activity, dataObject, null, (ex, outputs) => completed?.Invoke());
         }
 
         public static void Run(Activity activity, DsfDataObject dataObject, Dictionary<string, object> inputArgs, Action<Exception, IDictionary<string, object>> completed)
@@ -174,10 +143,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 wfApp.Extensions.Add(dataObject);
             }
-            wfApp.Completed += args => completed(null, args.Outputs);
+            wfApp.Completed += args => completed?.Invoke(null, args.Outputs);
             wfApp.OnUnhandledException += args =>
             {
-                completed(args.UnhandledException, null);
+                completed?.Invoke(args.UnhandledException, null);
                 return UnhandledExceptionAction.Cancel;
             };
             wfApp.Run();
@@ -219,7 +188,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity(new Mock<IDebugDispatcher>().Object)
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -270,7 +238,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -314,7 +281,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity(mockDebugDispatcher.Object)
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -382,9 +348,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfActivity_UpdateDebugParentID_UniqueIdSameIfNestingLevelNotChanged()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
             {
@@ -394,7 +360,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsDebug = true,
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -407,9 +373,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("DsfNativeActivity_UpdateDebugParentID")]
-        // ReSharper disable InconsistentNaming
+        
         public void DsfNativeActivity_UpdateDebugParentID_UniqueIdNotSameIfNestingLevelIncreased()
-        // ReSharper restore InconsistentNaming
+
         {
             var dataObject = new DsfDataObject("<Datalist></Datalist>", Guid.NewGuid())
             {
@@ -420,7 +386,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ForEachNestingLevel = 1
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
             var originalGuid = Guid.NewGuid();
             act.UniqueID = originalGuid.ToString();
             act.UpdateDebugParentID(dataObject);
@@ -443,7 +409,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsServiceTestExecution = true
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
 
             var serviceTestModelTO = new ServiceTestModelTO
             {
@@ -487,7 +453,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 IsServiceTestExecution = true
             };
 
-            TestNativeActivity act = new TestNativeActivity(false, "bob");
+            var act = new TestNativeActivity(false, "bob");
             act.IsEndedOnError = true;
             act.OnErrorVariable = "[[Error]]";
             dataObject.Environment.AddError("There is an error");
@@ -530,7 +496,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             var activity = new TestActivity(mockDebugDispatcher.Object)
             {
                 IsSimulationEnabled = false,
-                SimulationMode = SimulationMode.Never,
                 ScenarioID = Guid.NewGuid().ToString(),
                 IsWorkflow = true,
             };
@@ -569,7 +534,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
     }
 
-    internal class TestNativeActivity : DsfNativeActivity<string>
+    class TestNativeActivity : DsfNativeActivity<string>
     {
 
         public TestNativeActivity(bool isExecuteAsync, string displayName)
@@ -589,11 +554,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         {
             return new List<string>();
         }
-
-        /// <summary>
-        /// When overridden runs the activity's execution logic 
-        /// </summary>
-        /// <param name="context">The context to be used.</param>
+        
         protected override void OnExecute(NativeActivityContext context)
         {
         }
@@ -628,7 +589,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         #endregion
     }
 
-    internal class TestExecutionService : IExecutableService
+    class TestExecutionService : IExecutableService
     {
         #region Implementation of IExecutableService
 

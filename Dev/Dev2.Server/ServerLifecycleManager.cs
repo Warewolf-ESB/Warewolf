@@ -1,7 +1,7 @@
-// ReSharper disable RedundantUsingDirective
+
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,8 +23,6 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Threading;
-using System.Xml;
-using CommandLine;
 using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
@@ -73,11 +71,11 @@ namespace Dev2
             const int Result = 0;
             AppDomain.CurrentDomain.UnhandledException += (sender, args) =>
             {
-                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception);
+                Dev2Logger.Fatal("Server has crashed!!!", args.ExceptionObject as Exception, "Warewolf Fatal");
             };
             if (Environment.UserInteractive)
             {
-                Dev2Logger.Info("** Starting In Interactive Mode **");
+                Dev2Logger.Info("** Starting In Interactive Mode **", GlobalConstants.WarewolfInfo);
                 using (_singleton = new ServerLifecycleManager(arguments))
                 {
                     _singleton.Run(true);
@@ -87,7 +85,7 @@ namespace Dev2
             }
             else
             {
-                Dev2Logger.Info("** Starting In Service Mode **");
+                Dev2Logger.Info("** Starting In Service Mode **", GlobalConstants.WarewolfInfo);
                 using (var service = new ServerLifecycleManagerService())
                 {
                     ServiceBase.Run(service);
@@ -96,25 +94,24 @@ namespace Dev2
             return Result;
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public class ServerLifecycleManagerService : ServiceBase
         {
             public ServerLifecycleManagerService()
             {
-                ServiceName = ServiceName;
                 CanPauseAndContinue = false;
             }
 
             protected override void OnStart(string[] args)
             {
-                Dev2Logger.Info("** Service Started **");
+                Dev2Logger.Info("** Service Started **", GlobalConstants.WarewolfInfo);
                 _singleton = new ServerLifecycleManager(null);
                 _singleton.Run(false);
             }
 
             protected override void OnStop()
             {
-                Dev2Logger.Info("** Service Stopped **");
+                Dev2Logger.Info("** Service Stopped **", GlobalConstants.WarewolfInfo);
                 _singleton.Stop(false, 0);
                 _singleton = null;
             }
@@ -127,11 +124,11 @@ namespace Dev2
         Timer _timer;
         IDisposable _owinServer;
         readonly IPulseLogger _pulseLogger;
-        private int _daysToKeepTempFiles;
-        private readonly PulseTracker _pulseTracker;
-        private IpcClient _ipcIpcClient;
-        
-        // ReSharper disable once UnusedParameter.Local
+        int _daysToKeepTempFiles;
+        readonly PulseTracker _pulseTracker;
+        IpcClient _ipcIpcClient;
+
+
         ServerLifecycleManager(string[] arguments)
         {
             _pulseLogger = new PulseLogger(60000);
@@ -148,17 +145,18 @@ namespace Dev2
             try
             {
                 Dev2Logger.AddEventLogging(settingsConfigFile, "Warewolf Server");
+                Dev2Logger.UpdateFileLoggerToProgramData(settingsConfigFile);
                 XmlConfigurator.ConfigureAndWatch(new FileInfo(settingsConfigFile));
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("Error in startup.", e);
+                Dev2Logger.Error("Error in startup.", e, GlobalConstants.WarewolfError);
             }
             Common.Utilities.ServerUser = new WindowsPrincipal(WindowsIdentity.GetCurrent());
             SetupTempCleanupSetting();
         }
 
-        private static void MoveSettingsFiles()
+        static void MoveSettingsFiles()
         {
             if (File.Exists("Settings.config"))
             {
@@ -184,17 +182,14 @@ namespace Dev2
             }
         }
 
-        private void SetupTempCleanupSetting()
+        void SetupTempCleanupSetting()
         {
             var daysToKeepTempFilesValue = ConfigurationManager.AppSettings.Get("DaysToKeepTempFiles");
-            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue))
+            if (!string.IsNullOrEmpty(daysToKeepTempFilesValue) && int.TryParse(daysToKeepTempFilesValue, out int daysToKeepTempFiles))
             {
-                int daysToKeepTempFiles;
-                if (int.TryParse(daysToKeepTempFilesValue, out daysToKeepTempFiles))
-                {
-                    _daysToKeepTempFiles = daysToKeepTempFiles;
-                }
+                _daysToKeepTempFiles = daysToKeepTempFiles;
             }
+
         }
         
         void Run(bool interactiveMode)
@@ -224,19 +219,23 @@ namespace Dev2
                 ConfigureLoggging();
                 _ipcIpcClient = IpcClient.GetIPCExecutor();
                 var catalog = LoadResourceCatalog();
-                StartWebServer();
                 _timer = new Timer(PerformTimerActions, null, 1000, GlobalConstants.NetworkComputerNameQueryFreq);
                 StartPulseLogger();
                 LoadPerformanceCounters();
                 LoadServerWorkspace();
                 LoadActivityCache(catalog);
+                StartWebServer();
                 LoadTestCatalog();
                 ServerLoop(interactiveMode);
             }
             catch (Exception e)
             {
+#pragma warning disable S2228 // Console logging should not be used
+#pragma warning disable S2228 // Console logging should not be used
                 Console.WriteLine(e);
-                Dev2Logger.Error("Error Starting Server", e);
+#pragma warning restore S2228 // Console logging should not be used
+#pragma warning restore S2228 // Console logging should not be used
+                Dev2Logger.Error("Error Starting Server", e, GlobalConstants.WarewolfError);
                 Stop(true, 0);
             }
 
@@ -282,7 +281,7 @@ namespace Dev2
         }
 
 
-        private void DeleteTempFiles()
+        void DeleteTempFiles()
         {
             var tempPath = Path.Combine(GlobalConstants.TempLocation, "Warewolf", "Debug");
             DeleteTempFiles(tempPath);
@@ -290,7 +289,7 @@ namespace Dev2
             DeleteTempFiles(schedulerTempPath);
         }
 
-        private void DeleteTempFiles(string tempPath)
+        void DeleteTempFiles(string tempPath)
         {
             if (Directory.Exists(tempPath))
             {
@@ -341,11 +340,11 @@ namespace Dev2
             }
         }
 
-        void SetWorkingDirectory()
+        static void SetWorkingDirectory()
         {
             try
             {
-                // ReSharper disable once AssignNullToNotNullAttribute
+                
                 Directory.SetCurrentDirectory(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
             }
             catch (Exception e)
@@ -376,9 +375,8 @@ namespace Dev2
                         throw new ArgumentException("Web server port not set but web server is enabled. Please set the webServerPort value in the configuration file.");
                     }
 
-                    int realPort;
 
-                    if (!int.TryParse(webServerPort, out realPort))
+                    if (!int.TryParse(webServerPort, out int realPort))
                     {
                         throw new ArgumentException("Web server port is not valid. Please set the webServerPort value in the configuration file.");
                     }
@@ -390,7 +388,7 @@ namespace Dev2
                     endpoints.Add(new Dev2Endpoint(httpEndpoint, httpUrl));
 
                     EnvironmentVariables.WebServerUri = httpUrl.Replace("*", Environment.MachineName);
-                    EnableSSLForServer(webServerSslPort, endpoints);
+                    EnableSslForServer(webServerSslPort, endpoints);
 
                     _endpoints = endpoints.ToArray();
                 }
@@ -402,13 +400,12 @@ namespace Dev2
             }
         }
 
-        // ReSharper disable once InconsistentNaming
-        private void EnableSSLForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
+
+        void EnableSslForServer(string webServerSslPort, List<Dev2Endpoint> endpoints)
         {
             if (!string.IsNullOrEmpty(webServerSslPort) && _isWebServerSslEnabled)
             {
-                int realWebServerSslPort;
-                int.TryParse(webServerSslPort, out realWebServerSslPort);
+                int.TryParse(webServerSslPort, out int realWebServerSslPort);
 
                 var sslCertPath = ConfigurationManager.AppSettings["sslCertificateName"];
 
@@ -429,8 +426,8 @@ namespace Dev2
                 }
             }
         }
-        
-        // ReSharper disable once MemberCanBePrivate.Global
+
+
         internal void CleanupServer()
         {
             try
@@ -478,7 +475,10 @@ namespace Dev2
         public void Dispose()
         {
             if (_isDisposed)
+            {
                 return;
+            }
+
             _isDisposed = true;
             Dispose(true);
             GC.SuppressFinalize(this);
@@ -501,7 +501,7 @@ namespace Dev2
             _owinServer = null;
         }
 
-        void LoadPerformanceCounters()
+        static void LoadPerformanceCounters()
         {
             try
             {
@@ -520,7 +520,7 @@ namespace Dev2
             catch (Exception err)
             {
                 // ignored
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
 
@@ -529,19 +529,24 @@ namespace Dev2
         /// <returns></returns>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/13</date>
-        ResourceCatalog LoadResourceCatalog()
+        static ResourceCatalog LoadResourceCatalog()
         {
             
             MigrateOldResources();
             ValidateResourceFolder();
             Write("Loading resource catalog...  ");
             var catalog = ResourceCatalog.Instance;
-            //ServerExplorerRepository.Instance.Load(GlobalConstants.ServerWorkspaceID);
+            MethodsToBeDepricated();
             WriteLine("done.");
             return catalog;
         }
 
-        void LoadTestCatalog()
+        static void MethodsToBeDepricated()
+        {
+            ResourceCatalog.Instance.CleanUpOldVersionControlStructure();
+        }
+
+        static void LoadTestCatalog()
         {
             
             Write("Loading Test catalog...  ");
@@ -549,15 +554,14 @@ namespace Dev2
             WriteLine("done.");
         }
 
-        private static void LoadActivityCache(ResourceCatalog catalog)
+        static void LoadActivityCache(ResourceCatalog catalog)
         {
             PreloadReferences();
             CustomContainer.Register<IActivityParser>(new ActivityParser());
             Write("Loading resource activity cache...  ");
             catalog.LoadServerActivityCache();
-            CustomContainer.Register<IExecutionManager>(ExecutionManager.Instance);
-            WriteLine("done.");            
-            SetStarted();
+            CustomContainer.Register<IExecutionManager>(new ExecutionManager());
+            WriteLine("done.");
         }
 
         static void MigrateOldResources()
@@ -594,14 +598,14 @@ namespace Dev2
         /// </summary>
         /// <author>Trevor.Williams-Ros</author>
         /// <date>2013/03/07</date>
-        void LoadSettingsProvider()
+        static void LoadSettingsProvider()
         {
             Write("Loading settings provider...  ");
             Runtime.Configuration.SettingsProvider.WebServerUri = EnvironmentVariables.WebServerUri;
             WriteLine("done.");
         }
 
-        void ConfigureLoggging()
+        static void ConfigureLoggging()
         {
             try
             {
@@ -620,21 +624,27 @@ namespace Dev2
             }
         }
 
-        void LoadServerWorkspace()
+        static void LoadServerWorkspace()
         {
 
             Write("Loading server workspace...  ");
-            // ReSharper disable UnusedVariable
+            
             var instance = WorkspaceRepository.Instance;
-            // ReSharper restore UnusedVariable
-            WriteLine("done.");
+            if (instance != null)
+            {
+                WriteLine("done.");
+            }
         }
 
-        void LoadHostSecurityProvider()
+        static void LoadHostSecurityProvider()
         {
-            // ReSharper disable UnusedVariable
+            Write("Loading Security Provider...  ");
             var instance = HostSecurityProvider.Instance;
-            // ReSharper restore UnusedVariable
+            if (instance != null)
+            {
+                WriteLine("done.");
+            }
+
         }
 
         void StartWebServer()
@@ -667,38 +677,39 @@ namespace Dev2
                     Console.ReadLine();
                 }
             }
+            SetAsStarted();
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         internal static void WriteLine(string message)
         {
             if (Environment.UserInteractive)
             {
                 Console.WriteLine(message);
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
             else
             {
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
 
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         internal static void Write(string message)
         {
             if (Environment.UserInteractive)
             {
                 Console.Write(message);
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
             else
             {
-                Dev2Logger.Info(message);
+                Dev2Logger.Info(message, GlobalConstants.WarewolfInfo);
             }
         }
 
-        static void SetStarted()
+        static void SetAsStarted()
         {
             try
             {
@@ -710,12 +721,13 @@ namespace Dev2
             }
             catch (Exception err)
             {
-                Dev2Logger.Error(err);
+                Dev2Logger.Error(err, GlobalConstants.WarewolfError);
             }
         }
+
         static void LogException(Exception ex)
         {
-            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex);
+            Dev2Logger.Error("Dev2.ServerLifecycleManager", ex, GlobalConstants.WarewolfError);
         }
     }
 }

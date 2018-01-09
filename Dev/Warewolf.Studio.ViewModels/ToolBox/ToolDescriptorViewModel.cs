@@ -8,7 +8,7 @@ using Dev2;
 using Dev2.Common.Interfaces.Toolbox;
 using Microsoft.Practices.Prism.Mvvm;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-// ReSharper disable NonLocalizedString
+
 
 namespace Warewolf.Studio.ViewModels.ToolBox
 {
@@ -17,8 +17,8 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         IToolDescriptor _tool;
         bool _isEnabled;
 
-        private DataObject _activityType;
-        private DrawingImage _icon;
+        DataObject _activityType;
+        DrawingImage _icon;
 
         public ToolDescriptorViewModel(IToolDescriptor tool, bool isEnabled)
         {
@@ -28,7 +28,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             Tool = tool;
         }
 
-        private void UpdateToolActualType(IToolDescriptor tool)
+        void UpdateToolActualType(IToolDescriptor tool)
         {
             var type = typeof(DsfNativeActivity<>);
             var assembly = type.Assembly;

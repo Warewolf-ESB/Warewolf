@@ -54,20 +54,12 @@ namespace Dev2.Common.Interfaces
             }
             return Equals((NameValue)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type. 
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked
-            {
-                // ReSharper disable NonReadonlyFieldInGetHashCode
-                return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value?.GetHashCode() ?? 0);
-                // ReSharper restore NonReadonlyFieldInGetHashCode
+            {                
+                return ((_name?.GetHashCode() ?? 0) * 397) ^ (_value?.GetHashCode() ?? 0);                
             }
         }
 
@@ -90,20 +82,20 @@ namespace Dev2.Common.Interfaces
 
         public NameValue()
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            
             Name = "";
 
             Value = "";
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            
         }
 
         public NameValue(string name, string value)
         {
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            
             Name = name;
 
             Value = value;
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            
         }
 
 
@@ -164,13 +156,13 @@ namespace Dev2.Common.Interfaces
         {
             _sourceCollection = sourceCollection;
             _update = update;
-            // ReSharper disable DoNotCallOverridableMethodsInConstructor
+            
             Name = "";
 
             Value = "";
             AddRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(AddRow);
             RemoveRowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(RemoveRow);
-            // ReSharper restore DoNotCallOverridableMethodsInConstructor
+            
         }
 
         void RemoveRow()

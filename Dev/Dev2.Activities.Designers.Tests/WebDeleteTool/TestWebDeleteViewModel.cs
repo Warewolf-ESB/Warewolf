@@ -14,8 +14,8 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
-// ReSharper disable All
+
+
 
 namespace Dev2.Activities.Designers.Tests.WebDeleteTool
 {
@@ -24,12 +24,12 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
     {
         #region Test Setup
 
-        private static MyWebModel GetMockModel()
+        static MyWebModel GetMockModel()
         {
             return new MyWebModel();
         }
 
-        private static DsfWebDeleteActivity GetPostActivityWithOutPuts(MyWebModel mod)
+        static DsfWebDeleteActivity GetPostActivityWithOutPuts(MyWebModel mod)
         {
             return new DsfWebDeleteActivity()
             {
@@ -46,12 +46,12 @@ namespace Dev2.Activities.Designers.Tests.WebDeleteTool
             };
         }
 
-        private static DsfWebDeleteActivity GetEmptyPostActivity()
+        static DsfWebDeleteActivity GetEmptyPostActivity()
         {
             return new DsfWebDeleteActivity();
         }
 
-        private WebServiceDeleteViewModel GetWebServicedeleteViewModel()
+        WebServiceDeleteViewModel GetWebServicedeleteViewModel()
         {
             return new WebServiceDeleteViewModel(ModelItemUtils.CreateModelItem(GetEmptyPostActivity(), GetMockModel()));
         }

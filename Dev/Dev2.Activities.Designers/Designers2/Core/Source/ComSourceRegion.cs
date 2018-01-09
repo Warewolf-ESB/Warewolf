@@ -11,27 +11,25 @@ using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.Practices.Prism.Commands;
 
-// ReSharper disable ExplicitCallerInfoArgument
+
 
 namespace Dev2.Activities.Designers2.Core.Source
 {
     public class ComSourceRegion : ISourceToolRegion<IComPluginSource>
     {
-        private bool _isEnabled;
-        private IComPluginSource _selectedSource;
-        private ICollection<IComPluginSource> _sources;
-        private readonly ModelItem _modelItem;
-        // ReSharper disable once UnusedMember.Local
-        readonly Dictionary<Guid, IList<IToolRegion>> _previousRegions = new Dictionary<Guid, IList<IToolRegion>>();
-        private Guid _sourceId;
-        private Action _sourceChangedAction;
-        private double _labelWidth;
-        private string _newSourceHelpText;
-        private string _editSourceHelpText;
-        private string _sourcesHelpText;
-        private string _newSourceToolText;
-        private string _editSourceToolText;
-        private string _sourcesToolText;
+        bool _isEnabled;
+        IComPluginSource _selectedSource;
+        ICollection<IComPluginSource> _sources;
+        readonly ModelItem _modelItem;
+        Guid _sourceId;
+        Action _sourceChangedAction;
+        double _labelWidth;
+        string _newSourceHelpText;
+        string _editSourceHelpText;
+        string _sourcesHelpText;
+        string _newSourceToolText;
+        string _editSourceToolText;
+        string _sourcesToolText;
 
         public ComSourceRegion(IComPluginServiceModel model, ModelItem modelItem)
         {
@@ -149,7 +147,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetInitialValues()
+        void SetInitialValues()
         {
             IsEnabled = true;
         }
@@ -221,8 +219,7 @@ namespace Dev2.Activities.Designers2.Core.Source
 
         public void RestoreRegion(IToolRegion toRestore)
         {
-            var region = toRestore as ComSourceRegion;
-            if (region != null)
+            if (toRestore is ComSourceRegion region)
             {
                 SelectedSource = region.SelectedSource;
                 IsEnabled = region.IsEnabled;
@@ -249,14 +246,14 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
 
                 SetSelectedSource(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
             }
         }
 
-        private void SetSelectedSource(IComPluginSource value)
+        void SetSelectedSource(IComPluginSource value)
         {
             if (value != null)
             {

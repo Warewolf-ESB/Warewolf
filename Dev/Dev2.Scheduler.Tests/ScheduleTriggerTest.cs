@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,7 +37,7 @@ namespace Dev2.Scheduler.Test
             mockTriggers.Setup(a => a.Add(t.Object)).Verifiable();
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
 
-            ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
+            var trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
         }
@@ -60,7 +60,7 @@ namespace Dev2.Scheduler.Test
             service.Setup(a => a.NewTask()).Returns(mockTask.Object);
 
 
-            ScheduleTrigger trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
+            var trigger = new ScheduleTrigger(TaskState.Disabled, t.Object, service.Object, mockFactory.Object);
             mockTask.VerifyGet(a => a.XmlText);
             Assert.AreEqual(trigger.NativeXML, "bob");
             Assert.AreEqual(trigger.State, TaskState.Disabled);
@@ -75,9 +75,9 @@ namespace Dev2.Scheduler.Test
 
         }
 
-        // ReSharper disable UnusedAutoPropertyAccessor.Local
+        
         public TriggerCollection Instance { get; private set; }
-        // ReSharper restore UnusedAutoPropertyAccessor.Local
+        
         public new ITrigger Add(ITrigger unboundTrigger)
         {
             base.Add(unboundTrigger);

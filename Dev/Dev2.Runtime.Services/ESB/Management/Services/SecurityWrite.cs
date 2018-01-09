@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,11 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Security;
 using Dev2.Services.Security;
 using Dev2.Workspaces;
@@ -25,39 +22,24 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Checks a users permissions on the local file system
-    /// </summary>
-    public class SecurityWrite : IEsbManagementEndpoint
+    public class SecurityWrite : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             if(values == null)
             {
                 throw new InvalidDataException(ErrorResource.EmptyValuesPassed);
             }
 
-            StringBuilder securitySettings;
-            values.TryGetValue("SecuritySettings", out securitySettings);
-            StringBuilder timeoutPeriodString;
-            values.TryGetValue("TimeoutPeriod", out timeoutPeriodString);
+            values.TryGetValue("SecuritySettings", out StringBuilder securitySettings);
+            values.TryGetValue("TimeoutPeriod", out StringBuilder timeoutPeriodString);
 
-            if(securitySettings == null || securitySettings.Length == 0)
+            if (securitySettings == null || securitySettings.Length == 0)
             {
                 throw new InvalidDataException(ErrorResource.EmptySecuritySettingsPassed);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             try
             {
@@ -75,7 +57,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 throw new InvalidDataException(ErrorResource.InvalidSecuritySettings + $" Error: {e.Message}");
             }
 
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("Success");
 
             return serializer.SerializeToBuilder(msg);
@@ -104,8 +86,8 @@ namespace Dev2.Runtime.ESB.Management.Services
         {
             var byteConverter = new ASCIIEncoding();
             var encryptedData = SecurityEncryption.Encrypt(permissions);
-            byte[] dataToEncrypt = byteConverter.GetBytes(encryptedData);
-            using(var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
+            var dataToEncrypt = byteConverter.GetBytes(encryptedData);
+            using (var outStream = new FileStream(EnvironmentVariables.ServerSecuritySettingsFile, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite))
             {
                 outStream.SetLength(0);
                 outStream.Write(dataToEncrypt, 0, dataToEncrypt.Length);
@@ -113,29 +95,8 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var dynamicService = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><SecuritySettings ColumnIODirection=\"Input\"></SecuritySettings><Result/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var serviceAction = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            dynamicService.Actions.Add(serviceAction);
-
-            return dynamicService;
-        }
-
-        public string HandlesType()
-        {
-            return "SecurityWriteService";
-        }
+        public override string HandlesType() => "SecurityWriteService";
     }
 }

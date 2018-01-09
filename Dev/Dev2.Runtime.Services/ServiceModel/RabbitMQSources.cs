@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,12 +16,12 @@ using System;
 using System.Text;
 using Dev2.Runtime.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Runtime.ServiceModel
 {
     public class RabbitMQSources : ExceptionManager
     {
-        private readonly IResourceCatalog _resourceCatalog;
+        readonly IResourceCatalog _resourceCatalog;
 
         #region CTOR
 
@@ -60,7 +60,7 @@ namespace Dev2.Runtime.ServiceModel
 
         #region CanConnectServer
 
-        private ValidationResult CanConnectServer(RabbitMQSource rabbitMQSource)
+        ValidationResult CanConnectServer(RabbitMQSource rabbitMQSource)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace Dev2.Runtime.ServiceModel
                     Port = rabbitMQSource.Port,
                     UserName = rabbitMQSource.UserName,
                     Password = rabbitMQSource.Password,
-                    VirtualHost = rabbitMQSource.VirtualHost                  
+                    VirtualHost = rabbitMQSource.VirtualHost
                 };
 
                 using (IConnection connection = connectionFactory.CreateConnection())
@@ -101,7 +101,7 @@ namespace Dev2.Runtime.ServiceModel
                 return new ValidationResult
                 {
                     IsValid = false,
-                    ErrorMessage = e.InnerException!=null? string.Join(Environment.NewLine,e.Message,e.InnerException.Message) : e.Message
+                    ErrorMessage = e.InnerException != null ? string.Join(Environment.NewLine, e.Message, e.InnerException.Message) : e.Message
                 };
             }
         }

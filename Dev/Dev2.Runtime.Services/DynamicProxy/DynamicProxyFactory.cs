@@ -18,12 +18,12 @@ using System.Web.Services.Discovery;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
-// ReSharper disable UnusedVariable
-// ReSharper disable StringCompareIsCultureSpecific.3
-// ReSharper disable ConditionIsAlwaysTrueOrFalse
 
-// ReSharper disable InconsistentNaming
-// ReSharper disable UseNameofExpression
+
+
+
+
+
 
 namespace Dev2.Runtime.DynamicProxy
 {
@@ -32,31 +32,35 @@ namespace Dev2.Runtime.DynamicProxy
 
     public class DynamicProxyFactory
     {
-        private readonly string wsdlUri;
-        private readonly DynamicProxyFactoryOptions options;
+        readonly string wsdlUri;
+        readonly DynamicProxyFactoryOptions options;
 
-        private CodeCompileUnit codeCompileUnit;
-        private CodeDomProvider codeDomProvider;
-        private ServiceContractGenerator contractGenerator;
+        CodeCompileUnit codeCompileUnit;
+        CodeDomProvider codeDomProvider;
+        ServiceContractGenerator contractGenerator;
 
-        private Collection<MetadataSection> metadataCollection;
-        private IEnumerable<Binding> bindings;
-        private IEnumerable<ContractDescription> contracts;
-        private ServiceEndpointCollection endpoints;
-        private IEnumerable<MetadataConversionError> importWarnings;
-        private IEnumerable<MetadataConversionError> codegenWarnings;
-        private IEnumerable<CompilerError> compilerWarnings;
+        Collection<MetadataSection> metadataCollection;
+        IEnumerable<Binding> bindings;
+        IEnumerable<ContractDescription> contracts;
+        ServiceEndpointCollection endpoints;
+        IEnumerable<MetadataConversionError> importWarnings;
+        IEnumerable<MetadataConversionError> codegenWarnings;
+        IEnumerable<CompilerError> compilerWarnings;
 
-        private Assembly proxyAssembly;
-        private string proxyCode;
+        Assembly proxyAssembly;
+        string proxyCode;
 
         public DynamicProxyFactory(string wsdlUri, DynamicProxyFactoryOptions options)
         {
             if (wsdlUri == null)
+            {
                 throw new ArgumentNullException("wsdlUri");
+            }
 
             if (options == null)
+            {
                 throw new ArgumentNullException("options");
+            }
 
             this.wsdlUri = wsdlUri;
             this.options = options;
@@ -73,7 +77,7 @@ namespace Dev2.Runtime.DynamicProxy
         {
         }
 
-        private void DownloadMetadata()
+        void DownloadMetadata()
         {
             var epr = new EndpointAddress(wsdlUri);
 
@@ -87,10 +91,13 @@ namespace Dev2.Runtime.DynamicProxy
 
             var results = new Collection<MetadataSection>();
             if (disco.Documents.Values != null)
+            {
                 foreach (var document in disco.Documents.Values)
                 {
                     AddDocumentToResults(document, results);
                 }
+            }
+
             metadataCollection = results;
         }
 
@@ -121,7 +128,7 @@ namespace Dev2.Runtime.DynamicProxy
         }
 
 
-        private void ImportMetadata()
+        void ImportMetadata()
         {
             codeCompileUnit = new CodeCompileUnit();
             CreateCodeDomProvider();
@@ -191,22 +198,17 @@ namespace Dev2.Runtime.DynamicProxy
 
             foreach (var importExtension in importer.WsdlImportExtensions)
             {
-                var dcConverter =
-                    importExtension as DataContractSerializerMessageContractImporter;
 
-                if (dcConverter != null)
+                if (importExtension is DataContractSerializerMessageContractImporter dcConverter)
                 {
-                    if (options.FormatMode ==
-                        DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer)
-                        dcConverter.Enabled = false;
-                    else
-                        dcConverter.Enabled = true;
+                    dcConverter.Enabled = options.FormatMode ==
+                        DynamicProxyFactoryOptions.FormatModeOptions.XmlSerializer ? false : true;
                 }
 
             }
         }
 
-        private void CreateProxy()
+        void CreateProxy()
         {
             CreateServiceContractGenerator();
 
@@ -238,7 +240,7 @@ namespace Dev2.Runtime.DynamicProxy
             }
         }
 
-        private void CompileProxy()
+        void CompileProxy()
         {
             // reference the required assemblies with the correct path.
             var compilerParams = new CompilerParameters();
@@ -282,7 +284,7 @@ namespace Dev2.Runtime.DynamicProxy
             proxyAssembly = Assembly.LoadFile(results.PathToAssembly);
         }
 
-        private void WriteCode()
+        void WriteCode()
         {
             using (var writer = new StringWriter())
             {
@@ -296,7 +298,9 @@ namespace Dev2.Runtime.DynamicProxy
 
             // use the modified proxy code, if code modifier is set.
             if (options.CodeModifier != null)
+            {
                 proxyCode = options.CodeModifier(proxyCode);
+            }
         }
 
         void AddAssemblyReference(Assembly referencedAssembly,
@@ -328,19 +332,21 @@ namespace Dev2.Runtime.DynamicProxy
             }
 
             if (matchingEndpoint == null)
+            {
                 throw new ArgumentException(string.Format(
                     Constants.ErrorMessages.EndpointNotFound,
                     contractName, contractNamespace));
+            }
 
             return matchingEndpoint;
         }
 
-        private bool ContractNameMatch(ContractDescription cDesc, string name)
+        bool ContractNameMatch(ContractDescription cDesc, string name)
         {
             return (string.Compare(cDesc.Name, name, true) == 0);
         }
 
-        private bool ContractNsMatch(ContractDescription cDesc, string ns)
+        bool ContractNsMatch(ContractDescription cDesc, string ns)
         {
             return ((ns == null) ||
                     (string.Compare(cDesc.Namespace, ns, true) == 0));
@@ -371,7 +377,7 @@ namespace Dev2.Runtime.DynamicProxy
                     endpoint.Address);
         }
 
-        private Type GetContractType(string contractName,
+        Type GetContractType(string contractName,
                 string contractNamespace)
         {
             var allTypes = proxyAssembly.GetTypes();
@@ -379,31 +385,43 @@ namespace Dev2.Runtime.DynamicProxy
             foreach (var type in allTypes)
             {
                 // Is it an interface?
-                if (!type.IsInterface) continue;
+                if (!type.IsInterface)
+                {
+                    continue;
+                }
 
                 // Is it marked with ServiceContract attribute?
                 var attrs = type.GetCustomAttributes(
                     typeof(ServiceContractAttribute), false);
-                if ((attrs == null) || (attrs.Length == 0)) continue;
+                if ((attrs == null) || (attrs.Length == 0))
+                {
+                    continue;
+                }
 
                 // is it the required service contract?
                 var scAttr = (ServiceContractAttribute)attrs[0];
                 var cName = GetContractName(type, scAttr.Name, scAttr.Namespace);
 
                 if (string.Compare(cName.Name, contractName, true) != 0)
+                {
                     continue;
+                }
 
                 if (string.Compare(cName.Namespace, contractNamespace,
                             true) != 0)
+                {
                     continue;
+                }
 
                 contractType = type;
                 break;
             }
 
             if (contractType == null)
+            {
                 throw new ArgumentException(
                     Constants.ErrorMessages.UnknownContract);
+            }
 
             return contractType;
         }
@@ -417,19 +435,12 @@ namespace Dev2.Runtime.DynamicProxy
                 name = contractType.Name;
             }
 
-            if (ns == null)
-            {
-                ns = DefaultNamespace;
-            }
-            else
-            {
-                ns = Uri.EscapeUriString(ns);
-            }
+            ns = ns == null ? DefaultNamespace : Uri.EscapeUriString(ns);
 
             return new XmlQualifiedName(name, ns);
         }
 
-        private Type GetProxyType(Type contractType)
+        Type GetProxyType(Type contractType)
         {
             var clientBaseType = typeof(ClientBase<>).MakeGenericType(
                     contractType);
@@ -450,20 +461,22 @@ namespace Dev2.Runtime.DynamicProxy
             }
 
             if (proxyType == null)
+            {
                 throw new DynamicProxyException(string.Format(
                             Constants.ErrorMessages.ProxyTypeNotFound,
                             contractType.FullName));
+            }
 
             return proxyType;
         }
 
 
-        private void CreateCodeDomProvider()
+        void CreateCodeDomProvider()
         {
             codeDomProvider = CodeDomProvider.CreateProvider(options.Language.ToString());
         }
 
-        private void CreateServiceContractGenerator()
+        void CreateServiceContractGenerator()
         {
             contractGenerator = new ServiceContractGenerator(
                 codeCompileUnit);
@@ -497,10 +510,7 @@ namespace Dev2.Runtime.DynamicProxy
 
                 foreach (var error in importErrors)
                 {
-                    if (error.IsWarning)
-                        importErrStr.AppendLine("Warning : " + error.Message);
-                    else
-                        importErrStr.AppendLine("Error : " + error.Message);
+                    importErrStr.AppendLine(error.IsWarning ? "Warning : " + error.Message : "Error : " + error.Message);
                 }
 
                 return importErrStr.ToString();
@@ -514,21 +524,28 @@ namespace Dev2.Runtime.DynamicProxy
             {
                 var builder = new StringBuilder();
                 foreach (var error in compilerErrors)
+                {
                     builder.AppendLine(error.ToString());
+                }
 
                 return builder.ToString();
             }
             return null;
         }
 
-        private static IEnumerable<CompilerError> ToEnumerable(
+        static IEnumerable<CompilerError> ToEnumerable(
                 CompilerErrorCollection collection)
         {
-            if (collection == null) return null;
+            if (collection == null)
+            {
+                return null;
+            }
 
             var errorList = new List<CompilerError>();
             foreach (CompilerError error in collection)
+            {
                 errorList.Add(error);
+            }
 
             return errorList;
         }

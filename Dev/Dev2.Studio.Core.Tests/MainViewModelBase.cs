@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -73,7 +73,7 @@ namespace Dev2.Core.Tests
             var mockEnv = new Mock<IServerRepository>();
             mockEnv.SetupProperty(g => g.ActiveServer); // Start tracking changes
             mockEnv.Setup(g => g.All()).Returns(new List<IServer>());
-
+            CustomContainer.Register(mockEnv.Object);
             var mockEnvironmentModel = new Mock<IServer>();
             mockEnvironmentModel.Setup(model => model.AuthorizationService).Returns(new Mock<IAuthorizationService>().Object);
             mockEnv.Setup(repository => repository.Source).Returns(mockEnvironmentModel.Object);
@@ -83,11 +83,11 @@ namespace Dev2.Core.Tests
             EventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
             WindowManager = new Mock<IWindowManager>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            // ReSharper disable ObjectCreationAsStatement
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockWorkspaceItemRepository = GetworkspaceItemRespository();
+
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
             vieFactory.Setup(factory => factory.GetViewGivenServerResourceType(It.IsAny<string>()))
@@ -112,11 +112,11 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(WindowManager.Object);
             CustomContainer.Register(PopupController.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            // ReSharper disable ObjectCreationAsStatement
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockWorkspaceItemRepository = GetworkspaceItemRespository();
+
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
             var explorerViewModel = new Mock<IExplorerViewModel>();
             var vieFactory = new Mock<IViewFactory>();
             var viewMock = new Mock<IView>();
@@ -154,6 +154,8 @@ namespace Dev2.Core.Tests
         {
             var models = new List<IServer> { EnvironmentModel.Object };
             var mock = new Mock<IServerRepository>();
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(mock.Object);
             mock.Setup(s => s.All()).Returns(models);
             mock.Setup(s => s.Source).Returns(EnvironmentModel.Object);
             mock.Setup(repo => repo.Get(It.IsAny<Guid>())).Returns(EnvironmentModel.Object);
@@ -190,7 +192,7 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.WebServerUri)
                 .Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}"));
             connection.Setup(c => c.IsConnected).Returns(true);
-            int cnt = 0;
+            var cnt = 0;
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(
                     () =>
@@ -233,7 +235,6 @@ namespace Dev2.Core.Tests
             item.SetupGet(i => i.ID).Returns(FirstResourceId);
             list.Add(item.Object);
             MockWorkspaceRepo.SetupGet(c => c.WorkspaceItems).Returns(list);
-            MockWorkspaceRepo.Setup(c => c.UpdateWorkspaceItem(It.IsAny<IContextualResourceModel>(), It.IsAny<bool>())).Returns(new ExecuteMessage());
             MockWorkspaceRepo.Setup(c => c.Remove(FirstResource.Object)).Verifiable();
             return MockWorkspaceRepo;
         }

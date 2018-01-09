@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -121,9 +121,9 @@ namespace Dev2.Runtime.Configuration
         {
             var rootDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-            // ReSharper disable AssignNullToNotNullAttribute
+            
             return Path.Combine(rootDir, "Settings", "Application.xml");
-            // ReSharper restore AssignNullToNotNullAttribute
+            
         }
 
         #endregion
@@ -142,12 +142,12 @@ namespace Dev2.Runtime.Configuration
 
                     return new Settings.Configuration(xml);
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch(Exception ex)
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
                     // error occurred so ignore and load empty
-                    Dev2Logger.Error(ex);
+                    Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                 }
             }
             return new Settings.Configuration(WebServerUri);

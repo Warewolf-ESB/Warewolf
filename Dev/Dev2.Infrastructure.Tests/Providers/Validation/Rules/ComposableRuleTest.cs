@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         [Owner("Leon Rajindrapersadh")]
         [TestCategory("ComposeAbleRule_Ctor")]
         [ExpectedException(typeof(ArgumentNullException))]
-// ReSharper disable InconsistentNaming
+
         public void ComposeAbleRule_Null()
 
         {
@@ -111,7 +111,7 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
             Assert.IsNull(cr.Check());
 
         }
-        // ReSharper restore InconsistentNaming
+
     }
 
     public class Rule1 :Rule<string>
@@ -126,7 +126,10 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             if(GetValue()!= "1")
+            {
                 return new ActionableErrorInfo();
+            }
+
             return null;
         }
 
@@ -145,7 +148,10 @@ namespace Dev2.Infrastructure.Tests.Providers.Validation.Rules
         public override IActionableErrorInfo Check()
         {
             if (GetValue() != "2")
+            {
                 return new ActionableErrorInfo();
+            }
+
             return null;
         }
 

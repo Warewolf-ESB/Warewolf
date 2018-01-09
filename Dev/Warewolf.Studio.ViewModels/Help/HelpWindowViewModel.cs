@@ -102,19 +102,19 @@ namespace Warewolf.Studio.ViewModels.Help
 
         #region Implementation of IDisposable
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
-        // ReSharper disable once UnusedParameter.Local
+        
         void Dispose(bool disposing)
         {
-            HelpModel.OnHelpTextReceived -= OnHelpTextReceived;
+            if (disposing)
+            {
+                HelpModel.OnHelpTextReceived -= OnHelpTextReceived;
+            }
         }
 
         #endregion

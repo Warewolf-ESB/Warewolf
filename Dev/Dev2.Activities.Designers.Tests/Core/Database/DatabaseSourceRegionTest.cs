@@ -11,7 +11,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
 
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(1, region.Errors.Count);
@@ -48,7 +48,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc });
 
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(dbsrc, region.SelectedSource);
@@ -70,7 +70,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             region.SomethingChanged += (a, b) => { evt = true; };
             region.SelectedSource = s2;
 
@@ -93,7 +93,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
 
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -126,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
 
             var clone1 = new Mock<IToolRegion>();
             var clone2 = new Mock<IToolRegion>();
@@ -158,7 +158,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             var cloned = region.CloneRegion();
 
             //------------Assert Results-------------------------
@@ -179,9 +179,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>() { dbsrc, s2 });
             
             //------------Execute Test---------------------------
-            DatabaseSourceRegion region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
-            // ReSharper disable once UseObjectOrCollectionInitializer
-            DatabaseSourceRegion regionToRestore = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+            var region = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
+
+            var regionToRestore = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(act), enSourceType.SqlDatabase);
             regionToRestore.SelectedSource = s2;
 
             region.RestoreRegion(regionToRestore);

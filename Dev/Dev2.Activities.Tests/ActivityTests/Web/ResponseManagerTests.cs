@@ -14,7 +14,7 @@ using Warewolf.Core;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Activities.ActivityTests.Web
 {
@@ -49,7 +49,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ,
                 Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
             };
-            StringBuilder value = new StringBuilder("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
+            var value = new StringBuilder("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(value.ToString());
             Assert.IsNotNull(responseManager);
@@ -70,7 +70,7 @@ namespace Dev2.Tests.Activities.ActivityTests.Web
                     ,
                 Outputs = It.IsAny<ICollection<IServiceOutputMapping>>()
             };
-            StringBuilder value = new StringBuilder("x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
+            var value = new StringBuilder("x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
             //---------------Assert Precondition----------------
             Assert.IsNotNull(value.ToString());
             Assert.IsNotNull(responseManager);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,16 +12,14 @@ using System;
 using System.Runtime.Serialization;
 using System.Xml.Linq;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Workspaces
 {
     [Serializable]
-// ReSharper disable PartialTypeWithSinglePart
-    public partial class WorkspaceItem : IWorkspaceItem
-// ReSharper restore PartialTypeWithSinglePart
+    public class WorkspaceItem : IWorkspaceItem
     {
-        public const string ServiceServiceType = "DynamicService";
-        public const string SourceServiceType = "Source";
+        public static readonly string ServiceServiceType = "DynamicService";
+        public static readonly string SourceServiceType = "Source";
 
         #region Initialization
 
@@ -187,25 +185,22 @@ namespace Dev2.Workspaces
         public WorkspaceItem(XElement xml)
         {
             ID = Guid.Parse(GetAttributeValue(xml, "ID"));
-            Guid tryGetWorkspaceId;
-            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out tryGetWorkspaceId))
+            if (Guid.TryParse(GetAttributeValue(xml, "WorkspaceID"), out Guid tryGetWorkspaceId))
             {
                 WorkspaceID = tryGetWorkspaceId;
             }
-            Guid tryGetServerId;
-            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out tryGetServerId))
+            if (Guid.TryParse(GetAttributeValue(xml, "ServerID"), out Guid tryGetServerId))
             {
                 ServerID = tryGetServerId;
             }
-            Guid envId;
-            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out envId))
+            if (Guid.TryParse(GetAttributeValue(xml, "EnvironmentID"), out Guid envId))
             {
                 EnvironmentID = envId;
-            } 
+            }
             ServiceName = GetAttributeValue(xml, "ServiceName");
             bool isWorkflowSaved;
-            string attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
-            if(String.IsNullOrEmpty(attributeValue))
+            var attributeValue = GetAttributeValue(xml, "IsWorkflowSaved");
+            if (String.IsNullOrEmpty(attributeValue))
             {
                 isWorkflowSaved = true;
             }
@@ -216,8 +211,7 @@ namespace Dev2.Workspaces
             IsWorkflowSaved = isWorkflowSaved;
             ServiceType = GetAttributeValue(xml, "ServiceType");
 
-            WorkspaceItemAction action;
-            Action = Enum.TryParse(GetAttributeValue(xml, "Action"), true, out action) ? action : WorkspaceItemAction.None;
+            Action = Enum.TryParse(GetAttributeValue(xml, "Action"), true, out WorkspaceItemAction action) ? action : WorkspaceItemAction.None;
         }
 
         /// <summary>

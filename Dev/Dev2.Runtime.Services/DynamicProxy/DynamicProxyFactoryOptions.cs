@@ -1,6 +1,6 @@
 using System.Text;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Runtime.DynamicProxy
 {
@@ -11,9 +11,9 @@ namespace Dev2.Runtime.DynamicProxy
         public enum LanguageOptions { CS, VB }
         public enum FormatModeOptions { Auto, XmlSerializer, DataContractSerializer }
 
-        private LanguageOptions lang;
-        private FormatModeOptions mode;
-        private ProxyCodeModifier codeModifier;
+        LanguageOptions lang;
+        FormatModeOptions mode;
+        ProxyCodeModifier codeModifier;
 
         public DynamicProxyFactoryOptions()
         {
@@ -67,7 +67,7 @@ namespace Dev2.Runtime.DynamicProxy
 
         public override string ToString()
         {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append("DynamicProxyFactoryOptions[");
             sb.Append("Language=" + Language);
             sb.Append(",FormatMode=" + FormatMode);

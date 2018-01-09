@@ -22,6 +22,13 @@ namespace Dev2.Core.Tests
     [TestClass]
     public class StudioTestViewModelTest
     {
+        [TestInitialize]
+        public void Init()
+        {
+            var newServerRepo = new Mock<IServerRepository>();
+            CustomContainer.Register(newServerRepo.Object);
+        } 
+    
         [TestMethod]
         [Owner("Hagashen Naidu")]
         [TestCategory("WorkSurfaceContextViewModel_Constructor")]
@@ -309,7 +316,7 @@ namespace Dev2.Core.Tests
             testViewModel.SelectedServiceTest.TestName = "New Test Name";
             vm.ViewModel = testViewModel;
 
-            bool wasCalled = false;
+            var wasCalled = false;
             vm.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "DisplayName")
@@ -455,6 +462,9 @@ namespace Dev2.Core.Tests
         public void StudioTestViewModel_DoDeactivate_CanSave_MessageBoxYesHasDuplicates()
         {
             //------------Setup for test--------------------------
+            var serverRepo = new Mock<IServerRepository>();
+            CustomContainer.DeRegister<IServerRepository>();
+            CustomContainer.Register(serverRepo.Object);
             var mockWorkSurfaceViewModel = new Mock<IWorkflowDesignerViewModel>();
             var mockedConn = new Mock<IEnvironmentConnection>();
             mockedConn.Setup(conn => conn.ServerEvents).Returns(new Mock<IEventPublisher>().Object);

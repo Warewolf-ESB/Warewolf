@@ -9,7 +9,7 @@ using Warewolf.Security.Encryption;
 
 namespace Dev2.Services.Sql
 {
-    internal class MySqlDbFactory : IDbFactory
+    class MySqlDbFactory : IDbFactory
     {
         #region Implementation of IDbFactory
 
@@ -42,29 +42,27 @@ namespace Dev2.Services.Sql
         DataTable GetMySqlServerSchema(IDbConnection connection)
         {
             if (!(connection is MySqlConnection))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidSqlConnection, "Mqsql"));
+            }
 
             return ((MySqlConnection)connection).GetSchema();
-
         }
-
-
 
         public DataTable CreateTable(IDataAdapter reader, LoadOption overwriteChanges)
         {
-            DataSet ds = new DataSet(); //conn is opened by dataadapter
+            var ds = new DataSet();
             reader.Fill(ds);
             return ds.Tables[0];
-
-//            var table = new DataTable();
-//            table.Load(reader, LoadOption.OverwriteChanges);
-//            return table;
         }
 
         public DataSet FetchDataSet(IDbCommand command)
         {
             if (!(command is SqlCommand))
+            {
                 throw new Exception(string.Format(ErrorResource.InvalidCommand, "DBComman"));
+            }
+
             using (var dataSet = new DataSet())
             {
                 using (var adapter = new SqlDataAdapter(command as SqlCommand))

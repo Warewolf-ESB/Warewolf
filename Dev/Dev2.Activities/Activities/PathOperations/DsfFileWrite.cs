@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,9 +28,9 @@ using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
 using Warewolf.Core;
 using Warewolf.Storage;
 
-// ReSharper disable CheckNamespace
+
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
-// ReSharper restore CheckNamespace
+
 {
     /// <summary>
     /// PBI : 1172
@@ -38,7 +38,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Purpose : To provide an activity that can write a file and its contents via FTP, FTPS and file system
     /// </summary>
     [ToolDescriptorInfo("FileFolder-Write", "Write File", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "File, FTP, FTPS & SFTP", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_File_Write_File")]
-    public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite
+    public class DsfFileWrite : DsfAbstractFileActivity, IFileWrite, IPathOutput, IPathOverwrite,IEquatable<DsfFileWrite>
     {
 
         public DsfFileWrite()
@@ -88,14 +88,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             while(colItr.HasMoreData())
             {
-                IActivityOperationsBroker broker = ActivityIOFactory.CreateOperationsBroker();
+                var broker = ActivityIOFactory.CreateOperationsBroker();
                 var writeType = GetCorrectWriteType();
-                Dev2PutRawOperationTO putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)));
-                IActivityIOPath opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
+                var putTo = ActivityIOFactory.CreatePutRawOperationTO(writeType, TextUtils.ReplaceWorkflowNewLinesWithEnvironmentNewLines(colItr.FetchNextValue(contentItr)));
+                var opath = ActivityIOFactory.CreatePathFromString(colItr.FetchNextValue(inputItr),
                                                                                 colItr.FetchNextValue(unameItr),
                                                                                 colItr.FetchNextValue(passItr),
                                                                                 true, colItr.FetchNextValue(privateKeyItr));
-                IActivityIOOperationsEndPoint endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
+                var endPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(opath);
 
                 try
                 {
@@ -105,7 +105,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     }
                     else
                     {
-                        string result = broker.PutRaw(endPoint, putTo);
+                        var result = broker.PutRaw(endPoint, putTo);
                         outputs[0].OutputStrings.Add(result);
                     }
                 }
@@ -198,9 +198,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             get;
             set;
         }
-        
 
-        private string GetMethod()
+
+        string GetMethod()
         {
             return GetCorrectWriteType().GetDescription();
         }
@@ -242,6 +242,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public override IList<DsfForEachItem> GetForEachOutputs()
         {
             return GetForEachItems(Result);
+        }
+
+        public bool Equals(DsfFileWrite other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && Append == other.Append
+                && string.Equals(FileContents, other.FileContents) 
+                && string.Equals(OutputPath, other.OutputPath) 
+                && Overwrite == other.Overwrite 
+                && AppendTop == other.AppendTop
+                && AppendBottom == other.AppendBottom;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfFileWrite) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ Append.GetHashCode();
+                hashCode = (hashCode * 397) ^ (FileContents != null ? FileContents.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputPath != null ? OutputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                hashCode = (hashCode * 397) ^ AppendTop.GetHashCode();
+                hashCode = (hashCode * 397) ^ AppendBottom.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

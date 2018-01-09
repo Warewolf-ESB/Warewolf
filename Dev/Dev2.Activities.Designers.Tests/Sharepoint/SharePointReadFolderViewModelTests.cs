@@ -20,7 +20,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
         public const string TestOwner = "Bernardt Joubert";
         public const string Category = "SharePoint";
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var folderActivity = new SharepointReadFolderItemActivity();
             folderActivity.ServerInputPath = "TestFolder";
@@ -56,7 +56,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointReadFolderDesignerViewModel(CreateModelItem(), null, new Mock<IServer>().Object);
             //------------Assert Results-------------------------
         }
@@ -71,7 +71,7 @@ namespace Dev2.Activities.Designers.Tests.Sharepoint
 
 
             //------------Execute Test---------------------------
-            // ReSharper disable once ObjectCreationAsStatement
+            
             new SharePointReadFolderDesignerViewModel(CreateModelItem(), new SynchronousAsyncWorker(), null);
             //------------Assert Results-------------------------
         }

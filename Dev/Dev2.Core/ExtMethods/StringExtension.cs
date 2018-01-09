@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Xml;
 using Dev2.Common;
@@ -22,10 +21,10 @@ namespace Dev2
 {
     public static class StringExtension
     {
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public static bool IsDate(this string payload)
         {
-            bool result = false;
+            var result = false;
 
             if (string.IsNullOrEmpty(payload))
             {
@@ -60,32 +59,32 @@ namespace Dev2
                 "yyyy.mm.dd",
                 "yyyy.dd.mm"
             };
-            var d = new DateTimeParser();
-            int count = 0;
-            while (result == false && count < acceptedDateFormats.Count)
+            var d = new Dev2DateTimeParser();
+            var count = 0;
+            while (!result && count < acceptedDateFormats.Count)
             {
-                string errorMsg;
-                IDateTimeResultTO to;
-                result = d.TryParseDateTime(payload, acceptedDateFormats[count], out to, out errorMsg);
+                result = d.TryParseDateTime(payload, acceptedDateFormats[count], out IDateTimeResultTO to, out string errorMsg);
                 count++;
             }
             return result;
         }
-        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
+        static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         public static bool IsXml(this string payload)
         {
-            bool result = false;
-            bool isFragment;
+            var result = false;
 
 
-            if (IsXml(payload, out isFragment))
+            if (IsXml(payload, out bool isFragment))
             {
                 result = true;
             }
-            else if (isFragment)
+            else
             {
-                result = true;
+                if (isFragment)
+                {
+                    result = true;
+                }
             }
 
             return result;
@@ -107,7 +106,7 @@ namespace Dev2
                 }
 
 
-                catch
+                catch (Exception ex)
                 {
                     return false;
                 }
@@ -120,8 +119,7 @@ namespace Dev2
         /// </summary>
         public static bool IsXml(string data, out bool isFragment)
         {
-            bool isHtml;
-            return IsXml(data, out isFragment, out isHtml) && !isFragment && !isHtml;
+            return IsXml(data, out isFragment, out bool isHtml) && !isFragment && !isHtml;
         }
 
         /// <summary>
@@ -129,8 +127,8 @@ namespace Dev2
         /// </summary>
         static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
-            string trimedData = data.Trim();
-            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var trimedData = data.Trim();
+            var result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;
@@ -166,7 +164,7 @@ namespace Dev2
                         }
                         catch (Exception ex)
                         {
-                            Dev2Logger.Error("DataListUtil", ex);
+                            Dev2Logger.Error("DataListUtil", ex, GlobalConstants.WarewolfError);
                             tr.Close();
                             reader.Close();
                             isFragment = false;

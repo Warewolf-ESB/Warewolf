@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,7 +9,6 @@
 */
 
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Mail;
 using System.Text;
@@ -48,7 +47,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Get
 
         // POST: Service/EmailSources/Get
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public EmailSource Get(string resourceId, Guid workspaceId, Guid dataListId)
         {
             var result = new EmailSource();
@@ -73,7 +72,7 @@ namespace Dev2.Runtime.ServiceModel
         #region Test
 
         // POST: Service/EmailSources/Test
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         public ValidationResult Test(string args, Guid workspaceId, Guid dataListId)
         {
             try
@@ -126,8 +125,8 @@ namespace Dev2.Runtime.ServiceModel
                 }
                 var errors = new StringBuilder();
                 errors.AppendFormat("{0} ", message);
-                Exception ex = sex.InnerException;
-                while(ex != null)
+                var ex = sex.InnerException;
+                while (ex != null)
                 {
                     errors.AppendFormat("{0} ", ex.Message);
                     ex = ex.InnerException;

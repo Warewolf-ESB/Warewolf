@@ -8,9 +8,9 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
-// ReSharper disable UseObjectOrCollectionInitializer
 
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -30,10 +30,10 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
             //------------Assert Results-------------------------
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             Assert.IsNotNull(vm.CloseCommand);
             Assert.IsNotNull(vm.CloseCommand);
 
@@ -44,8 +44,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
         [TestCategory("OutputsRegion_Ctor")]
         public void ManageDatabaseServiceInputViewModel_TestAction()
         {
-            bool called = false;
-            bool calledOk = false;
+            var called = false;
+            var calledOk = false;
 
             var mod = new SqlServerModel();
             var act = new DsfSqlServerDatabaseActivity
@@ -55,9 +55,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             vm.TestAction = () => { called = true; };
             vm.OkAction = () =>
             {
@@ -83,7 +83,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
             var called = false;
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.PropertyChanged += (sender, args) => called = true;
             inputview.Model = new DatabaseService();
@@ -104,7 +104,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var mod = new SqlServerModel();
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
 
@@ -126,7 +126,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = null;
 
@@ -148,7 +148,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             mod.HasRecError = true;
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             sqlServer.OutputsRegion.Outputs = null;
 
@@ -169,7 +169,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var mod = new SqlServerModel();
 
             var act = new DsfSqlServerDatabaseActivity();
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
 
@@ -191,7 +191,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
             inputview.ExecuteTest();
@@ -226,7 +226,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService() { Source = new DbSourceDefinition(), Action = new DbAction() { Inputs = new List<IServiceInput>(), Name = "bob" }, };
             inputview.ExecuteTest();
@@ -255,7 +255,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var act = new DsfSqlServerDatabaseActivity();
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             var inputview = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             inputview.Model = new DatabaseService();
             inputview.ExecuteClose();
@@ -283,9 +283,9 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
                 ServiceName = "dsfBob"
             };
 
-            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new SqlServerDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
 
-            ManageDatabaseServiceInputViewModel vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
+            var vm = new ManageDatabaseServiceInputViewModel(sqlServer, mod);
             var lst = new List<IServiceInput>();
             vm.InputArea.Inputs = lst;
             Assert.AreEqual(lst.Count, vm.InputArea.Inputs.Count);

@@ -13,13 +13,15 @@ namespace Warewolf.Sharepoint
 {
     public class SharepointHelper
     {
-        private string Server { get; set; }
-        private string UserName { get; set; }
-        private string Password { get; set; }
+        string Server { get; set; }
+        string UserName { get; set; }
+        string Password { get; set; }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="T:System.Object"/> class.
-        /// </summary>
+        public SharepointHelper(string server)
+            : this(server, "", "", false)
+        {
+        }
+        
         public SharepointHelper(string server, string userName, string password, bool isSharepointOnline)
         {
             Server = server;
@@ -28,7 +30,7 @@ namespace Warewolf.Sharepoint
             IsSharepointOnline = isSharepointOnline;
         }
 
-        private bool IsSharepointOnline { get; set; }
+        bool IsSharepointOnline { get; set; }
 
         public ClientContext GetContext()
         {
@@ -48,7 +50,7 @@ namespace Warewolf.Sharepoint
             return ctx;
         }
 
-        private ClientContext GetContextWithOnlineCredentials()
+        ClientContext GetContextWithOnlineCredentials()
         {
             var ctx = new ClientContext(Server);
             if (string.IsNullOrEmpty(UserName) && String.IsNullOrEmpty(Password))
@@ -226,7 +228,8 @@ namespace Warewolf.Sharepoint
             return "Success";
         }
 
-        public string DownLoadFile(string serverPath, string localPath, bool overwrite = false)
+        public string DownLoadFile(string serverPath, string localPath) => DownLoadFile(serverPath, localPath, false);
+        public string DownLoadFile(string serverPath, string localPath, bool overwrite)
         {
             var fileName = Path.GetFileName(localPath);
 
@@ -241,7 +244,10 @@ namespace Warewolf.Sharepoint
 
             if (!overwrite && !string.IsNullOrEmpty(localPath) && !string.IsNullOrEmpty(fileName))
             {
-                if (CheckIfFileExist(Path.Combine(localPath, fileName))) return "Success";
+                if (CheckIfFileExist(Path.Combine(localPath, fileName)))
+                {
+                    return "Success";
+                }
             }
 
             CreateFolderIfNotExist(localPath);
@@ -258,7 +264,10 @@ namespace Warewolf.Sharepoint
                 var fileRef = file.ServerRelativeUrl;
                 var fileInfo = File.OpenBinaryDirect(ctx, fileRef);
 
-                if (fileName == null || localPath == null) return "Failed";
+                if (fileName == null || localPath == null)
+                {
+                    return "Failed";
+                }
 
                 var newPath = Path.Combine(localPath, fileName);
 
@@ -271,22 +280,22 @@ namespace Warewolf.Sharepoint
             return "Success";
         }
 
-        private string GetFileName(string serverPath)
+        string GetFileName(string serverPath)
         {
             return Path.GetFileName(serverPath);
         }
 
-        private string GetFileExtention(string localPath)
+        string GetFileExtention(string localPath)
         {
             return Path.GetExtension(localPath);
         }
 
-        private bool CheckIfFileExist(string localPath)
+        bool CheckIfFileExist(string localPath)
         {
             return System.IO.File.Exists(localPath);
         }
 
-        private void CreateFolderIfNotExist(string localPath)
+        void CreateFolderIfNotExist(string localPath)
         {
             if (localPath != null && !Directory.Exists(localPath))
             {
@@ -294,21 +303,21 @@ namespace Warewolf.Sharepoint
             }
         }
 
-        private string GetSharePointRootFolder(string folderUrl, ClientContext ctx)
+        string GetSharePointRootFolder(string folderUrl, ClientContext ctx)
         {
             var list = ctx.Web.Lists.GetByTitle("Documents");
             ctx.Load(list.RootFolder);
             ctx.ExecuteQuery();
             var serverRelativeUrl = list.RootFolder.ServerRelativeUrl;
             var fullPath = folderUrl;
-            if(!folderUrl.StartsWith(serverRelativeUrl))
+            if (!folderUrl.StartsWith(serverRelativeUrl))
             {
                 fullPath = serverRelativeUrl + "/" + folderUrl;
             }
             return fullPath;
         }
 
-        private static SharepointFieldTo CreateSharepointFieldToFromSharepointField(Field field)
+        static SharepointFieldTo CreateSharepointFieldToFromSharepointField(Field field)
         {
             var sharepointFieldTo = new SharepointFieldTo { Name = field.Title, InternalName = field.InternalName, IsRequired = field.Required, IsEditable = !field.ReadOnlyField };
             switch (field.FieldTypeKind)
@@ -362,7 +371,54 @@ namespace Warewolf.Sharepoint
                         sharepointFieldTo.MinValue = numberField.MinimumValue;
                     }
                     break;
-
+                case FieldType.Lookup:
+                    break;
+                case FieldType.URL:
+                    break;
+                case FieldType.Computed:
+                    break;
+                case FieldType.Threading:
+                    break;
+                case FieldType.Guid:
+                    break;
+                case FieldType.MultiChoice:
+                    break;
+                case FieldType.GridChoice:
+                    break;
+                case FieldType.Calculated:
+                    break;
+                case FieldType.File:
+                    break;
+                case FieldType.Attachments:
+                    break;
+                case FieldType.User:
+                    break;
+                case FieldType.Recurrence:
+                    break;
+                case FieldType.CrossProjectLink:
+                    break;
+                case FieldType.ModStat:
+                    break;
+                case FieldType.Error:
+                    break;
+                case FieldType.ContentTypeId:
+                    break;
+                case FieldType.PageSeparator:
+                    break;
+                case FieldType.ThreadIndex:
+                    break;
+                case FieldType.WorkflowStatus:
+                    break;
+                case FieldType.AllDayEvent:
+                    break;
+                case FieldType.WorkflowEventType:
+                    break;
+                case FieldType.Geolocation:
+                    break;
+                case FieldType.OutcomeChoice:
+                    break;
+                case FieldType.MaxItems:
+                    break;
                 default:
                     sharepointFieldTo.Type = SharepointFieldType.Text;
                     break;
@@ -378,7 +434,7 @@ namespace Warewolf.Sharepoint
             {
                 using (var ctx = GetContext())
                 {
-                    Web web = ctx.Web;
+                    var web = ctx.Web;
                     ctx.Load(web);
                     ctx.ExecuteQuery();
                 }
@@ -389,7 +445,7 @@ namespace Warewolf.Sharepoint
                 {
                     using (var ctx = GetContextWithOnlineCredentials())
                     {
-                        Web web = ctx.Web;
+                        var web = ctx.Web;
                         ctx.Load(web);
                         ctx.ExecuteQuery();
                         isSharepointOnline = true;
@@ -405,14 +461,14 @@ namespace Warewolf.Sharepoint
 
         public List LoadFieldsForList(string listName, ClientContext ctx, bool editableFieldsOnly)
         {
-            List list = ctx.Web.Lists.GetByTitle(listName);
+            var list = ctx.Web.Lists.GetByTitle(listName);
             if (editableFieldsOnly)
             {
-                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false && field.ReadOnlyField == false));
+                ctx.Load(list.Fields, collection => collection.Where(field => !field.Hidden && !field.ReadOnlyField));
             }
             else
             {
-                ctx.Load(list.Fields, collection => collection.Where(field => field.Hidden == false));
+                ctx.Load(list.Fields, collection => collection.Where(field => !field.Hidden));
             }
             return list;
         }

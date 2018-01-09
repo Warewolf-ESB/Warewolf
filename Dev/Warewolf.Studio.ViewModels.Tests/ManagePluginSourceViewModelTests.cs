@@ -15,8 +15,8 @@ using Dev2.Threading;
 using Microsoft.Practices.Prism.PubSubEvents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable ObjectCreationAsStatement
-// ReSharper disable InconsistentNaming
+
+
 
 namespace Warewolf.Studio.ViewModels.Tests
 {
@@ -25,25 +25,25 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IManagePluginSourceModel> _updateManagerMock;
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
-        private Mock<IFileListing> _selectedDllMock;
-        private Mock<IPluginSource> _pluginSourceMock;
-        private Mock<IEventAggregator> _aggregatorMock;
-        private Mock<IAsyncWorker> _asyncWorkerMock;
+        Mock<IManagePluginSourceModel> _updateManagerMock;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewModelMock;
+        Task<IRequestServiceNameViewModel> _requestServiceNameViewModelTask;
+        Mock<IFileListing> _selectedDllMock;
+        Mock<IPluginSource> _pluginSourceMock;
+        Mock<IEventAggregator> _aggregatorMock;
+        Mock<IAsyncWorker> _asyncWorkerMock;
 
-        private string _pluginSourceName;
-        private string _warewolfServerName;
-        private string _selectedDllFullName;
+        string _pluginSourceName;
+        string _warewolfServerName;
+        string _selectedDllFullName;
 
-        private List<string> _changedProperties;
-        private ManagePluginSourceViewModel _target;
-        private List<string> _changedPropertiesSource;
-        private ManagePluginSourceViewModel _targetSource;
+        List<string> _changedProperties;
+        ManagePluginSourceViewModel _target;
+        List<string> _changedPropertiesSource;
+        ManagePluginSourceViewModel _targetSource;
 
-        private List<string> _changedPropertiesRequestServiceNameViewModel;
-        private ManagePluginSourceViewModel _targetRequestServiceNameViewModel;
+        List<string> _changedPropertiesRequestServiceNameViewModel;
+        ManagePluginSourceViewModel _targetRequestServiceNameViewModel;
 
         #endregion Fields
 
@@ -77,12 +77,12 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         try
                         {
-                            start();
-                            finish();
+                            start?.Invoke();
+                            finish?.Invoke();
                         }
                         catch (Exception e)
                         {
-                            exception(e);
+                            exception?.Invoke(e);
                         }
                     });
             _updateManagerMock.Setup(model => model.FetchSource(It.IsAny<Guid>()))
@@ -94,7 +94,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IPluginSource>, Action<IPluginSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _changedProperties = new List<string>();
             _target = new ManagePluginSourceViewModel(_updateManagerMock.Object, _requestServiceNameViewModelTask, _aggregatorMock.Object, _asyncWorkerMock.Object);
@@ -270,7 +270,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestOkCommandCanExecuteDll()
         {
             //arrange
-            string someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
+            var someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
             using (File.Create(someassemblynameDll))
             {
             }
@@ -290,7 +290,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSelectConfigFilesTrue()
         {
             //arrange
-            string someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
+            var someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName.dll";
             _target.FileSystemAssemblyName = someassemblynameDll;
 
             //assert
@@ -301,7 +301,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         public void TestCanSelectConfigFilesFalse()
         {
             //arrange
-            string someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName";
+            var someassemblynameDll = EnvironmentVariables.WorkspacePath + @"\someAssemblyName";
             _target.FileSystemAssemblyName = someassemblynameDll;
 
             //assert

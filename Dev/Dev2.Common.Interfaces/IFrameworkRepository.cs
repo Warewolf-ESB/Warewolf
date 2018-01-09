@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,7 +10,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq.Expressions;
 
 namespace Dev2.Common.Interfaces
@@ -19,24 +18,24 @@ namespace Dev2.Common.Interfaces
     {
         ICollection<T> All();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         ICollection<T> Find(Expression<Func<T, bool>> expression);
 
         T FindSingle(Expression<Func<T, bool>> expression);
 
         string Save(T instanceObj);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Save(ICollection<T> instanceObjs);
 
         event EventHandler ItemAdded;
 
         void Load();
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(T instanceObj);
 
-        [SuppressMessage("ReSharper", "UnusedMember.Global")]
+    
         void Remove(ICollection<T> instanceObjs);
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,7 @@ using System;
 using System.Windows;
 using System.Windows.Data;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Dock
 {
     /// <summary>
@@ -67,13 +67,19 @@ namespace Dev2.Studio.Dock
         internal bool CanApply(DependencyObject container, object item)
         {
             if(TargetProperty == null || Binding == null)
+            {
                 return false;
+            }
 
-            if(container != null && TargetContainerType != null && !TargetContainerType.IsAssignableFrom(container.GetType()))
+            if (container != null && TargetContainerType != null && !TargetContainerType.IsAssignableFrom(container.GetType()))
+            {
                 return false;
+            }
 
-            if(item != null && SourceType != null && !SourceType.IsAssignableFrom(item.GetType()))
+            if (item != null && SourceType != null && !SourceType.IsAssignableFrom(item.GetType()))
+            {
                 return false;
+            }
 
             return true;
         }

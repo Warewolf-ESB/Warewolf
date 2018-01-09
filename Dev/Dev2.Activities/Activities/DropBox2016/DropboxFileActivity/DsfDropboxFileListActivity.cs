@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Dev2.Activities.Debug;
+using Dev2.Common.Interfaces.Data;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Common.Wrappers;
 using Dev2.Diagnostics;
@@ -22,17 +23,17 @@ using Warewolf.Storage.Interfaces;
 namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 {
     [ToolDescriptorInfo("Dropbox", "List Contents", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090D8C8EA3E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Storage: Dropbox", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Dropbox_List_Contents")]
-    public class DsfDropboxFileListActivity : DsfBaseActivity
+    public class DsfDropboxFileListActivity : DsfBaseActivity,IEquatable<DsfDropboxFileListActivity>
     {
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public IDropboxFactory DropboxFactory { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Global
+        
         public OauthSource SelectedSource { get; set; }
 
         public List<string> Files { get; set; }
-        private DropboxClient _dropboxClient;
-        private IDropboxClientWrapper _dropboxClientWrapper;
+        DropboxClient _dropboxClient;
+        IDropboxClientWrapper _dropboxClientWrapper;
         public Exception Exception { get; set; }
 
         [FindMissing]
@@ -57,12 +58,12 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
         [FindMissing]
         public bool IsFilesAndFoldersSelected { get; set; }
 
-        // ReSharper restore MemberCanBePrivate.Global
 
-        private DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
+
+        DsfDropboxFileListActivity(IDropboxFactory dropboxFactory)
         {
             DropboxFactory = dropboxFactory;
-            // ReSharper disable VirtualMemberCallInContructor
+
             DisplayName = "List Dropbox Contents";
             Files = new List<string>();
             IsFilesSelected = true;
@@ -107,15 +108,13 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
         protected override List<string> PerformExecution(Dictionary<string, string> evaluatedValues)
         {
-            string toPath;
-            evaluatedValues.TryGetValue("ToPath", out toPath);
+            evaluatedValues.TryGetValue("ToPath", out var toPath);
 
             IDropboxSingleExecutor<IDropboxResult> dropboxFileRead = new DropboxFileRead(IsRecursive, toPath, IncludeMediaInfo, IncludeDeleted);
             var dropboxSingleExecutor = GetDropboxSingleExecutor(dropboxFileRead);
             _dropboxClientWrapper = _dropboxClientWrapper ?? new DropboxClientWrapper(GetDropboxClient());
             var dropboxExecutionResult = dropboxSingleExecutor.ExecuteTask(_dropboxClientWrapper);
-            var dropboxSuccessResult = dropboxExecutionResult as DropboxListFolderSuccesResult;
-            if (dropboxSuccessResult != null)
+            if (dropboxExecutionResult is DropboxListFolderSuccesResult dropboxSuccessResult)
             {
                 var listFolderResult = dropboxSuccessResult.GetListFolderResulResult();
                 var metadatas = listFolderResult.Entries;
@@ -124,9 +123,15 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
                     Files.AddRange(listFolderResult.Entries.Where(metadata => metadata.IsDeleted).Select(metadata => metadata.PathLower).ToList());
                 }
                 if (IsFoldersSelected)
+                {
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
+                }
+
                 if (IsFilesSelected)
+                {
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFile).Select(metadata => metadata.PathLower).ToList());
+                }
+
                 if (IsFilesAndFoldersSelected)
                 {
                     Files.AddRange(metadatas.Where(metadata => metadata.IsFolder).Select(metadata => metadata.PathLower).ToList());
@@ -135,8 +140,7 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
                 return new List<string> { GlobalConstants.DropBoxSuccess };
             }
-            var dropboxFailureResult = dropboxExecutionResult as DropboxFailureResult;
-            if (dropboxFailureResult != null)
+            if (dropboxExecutionResult is DropboxFailureResult dropboxFailureResult)
             {
                 Exception = dropboxFailureResult.GetException();
             }
@@ -167,9 +171,9 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
             }
             base.GetDebugInputs(env, update);
 
-            DebugItem debugItem = new DebugItem();
+            var debugItem = new DebugItem();
             AddDebugItem(new DebugItemStaticDataParams("", "Folders"), debugItem);
-            string value = IsFoldersSelected ? "True" : "False";
+            var value = IsFoldersSelected ? "True" : "False";
             AddDebugItem(new DebugEvalResult(value, "", env, update), debugItem);
             _debugInputs.Add(debugItem);
 
@@ -196,5 +200,50 @@ namespace Dev2.Activities.DropBox2016.DropboxFileActivity
 
 
         #endregion
+
+        public bool Equals(DsfDropboxFileListActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var isSourceEqual = CommonEqualityOps.AreObjectsEqual<IResource>(SelectedSource, other.SelectedSource);
+            return base.Equals(other) 
+                && isSourceEqual
+                && Files.SequenceEqual(other.Files, StringComparer.Ordinal) 
+                && IncludeMediaInfo == other.IncludeMediaInfo
+                && IsRecursive == other.IsRecursive
+                && IncludeDeleted == other.IncludeDeleted 
+                && string.Equals(ToPath, other.ToPath) 
+                && string.Equals(DisplayName, other.DisplayName) 
+                && IsFilesSelected == other.IsFilesSelected
+                && IsFoldersSelected == other.IsFoldersSelected
+                && IsFilesAndFoldersSelected == other.IsFilesAndFoldersSelected;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDropboxFileListActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SelectedSource != null ? SelectedSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Files != null ? Files.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IncludeMediaInfo.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsRecursive.GetHashCode();
+                hashCode = (hashCode * 397) ^ IncludeDeleted.GetHashCode();
+                hashCode = (hashCode * 397) ^ (ToPath != null ? ToPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsFilesSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFoldersSelected.GetHashCode();
+                hashCode = (hashCode * 397) ^ IsFilesAndFoldersSelected.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

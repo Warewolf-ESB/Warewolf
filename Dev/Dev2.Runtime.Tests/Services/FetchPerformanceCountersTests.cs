@@ -9,7 +9,7 @@ using Dev2.Runtime.ESB.Management.Services;
 using Dev2.Workspaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Services
 {
@@ -86,7 +86,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            PrivateObject p = new PrivateObject(fetchPerformanceCounters);
+            var p = new PrivateObject(fetchPerformanceCounters);
             var nll =   p.GetProperty("Manager");
             Assert.IsNull(nll);
         }
@@ -106,8 +106,8 @@ namespace Dev2.Tests.Runtime.Services
             //------------Execute Test---------------------------
 
             //------------Assert Results-------------------------
-            PrivateObject p = new PrivateObject(fetchPerformanceCounters);
-           Assert.IsNotNull( p.GetProperty("Manager"));
+            var p = new PrivateObject(fetchPerformanceCounters);
+            Assert.IsNotNull( p.GetProperty("Manager"));
            Assert.IsTrue(ReferenceEquals( mng.Object, p.GetProperty("Manager")));
         }
 
@@ -129,7 +129,7 @@ namespace Dev2.Tests.Runtime.Services
            var output =  fetchPerformanceCounters.Execute(new Dictionary<string, StringBuilder>(),new Mock<IWorkspace>().Object);
             //------------Assert Results-------------------------
             Assert.IsNotNull(output);
-            Dev2JsonSerializer ser = new Dev2JsonSerializer();
+            var ser = new Dev2JsonSerializer();
             var res =   ser.Deserialize<IPerformanceCounterTo>(output);
             Assert.IsNotNull(res);
         }

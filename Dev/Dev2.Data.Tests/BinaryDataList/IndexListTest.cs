@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IndexList_UnitTest_CanInitNormally()
         {
 
-            IndexList il = new IndexList(null, 5);
+            var il = new IndexList(null, 5);
 
             Assert.AreEqual(1, il.MinValue);
             Assert.AreEqual(5, il.MaxValue);
@@ -37,8 +37,8 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IndexList_UnitTest_CanInitWithGaps()
         {
 
-            HashSet<int> gaps = new HashSet<int> { 1, 3 };
-            IndexList il = new IndexList(gaps, 5);
+            var gaps = new HashSet<int> { 1, 3 };
+            var il = new IndexList(gaps, 5);
 
             Assert.AreEqual(1, il.MinValue);
             Assert.AreEqual(5, il.MaxValue);
@@ -52,8 +52,8 @@ namespace Dev2.Data.Tests.BinaryDataList
         public void IndexList_UnitTest_CanCountCorrectlyWhenMinValueGreaterThan1()
         {
 
-            HashSet<int> gaps = new HashSet<int> { 1, 5 };
-            IndexList il = new IndexList(gaps, 4, 3);
+            var gaps = new HashSet<int> { 1, 5 };
+            var il = new IndexList(gaps, 4, 3);
 
             Assert.AreEqual(3, il.MinValue);
             Assert.AreEqual(4, il.MaxValue);

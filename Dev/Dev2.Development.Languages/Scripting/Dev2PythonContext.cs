@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,13 +15,13 @@ using Dev2.Common.Interfaces.Scripting;
 using IronPython.Hosting;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Hosting;
-// ReSharper disable NonLocalizedString
+
 
 namespace Dev2.Development.Languages.Scripting
 {
     public class Dev2PythonContext:IScriptingContext
     {
-        private readonly IStringScriptSources _sources;
+        readonly IStringScriptSources _sources;
 
         /// <summary>Initializes a new instance of the <see cref="T:System.Object" /> class.</summary>
         public Dev2PythonContext(IStringScriptSources sources)
@@ -35,13 +35,13 @@ namespace Dev2.Development.Languages.Scripting
             var scriptStatements = scriptValue.Split(new[] { '\r','\n' }, StringSplitOptions.RemoveEmptyEntries);
             var fixedScriptStatements = scriptStatements.Select(scriptStatement => "    " + scriptStatement).ToList();
             var fixedScript = String.Join(Environment.NewLine, fixedScriptStatements);
-            string pyFunc =  @"def __result__(): "+Environment.NewLine + fixedScript;
-            ScriptScope scope = pyEng.CreateScope();
+            var pyFunc =  @"def __result__(): "+Environment.NewLine + fixedScript;
+            var scope = pyEng.CreateScope();
             AddScriptToContext(pyEng, scope);
-            ScriptSource source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
+            var source = pyEng.CreateScriptSourceFromString(pyFunc, SourceCodeKind.Statements);
 
             //create a scope to act as the context for the code
-          
+
             //execute the source
             source.Execute(scope);
 
@@ -58,11 +58,15 @@ namespace Dev2.Development.Languages.Scripting
             return string.Empty;
         }
 
-        private void AddScriptToContext(ScriptEngine pyEng, ScriptScope scope)
+        void AddScriptToContext(ScriptEngine pyEng, ScriptScope scope)
         {
-            if(_sources?.GetFileScriptSources() != null)
-                foreach(var fileScriptSource in _sources.GetFileScriptSources())
+            if (_sources?.GetFileScriptSources() != null)
+            {
+                foreach (var fileScriptSource in _sources.GetFileScriptSources())
+                {
                     pyEng.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
+                }
+            }
         }
 
         public enScriptType HandlesType()

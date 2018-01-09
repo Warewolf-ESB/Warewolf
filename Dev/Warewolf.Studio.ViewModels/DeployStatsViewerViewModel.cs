@@ -24,7 +24,7 @@ namespace Warewolf.Studio.ViewModels
         List<Conflict> _conflicts;
         IEnumerable<IExplorerTreeItem> _new;
         IList<IExplorerTreeItem> _items;
-        private ICollection<IExplorerItemViewModel> _destinationItems;
+        ICollection<IExplorerItemViewModel> _destinationItems;
 
         public DeployStatsViewerViewModel(IDeployDestinationExplorerViewModel destination)
         {
@@ -37,12 +37,12 @@ namespace Warewolf.Studio.ViewModels
             Status = @"";
         }
 
-        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
             if (_destination?.SelectedEnvironment != null && _destination.SelectedEnvironment.AsList().Count <= 0)
             {
-                await _destination.SelectedEnvironment.Load(true, true);
-                CheckDestinationPersmisions();
+                await _destination.SelectedEnvironment.LoadAsync(true, true).ConfigureAwait(true);
+                CheckDestinationPermissions();
             }
         }
 
@@ -151,7 +151,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void CheckDestinationPersmisions()
+        public void CheckDestinationPermissions()
         {
             _destinationItems = _destination.SelectedEnvironment?.AsList();
             if (_destinationItems == null || _destinationItems.Count == 0 || _destination.SelectedEnvironment == null || !_destination.SelectedEnvironment.IsConnected)
@@ -174,26 +174,21 @@ namespace Warewolf.Studio.ViewModels
                             {
                                 if (currentItem.Server.CanDeployFrom && explorerItemViewModel.Server.CanDeployTo)
                                 {
-                                    if (!IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel))
-                                    {
-                                        currentItem.CanDeploy = explorerItemViewModel.CanContribute;
-                                    }
-                                    else
-                                    {
-                                        currentItem.CanDeploy = true;
-                                    }
+                                    currentItem.CanDeploy = !IsSourceAndDestinationSameServer(currentItem, explorerItemViewModel) ? explorerItemViewModel.CanContribute : true;
                                 }
                             }
                             else
+                            {
                                 currentItem.CanDeploy = true;
+                            }
                         }
                     }
                 }
             }
         }
 
-        private static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
-        {            
+        static bool IsSourceAndDestinationSameServer(IExplorerTreeItem currentItem, IExplorerItemViewModel explorerItemViewModel)
+        {
             return Equals(currentItem.Server, explorerItemViewModel.Server);
         }
 
@@ -217,7 +212,7 @@ namespace Warewolf.Studio.ViewModels
 
                 Unknown = items.Count(a => a.ResourceType == @"Unknown" || string.IsNullOrEmpty(a.ResourceType));
 
-                if (_destination.SelectedEnvironment != null)
+                if (_destination.SelectedEnvironment != null && _destination.SelectedEnvironment.UnfilteredChildren != null)
                 {
                     var explorerItemViewModels = _destination.SelectedEnvironment.UnfilteredChildren.Flatten(model => model.UnfilteredChildren?? new ObservableCollection<IExplorerItemViewModel>());
                     var explorerTreeItems = explorerItemViewModels as IExplorerItemViewModel[] ?? explorerItemViewModels.ToArray();
@@ -276,7 +271,7 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Conflicts);
             OnPropertyChanged(() => New);
             CalculateAction?.Invoke();
-            CheckDestinationPersmisions();
+            CheckDestinationPermissions();
         }
 
         public IList<Conflict> Conflicts => _conflicts.ToList();

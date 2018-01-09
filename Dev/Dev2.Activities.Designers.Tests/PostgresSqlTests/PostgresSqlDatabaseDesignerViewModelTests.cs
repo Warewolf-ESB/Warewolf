@@ -16,7 +16,7 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Threading;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Warewolf.Core;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
 {
@@ -32,7 +32,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            return new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            return new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
 
             //------------Execute Test---------------------------
 
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
 
@@ -108,7 +108,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
 #pragma warning disable 4014
@@ -163,7 +163,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
             model.ActionRegion.SelectedAction = model.ActionRegion.Actions.First();
@@ -195,7 +195,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var id = Guid.NewGuid();
             var mod = new PostgreSqlModel();
             var act = new DsfPostgreSqlActivity();
-            var sqlServer = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var sqlServer = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             sqlServer.ManageServiceInputViewModel = new InputViewForTest(sqlServer, mod);
             sqlServer.SourceRegion.SelectedSource = sqlServer.SourceRegion.Sources.First();
             //------------Execute Test---------------------------
@@ -216,7 +216,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             var act = new DsfPostgreSqlActivity();
 
             //------------Execute Test---------------------------
-            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker());
+            var model = new PostgreSqlDatabaseDesignerViewModel(ModelItemUtils.CreateModelItem(act), mod, new SynchronousAsyncWorker(), new ViewPropertyBuilder());
             model.ManageServiceInputViewModel = new InputViewForTest(model, mod);
             model.SourceRegion.SelectedSource = model.SourceRegion.Sources.First();
             model.ActionRegion.SelectedAction = model.ActionRegion.Actions.First();
@@ -245,13 +245,13 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
     public class PostgreSqlModel : IDbServiceModel
     {
 #pragma warning disable 649
-        private IStudioUpdateManager _updateRepository;
+        IStudioUpdateManager _updateRepository;
 #pragma warning restore 649
 #pragma warning disable 169
-        private IQueryManager _queryProxy;
+        IQueryManager _queryProxy;
 #pragma warning restore 169
 
-        private readonly ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
+        readonly ObservableCollection<IDbSource> _sources = new ObservableCollection<IDbSource>
         {
             new DbSourceDefinition()
             {
@@ -264,7 +264,7 @@ namespace Dev2.Activities.Designers.Tests.PostgresSqlTests
             }
         };
 
-        private readonly ObservableCollection<IDbAction> _actions = new ObservableCollection<IDbAction>
+        readonly ObservableCollection<IDbAction> _actions = new ObservableCollection<IDbAction>
         {
             new DbAction()
             {

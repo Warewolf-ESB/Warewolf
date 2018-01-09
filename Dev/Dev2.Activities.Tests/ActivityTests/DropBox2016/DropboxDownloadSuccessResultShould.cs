@@ -1,4 +1,3 @@
-using System.Diagnostics.CodeAnalysis;
 using Dev2.Activities.DropBox2016.Result;
 using Dropbox.Api.Files;
 using Dropbox.Api.Stone;
@@ -8,7 +7,7 @@ using Moq;
 namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
 {
     [TestClass]
-    [SuppressMessage("ReSharper", "InconsistentNaming")]
+
     public class DropboxDownloadSuccessResultShould
     {
         [TestMethod]

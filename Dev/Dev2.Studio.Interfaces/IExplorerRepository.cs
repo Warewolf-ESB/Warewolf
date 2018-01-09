@@ -20,7 +20,8 @@ namespace Dev2.Studio.Interfaces
 
         bool Rename(IExplorerItemViewModel vm, string newName);
         Task<bool> Move(IExplorerItemViewModel explorerItemViewModel, IExplorerTreeItem destination);
-        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue = false);
+        Task<IExplorerItem> LoadExplorer();
+        Task<IExplorerItem> LoadExplorer(bool reloadCatalogue);
         Task<List<string>> LoadExplorerDuplicates();
         IRollbackResult Rollback(Guid resourceId, string version);
         void CreateFolder(string parentPath, string name, Guid id);

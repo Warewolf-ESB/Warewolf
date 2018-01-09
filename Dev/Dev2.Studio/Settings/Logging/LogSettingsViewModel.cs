@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Input;
@@ -21,17 +23,6 @@ using Newtonsoft.Json;
 
 namespace Dev2.Settings.Logging
 {
-    public enum LogLevel
-    {
-        // ReSharper disable InconsistentNaming
-        OFF,
-        FATAL,
-        ERROR,
-        WARN,
-        INFO,
-        DEBUG,
-        TRACE
-    }
     public class LogSettingsViewModel : SettingsItemViewModel, ILogSettings, IUpdatesHelp
     {
         public IServer CurrentEnvironment
@@ -43,24 +34,25 @@ namespace Dev2.Settings.Logging
             set
             {
                 _currentEnvironment = value;
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("CanEditStudioLogSettings");
-                // ReSharper disable once ExplicitCallerInfoArgument
+                
                 OnPropertyChanged("CanEditLogSettings");
             }
         }
-        private string _serverLogMaxSize;
-        private string _studioLogMaxSize;
-        private LogLevel _serverEventLogLevel;
-        private LogLevel _studioEventLogLevel;
-        private ProgressDialogViewModel _progressDialogViewModel;
-        private string _serverLogFile;
-        private IServer _currentEnvironment;
-        private LogLevel _serverFileLogLevel;
-        private LogLevel _studioFileLogLevel;
-        private LogSettingsViewModel _item;
+        string _serverLogMaxSize;
+        string _studioLogMaxSize;
+        string _selectedLoggingType;
+        LogLevel _serverEventLogLevel;
+        LogLevel _studioEventLogLevel;
+        ProgressDialogViewModel _progressDialogViewModel;
+        string _serverLogFile;
+        IServer _currentEnvironment;
+        LogLevel _serverFileLogLevel;
+        LogLevel _studioFileLogLevel;
+        LogSettingsViewModel _item;
 
-        // ReSharper disable once UnusedMember.Global
+
         public LogSettingsViewModel()
         {
 
@@ -68,29 +60,28 @@ namespace Dev2.Settings.Logging
 
         public LogSettingsViewModel(LoggingSettingsTo logging, IServer currentEnvironment)
         {
-            if (logging == null) throw new ArgumentNullException(nameof(logging));
+            if (logging == null)
+            {
+                throw new ArgumentNullException(nameof(logging));
+            }
+
             CurrentEnvironment = currentEnvironment ?? throw new ArgumentNullException(nameof(currentEnvironment));
             GetServerLogFileCommand = new DelegateCommand(OpenServerLogFile);
             GetStudioLogFileCommand = new DelegateCommand(OpenStudioLogFile);
-            LogLevel serverFileLogLevel;
-            LogLevel serverEventLogLevel;
-            if (Enum.TryParse(logging.FileLoggerLogLevel, out serverFileLogLevel))
+            if (Enum.TryParse(logging.FileLoggerLogLevel, out LogLevel serverFileLogLevel))
             {
                 _serverFileLogLevel = serverFileLogLevel;
             }
-            if (Enum.TryParse(logging.EventLogLoggerLogLevel, out serverEventLogLevel))
+            if (Enum.TryParse(logging.EventLogLoggerLogLevel, out LogLevel serverEventLogLevel))
             {
                 _serverEventLogLevel = serverEventLogLevel;
             }
             _serverLogMaxSize = logging.FileLoggerLogSize.ToString(CultureInfo.InvariantCulture);
-
-            LogLevel studioFileLogLevel;
-            LogLevel studioEventLogLevel;
-            if (Enum.TryParse(Dev2Logger.GetFileLogLevel(), out studioFileLogLevel))
+            if (Enum.TryParse(Dev2Logger.GetFileLogLevel(), out LogLevel studioFileLogLevel))
             {
                 _studioFileLogLevel = studioFileLogLevel;
             }
-            if (Enum.TryParse(Dev2Logger.GetEventLogLevel(), out studioEventLogLevel))
+            if (Enum.TryParse(Dev2Logger.GetEventLogLevel(), out LogLevel studioEventLogLevel))
             {
                 _studioEventLogLevel = studioEventLogLevel;
             }
@@ -100,25 +91,26 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         void OpenServerLogFile(object o)
         {
-            WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials };
-            var dialog = new ProgressDialog();
-            _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
+            using (WebClient client = new WebClient { Credentials = CurrentEnvironment.Connection.HubConnection.Credentials })
             {
-                dialog.Show();
-            }, delegate
-            {
-                dialog.Close();
-            });
-            _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
-            _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
-            dialog.DataContext = _progressDialogViewModel;
-            _progressDialogViewModel.Show();
-            client.DownloadProgressChanged += DownloadProgressChanged;
-            client.DownloadFileCompleted += DownloadFileCompleted;
-            var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
-            _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
-            client.DownloadFileAsync(managementServiceUri, _serverLogFile);
-
+                var dialog = new ProgressDialog();
+                _progressDialogViewModel = new ProgressDialogViewModel(() => { dialog.Close(); }, delegate
+                {
+                    dialog.Show();
+                }, delegate
+                {
+                    dialog.Close();
+                });
+                _progressDialogViewModel.StatusChanged("Server Log File", 0, 0);
+                _progressDialogViewModel.SubLabel = "Preparing to download Warewolf Server log file.";
+                dialog.DataContext = _progressDialogViewModel;
+                _progressDialogViewModel.Show();
+                client.DownloadProgressChanged += DownloadProgressChanged;
+                client.DownloadFileCompleted += DownloadFileCompleted;
+                var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile", CurrentEnvironment.Connection);
+                _serverLogFile = Path.Combine(GlobalConstants.TempLocation, CurrentEnvironment.Connection.DisplayName + " Server Log.txt");
+                client.DownloadFileAsync(managementServiceUri, _serverLogFile);
+            }
         }
 
         [ExcludeFromCodeCoverage]
@@ -157,7 +149,7 @@ namespace Dev2.Settings.Logging
         [ExcludeFromCodeCoverage]
         public virtual void Save(LoggingSettingsTo logSettings)
         {
-            logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
+            //logSettings.FileLoggerLogLevel = ServerFileLogLevel.ToString();
             logSettings.EventLogLoggerLogLevel = ServerEventLogLevel.ToString();
             logSettings.FileLoggerLogSize = int.Parse(ServerLogMaxSize);
             var settingsConfigFile = HelperUtils.GetStudioLogSettingsConfigFile();
@@ -191,7 +183,7 @@ namespace Dev2.Settings.Logging
         {
             var resolver = new ShouldSerializeContractResolver();
             var ser = JsonConvert.SerializeObject(model, new JsonSerializerSettings { ContractResolver = resolver });
-            LogSettingsViewModel clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
+            var clone = JsonConvert.DeserializeObject<LogSettingsViewModel>(ser);
             return clone;
         }
 
@@ -223,20 +215,6 @@ namespace Dev2.Settings.Logging
                 OnPropertyChanged();
             }
         }
-
-        public LogLevel ServerFileLogLevel
-        {
-            get
-            {
-                return _serverFileLogLevel;
-            }
-            set
-            {
-                _serverFileLogLevel = value;
-                IsDirty = !Equals(Item);
-                OnPropertyChanged();
-            }
-        }
         public LogLevel StudioFileLogLevel
         {
             get
@@ -251,6 +229,29 @@ namespace Dev2.Settings.Logging
             }
         }
 
+        public IEnumerable<string> LoggingTypes => EnumHelper<LogLevel>.GetDiscriptionsAsList(typeof(LogLevel)).ToList();
+
+        public string SelectedLoggingType
+        {
+            get
+            {
+                return EnumHelper<LogLevel>.GetEnumDescription(ServerEventLogLevel.ToString());
+            }
+            set
+            {
+                if (string.IsNullOrEmpty(value) && string.IsNullOrEmpty(ServerEventLogLevel.ToString()))
+                {
+                    return;
+                }
+
+                var logLevel = LoggingTypes.Single(p => p.ToString().Contains(value));
+                _selectedLoggingType = logLevel;
+
+                var enumFromDescription = EnumHelper<LogLevel>.GetEnumFromDescription(logLevel);
+                ServerEventLogLevel = enumFromDescription;
+            }
+        }
+
         public string ServerLogMaxSize
         {
             get { return _serverLogMaxSize; }
@@ -262,8 +263,7 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    int val;
-                    if (value.IsWholeNumber(out val))
+                    if (value.IsWholeNumber(out int val))
                     {
                         IsDirty = !Equals(Item);
                         _serverLogMaxSize = value;
@@ -285,15 +285,14 @@ namespace Dev2.Settings.Logging
                 }
                 else
                 {
-                    int val;
-                    if (value.IsWholeNumber(out val))
+                    if (value.IsWholeNumber(out int val))
                     {
                         IsDirty = !Equals(Item);
                         _studioLogMaxSize = value;
                         OnPropertyChanged();
                     }
                 }
-              
+
             }
         }
 
@@ -306,7 +305,7 @@ namespace Dev2.Settings.Logging
 
         #endregion
 
-        private bool Equals(LogSettingsViewModel other)
+        bool Equals(LogSettingsViewModel other)
         {
             if (ReferenceEquals(null, other))
             {
@@ -316,29 +315,16 @@ namespace Dev2.Settings.Logging
             return EqualsSeq(other);
         }
 
-        private bool EqualsSeq(LogSettingsViewModel other)
+        bool EqualsSeq(LogSettingsViewModel other)
         {
             var equalsSeq = string.Equals(_serverEventLogLevel.ToString(), other._serverEventLogLevel.ToString()) &&
                             string.Equals(_studioEventLogLevel.ToString(), other._studioEventLogLevel.ToString()) &&
                             string.Equals(_serverFileLogLevel.ToString(), other._serverFileLogLevel.ToString()) &&
                             string.Equals(_studioFileLogLevel.ToString(), other._studioFileLogLevel.ToString()) &&
+                            Equals(_selectedLoggingType, other._selectedLoggingType) &&
                             int.Parse(_serverLogMaxSize) == int.Parse(other._serverLogMaxSize) &&
                             int.Parse(_studioLogMaxSize) == int.Parse(other._studioLogMaxSize);
             return equalsSeq;
         }
-    }
-
-    public interface ILogSettings
-    {
-        ICommand GetServerLogFileCommand { get; }
-        ICommand GetStudioLogFileCommand { get; }
-        LogLevel ServerEventLogLevel { get; set; }
-        LogLevel StudioEventLogLevel { get; set; }
-        string StudioLogMaxSize { get; }
-        string ServerLogMaxSize { get; }
-        bool CanEditStudioLogSettings { get; }
-        bool CanEditLogSettings { get; }
-        LogLevel ServerFileLogLevel { get; }
-        LogLevel StudioFileLogLevel { get; }
     }
 }

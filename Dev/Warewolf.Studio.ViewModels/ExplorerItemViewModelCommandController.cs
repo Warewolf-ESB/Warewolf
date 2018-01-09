@@ -6,36 +6,35 @@ using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Versioning;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable NonLocalizedString
-// ReSharper disable InconsistentNaming
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerItemViewModelCommandController
     {
-        private static IShellViewModel _shellViewModel;
-        static IPopupController _popupController;
+        IShellViewModel _shellViewModel;
+        IPopupController _popupController;
 
         public ExplorerItemViewModelCommandController(IShellViewModel shellViewModel, IPopupController popupController)
         {
             _shellViewModel = shellViewModel;
             _popupController = popupController;
         }
+
         public void RollbackCommand(IExplorerRepository explorerRepository, IExplorerTreeItem parent, Guid resourceId, string versionNumber)
         {
             var output = explorerRepository.Rollback(resourceId, versionNumber);
-            parent.AreVersionsVisible = true;
+            parent.AreVersionsVisible = false;
             parent.ResourceName = output.DisplayName;
             if (parent.Server != null)
             {
                 _shellViewModel.CloseResource(resourceId, parent.Server.EnvironmentID);
                 _shellViewModel.OpenCurrentVersion(resourceId, parent.Server.EnvironmentID);
             }
+            parent.AreVersionsVisible = true;
         }
 
         internal void OpenCommand(ExplorerItemViewModel item, IServer server)
         {
-            Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId);
+            Dev2Logger.Info("Open resource: " + item.ResourceName + " - ResourceId: " + item.ResourceId, "Warewolf Info");
             if (item.IsFolder)
             {
                 item.IsExpanded = !item.IsExpanded;
@@ -51,7 +50,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        public void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
+        private void OpenVersionCommand(Guid resourceId, IVersionInfo versionInfo)
         {
             _shellViewModel.OpenVersion(resourceId, versionInfo);
         }
@@ -77,9 +76,9 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewSchedule(resourceId);
         }
 
-        public void RunAllTestsCommand(Guid resourceId)
+        public void RunAllTestsCommand(string ResourcePath, Guid resourceId)
         {
-            _shellViewModel.RunAllTests(resourceId);
+            _shellViewModel.RunAllTests(ResourcePath, resourceId);
         }
 
         public void CopyUrlCommand(Guid resourceId, IServer server)
@@ -164,7 +163,7 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel.NewServerSource(resourcePath);
         }
 
-        private static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
+        static void SetActiveStates(IShellViewModel shellViewModel, IServer server)
         {
             shellViewModel.SetActiveServer(server.EnvironmentID);
         }
@@ -193,6 +192,16 @@ namespace Warewolf.Studio.ViewModels
 
                 parentChildren.RemoveAt(index);
                 parent.Children = new ObservableCollection<IExplorerItemViewModel>(parentChildren);
+                if (parent.ChildrenCount == 0)
+                {
+                    parent.AreVersionsVisible = true;
+                }
+                if (parentChildren.Count == 0)
+                {
+                    parent.AreVersionsVisible = false;
+                    parent.IsMergeVisible = false;
+                }
+                _shellViewModel.UpdateExplorerWorkflowChanges(explorerItemViewModel.ResourceId);
             }
         }
         public void DuplicateResource(IExplorerItemViewModel explorerItemViewModel)
@@ -233,8 +242,7 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public ExplorerItemViewModel CreateChild(string name, Guid id, IServer server, ExplorerItemViewModel explorerItem, Action<IExplorerItemViewModel> selectAction)
-        {
-            // ReSharper disable once UseObjectOrCollectionInitializer
+        {            
             var child = new ExplorerItemViewModel(server, explorerItem, selectAction, _shellViewModel, _popupController)
             {
                 ResourcePath = explorerItem.ResourcePath + "\\" + name,
@@ -268,6 +276,12 @@ namespace Warewolf.Studio.ViewModels
         public void ViewSwaggerCommand(Guid resourceId, IServer server)
         {
             _shellViewModel.ViewSwagger(resourceId, server);
+        }
+
+        public void MergeCommand(IExplorerItemViewModel explorerItemViewModel, IServer server)
+        {
+            SetActiveStates(_shellViewModel, server);
+            _shellViewModel.OpenMergeDialogView(explorerItemViewModel);
         }
 
         public void CreateTest(Guid resourceId)

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Tests.Activities.ActivityTests
 {
     /// <summary>
@@ -49,12 +49,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 0
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string Expected = "1978/07/23 03:30 PM";
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -75,12 +72,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "2012/11/28 02:12:41 AM";
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
 
             // remove test datalist ;)
 
@@ -102,14 +96,12 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyDateRecordSet().Date]]");
 
-            IDSFDataObject result = ExecuteProcess();
-            DateTime firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
-            string firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
-            DateTime secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
-            string secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
-            IList<string> actual;
-            string error;
-            GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out actual, out error);
+            var result = ExecuteProcess();
+            var firstDateTime = DateTime.Parse("2012/11/27 04:12:41 PM").AddHours(10);
+            var firstDateTimeExpected = firstDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            var secondDateTime = DateTime.Parse("2012/12/27 04:12:41 PM").AddHours(10);
+            var secondDateTimeExpected = secondDateTime.ToString("yyyy/MM/dd hh:mm:ss tt");
+            GetRecordSetFieldValueFromDataList(result.Environment, "MyDateRecordSet", "Date", out IList<string> actual, out string error);
             // remove test datalist ;)
             var firstResult = actual[2];
             var secondResult = actual[3];
@@ -118,7 +110,6 @@ namespace Dev2.Tests.Activities.ActivityTests
             Assert.AreEqual(secondDateTimeExpected, secondResult);
         }
 
-        //2013.02.12: Ashley Lewis - Bug 8725, Task 8840 DONE
         [TestMethod]
         public void DateTimeAddSplitsExpectedDateTimeReturnedCorrectly()
         {
@@ -128,16 +119,13 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , "2013/02/07 08:38:56.953 PM"
                          , "yyyy/mm/dd 12h:min:ss.sp am/pm"
                          , "yyyy/mm/dd 12h:min:ss.sp am/pm"
-                         , "Split Secs"
+                         , "Milliseconds"
                          , 327
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            string actual;
-            string error;
-
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
             // remove test datalist ;)
 
             const string expected = "2013/02/07 08:38:57.280 PM";
@@ -147,11 +135,11 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
+
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInput_DateTimeNowIsUsed()
-        // ReSharper restore InconsistentNaming
+
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
 
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -163,12 +151,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-            DateTime actualdt = DateTime.Parse(actual);
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+            var actualdt = DateTime.Parse(actual);
             var timeSpan = actualdt - now;
 
             Assert.IsTrue(timeSpan.TotalMilliseconds >= 9000, timeSpan.TotalMilliseconds + " is not >= 9000");
@@ -177,9 +162,9 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [TestCategory("DateTimeUnitTest")]
         [Owner("Massimo Guerrera")]
-        // ReSharper disable InconsistentNaming
+
         public void DateTime_DateTimeUnitTest_ExecuteWithBlankInputAndSplitSecondsOutput_OutputNotZero()
-        // ReSharper restore InconsistentNaming
+
         {
             const string currDL = @"<root><MyTestResult></MyTestResult></root>";
             SetupArguments(currDL
@@ -191,12 +176,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , 10
                          , "[[MyTestResult]]");
 
-            IDSFDataObject result = ExecuteProcess();
-
-            string actual;
-            string error;
-            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out actual, out error);
-            if(actual == "0")
+            var result = ExecuteProcess();
+            GetScalarValueFromEnvironment(result.Environment, "MyTestResult", out string actual, out string error);
+            if (actual == "0")
             {
                 Thread.Sleep(11);
 
@@ -219,8 +201,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             //------------Setup for test--------------------------
             var act = new DsfDateTimeActivity
             {
-                DateTime = "", InputFormat = "", OutputFormat = "",TimeModifierType = "",
-                TimeModifierAmount = 1, Result = "[[dt]]",
+                DateTime = "",
+                InputFormat = "",
+                OutputFormat = "",
+                TimeModifierType = "",
+                TimeModifierAmount = 1,
+                Result = "[[dt]]",
                 TimeModifierAmountDisplay = 1.ToString(CultureInfo.InvariantCulture)
             };
             //------------Execute Test---------------------------
@@ -232,7 +218,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
+        void SetupArguments(string currentDL, string testData, string dateTime, string inputFormat, string outputFormat, string timeModifierType, int timeModifierAmount, string resultValue)
         {
             TestStartNode = new FlowStep
             {

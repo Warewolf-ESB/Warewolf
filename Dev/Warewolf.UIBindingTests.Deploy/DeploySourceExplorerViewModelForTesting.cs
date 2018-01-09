@@ -19,7 +19,9 @@ namespace Warewolf.UIBindingTests.Deploy
         public void SetSelecetdItems(IEnumerable<IExplorerTreeItem> items)
         {
             foreach (var explorerTreeItem in items)
+            {
                 SelectedItems.Add(explorerTreeItem);
+            }
         }
 
         public void SetSelecetdItemsForConflicts(IEnumerable<IExplorerTreeItem> items)
@@ -45,8 +47,7 @@ namespace Warewolf.UIBindingTests.Deploy
 
         public DeploySourceExplorerViewModelForTesting(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
             : base(shellViewModel, aggregator, statsArea)
-        {
-            // ReSharper disable once VirtualMemberCallInContructor
+        {            
             SelectedItems = new List<IExplorerTreeItem>();
         }
 
@@ -57,7 +58,7 @@ namespace Warewolf.UIBindingTests.Deploy
         protected override void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
             localhostEnvironment.Children = new ObservableCollection<IExplorerItemViewModel>(Children ?? new List<IExplorerItemViewModel> { CreateExplorerVMS() });
-            PrivateObject p = new PrivateObject(localhostEnvironment);
+            var p = new PrivateObject(localhostEnvironment);
             p.SetField("_isConnected", true);
             localhostEnvironment.ResourceId = Guid.Empty;
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
@@ -67,7 +68,7 @@ namespace Warewolf.UIBindingTests.Deploy
         {
             ExplorerItemViewModel ax = null;
             var perm = new Mock<IServer>();
-            List<IWindowsGroupPermission> perms = new List<IWindowsGroupPermission>();
+            var perms = new List<IWindowsGroupPermission>();
             perms.Add(new WindowsGroupPermission
             {
                 Permissions = Permissions.View

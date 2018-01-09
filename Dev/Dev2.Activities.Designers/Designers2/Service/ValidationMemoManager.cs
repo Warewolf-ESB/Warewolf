@@ -9,22 +9,22 @@ using Dev2.Services;
 using Warewolf.Resource.Errors;
 using Dev2.Common.Interfaces.Studio.Core;
 using Dev2.Studio.Interfaces;
-// ReSharper disable ParameterTypeCanBeEnumerable.Global
+using System;
 
 namespace Dev2.Activities.Designers2.Service
 {
-    public class ValidationMemoManager
+    public class ValidationMemoManager : IDisposable
     {
-        private readonly ServiceDesignerViewModel _serviceDesignerViewModel;
-        public readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
+        readonly ServiceDesignerViewModel _serviceDesignerViewModel;
+        internal readonly string SourceNotFoundMessage = Warewolf.Studio.Resources.Languages.Core.ServiceDesignerSourceNotFound;
         public static readonly ErrorInfo NoError = new ErrorInfo
         {
             ErrorType = ErrorType.None,
             Message = @"Service Working Normally"
         };
-        private IDesignValidationService _validationService;
-        private IErrorInfo _worstDesignError;
-        private bool _versionsDifferent;
+        IDesignValidationService _validationService;
+        IErrorInfo _worstDesignError;
+        bool _versionsDifferent;
 
         internal ValidationMemoManager(ServiceDesignerViewModel serviceDesignerViewModel)
         {
@@ -35,9 +35,14 @@ namespace Dev2.Activities.Designers2.Service
         public ObservableCollection<IErrorInfo> DesignValidationErrors { get; set; }
         public ErrorType WorstError
         {
-            get { return (ErrorType)_serviceDesignerViewModel.GetValue(ServiceDesignerViewModel.WorstErrorProperty); }
-            private set {
-                _serviceDesignerViewModel.SetValue(ServiceDesignerViewModel.WorstErrorProperty, value); }
+            get
+            {
+                return (ErrorType)_serviceDesignerViewModel.GetValue(ServiceDesignerViewModel.WorstErrorProperty);
+            }
+            private set
+            {
+                _serviceDesignerViewModel.SetValue(ServiceDesignerViewModel.WorstErrorProperty, value);
+            }
         }
         public IErrorInfo WorstDesignError
         {
@@ -52,12 +57,10 @@ namespace Dev2.Activities.Designers2.Service
                 }
             }
         }
-        public bool VersionsDifferent
+
+        public void SetVersionsDifferent(bool value)
         {
-            set
-            {
-                _versionsDifferent = value;
-            }
+            _versionsDifferent = value;
         }
         public IDesignValidationService ValidationService => _validationService;
 
@@ -142,6 +145,7 @@ namespace Dev2.Activities.Designers2.Service
             {
                 switch (result)
                 {
+                    default:
                     case ConnectResult.Success:
                         break;
                     case ConnectResult.ConnectFailed:
@@ -200,13 +204,16 @@ namespace Dev2.Activities.Designers2.Service
                         RemoveError(WorstDesignError);
                         UpdateWorstError();
                     }
-                    else if (_versionsDifferent)
+                    else
                     {
-                        _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
-                        _serviceDesignerViewModel.MappingManager.InitializeMappings();
-                        RemoveErrors(
-                            LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
-                        UpdateWorstError();
+                        if (_versionsDifferent)
+                        {
+                            _serviceDesignerViewModel.ResourceModel = _serviceDesignerViewModel.NewModel;
+                            _serviceDesignerViewModel.MappingManager.InitializeMappings();
+                            RemoveErrors(
+                                LastValidationMemo.Errors.Where(a => a.Message.Contains(@"Incorrect Version")).ToList());
+                            UpdateWorstError();
+                        }
                     }
                     break;
 
@@ -215,7 +222,7 @@ namespace Dev2.Activities.Designers2.Service
                     var inputOutputViewModels = _serviceDesignerViewModel.MappingManager.DeserializeMappings(true, _serviceDesignerViewModel.MappingManager.FetchXElementFromFixData());
                     foreach (var inputOutputViewModel in inputOutputViewModels.Where(c => c.Required))
                     {
-                        IInputOutputViewModel model = inputOutputViewModel;
+                        var model = inputOutputViewModel;
                         var actualViewModel = _serviceDesignerViewModel.MappingManager.DataMappingViewModel.Inputs.FirstOrDefault(c => c.Name == model.Name);
                         if (actualViewModel != null)
                         {
@@ -226,6 +233,11 @@ namespace Dev2.Activities.Designers2.Service
                         }
                     }
 
+                    break;
+                case FixType.None:
+                case FixType.Delete:
+                case FixType.InvalidPermissions:
+                default:
                     break;
             }
         }
@@ -275,6 +287,11 @@ namespace Dev2.Activities.Designers2.Service
                 _serviceDesignerViewModel.RootModel.AddError(error);
             }
             UpdateWorstError();
+        }
+
+        public void Dispose()
+        {
+            _validationService.Dispose();
         }
     }
 }

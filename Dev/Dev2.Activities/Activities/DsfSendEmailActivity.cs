@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,11 +35,12 @@ using Warewolf.Resource.Errors;
 using Warewolf.Security.Encryption;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-SendMail", "SMTP Send", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Email", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Email_SMTP_Send")]
-    public class DsfSendEmailActivity : DsfActivityAbstract<string>
+    public class DsfSendEmailActivity : DsfActivityAbstract<string>,IEquatable<DsfSendEmailActivity>
     {
         #region Fields
 
@@ -54,7 +55,7 @@ namespace Dev2.Activities
         /// The property that holds all the conversions
         /// </summary>
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public EmailSource SelectedEmailSource
         {
             get
@@ -72,7 +73,7 @@ namespace Dev2.Activities
                 }
             }
         }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         [FindMissing]
         public string FromAccount { get; set; }
         [FindMissing]
@@ -100,7 +101,7 @@ namespace Dev2.Activities
         }
 
         [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         [FindMissing]
@@ -110,9 +111,9 @@ namespace Dev2.Activities
         [FindMissing]
         public string Bcc { get; set; }
 
-        // ReSharper disable MemberCanBePrivate.Global
+        
         public enMailPriorityEnum Priority { get; set; }
-        // ReSharper restore MemberCanBePrivate.Global
+        
         [FindMissing]
         public string Subject { get; set; }
         [FindMissing]
@@ -120,7 +121,7 @@ namespace Dev2.Activities
         [FindMissing]
         public string Body { get; set; }
 
-        // ReSharper disable once UnusedAutoPropertyAccessor.Local
+        
         public bool IsHtml { get; set; }
 
         /// <summary>
@@ -167,11 +168,11 @@ namespace Dev2.Activities
 
         #region Overrides of DsfNativeActivity<string>
 
-        private bool IsDebug
+        bool IsDebug
         {
             get
             {
-                if(_dataObject == null)
+                if (_dataObject == null)
                 {
                     return false;
                 }
@@ -182,11 +183,11 @@ namespace Dev2.Activities
         /// When overridden runs the activity's execution logic
         /// </summary>
         /// <param name="context">The context to be used.</param>
-        // ReSharper disable MethodTooLong
+
         protected override void OnExecute(NativeActivityContext context)
-            // ReSharper restore MethodTooLong
+            
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -196,8 +197,8 @@ namespace Dev2.Activities
 
             _dataObject = dataObject;
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            int indexToUpsertTo = 0;
+            var allErrors = new ErrorResultTO();
+            var indexToUpsertTo = 0;
 
             InitializeDebug(dataObject);
             try
@@ -255,8 +256,7 @@ namespace Dev2.Activities
                 {
                     while(colItr.HasMoreData())
                     {
-                        ErrorResultTO errors;
-                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out errors);
+                        var result = SendEmail(runtimeSource, colItr, fromAccountItr, passwordItr, toItr, ccItr, bccItr, subjectItr, bodyItr, attachmentsItr, out ErrorResultTO errors);
                         allErrors.MergeErrors(errors);
                         if(!allErrors.HasErrors())
                         {
@@ -284,7 +284,7 @@ namespace Dev2.Activities
             }
             catch(Exception e)
             {
-                Dev2Logger.Error("DSFEmail", e);
+                Dev2Logger.Error("DSFEmail", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
 
@@ -323,19 +323,11 @@ namespace Dev2.Activities
             AddDebugInputItem(DataListUtil.IsEvaluated(value) ? new DebugItemStaticDataParams("", value, label) : new DebugItemStaticDataParams(value, label));
         }
 
-        private int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
+        int UpsertResult(int indexToUpsertTo, IExecutionEnvironment environment, string result, int update)
         {
             string expression;
-            if(DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star)
-            {
-                expression = Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture));
-            }
-            else
-            {
-                expression = Result;
-            }
-            //2013.06.03: Ashley Lewis for bug 9498 - handle multiple regions in result
-            foreach(var region in DataListCleaningUtils.SplitIntoRegions(expression))
+            expression = DataListUtil.IsValueRecordset(Result) && DataListUtil.GetRecordsetIndexType(Result) == enRecordsetIndexType.Star ? Result.Replace(GlobalConstants.StarExpression, indexToUpsertTo.ToString(CultureInfo.InvariantCulture)) : Result;
+            foreach (var region in DataListCleaningUtils.SplitIntoRegions(expression))
             {
                 environment.Assign(region, result, update);
                 indexToUpsertTo++;
@@ -343,9 +335,9 @@ namespace Dev2.Activities
             return indexToUpsertTo;
         }
 
-        // ReSharper disable TooManyArguments
+
         string SendEmail(EmailSource runtimeSource, IWarewolfListIterator colItr, IWarewolfIterator fromAccountItr, IWarewolfIterator passwordItr, IWarewolfIterator toItr, IWarewolfIterator ccItr, IWarewolfIterator bccItr, IWarewolfIterator subjectItr, IWarewolfIterator bodyItr, IWarewolfIterator attachmentsItr, out ErrorResultTO errors)
-            // ReSharper restore TooManyArguments
+            
         {
             errors = new ErrorResultTO();
             var fromAccountValue = colItr.FetchNextValue(fromAccountItr);
@@ -356,9 +348,8 @@ namespace Dev2.Activities
             var subjectValue = colItr.FetchNextValue(subjectItr);
             var bodyValue = colItr.FetchNextValue(bodyItr);
             var attachmentsValue = colItr.FetchNextValue(attachmentsItr);
-            MailMessage mailMessage = new MailMessage { IsBodyHtml = IsHtml };
-            MailPriority priority;
-            if(Enum.TryParse(Priority.ToString(), true, out priority))
+            var mailMessage = new MailMessage { IsBodyHtml = IsHtml };
+            if (Enum.TryParse(Priority.ToString(), true, out MailPriority priority))
             {
                 mailMessage.Priority = priority;
             }
@@ -407,7 +398,7 @@ namespace Dev2.Activities
             return result;
         }
 
-        private List<string> GetSplitValues(string stringToSplit, char[] splitOn)
+        List<string> GetSplitValues(string stringToSplit, char[] splitOn)
         {
             return stringToSplit.Split(splitOn, StringSplitOptions.RemoveEmptyEntries).ToList();
         }
@@ -559,5 +550,57 @@ namespace Dev2.Activities
 
         #endregion
 
+        public bool Equals(DsfSendEmailActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var emailSourcesComparer = new EmailSourceComparer();
+            var emailSourcesAreEqual = emailSourcesComparer.Equals(SelectedEmailSource, other.SelectedEmailSource);
+            var paswordsAreEqual = CommonEqualityOps.PassWordsCompare(Password, other.Password);
+            return base.Equals(other) 
+                && paswordsAreEqual
+                && emailSourcesAreEqual
+                && string.Equals(FromAccount, other.FromAccount) 
+                && string.Equals(To, other.To) 
+                && string.Equals(Cc, other.Cc) 
+                && string.Equals(Bcc, other.Bcc) 
+                && Priority == other.Priority 
+                && string.Equals(Subject, other.Subject) 
+                && string.Equals(Attachments, other.Attachments) 
+                && string.Equals(Body, other.Body) 
+                && IsHtml == other.IsHtml 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfSendEmailActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_emailSender != null ? _emailSender.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_dataObject != null ? _dataObject.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_password != null ? _password.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_selectedEmailSource != null ? _selectedEmailSource.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (FromAccount != null ? FromAccount.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (To != null ? To.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Cc != null ? Cc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Bcc != null ? Bcc.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (int) Priority;
+                hashCode = (hashCode * 397) ^ (Subject != null ? Subject.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Attachments != null ? Attachments.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Body != null ? Body.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsHtml.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

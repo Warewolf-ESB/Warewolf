@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -44,13 +44,13 @@ namespace Dev2.Core.Tests
             m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder("result"));
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
 
-            IContextualResourceModel model = m.Object;
+            var model = m.Object;
             _target = new ResourceDesignerViewModel(model, null);
         }
 
 
         #region DefaultDefinition Tests
-        // ReSharper disable InconsistentNaming
+        
 
         /// <summary>
         /// Tests that the Default Service Definition for Services
@@ -58,7 +58,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DefaultDefinition_ServiceType_Expected_ServiceDefinitionBuiltForService()
         {
-            Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
+            var m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(string.Empty)).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Service);
             _target = new ResourceDesignerViewModel(m.Object, null);
@@ -74,7 +74,7 @@ namespace Dev2.Core.Tests
         [TestMethod]
         public void DefaultDefinition_SourceType_Expected_ServiceDefinitionBuiltForService()
         {
-            Mock<IContextualResourceModel> m = new Mock<IContextualResourceModel>();
+            var m = new Mock<IContextualResourceModel>();
             m.Setup(c => c.WorkflowXaml).Returns(new StringBuilder(string.Empty)).Verifiable();
             m.Setup(c => c.ResourceType).Returns(ResourceType.Source);
             _target = new ResourceDesignerViewModel(m.Object, null);

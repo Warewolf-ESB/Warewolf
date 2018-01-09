@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,8 +21,8 @@ namespace Dev2.Data
     [Serializable]
     public class IndexIterator : IIndexIterator
     {
-        private int _curValue;
-        private IndexList _indexList;
+        int _curValue;
+        IndexList _indexList;
 
         public IndexList IndexList
         {
@@ -55,9 +55,9 @@ namespace Dev2.Data
         {
             get
             {
-                int result = _curValue - Count;
+                var result = _curValue - Count;
 
-                if(result == 0 && HasMore())
+                if (result == 0 && HasMore())
                 {
                     return false;
                 }
@@ -72,59 +72,44 @@ namespace Dev2.Data
             }
         }
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="IndexIterator"/> class.
-        /// </summary>
-        /// <param name="gaps">The gaps.</param>
-        /// <param name="maxValue">The maximum value.</param>
-        /// <param name="minValue">The minimum value.</param>
-        public IndexIterator(HashSet<int> gaps, int maxValue, int minValue = 1)
+        public IndexIterator(HashSet<int> gaps, int maxValue)
+            : this(gaps, maxValue, 1)
+        {
+        }
+
+        public IndexIterator(HashSet<int> gaps, int maxValue, int minValue)
         {
             IndexList = new IndexList(gaps, maxValue, minValue);
             _curValue = minValue;
         }
-
-        /// <summary>
-        /// Determines whether this instance has more.
-        /// </summary>
-        /// <returns></returns>
+        
         public bool HasMore()
         {
-            int canidate = _curValue;
-            while(IndexList.Gaps.Contains(canidate))
+            var canidate = _curValue;
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
 
             return canidate <= IndexList.MaxValue;
         }
-
-        /// <summary>
-        /// Fetches the index of the next.
-        /// </summary>
-        /// <returns></returns>
+        
         public int FetchNextIndex()
         {
+            var canidate = _curValue;
 
-            int canidate = _curValue;
-            // assign a new curValue
-
-            while(IndexList.Gaps.Contains(canidate))
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
 
-            int result = canidate;
+            var result = canidate;
 
-            _curValue = canidate + 1; // save next value ;)
+            _curValue = canidate + 1;
 
             return result;
         }
-
-        /// <summary>
-        /// Maximums the index.
-        /// </summary>
-        /// <returns></returns>
+        
         public int MaxIndex()
         {
             return IndexList.GetMaxIndex();
@@ -134,7 +119,7 @@ namespace Dev2.Data
     public class IndexListIndexIterator:IIndexIterator
     {
 
-        private readonly IList<int> _values;
+        readonly IList<int> _values;
         int _current;
 
         public IndexListIndexIterator(IList<int> values)

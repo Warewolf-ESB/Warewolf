@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,14 +16,14 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Warewolf.Security.Encryption;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Data.ServiceModel
 {
     public class RabbitMQSource : Resource, IResourceSource, IRabbitMQ
     {
-        private const int DefaultPort = 5672;
-        private const string DefaultVirtualHost = "/";
+        const int DefaultPort = 5672;
+        const string DefaultVirtualHost = "/";
 
         #region Properties
 
@@ -68,8 +68,7 @@ namespace Dev2.Data.ServiceModel
             UserName = properties["UserName"];
             Password = properties["Password"];
 
-            int port;
-            Port = Int32.TryParse(properties["Port"], out port) ? port : DefaultPort;
+            Port = Int32.TryParse(properties["Port"], out int port) ? port : DefaultPort;
             VirtualHost = !string.IsNullOrWhiteSpace(properties["VirtualHost"]) ? properties["VirtualHost"] : DefaultVirtualHost;
         }
 

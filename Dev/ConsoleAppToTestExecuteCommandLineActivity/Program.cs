@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,15 +12,15 @@ using System;
 
 namespace ConsoleAppToTestExecuteCommandLineActivity
 {
-    internal class Program
+    class Program
     {
-        private static void Main(string[] args)
+        static void Main(string[] args)
         {
             if (args.Length == 0)
             {
                 return;
             }
-            string switchArg = args[0];
+            var switchArg = args[0];
             switch (switchArg)
             {
                 case "user":
@@ -36,6 +36,8 @@ namespace ConsoleAppToTestExecuteCommandLineActivity
                     Console.WriteLine("This is error");
                     Console.Error.Write("The console errored.");
                     return;
+                default:
+                    break;
             }
         }
     }

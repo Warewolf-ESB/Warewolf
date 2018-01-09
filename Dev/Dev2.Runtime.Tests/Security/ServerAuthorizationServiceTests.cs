@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Tests.Runtime.Security
     [TestClass]
     public class ServerAuthorizationServiceTests
     {
-        // ReSharper disable InconsistentNaming
+        
 
         [TestMethod]
         [Owner("Trevor Williams-Ros")]
@@ -448,7 +448,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(requests);
         }
 
-        private void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
+        void Verify_IsAuthorized(TestAuthorizationRequest[] requests)
         {
             var isServers = new[] { false, true };
 
@@ -470,14 +470,13 @@ namespace Dev2.Tests.Runtime.Security
             }
         }
 
-        private void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
+        void Verify_IsAuthorized(Permissions configPermissions, TestAuthorizationRequest authorizationRequest, bool isServer)
         {
             var configPermission = new WindowsGroupPermission { WindowsGroup = TestAuthorizationRequest.UserRole, IsServer = isServer, Permissions = configPermissions };
 
             if (!isServer && !string.IsNullOrEmpty(authorizationRequest.Resource))
             {
-                Guid resourceID;
-                if (Guid.TryParse(authorizationRequest.Resource, out resourceID))
+                if (Guid.TryParse(authorizationRequest.Resource, out Guid resourceID))
                 {
                     configPermission.ResourceID = resourceID;
                     configPermission.ResourceName = "TestCategory\\";
@@ -496,7 +495,7 @@ namespace Dev2.Tests.Runtime.Security
             Verify_IsAuthorized(configPermission, authorizationRequest);
         }
 
-        private void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
+        void Verify_IsAuthorized(WindowsGroupPermission configPermissions, TestAuthorizationRequest authorizationRequest)
         {
             //------------Setup for test--------------------------
             var allowedPermissions = AuthorizationHelpers.ToPermissions(authorizationRequest.AuthorizationContext);
@@ -531,6 +530,6 @@ namespace Dev2.Tests.Runtime.Security
             //------------Assert Results-------------------------
         }
 
-        // ReSharper restore InconsistentNaming
+
     }
 }

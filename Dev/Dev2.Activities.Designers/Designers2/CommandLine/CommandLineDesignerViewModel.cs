@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,7 +34,7 @@ namespace Dev2.Activities.Designers2.CommandLine
 
         public List<KeyValuePair<ProcessPriorityClass, string>> CommandPriorities { get; private set; }
 
-        public bool IsCommandFileNameFocused { get { return (bool)GetValue(IsCommandFileNameFocusedProperty); } set { SetValue(IsCommandFileNameFocusedProperty, value); } }
+        public bool IsCommandFileNameFocused { get => (bool)GetValue(IsCommandFileNameFocusedProperty); set { SetValue(IsCommandFileNameFocusedProperty, value); } }
 
         public static readonly DependencyProperty IsCommandFileNameFocusedProperty =
             DependencyProperty.Register("IsCommandFileNameFocused", typeof(bool), typeof(CommandLineDesignerViewModel), new PropertyMetadata(false));
@@ -47,11 +47,10 @@ namespace Dev2.Activities.Designers2.CommandLine
             var errors = new List<IActionableErrorInfo>();
 
             Action onError = () => IsCommandFileNameFocused = true;
+            var util = new VariableUtils();
+            util.AddError(errors, util.TryParseVariables(CommandFileName,out string commandValue, onError));
 
-            string commandValue;
-            errors.AddError(CommandFileName.TryParseVariables(out commandValue, onError));
-
-            if(string.IsNullOrWhiteSpace(commandValue))
+            if (string.IsNullOrWhiteSpace(commandValue))
             {
                 errors.Add(new ActionableErrorInfo(onError) { ErrorType = ErrorType.Critical, Message = string.Format(ErrorResource.PropertyMusHaveAValue, "Command") });
             }

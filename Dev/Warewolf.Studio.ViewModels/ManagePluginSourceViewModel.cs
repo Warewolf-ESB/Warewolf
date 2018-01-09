@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,9 +20,6 @@ using Dev2.Runtime.Configuration.ViewModels.Base;
 using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.PubSubEvents;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable UnusedAutoPropertyAccessor.Global
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ManagePluginSourceViewModel : SourceBaseImpl<IPluginSource>, IManagePluginSourceViewModel
@@ -32,13 +29,13 @@ namespace Warewolf.Studio.ViewModels
         string _resourceName;
         readonly string _warewolfserverName;
         string _headerText;
-        private bool _isDisposed;
+        bool _isDisposed;
         Task<IRequestServiceNameViewModel> _requestServiceNameViewModel;
-        private IDllListingModel _selectedDll;
-        private string _gacAssemblyName;
-        private string _fileSystemAssemblyName;
-        private string _configFilePath;
-        private bool _canSelectConfigFiles;
+        IDllListingModel _selectedDll;
+        string _gacAssemblyName;
+        string _fileSystemAssemblyName;
+        string _configFilePath;
+        bool _canSelectConfigFiles;
 
         /// <exception cref="Exception">A delegate callback throws an exception.</exception>
         public ManagePluginSourceViewModel(IManagePluginSourceModel updateManager, IEventAggregator aggregator, IAsyncWorker asyncWorker)
@@ -76,8 +73,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 var fileChooser = CustomContainer.GetInstancePerRequestType<IFileChooserView>();
                 fileChooser.ShowView(false);
-                var vm = fileChooser.DataContext as FileChooser;
-                if (vm != null && vm.Result == MessageBoxResult.OK)
+                if (fileChooser.DataContext is FileChooser vm && vm.Result == MessageBoxResult.OK)
                 {
                     var selectedFiles = vm.GetAttachments();
                     if (selectedFiles != null && selectedFiles.Count > 0)
@@ -284,7 +280,10 @@ namespace Warewolf.Studio.ViewModels
                     src.Path = RequestServiceNameViewModel.ResourceName.Path ?? RequestServiceNameViewModel.ResourceName.Name;
                     Save(src);
                     if (RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel != null)
+                    {
                         AfterSave(RequestServiceNameViewModel.SingleEnvironmentExplorerViewModel.Environments[0].ResourceId, src.Id);
+                    }
+
                     Path = src.Path;
                     _pluginSource = src;
                     ToItem();
@@ -341,13 +340,13 @@ namespace Warewolf.Studio.ViewModels
             };
         }
 
-        private IPluginSource ToSource()
+        IPluginSource ToSource()
         {
             if (_pluginSource == null)
             {
                 return ToNewSource();
             }
-            // ReSharper disable once RedundantIfElseBlock
+
             else
             {
                 _pluginSource.FileSystemAssemblyName = FileSystemAssemblyName;
@@ -357,7 +356,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IPluginSource ToNewSource()
+        IPluginSource ToNewSource()
         {
             return new PluginSourceDefinition
             {
@@ -368,7 +367,7 @@ namespace Warewolf.Studio.ViewModels
                 GACAssemblyName = _gacAssemblyName,
                 Id = _pluginSource?.Id ?? Guid.NewGuid()
             };
-            
+
         }
 
         public IRequestServiceNameViewModel RequestServiceNameViewModel
@@ -382,7 +381,7 @@ namespace Warewolf.Studio.ViewModels
                     {
                         return _requestServiceNameViewModel.Result;
                     }
-                    // ReSharper disable once RedundantIfElseBlock
+                    
                     else
                     {
                         throw _requestServiceNameViewModel.Exception;
@@ -390,7 +389,11 @@ namespace Warewolf.Studio.ViewModels
                 }
                 return null;
             }
-            set { _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value); _requestServiceNameViewModel.Start(); }
+            set
+            {
+                _requestServiceNameViewModel = new Task<IRequestServiceNameViewModel>(() => value);
+                _requestServiceNameViewModel.Start();
+            }
         }
 
         public ICommand OkCommand { get; set; }
@@ -410,28 +413,13 @@ namespace Warewolf.Studio.ViewModels
         protected override void OnDispose()
         {
             RequestServiceNameViewModel?.Dispose();
-            Dispose(true);
+            DisposeManagePluginSourceViewModel(true);
         }
-
-        // Dispose(bool disposing) executes in two distinct scenarios.
-        // If disposing equals true, the method has been called directly
-        // or indirectly by a user's code. Managed and unmanaged resources
-        // can be disposed.
-        // If disposing equals false, the method has been called by the
-        // runtime from inside the finalizer and you should not reference
-        // other objects. Only unmanaged resources can be disposed.
-        void Dispose(bool disposing)
+        
+        void DisposeManagePluginSourceViewModel(bool disposing)
         {
-            // Check to see if Dispose has already been called.
-            if (!_isDisposed)
+            if (!_isDisposed && !disposing)
             {
-                // If disposing equals true, dispose all managed
-                // and unmanaged resources.
-                if (disposing)
-                {
-                }
-
-                // Dispose unmanaged resources.
                 _isDisposed = true;
             }
         }

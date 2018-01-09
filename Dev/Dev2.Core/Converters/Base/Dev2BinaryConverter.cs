@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,17 +16,17 @@ using Dev2.DynamicServices;
 
 namespace Dev2.Converters
 {
-    internal class Dev2BinaryConverter : IBaseConverter
+    class Dev2BinaryConverter : IBaseConverter
     {
         public string ConvertToBase(byte[] payload)
         {
             var result = new StringBuilder();
 
-            // ReSharper disable ForCanBeConvertedToForeach
+            
             for (int i = 0; i < payload.Length; i++)
-                // ReSharper restore ForCanBeConvertedToForeach
+                
             {
-                string tmp = Convert.ToString(payload[i], 2);
+                var tmp = Convert.ToString(payload[i], 2);
                 // zero pad the value
                 for (int q = tmp.Length; q < 8; q++)
                 {
@@ -44,7 +44,7 @@ namespace Dev2.Converters
             {
                 var result = new byte[payload.Length/8];
 
-                int pos = 0;
+                var pos = 0;
                 for (int i = 0; i < payload.Length; i += 8)
                 {
                     result[pos] = Convert.ToByte(payload.Substring(i, 8), 2);

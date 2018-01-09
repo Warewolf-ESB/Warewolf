@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,28 +12,23 @@ using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 using System.Text;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Execution;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
+using Dev2.Runtime.ESB.Management.Services;
 
-// ReSharper disable CheckNamespace
 namespace Dev2.Runtime.ESB.Management
-    // ReSharper restore CheckNamespace
 {
-    public class TerminateExecution : IEsbManagementEndpoint
+    public class TerminateExecution : DefaultEsbManagementEndpoint
     {
-        public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
+        public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             string resourceIdString = null;
 
-            StringBuilder tmp;
-            values.TryGetValue("ResourceID", out tmp);
-            
+            values.TryGetValue("ResourceID", out StringBuilder tmp);
+
             if (tmp != null)
             {
                 resourceIdString = tmp.ToString();
@@ -46,9 +41,8 @@ namespace Dev2.Runtime.ESB.Management
 
             var res = new ExecuteMessage { HasError = false };
 
-            Guid resourceId;
-            var hasResourceId = Guid.TryParse(resourceIdString, out resourceId);
-            if(!hasResourceId)
+            var hasResourceId = Guid.TryParse(resourceIdString, out Guid resourceId);
+            if (!hasResourceId)
             {
                 res.SetMessage(Resources.CompilerError_TerminationFailed);
                 res.HasError = true;
@@ -66,32 +60,12 @@ namespace Dev2.Runtime.ESB.Management
                 res.SetMessage(Resources.CompilerMessage_TerminationSuccess);
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             return serializer.SerializeToBuilder(res);
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ResourceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            return newDs;
-        }
-
-        public string HandlesType()
-        {
-            return "TerminateExecutionService";
-        }
-
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "TerminateExecutionService";
     }
 }

@@ -20,9 +20,9 @@ namespace Warewolf.Studio.ViewModels.ToolBox
         ICollection<IToolDescriptorViewModel> _tools;
         bool _isDesignerFocused;
         IToolDescriptorViewModel _selectedTool;
-        private string _searchTerm;
-        private ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
-        private bool _isVisible;
+        string _searchTerm;
+        ObservableCollection<IToolDescriptorViewModel> _backedUpTools;
+        bool _isVisible;
 
         public ToolboxViewModel(IToolboxModel localModel, IToolboxModel remoteModel)
         {
@@ -64,7 +64,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        // ReSharper disable once MemberCanBePrivate.Global
+        
         public ObservableCollection<IToolDescriptorViewModel> BackedUpTools
         {
             get { return _backedUpTools; }
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             set
             {
 
-                // ReSharper disable once PossibleUnintendedReferenceComparison
+                
                 if (value != _selectedTool)
                 {
                     _selectedTool = value;
@@ -140,7 +140,7 @@ namespace Warewolf.Studio.ViewModels.ToolBox
             }
         }
 
-        private void FilterItems(string filterText)
+        void FilterItems(string filterText)
         {
             var searchWords = filterText.ToLower().Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -166,21 +166,19 @@ namespace Warewolf.Studio.ViewModels.ToolBox
 
         #region Implementation of IDisposable
 
-        /// <summary>
-        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-        /// </summary>
         public void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
-        // ReSharper disable UnusedParameter.Local
-        void Dispose(bool disposing)
-        // ReSharper restore UnusedParameter.Local
+                
+        void Dispose(bool disposing)        
         {
-            _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
-            _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
+            if (disposing)
+            {
+                _localModel.OnserverDisconnected -= _localModel_OnserverDisconnected;
+                _remoteModel.OnserverDisconnected -= _remoteModel_OnserverDisconnected;
+            }
         }
 
         #endregion

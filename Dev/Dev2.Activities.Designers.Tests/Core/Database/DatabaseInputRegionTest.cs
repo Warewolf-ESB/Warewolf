@@ -20,7 +20,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Warewolf.Core;
 
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.Core.Database
 {
@@ -37,8 +37,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -67,14 +67,13 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
             Assert.AreEqual(region.Errors.Count, 0);
-            var clone = region.CloneRegion() as DatabaseInputRegion;
-            if (clone != null)
+            if (region.CloneRegion() is DatabaseInputRegion clone)
             {
                 Assert.AreEqual(clone.IsEnabled, false);
                 Assert.AreEqual(clone.Errors.Count, 0);
@@ -90,8 +89,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -106,8 +105,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
             Assert.AreEqual(region.IsEnabled, false);
@@ -124,11 +123,11 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var act = new DsfSqlServerDatabaseActivity() { SourceId = id };
             var src = new Mock<IDbServiceModel>();
             src.Setup(a => a.RetrieveSources()).Returns(new ObservableCollection<IDbSource>());
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var regionToRestore = new DatabaseInputRegionClone();
             regionToRestore.IsEnabled = true;
             //------------Execute Test---------------------------
@@ -149,8 +148,8 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
             var src = new Mock<IDbServiceModel>();
             var lst = new ObservableCollection<IDbSource>() { new DbSourceDefinition() { Name = "bravo" }, new DbSourceDefinition() { Name = "johnny" } };
             src.Setup(a => a.RetrieveSources()).Returns(lst);
-            DatabaseSourceRegion sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
-            DbActionRegion dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
+            var sourceRegion = new DatabaseSourceRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), enSourceType.SqlDatabase);
+            var dbActionRegion = new DbActionRegion(src.Object, ModelItemUtils.CreateModelItem(new DsfSqlServerDatabaseActivity()), sourceRegion, new SynchronousAsyncWorker());
 
             var region = new DatabaseInputRegion(ModelItemUtils.CreateModelItem(act), dbActionRegion);
 
@@ -175,7 +174,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
             Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
@@ -214,7 +213,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
             Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
@@ -263,7 +262,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
             //---------------Assert Precondition----------------
 
-            // ReSharper disable once PossibleNullReferenceException
+            
             var countBefore = DataListSingleton.ActiveDataList.ScalarCollection.Count;
             Assert.AreEqual(0, countBefore);
             //---------------Execute Test ----------------------
@@ -281,7 +280,7 @@ namespace Dev2.Activities.Designers.Tests.Core.Database
 
         }
 
-        private IDbAction ValueFunction()
+        IDbAction ValueFunction()
         {
             return new DbAction
             {

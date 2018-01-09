@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,19 +29,18 @@ namespace Dev2.Data.Decisions.Operations
         public bool Invoke(string[] cols)
         {
             
-            double[] dVal = new double[3];
-            DateTime[] dtVal = new DateTime[3];
+            var dVal = new double[3];
+            var dtVal = new DateTime[3];
 
-            int pos = 0;
-            bool isDateTimeCompare = false;
-            foreach(string c in cols)
+            var pos = 0;
+            var isDateTimeCompare = false;
+            foreach (string c in cols)
             {
                 if(!double.TryParse(c, out dVal[pos]))
                 {
                     try
                     {
-                        DateTime dt;
-                        if (DateTime.TryParse(c, out dt))
+                        if (DateTime.TryParse(c, out DateTime dt))
                         {
                             dtVal[pos] = dt;
                             isDateTimeCompare = true;
@@ -49,7 +48,7 @@ namespace Dev2.Data.Decisions.Operations
                     }
                     catch(Exception ex)
                     {
-                        Dev2Logger.Error(ex);
+                        Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                     }
                 }
 
@@ -77,7 +76,7 @@ namespace Dev2.Data.Decisions.Operations
             }
             catch(Exception e)
             {
-                Dev2Logger.Error(ErrorResource.IsBetweenDataTypeMismatch,e);
+                Dev2Logger.Error(ErrorResource.IsBetweenDataTypeMismatch,e, GlobalConstants.WarewolfError);
                 throw new InvalidDataException(ErrorResource.IsBetweenDataTypeMismatch);
             }            
             return left >= 0 && right <= 0 || left <= 0 && right >= 0;

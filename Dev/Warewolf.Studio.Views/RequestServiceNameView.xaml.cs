@@ -63,29 +63,25 @@ namespace Warewolf.Studio.Views
 
         public string GetValidationMessage()
         {
-            BindingExpression be = ErrorMessageTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            var be = ErrorMessageTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return ErrorMessageTextBlock.Text;
         }
-
 
         public void Cancel()
         {
             CancelButton.Command.Execute(null);
         }
 
-        public void Save()
-        {
-            OkButton.Command.Execute(null);
-        }
-
-        private void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
+        void RequestServiceNameView_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Left)
+            {
                 DragMove();
+            }
         }
 
-        private void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
+        void ExplorerView_OnKeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Escape)
             {
@@ -95,57 +91,50 @@ namespace Warewolf.Studio.Views
                     e.Handled = true;
                     return;
                 }
-                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
-                requestServiceNameViewModel?.CancelCommand.Execute(this);
+                RequestServiceNameViewModel?.CancelCommand.Execute(this);
             }
             if (e.Key == Key.Delete && !ExplorerView.SearchTextBox.IsFocused)
             {
-                var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
-                var explorerItemViewModelSelected = environmentViewModel?.Children.Flatten(model => model.Children)
-                    .FirstOrDefault(model => model.IsSelected);
-                var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
-                .FirstOrDefault(model => model.IsRenaming);
-                if (explorerItemViewModelSelected != null && !explorerItemViewModelSelected.IsRenaming && explorerItemViewModelRename == null)
+                var explorerItemViewModelSelected = RequestServiceNameViewModel?.ExplorerItemViewModelIsSelected();
+                if (explorerItemViewModelSelected != null && !explorerItemViewModelSelected.IsRenaming)
                 {
-                    explorerItemViewModelSelected.DeleteCommand.Execute(null);
+                    explorerItemViewModelSelected?.DeleteCommand.Execute(null);
                 }
             }
         }
 
-        private bool IsRenaming { get; set; }
+        RequestServiceNameViewModel RequestServiceNameViewModel => DataContext as RequestServiceNameViewModel;
 
-        private void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
+        bool IsRenaming { get; set; }
+
+        void ExplorerView_OnPreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var explorerItemViewModelRename = ExplorerItemViewModelRename();
-
             if (e.Key == Key.Escape)
             {
-                HandleRenameResource(e, explorerItemViewModelRename);
+                HandleRenameResource(e);
             }
         }
 
-        private void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
+        void RequestServiceNameView_OnKeyUp(object sender, KeyEventArgs e)
         {
-            var explorerItemViewModelRename = ExplorerItemViewModelRename();
-
             if (e.Key == Key.Escape)
             {
-                HandleRenameResource(e, explorerItemViewModelRename);
-                var requestServiceNameViewModel = DataContext as RequestServiceNameViewModel;
-                requestServiceNameViewModel?.CancelCommand.Execute(this);
+                HandleRenameResource(e);
+                RequestServiceNameViewModel?.CancelCommand.Execute(this);
             }
         }
 
-        private IExplorerItemViewModel ExplorerItemViewModelRename()
+        void RequestServiceNameView_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            var environmentViewModel = ExplorerView.ExplorerTree.Items.CurrentItem as EnvironmentViewModel;
-            var explorerItemViewModelRename = environmentViewModel?.Children.Flatten(model => model.Children)
-                .FirstOrDefault(model => model.IsRenaming);
-            return explorerItemViewModelRename;
+            if (e.Key == Key.Enter)
+            {
+                HandleRenameResource(e);
+            }
         }
 
-        private void HandleRenameResource(KeyEventArgs e, IExplorerItemViewModel explorerItemViewModelRename)
+        void HandleRenameResource(KeyEventArgs e)
         {
+            var explorerItemViewModelRename = RequestServiceNameViewModel?.ExplorerItemViewModelRename();
             if (explorerItemViewModelRename != null)
             {
                 var textBox = e.OriginalSource as TextBox;

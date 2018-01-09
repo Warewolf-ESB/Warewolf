@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,7 +37,7 @@ namespace Dev2.Studio.Interfaces.Enums
     {
         public static WorkSurfaceContext ToWorkSurfaceContext(this ResourceType resourceType)
         {
-            switch(resourceType)
+            switch (resourceType)
             {
                 case ResourceType.WorkflowService:
                     return WorkSurfaceContext.Workflow;
@@ -46,8 +46,8 @@ namespace Dev2.Studio.Interfaces.Enums
                 case ResourceType.Source:
                     return WorkSurfaceContext.SourceManager;
                 case ResourceType.Unknown:
+                default:
                     return WorkSurfaceContext.Unknown;
-                default: return WorkSurfaceContext.Unknown;
             }
         }
 

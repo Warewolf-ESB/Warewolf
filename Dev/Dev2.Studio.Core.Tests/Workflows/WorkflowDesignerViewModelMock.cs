@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,15 +31,14 @@ namespace Dev2.Core.Tests.Workflows
     {
         readonly Mock<WorkflowDesigner> _moq = new Mock<WorkflowDesigner>();
 
-        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IExternalProcessExecutor processExecutor, bool createDesigner = false)
+        public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
                 new Mock<IPopupController>().Object,
-                new SynchronousAsyncWorker(), processExecutor,
+                new SynchronousAsyncWorker(),
                 createDesigner, false)
         {
-            _moq.SetupAllProperties();
             _wd = _moq.Object;
         }
 
@@ -47,29 +46,37 @@ namespace Dev2.Core.Tests.Workflows
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
+                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
         {
-            _moq.SetupAllProperties();
+            //_moq.SetupAllProperties();
             _wd = _moq.Object;
+        }
+        public WorkflowDesignerViewModelMock(IWorkflowDesignerWrapper workflowDesignerWrapper, IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, WorkflowDesigner workflowDesigner, bool createDesigner = false)
+           : base(workflowDesignerWrapper,
+               eventAggregator,
+               resource, workflowHelper,
+               new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
+        {
+            //_moq.SetupAllProperties();
+            _wd = workflowDesigner;
         }
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IEventAggregator eventAggregator, ModelService modelService, bool createDesigner = false)
             : base(
                 eventAggregator,
                 resource, workflowHelper,
-                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), new Mock<IExternalProcessExecutor>().Object, createDesigner, false)
+                new Mock<IPopupController>().Object, new SynchronousAsyncWorker(), createDesigner, false)
         {
-            _moq.SetupAllProperties();
+            //_moq.SetupAllProperties();
             _wd = _moq.Object;
-            ModelService = modelService;
+            _modelService = modelService;
         }
 
         public WorkflowDesignerViewModelMock(IContextualResourceModel resource, IWorkflowHelper workflowHelper, IPopupController popupController, IExternalProcessExecutor processExecutor, bool createDesigner = false)
             : base(
                 new Mock<IEventAggregator>().Object,
                 resource, workflowHelper,
-                popupController, new SynchronousAsyncWorker(), processExecutor, createDesigner, false)
+                popupController, new SynchronousAsyncWorker(), createDesigner, false)
         {
-            _moq.SetupAllProperties();
             _wd = _moq.Object;
         }
 
@@ -138,7 +145,7 @@ namespace Dev2.Core.Tests.Workflows
         public void SetupRequestExapandAll()
         {
             RequestedExpandAll = false;
-            DesignerManagementService.ExpandAllRequested += (sender, args) =>
+            _designerManagementService.ExpandAllRequested += (sender, args) =>
             {
                 RequestedExpandAll = true;
             };
@@ -147,7 +154,7 @@ namespace Dev2.Core.Tests.Workflows
         public void SetupRequestRestoreAll()
         {
             RequestedExpandAll = false;
-            DesignerManagementService.RestoreAllRequested += (sender, args) =>
+            _designerManagementService.RestoreAllRequested += (sender, args) =>
             {
                 RequestedRestoreAll = true;
             };
@@ -156,7 +163,7 @@ namespace Dev2.Core.Tests.Workflows
         public void SetupRequestCollapseAll()
         {
             RequestedExpandAll = false;
-            DesignerManagementService.CollapseAllRequested += (sender, args) =>
+            _designerManagementService.CollapseAllRequested += (sender, args) =>
             {
                 RequestedCollapseAll = true;
             };
@@ -189,6 +196,11 @@ namespace Dev2.Core.Tests.Workflows
         public void FireWorkflowChanged()
         {
             WorkflowChanged.Invoke();
+        }
+
+        public void SetIsPaste(bool pasteValue)
+        {
+            _isPaste = pasteValue;
         }
     }
 }

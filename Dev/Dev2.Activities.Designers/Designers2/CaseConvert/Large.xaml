@@ -7,7 +7,7 @@
                                xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
                                xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                                xmlns:local="clr-namespace:Dev2.Activities.Designers2.CaseConvert"
-                               
+                               xmlns:attachedProperties="clr-namespace:Dev2.Activities.AttachedProperties"
                                xmlns:errors="clr-namespace:Dev2.Activities.Designers2.Core.Errors"
                                xmlns:controls="clr-namespace:Dev2.Activities.Designers2.Core.Controls"
                                xmlns:dev2="clr-namespace:Dev2;assembly=Dev2.Core"
@@ -35,14 +35,14 @@
         </ResourceDictionary>
     </core:ActivityDesignerTemplate.Resources>
     <core:ActivityDesignerTemplate.RightButtons>
-        <!-- ReSharper disable UnusedMember.Global -->
+        
         <core:ActivityDesignerButton x:Name="DoneButton"
                                      Content="Done"
                                      Margin="0,0,7,12"
                                      IsValidatedBefore="True"
                                      IsClosedAfter="True"
                                      Style="{StaticResource ActivityDesignerButtonStyle}" />
-        <!-- ReSharper restore UnusedMember.Global -->
+        
     </core:ActivityDesignerTemplate.RightButtons>
     <Grid Margin="{StaticResource ElementBorder}">
         <Grid.RowDefinitions>
@@ -90,7 +90,8 @@
                                                     WrapInBrackets="True"
                                                     Text="{Binding StringToConvert, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                                     ToolTip="{x:Static languages:Tooltips.CaseConversionToolTipTextInput}"
-                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}">
+                                                    Style="{StaticResource DatagridIntellisenseTextBoxStyle}"
+                                                    attachedProperties:FocusSetter.IsFocused="{Binding IsStringToConvertFocused, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
                                     <core1:HelpSetter Text="{x:Static languages:HelpText.CaseConversionHelpTextInput}" DataContext="{Binding DataContext, RelativeSource={RelativeSource AncestorType=core:ActivityDesignerTemplate}}" />
                                     <errors:ErrorsSetter Source="{Binding}"

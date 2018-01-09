@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,6 +16,7 @@ using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.DB;
 using Dev2.Common.Interfaces.ServerProxyLayer;
 using Dev2.Studio.Interfaces;
+using System;
 
 namespace Warewolf.Studio.ViewModels
 {
@@ -66,6 +67,8 @@ namespace Warewolf.Studio.ViewModels
                 case enSourceType.ODBC:
                     _shell.NewOdbcSource(string.Empty);
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Source Type: " + type.ToString());
             }
         }
 
@@ -73,21 +76,23 @@ namespace Warewolf.Studio.ViewModels
         {
             switch (type)
             {
-                    case enSourceType.SqlDatabase:
+                case enSourceType.SqlDatabase:
                     _shell.EditSqlServerResource(selectedSource);
                     break;
-                    case enSourceType.MySqlDatabase:
+                case enSourceType.MySqlDatabase:
                     _shell.EditMySqlResource(selectedSource);
                     break;
-                    case enSourceType.PostgreSQL:
+                case enSourceType.PostgreSQL:
                     _shell.EditPostgreSqlResource(selectedSource);
                     break;
-                    case enSourceType.Oracle:
+                case enSourceType.Oracle:
                     _shell.EditOracleResource(selectedSource);
                     break;
-                    case enSourceType.ODBC:
+                case enSourceType.ODBC:
                     _shell.EditOdbcResource(selectedSource);
                     break;
+                default:
+                    throw new ArgumentException("Unrecognized Source Type: " + type.ToString());
             }
         }
 

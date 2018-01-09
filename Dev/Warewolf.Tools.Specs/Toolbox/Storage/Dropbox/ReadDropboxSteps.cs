@@ -23,11 +23,15 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
     [Binding]
     public class ReadDropboxSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ReadDropboxSteps(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
@@ -154,7 +158,7 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         [Then(@"the New Readlist Dropbox Source window is opened")]
         public void ThenTheReadNewDropboxSourceWindowIsOpened()
         {
-            Mock<IEventAggregator> eventAggregator = GetEventAggregator();
+            var eventAggregator = GetEventAggregator();
             eventAggregator.Verify(a => a.Publish(It.IsAny<IMessage>()));
         }
 
@@ -169,7 +173,9 @@ namespace Dev2.Activities.Specs.Toolbox.Storage.Dropbox
         public void ThenTheReadDropboxSourceWindowIsOpened(string sourceName)
         {
             if (sourceName == "Drop")
+            {
                 Assert.IsTrue(GetViewModel().SelectedSource.ResourceName == sourceName);
+            }
         }
 
         [Then(@"Readlist Local File equals ""(.*)""")]

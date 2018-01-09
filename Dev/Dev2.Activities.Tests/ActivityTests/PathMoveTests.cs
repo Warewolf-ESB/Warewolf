@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ namespace Dev2.Tests.Activities.ActivityTests
     /// Summary description for DateTimeDifferenceTests
     /// </summary>
     [TestClass]
-    // ReSharper disable InconsistentNaming
+    
     public class PathMoveTests : BaseActivityUnitTest
     {
 #pragma warning disable 649
@@ -98,7 +98,7 @@ namespace Dev2.Tests.Activities.ActivityTests
             var inputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]].txt");
             var outputPath = string.Concat(TestContext.TestRunDirectory, "\\", newGuid + "[[CompanyName]]2.txt");
             var act = new DsfPathMove { InputPath = inputPath, OutputPath = outputPath, Result = "[[CompanyName]]" };
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var serialized = serializer.Serialize(act);
             //------------Execute Test---------------------------
             var deSerialized = serializer.Deserialize<DsfPathMove>(serialized);
@@ -242,12 +242,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestCategory("DsfPathMove_Execute")]
         public void Move_Execute_Workflow_SourceFile_And_DestinationFile_Has_Separate_Passwords_Both_Passwords_Are_Sent_To_OperationBroker()
         {
-            List<string> fileNames = new List<string>
+            var fileNames = new List<string>
             {
                 Path.Combine(TestContext.TestRunDirectory, "NewFileFolder\\Dev2.txt")
             };
 
-            List<string> directoryNames = new List<string>();
+            var directoryNames = new List<string>();
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder"));
             directoryNames.Add(Path.Combine(TestContext.TestRunDirectory, "NewFileFolder2"));
 
@@ -263,7 +263,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             var activityOperationBrokerMock = new ActivityOperationBrokerMock();
 
-            DsfPathMove act = new DsfPathMove
+            var act = new DsfPathMove
             {
                 InputPath = @"c:\OldFile.txt",
                 OutputPath = Path.Combine(TestContext.TestRunDirectory, "NewName.txt"),
@@ -275,11 +275,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 GetOperationBroker = () => activityOperationBrokerMock
             };
 
-            List<DebugItem> inRes;
-            List<DebugItem> outRes;
-
             CheckPathOperationActivityDebugInputOutput(act, ActivityStrings.DebugDataListShape,
-                                                       ActivityStrings.DebugDataListWithData, out inRes, out outRes);
+                                                       ActivityStrings.DebugDataListWithData, out List<DebugItem> inRes, out List<DebugItem> outRes);
 
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Password, "destPWord");
             Assert.AreEqual(activityOperationBrokerMock.Destination.IOPath.Username, "destUName");

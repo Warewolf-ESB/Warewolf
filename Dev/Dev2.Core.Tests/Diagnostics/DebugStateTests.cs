@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,9 +26,9 @@ namespace Dev2.Tests.Diagnostics
 
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Constructor_Expected_InitializesInputsAndOutputsAsEmptyLists()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugState();
 
@@ -205,9 +205,9 @@ namespace Dev2.Tests.Diagnostics
 
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Constructor_With_ByteReaderBase_Expected_InvokesByteReaderBase()
-        // ReSharper restore InconsistentNaming
+
         {
             var reader = new Mock<IByteReaderBase>();
             reader.Setup(w => w.ReadInt32()).Verifiable();
@@ -216,9 +216,9 @@ namespace Dev2.Tests.Diagnostics
             reader.Setup(w => w.ReadGuid()).Verifiable();
             reader.Setup(w => w.ReadDateTime()).Verifiable();
 
-            // ReSharper disable ObjectCreationAsStatement
+            
             new DebugState(reader.Object);
-            // ReSharper restore ObjectCreationAsStatement
+            
 
             reader.Verify(w => w.ReadInt32());
             reader.Verify(w => w.ReadString());
@@ -232,9 +232,9 @@ namespace Dev2.Tests.Diagnostics
         #region Write
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Write_With_ByteWriterBase_Expected_InvokesByteWriterBase()
-        // ReSharper restore InconsistentNaming
+
         {
             var debugState = new DebugState();
 
@@ -258,15 +258,15 @@ namespace Dev2.Tests.Diagnostics
         #region Serialization
 
         [TestMethod]
-        // ReSharper disable InconsistentNaming - Unit Test
+
         public void Serialized_Expected_CanBeDeserialized()
-        // ReSharper restore InconsistentNaming
+
         {
             var rw = new MockByteReaderWriter();
 
             var debugStateIn = DebugStateIn();
 
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Label, Value = "MyLabel" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Variable, Value = "[[MyVar]]" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 0, GroupName = "Group1", Type = DebugItemResultType.Value, Value = "MyValue" });
@@ -295,13 +295,13 @@ namespace Dev2.Tests.Diagnostics
 
         }
 
-        // ReSharper disable InconsistentNaming
+        
         [TestMethod]
         [Owner("Tshepo Ntlhokoa")]
         [TestCategory("DebugItem_Add")]
         public void DebugItem_Add_GroupIndexIsGreaterThan10_MoreLinkHasData()
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             itemToAdd.Add(new DebugItemResult { GroupIndex = 1, GroupName = "[[record(*).row]]", Label = "", Operator = "=", Value = "1", Type = DebugItemResultType.Variable, Variable = "[[record(1).row]]" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 2, GroupName = "[[record(*).row]]", Label = "", Operator = "=", Value = "2", Type = DebugItemResultType.Variable, Variable = "[[record(2).row]]" });
             itemToAdd.Add(new DebugItemResult { GroupIndex = 3, GroupName = "[[record(*).row]]", Label = "", Operator = "=", Value = "3", Type = DebugItemResultType.Variable, Variable = "[[record(3).row]]" });
@@ -336,7 +336,7 @@ namespace Dev2.Tests.Diagnostics
         public void JsonConverter_GivenStatetype_ShouldConvertToString()
         {
             //---------------Set up test pack-------------------
-            DebugState debugState = new DebugState() { StateType = StateType.End };
+            var debugState = new DebugState() { StateType = StateType.End };
             //---------------Assert Precondition----------------
             Assert.IsFalse(debugState.IsAdded);
             //---------------Execute Test ----------------------

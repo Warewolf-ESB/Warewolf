@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,17 +32,21 @@ namespace Warewolf.Tools.Specs.BaseTypes
     [Binding]
     public abstract class RecordSetBases : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public RecordSetBases(ScenarioContext scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException("scenarioContext");
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException("scenarioContext");
+            }
+
             this.scenarioContext = scenarioContext;
             _commonSteps = new CommonSteps(this.scenarioContext);
         }
 
         protected const string ResultVariable = "[[result]]";
-        private readonly CommonSteps _commonSteps;
+        readonly CommonSteps _commonSteps;
 
         protected abstract void BuildDataList();
 
@@ -63,11 +67,10 @@ namespace Warewolf.Tools.Specs.BaseTypes
             var dataListViewModel = new DataListViewModel();
             dataListViewModel.InitializeDataListViewModel(new ResourceModel(null));
             DataListSingleton.SetDataList(dataListViewModel);
-            // ReSharper disable NotAccessedVariable
-            int row = 0;
-            dynamic variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
-            if(variableList != null)
+            
+            var row = 0;
+            scenarioContext.TryGetValue("variableList", out dynamic variableList);
+            if (variableList != null)
             {
                 try
                 {
@@ -121,16 +124,15 @@ namespace Warewolf.Tools.Specs.BaseTypes
                     }
                     DataListSingleton.ActiveDataList.WriteToResourceModel();
                 }
-                    // ReSharper disable EmptyGeneralCatchClause
+                    
                 catch
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                 {
                     
                 }
             }
 
-            List<Tuple<string, string>> emptyRecordset;
-            bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
+            var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)
@@ -139,8 +141,7 @@ namespace Warewolf.Tools.Specs.BaseTypes
                 }
             }
 
-            dynamic objList;
-            scenarioContext.TryGetValue("objList", out objList);
+            scenarioContext.TryGetValue("objList", out dynamic objList);
             if (objList != null)
             {
                 try
@@ -161,9 +162,9 @@ namespace Warewolf.Tools.Specs.BaseTypes
                         }
                     }
                 }
-                // ReSharper disable EmptyGeneralCatchClause
+                
                 catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
                 {
 
                 }
@@ -181,8 +182,8 @@ namespace Warewolf.Tools.Specs.BaseTypes
 
         protected string ReadFile(string resourceName)
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            using(Stream stream = assembly.GetManifestResourceStream(resourceName))
+            var assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(resourceName))
             {
                 if(stream == null)
                 {

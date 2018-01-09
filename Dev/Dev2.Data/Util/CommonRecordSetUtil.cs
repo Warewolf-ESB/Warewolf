@@ -3,23 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using Dev2.Data.Interfaces;
 using Dev2.Data.Interfaces.Enums;
-using Dev2.Data.Parsers;
 using Dev2.DataList.Contract;
 
 namespace Dev2.Data.Util
 {
-    internal class CommonRecordSetUtil : ICommonRecordSetUtil
+    class CommonRecordSetUtil : ICommonRecordSetUtil
     {
-        private Dev2DataLanguageParser _dev2DataLanguageParser;
         const string EmptyBrackets = "()";
-        public CommonRecordSetUtil()
-        {
-
-        }
-        public CommonRecordSetUtil(Dev2DataLanguageParser dev2DataLanguageParser)
-        {
-            _dev2DataLanguageParser = dev2DataLanguageParser;
-        }
         #region Implementation of ICommonRecordSetUtil
 
         public string ReplaceRecordBlankWithStar(string fullRecSetName)
@@ -73,9 +63,9 @@ namespace Dev2.Data.Util
 
         public enRecordsetIndexType GetRecordsetIndexType(string expression)
         {
-            enRecordsetIndexType result = enRecordsetIndexType.Error;
+            var result = enRecordsetIndexType.Error;
 
-            string idx = ExtractIndexRegionFromRecordset(expression);
+            var idx = ExtractIndexRegionFromRecordset(expression);
             if (idx == "*")
             {
                 result = enRecordsetIndexType.Star;
@@ -86,8 +76,7 @@ namespace Dev2.Data.Util
             }
             else
             {
-                int convertIntTest;
-                if (Int32.TryParse(idx, out convertIntTest))
+                if (Int32.TryParse(idx, out int convertIntTest))
                 {
                     result = enRecordsetIndexType.Numeric;
                 }
@@ -108,12 +97,12 @@ namespace Dev2.Data.Util
 
         public string ExtractIndexRegionFromRecordset(string rs)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
-            int start = rs.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var start = rs.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             if (start > 0)
             {
-                int end = rs.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
+                var end = rs.LastIndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
                 if (end < 0)
                 {
                     end = rs.Length;
@@ -135,7 +124,7 @@ namespace Dev2.Data.Util
                 inject = "(*)";
             }
 
-            string result = DataListUtil.StripBracketsFromValue(value);
+            var result = DataListUtil.StripBracketsFromValue(value);
 
             if (result.EndsWith(DataListUtil.RecordsetIndexOpeningBracket))
             {
@@ -145,18 +134,21 @@ namespace Dev2.Data.Util
             {
                 return result.Replace(DataListUtil.RecordsetIndexClosingBracket, inject);
             }
-            else if (!result.EndsWith(EmptyBrackets))
+            else
             {
-                result = string.Concat(result, inject);
+                if (!result.EndsWith(EmptyBrackets))
+                {
+                    result = string.Concat(result, inject);
+                }
             }
             return result;
         }
 
         public string ExtractFieldNameOnlyFromValue(string value)
         {
-            string result = string.Empty;
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
-            int closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
+            var result = string.Empty;
+            var dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
+            var closeIdx = value.Contains("]]") ? value.LastIndexOf("]]", StringComparison.Ordinal) : value.Length;
             if (dotIdx > 0)
             {
                 result = value.Substring(dotIdx + 1, closeIdx - dotIdx - 1);
@@ -167,9 +159,9 @@ namespace Dev2.Data.Util
 
         public string ExtractFieldNameFromValue(string value)
         {
-            string result = string.Empty;
+            var result = string.Empty;
             value = DataListUtil.StripBracketsFromValue(value);
-            int dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
+            var dotIdx = value.LastIndexOf(".", StringComparison.Ordinal);
             if (dotIdx > 0)
             {
                 result = value.Substring(dotIdx + 1);
@@ -186,9 +178,9 @@ namespace Dev2.Data.Util
             }
 
             value = DataListUtil.StripBracketsFromValue(value);
-            string result = string.Empty;
+            var result = string.Empty;
 
-            int openBracket = value.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+            var openBracket = value.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             if (openBracket > 0)
             {
                 result = value.Substring(0, openBracket);
@@ -204,7 +196,7 @@ namespace Dev2.Data.Util
 
         public bool IsValueRecordset(string value)
         {
-            bool result = false;
+            var result = false;
 
             if (!string.IsNullOrEmpty(value))
             {
@@ -226,7 +218,7 @@ namespace Dev2.Data.Util
                 return expression;
             }
 
-            string extractIndexRegionFromRecordset = $"({index})";
+            var extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
                                         expression.Replace(extractIndexRegionFromRecordset, "(*)");
         }
@@ -236,13 +228,18 @@ namespace Dev2.Data.Util
             var firstOpenBracket = expression.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
             var firstCloseBracket = expression.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);            
             if (firstOpenBracket > firstCloseBracket)
+            {
                 return EmptyBrackets;
+            }
+
             var index = ExtractIndexRegionFromRecordset(expression);
 
             if (string.IsNullOrEmpty(index))
+            {
                 return expression;
+            }
 
-            string extractIndexRegionFromRecordset = $"({index})";
+            var extractIndexRegionFromRecordset = $"({index})";
             return string.IsNullOrEmpty(extractIndexRegionFromRecordset) ? expression :
                                         expression.Replace(extractIndexRegionFromRecordset, EmptyBrackets);
         }
@@ -252,7 +249,7 @@ namespace Dev2.Data.Util
             if (search.Contains(DataListUtil.RecordsetIndexOpeningBracket))
             {
                 isRs = true;
-                int pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
+                var pos = search.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                 search = search.Substring(0, search.Length - (search.Length - pos));
             }
             return search;
@@ -288,21 +285,14 @@ namespace Dev2.Data.Util
         {
             if (payload.Parent != null && payload.Parent.Payload.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal) >= 0)
             {
-                IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description + " / Use row at this index");
+                var part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description + " / Use row at this index");
 
                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
             }
             else
             {
                 IDataListVerifyPart part;
-                if (t1.Name.Contains('(') && t1.Name.Contains(')'))
-                {
-                    part = IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true);
-                }
-                else
-                {
-                    part = IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
-                }
+                part = t1.Name.Contains('(') && t1.Name.Contains(')') ? IntellisenseFactory.CreateDataListValidationRecordsetPart(string.Empty, t1.Name, true) : IntellisenseFactory.CreateDataListValidationScalarPart(t1.Name, t1.Description);
 
                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
             }
@@ -313,25 +303,17 @@ namespace Dev2.Data.Util
             // only process if it is an open region
             // we need to add all children
             string idx;
-            if (!payload.IsLeaf && !payload.Child.HangingOpen)
-            {
-                idx = DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets;
-            }
-            else
-            {
-                // we need to extract the index
-                idx = DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
-            }
+            idx = !payload.IsLeaf && !payload.Child.HangingOpen ? DataListUtil.OpeningSquareBrackets + payload.Child.Payload + DataListUtil.ClosingSquareBrackets : DataListUtil.ExtractIndexRegionFromRecordset(rawSearch);
             // add general closed recordset
-            string rsName = search;
+            var rsName = search;
             if (idx == string.Empty)
             {
                 rsName = payload.Payload;
             }
-            IDataListVerifyPart part = IntellisenseFactory.CreateDataListValidationRecordsetPart(rsName, "", t1.Description + " / Select a specific row", idx);
+            var part = IntellisenseFactory.CreateDataListValidationRecordsetPart(rsName, "", t1.Description + " / Select a specific row", idx);
             result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, part, part.Description));
 
-            IList<IDev2DataLanguageIntellisensePart> children = t1.Children;
+            var children = t1.Children;
             if (children != null)
             {
                 foreach (IDev2DataLanguageIntellisensePart t in children)
@@ -346,10 +328,10 @@ namespace Dev2.Data.Util
         {
             if (addCompleteParts)
             {
-                string idx = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
-                string recset = DataListUtil.ExtractRecordsetNameFromValue(parts[0]);
+                var idx = DataListUtil.ExtractIndexRegionFromRecordset(parts[0]);
+                var recset = DataListUtil.ExtractRecordsetNameFromValue(parts[0]);
 
-                IDataListVerifyPart p = IntellisenseFactory.CreateDataListValidationRecordsetPart(recset, string.Empty, t1.Description, payload.Child != null ? payload.Child.Payload : idx);
+                var p = IntellisenseFactory.CreateDataListValidationRecordsetPart(recset, string.Empty, t1.Description, payload.Child != null ? payload.Child.Payload : idx);
 
                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, p, p.Description));
             }
@@ -378,8 +360,8 @@ namespace Dev2.Data.Util
         {
             if (payload.Child != null)
             {
-                string indx = payload.Child.Payload;
-                int end = indx.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
+                var indx = payload.Child.Payload;
+                var end = indx.IndexOf(DataListUtil.RecordsetIndexClosingBracket, StringComparison.Ordinal);
                 if (end > 0)
                 {
                     // malformed index -- correct it
@@ -388,21 +370,21 @@ namespace Dev2.Data.Util
 
                 indx = DataListUtil.AddBracketsToValueIfNotExist(indx);
 
-                string rs = payload.Payload;
+                var rs = payload.Payload;
                 end = rs.IndexOf(DataListUtil.RecordsetIndexOpeningBracket, StringComparison.Ordinal);
                 if (end > 0)
                 {
                     rs = rs.Substring(0, end);
                 }
 
-                IDataListVerifyPart prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, "", " / Select a specific row", indx);
+                var prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, "", " / Select a specific row", indx);
 
                 result.Add(IntellisenseFactory.CreateSelectableResult(payload.StartIndex, payload.EndIndex, prt, prt.Description));
 
                 // now add all fields to collection too ;)
                 if (t1.Children != null)
                 {
-                    IList<IDev2DataLanguageIntellisensePart> cParts = t1.Children;
+                    var cParts = t1.Children;
                     foreach (IDev2DataLanguageIntellisensePart t in cParts)
                     {
                         prt = IntellisenseFactory.CreateDataListValidationRecordsetPart(rs, t.Name, " / Select a specific row", indx);

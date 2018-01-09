@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,21 +14,21 @@ using Dev2.Common.Interfaces.Core.Convertors.Base;
 
 namespace Dev2.Converters
 {
-    internal class Dev2Base64Converter : IBaseConverter
+    class Dev2Base64Converter : IBaseConverter
     {
         public bool IsType(string payload)
         {
-            bool result = false;
+            var result = false;
             try
             {
-                // ReSharper disable ReturnValueOfPureMethodIsNotUsed
+                
                 Convert.FromBase64String(payload);
-                // ReSharper restore ReturnValueOfPureMethodIsNotUsed
+                
                 result = true;
             }
-                // ReSharper disable EmptyGeneralCatchClause
+                
             catch
-                // ReSharper restore EmptyGeneralCatchClause
+                
             {
                 // if error is thrown we know it is not a valid base64 string
             }
@@ -43,8 +43,8 @@ namespace Dev2.Converters
 
         public byte[] NeutralizeToCommon(string payload)
         {
-            byte[] decoded = Convert.FromBase64String(payload);
-            string tmp = Encoding.UTF8.GetString(decoded);
+            var decoded = Convert.FromBase64String(payload);
+            var tmp = Encoding.UTF8.GetString(decoded);
 
             var encoder = new UTF8Encoding();
             return encoder.GetBytes(tmp);

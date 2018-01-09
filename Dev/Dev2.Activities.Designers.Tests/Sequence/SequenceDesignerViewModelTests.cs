@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 
-// ReSharper disable InconsistentNaming
+
 namespace Dev2.Activities.Designers.Tests.Sequence
 {
     [TestClass]
@@ -207,7 +207,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -226,7 +226,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new System.Activities.Statements.Sequence());
+            var modelItem = ModelItemUtils.CreateModelItem(new System.Activities.Statements.Sequence());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -264,26 +264,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfPluginActivity());
-            //------------Execute Test---------------------------
-            sequenceDesignerViewModel.SmallViewItem = modelItem;
-            //------------Assert Results-------------------------
-            Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
-        }
-
-        [TestMethod]
-        [Owner("Hagashen Naidu")]
-        [TestCategory("SequenceDesignerViewModel_SetSmallViewItem")]
-        public void SequenceDesignerViewModel_SetSmallViewItem_WhenModelItemDsfWebserviceActivity_ActivityNotAdded()
-        {
-            //------------Setup for test--------------------------
-            var dsfSequenceActivity = new DsfSequenceActivity();
-            var dsfMultiAssignActivity = new DsfMultiAssignActivity();
-            dsfSequenceActivity.Activities.Add(dsfMultiAssignActivity);
-            var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
-            dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
-            var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfWebserviceActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfPluginActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -302,7 +283,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dsfFindRecordsMultipleCriteriaActivity = new DsfFindRecordsMultipleCriteriaActivity();
             dsfSequenceActivity.Activities.Add(dsfFindRecordsMultipleCriteriaActivity);
             var sequenceDesignerViewModel = new SequenceDesignerViewModel(CreateModelItem(dsfSequenceActivity));
-            ModelItem modelItem = ModelItemUtils.CreateModelItem(new DsfDatabaseActivity());
+            var modelItem = ModelItemUtils.CreateModelItem(new DsfDatabaseActivity());
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SmallViewItem = modelItem;
             //------------Assert Results-------------------------
@@ -324,7 +305,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dataObjectMock = new Mock<IDataObject>();
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new string[] { });
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(doDrop);
             Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
@@ -346,7 +327,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "Something Else" });
             dataObjectMock.Setup(o => o.GetData("Something Else")).Returns(ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()));
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(doDrop);
             Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
@@ -368,7 +349,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
             dataObjectMock.Setup(o => o.GetData("ModelItemsFormat")).Returns(new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()), ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()) });
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(4, dsfSequenceActivity.Activities.Count);
@@ -390,7 +371,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
             dataObjectMock.Setup(o => o.GetData("ModelItemsFormat")).Returns(new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()) });
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
@@ -427,7 +408,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
+            var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
         }
 
@@ -445,7 +426,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
+            var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
         }
 
@@ -463,7 +444,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
+            var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
         }
 

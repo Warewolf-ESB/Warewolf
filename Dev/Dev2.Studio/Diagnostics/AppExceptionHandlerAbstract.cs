@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,7 +12,7 @@ using System;
 using System.Text;
 using Dev2.Common;
 
-// ReSharper disable once CheckNamespace
+
 namespace Dev2.Studio.Diagnostics
 {
     public abstract class AppExceptionHandlerAbstract : IAppExceptionHandler
@@ -35,7 +35,7 @@ namespace Dev2.Studio.Diagnostics
             }
             try
             {
-                Dev2Logger.Error("Unhandled Exception" ,e);
+                Dev2Logger.Error("Unhandled Exception" ,e, "Warewolf Error");
                 _exception = e;
                 _busy = true;                
                 var popupController = CreatePopupController();
@@ -55,7 +55,7 @@ namespace Dev2.Studio.Diagnostics
                 }
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
                 ShutdownApp();
                 return false;

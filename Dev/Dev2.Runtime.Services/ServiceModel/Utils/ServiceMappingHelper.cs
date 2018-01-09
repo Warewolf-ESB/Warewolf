@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,10 +37,10 @@ namespace Dev2.Runtime.ServiceModel.Utils
             
             var rsFields = new List<RecordsetField>(theService.Recordset.Fields);
             #pragma warning disable 219
-            int recordsetIndex = 0;
-            #pragma warning restore 219
+            var recordsetIndex = 0;
+#pragma warning restore 219
 
-            foreach(var path in outputsToMap)
+            foreach (var path in outputsToMap)
             {
                 // Remove bogus names and dots
                 var name = path.DisplayPath.Replace("NewDataSet", "").Replace(".Table.", "").Replace("DocumentElement","");
@@ -51,7 +51,9 @@ namespace Dev2.Runtime.ServiceModel.Utils
                 {
                     name = name.Remove(0, idx + 2);
                     if (name.StartsWith("."))
+                    {
                         name = name.Substring(1);
+                    }
                 }
 
                 var field = new RecordsetField { Name = name, Alias = string.IsNullOrEmpty(path.OutputExpression) ? alias : path.OutputExpression, Path = path };
@@ -89,7 +91,7 @@ namespace Dev2.Runtime.ServiceModel.Utils
 
             var rsFields = new List<RecordsetField>(theService.Recordset.Fields);
 #pragma warning disable 219
-            int recordsetIndex = 0;
+            var recordsetIndex = 0;
 #pragma warning restore 219
 
             foreach (var path in outputsToMap)

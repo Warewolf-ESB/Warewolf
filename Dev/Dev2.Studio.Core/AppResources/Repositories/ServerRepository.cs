@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,18 +25,16 @@ using Dev2.Studio.Core.Models;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 
-// ReSharper disable CheckNamespace
+
 namespace Dev2.Studio.Core
 {
-
     public class ServerRepository : IServerRepository
     {
         static readonly List<IServer> EmptyList = new List<IServer>();
-
         static readonly object FileLock = new Object();
         static readonly object RestoreLock = new Object();
         protected List<IServer> Environments;
-        private bool _isDisposed;
+        bool _isDisposed;
 
         #region Singleton Instance
 
@@ -51,10 +49,7 @@ namespace Dev2.Studio.Core
         static volatile IServerRepository _instance;
 
         static readonly object SyncInstance = new Object();
-
-        /// <summary>
-        /// Gets the repository instance.
-        /// </summary>
+        
         public static IServerRepository Instance
         {
             get
@@ -77,27 +72,22 @@ namespace Dev2.Studio.Core
 
         #region CTOR
 
-        // Singleton instance only
         public ServerRepository()
-            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppSettings.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppSettings.LocalHost), StringResources.DefaultEnvironmentName))
+            : this(CreateEnvironmentModel(Guid.Empty, new Uri(string.IsNullOrEmpty(AppUsageStats.LocalHost) ? $"http://{Environment.MachineName.ToLowerInvariant()}:3142" : AppUsageStats.LocalHost), StringResources.DefaultEnvironmentName))
         {
         }
 
-        // Testing only!!!
         protected ServerRepository(IServer source)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException(nameof(source));
-            }
-            Source = source;
+            Source = source ?? throw new ArgumentNullException(nameof(source));
             Environments = new List<IServer> { Source };
         }
 
-        //For Testing Only!!!!!!!
         public ServerRepository(IServerRepository serverRepository)
         {
+#pragma warning disable S3010 // For testing
             _instance = serverRepository;
+#pragma warning restore S3010
         }
 
         #endregion
@@ -107,7 +97,6 @@ namespace Dev2.Studio.Core
 
         public IServer Source { get; private set; }
         public IServer ActiveServer { get; set; }
-
         public bool IsLoaded { get; set; }
 
         #region Clear
@@ -241,9 +230,9 @@ namespace Dev2.Studio.Core
 
                 var tryReadFile = File.Exists(path) ? File.ReadAllText(path) : null;
 
-                // ReSharper disable RedundantAssignment
+                
                 var xml = new XElement("Environments");
-                // ReSharper restore RedundantAssignment
+                
                 var result = new List<Guid>();
 
                 if (!string.IsNullOrEmpty(tryReadFile))
@@ -254,16 +243,17 @@ namespace Dev2.Studio.Core
                         var guids = xml.Descendants("Environment").Select(id => id.Value).ToList();
                         foreach (var guidStr in guids)
                         {
-                            Guid guid;
-                            if (Guid.TryParse(guidStr, out guid))
+                            if (Guid.TryParse(guidStr, out Guid guid))
                             {
                                 result.Add(guid);
                             }
                         }
+                    }                    
+                    catch (Exception e)
+                    {
+                        Dev2Logger.Warn(e.Message, "Warewolf Warn");
                     }
-                    // ReSharper disable EmptyGeneralCatchClause
-                    catch { }
-                    // ReSharper restore EmptyGeneralCatchClause
+                    
                 }
 
                 return result;
@@ -298,7 +288,7 @@ namespace Dev2.Studio.Core
             IServer environment = null;
             if (server != null)
             {
-                Guid id = server.EnvironmentID;
+                var id = server.EnvironmentID;
                 environment = Environments.FirstOrDefault(e => e.EnvironmentID == id) ?? CreateEnvironmentModel(id, server.Connection.AppServerUri, server.Connection.AuthenticationType, server.Connection.UserName, server.Connection.Password, server.Name);
             }
             return environment;
@@ -350,9 +340,9 @@ namespace Dev2.Studio.Core
                 }
                 var environments = LookupEnvironments(Source);
                 // Don't just clear and add, environments may be connected!!!
-                foreach (var newEnv in environments.Where(newEnv => !Environments.Contains(newEnv)))
+                foreach (var newEnv in environments.Where(newEnv => !ValidateIfEnvironmentExists(newEnv)))
                 {
-                    Environments.Add(newEnv);
+                    AddEnvironmentIfNotExist(newEnv);
                 }
                 foreach (var newEnv in environments.Where(newEnv => Environments.Contains(newEnv)))
                 {
@@ -361,10 +351,10 @@ namespace Dev2.Studio.Core
                     {
                         if (res.IsConnected)
                         {
-                            res.Disconnect();                            
+                            res.Disconnect();
                         }
                         Environments.Remove(res);
-                        Environments.Add(newEnv);
+                        AddEnvironmentIfNotExist(newEnv);
                     }
                 }
 
@@ -377,6 +367,19 @@ namespace Dev2.Studio.Core
 
                 IsLoaded = true;
             }
+        }
+
+        void AddEnvironmentIfNotExist(IServer newEnv)
+        {
+            if (!ValidateIfEnvironmentExists(newEnv))
+            {
+                Environments.Add(newEnv);
+            }
+        }
+
+        bool ValidateIfEnvironmentExists(IServer newEnv)
+        {
+            return Environments.Contains(newEnv);
         }
 
         protected virtual void LoadComplete()
@@ -430,17 +433,9 @@ namespace Dev2.Studio.Core
 
         #region LookupEnvironments
 
-        /// <summary>
-        /// Lookups the environments.
-        /// <remarks>
-        /// If <paramref name="environmentGuids"/> is <code>null</code> or empty then this returns all <see cref="enSourceType.Dev2Server"/> sources.
-        /// </remarks>
-        /// </summary>
-        /// <param name="defaultEnvironment">The default environment.</param>
-        /// <param name="environmentGuids">The environment guids to be queried; may be null.</param>
-        /// <returns></returns>
-        /// <exception cref="System.ArgumentNullException">defaultEnvironment</exception>
-        public IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids = null)
+        public IList<IServer> LookupEnvironments(IServer defaultEnvironment) => LookupEnvironments(defaultEnvironment, null);
+
+        public IList<IServer> LookupEnvironments(IServer defaultEnvironment, IList<string> environmentGuids)
         {
             if (defaultEnvironment == null)
             {
@@ -452,11 +447,11 @@ namespace Dev2.Studio.Core
             {
                 defaultEnvironment.Connect();
             }
-            // ReSharper disable EmptyGeneralCatchClause
+            
             catch (Exception err)
-            // ReSharper restore EmptyGeneralCatchClause
+            
             {
-                Dev2Logger.Info(err);
+                Dev2Logger.Info(err, "Warewolf Info");
                 //Swallow exception for localhost connection
             }
             if (!defaultEnvironment.IsConnected)
@@ -478,12 +473,11 @@ namespace Dev2.Studio.Core
                         #region Parse connection string values
 
                         // Let this use of strings go, payload should be under the LOH size limit if 85k bytes ;)
-                        XElement xe = XElement.Parse(payload.ToString());
+                        var xe = XElement.Parse(payload.ToString());
                         var conStr = xe.AttributeSafe("ConnectionString");
-                        Dictionary<string, string> connectionParams = ParseConnectionString(conStr);
+                        var connectionParams = ParseConnectionString(conStr);
 
-                        string tmp;
-                        if (!connectionParams.TryGetValue("AppServerUri", out tmp))
+                        if (!connectionParams.TryGetValue("AppServerUri", out string tmp))
                         {
                             continue;
                         }
@@ -493,7 +487,7 @@ namespace Dev2.Studio.Core
                         {
                             appServerUri = new Uri(tmp);
                         }
-                        catch
+                        catch (Exception ex)
                         {
                             continue;
                         }
@@ -502,8 +496,7 @@ namespace Dev2.Studio.Core
                         {
                             continue;
                         }
-                        int webServerPort;
-                        if (!int.TryParse(tmp, out webServerPort))
+                        if (!int.TryParse(tmp, out int webServerPort))
                         {
                             continue;
                         }
@@ -512,15 +505,12 @@ namespace Dev2.Studio.Core
                         {
                             tmp = "";
                         }
-                        AuthenticationType authenticationType;
-                        if (!Enum.TryParse(tmp, true, out authenticationType))
+                        if (!Enum.TryParse(tmp, true, out AuthenticationType authenticationType))
                         {
                             authenticationType = AuthenticationType.Windows;
                         }
-                        string userName;
-                        connectionParams.TryGetValue("UserName", out userName);
-                        string password;
-                        connectionParams.TryGetValue("Password", out password);
+                        connectionParams.TryGetValue("UserName", out string userName);
+                        connectionParams.TryGetValue("Password", out string password);
                         #endregion
 
                         var environment = CreateEnvironmentModel(env.ID, appServerUri, authenticationType, userName, password, env.DisplayName);
@@ -617,7 +607,7 @@ namespace Dev2.Studio.Core
 
         #region CreateEnvironmentModel
 
-        private static IServer CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
+        static IServer CreateEnvironmentModel(Guid id, Uri applicationServerUri, string alias)
         {
             var acutalWebServerUri = new Uri(applicationServerUri.ToString().ToUpper().Replace("localhost".ToUpper(), Environment.MachineName));
             var environmentConnection = new ServerProxy(acutalWebServerUri);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,8 +19,8 @@ namespace Dev2.TaskScheduler.Wrappers
 {
     public class Dev2TaskDefinition : IDev2TaskDefinition
     {
-        private readonly TaskDefinition _taskDefinition;
-        private readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
+        readonly TaskDefinition _taskDefinition;
+        readonly ITaskServiceConvertorFactory _taskServiceConvertorFactory;
 
         public Dev2TaskDefinition(ITaskServiceConvertorFactory taskServiceConvertorFactory,
             TaskDefinition taskDefinition)
@@ -53,14 +53,20 @@ namespace Dev2.TaskScheduler.Wrappers
             {
                 return false;
             }
-            if (Actions.First().ActionType != TaskActionType.Execute) return false;
-            IExecAction action = _taskServiceConvertorFactory.CreateExecAction(Actions.First());
+            if (Actions.First().ActionType != TaskActionType.Execute)
+            {
+                return false;
+            }
+
+            var action = _taskServiceConvertorFactory.CreateExecAction(Actions.First());
             if (action.Arguments != null)
             {
-                List<string> output =
+                var output =
                     action.Arguments.Split('"').Where(a => !String.IsNullOrEmpty(a.Trim())).ToList();
                 if (output.Count >3 || output.Count < 2 || !output.All(a => a.Contains(":")))
+                {
                     return false;
+                }
             }
 
 
@@ -88,6 +94,13 @@ namespace Dev2.TaskScheduler.Wrappers
         public void Dispose()
         {
             _taskDefinition.Dispose();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            // Cleanup
         }
 
         public TaskDefinition Instance => _taskDefinition;

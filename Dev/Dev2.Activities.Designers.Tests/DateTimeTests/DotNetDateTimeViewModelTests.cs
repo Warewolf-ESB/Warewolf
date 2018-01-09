@@ -1,0 +1,145 @@
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using System.Activities.Presentation.Model;
+using System.Collections.Generic;
+using Dev2.Common.Interfaces.Help;
+using Dev2.Studio.Interfaces;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
+using Moq.Protected;
+using Dev2.Studio.Core.Activities.Utils;
+using Unlimited.Applications.BusinessDesignStudio.Activities;
+using Dev2.Common;
+using Dev2.Activities.DateAndTime;
+
+namespace Dev2.Activities.Designers.Tests.DateTimeTests
+{
+    [TestClass]
+    public class DotNetDateTimeViewModelTests
+    {
+        [TestMethod]
+        public void DateTimeDesignerViewModel_ShouldSetInputFormat_WhenNoInputFormat()
+        {
+            var modelItem = CreateModelItem();
+            var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var po = new PrivateObject(viewModel);
+            Assert.AreEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
+        }
+
+        [TestMethod]
+        public void DateTimeDesignerViewModel_ShouldNotSetInputFormat_WhenInputFormat()
+        {
+            var modelItem = CreateModelItemWithInputFormat("yyyy-mm-dd");
+            var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var po = new PrivateObject(viewModel);
+            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
+            Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
+        }
+
+        [TestMethod]
+        public void DateTimeDesignerViewModel_ShouldSetOutputFormat_WhenNoInputFormat()
+        {
+            var modelItem = CreateModelItem();
+            var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var po = new PrivateObject(viewModel);
+            Assert.AreEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
+        }
+
+        [TestMethod]
+        public void DateTimeDesignerViewModel_ShouldNotSetOutputFormat_WhenOutputFormat()
+        {
+            var modelItem = CreateModelItemWithOutputFormat("yyyy-mm-dd");
+            var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var po = new PrivateObject(viewModel);
+            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
+            Assert.AreEqual("yyyy-mm-dd", po.GetProperty("OutputFormat"));
+        }
+
+        [TestMethod]
+        public void DateTimeDesignerViewModel_ShouldNotSetInputOrOutputFormat_WhenInputAndOutputFormat()
+        {
+            var modelItem = CreateModelItemWithInputOutputFormat("yyyy-mm-dd", "MM/dd/yyyy");
+            var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(modelItem);
+            var expectedDefaultFormat = GlobalConstants.Dev2DotNetDefaultDateTimeFormat;
+            var po = new PrivateObject(viewModel);
+            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("InputFormat"));
+            Assert.AreEqual("yyyy-mm-dd", po.GetProperty("InputFormat"));
+            Assert.AreNotEqual(expectedDefaultFormat, po.GetProperty("OutputFormat"));
+            Assert.AreEqual("MM/dd/yyyy", po.GetProperty("OutputFormat"));
+        }
+
+        [TestMethod]
+        [Owner("Pieter Terblanche")]
+        [TestCategory("DateTimeActivityViewModel_Handle")]
+        public void DateTimeActivityViewModel_UpdateHelp_ShouldCallToHelpViewMode()
+        {
+            //------------Setup for test--------------------------      
+            var expected = string.Empty;
+            const string TimeModifierAmountDisplay = "TimeModifierAmountDisplay";
+
+            var prop = new Mock<ModelProperty>();
+            var properties = new Dictionary<string, Mock<ModelProperty>>();
+            var propertyCollection = new Mock<ModelPropertyCollection>();
+            var mockModel = new Mock<ModelItem>();
+
+            prop.Setup(p => p.SetValue(expected)).Verifiable();
+            properties.Add(TimeModifierAmountDisplay, prop);
+            propertyCollection.Protected().Setup<ModelProperty>("Find", TimeModifierAmountDisplay, true).Returns(prop.Object);
+            mockModel.Setup(s => s.Properties).Returns(propertyCollection.Object);
+
+            var mockMainViewModel = new Mock<IShellViewModel>();
+            var mockHelpViewModel = new Mock<IHelpWindowViewModel>();
+            mockHelpViewModel.Setup(model => model.UpdateHelpText(It.IsAny<string>())).Verifiable();
+            mockMainViewModel.Setup(model => model.HelpViewModel).Returns(mockHelpViewModel.Object);
+            CustomContainer.Register(mockMainViewModel.Object);
+
+            var viewModel = new Dev2.Activities.Designers2.DateTimStandard.DateTimeDesignerViewModel(mockModel.Object) { SelectedTimeModifierType = expected };
+            //------------Execute Test---------------------------
+            viewModel.UpdateHelpDescriptor("help");
+            //------------Assert Results-------------------------
+            mockHelpViewModel.Verify(model => model.UpdateHelpText(It.IsAny<string>()), Times.Once());
+        }
+
+        static ModelItem CreateModelItem()
+        {
+            return ModelItemUtils.CreateModelItem(new DsfDotNetDateTimeActivity());
+        }
+
+        static ModelItem CreateModelItemWithInputFormat(string dateTimeFormat)
+        {
+            return ModelItemUtils.CreateModelItem(new DsfDotNetDateTimeActivity
+            {
+                InputFormat = dateTimeFormat
+            });
+        }
+
+        static ModelItem CreateModelItemWithOutputFormat(string dateTimeFormat)
+        {
+            return ModelItemUtils.CreateModelItem(new DsfDotNetDateTimeActivity
+            {
+                OutputFormat = dateTimeFormat
+            });
+        }
+
+        static ModelItem CreateModelItemWithInputOutputFormat(string inputDateTimeFormat, string outputDateTimeFormat)
+        {
+            return ModelItemUtils.CreateModelItem(new DsfDateTimeActivity
+            {
+                InputFormat = inputDateTimeFormat,
+                OutputFormat = outputDateTimeFormat
+            });
+        }
+    }
+}

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -127,7 +127,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             IIntellisenseProvider provider = new DefaultIntellisenseProvider();
 
-            switch(providerName.Trim())
+            switch (providerName.Trim())
             {
                 case "Calculate":
                     provider = new CalculateIntellisenseProvider();
@@ -139,6 +139,8 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
                     break;
                 case "DateTime":
                     provider = new DateTimeIntellisenseProvider();
+                    break;
+                default:
                     break;
             }
 
@@ -163,7 +165,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
             ScenarioContext.Current.Add("context", context);
 
-            IIntellisenseProvider provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
+            var provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
 
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => i.IsError);
@@ -193,16 +195,19 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [Given(@"the suggestion list as '(.*)'")]
         public void GivenTheSuggestionListAs(string p0)
         {
-            Dev2TrieSugggestionProvider provider = new Dev2TrieSugggestionProvider();
+            var provider = new Dev2TrieSugggestionProvider();
             provider.VariableList = new ObservableCollection<string>(ScenarioContext.Current["datalistOptions"] as IEnumerable<string>);
             var filterType = ScenarioContext.Current["filterType"] is enIntellisensePartType ? (enIntellisensePartType)ScenarioContext.Current["filterType"] : enIntellisensePartType.All;
-            int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
             var options = provider.GetSuggestions(ScenarioContext.Current["inputText"].ToString(), caretpos, true,filterType);
             var selected = p0.Split(new char[] { ',' });
              if(p0=="" && !options.Any())
-                 return;
-            bool all = true;
-            foreach(var a in selected)
+            {
+                return;
+            }
+
+            var all = true;
+            foreach (var a in selected)
             {
                 if(!String.IsNullOrEmpty(a)&& !options.Contains(a))
                 {
@@ -234,12 +239,12 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
 
             ScenarioContext.Current.Add("context", context);
 
-            IIntellisenseProvider provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
+            var provider = ScenarioContext.Current.Get<IIntellisenseProvider>("provider");
 
             var getResults = provider.GetIntellisenseResults(context);
             var actualist = getResults.Where(i => !i.IsError).Select(i => i.Name).ToArray();
             Assert.AreEqual(expectedList.Length, actualist.Length);
-            bool all = true;
+            var all = true;
             foreach (var a in expectedList)
             {
                 if (!String.IsNullOrEmpty(a) && !actualist.Contains(a))
@@ -256,11 +261,10 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         {
             var context = ScenarioContext.Current.Get<IntellisenseProviderContext>("context");
             string result;
-            bool isFileProvider;
 
-            if(ScenarioContext.Current.TryGetValue("isFileProvider", out isFileProvider))
+            if (ScenarioContext.Current.TryGetValue("isFileProvider", out bool isFileProvider))
             {
-                if(DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
+                if (DataListUtil.IsEvaluated(option) || string.IsNullOrEmpty(option))
                 {
                     result = new DefaultIntellisenseProvider().PerformResultInsertion(option, context);
                 }
@@ -281,9 +285,9 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         [When(@"I select the following string option '(.*)'")]
         public void WhenISelectTheFollowingStringOption(string option)
         { 
-            string originalText =ScenarioContext.Current["inputText"].ToString();
-             int caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
-            if(option=="")
+            var originalText =ScenarioContext.Current["inputText"].ToString();
+            var caretpos = int.Parse(ScenarioContext.Current["cursorIndex"].ToString());
+            if (option=="")
             {
                 ScenarioContext.Current["stringResult"] = new IntellisenseStringResult(originalText,caretpos) ;
                 return;
@@ -292,7 +296,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
             var options =ScenarioContext.Current["stringOptions"] as IEnumerable<string>;
             Assert.IsTrue(options.Contains(option));
            
-            IntellisenseStringResultBuilder builder = new IntellisenseStringResultBuilder();
+            var builder = new IntellisenseStringResultBuilder();
             var res = builder.Build(option,caretpos, originalText,originalText);
             ScenarioContext.Current["stringResult"] = res;
         }
@@ -315,7 +319,7 @@ namespace Dev2.Studio.Core.Specs.IntellisenseSpecs
         public void ThenTheResultTextShouldBeWithCaretPositionWillBe(string p0, int p1)
         {
            var res =  ScenarioContext.Current["stringResult"] as IIntellisenseStringResult;
-            // ReSharper disable once PossibleNullReferenceException
+            
             Assert.AreEqual(res.Result,p0);
             Assert.AreEqual(p1,res.CaretPosition);
         }

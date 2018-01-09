@@ -15,19 +15,17 @@ using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Core;
 using TechTalk.SpecFlow;
 using Warewolf.Core;
-using Dev2.Common.Interfaces.ToolBase;
 using Dev2.Studio.Interfaces;
-using Warewolf.Tools.Specs.Toolbox.Database;
 
 namespace Dev2.Activities.Specs.Toolbox.Resources
 {
     [Binding]
     public class ODBCServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I open workflow with ODBC connector")]
         public void GivenIOpenWorkflowWithODBC()
@@ -223,7 +221,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = ScenarioContext.Current.Get<ODBCDatabaseDesignerViewModel>("ViewModel");
-            int rowNum = 0;
+            var rowNum = 0;
             foreach (var row in table.Rows)
             {
                 var inputValue = row["Input"];
@@ -308,7 +306,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test ODBC Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel<ODBCDatabaseDesignerViewModel>();
             foreach (var row in table.Rows)
             {
@@ -327,7 +325,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             if (table.Rows.Count == 0)
             {
                 if (vm.OutputsRegion.Outputs != null)
+                {
                     Assert.AreEqual(vm.OutputsRegion.Outputs.Count, 0);
+                }
             }
             else
             {
@@ -347,7 +347,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             AssertAgainstOutputs(table, outputMappings);
         }
 
-        private static void CheckODBCToolTestInputs(Table table, ICollection<IServiceOutputMapping> inputs)
+        static void CheckODBCToolTestInputs(Table table, ICollection<IServiceOutputMapping> inputs)
         {
             Assert.IsNotNull(inputs);
             //TODO:Assert.AreEqual(table.Rows.Count, outputMappings.Count, "Wrong number of outputs in ODBC view model.");
@@ -368,7 +368,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
             }
         }
 
-        private static void AssertAgainstOutputs(Table table, ICollection<IServiceOutputMapping> outputs)
+        static void AssertAgainstOutputs(Table table, ICollection<IServiceOutputMapping> outputs)
         {
             if (table.Rows.Count == 0)
             {

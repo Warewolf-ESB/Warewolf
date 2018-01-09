@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls;
 using Dev2;
@@ -21,7 +20,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
     [Binding]
     public sealed class ServiceTestViewSteps
     {
-        private Mock<IContextualResourceModel> CreateMockResourceModel()
+        Mock<IContextualResourceModel> CreateMockResourceModel()
         {
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
@@ -34,7 +33,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
             return moqModel;
         }
 
-        private IContextualResourceModel CreateResourceModel(bool isConnected = true)
+        IContextualResourceModel CreateResourceModel(bool isConnected = true)
         {
             var moqModel = new Mock<IContextualResourceModel>();
             moqModel.SetupAllProperties();
@@ -49,7 +48,7 @@ namespace Warewolf.UIBindingTests.ServiceTestViewModel
         }
 
         [Given(@"I Open serviceTestview Then DesignSurface allow drop is false")]
-        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        
         public void GivenIOpenServiceTestviewThenDesignSurfaceAllowDropIsFalse()
         {
             Utils.SetupResourceDictionary();

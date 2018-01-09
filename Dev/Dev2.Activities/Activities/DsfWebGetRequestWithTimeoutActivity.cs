@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,13 +29,13 @@ using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
 
-// ReSharper disable MemberCanBePrivate.Global
-// ReSharper disable ParameterTypeCanBeEnumerable.Local
+
+
 
 namespace Dev2.Activities
 {
     [ToolDescriptorInfo("Utility-GetWebRequest", "Web Request", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_WebMethod_Get")]
-    public class DsfWebGetRequestWithTimeoutActivity : DsfActivityAbstract<string>
+    public class DsfWebGetRequestWithTimeoutActivity : DsfActivityAbstract<string>,IEquatable<DsfWebGetRequestWithTimeoutActivity>
     {
         IWebRequestInvoker _webRequestInvoker;
 
@@ -114,10 +114,10 @@ namespace Dev2.Activities
             InitializeDebug(dataObject);
             try
             {
-                allErrors.MergeErrors(errorsTo);
+                allErrors.MergeErrors(_errorsTo);
                 if (dataObject.IsDebugMode())
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Url, "URL", dataObject.Environment,update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -138,11 +138,10 @@ namespace Dev2.Activities
                     var headersEntries = new List<Tuple<string, string>>();
 
                     AddHeaderDebug(dataObject, update, headers, headersEntries);
-                    bool timeoutSecondsError = false;
+                    var timeoutSecondsError = false;
                     if (!string.IsNullOrEmpty(TimeOutText))
                     {
-                        int timeoutval;
-                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText,update)), out timeoutval))
+                        if (int.TryParse(CommonFunctions.evalResultToString(dataObject.Environment.Eval(TimeOutText, update)), out int timeoutval))
                         {
                             if (timeoutval < 0)
                             {
@@ -150,7 +149,9 @@ namespace Dev2.Activities
                                 timeoutSecondsError = true;
                             }
                             else
+                            {
                                 TimeoutSeconds = timeoutval;
+                            }
                         }
                         else
                         {
@@ -160,7 +161,7 @@ namespace Dev2.Activities
 
                         if (dataObject.IsDebugMode())
                         {
-                            DebugItem debugItem = new DebugItem();
+                            var debugItem = new DebugItem();
                             AddDebugItem(new DebugEvalResult(String.IsNullOrEmpty(TimeOutText) ? "100" : TimeOutText, "Time Out Seconds", dataObject.Environment, update), debugItem);
                             _debugInputs.Add(debugItem);
                         }
@@ -173,18 +174,19 @@ namespace Dev2.Activities
                             headersEntries, TimeoutSeconds == 0 ? Timeout.Infinite : TimeoutSeconds * 1000  // important to list the parameter name here to see the conversion from seconds to milliseconds
                             );
 
-                        allErrors.MergeErrors(errorsTo);
+                        allErrors.MergeErrors(_errorsTo);
                         PushResultsToDataList(Result, result, dataObject, update == 0 ? counter : update);
                         counter++;
                     }                    
                     else
+                    {
                         throw new ApplicationException("Execution aborted - see error messages.");
-
+                    }
                 }
             }
             catch (Exception e)
             {
-                Dev2Logger.Error("DSFWebGetRequest", e);
+                Dev2Logger.Error("DSFWebGetRequest", e, GlobalConstants.WarewolfError);
                 allErrors.AddError(e.Message);
             }
             finally
@@ -205,16 +207,16 @@ namespace Dev2.Activities
             }
         }
 
-        private void AddHeaderDebug(IDSFDataObject dataObject, int update, string[] headers, List<Tuple<string, string>> headersEntries)
+        void AddHeaderDebug(IDSFDataObject dataObject, int update, string[] headers, List<Tuple<string, string>> headersEntries)
         {
-            foreach(var header in headers)
+            foreach (var header in headers)
             {
                 var headerSegments = header.Split(':');
                 headersEntries.Add(new Tuple<string, string>(headerSegments[0], headerSegments[1]));
 
-                if(dataObject.IsDebugMode())
+                if (dataObject.IsDebugMode())
                 {
-                    DebugItem debugItem = new DebugItem();
+                    var debugItem = new DebugItem();
                     AddDebugItem(new DebugEvalResult(Headers, "Header", dataObject.Environment, update), debugItem);
                     _debugInputs.Add(debugItem);
                 }
@@ -307,5 +309,41 @@ namespace Dev2.Activities
 
         #endregion
         #endregion
+
+        public bool Equals(DsfWebGetRequestWithTimeoutActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && TimeoutSeconds == other.TimeoutSeconds 
+                && string.Equals(Method, other.Method) 
+                && string.Equals(TimeOutText, other.TimeOutText) 
+                && string.Equals(Url, other.Url) 
+                && string.Equals(Headers, other.Headers) 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebGetRequestWithTimeoutActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ TimeoutSeconds;
+                hashCode = (hashCode * 397) ^ (Method != null ? Method.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TimeOutText != null ? TimeOutText.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Url != null ? Url.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

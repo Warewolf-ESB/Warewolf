@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,7 +21,7 @@ namespace System.Windows.Controls
     /// utilities in a small enough number to not warrant a dedicated extension
     /// methods class.
     /// </summary>
-    internal static class Extensions
+    static class Extensions
     {
         /// <summary>
         /// An implementation of the Contains member of string that takes in a 

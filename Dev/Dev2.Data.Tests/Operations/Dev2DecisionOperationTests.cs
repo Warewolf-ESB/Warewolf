@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -10,6 +10,7 @@
 
 using Dev2.Data.Decisions.Operations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace Dev2.Data.Tests.Operations
 {
@@ -24,9 +25,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThan with an array of strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsLessThan_IsLessThanUnitTest_Invoke_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsLessThan();
@@ -63,9 +64,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThan with an array of strings that can be parsed to integers, false is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsLessThan_IsLessThanUnitTest_Invoke_FalseIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsLessThan();
@@ -81,9 +82,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThan with an array of strings that can be parsed to decimals, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsLessThan_IsLessThanUnitTest_InvokeWithDecimals_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsLessThan();
@@ -103,9 +104,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThan with an array of strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsGreaterThan_IsGreaterThanUnitTest_Invoke_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsGreaterThan();
@@ -121,9 +122,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThan with an array of strings that can be parsed to integers, false is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsGreaterThan_IsGreaterThanUnitTest_Invoke_FalseIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsGreaterThan();
@@ -166,9 +167,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_InvokeWithEqualStrings_TrueIsReturned()
-            // ReSharper restore InconsistentNaming
+    
         {
             //init
             var comparer = new IsGreaterThanOrEqual();
@@ -184,9 +185,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThanOrEqual with an array of equal strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_TrueIsReturned()
-            // ReSharper restore InconsistentNaming
+    
         {
             //init
             var comparer = new IsGreaterThanOrEqual();
@@ -211,9 +212,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsGreaterThanOrEqual with an array of strings that can be parsed to integers, false is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsGreaterThanOrEqual_IsGreaterThanOrEqualUnitTest_Invoke_FalseIsReturned()
-            // ReSharper restore InconsistentNaming
+    
         {
             //init
             var comparer = new IsGreaterThanOrEqual();
@@ -247,9 +248,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsLessThanOrEqual_IsLessThanOrEqualUnitTest_Invoke_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsLessThanOrEqual();
@@ -265,9 +266,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of equal strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsLessThanOrEqual_IsLessThanOrEqualUnitTest_InvokeWithEqualStrings_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsLessThanOrEqual();
@@ -304,9 +305,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, false is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsLessThanOrEqual_IsLessThanOrEqualUnitTest_Invoke_FalseIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsLessThanOrEqual();
@@ -320,26 +321,24 @@ namespace Dev2.Data.Tests.Operations
 
 
         #endregion
-
-     
-
+        
         #region NotBetween
 
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("NotBetween_Invoke")]
-        public void NotBetween_Invoke_IsBetween_ReturnsFalse()
+        public void NotBetween_Invoke_NotBetween_ReturnsFalse()
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
-            string[] cols = new string[3];
+            var cols = new string[3];
             cols[0] = "15";
             cols[1] = "10";
             cols[2] = "20";
 
             //------------Execute Test---------------------------
 
-            bool result = notBetween.Invoke(cols);
+            var result = notBetween.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
@@ -352,14 +351,14 @@ namespace Dev2.Data.Tests.Operations
         {
             //------------Setup for test--------------------------
             var notBetween = new NotBetween();
-            string[] cols = new string[3];
+            var cols = new string[3];
             cols[0] = "30";
             cols[1] = "10";
             cols[2] = "20";
 
             //------------Execute Test---------------------------
 
-            bool result = notBetween.Invoke(cols);
+            var result = notBetween.Invoke(cols);
 
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
@@ -386,9 +385,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsEqual_IsEqualUnitTest_Invoke_TrueIsReturned()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsEqual();
@@ -404,9 +403,9 @@ namespace Dev2.Data.Tests.Operations
         [TestCategory("UnitTest")]
         [Description("Test for invoking IsLessThanOrEqual with an array of strings that can be parsed to integers, true is expected")]
         [Owner("Ashley Lewis")]
-        // ReSharper disable InconsistentNaming
+        
         public void IsEqual_IsEqualUnitTest_Invoke_TrueIsReturned_Decimal()
-        // ReSharper restore InconsistentNaming
+
         {
             //init
             var comparer = new IsEqual();
@@ -458,7 +457,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         [Owner("Sanele Mthembu")]        
         public void IsNotEqual_IsNotEqualUnitTest_Invoke_TrueIsReturned_Decimal()
-        // ReSharper restore InconsistentNaming
+
         {            
             var comparer = new IsNotEqual();
             var actual = comparer.Invoke(new[] { "1.08", "1.80" });
@@ -481,6 +480,52 @@ namespace Dev2.Data.Tests.Operations
             Assert.AreEqual(decisionType, isNotEqual.HandlesType());
         }
 
+
+        #endregion
+
+        #endregion
+
+        #region Comparing DateTimes
+
+        #region NotBetween
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("NotBetween_Invoke")]
+        public void NotBetween_InvokeWithDoubles_NotBetween_ReturnsFalse()
+        {
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            var cols = new String[3];
+            cols[0] = DateTime.Now.ToString();
+            cols[1] = (DateTime.Now - TimeSpan.FromMinutes(5)).ToString();
+            cols[2] = (DateTime.Now + TimeSpan.FromMinutes(10)).ToString();
+
+            //------------Execute Test---------------------------
+            var result = notBetween.Invoke(cols);
+
+            //------------Assert Results-------------------------
+            Assert.IsFalse(result);
+        }
+
+        [TestMethod]
+        [Owner("Ashley Lewis")]
+        [TestCategory("NotBetween_Invoke")]
+        public void NotBetween_InvokeWithDoubles_NotBetween_ReturnsTrue()
+        {
+            //------------Setup for test--------------------------
+            var notBetween = new NotBetween();
+            var cols = new string[3];
+            cols[0] = "30.0";
+            cols[1] = "10.0";
+            cols[2] = "20.0";
+
+            //------------Execute Test---------------------------
+            var result = notBetween.Invoke(cols);
+
+            //------------Assert Results-------------------------
+            Assert.IsTrue(result);
+        }
 
         #endregion
 

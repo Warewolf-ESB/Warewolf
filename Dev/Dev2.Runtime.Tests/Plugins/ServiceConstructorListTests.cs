@@ -2,7 +2,7 @@
 using Dev2.Communication;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Tests.Runtime.Plugins
 {
@@ -14,14 +14,14 @@ namespace Dev2.Tests.Runtime.Plugins
         public void ToString_GivenIsNotNull_ShouldJsonFormat()
         {
             //---------------Set up test pack-------------------
-            ServiceConstructorList constructorList = new ServiceConstructorList();
+            var constructorList = new ServiceConstructorList();
             //---------------Assert Precondition----------------
             Assert.IsNotNull(constructorList);
             //---------------Execute Test ----------------------
             Assert.IsInstanceOfType(constructorList, typeof(List<ServiceConstructor>));
             //---------------Test Result -----------------------
             var s = constructorList.ToString();
-            Dev2JsonSerializer dev2JsonSerializer = new Dev2JsonSerializer();
+            var dev2JsonSerializer = new Dev2JsonSerializer();
             var serialize = dev2JsonSerializer.Serialize(s);
             Assert.IsTrue(!string.IsNullOrEmpty(serialize));
         }

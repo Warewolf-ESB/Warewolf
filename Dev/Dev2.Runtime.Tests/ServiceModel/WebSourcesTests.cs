@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,12 +13,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Dev2.Common;
-using Dev2.Common.Interfaces;
-using Dev2.Data.TO;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Runtime.ServiceModel.Data;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
 
 namespace Dev2.Tests.Runtime.ServiceModel
 {
@@ -26,7 +23,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
     [TestClass]
     public class WebSourcesTests
     {
-        // ReSharper disable InconsistentNaming
+        
         #region CTOR
 
         [TestMethod]
@@ -34,9 +31,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void WebSourcesConstructorWithNullResourceCatalogExpectedThrowsArgumentNullException()
         {
 #pragma warning disable 168
-            // ReSharper disable UnusedVariable
+            
             var handler = new WebSources(null);
-            // ReSharper restore UnusedVariable
+            
 #pragma warning restore 168
         }
 
@@ -67,7 +64,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
 
-            WebSources.EnsureWebClient(source, new List<string>());
+            WebSources.CreateWebClient(source, new List<string>());
 
             var client = source.Client;
             var agent = client.Headers["user-agent"];
@@ -79,7 +76,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.Anonymous };
 
-            WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
+            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
             var agent = client.Headers["user-agent"];
@@ -95,14 +92,14 @@ namespace Dev2.Tests.Runtime.ServiceModel
         {
             var source = new WebSource { Address = "www.foo.bar", AuthenticationType = AuthenticationType.User, UserName = "User", Password = "pwd" };
 
-            WebSources.EnsureWebClient(source, new List<string> { "a:x", "b:e" });
+            WebSources.CreateWebClient(source, new List<string> { "a:x", "b:e" });
 
             var client = source.Client;
-            // ReSharper disable PossibleNullReferenceException
+            
             Assert.IsTrue((client.Credentials as NetworkCredential).UserName == "User");
 
             Assert.IsTrue((client.Credentials as NetworkCredential).Password == "pwd");
-            // ReSharper restore PossibleNullReferenceException
+            
         }
 
         #endregion

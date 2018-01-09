@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,21 +24,24 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
     [Binding]
     public class DeleteSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DeleteSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
         {
-            if (scenarioContext == null) throw new ArgumentNullException(nameof(scenarioContext));
+            if (scenarioContext == null)
+            {
+                throw new ArgumentNullException(nameof(scenarioContext));
+            }
+
             this.scenarioContext = scenarioContext;
         }
 
         protected override void BuildDataList()
         {
-            List<Tuple<string, string>> variableList;
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-            if(variableList == null)
+            if (variableList == null)
             {
                 variableList = new List<Tuple<string, string>>();
                 scenarioContext.Add("variableList", variableList);
@@ -48,18 +51,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
             BuildShapeAndTestData();
 
             var recordset = scenarioContext.Get<string>("recordset");
-            bool treaNullAsZero;
-            scenarioContext.TryGetValue("treaNullAsZero", out treaNullAsZero);
-            DsfActivityAbstract<string> delete;
-            scenarioContext.TryGetValue("activityMode", out delete);
+            scenarioContext.TryGetValue("treaNullAsZero", out bool treaNullAsZero);
+            scenarioContext.TryGetValue("activityMode", out DsfActivityAbstract<string> delete);
             if (delete != null)
-               
-            delete = new DsfDeleteRecordNullHandlerActivity
+            {
+                delete = new DsfDeleteRecordNullHandlerActivity
             {
                 RecordsetName = recordset,
                 Result = ResultVariable,
                 TreatNullAsZero = treaNullAsZero
             };
+            }
             else
             {
                 delete = new DsfDeleteRecordActivity
@@ -79,17 +81,16 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I have the following recordset")]
         public void GivenIHaveTheFollowingRecordset(Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
-            if(tableRows.Count == 0)
+            if (tableRows.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
-                List<Tuple<string, string>> emptyRecordset;
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out emptyRecordset);
-                if(!isAdded)
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
                     scenarioContext.Add("rs", emptyRecordset);
@@ -99,10 +100,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
 
             foreach(TableRow t in tableRows)
             {
-                List<Tuple<string, string>> variableList;
-                scenarioContext.TryGetValue("variableList", out variableList);
+                scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
-                if(variableList == null)
+                if (variableList == null)
                 {
                     variableList = new List<Tuple<string, string>>();
                     scenarioContext.Add("variableList", variableList);
@@ -114,9 +114,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"an index ""(.*)"" exists with a value ""(.*)""")]
         public void GivenAnIndexExistsWithAValue(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if(variableList == null)
             {
@@ -129,9 +128,8 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Given(@"I have a delete variable ""(.*)"" equal to ""(.*)""")]
         public void GivenIHaveADeleteVariableEqualTo(string variable, string value)
         {
-            List<Tuple<string, string>> variableList;
             value = value.Replace('"', ' ').Trim();
-            scenarioContext.TryGetValue("variableList", out variableList);
+            scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
             if(variableList == null)
             {
@@ -146,19 +144,17 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         public void WhenTheDeleteToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
         [Then(@"the delete result should be ""(.*)""")]
         public void ThenTheDeleteResultShouldBe(string expectedResult)
         {
-            string error;
-            string actualValue;
             expectedResult = expectedResult.Replace('"', ' ').Trim();
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
-                                       out actualValue, out error);
+                                       out string actualValue, out string error);
             //if(string.IsNullOrEmpty(expectedResult))
             //{
             //    expectedResult = null;
@@ -169,14 +165,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.Recordset
         [Then(@"the recordset ""(.*)"" will be as follows")]
         public void ThenTheRecordsetWillBeAsFollows(string recordset, Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
 
             var recordSets = DataObject.Environment.Eval(recordset, 0);
             if (recordSets.IsWarewolfAtomListresult)
             {
-                // ReSharper disable PossibleNullReferenceException
+                
                 var recordSetValues = (recordSets as CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult).Item.ToList();
-                // ReSharper restore PossibleNullReferenceException
+                
                 Assert.AreEqual<int>(tableRows.Count, recordSetValues.Count);
 
                 for (int i = 0; i < tableRows.Count; i++)

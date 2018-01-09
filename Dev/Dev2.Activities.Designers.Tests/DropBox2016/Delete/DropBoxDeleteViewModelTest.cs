@@ -13,14 +13,14 @@ using Dev2.Studio.Core.Activities.Utils;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
-// ReSharper disable InconsistentNaming
+
 
 namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
 {
     [TestClass]
     public class DropBoxDeleteViewModelTest
     {
-        private DropBoxDeleteViewModel CreateMockViewModel()
+        DropBoxDeleteViewModel CreateMockViewModel()
         {
             var dropBoxSourceManager = new Mock<IDropboxSourceManager>();
             var agg = new Mock<IEventAggregator>();
@@ -28,7 +28,7 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             return dropBoxDeleteViewModel;
         }
 
-        private ModelItem CreateModelItem()
+        ModelItem CreateModelItem()
         {
             var modelItem = ModelItemUtils.CreateModelItem(new DsfDropBoxDeleteActivity());
             return modelItem;
@@ -190,12 +190,12 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var model = CreateModelItem();
 
             //------------Execute Test---------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, TestResourceCatalog.LazySourceManager.Value);
             dropBoxDeleteViewModel.DeletePath = "A";
 
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["DeletePath"];
+            var property = model.Properties["DeletePath"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");
@@ -213,12 +213,12 @@ namespace Dev2.Activities.Designers.Tests.DropBox2016.Delete
             var agg = new Mock<IEventAggregator>();
             var model = CreateModelItem();
             //------------Execute Test---------------------------
-            // ReSharper disable once UseObjectOrCollectionInitializer
+            
             var dropBoxDeleteViewModel = new DropBoxDeleteViewModel(model, TestResourceCatalog.LazySourceManager.Value);
             dropBoxDeleteViewModel.Result = "A";
 
             //------------Assert Results-------------------------
-            ModelProperty property = model.Properties["Result"];
+            var property = model.Properties["Result"];
             if (property == null)
             {
                 Assert.Fail("Property Does not exist");

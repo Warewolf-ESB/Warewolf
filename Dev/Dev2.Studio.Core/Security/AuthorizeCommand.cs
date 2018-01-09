@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using Dev2.Common.Interfaces.Enums;
 using Dev2.Services.Security;
 using Dev2.Studio.Interfaces;
 
-// ReSharper disable CheckNamespace
+
 
 namespace Dev2.Security
 {
@@ -56,7 +56,7 @@ namespace Dev2.Security
 
         public static readonly DependencyProperty UnauthorizedVisibilityProperty =
             DependencyProperty.Register("UnauthorizedVisibility", typeof(Visibility), typeof(AuthorizeCommand<T>), new PropertyMetadata(Visibility.Collapsed));
-        private IContextualResourceModel _resourceModel;
+        IContextualResourceModel _resourceModel;
 
         public AuthorizationContext AuthorizationContext { get;  set; }
 
@@ -86,7 +86,9 @@ namespace Dev2.Security
             }
         }
 
-        public void UpdateContext(IServer environment, IContextualResourceModel resourceModel = null)
+        public void UpdateContext(IServer environment) => UpdateContext(environment, null);
+
+        public void UpdateContext(IServer environment, IContextualResourceModel resourceModel)
         {
             // MUST set ResourceID first as setting AuthorizationService triggers IsAuthorized() query
             if(resourceModel != null)
