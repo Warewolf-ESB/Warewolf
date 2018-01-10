@@ -206,7 +206,7 @@ namespace Warewolf.Studio.ViewModels.Tests
         {
             var viewModel = GetViewModelWithSource();
             viewModel.AutoDiscoverUrl = string.Empty;
-            Assert.IsTrue(viewModel.CanSave());
+            Assert.IsFalse(viewModel.CanSave());
         }
 
         [TestMethod]
