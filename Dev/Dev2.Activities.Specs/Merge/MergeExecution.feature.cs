@@ -395,6 +395,43 @@ this.ScenarioSetup(scenarioInfo);
 #line hidden
             this.ScenarioCleanup();
         }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Merge Workflow Containing Switch tool")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "MergeExecution")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestCategoryAttribute("WorkflowMerging")]
+        public virtual void MergeWorkflowContainingSwitchTool()
+        {
+            TechTalk.SpecFlow.ScenarioInfo scenarioInfo = new TechTalk.SpecFlow.ScenarioInfo("Merge Workflow Containing Switch tool", ((string[])(null)));
+#line 116
+this.ScenarioSetup(scenarioInfo);
+#line 117
+  testRunner.Given("I Load workflow \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Given ");
+#line 118
+  testRunner.And("I Load workflow version \"1\" of \"MergeSwitchTool\" from \"localhost\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 119
+  testRunner.When("Merge Window is opened with local \"MergeSwitchTool\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "When ");
+#line 120
+  testRunner.Then("Current workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line 121
+  testRunner.And("Different workflow contains \"5\" tools", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 122
+  testRunner.And("Merge conflicts count is \"5\"", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 123
+  testRunner.And("Merge variable conflicts is false", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 124
+  testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 125
+  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 126
+  testRunner.And("I select Current Tool", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 127
+  testRunner.And("I select Current Arm", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "And ");
+#line 128
+  testRunner.Then("Save is enabled", ((string)(null)), ((TechTalk.SpecFlow.Table)(null)), "Then ");
+#line hidden
+            this.ScenarioCleanup();
+        }
     }
 }
 #pragma warning restore

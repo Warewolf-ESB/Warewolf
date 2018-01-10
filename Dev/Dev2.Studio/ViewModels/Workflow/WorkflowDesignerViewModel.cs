@@ -3001,8 +3001,8 @@ namespace Dev2.Studio.ViewModels.Workflow
                         else
                         {
                             parentNodeProperty.SetValue(next);
+                            Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                         }
-                        Selection.Select(_wd.Context, ModelItemUtils.CreateModelItem(next));
                     }
                     return true;
                 }
@@ -3040,15 +3040,15 @@ namespace Dev2.Studio.ViewModels.Workflow
             if (key != "Default")
             {
                 var parentNodeProperty = switchItem.Properties["Cases"];
-                var cases = parentNodeProperty?.Dictionary;
-                cases.Remove(key);
-                cases.Add(key, nodeItem);
                 if (delink)
                 {
                     parentNodeProperty.SetValue(null);
                 }
                 else
                 {
+                    var cases = parentNodeProperty?.Dictionary;
+                    cases.Remove(key);
+                    cases.Add(key, nodeItem);
                     parentNodeProperty.SetValue(cases);
                 }
             }

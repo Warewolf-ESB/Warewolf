@@ -112,3 +112,17 @@ Scenario: Merge Workflow Containing Removed tool
 	 And I select Current Tool
 	 And I select Current Arm
 	 Then Save is enabled
+
+Scenario: Merge Workflow Containing Switch tool
+	 Given I Load workflow "MergeSwitchTool" from "localhost"
+	 And I Load workflow version "1" of "MergeSwitchTool" from "localhost"	 
+	 When Merge Window is opened with local "MergeSwitchTool"
+	 Then Current workflow contains "5" tools
+	 And Different workflow contains "5" tools
+	 And Merge conflicts count is "5"
+	 And Merge variable conflicts is false
+	 And I select Current Tool
+	 And I select Current Arm
+	 And I select Current Tool
+	 And I select Current Arm
+	 Then Save is enabled
