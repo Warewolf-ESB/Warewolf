@@ -163,7 +163,7 @@ namespace Dev2.Activities
                     {
                         if (Default == null)
                         {
-                            dataObject.Environment.Errors.Add("Failed: Switch must have a Default arm connected.");
+                            dataObject.Environment.Errors.Add(Warewolf.Studio.Resources.Languages.Core.SwitchNoDefaultError);
                         }
                         else
                         {
@@ -213,7 +213,7 @@ namespace Dev2.Activities
             }
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
             }
         }
 
@@ -239,7 +239,7 @@ namespace Dev2.Activities
 
             catch (Exception e)
             {
-                Dev2Logger.Warn(e.Message, "Warewolf Warn");
+                Dev2Logger.Warn(e.Message, GlobalConstants.WarewolfWarn);
             }
         }
 
