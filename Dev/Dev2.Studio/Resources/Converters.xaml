@@ -3,16 +3,15 @@
                     xmlns:activities="clr-namespace:Unlimited.Applications.BusinessDesignStudio.Activities;assembly=Dev2.Activities"
                     xmlns:converters="clr-namespace:Dev2.Studio.Core.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:converters3="clr-namespace:Dev2.Studio.AppResources.Converters"
-    xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
-    xmlns:converters4="clr-namespace:Dev2.Converters;assembly=Dev2.Core"
+                    xmlns:converters2="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.CustomControls"
                     xmlns:converters1="clr-namespace:Dev2.AppResources.Converters;assembly=Dev2.Studio.Core"
                     xmlns:converters5="clr-namespace:Dev2.AppResources.Converters"
-    xmlns:debug="clr-namespace:Dev2.Common.Interfaces.Diagnostics.Debug;assembly=Dev2.Common.Interfaces"
-    xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
-    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
-    xmlns:converters6="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
-    xmlns:enums="clr-namespace:Dev2.Data.Interfaces.Enums;assembly=Dev2.Data.Interfaces"
-    xmlns:converters7="clr-namespace:Dev2.Studio.Core.AppResources.Converters">
+                    xmlns:debug="clr-namespace:Dev2.Common.Interfaces.Diagnostics.Debug;assembly=Dev2.Common.Interfaces"
+                    xmlns:errors1="clr-namespace:Dev2.Common.Interfaces.Infrastructure.Providers.Errors;assembly=Dev2.Common.Interfaces"
+                    xmlns:core="clr-namespace:Warewolf.Studio.Core;assembly=Warewolf.Studio.Core"
+                    xmlns:converters6="clr-namespace:Dev2.CustomControls.Converters;assembly=Dev2.Studio.Core"
+                    xmlns:enums="clr-namespace:Dev2.Data.Interfaces.Enums;assembly=Dev2.Data.Interfaces"
+                    xmlns:converters7="clr-namespace:Dev2.Studio.Core.AppResources.Converters">
 
     <activities:ImagePathConverter x:Key="ImagePathConverter" />
     <converters2:FilterStringToBoolConverter x:Key="FilterStringToBoolConverter" />
@@ -52,6 +51,7 @@
     <converters6:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <core:ResourceTypeToIconConverter x:Key="ResourceTypeToIconConverter"/>
     <converters:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
+    <converters:ErrorTypeToTooltipConverter x:Key="ErrorTypeToTooltipConverter"/>
     <converters:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
     <converters2:MultipleBoolToEnabledConverter x:Key="MultipleBoolToEnabledConverter"/>
     <converters:IntInRangeToVisibilityConverter x:Key="IntInRangeToVisibilityConverter" />
