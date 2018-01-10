@@ -117,7 +117,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentTool()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflict && a.HasConflict).Cast<ToolConflict>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflict && a.HasConflict && !a.IsChecked).Cast<ToolConflict>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
             Assert.IsNotNull(mergeToolModel);
             mergeToolModel.IsMergeChecked = true;
         }
@@ -126,7 +126,7 @@ namespace Dev2.Activities.Specs.Merge
         public void ThenISelectCurrentArm()
         {
             var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
-            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict && a.HasConflict).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict && a.HasConflict && !a.IsChecked).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
             Assert.IsNotNull(mergeArmConnector);
             mergeArmConnector.IsChecked = true;
         }

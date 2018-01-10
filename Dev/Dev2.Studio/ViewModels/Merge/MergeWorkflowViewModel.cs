@@ -118,6 +118,10 @@ namespace Dev2.ViewModels.Merge
                 {
                     ProcessDiffItem(differenceResourceModel, conflicts, armConnectorConflicts, diffTree[i]);
                 }
+                else
+                {
+                    ShowArmConnectors(conflicts, armConnectorConflicts);
+                }
             }
             return conflicts;
         }
