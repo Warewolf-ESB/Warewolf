@@ -192,9 +192,20 @@ namespace Warewolf.Studio.ViewModels.Tests
             var viewModel = GetViewModelWithSource();
 
             viewModel.Testing = false;
-            viewModel.TestPassed = true;
+            viewModel.AutoDiscoverUrl = "url";
 
             Assert.IsTrue(viewModel.CanTest());
+            Assert.IsTrue(viewModel.CanSave());
+        }
+
+
+        [TestMethod]
+        [Owner(TestOwner)]
+        [TestCategory(Category)]
+        public void ManageexchangeModel_CanSave_False_Returns_Success()
+        {
+            var viewModel = GetViewModelWithSource();
+            viewModel.AutoDiscoverUrl = string.Empty;
             Assert.IsTrue(viewModel.CanSave());
         }
 
