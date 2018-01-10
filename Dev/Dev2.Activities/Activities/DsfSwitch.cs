@@ -161,7 +161,11 @@ namespace Dev2.Activities
                     }
                     else
                     {
-                        if (Default != null)
+                        if (Default == null)
+                        {
+                            dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
+                        }
+                        else
                         {
                             Result = "Default";
                             var activity = Default.FirstOrDefault();
