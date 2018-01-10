@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -33,7 +33,7 @@ namespace Dev2.DataList.Contract
                     {
                         if(makePart.Child != null)
                         {
-                            int indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);
+                            var indexOfBracket = makePart.Payload.IndexOf("(", StringComparison.Ordinal);
                             var tmpresult = makePart.Payload.Insert(indexOfBracket + 1, DataListUtil.AddBracketsToValueIfNotExist(makePart.Child.Payload));
                             allRegions.Add(string.Concat("[[", tmpresult, "]]"));
                         }

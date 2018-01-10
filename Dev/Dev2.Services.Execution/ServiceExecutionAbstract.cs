@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -297,7 +297,7 @@ namespace Dev2.Services.Execution
             if (Inputs.Any())
             {
                 // Loop iterators 
-                int pos = 0;
+                var pos = 0;
                 foreach (var itr in itrs)
                 {
                     var injectVal = itrCollection.FetchNextValue(itr);
@@ -481,11 +481,11 @@ namespace Dev2.Services.Execution
             if (string.IsNullOrEmpty(InstanceInputDefinitions))
             {
                 var okay = new List<string>();
-                int startindex = 0;
+                var startindex = 0;
                 while (command.IndexOf("[[", startindex, StringComparison.Ordinal) != -1)
                 {
-                    int first = command.IndexOf("[[", startindex, StringComparison.Ordinal);
-                    int second = command.IndexOf("]]", first, StringComparison.Ordinal);
+                    var first = command.IndexOf("[[", startindex, StringComparison.Ordinal);
+                    var second = command.IndexOf("]]", first, StringComparison.Ordinal);
                     if (second != -1)
                     {
                         var val = command.Substring(first, (second - first) + 2);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -582,7 +582,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             {
                 var output = dc.OutputColumn;
                 var inputColumn = dc.InputColumn;
-                bool identityChecked = false;
+                var identityChecked = false;
 
 
                 if (output.IsAutoIncrement)
@@ -653,7 +653,7 @@ namespace Dev2.Activities.Designers2.SqlBulkInsert
             switch (propertyName)
             {
                 case "InputColumn":
-                    ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString(), "1",new VariableUtils()));
+                    ruleSet.Add(new IsValidExpressionRule(() => datalist, GetDatalistString?.Invoke(), "1",new VariableUtils()));
                     break;
                 default:
                     break;

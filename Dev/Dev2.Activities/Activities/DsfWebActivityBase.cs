@@ -14,10 +14,11 @@ using Dev2.Runtime.ServiceModel.Data;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
-    public class DsfWebActivityBase : DsfActivity
+    public class DsfWebActivityBase : DsfActivity,IEquatable<DsfWebActivityBase>
     {
         readonly WebRequestMethod _method;
         const string UserAgent = "User-Agent";
@@ -127,7 +128,7 @@ namespace Dev2.Activities
                 if (_method == WebRequestMethod.Delete)
                 {
                     taskOfResponseMessage = httpClient.DeleteAsync(new Uri(address));
-                    bool ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
+                    var ranToCompletion = taskOfResponseMessage.Status == TaskStatus.RanToCompletion;
                     return ranToCompletion ? "The task completed execution successfully" : "The task completed due to an unhandled exception";
                 }
                 if (_method == WebRequestMethod.Post)
@@ -151,6 +152,39 @@ namespace Dev2.Activities
                 return resultAsString;
             }
             return null;
+        }
+
+        public bool Equals(DsfWebActivityBase other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var headersEqual = CommonEqualityOps.CollectionEquals(Headers, other.Headers, new NameValueComparer());
+            return base.Equals(other) 
+                && _method == other._method 
+                && headersEqual
+                && string.Equals(QueryString, other.QueryString) 
+                && Equals(OutputDescription, other.OutputDescription);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfWebActivityBase) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (int) _method;
+                hashCode = (hashCode * 397) ^ (Headers != null ? Headers.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (QueryString != null ? QueryString.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputDescription != null ? OutputDescription.GetHashCode() : 0);
+                return hashCode;
+            }
         }
     }
 }

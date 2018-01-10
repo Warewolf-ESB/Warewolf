@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -201,8 +201,10 @@ namespace Dev2.Workspaces
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
             lock(_readLock)
-            {                
-                var filesToIgnore = servicesToIgnore.Select(s => s + ".xml").ToList();                
+            {
+                
+                var filesToIgnore = servicesToIgnore.Select(s => s += ".bite").ToList();
+                
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
             }
@@ -329,14 +331,14 @@ namespace Dev2.Workspaces
 
         string GetFileName(Guid workspaceID)
         {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".xml");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".bite");
         }
 
         #endregion
 
         static string GetUserMapFileName()
         {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.xml");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
         }
 
         static ConcurrentDictionary<string, Guid> ReadUserMap()

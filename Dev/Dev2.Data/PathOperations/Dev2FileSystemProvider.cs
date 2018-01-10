@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -98,7 +98,7 @@ namespace Dev2.PathOperations
 
                     var user = ExtractUserName(path);
                     var domain = ExtractDomain(path);
-                    bool loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = LogonUser(user, domain, path.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
                     if (loginOk)
@@ -137,7 +137,7 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public int Put(Stream src, IActivityIOPath dst, IDev2CRUDOperationTO args, string whereToPut, List<string> filesToCleanup)
         {
-            int result = -1;
+            var result = -1;
             using (src)
             {
                 if (!Path.IsPathRooted(dst.Path))
@@ -165,7 +165,7 @@ namespace Dev2.PathOperations
                         else
                         {
                             // handle UNC path
-                            bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                            var loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
                             if (loginOk)
@@ -219,7 +219,7 @@ namespace Dev2.PathOperations
                 else
                 {
                     // handle UNC path
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
                     {
@@ -276,7 +276,7 @@ namespace Dev2.PathOperations
                 try
                 {
                     // handle UNC path
-                    bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
 
                     if (loginOk)
@@ -319,7 +319,7 @@ namespace Dev2.PathOperations
         [PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
         public bool CreateDirectory(IActivityIOPath dst, IDev2CRUDOperationTO args)
         {
-            bool result = false;
+            var result = false;
 
             if (args.Overwrite)
             {
@@ -362,7 +362,7 @@ namespace Dev2.PathOperations
             try
             {
                 // handle UNC path
-                bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                var loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
@@ -404,7 +404,7 @@ namespace Dev2.PathOperations
             try
             {
                 // handle UNC path
-                bool loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                var loginOk = LogonUser(ExtractUserName(dst), ExtractDomain(dst), dst.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
                 if (loginOk)
                 {
@@ -526,7 +526,7 @@ namespace Dev2.PathOperations
         {
             var result = string.Empty;
 
-            int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
+            var idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
             if (idx > 0)
             {
@@ -544,7 +544,7 @@ namespace Dev2.PathOperations
             }
             var result = string.Empty;
 
-            int idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
+            var idx = path.Username.IndexOf("\\", StringComparison.Ordinal);
 
             if (idx > 0)
             {
@@ -556,20 +556,20 @@ namespace Dev2.PathOperations
 
         bool FileExist(IActivityIOPath path)
         {
-            bool result = File.Exists(path.Path);
+            var result = File.Exists(path.Path);
 
             return result;
         }
 
         bool DirectoryExist(IActivityIOPath dir)
         {
-            bool result = Directory.Exists(dir.Path);
+            var result = Directory.Exists(dir.Path);
             return result;
         }
 
         bool RequiresAuth(IActivityIOPath path)
         {
-            bool result = path.Username != string.Empty;
+            var result = path.Username != string.Empty;
 
             return result;
         }
@@ -631,7 +631,7 @@ namespace Dev2.PathOperations
                 try
                 {
                     // handle UNC path
-                    bool loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
+                    var loginOk = LogonUser(ExtractUserName(src), ExtractDomain(src), src.Password, LOGON32_LOGON_INTERACTIVE, LOGON32_PROVIDER_DEFAULT, out SafeTokenHandle safeTokenHandle);
 
                     if (loginOk)
                     {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -305,7 +305,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             var dataObjectMock = new Mock<IDataObject>();
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new string[] { });
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(doDrop);
             Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
@@ -327,7 +327,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "Something Else" });
             dataObjectMock.Setup(o => o.GetData("Something Else")).Returns(ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()));
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsFalse(doDrop);
             Assert.AreEqual(2, dsfSequenceActivity.Activities.Count);
@@ -349,7 +349,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
             dataObjectMock.Setup(o => o.GetData("ModelItemsFormat")).Returns(new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()), ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()) });
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(4, dsfSequenceActivity.Activities.Count);
@@ -371,7 +371,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             dataObjectMock.Setup(o => o.GetFormats()).Returns(new[] { "ModelItemsFormat" });
             dataObjectMock.Setup(o => o.GetData("ModelItemsFormat")).Returns(new List<ModelItem> { ModelItemUtils.CreateModelItem(new DsfGatherSystemInformationActivity()) });
             //------------Execute Test---------------------------
-            bool doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
+            var doDrop = sequenceDesignerViewModel.DoDrop(dataObjectMock.Object);
             //------------Assert Results-------------------------
             Assert.IsTrue(doDrop);
             Assert.AreEqual(3, dsfSequenceActivity.Activities.Count);
@@ -408,7 +408,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
+            var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
         }
 
@@ -426,7 +426,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
+            var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
         }
 
@@ -444,7 +444,7 @@ namespace Dev2.Activities.Designers.Tests.Sequence
             //------------Execute Test---------------------------
             sequenceDesignerViewModel.SetModelItemForServiceTypes(dataObject);
             //------------Assert Results-------------------------
-            bool dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
+            var dataPresent = dataObject.GetDataPresent(DragDropHelper.ModelItemDataFormat);
             Assert.IsFalse(dataPresent);
         }
 

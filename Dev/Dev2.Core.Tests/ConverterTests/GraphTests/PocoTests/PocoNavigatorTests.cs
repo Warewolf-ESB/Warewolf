@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -502,7 +502,7 @@ namespace Dev2.Tests.ConverterTests.GraphTests.PocoTests
             var pocoNavigator = new PocoNavigator(testData);
             var data = pocoNavigator.SelectEnumerablesAsRelated(paths);
 
-            int maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
+            var maxCount = Math.Max(testData.EnumerableData.Count, testData.EnumerableData1.Count);
 
             #region Complex Setup for Expected
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -114,7 +114,7 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         void ShouldExecuteDeploy(Dictionary<string, StringBuilder> values, List<DeployResult> toReturn, Dev2JsonSerializer serializer, IHubProxy proxy, StringBuilder roles, StringBuilder deployTests)
         {
-            bool doTestDeploy = bool.Parse(deployTests.ToString());
+            var doTestDeploy = bool.Parse(deployTests.ToString());
             values.TryGetValue("resourceIDsToDeploy", out StringBuilder resourceIDsToDeploy);
             var idsToDeploy = new List<Guid>();
             idsToDeploy.AddRange(serializer.Deserialize<List<Guid>>(resourceIDsToDeploy));
@@ -125,7 +125,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 var amountToTake = 10;
                 while (counter < count)
                 {
-                    int diff = count - counter;
+                    var diff = count - counter;
                     if (diff < 10)
                     {
                         amountToTake = diff;

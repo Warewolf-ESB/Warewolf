@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,8 +37,8 @@ namespace Dev2.Common
         {
             var result = new StringBuilder();
 
-            int start = startIdx;
-            int end = startIdx + ToIndex;
+            var start = startIdx;
+            var end = startIdx + ToIndex;
 
             // Avoid boundry over-run
             if (end > candidate.Length)

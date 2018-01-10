@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -246,10 +246,10 @@ namespace Dev2.Runtime.Hosting
                     var versions = GetVersions(resource.ResourceID).FirstOrDefault();
                     old.VersionInfo = _versionStrategy.GetCurrentVersion(resource, versions?.VersionInfo, _userName, reason);
 
-                    var fileName = $"{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.xml";
+                    var fileName = $"{old.VersionInfo.VersionNumber}_{GetDateString(old.VersionInfo.DateTimeStamp)}_{reason}.bite";
                     if (!_file.Exists(_filePath.Combine(versionFolder, fileName)))
                     {
-                        var sourceFile = _filePath.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".xml";
+                        var sourceFile = _filePath.Combine(GetFolderFromResource(old.GetResourcePath(workSpaceId)), old.ResourceName) + ".bite";
                         if (_file.Exists(sourceFile))
                         {
                             _directory.CreateIfNotExists(versionFolder);
@@ -292,7 +292,7 @@ namespace Dev2.Runtime.Hosting
                     directory.CreateIfNotExists(folderName);
                     var parts = _filePath.GetFileName(pathForVersion).Split('_');
                     var name = string.Format("{0}_{1}_{2}", parts[1], parts[2], parts[3]);
-                    string destination = _filePath.Combine(folderName, name);
+                    var destination = _filePath.Combine(folderName, name);
                     if (!_file.Exists(destination))
                     {
                         _file.Move(pathForVersion, destination);

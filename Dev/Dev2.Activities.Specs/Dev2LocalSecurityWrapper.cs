@@ -98,13 +98,13 @@ namespace Dev2.Activities.Specs
             long winErrorCode = 0; //contains the last error
 
             //pointer an size for the SID
-            IntPtr sid = IntPtr.Zero;
-            int sidSize = 0;
+            var sid = IntPtr.Zero;
+            var sidSize = 0;
             //StringBuilder and size for the domain name
             var domainName = new StringBuilder();
-            int nameSize = 0;
+            var nameSize = 0;
             //account-type variable for lookup
-            int accountType = 0;
+            var accountType = 0;
 
             //get required buffer size
             LookupAccountName(String.Empty, accountName, sid, ref sidSize, domainName, ref nameSize, ref accountType);
@@ -114,7 +114,7 @@ namespace Dev2.Activities.Specs
             sid = Marshal.AllocHGlobal(sidSize);
 
             //lookup the SID for the account
-            bool result = LookupAccountName(String.Empty, accountName, sid, ref sidSize, domainName, ref nameSize,
+            var result = LookupAccountName(String.Empty, accountName, sid, ref sidSize, domainName, ref nameSize,
                                             ref accountType);
 
             //say what you're doing
@@ -149,7 +149,7 @@ namespace Dev2.Activities.Specs
                                     );
                 //initialize a pointer for the policy handle
                 
-                IntPtr policyHandle = IntPtr.Zero;
+                var policyHandle = IntPtr.Zero;
 
                 //these attributes are not used, but LsaOpenPolicy wants them to exists
                 var ObjectAttributes = new LSA_OBJECT_ATTRIBUTES();
@@ -160,7 +160,7 @@ namespace Dev2.Activities.Specs
                 ObjectAttributes.SecurityQualityOfService = IntPtr.Zero;
 
                 //get a policy handle
-                uint resultPolicy = LsaOpenPolicy(ref systemName, ref ObjectAttributes, access, out policyHandle);
+                var resultPolicy = LsaOpenPolicy(ref systemName, ref ObjectAttributes, access, out policyHandle);
                 winErrorCode = LsaNtStatusToWinError(resultPolicy);
 
                 if (winErrorCode != 0)

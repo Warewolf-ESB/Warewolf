@@ -48,7 +48,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             {
                 isSearchTextChanged = isSearchTextChanged || e.PropertyName == "SearchText";
             };
-           
+
             //act
             _target.SearchText = _target.SearchText;
 
@@ -74,7 +74,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target.SearchText = searchTextValue;
 
             //assert
-            _environmentViewModelMock.Verify(it=>it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
+            _environmentViewModelMock.Verify(it => it.Filter(It.IsAny<Func<IExplorerItemViewModel, bool>>()));
             Assert.AreEqual(searchTextValue, _target.SearchText);
             Assert.IsTrue(isSearchTextChanged);
         }

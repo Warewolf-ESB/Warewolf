@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,7 +37,7 @@ namespace Dev2.Activities.PathOperations
     /// Status : New
     /// Purpose : To provide an activity that can move a file/folder via FTP, FTPS and file system
     /// </summary>
-    public abstract class DsfAbstractMultipleFilesActivity : DsfAbstractFileActivity
+    public abstract class DsfAbstractMultipleFilesActivity : DsfAbstractFileActivity,IEquatable<DsfAbstractMultipleFilesActivity>
     {
         protected DsfAbstractMultipleFilesActivity(string displayName)
             : base(displayName)
@@ -152,7 +152,7 @@ namespace Dev2.Activities.PathOperations
 
                 try
                 {
-                    var broker = GetOperationBroker();
+                    var broker = GetOperationBroker?.Invoke();
                     var result = ExecuteBroker(broker, scrEndPoint, dstEndPoint);
                     outputs[0].OutputStrings.Add(result);
 
@@ -289,5 +289,35 @@ namespace Dev2.Activities.PathOperations
         }
 
         #endregion
+
+        public bool Equals(DsfAbstractMultipleFilesActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) && string.Equals(DestinationPassword, other.DestinationPassword) && Overwrite == other.Overwrite && string.Equals(InputPath, other.InputPath) && string.Equals(OutputPath, other.OutputPath) && string.Equals(DestinationUsername, other.DestinationUsername) && string.Equals(DestinationPrivateKeyFile, other.DestinationPrivateKeyFile);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfAbstractMultipleFilesActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DestinationPassword != null ? DestinationPassword.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Overwrite.GetHashCode();
+                hashCode = (hashCode * 397) ^ (InputPath != null ? InputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputPath != null ? OutputPath.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DestinationUsername != null ? DestinationUsername.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DestinationPrivateKeyFile != null ? DestinationPrivateKeyFile.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

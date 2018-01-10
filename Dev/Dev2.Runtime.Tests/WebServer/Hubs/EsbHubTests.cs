@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,7 +35,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
-            bool messagePublished = false;
+            var messagePublished = false;
             all.ItemAddedMessage = new Action<string>(serialisedItem =>
             {
                 messagePublished = true;
@@ -62,7 +62,7 @@ namespace Dev2.Tests.Runtime.WebServer.Hubs
             var mockClients = new Mock<IHubCallerConnectionContext<dynamic>>();
             hub.Clients = mockClients.Object;
             dynamic all = new ExpandoObject();
-            bool messagePublished = false;
+            var messagePublished = false;
             all.ItemAddedMessage = new Action<string>(serialisedItem =>
             {
                 messagePublished = true;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -1013,7 +1013,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowDebugStatus")
@@ -1036,7 +1036,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowAssertResult")
@@ -1059,7 +1059,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowOutputs")
@@ -1081,7 +1081,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowInputs")
@@ -1104,7 +1104,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowDuration")
@@ -1126,7 +1126,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowTime")
@@ -1149,7 +1149,7 @@ namespace Dev2.Core.Tests
             //---------------Set up test pack-------------------
             var mockedEnvRepo = new Mock<IServerRepository>();
             var debugOutputViewModel = new DebugOutputViewModel(new Mock<IEventPublisher>().Object, mockedEnvRepo.Object, new Mock<IDebugOutputFilterStrategy>().Object) { DebugStatus = DebugStatus.Finished };
-            bool wasCalled=false;
+            var wasCalled=false;
             debugOutputViewModel.PropertyChanged += (sender, args) =>
             {
                 if(args.PropertyName == "ShowServer")

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -37,6 +37,26 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         public DsfFlowSwitchActivity(string displayName, IDebugDispatcher debugDispatcher, bool isAsync)
             : base(displayName, debugDispatcher, isAsync)
         {
+        }
+
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();            
+            //if (Switches != null)
+            //{
+            //    foreach (var swt in Switches)
+            //    {
+            //        armConnectors.Add(($"{GetDisplayName()}: {swt.Key}->{swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
+            //    }
+            //}
+            //if (Default != null)
+            //{
+            //    foreach (var dft in Default)
+            //    {
+            //        armConnectors.Add(($"{GetDisplayName()}: DEFAULT->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+            //    }
+            //}
+            return armConnectors;
         }
 
         #endregion

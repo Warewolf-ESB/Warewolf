@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -104,7 +104,7 @@ namespace Dev2.Activities
                 return 1;
             }
 
-            uint style = GetWindowLong(hWnd, GWL_EXSTYLE);
+            var style = GetWindowLong(hWnd, GWL_EXSTYLE);
             if ((style & WS_EX_DLGMODALFRAME) != 0)
             {
                 _waiting = true;

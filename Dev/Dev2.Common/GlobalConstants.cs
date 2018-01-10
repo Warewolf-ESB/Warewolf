@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,6 +27,11 @@ namespace Dev2.Common
 
     public static class GlobalConstants
     {
+        public const string PayloadStart = @"<XamlDefinition>";
+        public const string PayloadEnd = @"</XamlDefinition>";
+        public const string AltPayloadStart = @"<Actions>";
+        public const string AltPayloadEnd = @"</Actions>";
+
         static GlobalConstants()
         {
             SystemEvents.TimeChanged += (sender, args) =>
@@ -389,7 +394,8 @@ where pn.nspname = 'public';
         public static readonly string WarewolfInfo = "Warewolf Info";
         public static readonly string WarewolfError = "Warewolf Error";
         public static readonly string WarewolfDebug = "Warewolf Debug";
-        
+        public static readonly string WarewolfWarn = "Warewolf Warn";
+
         public static readonly string ResourcePickerWorkflowString = "DsfWorkflowActivity";
 
         public static readonly string SerializableResourceQuote = "__QUOTE__";
@@ -465,7 +471,7 @@ where pn.nspname = 'public';
         {
             if (Resultscache.ContainsKey(resourceId))
             {
-                bool removed = Resultscache.TryRemove(resourceId, out TextExpressionCompilerResults val);
+                var removed = Resultscache.TryRemove(resourceId, out TextExpressionCompilerResults val);
                 if (!removed)
                 {
                     Resultscache.TryRemove(resourceId, out val);
@@ -554,9 +560,9 @@ where pn.nspname = 'public';
             try
             {
                 var stringParam = (string)paramaTer;
-                if (string.IsNullOrEmpty(stringParam))
+                if (String.IsNullOrEmpty(stringParam))
                 {
-                    throw new ArgumentNullException(name, string.Format(ErrorResource.NoValueProvided, name));
+                    throw new ArgumentNullException(name, String.Format(ErrorResource.NoValueProvided, name));
                 }
             }
             catch (ArgumentNullException)
@@ -567,7 +573,7 @@ where pn.nspname = 'public';
             {
                 if (paramaTer == null)
                 {
-                    throw new ArgumentNullException(name, string.Format(ErrorResource.NoValueProvided, name));
+                    throw new ArgumentNullException(name, String.Format(ErrorResource.NoValueProvided, name));
                 }
             }
         }

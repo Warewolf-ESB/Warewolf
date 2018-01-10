@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going bac
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -84,6 +84,9 @@ using Warewolf.Tools.Specs.BaseTypes;
 using Dev2.Data.Interfaces.Enums;
 using TestingDotnetDllCascading;
 using Warewolf.Sharepoint;
+using Dev2.Studio.ViewModels;
+using Caliburn.Micro;
+using Dev2.Studio.Core.Helpers;      
 
 namespace Dev2.Activities.Specs.Composition
 {
@@ -163,8 +166,7 @@ namespace Dev2.Activities.Specs.Composition
         {
             TryGetValue("activityList", out Dictionary<string, Activity> activityList);
             TryGetValue("parentWorkflowName", out string parentWorkflowName);
-            var debugStates = Get<List<IDebugState>>("debugStates").ToList();
-
+            var debugStates = Get<List<IDebugState>>("debugStates").ToList();            
             if (hasError == "AN")
             {
                 var hasErrorState = debugStates.FirstOrDefault(state => state.HasError);
@@ -285,7 +287,7 @@ namespace Dev2.Activities.Specs.Composition
                                                             }, new List<IResourcePerformanceCounter>());
                 CustomContainer.Register<IWarewolfPerformanceCounterLocater>(new WarewolfPerformanceCounterManager(register.Counters, new List<IResourcePerformanceCounter>(), register, new Mock<IPerformanceCounterPersistence>().Object));
             }
-            catch
+            catch (Exception ex)
             {
                 Assert.Fail("failed to delete existing counters");
             }
@@ -1015,6 +1017,7 @@ namespace Dev2.Activities.Specs.Composition
         [When(@"""(.*)"" is executed")]
         public void WhenIsExecuted(string workflowName)
         {
+            Get<List<IDebugState>>("debugStates").Clear();
             BuildDataList();
 
             var activityList = _commonSteps.GetActivityList();
@@ -1303,7 +1306,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             IDebugState outputState;
             if (toolSpecificDebug.Count > 1 && toolSpecificDebug.Any(state => state.StateType == StateType.End))
             {
@@ -1356,7 +1359,7 @@ namespace Dev2.Activities.Specs.Composition
                 debugStates.Where(ds => ds.DisplayName.Equals(toolName)).ToList();
             }
             // Data Merge breaks our debug scheme, it only ever has 1 value, not the expected 2 ;)
-            bool isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
+            var isDataMergeDebug = toolSpecificDebug.Count == 1 && toolSpecificDebug.Any(t => t.Name == "Data Merge");
             var outputState = toolSpecificDebug.FirstOrDefault();
             if (toolSpecificDebug.Count > 1)
             {
@@ -3079,9 +3082,9 @@ namespace Dev2.Activities.Specs.Composition
         [Then(@"the delta between ""(.*)"" and ""(.*)"" is less than ""(.*)"" milliseconds")]
         public void ThenTheDeltaBetweenAndIsLessThanMilliseconds(string executionLabelFirst, string executionLabelSecond, int maxDeltaMilliseconds)
         {
-            int e1 = Convert.ToInt32(_scenarioContext[executionLabelFirst]),
-                e2 = Convert.ToInt32(_scenarioContext[executionLabelSecond]),
-                d = maxDeltaMilliseconds;
+            var e1 = Convert.ToInt32(_scenarioContext[executionLabelFirst]);
+            var e2 = Convert.ToInt32(_scenarioContext[executionLabelSecond]);
+            var d = maxDeltaMilliseconds;
             d.Should().BeGreaterThan(Math.Abs(e1 - e2), $"async logging should not add more than {d} milliseconds to the execution");
         }
 
@@ -4243,6 +4246,26 @@ namespace Dev2.Activities.Specs.Composition
                 Add("resourceRepo", environmentModel.ResourceRepository);
                 Add("debugStates", new List<IDebugState>());
             }
+        }
+        [When(@"workflow ""(.*)"" merge is opened")]
+        public void WhenWorkflowMergeIsOpened(string mergeWfName)
+        {            
+            var environmentModel = ServerRepository.Instance.Source;
+            var serverRepository = new Mock<IServerRepository>();
+            serverRepository.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
+            serverRepository.Setup(p => p.Source).Returns(new Mock<IServer>().Object);
+            var evntArg  = new Mock<IEventAggregator>().Object;
+            var versionChecker = new Mock<IVersionChecker>().Object;
+            var explorer = new Mock<IExplorerViewModel>().Object;
+            var viewFact = new Mock<IViewFactory>().Object;            
+            var versions = _scenarioContext["Versions"] as IList<IExplorerItem>;
+            var repo = _scenarioContext.Get<IResourceRepository>("resourceRepo") as ResourceRepository;
+            var localResource = repo.LoadContextualResourceModel(versions.First().ResourceId);
+            var remoteResource = repo.LoadContextualResourceModel(versions.Last().ResourceId);
+            var vm = new Mock<IMergeWorkflowViewModel>();
+            var wdvm = new Mock<IWorkflowDesignerViewModel>();
+            vm.Setup(p => p.WorkflowDesignerViewModel).Returns(wdvm.Object);
+            
         }
     }
 }

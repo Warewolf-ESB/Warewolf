@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -915,7 +915,7 @@ namespace Dev2.PathOperations
 
                 if (!Dev2ActivityIOPathUtils.IsStarWildCard(src.IOPath.Path))
                 {
-                    return performAfterValidation();
+                    return performAfterValidation?.Invoke();
                 }
                 if (!TransferDirectoryContents(src, dst, args))
                 {
@@ -948,7 +948,7 @@ namespace Dev2.PathOperations
                 throw new Exception(ErrorResource.DestinationDirectoryExist);
             }
 
-            return performAfterValidation();
+            return performAfterValidation?.Invoke();
         }
 
         string ValidateZipSourceDestinationFileOperation(IActivityIOOperationsEndPoint src,
@@ -992,7 +992,7 @@ namespace Dev2.PathOperations
             {
                 throw new Exception(string.Format(ErrorResource.RecursiveDirectoryCreateFailed, dst.IOPath.Path));
             }
-            return performAfterValidation();
+            return performAfterValidation?.Invoke();
         }
         #endregion
     }

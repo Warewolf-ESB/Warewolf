@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -278,7 +278,7 @@ namespace Dev2.Activities.Specs.Scheduler
             try
             {
 
-                int i = 0;
+                var i = 0;
                 var x = new TaskService();
                 x.GetFolder("Warewolf");
                 var task = x.FindTask(scheduleName);
@@ -288,7 +288,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
 
                     const int TimeOut = 10;
-                    int time = 0;
+                    var time = 0;
                     while (task.State == TaskState.Running && time < TimeOut)
                     {
                         time++;
@@ -309,7 +309,7 @@ namespace Dev2.Activities.Specs.Scheduler
 
         public static bool AccountExists(string name)
         {
-            bool accountExists = false;
+            var accountExists = false;
             try
             {
                 var id = GetUserSecurityIdentifier(name);

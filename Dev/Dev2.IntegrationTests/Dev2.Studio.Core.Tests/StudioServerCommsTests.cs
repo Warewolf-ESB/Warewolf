@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -57,7 +57,7 @@ namespace Dev2.Integration.Tests.Dev2.Studio.Core.Tests
             Thread.Sleep(100);
             conn.Connect(Guid.Empty);
             Thread.Sleep(500);
-            bool afterReconnection = conn.IsConnected;
+            var afterReconnection = conn.IsConnected;
 
             Assert.IsTrue(afterReconnection);
 

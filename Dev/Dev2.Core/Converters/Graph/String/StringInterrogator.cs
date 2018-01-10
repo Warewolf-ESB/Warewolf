@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -89,7 +89,7 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         bool IsXml(string data)
         {
-            bool result = true;
+            var result = true;
 
             try
             {
@@ -108,7 +108,7 @@ namespace Unlimited.Framework.Converters.Graph.String
 
         bool IsJson(string data)
         {
-            bool result = true;
+            var result = true;
 
             try
             {

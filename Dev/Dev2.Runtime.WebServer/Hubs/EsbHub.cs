@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -202,12 +202,12 @@ namespace Dev2.Runtime.WebServer.Hubs
                 var user = hubCallerConnectionContext.User(Context.User.Identity.Name);
                 user.SendDebugState(debugSerializated);
             }
-            catch
+            catch (Exception ex)
             {
                 var user = hubCallerConnectionContext.Caller;
                 user.SendDebugState(debugSerializated);
             }
-           
+
         }
 
         void WriteEventProviderClientMessage<TMemo>(IEnumerable<ICompileMessageTO> messages, Action<TMemo, ICompileMessageTO> coalesceErrors)
@@ -242,7 +242,7 @@ namespace Dev2.Runtime.WebServer.Hubs
                 foreach (var message in grouping)
                 {
                     memo.WorkspaceID = message.WorkspaceID;
-                    coalesceErrors(memo, message);
+                    coalesceErrors?.Invoke(memo, message);
                 }
             }
         }

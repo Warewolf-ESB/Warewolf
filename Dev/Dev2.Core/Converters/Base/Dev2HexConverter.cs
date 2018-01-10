@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,7 +40,7 @@ namespace Dev2.Converters
 
             var result = new byte[payload.Length/2];
 
-            int pos = 0;
+            var pos = 0;
             for (int i = 0; i < payload.Length; i += 2)
             {
                 result[pos] = Convert.ToByte(payload.Substring(i, 2), 16);
@@ -52,7 +52,7 @@ namespace Dev2.Converters
 
         public bool IsType(string payload)
         {
-            bool result = Regex.IsMatch(payload, @"\A\b[0-9a-fA-F]+\b\Z") ||
+            var result = Regex.IsMatch(payload, @"\A\b[0-9a-fA-F]+\b\Z") ||
                           Regex.IsMatch(payload, @"\A\b(0[xX])?[0-9a-fA-F]+\b\Z");
 
             if (payload.Length%2 != 0)

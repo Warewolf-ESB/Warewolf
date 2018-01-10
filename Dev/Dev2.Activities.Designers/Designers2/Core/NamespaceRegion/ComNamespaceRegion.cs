@@ -144,7 +144,7 @@ namespace Dev2.Activities.Designers2.Core.NamespaceRegion
             set
             {
                 SetSelectedNamespace(value);
-                SourceChangedNamespace();
+                SourceChangedNamespace?.Invoke();
                 OnSomethingChanged(this);
 
                 var delegateCommand = RefreshNamespaceCommand as Microsoft.Practices.Prism.Commands.DelegateCommand;

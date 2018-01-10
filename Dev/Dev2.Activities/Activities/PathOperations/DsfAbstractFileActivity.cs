@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,6 +12,7 @@ using System;
 using System.Activities;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Dev2;
 using Dev2.Activities;
 using Dev2.Activities.Debug;
 using Dev2.Common;
@@ -38,7 +39,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
     /// Status : New
     /// Purpose : To provide a base activity for all file activities to inherit from
     /// </summary>
-    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify
+    public abstract class DsfAbstractFileActivity : DsfActivityAbstract<string>, IPathAuth, IResult, IPathCertVerify, IEquatable<DsfAbstractFileActivity>
     {
 
         string _username;
@@ -95,7 +96,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                                     else
                                     {
                                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(output.OutPutDescription))
-                                        {                                            
+                                        {
                                             dataObject.Environment.Assign(region, value, update);
                                         }
                                     }
@@ -108,15 +109,15 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         foreach (var region in DataListCleaningUtils.SplitIntoRegions(Result))
                         {
-                            dataObject.Environment.Assign(region, "",update);
+                            dataObject.Environment.Assign(region, "", update);
                         }
                     }
                     if (dataObject.IsDebugMode())
-                        {
+                    {
                         if (!String.IsNullOrEmpty(Result))
-                            {
-                                AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
-                            }
+                        {
+                            AddDebugOutputItem(new DebugEvalResult(Result, "", dataObject.Environment, update));
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -147,7 +148,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)] 
+        [DesignerSerializationVisibility(DesignerSerializationVisibility.Hidden)]
         protected string DecryptedPassword => DataListUtil.NotEncrypted(Password) ? Password : DpapiWrapper.Decrypt(Password);
 
         /// <summary>
@@ -285,6 +286,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         static string GetBlankedOutPassword(string password)
         {
             return "".PadRight((password ?? "").Length, '*');
+        }
+
+        public bool Equals(DsfAbstractFileActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var passWordsCompare = CommonEqualityOps.PassWordsCompare(Password, other.Password);
+            return base.Equals(other)
+                && string.Equals(Username, other.Username)
+                && passWordsCompare
+                && string.Equals(DisplayName, other.DisplayName)
+                && string.Equals(PrivateKeyFile, other.PrivateKeyFile)
+                && string.Equals(Result, other.Result)
+                && IsNotCertVerifiable == other.IsNotCertVerifiable;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfAbstractFileActivity)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Username != null ? Username.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (PrivateKeyFile != null ? PrivateKeyFile.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ IsNotCertVerifiable.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

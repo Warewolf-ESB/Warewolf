@@ -91,6 +91,10 @@
         <ResourceDictionary Source="Images/System-Help.xaml" />
         <ResourceDictionary Source="Images/System-Link.xaml" />
         <ResourceDictionary Source="Images/System-Logo.xaml" />
+        <ResourceDictionary Source="Images/Source-Fork.xaml" />
+        <ResourceDictionary Source="Images/Source-Pull.xaml" />
+        <ResourceDictionary Source="Images/Source-Merge.xaml" />
+        <ResourceDictionary Source="Images/Source-Branch.xaml" />
         <ResourceDictionary Source="Images/System-Spacer.xaml" />
         <ResourceDictionary Source="Images/System-Lock.xaml" />
         <ResourceDictionary Source="Images/System-More.xaml" />

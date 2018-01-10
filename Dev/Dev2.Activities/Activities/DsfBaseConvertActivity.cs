@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,6 +21,7 @@ using Dev2.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Common.Interfaces.Enums.Enums;
 using Dev2.Common.Interfaces.Toolbox;
+using Dev2.Comparer;
 using Dev2.Converters;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -33,7 +34,7 @@ using Warewolf.Storage.Interfaces;
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
     [ToolDescriptorInfo("Data-BaseConversion", "Base Convert", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Activities", "1.0.0.0", "", "Data", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Data_Base_Convert")]
-    public class DsfBaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity
+    public class DsfBaseConvertActivity : DsfActivityAbstract<string>, ICollectionActivity,IEquatable<DsfBaseConvertActivity>
     {
         readonly Dev2BaseConversionFactory _fac = new Dev2BaseConversionFactory();
 
@@ -361,6 +362,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             else
             {
                 AddToCollection(listToAdd, modelItem);
+            }
+        }
+
+        public bool Equals(DsfBaseConvertActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var collectionEquals = CommonEqualityOps.CollectionEquals(ConvertCollection, other.ConvertCollection, new BaseConvertToComparer());
+            return base.Equals(other) 
+                && collectionEquals;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfBaseConvertActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_fac != null ? _fac.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (ConvertCollection != null ? ConvertCollection.GetHashCode() : 0);
+                return hashCode;
             }
         }
     }

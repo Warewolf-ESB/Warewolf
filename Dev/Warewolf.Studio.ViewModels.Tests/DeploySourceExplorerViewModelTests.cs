@@ -224,7 +224,6 @@ namespace Warewolf.Studio.ViewModels.Tests
         #endregion Test properties
 
         #region Test methods
-
         [TestMethod]
         public void TestSelectedEnvironmentChanged()
         {

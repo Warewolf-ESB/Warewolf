@@ -38,12 +38,12 @@ namespace Warewolf.Studio.ViewModels
             ExpertHelpUrl = expUri;
             var warewolfUri = new Uri(Resources.Languages.Core.WarewolfUrl);
             WarewolfUrl = warewolfUri;
-            WarewolfCopyright = Resources.Languages.Core.WarewolfCopyright;
+            WarewolfCopyright = string.Format(Resources.Languages.Core.WarewolfCopyright, DateTime.Now.Year.ToString());
 
             ContributorsCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ContributorsUrl));
             CommunityCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(CommunityUrl));
             ExpertHelpCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(ExpertHelpUrl));
-            WarewolfUrlCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(WarewolfUrl));            
+            WarewolfUrlCommand = new DelegateCommand(() => externalProcessExecutor.OpenInBrowser(WarewolfUrl));
         }
 
         public IServer Server { get; set; }
@@ -54,10 +54,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand WarewolfUrlCommand { get; set; }
         public string ServerVersion
         {
-            get
-            {
-                return _serverVersion;
-            }
+            get => _serverVersion;
             set
             {
                 _serverVersion = value;
@@ -67,10 +64,7 @@ namespace Warewolf.Studio.ViewModels
         [ExcludeFromCodeCoverage]
         public string StudioVersion
         {
-            get
-            {
-                return _studioVersion;
-            }
+            get => _studioVersion;
             set
             {
                 _studioVersion = value;

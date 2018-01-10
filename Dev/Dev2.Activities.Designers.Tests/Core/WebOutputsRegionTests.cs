@@ -122,7 +122,7 @@ namespace Dev2.Activities.Designers.Tests.Core
             //---------------Set up test pack-------------------
             var act = new DsfWebGetActivity() { SourceId = Guid.NewGuid(), Outputs = null };
             var outputsRegion = new OutputsRegion(ModelItemUtils.CreateModelItem(act), true);
-            bool wasCalled = false;
+            var wasCalled = false;
             outputsRegion.PropertyChanged += (sender, args) =>
             {
                 wasCalled = true;
