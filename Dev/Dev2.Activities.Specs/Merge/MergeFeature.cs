@@ -1,4 +1,5 @@
 ﻿using Dev2.Activities.Specs.BaseTypes;
+using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Threading;
 using Dev2.Studio.Core;
@@ -21,6 +22,7 @@ namespace Dev2.Activities.Specs.Merge
     {
         const string remoteResourceString = "RemoteResource";
         const string localResourceString = "LocalResource";
+        const string localResourceVersionString = "LocalResourceVersion";
         const string mergeVmString = "mergeVm";
         readonly ScenarioContext _scenarioContext;
         readonly CommonSteps _commonSteps;
@@ -89,17 +91,51 @@ namespace Dev2.Activities.Specs.Merge
                 var versions = localHost.ExplorerRepository.GetVersions(localResource.ID);
                 var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
                 var localResourceVersion = version.ToContextualResourceModel(localHost, localResource.ID);
-                _scenarioContext.Add(localResourceString, localResourceVersion);
+                _scenarioContext.Add(localResourceVersionString, localResourceVersion);
             }
         }
 
-        [When(@"Merge Window is opened with ""(.*)""")]
-        public void WhenMergeWindowIsOpenedWith(string p0)
+        [When(@"Merge Window is opened with remote ""(.*)""")]
+        public void WhenMergeWindowIsOpenedWithRemote(string p0)
         {
             var remoteResource = _scenarioContext.Get<IContextualResourceModel>(remoteResourceString);
             var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
             var mergeVm = new MergeWorkflowViewModel(localResource, remoteResource, true);
             _scenarioContext.Add(mergeVmString, mergeVm);
+        }
+
+        [When(@"Merge Window is opened with local ""(.*)""")]
+        public void WhenMergeWindowIsOpenedWithLocal(string p0)
+        {
+            var localResourceVersion = _scenarioContext.Get<IContextualResourceModel>(localResourceVersionString);
+            var localResource = _scenarioContext.Get<IContextualResourceModel>(localResourceString);
+            var mergeVm = new MergeWorkflowViewModel(localResource, localResourceVersion, false);
+            _scenarioContext.Add(mergeVmString, mergeVm);
+        }
+
+        [Then(@"I select Current Tool")]
+        public void ThenISelectCurrentTool()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var mergeToolModel = mergeVm.Conflicts.Where(a => a is ToolConflict && a.HasConflict).Cast<ToolConflict>().Select(p => p.CurrentViewModel).FirstOrDefault() as IMergeToolModel;
+            Assert.IsNotNull(mergeToolModel);
+            mergeToolModel.IsMergeChecked = true;
+        }
+
+        [Then(@"I select Current Arm")]
+        public void ThenISelectCurrentArm()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            var mergeArmConnector = mergeVm.Conflicts.Where(a => a is ArmConnectorConflict && a.HasConflict).Cast<ArmConnectorConflict>().Select(p => p.CurrentArmConnector).FirstOrDefault() as IMergeArmConnectorConflict;
+            Assert.IsNotNull(mergeArmConnector);
+            mergeArmConnector.IsChecked = true;
+        }
+
+        [Then(@"Save is enabled")]
+        public void ThenSaveIsEnabled()
+        {
+            var mergeVm = _scenarioContext.Get<MergeWorkflowViewModel>(mergeVmString);
+            Assert.IsTrue(mergeVm.CanSave);
         }
 
         [Then(@"Current workflow contains ""(.*)"" tools")]
