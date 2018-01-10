@@ -58,7 +58,7 @@ namespace Warewolf.Studio.ViewModels
 
         static readonly IEnumerable<Type> Types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes());
 
-        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel) 
+        public ServiceTestViewModel(IContextualResourceModel resourceModel, IAsyncWorker asyncWorker, IEventAggregator eventPublisher, IExternalProcessExecutor processExecutor, IWorkflowDesignerViewModel workflowDesignerViewModel)
             : this(resourceModel, asyncWorker, eventPublisher, processExecutor, workflowDesignerViewModel, null)
         {
         }
@@ -463,7 +463,7 @@ namespace Warewolf.Studio.ViewModels
             return childStep;
         }
 
-        bool NullParent(IDebugState debugItemContent, ref IServiceTestStep parent)
+        static bool NullParent(IDebugState debugItemContent, ref IServiceTestStep parent)
         {
             if (parent == null)
             {
@@ -704,7 +704,7 @@ namespace Warewolf.Studio.ViewModels
             SelectedServiceTest.ErrorContainsText = outPutState.ErrorMessage;
         }
 
-        void OnError(Exception exception)
+        static void OnError(Exception exception)
         {
             Dev2Logger.Error(exception, GlobalConstants.WarewolfError);
             throw exception;
@@ -806,7 +806,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        T GetCurrentActivity<T>(ModelItem modelItem) where T : class
+        static T GetCurrentActivity<T>(ModelItem modelItem) where T : class
         {
             var activity = modelItem.GetCurrentValue() as T;
             if (activity == null && modelItem.Content?.Value != null)
@@ -996,7 +996,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        static void AddEnhancedDotNetDll(DsfEnhancedDotNetDllActivity dotNetDllActivity, ServiceTestStep parent, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
             if (dotNetDllActivity == null)
             {
@@ -1078,7 +1078,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void AddChildActivity<T>(DsfNativeActivity<T> act, ServiceTestStep testStep)
+        static void AddChildActivity<T>(DsfNativeActivity<T> act, ServiceTestStep testStep)
         {
             var outputs = act.GetOutputs();
             if (outputs != null && outputs.Count > 0)
@@ -1095,7 +1095,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
+        static void AddEnhancedDotNetDllConstructor(DsfEnhancedDotNetDllActivity dotNetConstructor, IServiceTestStep testStep)
         {
             var serviceTestStep = CreateMockChildStep(dotNetConstructor.Constructor.ID, testStep, testStep.ActivityType, dotNetConstructor.Constructor.ConstructorName);
             var serviceOutputs = new ObservableCollection<IServiceTestOutput>
@@ -1107,7 +1107,7 @@ namespace Warewolf.Studio.ViewModels
             testStep.Children.Insert(0, serviceTestStep);
         }
 
-        void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep)
+        static void AddEnhancedDotNetDllMethod(IPluginAction pluginAction, IServiceTestStep testStep)
         {
             var serviceTestStep = CreateMockChildStep(pluginAction.ID, testStep, testStep.ActivityType, pluginAction.Method);
             var serviceOutputs = new ObservableCollection<IServiceTestOutput>
@@ -1473,7 +1473,7 @@ namespace Warewolf.Studio.ViewModels
             return false;
         }
 
-        ServiceTestStep CreateServiceTestStep(Guid uniqueID, string displayName, Type type, List<IServiceTestOutput> serviceTestOutputs)
+        static ServiceTestStep CreateServiceTestStep(Guid uniqueID, string displayName, Type type, List<IServiceTestOutput> serviceTestOutputs)
         {
             var step = new ServiceTestStep(uniqueID, type.Name, serviceTestOutputs.ToObservableCollection(), StepType.Assert)
             {
@@ -1493,12 +1493,12 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void SetStepIcon(Type type, ServiceTestStep serviceTestStep)
+        static void SetStepIcon(Type type, ServiceTestStep serviceTestStep)
         {
             SetStepIcon(type?.Name, serviceTestStep);
         }
 
-        void SetStepIcon(string typeName, ServiceTestStep serviceTestStep)
+        static void SetStepIcon(string typeName, ServiceTestStep serviceTestStep)
         {
             if (string.IsNullOrEmpty(typeName) || serviceTestStep == null)
             {
@@ -1526,10 +1526,9 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        IToolDescriptor GetDescriptorFromAttribute(Type type)
+        static IToolDescriptor GetDescriptorFromAttribute(Type type)
         {
             var info = type.GetCustomAttributes(typeof(ToolDescriptorInfo)).First() as ToolDescriptorInfo;
-            
             return new ToolDescriptor(info.Id, info.Designer, new WarewolfType(type.FullName, type.Assembly.GetName().Version, type.Assembly.Location), info.Name, info.Icon, type.Assembly.GetName().Version, true, info.Category, ToolType.Native, info.IconUri, info.FilterTag, info.ResourceToolTip, info.ResourceHelpText);
         }
 
@@ -1798,7 +1797,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool CanSave { get; set; }
 
-        bool GetPermissions()
+        static bool GetPermissions()
         {
             return true;
         }
@@ -1966,7 +1965,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        void MarkPending(List<IServiceTestModel> serviceTestModels)
+        static void MarkPending(List<IServiceTestModel> serviceTestModels)
         {
             foreach (var serviceTestModel in serviceTestModels)
             {
@@ -2375,7 +2374,7 @@ namespace Warewolf.Studio.ViewModels
             DeleteStep(testStep, SelectedServiceTest.TestSteps);
         }
 
-        void DeleteStep(IServiceTestStep testStep, ObservableCollection<IServiceTestStep> serviceTestSteps)
+        static void DeleteStep(IServiceTestStep testStep, ObservableCollection<IServiceTestStep> serviceTestSteps)
         {
             if (serviceTestSteps.Contains(testStep))
             {
@@ -2426,12 +2425,12 @@ namespace Warewolf.Studio.ViewModels
                 NoErrorExpected = to.NoErrorExpected,
                 ErrorContainsText = to.ErrorContainsText,
                 LastRunDate = to.LastRunDate,
+                TestInvalid = to.TestInvalid,
                 TestPending = to.TestPending,
                 TestFailing = to.TestFailing,
                 TestPassed = to.TestPassed,
                 Password = to.Password,
                 ParentId = to.ResourceId,
-                TestInvalid = to.TestInvalid,
                 TestSteps = to.TestSteps?.Select(step => CreateServiceTestStep(step) as IServiceTestStep).ToObservableCollection(),
                 Inputs = to.Inputs?.Select(CreateInput).ToObservableCollection(),
                 Outputs = to.Outputs?.Select(CreateOutput).ToObservableCollection()
@@ -2439,7 +2438,7 @@ namespace Warewolf.Studio.ViewModels
             return serviceTestModel;
         }
 
-        IServiceTestOutput CreateOutput(IServiceTestOutput output)
+        static IServiceTestOutput CreateOutput(IServiceTestOutput output)
         {
             var serviceTestOutput = new ServiceTestOutput(output.Variable, output.Value, output.From, output.To) as IServiceTestOutput;
             serviceTestOutput.AssertOp = output.AssertOp;
@@ -2447,7 +2446,7 @@ namespace Warewolf.Studio.ViewModels
             return serviceTestOutput;
         }
 
-        IServiceTestInput CreateInput(IServiceTestInput input)
+        static IServiceTestInput CreateInput(IServiceTestInput input)
         {
             var serviceTestInput = new ServiceTestInput(input.Variable, input.Value) as IServiceTestInput;
             serviceTestInput.EmptyIsNull = input.EmptyIsNull;
@@ -2483,7 +2482,7 @@ namespace Warewolf.Studio.ViewModels
             return testStep;
         }
 
-        ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromStep(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
+        static ObservableCollection<IServiceTestOutput> CreateServiceTestOutputFromStep(ObservableCollection<IServiceTestOutput> stepStepOutputs, ServiceTestStep testStep)
         {
             var stepOutputs = new ObservableCollection<IServiceTestOutput>();
             foreach (var serviceTestOutput in stepStepOutputs)
