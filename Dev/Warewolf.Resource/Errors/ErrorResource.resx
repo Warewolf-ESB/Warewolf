@@ -1328,4 +1328,7 @@ Please contact your Windows System Administrator.</value>
   <data name="GatherSystemInfoInputInvalidExpressionErrorTest" xml:space="preserve">
     <value>Result - Invalid expression: opening and closing brackets don't match</value>
   </data>
+  <data name="SwitchNoDefaultError" xml:space="preserve">
+    <value>Failed: Switch must have a Default arm connected.</value>
+  </data>
 </root>
