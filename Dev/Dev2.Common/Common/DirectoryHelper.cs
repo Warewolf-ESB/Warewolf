@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -9,6 +9,7 @@
 */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Warewolf.Resource.Errors;
 
@@ -16,25 +17,44 @@ namespace Dev2.Common.Common
 {
     public static class DirectoryHelper
     {
+        
+        /// <summary>
+        /// This needs to be remove at Version 3.0
+        /// </summary>
+        /// <param name="path"></param>
+        /// <param name="extensions"></param>
+        /// <returns></returns>
+        public static IEnumerable<string> GetFilesByExtensions(string path, params string[] extensions)
+        {
+            var dir = new DirectoryInfo(path);
+            if (extensions == null)
+                throw new ArgumentNullException("extensions");
+            var _files = new List<string>();
+            foreach (string ext in extensions)
+            {
+                var fyles = Directory.GetFiles(path, string.Format("*{0}", ext));
+                foreach (var item in fyles)
+                {
+                    _files.Add(item);
+                }
+            }
+            return _files;
+        }
+
         public static void Copy(string sourceDirName, string destDirName, bool copySubDirs)
         {
-            var dir = new DirectoryInfo(sourceDirName);
-            DirectoryInfo[] dirs = dir.GetDirectories();
-
-            if (!dir.Exists)
-            {
-                throw new DirectoryNotFoundException(string.Format(ErrorResource.SourceDirectoryDoesNotExist, sourceDirName));
-            }
-
             if (!Directory.Exists(destDirName))
             {
                 Directory.CreateDirectory(destDirName);
             }
 
-            FileInfo[] files = dir.GetFiles();
+            var dir = new DirectoryInfo(sourceDirName);
+            var dirs = dir.GetDirectories();
+
+            var files = dir.GetFiles();
             foreach (FileInfo file in files)
             {
-                string temppath = Path.Combine(destDirName, file.Name);
+                var temppath = Path.Combine(destDirName, file.Name);
                 file.CopyTo(temppath, false);
             }
 
@@ -42,7 +62,7 @@ namespace Dev2.Common.Common
             {
                 foreach (DirectoryInfo subdir in dirs)
                 {
-                    string temppath = Path.Combine(destDirName, subdir.Name);
+                    var temppath = Path.Combine(destDirName, subdir.Name);
                     Copy(subdir.FullName, temppath, true);
                 }
             }
@@ -60,7 +80,7 @@ namespace Dev2.Common.Common
             }
         }
 
-        private static void DeleteFileSystemInfo(FileSystemInfo fsi)
+        static void DeleteFileSystemInfo(FileSystemInfo fsi)
         {
             CheckIfDeleteIsValid(fsi);
             fsi.Attributes = FileAttributes.Normal;
@@ -75,7 +95,7 @@ namespace Dev2.Common.Common
             fsi.Delete();
         }
 
-        private static void CheckIfDeleteIsValid(FileSystemInfo fsi)
+        static void CheckIfDeleteIsValid(FileSystemInfo fsi)
         {
             if (fsi.FullName.ToLower() == @"C:\".ToLower())
             {

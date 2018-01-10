@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -52,19 +52,18 @@ namespace Dev2.Studio.Interfaces
         void SetPropertiesForDialogFromPermissions(IWindowsGroupPermission permissions);
 
         Action SelectAll { get; set; }
-        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
 
-        Task<bool> Load();
+        Task<bool> LoadAsync();
 
-        Task<bool> Load(bool isDeploy);
+        Task<bool> LoadAsync(bool isDeploy);
 
-        Task<bool> Load(bool isDeploy, bool reloadCatalogue);
+        Task<bool> LoadAsync(bool isDeploy, bool reloadCatalogue);
 
-        Task<bool> LoadDialog(string selectedId);
+        Task<bool> LoadDialogAsync(string selectedId);
 
-        Task<bool> LoadDialog(string selectedId, bool b, bool reloadCatalogue);
+        Task<bool> LoadDialogAsync(string selectedId, bool b, bool reloadCatalogue);
 
-        Task<bool> LoadDialog(Guid selectedPath);
+        Task<bool> LoadDialogAsync(Guid selectedPath);
         IExplorerTreeItem FindByPath(string path);
 
         ObservableCollection<IExplorerItemViewModel> CreateExplorerItemModels(IEnumerable<IExplorerItem> explorerItems, IServer server, IExplorerTreeItem parent, bool isDialog, bool isDeploy);

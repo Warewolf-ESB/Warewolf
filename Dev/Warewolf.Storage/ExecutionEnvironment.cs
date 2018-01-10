@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ namespace Warewolf.Storage
 {
     public class ExecutionEnvironment : IExecutionEnvironment
     {
-        private DataStorage.WarewolfEnvironment _env;
+        DataStorage.WarewolfEnvironment _env;
 
         public ExecutionEnvironment()
         {
@@ -123,11 +123,17 @@ namespace Warewolf.Storage
             {
                 return;
             }
+            try
+            {
+                var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), update, _env);
 
-            var envTemp = PublicFunctions.EvalAssignWithFrame(new AssignValue(exp, value), update, _env);
-
-            _env = envTemp;
-            CommitAssign();
+                _env = envTemp;
+                CommitAssign();
+            }
+            catch (Exception err)
+            {
+                Errors.Add(err.Message);
+            }
         }
 
         public void AssignStrict(string exp, string value, int update)
@@ -137,10 +143,17 @@ namespace Warewolf.Storage
                 return;
             }
 
-            var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), update, _env);
+            try
+            {
+                var envTemp = PublicFunctions.EvalAssignWithFrameStrict(new AssignValue(exp, value), update, _env);
 
-            _env = envTemp;
-            CommitAssign();
+                _env = envTemp;
+                CommitAssign();
+            }
+            catch (Exception err)
+            {
+                Errors.Add(err.Message);
+            }
         }
 
 
@@ -326,7 +339,7 @@ namespace Warewolf.Storage
             if (result is CommonFunctions.WarewolfEvalResult.WarewolfAtomListresult warewolfAtomListresult)
             {
                 var x = warewolfAtomListresult.Item;
-                StringBuilder res = new StringBuilder();
+                var res = new StringBuilder();
                 for (int index = 0; index < x.Count; index++)
                 {
                     var warewolfAtom = x[index];
@@ -642,7 +655,7 @@ namespace Warewolf.Storage
             return indexMap.Where(s => !s.Contains(@"(*)")).ToList();
         }
 
-        private void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
+        void BuildIndexMap(LanguageAST.JsonIdentifierExpression var, string exp, List<string> indexMap, JContainer container)
         {
             var jsonIdentifierExpression = var;
             if (jsonIdentifierExpression != null)

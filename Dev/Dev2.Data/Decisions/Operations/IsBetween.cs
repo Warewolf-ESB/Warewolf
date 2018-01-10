@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,12 +29,12 @@ namespace Dev2.Data.Decisions.Operations
         public bool Invoke(string[] cols)
         {
             
-            double[] dVal = new double[3];
-            DateTime[] dtVal = new DateTime[3];
+            var dVal = new double[3];
+            var dtVal = new DateTime[3];
 
-            int pos = 0;
-            bool isDateTimeCompare = false;
-            foreach(string c in cols)
+            var pos = 0;
+            var isDateTimeCompare = false;
+            foreach (string c in cols)
             {
                 if(!double.TryParse(c, out dVal[pos]))
                 {

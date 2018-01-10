@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,9 +14,9 @@ namespace Dev2.Data.Binary_Objects
 {
     public class ListIndexIterator : IIndexIterator
     {
-        private int _curValue;
-        private int _curPos;
-        private ListOfIndex _indexList;
+        int _curValue;
+        int _curPos;
+        ListOfIndex _indexList;
 
         public ListOfIndex IndexList
         {
@@ -45,7 +45,7 @@ namespace Dev2.Data.Binary_Objects
 
         public bool HasMore()
         {
-            bool result = _curPos < IndexList.Count();
+            var result = _curPos < IndexList.Count();
             return result;
         }
 

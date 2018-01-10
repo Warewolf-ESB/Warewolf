@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -546,7 +546,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -584,7 +584,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -621,7 +621,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.NoMatch, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -660,7 +660,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Success, Message = "" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();
@@ -697,7 +697,7 @@ namespace Dev2.Tests.Runtime.Hosting
             //------------Setup for test--------------------------
             var testCatalogue = new Mock<ITestCatalog>();
             var catalogue = new Mock<IResourceCatalog>();
-            ResourceCatalogResult resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Fail, Message = "Error Renaming" };
+            var resourceCatalogResult = new ResourceCatalogResult { Status = ExecStatus.Fail, Message = "Error Renaming" };
             catalogue.Setup(catalog => catalog.RenameCategory(It.IsAny<Guid>(), It.IsAny<string>(), It.IsAny<string>())).Returns(resourceCatalogResult);
             var factory = new Mock<IExplorerItemFactory>();
             var dir = new Mock<IDirectory>();

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -300,7 +300,7 @@ namespace Dev2.Core.Tests.Services
 
         static ServerServiceConfiguration CreateServerServiceConfiguration(bool isServiceRunning)
         {
-            Mock<IWindowsServiceManager> serviceManager = new Mock<IWindowsServiceManager>();
+            var serviceManager = new Mock<IWindowsServiceManager>();
             serviceManager.Setup(sm => sm.IsRunning()).Returns(isServiceRunning);
 
             var serverServiceConfiguration = new ServerServiceConfiguration(serviceManager.Object);
@@ -309,7 +309,7 @@ namespace Dev2.Core.Tests.Services
 
         static ServerServiceConfiguration CreateServerServiceConfiguration(bool isServiceRunning, bool startServiceResult)
         {
-            Mock<IWindowsServiceManager> serviceManager = new Mock<IWindowsServiceManager>();
+            var serviceManager = new Mock<IWindowsServiceManager>();
             serviceManager.Setup(sm => sm.IsRunning()).Returns(isServiceRunning);
             serviceManager.Setup(sm => sm.Start()).Returns(startServiceResult);
             serviceManager.Setup(sm => sm.Exists()).Returns(true);
@@ -320,12 +320,12 @@ namespace Dev2.Core.Tests.Services
 
         static ServerServiceConfiguration CreateServerServiceConfiguration(bool isServiceRunning, bool startServiceResult, bool serviceExist, out Mock<IPopupController> ctrl)
         {
-            Mock<IWindowsServiceManager> serviceManager = new Mock<IWindowsServiceManager>();
+            var serviceManager = new Mock<IWindowsServiceManager>();
             serviceManager.Setup(sm => sm.IsRunning()).Returns(isServiceRunning);
             serviceManager.Setup(sm => sm.Start()).Returns(startServiceResult);
             serviceManager.Setup(sm => sm.Exists()).Returns(serviceExist);
 
-            Mock<IPopupController> controller = new Mock<IPopupController>();
+            var controller = new Mock<IPopupController>();
             controller.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
 
             // set for out arg
@@ -337,10 +337,10 @@ namespace Dev2.Core.Tests.Services
 
         static ServerServiceConfiguration CreateServerServiceConfiguration(bool isServiceRunning, MessageBoxResult promptResult, out Mock<IPopupController> ctrl)
         {
-            Mock<IWindowsServiceManager> serviceManager = new Mock<IWindowsServiceManager>();
+            var serviceManager = new Mock<IWindowsServiceManager>();
             serviceManager.Setup(sm => sm.IsRunning()).Returns(isServiceRunning);
 
-            Mock<IPopupController> controller = new Mock<IPopupController>();
+            var controller = new Mock<IPopupController>();
             controller.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Verifiable();
             controller.Setup(c => c.Show(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<MessageBoxButton>(), It.IsAny<MessageBoxImage>(), It.IsAny<string>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>(), It.IsAny<bool>())).Returns(promptResult);
 

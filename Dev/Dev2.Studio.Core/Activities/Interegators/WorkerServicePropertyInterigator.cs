@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,14 +38,14 @@ namespace Dev2.Studio.Core.Activities.Interegators
 
                         fragment += "</Action>";
                         fragment = fragment.Replace("&", "&amp;");
-                        XmlDocument document = new XmlDocument();
+                        var document = new XmlDocument();
 
                         document.LoadXml(fragment);
 
                         if(document.DocumentElement != null)
                         {
-                            XmlNode node = document.SelectSingleNode("//Action");
-                            if(node?.Attributes != null)
+                            var node = document.SelectSingleNode("//Action");
+                            if (node?.Attributes != null)
                             {
                                 var attr = node.Attributes["SourceName"];
                                 if(attr != null)

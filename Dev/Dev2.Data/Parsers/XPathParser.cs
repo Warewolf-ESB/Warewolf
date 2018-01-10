@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -66,7 +66,7 @@ namespace Dev2.Data.Parsers
                     throw new Exception("Input XML is not valid.");
                 }
                 List<string> stringList;
-                XmlDocument document = new XmlDocument();
+                var document = new XmlDocument();
                 document.LoadXml(useXmlData);
                 var namespaces = new List<KeyValuePair<string, string>>();
                 if (document.DocumentElement != null)
@@ -88,7 +88,7 @@ namespace Dev2.Data.Parsers
                 }
                 using (TextReader stringReader = new StringReader(useXmlData))
                 {
-                    Processor processor = new Processor(false);
+                    var processor = new Processor(false);
                     var compiler = processor.NewXPathCompiler();
                     compiler.XPathLanguageVersion = "3.0";
                     foreach (var keyValuePair in namespaces)
@@ -121,9 +121,9 @@ namespace Dev2.Data.Parsers
             }
         }
 
-        private static List<string> BuildListFromXPathResult(IEnumerator list)
+        static List<string> BuildListFromXPathResult(IEnumerator list)
         {
-            List<string> stringList = new List<string>();
+            var stringList = new List<string>();
             while (list.MoveNext())
             {
                 var current = list.Current;

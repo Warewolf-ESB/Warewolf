@@ -7,8 +7,8 @@ namespace Gma.DataStructures.StringSearch
 {
     public class PatriciaSuffixTrie<TValue> : ITrie<TValue>
     {
-        private readonly int m_MinQueryLength;
-        private readonly PatriciaTrie<TValue> m_InnerTrie;
+        readonly int m_MinQueryLength;
+        readonly PatriciaTrie<TValue> m_InnerTrie;
 
         public PatriciaSuffixTrie(int minQueryLength)
             : this(minQueryLength, new PatriciaTrie<TValue>())
@@ -37,14 +37,14 @@ namespace Gma.DataStructures.StringSearch
 
         public void Add(string key, TValue value)
         {
-            IEnumerable<StringPartition> allSuffixes = GetAllSuffixes(MinQueryLength, key);
+            var allSuffixes = GetAllSuffixes(MinQueryLength, key);
             foreach (StringPartition currentSuffix in allSuffixes)
             {
                 m_InnerTrie.Add(currentSuffix, value);
             }
         }
 
-        private static IEnumerable<StringPartition> GetAllSuffixes(int minSuffixLength, string word)
+        static IEnumerable<StringPartition> GetAllSuffixes(int minSuffixLength, string word)
         {
             for (int i = word.Length - minSuffixLength; i >= 0; i--)
             {

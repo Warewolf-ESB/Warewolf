@@ -18,14 +18,14 @@ namespace Warewolf.Studio.Views
             InitializeComponent();
         }
 
-        private void EnterServerName(string serverName)
+        void EnterServerName(string serverName)
         {
             ServerTextBox.Text = serverName;
         }
 
         public Visibility GetDatabaseDropDownVisibility()
         {
-            BindingExpression be = DatabaseComboxContainer.GetBindingExpression(VisibilityProperty);
+            var be = DatabaseComboxContainer.GetBindingExpression(VisibilityProperty);
             be?.UpdateTarget();
             return DatabaseComboxContainer.Visibility;
         }
@@ -87,14 +87,14 @@ namespace Warewolf.Studio.Views
 
         public Visibility GetUsernameVisibility()
         {
-            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            var be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
             be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
 
         public Visibility GetPasswordVisibility()
         {
-            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            var be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
             be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
@@ -135,7 +135,7 @@ namespace Warewolf.Studio.Views
 
 
 
-        private void XamComboEditor_Loaded(object sender, RoutedEventArgs e)
+        void XamComboEditor_Loaded(object sender, RoutedEventArgs e)
         {
         }
 

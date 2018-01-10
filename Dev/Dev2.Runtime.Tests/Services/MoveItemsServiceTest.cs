@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -83,8 +83,8 @@ namespace Dev2.Tests.Runtime.Services
             var MoveItemService = new MoveItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = MoveItemService.Execute(null, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = MoveItemService.Execute(null, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -99,8 +99,8 @@ namespace Dev2.Tests.Runtime.Services
             var MoveItemService = new MoveItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = MoveItemService.Execute(values, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = MoveItemService.Execute(values, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -115,8 +115,8 @@ namespace Dev2.Tests.Runtime.Services
             var MoveItemService = new MoveItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = MoveItemService.Execute(values, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = MoveItemService.Execute(values, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -131,8 +131,8 @@ namespace Dev2.Tests.Runtime.Services
             var MoveItemService = new MoveItemService();
             var serializer = new Dev2JsonSerializer();
             //------------Execute Test---------------------------
-            StringBuilder jsonResult = MoveItemService.Execute(values, null);
-            IExplorerRepositoryResult result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
+            var jsonResult = MoveItemService.Execute(values, null);
+            var result = serializer.Deserialize<IExplorerRepositoryResult>(jsonResult);
             //------------Assert Results-------------------------
             Assert.AreEqual(ExecStatus.Fail, result.Status);
         }
@@ -145,7 +145,7 @@ namespace Dev2.Tests.Runtime.Services
             //------------Setup for test--------------------------
             var moveItemService = new MoveItemService();
 
-            ServerExplorerItem item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
+            var item = new ServerExplorerItem("a", Guid.NewGuid(), "Folder", null, Permissions.DeployFrom, "");
             var repo = new Mock<IExplorerServerResourceRepository>();
             var ws = new Mock<IWorkspace>();
             repo.Setup(a => a.MoveItem(It.IsAny<IExplorerItem>(), It.IsAny<string>(), It.IsAny<Guid>())).Returns(new ExplorerRepositoryResult(ExecStatus.Success, "")).Verifiable();

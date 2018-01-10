@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,8 +56,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     typeof (XDocument), Data.GetType()));
             }
 
-            string returnData = string.Empty;
-            XElement currentElement = document.Root;
+            var returnData = string.Empty;
+            var currentElement = document.Root;
 
             if (path.ActualPath == XmlPath.NodeSeperatorSymbol)
             {
@@ -69,7 +69,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             else
             {
                 var pathSegments = new List<XmlPathSegment>(xmlPath.GetSegements().OfType<XmlPathSegment>());
-                int segmentIndex = 0;
+                var segmentIndex = 0;
 
                 while (currentElement != null && segmentIndex < pathSegments.Count)
                 {
@@ -89,7 +89,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                         {
                             if (pathSegments[segmentIndex].IsAttribute)
                             {
-                                XAttribute attribute = currentElement.Attribute(pathSegments[segmentIndex].ActualSegment);
+                                var attribute = currentElement.Attribute(pathSegments[segmentIndex].ActualSegment);
 
                                 if (attribute != null)
                                 {
@@ -154,7 +154,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
 
             List<object> returnData = null;
-            XElement currentElement = document.Root;
+            var currentElement = document.Root;
 
             if (path.ActualPath == XmlPath.NodeSeperatorSymbol)
             {
@@ -239,8 +239,8 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         {
             foreach (IPath path in paths)
             {
-                IndexedPathSegmentTreeNode<string> indexedPathSegmentTreeNode = rootIndexedValueTreeNode;
-                int pathSegmentCount = 0;
+                var indexedPathSegmentTreeNode = rootIndexedValueTreeNode;
+                var pathSegmentCount = 0;
 
                 while (pathSegmentCount < indexedPathSegments[path].Count)
                 {
@@ -253,7 +253,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     if (indexedPathSegmentTreeNode != null && pathSegment != null && !indexedPathSegmentTreeNode.TryGetValue(pathSegment.ActualSegment,
                         out tmpIndexedPathSegmentTreeNode))
                     {
-                        IndexedPathSegmentTreeNode<string> newIndexedPathSegmentTreeNode =
+                        var newIndexedPathSegmentTreeNode =
                             CreatePathSegmentIndexedPathSegmentTreeNode(pathSegment, parentPathSegment,
                                 indexedPathSegmentTreeNode);
                         indexedPathSegmentTreeNode.Add(pathSegment.ActualSegment, newIndexedPathSegmentTreeNode);
@@ -275,9 +275,9 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
         {
             foreach (IPath path in paths)
             {
-                List<IPathSegment> list = indexedPathSegments[path];
+                var list = indexedPathSegments[path];
 
-                IndexedPathSegmentTreeNode<string> indexedPathSegmentTreeNode =
+                var indexedPathSegmentTreeNode =
                     rootIndexedValueTreeNode[list.Select(p => p.ActualSegment).ToList()];
 
                 if (indexedPathSegmentTreeNode.CurrentValue is XElement element)
@@ -292,7 +292,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             }
         }
 
-        private IndexedPathSegmentTreeNode<string> CreatePathSegmentIndexedPathSegmentTreeNode(
+        IndexedPathSegmentTreeNode<string> CreatePathSegmentIndexedPathSegmentTreeNode(
             XmlPathSegment pathSegment, IPathSegment parentPathSegment, IndexedPathSegmentTreeNode<string> parentNode)
         {
             var newIndexedValueTreeNode = new IndexedPathSegmentTreeNode<string>();
@@ -317,7 +317,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     {
                         if (parentCurentElement != null)
                         {
-                            List<XElement> childElements =
+                            var childElements =
                                 parentCurentElement.Elements(pathSegment.ActualSegment).ToList();
                             newIndexedValueTreeNode.EnumerableValue = childElements;
 
@@ -382,11 +382,11 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
             return newIndexedValueTreeNode;
         }
 
-        private IEnumerable<string> SelectEnumberable(IList<IPathSegment> pathSegments, IPathSegment parentPathSegment,
+        IEnumerable<string> SelectEnumberable(IList<IPathSegment> pathSegments, IPathSegment parentPathSegment,
             XElement element)
         {
             var returnData = new List<string>();
-            XElement currentElement = element;
+            var currentElement = element;
 
             if (pathSegments.Count > 0)
             {
@@ -397,7 +397,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
 
                     previousPathSegment = i > 0 ? pathSegments[i - 1] as XmlPathSegment : parentPathSegment as XmlPathSegment;
 
-                    bool lastSegment = i == pathSegments.Count - 1;
+                    var lastSegment = i == pathSegments.Count - 1;
 
                     if (previousPathSegment != null && previousPathSegment.IsEnumarable)
                     {
@@ -405,7 +405,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                         {
                             if (pathSegment != null)
                             {
-                                List<XElement> childElements =
+                                var childElements =
                                     currentElement.Elements(pathSegment.ActualSegment).ToList();
 
                                 if (childElements.Count > 0)
@@ -416,7 +416,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                                         {
                                             if (pathSegment.IsAttribute)
                                             {
-                                                XAttribute attribute = childElement.Attribute(pathSegment.ActualSegment);
+                                                var attribute = childElement.Attribute(pathSegment.ActualSegment);
 
                                                 if (attribute != null)
                                                 {
@@ -450,7 +450,7 @@ namespace Unlimited.Framework.Converters.Graph.String.Xml
                     }
                     if (pathSegment != null && pathSegment.IsAttribute)
                     {
-                        XAttribute attribute = currentElement?.Attribute(pathSegment.ActualSegment);
+                        var attribute = currentElement?.Attribute(pathSegment.ActualSegment);
 
                         if (attribute != null)
                         {

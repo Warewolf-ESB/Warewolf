@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -83,9 +83,9 @@ namespace Dev2.Core.Tests
             EventAggregator = new Mock<IEventAggregator>();
             PopupController = new Mock<IPopupController>();
             WindowManager = new Mock<IWindowManager>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockWorkspaceItemRepository = GetworkspaceItemRespository();
+
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             
             var vieFactory = new Mock<IViewFactory>();
@@ -112,9 +112,9 @@ namespace Dev2.Core.Tests
             CustomContainer.Register(WindowManager.Object);
             CustomContainer.Register(PopupController.Object);
             BrowserPopupController = new Mock<IBrowserPopupController>();
-            Mock<IAsyncWorker> asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
-            Mock<IWorkspaceItemRepository> mockWorkspaceItemRepository = GetworkspaceItemRespository();
-            
+            var asyncWorker = AsyncWorkerTests.CreateSynchronousAsyncWorker();
+            var mockWorkspaceItemRepository = GetworkspaceItemRespository();
+
             new WorkspaceItemRepository(mockWorkspaceItemRepository.Object);
             
             var explorerViewModel = new Mock<IExplorerViewModel>();
@@ -192,7 +192,7 @@ namespace Dev2.Core.Tests
             connection.Setup(c => c.WebServerUri)
                 .Returns(new Uri($"http://127.0.0.{rand.Next(1, 100)}:{rand.Next(1, 100)}"));
             connection.Setup(c => c.IsConnected).Returns(true);
-            int cnt = 0;
+            var cnt = 0;
             connection.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>()))
                 .Returns(
                     () =>

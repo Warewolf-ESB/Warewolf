@@ -15,8 +15,9 @@ namespace Dev2.Integration.Tests.Server_Refresh
     [TestClass]
     public class ServerRefreshTests
     {
-        private const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.xml";
+        const string PassResult = @"C:\ProgramData\Warewolf\Resources\PassResult.bite";
         [TestMethod]
+        [Owner("Nkosinathi Sangweni")]
         public void Run_a_workflow_to_test_server_refresh()
         {
             SetupPermissions();
@@ -53,18 +54,18 @@ namespace Dev2.Integration.Tests.Server_Refresh
             StringAssert.Contains(passRequest4Result, "Pass");
         }
 
-        private class PatientWebClient : WebClient
+        class PatientWebClient : WebClient
         {
             protected override WebRequest GetWebRequest(Uri uri)
             {
-                WebRequest w = base.GetWebRequest(uri);
+                var w = base.GetWebRequest(uri);
                 // ReSharper disable once PossibleNullReferenceException
                 w.Timeout = 20 * 60 * 1000;
                 return w;
             }
         }
 
-        private void FileIsDeleted(string fileToDelete)
+        void FileIsDeleted(string fileToDelete)
         {
             try
             {
@@ -76,7 +77,7 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        private Task<string> ExececuteRequest(Uri url)
+        public Task<string> ExececuteRequest(Uri url)
         {
             try
             {
@@ -95,9 +96,9 @@ namespace Dev2.Integration.Tests.Server_Refresh
             }
         }
 
-        private static void SetupPermissions()
+        static void SetupPermissions()
         {
-            string groupRights = "View, Execute, Contribute, Deploy To, Deploy From, Administrator";
+            var groupRights = "View, Execute, Contribute, Deploy To, Deploy From, Administrator";
             var groupPermssions = new WindowsGroupPermission
             {
                 WindowsGroup = "Public",
@@ -113,11 +114,11 @@ namespace Dev2.Integration.Tests.Server_Refresh
                     groupPermssions.Permissions |= permission;
                 }
             }
-            Data.Settings.Settings settings = new Data.Settings.Settings
+            var settings = new Data.Settings.Settings
             {
                 Security = new SecuritySettingsTO(new List<WindowsGroupPermission> { groupPermssions })
             };
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
             var environmentModel = ServerRepository.Instance.Source;
             environmentModel.Connect();
             environmentModel.ResourceRepository.WriteSettings(environmentModel, settings);

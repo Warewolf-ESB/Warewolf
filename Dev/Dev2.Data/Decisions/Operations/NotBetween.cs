@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,12 +15,8 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Data.Decisions.Operations
 {
-    /// <summary>
-    /// Is Between Operator
-    /// </summary>
     public class NotBetween : IDecisionOperation
     {
-
         public Enum HandlesType()
         {
             return enDecisionType.NotBetween;
@@ -28,14 +24,17 @@ namespace Dev2.Data.Decisions.Operations
 
         public bool Invoke(string[] cols)
         {
-            double[] dVal = new double[3];
-            DateTime[] dtVal = new DateTime[3];
+            var dVal = new double[3];
+            var dtVal = new DateTime[3];
 
-            int pos = 0;
+            var pos = 0;
+            var anyDoubles = false;
 
-            foreach(string c in cols)
+            foreach (string c in cols)
             {
-                if(!double.TryParse(c, out dVal[pos]))
+                var isDouble = double.TryParse(c, out dVal[pos]);
+                anyDoubles = anyDoubles || isDouble;
+                if (!anyDoubles)
                 {
                     try
                     {
@@ -47,18 +46,16 @@ namespace Dev2.Data.Decisions.Operations
                     catch(Exception ex)
                     {
                         Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
-                        // Best effort ;)
                     }
                 }
 
                 pos++;
             }
 
-
             double left;
             double right;
 
-            if(dVal.Length == 3)
+            if(anyDoubles)
             {
                 left = dVal[0] - dVal[1];
                 right = dVal[0] - dVal[2];

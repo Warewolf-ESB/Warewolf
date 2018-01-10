@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,13 +19,13 @@ namespace Dev2.Runtime.Configuration.Settings
 {
     public sealed class Configuration : PropertyChangedBase
     {
-        private static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
+        static ConcurrentDictionary<Guid, TextExpressionCompilerResults> resultscache = new ConcurrentDictionary<Guid, TextExpressionCompilerResults>();
 
         #region Fields
 
-        private LoggingSettings _logging;
-        private SecuritySettings _security;
-        private BackupSettings _backup;
+        LoggingSettings _logging;
+        SecuritySettings _security;
+        BackupSettings _backup;
 
         #endregion
 
@@ -144,15 +144,15 @@ namespace Dev2.Runtime.Configuration.Settings
 
         #region Event Handlers
 
-        private void SettingChanged(object sender, PropertyChangedEventArgs e)
+        void SettingChanged(object sender, PropertyChangedEventArgs e)
         {
-            if(e.PropertyName == "HasError" || e.PropertyName == "Error")
+            if (e.PropertyName == "HasError" || e.PropertyName == "Error")
             {
                 NotifyOfPropertyChange(() => HasError);
                 return;
             }
 
-            if(e.PropertyName == "HasChanges")
+            if (e.PropertyName == "HasChanges")
             {
                 NotifyOfPropertyChange(() => HasChanges);
             }

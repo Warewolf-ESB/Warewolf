@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
+        void DataGridOnPreviewTextInput(object sender, TextCompositionEventArgs textCompositionEventArgs)
         {
             CallWorkflowUpdateEvent();
         }
@@ -98,7 +98,7 @@ namespace Dev2.Activities.Designers2.Core
             }
         }
 
-        private static void CallWorkflowUpdateEvent()
+        static void CallWorkflowUpdateEvent()
         {
             var shellViewModel = CustomContainer.Get<IShellViewModel>();
             var workflowDesignerViewModel = shellViewModel?.GetWorkflowDesigner();

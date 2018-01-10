@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
     [Binding]
     public class CommandSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CommandSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -80,7 +80,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         [Given(@"I have these command scripts to execute in a single execution run")]
         public void GivenIHaveTheseCommandScriptsToExecuteInASingleExecutionRun(Table table)
         {
-            List<TableRow> commands = table.Rows.ToList();
+            var commands = table.Rows.ToList();
             var commandBuilder = new StringBuilder();
             foreach(TableRow tableRow in commands)
             {
@@ -94,7 +94,7 @@ namespace Dev2.Activities.Specs.Toolbox.Scripting.Command
         public void WhenTheCommandToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

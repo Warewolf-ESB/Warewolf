@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,7 +14,7 @@ namespace Dev2.Activities
     public class DsfForEachItem
     {
         public static DsfForEachItem[] EmptyList { get => emptyList; set => emptyList = value; }
-        private static DsfForEachItem[] emptyList = new DsfForEachItem[0];
+        static DsfForEachItem[] emptyList = new DsfForEachItem[0];
         public string Name { get; set; }
 
         public string Value { get; set; }

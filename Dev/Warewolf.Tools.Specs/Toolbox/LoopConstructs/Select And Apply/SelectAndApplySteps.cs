@@ -21,7 +21,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
     [Binding]
     public class SelectAndApplySteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public SelectAndApplySteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -37,7 +37,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         [Given(@"There is a complexobject in the datalist with this shape")]
         public void GivenThereIsAComplexobjectInTheDatalistWithThisShape(Table table)
         {
-            List<TableRow> rows = table.Rows.ToList();
+            var rows = table.Rows.ToList();
 
             if (rows.Count == 0)
             {
@@ -45,7 +45,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("obj", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("obj", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -113,7 +113,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         [Given(@"I use a Number Format tool configured as")]
         public void GivenIUseANumberFormatToolConfiguredAs(Table table)
         {
-            DsfNumberFormatActivity numberFormatActivity = new DsfNumberFormatActivity();
+            var numberFormatActivity = new DsfNumberFormatActivity();
             numberFormatActivity.Expression = table.Rows[0]["Number"];
             numberFormatActivity.DecimalPlacesToShow = table.Rows[0]["Decimals to show"];
             numberFormatActivity.RoundingType = table.Rows[0]["Rounding"];
@@ -127,7 +127,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         public void WhenTheSelectAndApplyToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
+            var result = ExecuteProcess(isDebug: true, throwException: false, channel: new mockEsb(scenarioContext));
             scenarioContext.Add("result", result);
         }
 
@@ -202,9 +202,9 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
                 alias = string.Empty;
             }
 
-            Activity innerActivity = scenarioContext.Get<Activity>("innerActivity");
+            var innerActivity = scenarioContext.Get<Activity>("innerActivity");
 
-            DsfSelectAndApplyActivity selectAndApplyTool = new DsfSelectAndApplyActivity();
+            var selectAndApplyTool = new DsfSelectAndApplyActivity();
             selectAndApplyTool.DataSource = datasource;
             selectAndApplyTool.Alias = alias;
             selectAndApplyTool.ApplyActivityFunc.Handler = innerActivity;
@@ -216,14 +216,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             scenarioContext.Add("activity", selectAndApplyTool);
         }
 
-        private string BuildInputMappings()
+        string BuildInputMappings()
         {
             var inputMappings = new StringBuilder();
             inputMappings.Append("<Inputs>");
 
             var inMapTo = scenarioContext.Get<string>("inMapTo");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, inMapTo);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, inMapTo);
 
             var inMapFrom = scenarioContext.Get<string>("inMapFrom");
             inputMappings.Append(string.Format("<Input Name=\"{0}\" Source=\"{1}\" Recordset=\"{2}\"/>", inColumn,
@@ -233,14 +233,14 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
             return inputMappings.ToString();
         }
 
-        private string BuildOutputMappings()
+        string BuildOutputMappings()
         {
             var outputMappings = new StringBuilder();
             outputMappings.Append("<Outputs>");
 
             var outMapFrom = scenarioContext.Get<string>("outMapFrom");
-            string inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
-            string inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
+            var inRecordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, outMapFrom);
+            var inColumn = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, outMapFrom);
 
             var outMapTo = scenarioContext.Get<string>("outMapTo");
             outputMappings.Append(string.Format(
@@ -252,7 +252,7 @@ namespace Warewolf.ToolsSpecs.Toolbox.LoopConstructs.Select_And_Apply
         }
     }
 
-    internal class SelectAndApplyTestTool : DsfNativeActivity<string>
+    class SelectAndApplyTestTool : DsfNativeActivity<string>
     {
         public SelectAndApplyTestTool()
             : base(false, "")

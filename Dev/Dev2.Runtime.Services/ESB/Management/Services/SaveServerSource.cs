@@ -4,13 +4,11 @@ using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces;
 using Dev2.Common.Interfaces.Core;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Communication;
 using Dev2.Data.ServiceModel;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel;
 using Dev2.Workspaces;
@@ -18,26 +16,17 @@ using Dev2.Workspaces;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    /// <summary>
-    /// Adds a resource
-    /// </summary>
-
     public class SaveServerSource : IEsbManagementEndpoint
     {
         IExplorerServerResourceRepository _serverExplorerRepository;
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs) => Guid.Empty;
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Contribute;
-        }
+        public AuthorizationContext GetAuthorizationContextForService() => AuthorizationContext.Contribute;
 
-        private static int GetSpecifiedIndexOf(string str, char ch, int index)
+        static int GetSpecifiedIndexOf(string str, char ch, int index)
         {
-            int i = 0, o = 1;
+            var i = 0;
+            var o = 1;
             while ((i = str.IndexOf(ch, i)) != -1)
             {
                 if (o == index)
@@ -50,10 +39,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
             return 0;
         }
+
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage msg = new ExecuteMessage();
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var msg = new ExecuteMessage();
+            var serializer = new Dev2JsonSerializer();
             try
             {
                 Dev2Logger.Info("Save Resource Service",GlobalConstants.WarewolfInfo);
@@ -61,10 +51,10 @@ namespace Dev2.Runtime.ESB.Management.Services
                 values.TryGetValue("ServerSource", out StringBuilder resourceDefinition);
 
                 IServerSource src = serializer.Deserialize<ServerSource>(resourceDefinition);
-                Connection con = new Connection();
+                var con = new Connection();
 
-                int portIndex = GetSpecifiedIndexOf(src.Address, ':', 2);
-                string port = src.Address.Substring(portIndex + 1);
+                var portIndex = GetSpecifiedIndexOf(src.Address, ':', 2);
+                var port = src.Address.Substring(portIndex + 1);
 
                 con.Address = src.Address;
                 con.AuthenticationType = src.AuthenticationType;
@@ -73,7 +63,7 @@ namespace Dev2.Runtime.ESB.Management.Services
                 con.ResourceName = src.Name;
                 con.ResourceID = src.ID;
                 con.WebServerPort = int.Parse(port);
-                Connections tester = new Connections();
+                var tester = new Connections();
                 var res = tester.CanConnectToServer(con);
                 if (res.IsValid)
                 {
@@ -99,23 +89,15 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             return serializer.SerializeToBuilder(msg);
         }
+
         public IExplorerServerResourceRepository ServerExplorerRepo
         {
-            get { return _serverExplorerRepository ?? ServerExplorerRepository.Instance; }
-            set { _serverExplorerRepository = value; }
-        }
-        public DynamicService CreateServiceEntry()
-        {
-            DynamicService newDs = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Roles ColumnIODirection=\"Input\"/><ServerSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
-            ServiceAction sa = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-            newDs.Actions.Add(sa);
-
-            return newDs;
+            get => _serverExplorerRepository ?? ServerExplorerRepository.Instance;
+            set => _serverExplorerRepository = value;
         }
 
-        public string HandlesType()
-        {
-            return "SaveServerSourceService";
-        }
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Roles ColumnIODirection=\"Input\"/><ServerSource ColumnIODirection=\"Input\"/><WorkspaceID ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public string HandlesType() => "SaveServerSourceService";
     }
 }

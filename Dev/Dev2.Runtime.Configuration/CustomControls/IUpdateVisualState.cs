@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,7 +23,7 @@ namespace System.Windows.Controls
     /// InteractionHelper with access to the type's UpdateVisualState method.
     /// </summary>
     [SuppressMessage("Microsoft.Design", "CA1064:ExceptionsShouldBePublic", Justification = "This is not an exception class.")]
-    internal interface IUpdateVisualState
+interface IUpdateVisualState
     {
         /// <summary>
         /// Update the visual state of the control.

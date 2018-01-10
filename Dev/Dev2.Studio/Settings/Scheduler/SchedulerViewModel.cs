@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -51,33 +51,33 @@ namespace Dev2.Settings.Scheduler
 {
     public class SchedulerViewModel : BaseWorkSurfaceViewModel, IHelpSource, IStudioTab
     {
-        private ICommand _saveCommand;
-        private ICommand _newCommand;
-        private ICommand _deleteCommand;
-        private ICommand _editTriggerCommand;
-        private ICommand _addWorkflowCommand;
+        ICommand _saveCommand;
+        ICommand _newCommand;
+        ICommand _deleteCommand;
+        ICommand _editTriggerCommand;
+        ICommand _addWorkflowCommand;
         readonly Dev2JsonSerializer _ser = new Dev2JsonSerializer();
-        private IScheduledResource _selectedTask;
-        private readonly IPopupController _popupController;
-        private readonly IAsyncWorker _asyncWorker;
+        IScheduledResource _selectedTask;
+        readonly IPopupController _popupController;
+        readonly IAsyncWorker _asyncWorker;
 
-        private IResourceHistory _selectedHistory;
-        private IList<IResourceHistory> _history;
-        private TabItem _activeItem;
-        private bool _isProgressBarVisible;
-        private bool _isHistoryTabVisible;
-        private string _helpText;
-        private bool _isLoading;
-        private string _connectionError;
-        private bool _hasConnectionError;
-        private IServer _currentEnvironment;
-        private IScheduledResourceModel _scheduledResourceModel;
-        private Func<IServer, IServer> _toEnvironmentModel;
-        private bool _errorShown;
-        private DebugOutputViewModel _debugOutputViewModel;
-        private string _displayName;
+        IResourceHistory _selectedHistory;
+        IList<IResourceHistory> _history;
+        TabItem _activeItem;
+        bool _isProgressBarVisible;
+        bool _isHistoryTabVisible;
+        string _helpText;
+        bool _isLoading;
+        string _connectionError;
+        bool _hasConnectionError;
+        IServer _currentEnvironment;
+        IScheduledResourceModel _scheduledResourceModel;
+        Func<IServer, IServer> _toEnvironmentModel;
+        bool _errorShown;
+        DebugOutputViewModel _debugOutputViewModel;
+        string _displayName;
 
-        
+
         public SchedulerViewModel()
             : this(EventPublishers.Aggregator, new DirectoryObjectPickerDialog(), new PopupController(), new AsyncWorker(), CustomContainer.Get<IShellViewModel>().ActiveServer, null)
         {
@@ -98,7 +98,7 @@ namespace Dev2.Settings.Scheduler
         {
             SchedulerTaskManager = new SchedulerTaskManager(this, getResourcePicker);
             VerifyArgument.IsNotNull("directoryObjectPicker", directoryObjectPicker);
-            DirectoryObjectPickerDialog directoryObjectPicker1 = directoryObjectPicker;
+            var directoryObjectPicker1 = directoryObjectPicker;
 
             VerifyArgument.IsNotNull("popupController", popupController);
             _popupController = popupController;
@@ -124,9 +124,6 @@ namespace Dev2.Settings.Scheduler
             SetupServer(server);
             SetDisplayName(false);
         }
-
-        public override bool HasVariables => false;
-        public override bool HasDebugOutput => true;
 
         public override string DisplayName
         {
@@ -604,7 +601,7 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        private bool IsHistoryTab
+        bool IsHistoryTab
         {
             get
             {
@@ -665,13 +662,13 @@ namespace Dev2.Settings.Scheduler
         public ICommand AddWorkflowCommand => _addWorkflowCommand ??
                                               (_addWorkflowCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(SchedulerTaskManager.AddWorkflow, SchedulerTaskManager.CanSelectWorkflow));
 
-        private void InitializeHelp()
+        void InitializeHelp()
         {
             HelpToggle = CreateHelpToggle();
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.SchedulerSettingsHelpTextSettingsView;
         }
 
-        private static ActivityDesignerToggle CreateHelpToggle()
+        static ActivityDesignerToggle CreateHelpToggle()
         {
             var toggle = ActivityDesignerToggle.Create("ServiceHelp", "Close Help", "ServiceHelp", "Open Help", "HelpToggle");
 
@@ -680,7 +677,7 @@ namespace Dev2.Settings.Scheduler
 
         void SetupServer(IServer tmpEnv)
         {
-            CurrentEnvironment = ToEnvironmentModel(tmpEnv);
+            CurrentEnvironment = ToEnvironmentModel?.Invoke(tmpEnv);
 
             if (CurrentEnvironment?.AuthorizationService != null && CurrentEnvironment.IsConnected && tmpEnv.Permissions.Any(a => a.Administrator))
             {
@@ -736,7 +733,7 @@ namespace Dev2.Settings.Scheduler
             HasConnectionError = false;
         }
 
-        private void ClearViewModel()
+        void ClearViewModel()
         {
             Name = string.Empty;
             WorkflowName = string.Empty;
@@ -798,9 +795,9 @@ namespace Dev2.Settings.Scheduler
             }
         }
 
-        private void SetDisplayName(bool dirty)
+        void SetDisplayName(bool dirty)
         {
-            string baseName = "Scheduler";
+            var baseName = "Scheduler";
             if (Server != null)
             {
                 baseName = baseName + " - " + Server.DisplayName;
@@ -828,7 +825,7 @@ namespace Dev2.Settings.Scheduler
             {
                 if (SelectedTask != null && SelectedTask.IsDirty)
                 {
-                    MessageBoxResult showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
+                    var showSchedulerCloseConfirmation = _popupController.ShowSchedulerCloseConfirmation();
                     switch (showSchedulerCloseConfirmation)
                     {
                         case MessageBoxResult.Cancel:

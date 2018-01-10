@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,25 +39,7 @@ namespace System.Windows.Controls
             }
         }
 
-        private bool _cancel;
-        
-        public bool InCoercion { get; set; }
-        
-        public RoutedPropertyChangingEventArgs(
-            DependencyProperty property,
-            T oldValue,
-            T newValue,
-            bool isCancelable)
-        {
-            Property = property;
-            OldValue = oldValue;
-            NewValue = newValue;
-            IsCancelable = isCancelable;
-            Cancel = false;
-        }
-
-#if !SILVERLIGHT
-
+        bool _cancel;
         public RoutedPropertyChangingEventArgs(DependencyProperty property,
             T oldValue, T newValue, bool isCancelable, RoutedEvent routedEvent)
             : base(routedEvent)
@@ -68,7 +50,5 @@ namespace System.Windows.Controls
             IsCancelable = isCancelable;
             Cancel = false;
         }
-
-#endif
     }
 }

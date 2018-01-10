@@ -4,9 +4,7 @@ using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Dev2.Common.Interfaces.Security;
-
-
-
+using Dev2.Common.Interfaces.Versioning;
 
 namespace Dev2.Studio.Interfaces
 {
@@ -21,6 +19,7 @@ namespace Dev2.Studio.Interfaces
         bool CanShowDependencies { get; set; }
         bool IsVersion { get; set; }
         bool CanViewSwagger { get; set; }
+        bool CanMerge { get; set; }
         bool CanDuplicate { get; set; }
         bool CanCreateTest { get; set; }
 
@@ -30,8 +29,8 @@ namespace Dev2.Studio.Interfaces
         string EditToolTip { get; }
         string ActivityName { get; }
 
-
         ICommand ViewSwaggerCommand { get; set; }
+        ICommand MergeCommand { get; set; }
         ICommand OpenCommand { get; set; }
         ICommand DeleteVersionCommand { get; set; }
         ICommand ShowDependenciesCommand { get; set; }
@@ -45,12 +44,11 @@ namespace Dev2.Studio.Interfaces
         bool CanCreateSchedule { get; set; }
         bool CanViewRunAllTests { get; set; }
         bool CanContribute { get; set; }
-        ObservableCollection<IExplorerItemViewModel> UnfilteredChildren { get; set; }
+        IVersionInfo VersionInfo { get; set; }
 
         IEnumerable<IExplorerItemViewModel> AsList();
 
-        Task<bool> Move(IExplorerTreeItem destination);
-
+        Task<bool> MoveAsync(IExplorerTreeItem destination);
     
         void AddSibling(IExplorerItemViewModel sibling);
         void CreateNewFolder();
@@ -64,5 +62,7 @@ namespace Dev2.Studio.Interfaces
         void SetPermissions(Permissions explorerItemPermissions);
 
         void SetPermissions(Permissions explorerItemPermissions, bool isDeploy);
+        void SetIsResourceChecked(bool? isResource);
+        void AfterResourceChecked();
     }
 }

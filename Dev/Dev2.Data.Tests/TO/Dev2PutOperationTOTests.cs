@@ -9,7 +9,7 @@ namespace Dev2.Data.Tests.Operations
         [TestMethod]
         public void Dev2PutOperationTO_Should()
         {
-            Dev2PutOperationTOFactory operationToFactory = new Dev2PutOperationTOFactory();
+            var operationToFactory = new Dev2PutOperationTOFactory();
             var dev2PutOperationTo = operationToFactory.CreateDev2PutOperationTO(true, "SomeContent", true);
             Assert.IsNotNull(dev2PutOperationTo);
             Assert.IsTrue(dev2PutOperationTo.Append);

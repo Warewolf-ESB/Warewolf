@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,29 +30,25 @@ using System.Windows.Threading;
 using Dev2.Common;
 using Dev2.Studio.Controller;
 using Dev2.Studio.Interfaces;
-
+using System.Diagnostics.CodeAnalysis;
 
 namespace Dev2.Studio.ViewModels.Diagnostics
 {
-    /// <summary>
-    /// Used to display a user-friendly exceptionmessage, and allow the user to send a report via email
-    /// </summary>
-    /// <author>jurie.smit</author>
-    /// <date>2013/01/15</date>
+    [ExcludeFromCodeCoverage]
     public sealed class ExceptionViewModel : SimpleBaseViewModel, IExceptionViewModel
     {
         #region private fields
 
-        private BindableCollection<ExceptionUiModel> _exception;
-        private RelayCommand _cancelComand;
-        private string _stackTrace;
-        private ICommand _sendErrorCommand;
-        private bool _testing;
-        private IAsyncWorker _asyncWorker;
-        private string _emailAddress;
-        private string _stepsToFollow;
-        private string _serverLogFile;
-        private string _studioLogFile;
+        BindableCollection<ExceptionUiModel> _exception;
+        RelayCommand _cancelComand;
+        string _stackTrace;
+        ICommand _sendErrorCommand;
+        bool _testing;
+        IAsyncWorker _asyncWorker;
+        string _emailAddress;
+        string _stepsToFollow;
+        string _serverLogFile;
+        string _studioLogFile;
 
         #endregion private fields
 
@@ -76,24 +72,11 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string OutputPath { get; set; }
 
-        public IAsyncWorker AsyncWorker
-        {
-            get
-            {
-                if (_asyncWorker == null)
-                {
-                    _asyncWorker = new AsyncWorker();
-                }
-                return _asyncWorker;
-            }
-        }
+        public IAsyncWorker AsyncWorker => _asyncWorker ?? (_asyncWorker = new AsyncWorker());
 
         public bool Testing
         {
-            get
-            {
-                return _testing;
-            }
+            get => _testing;
             set
             {
                 _testing = value;
@@ -111,10 +94,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         /// <date>2013/01/15</date>
         public BindableCollection<ExceptionUiModel> Exception
         {
-            get
-            {
-                return _exception ?? (_exception = new BindableCollection<ExceptionUiModel>());
-            }
+            get => _exception ?? (_exception = new BindableCollection<ExceptionUiModel>());
             set
             {
                 _exception = value;
@@ -124,10 +104,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string StackTrace
         {
-            get
-            {
-                return _stackTrace;
-            }
+            get => _stackTrace;
             set
             {
                 if (_stackTrace == value)
@@ -142,10 +119,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string ServerLogFile
         {
-            get
-            {
-                return _serverLogFile;
-            }
+            get => _serverLogFile;
             set
             {
                 if (_serverLogFile == value)
@@ -160,10 +134,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string StudioLogFile
         {
-            get
-            {
-                return _studioLogFile;
-            }
+            get => _studioLogFile;
             set
             {
                 if (_studioLogFile == value)
@@ -203,7 +174,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string EmailAddress
         {
-            get { return _emailAddress; }
+            get => _emailAddress;
             set
             {
                 _emailAddress = value;
@@ -211,7 +182,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public string ServerVersion
+        private string ServerVersion
         {
             get
             {
@@ -220,7 +191,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             }
         }
 
-        public string StudioVersion
+        private string StudioVersion
         {
             get
             {
@@ -231,7 +202,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         public string StepsToFollow
         {
-            get { return _stepsToFollow; }
+            get => _stepsToFollow;
             set
             {
                 _stepsToFollow = value;
@@ -241,22 +212,22 @@ namespace Dev2.Studio.ViewModels.Diagnostics
 
         #region public methods
 
-        private void Cancel()
+        void Cancel()
         {
             Testing = false;
             RequestClose();
         }
 
-        public void SendError()
+        private void SendError()
         {
-            List<string> messageList = new List<string>();
+            var messageList = new List<string>();
 
             if (Exception != null)
             {
                 messageList.AddRange(Exception.Select(exceptionUiModel => exceptionUiModel.Message.Replace("Error :", "")));
             }
 
-            string url = Warewolf.Studio.Resources.Languages.Core.SendErrorReportUrl;
+            var url = Warewolf.Studio.Resources.Languages.Core.SendErrorReportUrl;
 
             AsyncWorker.Start(() => SetupProgressSpinner(messageList, url), () =>
             {
@@ -267,27 +238,27 @@ namespace Dev2.Studio.ViewModels.Diagnostics
             });
         }
 
-        private void SetupProgressSpinner(List<string> messageList, string url)
+        void SetupProgressSpinner(List<string> messageList, string url)
         {
             Dispatcher.CurrentDispatcher.Invoke(() =>
             {
                 Testing = true;
             });
 
-            string email = "No Email Provided";
+            var email = "No Email Provided";
             if (!string.IsNullOrWhiteSpace(EmailAddress))
             {
                 email = EmailAddress;
             }
-            string steps = "No Steps Provided";
+            var steps = "No Steps Provided";
             if (!string.IsNullOrWhiteSpace(StepsToFollow))
             {
                 steps = StepsToFollow;
             }
 
-            string description = "Server Version : " + ServerVersion + Environment.NewLine + " " + Environment.NewLine +
+            var description = "Server Version : " + ServerVersion + Environment.NewLine + " " + Environment.NewLine +
                                  "Studio Version : " + StudioVersion + Environment.NewLine + " " + Environment.NewLine +
-                                 "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +                                 
+                                 "Email Address : " + email + Environment.NewLine + " " + Environment.NewLine +
                                  "Steps to follow : " + steps + Environment.NewLine + " " + Environment.NewLine +
                                  StackTrace + Environment.NewLine + " " + Environment.NewLine +
                                  "Warewolf Studio log file : " + Environment.NewLine + " " + Environment.NewLine +
@@ -301,7 +272,7 @@ namespace Dev2.Studio.ViewModels.Diagnostics
         public static async Task<string> GetServerLogFile()
         {
             var activeEnvironment = CustomContainer.Get<IShellViewModel>().ActiveServer;
-            WebClient client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
+            var client = new WebClient { Credentials = activeEnvironment.Connection.HubConnection.Credentials };
             var managementServiceUri = WebServer.GetInternalServiceUri("getlogfile?numLines=10", activeEnvironment.Connection);
             var serverLogFile = await client.DownloadStringTaskAsync(managementServiceUri);
             client.Dispose();
@@ -322,10 +293,10 @@ namespace Dev2.Studio.ViewModels.Diagnostics
                     var file = new StreamReader(stream);
                     while (stream.Position<realEnd)
                     {
-                        string line = file.ReadLine();
+                        var line = file.ReadLine();
                         buffor.Add(line);
                     }
-                    string[] lastLines = buffor.Skip(Math.Max(0,  buffor.Count - numberOfLines)).Take(numberOfLines).ToArray();
+                    var lastLines = buffor.Skip(Math.Max(0,  buffor.Count - numberOfLines)).Take(numberOfLines).ToArray();
                     StudioLogFile = string.Join(Environment.NewLine, lastLines);
                 }
             }

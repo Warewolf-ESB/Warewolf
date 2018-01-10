@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
     [Binding]
     public class DataMergeSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DataMergeSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -54,8 +54,8 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
 
             scenarioContext.TryGetValue("mergeCollection", out List<Tuple<string, string, string, string, string>> mergeCollection);
 
-            int row = 1;
-            foreach(var variable in mergeCollection)
+            var row = 1;
+            foreach (var variable in mergeCollection)
             {
                 dataMerge.MergeCollection.Add(new DataMergeDTO(variable.Item1, variable.Item2, variable.Item3, row,
                                                                 variable.Item4, variable.Item5));
@@ -107,15 +107,15 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         [Given(@"a merge recordset")]
         public void GivenAMergeRecordset(Table table)
         {
-            List<TableRow> records = table.Rows.ToList();
+            var records = table.Rows.ToList();
 
-            if(records.Count == 0)
+            if (records.Count == 0)
             {
                 var rs = table.Header.ToArray()[0];
                 var field = table.Header.ToArray()[1];
 
 
-                bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+                var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
                 if (!isAdded)
                 {
                     emptyRecordset = new List<Tuple<string, string>>();
@@ -141,7 +141,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         public void WhenTheDataMergeToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -161,7 +161,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
                 Assert.AreEqual(value, actualValue);
             }
         }
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "\n").Replace("\r", "").ToString();
@@ -170,10 +170,10 @@ namespace Dev2.Activities.Specs.Toolbox.Data.DataMerge
         [Then(@"the merged result is the same as file ""(.*)""")]
         public void ThenTheMergedResultIsTheSameAsFile(string fileName)
         {
-            string resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Data.DataMerge.{0}",
+            var resourceName = string.Format("Warewolf.Tools.Specs.Toolbox.Data.DataMerge.{0}",
                                                 fileName);
             var readFile = ReadFile(resourceName);
-            string value = readFile;
+            var value = readFile;
             var result = scenarioContext.Get<IDSFDataObject>("result");
             GetScalarValueFromEnvironment(result.Environment, ResultVariable,
                                        out string actualValue, out string error);

@@ -24,10 +24,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class SQLServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I drag a Sql Server database connector")]
         public void GivenIDragASqlServerDatabaseConnector()
@@ -162,7 +162,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         public void ThenInputsAppearAs(Table table)
         {
             var viewModel = GetViewModel();
-            int rowNum = 0;
+            var rowNum = 0;
             foreach (var row in table.Rows)
             {
                 var inputValue = row["Input"];
@@ -297,7 +297,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test Sql Server Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel();
             foreach (var row in table.Rows)
             {

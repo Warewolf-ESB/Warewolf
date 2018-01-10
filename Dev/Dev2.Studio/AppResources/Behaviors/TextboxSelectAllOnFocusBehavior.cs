@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -15,7 +15,7 @@ using System.Windows.Interactivity;
 
 namespace Dev2.Studio.AppResources.Behaviors
 {
-    public class TextboxSelectAllOnFocusBehavior : Behavior<TextBox>, IDisposable
+    public class TextboxSelectAllOnFocusBehavior : Behavior<TextBox>
     {
         protected override void OnAttached()
         {
@@ -34,19 +34,6 @@ namespace Dev2.Studio.AppResources.Behaviors
         void AssociatedObject_GotFocus(object sender, EventArgs e)
         {
             AssociatedObject.SelectAll();
-        }       
-
-        protected override void OnDetaching()
-        {         
-            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
-            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
-            base.OnDetaching();
-        }
-
-        public void Dispose()
-        {
-            AssociatedObject.GotFocus -= AssociatedObject_GotFocus;
-            AssociatedObject.Unloaded -= AssociatedObjectOnUnloaded;
         }
     }
 }

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,8 +21,8 @@ namespace Dev2.Data
     [Serializable]
     public class IndexIterator : IIndexIterator
     {
-        private int _curValue;
-        private IndexList _indexList;
+        int _curValue;
+        IndexList _indexList;
 
         public IndexList IndexList
         {
@@ -55,9 +55,9 @@ namespace Dev2.Data
         {
             get
             {
-                int result = _curValue - Count;
+                var result = _curValue - Count;
 
-                if(result == 0 && HasMore())
+                if (result == 0 && HasMore())
                 {
                     return false;
                 }
@@ -85,8 +85,8 @@ namespace Dev2.Data
         
         public bool HasMore()
         {
-            int canidate = _curValue;
-            while(IndexList.Gaps.Contains(canidate))
+            var canidate = _curValue;
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
@@ -96,14 +96,14 @@ namespace Dev2.Data
         
         public int FetchNextIndex()
         {
-            int canidate = _curValue;
+            var canidate = _curValue;
 
-            while(IndexList.Gaps.Contains(canidate))
+            while (IndexList.Gaps.Contains(canidate))
             {
                 canidate++;
             }
 
-            int result = canidate;
+            var result = canidate;
 
             _curValue = canidate + 1;
 
@@ -119,7 +119,7 @@ namespace Dev2.Data
     public class IndexListIndexIterator:IIndexIterator
     {
 
-        private readonly IList<int> _values;
+        readonly IList<int> _values;
         int _current;
 
         public IndexListIndexIterator(IList<int> values)

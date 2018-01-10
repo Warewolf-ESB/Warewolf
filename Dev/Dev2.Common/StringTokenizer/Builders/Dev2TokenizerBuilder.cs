@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ namespace Dev2.Common
 {
     public class Dev2TokenizerBuilder
     {
-        private readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
+        readonly IList<IDev2SplitOp> _ops = new List<IDev2SplitOp>();
         public string ToTokenize { get; set; }
 
         public bool ReverseOrder { get; set; }

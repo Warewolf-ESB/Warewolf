@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Newtonsoft.Json.Linq;
 using WarewolfParserInterop;
-
+using Dev2.Data.Util;
 
 namespace Warewolf.Storage.Tests
 {
@@ -16,16 +16,16 @@ namespace Warewolf.Storage.Tests
     [TestClass]
     public class ExecutionEnvironmentTest
     {
-        private ExecutionEnvironment _environment;
+        ExecutionEnvironment _environment;
 
-        private const string OutOfBoundExpression = "[[rec(0).a]]";
-        private const string InvalidScalar = "[[rec(0).a]";
-        private const string PersonNameExpression = "[[@Person().Name]]";
-        private const string ChildNameExpression = "[[@Person.Child().Name]]";
-        private const string VariableA = "[[a]]";
+        const string OutOfBoundExpression = "[[rec(0).a]]";
+        const string InvalidScalar = "[[rec(0).a]";
+        const string PersonNameExpression = "[[@Person().Name]]";
+        const string ChildNameExpression = "[[@Person.Child().Name]]";
+        const string VariableA = "[[a]]";
 
 
-        private readonly CommonFunctions.WarewolfEvalResult _warewolfEvalNothingResult =
+        readonly CommonFunctions.WarewolfEvalResult _warewolfEvalNothingResult =
             CommonFunctions.WarewolfEvalResult.NewWarewolfAtomResult(DataStorage.WarewolfAtom.Nothing);
 
         [TestInitialize]
@@ -100,7 +100,7 @@ namespace Warewolf.Storage.Tests
             _environment.SortRecordSet("[[rec().a]]", true, 0);
         }
 
-        private static DataStorage.WarewolfEnvironment EvalMultiAssign()
+        static DataStorage.WarewolfEnvironment EvalMultiAssign()
         {
             var assigns = new List<IAssignValue>
             {
@@ -372,6 +372,17 @@ namespace Warewolf.Storage.Tests
             _environment.Assign(VariableA, "SomeValue", 0);
             var evalToExpression = _environment.EvalToExpression(VariableA, 0);
             Assert.AreEqual("[[a]]", evalToExpression);
+        }
+
+        [TestMethod]
+        [Owner("Hagashen Naidu")]
+        public void ExecutionEnvironmentEvalComplexCalcExpression_ShouldNotReplaceSpaces()
+        {
+            Assert.IsNotNull(_environment);
+            _environment.Assign("[[FirstNames]]", "Bob", 0);
+            var calcExpr = "!~calculation~!FIND(\" \",[[FirstNames]],1)!~~calculation~!";
+            var evalResult = _environment.Eval(calcExpr, 0);
+            Assert.AreEqual("!~calculation~!FIND(\" \",\"Bob\",1)!~~calculation~!", ExecutionEnvironment.WarewolfEvalResultToString(evalResult));
         }
 
         [TestMethod]
@@ -826,7 +837,7 @@ namespace Warewolf.Storage.Tests
 
         #region Private Methods
 
-        private ExecutionEnvironment CreateEnvironmentWithErrors()
+        ExecutionEnvironment CreateEnvironmentWithErrors()
         {
             _environment.Errors.Add("SomeError");
             return _environment;

@@ -231,14 +231,8 @@ namespace Dev2.Activities.Designers2.Core
 
         public ObservableCollection<IDev2TOFn> Collection
         {
-            get
-            {
-                return _collection;
-            }
-            protected set
-            {
-                _collection = value;
-            }
+            get => _collection;
+            set => _collection = value;
         }
 
         void AddDto(int indexNumber, string initializeWith = "")
@@ -349,7 +343,7 @@ namespace Dev2.Activities.Designers2.Core
             startIndex = Math.Max(startIndex, 0);
             for (var i = startIndex; i < Collection.Count; i++)
             {
-                processModelItem(Collection[i]);
+                processModelItem?.Invoke(Collection[i]);
             }
         }
 

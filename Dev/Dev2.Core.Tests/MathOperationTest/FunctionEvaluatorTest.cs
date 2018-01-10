@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Tests.MathOperationTest
     [TestClass]
     public class FunctionEvaluatorTest
     {
-        private IFunctionEvaluator _eval = MathOpsFactory.CreateFunctionEvaluator();
+        IFunctionEvaluator _eval = MathOpsFactory.CreateFunctionEvaluator();
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -40,8 +40,8 @@ namespace Dev2.Tests.MathOperationTest
             const string expression = @"Sum(10, 10)";
 
             _eval = MathOpsFactory.CreateFunctionEvaluator();
-            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
-            if(hasSuceeded)
+            var hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            if (hasSuceeded)
             {
                 Assert.AreEqual(result, "20");
             }
@@ -61,8 +61,8 @@ namespace Dev2.Tests.MathOperationTest
             const string expression = @"Sum(10, 10,asdasd)";
 
             _eval = MathOpsFactory.CreateFunctionEvaluator();
-            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
-            if(!hasSuceeded)
+            var hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            if (!hasSuceeded)
             {
                 Assert.IsTrue(error.Length > 0);
             }
@@ -82,7 +82,7 @@ namespace Dev2.Tests.MathOperationTest
             const string expression = @"(10, 10,asdasd)";
 
 
-            bool hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSuceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
             if (!hasSuceeded)
             {
                 Assert.IsTrue(error.Length > 0);
@@ -102,7 +102,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"10 + 10 - 10";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (hasSucceeded)
             {
@@ -119,7 +119,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"Average(10 + 10, 20*2, 30/2)";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (hasSucceeded)
             {
@@ -140,7 +140,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"thisDoesNotExist(12,1234,567)";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (!hasSucceeded)
             {
@@ -158,11 +158,33 @@ namespace Dev2.Tests.MathOperationTest
         [TestMethod]
         public void TryEvaluateFunction_DateFunction_Expected_EvaluationOfDateCorrect()
         {
-            DateTime date = new DateTime(2012, 2, 2);
+            var date = new DateTime(2012, 2, 2);
             const string expression = @"Date(2012,2,2)";
-            string expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var expected = date.ToShortDateString();
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string actual, out string error);
+
+            if (hasSucceeded)
+            {
+                Assert.IsTrue(actual.StartsWith(expected));
+            }
+            else
+            {
+                Assert.Fail("Date Calculation not being performed as expected");
+            }
+        }
+
+        /// <summary>
+        /// Tests that an expression that accesses the date capabilities of infrigistics evaluates correctly.
+        /// </summary>
+        [TestMethod]
+        public void TryEvaluateFunction_DateFunction_Expected_EvaluationOfDateCorrect_DotnetFormat()
+        {
+            var date = new DateTime(2012, 2, 2);
+            const string expression = @"Date(2012,2,2)";
+            var expected = date.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+            var eval = new FunctionEvaluator(Common.Interfaces.Diagnostics.Debug.FunctionEvaluatorOption.DotNetDateTimeFormat);
+            var hasSucceeded = eval.TryEvaluateFunction(expression, out string actual, out string error);
 
             if (hasSucceeded)
             {
@@ -183,7 +205,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"Year(""1989/02/01"")";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (hasSucceeded)
             {
@@ -196,6 +218,40 @@ namespace Dev2.Tests.MathOperationTest
         }
 
         /// <summary>
+        /// Tests that an expression that accesses the date capabilities of infrigistics mixed with string literal date format results in
+        /// a valid evaluation.
+        /// </summary>
+        [TestMethod]
+        public void FindFirstLetter_OfWord_Should_ReturnCorrectly()
+        {
+            var expression = "LEFT(\"Nkosinathi\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi\",1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)),\"\",MID(\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",FIND(\" \",\"Nkosinathi\",1)+1)+1,1))";
+
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+
+            if (hasSucceeded)
+            {
+                Assert.AreEqual("N", result);
+            }
+            else
+            {
+                Assert.Fail("Evaluator is unable to find first letter of word");
+            }
+
+             expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
+
+             hasSucceeded = _eval.TryEvaluateFunction(expression, out string result1, out string error1);
+
+            if (hasSucceeded)
+            {
+                Assert.AreEqual("NS", result1);
+            }
+            else
+            {
+                Assert.Fail("Evaluator is unable to find first letter of word");
+            }
+        }
+
+        /// <summary>
         /// Tests that the imaginary square root function of the infrigistics library evaluates correctly when used with
         /// a unary operator and an integer literal.
         /// </summary>
@@ -204,7 +260,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"Imsqrt(-1)";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (hasSucceeded)
             {
@@ -225,7 +281,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"Oct2Dec(764)";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (hasSucceeded)
             {
@@ -243,7 +299,7 @@ namespace Dev2.Tests.MathOperationTest
         {
             const string expression = @"Sum(Average(Abs(-100), Min(10,20,2,30,200)), Max(200,300,400)) + 250";
 
-            bool hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
+            var hasSucceeded = _eval.TryEvaluateFunction(expression, out string result, out string error);
 
             if (hasSucceeded)
             {

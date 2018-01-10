@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
     [Binding]
     public class CalculateSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CalculateSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -43,7 +43,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
             BuildInternal(false);
         }
 
-        private void BuildInternal(bool isAggregate)
+        void BuildInternal(bool isAggregate)
         {
             scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);
 
@@ -88,7 +88,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
                 };
                 scenarioContext.Add("activity", calculate);
             }
-            
+
         }
 
         [Given(@"I have the formula ""(.*)""")]
@@ -101,7 +101,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public void WhenTheAggregateCalculateToolIsExecuted()
         {
             BuildInternal(true);
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -109,7 +109,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         public void WhenTheCalculateToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -130,7 +130,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.Calculate
         [Given(@"I have a calculate variable ""(.*)"" equal to")]
         public void GivenIHaveACalculateVariableEqualTo(string recordset, Table table)
         {
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             for (int i = 0; i < tableRows.Count; i++)
             {
                 scenarioContext.TryGetValue("variableList", out List<Tuple<string, string>> variableList);

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,7 +54,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_ToObservableCollection_WhenIEnumableContainsData_ExpectCollection()
         {
             //------------Setup for test--------------------------
-            List<string> input = new List<string> { "foo", "bar" };
+            var input = new List<string> { "foo", "bar" };
 
             //------------Execute Test---------------------------
             var result = input.ToObservableCollection();
@@ -71,7 +71,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_ToObservableCollection_WhenIEnumableContainsNothing_ExpectEmptyCollection()
         {
             //------------Setup for test--------------------------
-            List<string> input = new List<string>();
+            var input = new List<string>();
 
             //------------Execute Test---------------------------
             var result = input.ToObservableCollection();
@@ -369,7 +369,7 @@ namespace Dev2.Common.Tests
             var tmpFile = Path.GetTempFileName();
             File.WriteAllText(tmpFile, "this is going to be some very long test just to ensure we can over write it");
             const string val = "<x><y>1</y></x>";
-            StringBuilder value = new StringBuilder(val);
+            var value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
             IFileManager fm = new TxFileManager();
@@ -393,7 +393,7 @@ namespace Dev2.Common.Tests
             var tmpFile = Path.GetTempFileName();
             File.WriteAllText(tmpFile, "this is going to be some very long test just to ensure we can over write it");
             const string val = "<x><y>1</y></x>";
-            StringBuilder value = new StringBuilder(val);
+            var value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
             IFileManager fm = new TxFileManager();
@@ -417,7 +417,7 @@ namespace Dev2.Common.Tests
             //------------Setup for test--------------------------
             var tmpFile = Path.GetTempFileName();
             const string val = "<x><y>1</y></x>";
-            StringBuilder value = new StringBuilder(val);
+            var value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
             value.WriteToFile(tmpFile, Encoding.UTF8,new TxFileManager());
@@ -438,7 +438,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_CleanEncodingHeaderForXmlSave_WhenSavingXElement_ExpectEncodingHeaderRemoved()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("<x><y>1</y></x>");
+            var value = new StringBuilder("<x><y>1</y></x>");
 
             //------------Execute Test---------------------------
             var xe = value.ToXElement();
@@ -466,7 +466,7 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             const string val = "<x><y>1</y>.</</x>";
-            StringBuilder value = new StringBuilder(val);
+            var value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
             value.ToXElement();
@@ -479,12 +479,12 @@ namespace Dev2.Common.Tests
         {
             //------------Setup for test--------------------------
             const string val = "<x><y>1</y></x>";
-            StringBuilder value = new StringBuilder(val);
+            var value = new StringBuilder(val);
 
             //------------Execute Test---------------------------
             var xe = value.ToXElement();
 
-            string result = xe.ToString(SaveOptions.DisableFormatting);
+            var result = xe.ToString(SaveOptions.DisableFormatting);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(val, result);
@@ -496,7 +496,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IndexOf_WhenStringBuilderContainsValue_ExpectValidIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.IndexOf("b", 0, true);
@@ -511,7 +511,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IndexOf_WhenStringBuilderDoesNotContainValue_ExpectNegativeIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.IndexOf("q", 0, true);
@@ -526,7 +526,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IndexOf_WhenStringBuilderDoesNotContainValueAndCaseMatchOn_ExpectNegativeIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.IndexOf("A", 0, false);
@@ -541,7 +541,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IndexOf_WhenStringBuilderDoesContainValueAndIndexIsAfter_ExpectNegativeIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.IndexOf("a", 1, false);
@@ -556,7 +556,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Substring_WhenStartAndEndInBound_ExpectString()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.Substring(0, 2);
@@ -571,7 +571,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Substring_WhenStartAndEndInBoundAndNotStartingAtZero_ExpectString()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.Substring(2, 3);
@@ -587,7 +587,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Substring_WhenStartAndEndOutOfBound_ExpectString()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             value.Substring(0, 20);
@@ -601,7 +601,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Contains_WhenSubstringIsContained_ExpectTrue()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.Contains(" b");
@@ -616,7 +616,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Contains_WhenSubstringIsNotContained_ExpectFalse()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("a b c");
+            var value = new StringBuilder("a b c");
 
             //------------Execute Test---------------------------
             var result = value.Contains(" bq");
@@ -631,7 +631,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Unescape_WhenEscapedXmlString_ExpectUnescapedStringBuilder()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
+            var value = new StringBuilder("&lt;x&gt;this &quot; is&apos; &amp; neat&lt;/x&gt;");
 
             //------------Execute Test---------------------------
             var result = value.Unescape();
@@ -646,7 +646,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_Unescape_WhenNormalString_ExpectSameStringBuilder()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("twigs are snail broad swords");
+            var value = new StringBuilder("twigs are snail broad swords");
 
             //------------Execute Test---------------------------
             var result = value.Unescape();
@@ -661,7 +661,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_LastIndexOf_WhenNormalString_ExpectLastIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
+            var value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
 
             //------------Execute Test---------------------------
             var result = value.LastIndexOf("bbb", false);
@@ -676,7 +676,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_LastIndexOf_WhenNormalStringWithCaseIgnore_ExpectLastIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee BBB");
+            var value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee BBB");
 
             //------------Execute Test---------------------------
             var result = value.LastIndexOf("bbb", true);
@@ -691,7 +691,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_LastIndexOf_WhenNormalStringInMiddle_ExpectLastIndex()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
+            var value = new StringBuilder("aaa bbb aaa ccc ddd aaa eee bbb");
 
             //------------Execute Test---------------------------
             var result = value.LastIndexOf("ccc", false);
@@ -707,7 +707,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_ExtractXmlAttributeFromUnsafeXml_WhenAttributePresent_ExpectAttributeValue()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
+            var value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
 
             //------------Execute Test---------------------------
             var result = value.ExtractXmlAttributeFromUnsafeXml("SourceName=\"");
@@ -722,7 +722,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_ExtractXmlAttributeFromUnsafeXml_WhenAttributeNotPresent_ExpectEmptyString()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
+            var value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
 
             //------------Execute Test---------------------------
             var result = value.ExtractXmlAttributeFromUnsafeXml("SourceNamePlanPath=\"");
@@ -737,7 +737,7 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_ExtractXmlAttributeFromUnsafeXml_WhenAttributePresentAndEndTagInvalid_ExpectEmptyString()
         {
             //------------Setup for test--------------------------
-            StringBuilder value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
+            var value = new StringBuilder("<Action Name=\"bug11827service\" Type=\"InvokeWebService\" SourceID=\"fd54cecb-eebf-485a-aff7-e97835853c93\" SourceName=\"bug11827src\" SourceMethod=\"\" RequestUrl=\"\" RequestMethod=\"Get\" JsonPath=\"\">");
 
             //------------Execute Test---------------------------
             var result = value.ExtractXmlAttributeFromUnsafeXml("SourceNamePlanPath=\"", "!!");
@@ -767,9 +767,9 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IsNullOrEmpty_EmptyStringBuilder_True()
         {
             //------------Setup for test--------------------------
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             //------------Execute Test---------------------------
-            
+
             var isNullOrEmpty = sb.IsNullOrEmpty();
             
             //------------Assert Results-------------------------
@@ -782,9 +782,9 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IsNullOrEmpty_NullStringStringBuilder_True()
         {
             //------------Setup for test--------------------------
-            StringBuilder sb = new StringBuilder(null);
+            var sb = new StringBuilder(null);
             //------------Execute Test---------------------------
-            
+
             var isNullOrEmpty = sb.IsNullOrEmpty();
             
             //------------Assert Results-------------------------
@@ -797,9 +797,9 @@ namespace Dev2.Common.Tests
         public void ExtensionMethods_IsNullOrEmpty_NonEmptyStringBuilder_False()
         {
             //------------Setup for test--------------------------
-            StringBuilder sb = new StringBuilder("Hello");
+            var sb = new StringBuilder("Hello");
             //------------Execute Test---------------------------
-            
+
             var isNullOrEmpty = sb.IsNullOrEmpty();
             
             //------------Assert Results-------------------------
@@ -815,7 +815,7 @@ namespace Dev2.Common.Tests
             const string myString = "This is my string";
             
             //------------Execute Test---------------------------
-            StringBuilder stringBuilder = myString.ToStringBuilder();
+            var stringBuilder = myString.ToStringBuilder();
             //------------Assert Results-------------------------
             StringAssert.Contains(stringBuilder.ToString(),myString);
         }
@@ -833,7 +833,7 @@ namespace Dev2.Common.Tests
         public void DeepCopy_GivenPesron_ShouldCopy()
         {
             //---------------Set up test pack-------------------
-            Person p = new Person();
+            var p = new Person();
             //---------------Assert Precondition----------------
             var deepCopy = ObjectExtensions.DeepCopy(p);
             //---------------Execute Test ----------------------

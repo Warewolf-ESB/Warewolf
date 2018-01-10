@@ -1,29 +1,22 @@
-﻿using Dev2.Common.Interfaces.Core.DynamicServices;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
+using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Common.Interfaces.ToolBase.ExchangeEmail;
 using System;
-
-
 
 
 namespace Dev2.Common.Interfaces.Core
 {
     public class ExchangeSourceDefinition : IExchangeSource, IEquatable<ExchangeSourceDefinition>
     {
-        public ExchangeSourceDefinition(IExchange db)
-        {
-            AutoDiscoverUrl = db.AutoDiscoverUrl;
-            Id = db.ResourceID;
-            Password = db.Password;
-            UserName = db.UserName;
-            Path = "";
-            Timeout = db.Timeout;
-            ResourceName = db.ResourceName;
-        }
-
-        public ExchangeSourceDefinition()
-        {
-        }
-
         public Guid ResourceID { get; set; }
         public string AutoDiscoverUrl { get; set; }
         public string UserName { get; set; }
@@ -37,14 +30,7 @@ namespace Dev2.Common.Interfaces.Core
         public string ResourceName { get; set; }
 
         #region Equality members
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
+        
         public bool Equals(ExchangeSourceDefinition other)
         {
             if (ReferenceEquals(null, other))
@@ -58,27 +44,12 @@ namespace Dev2.Common.Interfaces.Core
             return string.Equals(AutoDiscoverUrl, other.AutoDiscoverUrl) && string.Equals(UserName, other.UserName) && string.Equals(Password, other.Password)
                 && Timeout == other.Timeout;
         }
-
-        /// <summary>
-        /// Indicates whether the current object is equal to another object of the same type.
-        /// </summary>
-        /// <returns>
-        /// true if the current object is equal to the <paramref name="other"/> parameter; otherwise, false.
-        /// </returns>
-        /// <param name="other">An object to compare with this object.</param>
-
+        
         public bool Equals(IExchangeSource other)
         {
             return Equals(other as ExchangeSourceDefinition);
         }
-
-        /// <summary>
-        /// Determines whether the specified <see cref="T:System.Object"/> is equal to the current <see cref="T:System.Object"/>.
-        /// </summary>
-        /// <returns>
-        /// true if the specified object  is equal to the current object; otherwise, false.
-        /// </returns>
-        /// <param name="obj">The object to compare with the current object. </param>
+        
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj))
@@ -95,13 +66,7 @@ namespace Dev2.Common.Interfaces.Core
             }
             return Equals((ExchangeSourceDefinition)obj);
         }
-
-        /// <summary>
-        /// Serves as a hash function for a particular type.
-        /// </summary>
-        /// <returns>
-        /// A hash code for the current <see cref="T:System.Object"/>.
-        /// </returns>
+        
         public override int GetHashCode()
         {
             unchecked
@@ -111,16 +76,6 @@ namespace Dev2.Common.Interfaces.Core
                 hashCode = (hashCode * 397) ^ (Password != null ? Password.GetHashCode() : 0);
                 return hashCode;
             }
-        }
-
-        public static bool operator ==(ExchangeSourceDefinition left, ExchangeSourceDefinition right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(ExchangeSourceDefinition left, ExchangeSourceDefinition right)
-        {
-            return !Equals(left, right);
         }
 
         #endregion Equality members

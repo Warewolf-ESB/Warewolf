@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Dev2.Util.ExtensionMethods;
 
@@ -14,11 +12,6 @@ namespace Dev2.Runtime.ESB.Management.Services
 {
     public class GetLogDataService : LogDataServiceBase, IEsbManagementEndpoint
     {
-        public string HandlesType()
-        {
-            return "GetLogDataService";
-        }
-
         public StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
             Dev2Logger.Info("Get Log Data Service", GlobalConstants.WarewolfInfo);
@@ -76,9 +69,9 @@ namespace Dev2.Runtime.ESB.Management.Services
             return serializer.SerializeToBuilder("");
         }
 
-        private string GetValue(string key, Dictionary<string, StringBuilder> values)
+        string GetValue(string key, Dictionary<string, StringBuilder> values)
         {
-            string toReturn = "";
+            var toReturn = "";
             if (values.TryGetValue(key, out StringBuilder value))
             {
                 toReturn = value.ToString();
@@ -86,12 +79,12 @@ namespace Dev2.Runtime.ESB.Management.Services
             return toReturn;
         }
 
-        private DateTime GetDate(string key, Dictionary<string, StringBuilder> values)
+        DateTime GetDate(string key, Dictionary<string, StringBuilder> values)
         {
             return ParseDate(GetValue(key, values));
         }
 
-        private StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
+        StringBuilder FilterResults(Dictionary<string, StringBuilder> values, IEnumerable<LogEntry> filteredEntries, Dev2JsonSerializer dev2JsonSerializer)
         {
             var startTime = GetDate("StartDateTime", values);
             var endTime = GetDate("CompletedDateTime", values);
@@ -111,7 +104,7 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private static DateTime ParseDate(string s)
+        static DateTime ParseDate(string s)
         {
             return !string.IsNullOrEmpty(s) ?
                 DateTime.ParseExact(s, GlobalConstants.LogFileDateFormat, System.Globalization.CultureInfo.InvariantCulture) :
@@ -119,22 +112,15 @@ namespace Dev2.Runtime.ESB.Management.Services
         }
 
 
-        private string GetUser(string message)
+        string GetUser(string message)
         {
             var toReturn = message.Split('[')[2].Split(':')[0];
             return toReturn;
         }
 
-        public DynamicService CreateServiceEntry()
-        {
-            var findServices = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+        public DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceType ColumnIODirection=\"Input\"/><Roles ColumnIODirection=\"Input\"/><ResourceName ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            var fetchItemsAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findServices.Actions.Add(fetchItemsAction);
-
-            return findServices;
-        }
+        public string HandlesType() => "GetLogDataService";
     }
 
     public static class LogDataCache

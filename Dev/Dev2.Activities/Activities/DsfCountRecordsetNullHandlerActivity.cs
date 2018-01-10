@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("RecordSet-CountRecords", "Count", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Count")]
-    public class DsfCountRecordsetNullHandlerActivity : DsfActivityAbstract<string>
+    public class DsfCountRecordsetNullHandlerActivity : DsfActivityAbstract<string>,IEquatable<DsfCountRecordsetNullHandlerActivity>
     {
         #region Fields
 
@@ -71,7 +71,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -79,8 +79,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             // Process if no errors
@@ -92,7 +92,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 {
                     try
                     {
-                        string rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
+                        var rs = DataListUtil.ExtractRecordsetNameFromValue(RecordsetName);
                         if (CountNumber == string.Empty)
                         {
                             allErrors.AddError(ErrorResource.BlankResultVariable);
@@ -225,5 +225,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfCountRecordsetNullHandlerActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(RecordsetName, other.RecordsetName) 
+                && string.Equals(CountNumber, other.CountNumber) 
+                && TreatNullAsZero == other.TreatNullAsZero;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfCountRecordsetNullHandlerActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (RecordsetName != null ? RecordsetName.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (CountNumber != null ? CountNumber.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ TreatNullAsZero.GetHashCode();
+                return hashCode;
+            }
+        }
     }
 }

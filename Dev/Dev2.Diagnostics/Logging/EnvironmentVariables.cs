@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,9 +19,9 @@ namespace Dev2.Common
     public static class EnvironmentVariables
     {
 
-        private static string _appPath;
-        private static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
-        
+        static string _appPath;
+        static readonly string DataPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData, Environment.SpecialFolderOption.Create), "Warewolf");
+
         public static string ApplicationPath
         {
             get
@@ -56,6 +56,18 @@ namespace Dev2.Common
             }
         }
 
+        public static string VersionsPath
+        {
+            get
+            {
+                var versionsPath = Path.Combine(AppDataPath, "VersionControl");
+                if (!Directory.Exists(versionsPath))
+                {
+                    Directory.CreateDirectory(versionsPath);
+                }
+                return versionsPath;
+            }
+        }
         public static string TestPath
         {
             get
@@ -149,8 +161,8 @@ namespace Dev2.Common
 
         public static bool IsServerOnline { get; set; }
 
-        private static string _rootPath;
-        
+        static string _rootPath;
+
         public static string RootPersistencePath => _rootPath ?? (_rootPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Warewolf"));
         
         public struct CharacterMap
@@ -160,7 +172,7 @@ namespace Dev2.Common
             public static readonly int LettersLength = 26;
         }
 
-        private static readonly Guid RemoteID = Guid.NewGuid();
+        static readonly Guid RemoteID = Guid.NewGuid();
         /// <summary>
         /// Gets the remote invoke ID.
         /// </summary>

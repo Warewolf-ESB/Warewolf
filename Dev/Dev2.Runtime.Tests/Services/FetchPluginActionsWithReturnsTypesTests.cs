@@ -274,7 +274,7 @@ namespace Dev2.Tests.Runtime.Services
             Assert.IsFalse(results.HasError);
             var pluginActions = jsonSerializer.Deserialize<List<IPluginAction>>(results.Message);
             Assert.IsTrue(pluginActions.Any(action => action.IsVoid));
-            IEnumerable<IList<IServiceInput>> parameters= pluginActions.Select(action => action.Inputs);
+            var parameters= pluginActions.Select(action => action.Inputs);
             var enumerable = parameters as IList<IServiceInput>[] ?? parameters.ToArray();
             var containsObjectParameters = enumerable.Any(list => list.Any(input => input.IsObject));
             var shortTypeName = enumerable.All(list => list.All(input => !string.IsNullOrEmpty(input.ShortTypeName)));

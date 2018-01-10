@@ -3,7 +3,6 @@
                        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                        xmlns:core="clr-namespace:Dev2.Activities.Designers2.Core"
                        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-                       xmlns:local="clr-namespace:Dev2.Activities.Designers2.SelectAndApply"
                        xmlns:luna="clr-namespace:Warewolf.Studio.Themes.Luna;assembly=Warewolf.Studio.Themes.Luna"
                        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
                        xmlns:sap="clr-namespace:System.Activities.Presentation;assembly=System.Activities.Presentation"
@@ -21,9 +20,7 @@
         <ResourceDictionary>
             <selectAndApply:Small x:Key="Small" AutomationProperties.AutomationId="SmallViewContent" />
             <selectAndApply:Large x:Key="Large" AutomationProperties.AutomationId="LargeViewContent" />
-            <Style x:Key="ContentViewStyle"
-                   BasedOn="{StaticResource ActivityDesignerStyle}"
-                   TargetType="{x:Type sap:ActivityDesigner}">
+            <Style x:Key="ContentViewStyle" BasedOn="{StaticResource ActivityDesignerStyle}" TargetType="{x:Type sap:ActivityDesigner}">
                 <Setter Property="Content" Value="{DynamicResource Small}" />
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding Path=ShowLarge, Mode=TwoWay}" Value="true">

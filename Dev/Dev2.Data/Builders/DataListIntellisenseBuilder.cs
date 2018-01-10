@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ using Dev2.Data.TO;
 
 namespace Dev2.DataList.Contract
 {
-    internal class DataListIntellisenseBuilder
+    class DataListIntellisenseBuilder
     {
         const string DescAttribute = "Description";
 
@@ -31,8 +31,8 @@ namespace Dev2.DataList.Contract
         {
             IList<IDev2DataLanguageIntellisensePart> result = new List<IDev2DataLanguageIntellisensePart>();
 
-            XmlDocument xDoc = new XmlDocument();
-            
+            var xDoc = new XmlDocument();
+
             string rawRecsetName;
             
             if (FilterTO == null)
@@ -74,16 +74,16 @@ namespace Dev2.DataList.Contract
 
                 if (tmpRootNl != null)
                 {
-                    XmlNodeList nl = tmpRootNl[0].ChildNodes;
+                    var nl = tmpRootNl[0].ChildNodes;
                     for (int i = 0; i < nl.Count; i++)
                     {
-                        XmlNode tmpNode = nl[i];
+                        var tmpNode = nl[i];
 
                         if (IsValidChildNode(tmpNode))
                         {
-                            string recordsetName = tmpNode.Name;
+                            var recordsetName = tmpNode.Name;
                             IList<IDev2DataLanguageIntellisensePart> children = new List<IDev2DataLanguageIntellisensePart>();
-                            XmlNodeList childNl = tmpNode.ChildNodes;
+                            var childNl = tmpNode.ChildNodes;
                             for (int q = 0; q < childNl.Count; q++)
                             {
                                 children.Add(DataListFactory.CreateIntellisensePart(childNl[q].Name, ExtractDescription(childNl[q])));
@@ -116,9 +116,9 @@ namespace Dev2.DataList.Contract
             return result;
         }
 
-        private bool IsValidChildNode(XmlNode tmpNode)
+        bool IsValidChildNode(XmlNode tmpNode)
         {
-            bool result = false;
+            var result = false;
 
             if (tmpNode.HasChildNodes)
             {
@@ -140,14 +140,14 @@ namespace Dev2.DataList.Contract
 
             return result;
         }
-        
-        private string ExtractDescription(XmlNode node)
+
+        string ExtractDescription(XmlNode node)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
             try
             {
-                XmlAttribute attribute = node.Attributes?[DescAttribute];
+                var attribute = node.Attributes?[DescAttribute];
                 if (attribute != null)
                 {
                     result = attribute.Value;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -97,11 +97,11 @@ namespace Dev2.Activities.Designers2.Core
             var dataListViewModel = DataListSingleton.ActiveDataList;
             if(dataListViewModel != null)
             {
-                var isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, dataListViewModel.Resource.DataList);
+                var isValidExpressionRule = new IsValidExpressionRule(() => userNameValue, dataListViewModel.Resource.DataList, new VariableUtils());
                 credentialUserRuleSet.Add(isValidExpressionRule);
                 errors.AddRange(credentialUserRuleSet.ValidateRules(userNameLabel, onUserNameError));
                 var credentialPasswordRuleSet = new RuleSet();
-                isValidExpressionRule = new IsValidExpressionRule(() => passwordValue, dataListViewModel.Resource.DataList);
+                isValidExpressionRule = new IsValidExpressionRule(() => passwordValue, dataListViewModel.Resource.DataList, new VariableUtils());
                 credentialPasswordRuleSet.Add(isValidExpressionRule);
                 errors.AddRange(credentialPasswordRuleSet.ValidateRules(passwordLabel, onPasswordError));
             }

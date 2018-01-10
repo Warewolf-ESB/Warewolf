@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,21 +16,21 @@ using System.Windows.Media;
 
 namespace System.Windows.Controls
 {
-    internal class PopupHelper
+    class PopupHelper
     {
 #if SILVERLIGHT
         private bool _hasControlLoaded;
 #endif
         public bool UsesClosingVisualState { get; private set; }
-        
-        private Control Parent { get; set; }
+
+        Control Parent { get; set; }
 
 #if SILVERLIGHT
         private Canvas OutsidePopupCanvas { get; set; }
         
         private Canvas PopupChildCanvas { get; set; }
 #endif
-        
+
         public double MaxDropDownHeight { get; set; }
         
         public Popup Popup { get; private set; }
@@ -41,9 +41,9 @@ namespace System.Windows.Controls
             get { return Popup.IsOpen; }
             set { Popup.IsOpen = value; }
         }
-        
-        private FrameworkElement PopupChild { get; set; }
-        
+
+        FrameworkElement PopupChild { get; set; }
+
         public event EventHandler Closed;
         
         public event EventHandler FocusChanged;
@@ -91,20 +91,20 @@ namespace System.Windows.Controls
             {
                 u = VisualTreeHelper.GetParent(u) as UIElement;
             }
-            Window w = u as Window;
-            if(w == null)
+            var w = u as Window;
+            if (w == null)
             {
                 return;
             }
 
-            double rootWidth = w.ActualWidth;
-            double rootHeight = w.ActualHeight;
+            var rootWidth = w.ActualWidth;
+            var rootHeight = w.ActualHeight;
 #endif
 
-            double popupContentWidth = PopupChild.ActualWidth;
-            double popupContentHeight = PopupChild.ActualHeight;
-                        
-            if(rootHeight.Equals(0) || rootWidth.Equals(0) || popupContentWidth.Equals(0) || popupContentHeight.Equals(0))
+            var popupContentWidth = PopupChild.ActualWidth;
+            var popupContentHeight = PopupChild.ActualHeight;
+
+            if (rootHeight.Equals(0) || rootWidth.Equals(0) || popupContentWidth.Equals(0) || popupContentHeight.Equals(0))
             {
                 return;
             }
@@ -112,11 +112,11 @@ namespace System.Windows.Controls
             const double rootOffsetX = 0;
             const double rootOffsetY = 0;
 
-            double myControlHeight = Parent.ActualHeight;
-            double myControlWidth = Parent.ActualWidth;
-            
-            double popupMaxHeight = MaxDropDownHeight;
-            if(double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
+            var myControlHeight = Parent.ActualHeight;
+            var myControlWidth = Parent.ActualWidth;
+
+            var popupMaxHeight = MaxDropDownHeight;
+            if (double.IsInfinity(popupMaxHeight) || double.IsNaN(popupMaxHeight))
             {
                 popupMaxHeight = (rootHeight - myControlHeight) * 3 / 5;
             }
@@ -125,16 +125,16 @@ namespace System.Windows.Controls
             popupContentHeight = Math.Min(popupContentHeight, popupMaxHeight);
             popupContentWidth = Math.Max(myControlWidth, popupContentWidth);
             
-            double popupX = rootOffsetX;
-            if(rootWidth < popupX + popupContentWidth)
+            var popupX = rootOffsetX;
+            if (rootWidth < popupX + popupContentWidth)
             {
                 popupX = rootWidth - popupContentWidth;
                 popupX = Math.Max(0, popupX);
             }
             
-            bool below = true;
-            double popupY = rootOffsetY + myControlHeight;
-            if(rootHeight < popupY + popupContentHeight)
+            var below = true;
+            var popupY = rootOffsetY + myControlHeight;
+            if (rootHeight < popupY + popupContentHeight)
             {
                 below = false;
                 popupY = rootOffsetY - popupContentHeight;
@@ -181,31 +181,31 @@ namespace System.Windows.Controls
             Canvas.SetLeft(PopupChild, popupX - rootOffsetX);
             Canvas.SetTop(PopupChild, popupY - rootOffsetY);
         }
-        
-        private void OnClosed(EventArgs e)
+
+        void OnClosed(EventArgs e)
         {
-            EventHandler handler = Closed;
+            var handler = Closed;
             handler?.Invoke(this, e);
         }
-        
-        private void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
+
+        void OnPopupClosedStateChanged(object sender, VisualStateChangedEventArgs e)
         {
-            if(e?.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
+            if (e?.NewState != null && e.NewState.Name == VisualStates.StatePopupClosed)
             {
-                if(Popup != null)
+                if (Popup != null)
                 {
                     Popup.IsOpen = false;
                 }
                 OnClosed(EventArgs.Empty);
             }
         }
-        
+
         public void BeforeOnApplyTemplate()
         {
             if(UsesClosingVisualState)
             {
-                VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-                if(null != groupPopupClosed)
+                var groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
+                if (null != groupPopupClosed)
                 {
                     groupPopupClosed.CurrentStateChanged -= OnPopupClosedStateChanged;
                     UsesClosingVisualState = false;
@@ -225,8 +225,8 @@ namespace System.Windows.Controls
                 Popup.Closed += Popup_Closed;
             }
 
-            VisualStateGroup groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
-            if(null != groupPopupClosed)
+            var groupPopupClosed = VisualStates.TryGetVisualStateGroup(Parent, VisualStates.GroupPopup);
+            if (null != groupPopupClosed)
             {
                 groupPopupClosed.CurrentStateChanged += OnPopupClosedStateChanged;
                 UsesClosingVisualState = true;
@@ -265,45 +265,45 @@ namespace System.Windows.Controls
                 }
             }
         }
-        
-        private void PopupChild_SizeChanged(object sender, SizeChangedEventArgs e)
+
+        void PopupChild_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             Arrange();
         }
-        
-        private void Popup_Closed(object sender, EventArgs e)
+
+        void Popup_Closed(object sender, EventArgs e)
         {
             OnClosed(EventArgs.Empty);
         }
-        
-        private void OnFocusChanged(EventArgs e)
+
+        void OnFocusChanged(EventArgs e)
         {
-            EventHandler handler = FocusChanged;
+            var handler = FocusChanged;
             handler?.Invoke(this, e);
         }
-        
-        private void OnUpdateVisualStates(EventArgs e)
+
+        void OnUpdateVisualStates(EventArgs e)
         {
-            EventHandler handler = UpdateVisualStates;
+            var handler = UpdateVisualStates;
             handler?.Invoke(this, e);
         }
-        
-        private void PopupChild_GotFocus(object sender, RoutedEventArgs e)
+
+        void PopupChild_GotFocus(object sender, RoutedEventArgs e)
         {
             OnFocusChanged(EventArgs.Empty);
         }
-        
-        private void PopupChild_LostFocus(object sender, RoutedEventArgs e)
+
+        void PopupChild_LostFocus(object sender, RoutedEventArgs e)
         {
             OnFocusChanged(EventArgs.Empty);
         }
-        
-        private void PopupChild_MouseEnter(object sender, MouseEventArgs e)
+
+        void PopupChild_MouseEnter(object sender, MouseEventArgs e)
         {
             OnUpdateVisualStates(EventArgs.Empty);
         }
-        
-        private void PopupChild_MouseLeave(object sender, MouseEventArgs e)
+
+        void PopupChild_MouseLeave(object sender, MouseEventArgs e)
         {
             OnUpdateVisualStates(EventArgs.Empty);
         }

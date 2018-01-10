@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -42,10 +42,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "Value1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error).FirstOrDefault();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error).FirstOrDefault();
 
             // remove test datalist
 
@@ -88,10 +88,10 @@ namespace Dev2.Tests.Activities.ActivityTests
 </DataList>"
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "Value1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
 
             // remove test datalist
 
@@ -110,11 +110,11 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , "<root>" + data + "</root>", fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "display1";
-            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
-            string actual = vals[0];
+            var vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
+            var actual = vals[0];
 
             // remove test datalist
 
@@ -132,9 +132,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , data, fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "Value1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
 
             // remove test datalist
 
@@ -153,12 +153,12 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , "<root>" + data + "</root>", fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "display1";
 
 
             IList<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
-            string actual = vals[0];
+            var actual = vals[0];
 
             // remove test datalist
 
@@ -182,9 +182,9 @@ namespace Dev2.Tests.Activities.ActivityTests
             SetupArguments(
                             ActivityStrings.mult_assign_expression_both_sides_mult_eval_fields_rs_adl
                           , data, fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "Value2";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error).First();
 
             // remove test datalist
 
@@ -202,11 +202,11 @@ namespace Dev2.Tests.Activities.ActivityTests
                             ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , ActivityStrings.mult_assign_expression_both_sides_single_rs_adl
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "display1";
 
-            List<string> vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
-            string actual = vals[0];
+            var vals = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "display", out string error);
+            var actual = vals[0];
 
             // remove test datalist
 
@@ -224,7 +224,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                             ActivityStrings.NewScalarShape
                           , ActivityStrings.NewScalarShape
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "bob";
             GetScalarValueFromEnvironment(result.Environment, "testName1", out string actual, out string error);
 
@@ -245,7 +245,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "testValue1", out string actual, out string error);
 
             // remove test datalist
@@ -266,7 +266,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "testValue1", out string actual, out string error);
 
             // remove test datalist
@@ -286,7 +286,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "testValue@#";
             GetScalarValueFromEnvironment(result.Environment, "testValue1", out string actual, out string error);
 
@@ -306,10 +306,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "<root></root>"
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "testRecValue1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error).First();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error).First();
 
             // remove test datalist
 
@@ -327,10 +327,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                                       , "<root>" + ActivityStrings.recsetDataListShape + "</root>"
                                       , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> {  "testRecValue1" };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error);
+            var expected = new List<string> {  "testRecValue1" };
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error);
 
             // remove test datalist
 
@@ -348,10 +348,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , ActivityStrings.recsetDataListShape
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "testRecValue1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error).First();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "testRecSet1", "testRec1", out string error).First();
 
             // remove test datalist
 
@@ -374,10 +374,10 @@ namespace Dev2.Tests.Activities.ActivityTests
               , "<root></root>"
               , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "abc123";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "a", out string error).First();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "recset", "a", out string error).First();
 
             // remove test datalist
 
@@ -400,8 +400,8 @@ namespace Dev2.Tests.Activities.ActivityTests
 </root>"
                           , @"<root></root>"
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
+            var result = ExecuteProcess();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
 
             // remove test datalist
 
@@ -424,7 +424,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                       , @"<root></root>"
                                       , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = null;
             GetScalarValueFromEnvironment(result.Environment, "scalar", out string actual, out string error);
@@ -449,10 +449,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                                       , @"<root><cRec><opt>0</opt></cRec></root>"
                                       , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string> { "0", "1" };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
+            var expected = new List<string> { "0", "1" };
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -475,10 +475,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                                       , @"<root></root>"
                                       , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string>();
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
+            var expected = new List<string>();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "cRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -499,7 +499,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                       , @"<root></root>"
                                       , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "variable";
             GetScalarValueFromEnvironment(result.Environment, "var", out string actual, out string error);
@@ -522,7 +522,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                       , @"<root></root>"
                                       , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "variablevariable";
             GetScalarValueFromEnvironment(result.Environment, "var", out string actual, out string error);
@@ -559,9 +559,9 @@ namespace Dev2.Tests.Activities.ActivityTests
               , ActivityStrings.MutiAssignStarDataList
               , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string>{ "Value1"
+            var expected = new List<string>{ "Value1"
                                                     , "Value2"
                                                     , "Value3"
                                                     , "Value4"
@@ -571,7 +571,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                                                     , "Value8"
                                                     , "Value9"
                                                     , "Value10" };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -601,7 +601,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , ActivityStrings.MutiAssignStarDataList
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             IList<string> data = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
@@ -633,7 +633,7 @@ namespace Dev2.Tests.Activities.ActivityTests
               , "<root>" + ActivityStrings.MutiAssignStarDataList + "</root>"
               , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             IList<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
@@ -666,16 +666,16 @@ namespace Dev2.Tests.Activities.ActivityTests
                             dl
                           , "<root>" + ActivityStrings.MutiAssignStarDataList + "</root>"
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
-            List<string> expected = new List<string>{ "Value2"
+            var expected = new List<string>{ "Value2"
                                                     , "Value2"
                                                     , "Value2"
                                                     , "Value2"
                                                     , "Value2"
                                                     , "Value2"
                                                     , "Value2" };
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
 
@@ -705,10 +705,10 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , ActivityStrings.MutiAssignStarDataList
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "Value1";
-            string actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error)[1];
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error)[1];
 
             // remove test datalist ;)
 
@@ -735,7 +735,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 </root>"
                           , "<root>" + ActivityStrings.MultiAssignStarDataListWithScalar + "</root>"
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             const string expected = "Value10";
             GetScalarValueFromEnvironment(result.Environment, "testScalar", out string actual, out string error);
@@ -780,8 +780,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ActivityStrings.MultiAssignStarDataListWithScalar
               , ActivityStrings.MultiAssignStarDataListWithScalar
               , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
-            List<string> actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
+            var result = ExecuteProcess();
+            var actual = RetrieveAllRecordSetFieldValues(result.Environment, "gRec", "opt", out string error);
 
             // remove test datalist ;)
             Assert.AreEqual("some value \"testData\" another", actual[1]);
@@ -804,7 +804,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                 ActivityStrings.MultiAssignStarDataListWithScalar
               , ActivityStrings.MultiAssignStarDataListWithScalar
               , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "testScalar", out string actual, out string error);
 
             // remove test datalist ;)
@@ -826,8 +826,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "<ADL><Variable></Variable></ADL>"
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
-            string expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
+            var result = ExecuteProcess();
+            var expected = DsfMultiAssignActivity.CalculateTextConvertPrefix + "sum(5,10)";
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -847,8 +847,8 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "<ADL><Variable></Variable></ADL>"
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
-            string expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
+            var result = ExecuteProcess();
+            var expected = "sum(5)" + DsfMultiAssignActivity.CalculateTextConvertSuffix;
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
 
@@ -869,7 +869,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "<root><Variable></Variable></root>"
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "5";
 
             GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
@@ -881,6 +881,28 @@ namespace Dev2.Tests.Activities.ActivityTests
         }
 
         [TestMethod]
+        public void MutiAssign_CalculateMode_ValidComplexExpression()
+        {
+            var fieldCollection = new ObservableCollection<ActivityDTO>();
+            var expression = "LEFT(\"Nkosinathi Sangweni\",1)&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1,1))&IF(ISERROR(FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)),\"\",MID(\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",FIND(\" \",\"Nkosinathi Sangweni\",1)+1)+1,1))";
+            fieldCollection.Add(new ActivityDTO("[[Variable]]", String.Format(DsfMultiAssignActivity.CalculateTextConvertFormat, expression), fieldCollection.Count));
+
+            SetupArguments(
+                            "<ADL><Variable></Variable></ADL>"
+                          , "<root><Variable></Variable></root>"
+                          , fieldCollection);
+
+            var result = ExecuteProcess();
+            const string expected = "NS";
+
+            GetScalarValueFromEnvironment(result.Environment, "Variable", out string actual, out string error);
+
+
+            // remove test datalist ;)
+
+            Assert.AreEqual(expected, actual);
+        }
+        [TestMethod]
         public void MutiAssign_ErrorHandeling_Expected_ErrorTag()
         {
             var fieldCollection = new ObservableCollection<ActivityDTO>();
@@ -891,7 +913,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                           , "<ADL><Variable></Variable></ADL>"
                           , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             // remove test datalist ;)
 
@@ -908,12 +930,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            var fieldsCollection = new List<ActivityDTO>
             {
                 new ActivityDTO("[[result]]", "[[rs(*).val]] [[result]]", 1),
             };
 
-            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -935,12 +957,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_UpdateForEachInputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            var fieldsCollection = new List<ActivityDTO>
             {
                 new ActivityDTO("[[result]]", "[[rs(*).val]]", 1),
             };
 
-            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -962,12 +984,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            var fieldsCollection = new List<ActivityDTO>
             {
                 new ActivityDTO("[[rs(*).val]]", "abc", 1),
             };
 
-            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -989,12 +1011,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            var fieldsCollection = new List<ActivityDTO>
             {
                 new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
 
-            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -1012,12 +1034,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<ActivityDTO> fieldsCollection = new List<ActivityDTO>
+            var fieldsCollection = new List<ActivityDTO>
             {
                 new ActivityDTO("[[rs(*).val]]", "[[result]]", 1),
             };
 
-            DsfMultiAssignActivity act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfMultiAssignActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -1033,9 +1055,9 @@ namespace Dev2.Tests.Activities.ActivityTests
 
         #region Private Test Methods
 
-        private void SetupArguments(string currentDL, string testData,ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
+        void SetupArguments(string currentDL, string testData, ObservableCollection<ActivityDTO> fieldCollection, string outputMapping = null)
         {
-            if(outputMapping == null)
+            if (outputMapping == null)
             {
                 TestStartNode = new FlowStep
                 {

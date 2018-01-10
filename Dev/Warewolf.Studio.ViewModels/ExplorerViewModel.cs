@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,48 +23,36 @@ using Dev2.Studio.Interfaces;
 using Microsoft.Practices.Prism.Mvvm;
 using Dev2.Common;
 
-
-
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class ExplorerViewModelBase : BindableBase, IExplorerViewModel, IUpdatesHelp
     {
-
         protected ObservableCollection<IEnvironmentViewModel> _environments;
-
         protected string _searchText;
-        private bool _isRefreshing;
-        private IExplorerTreeItem _selectedItem;
-        private object[] _selectedDataItems;
+        bool _isRefreshing;
+        IExplorerTreeItem _selectedItem;
+        object[] _selectedDataItems;
         bool _fromActivityDrop;
         bool _allowDrag;
 
         protected ExplorerViewModelBase()
         {
-            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await Refresh(true).ConfigureAwait(true));
+            RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(async () => await RefreshAsync(true).ConfigureAwait(true));
             ClearSearchTextCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => SearchText = "");
             CreateFolderCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(CreateFolder);
         }
 
-        private void CreateFolder()
+        void CreateFolder()
         {
-            if (SelectedItem != null)
+            if (SelectedItem != null && SelectedItem.CreateFolderCommand.CanExecute(null))
             {
-                if (SelectedItem.CreateFolderCommand.CanExecute(null))
-                {
-                    SelectedItem.CreateFolderCommand.Execute(null);
-                }
+                SelectedItem.CreateFolderCommand.Execute(null);
             }
         }
 
         public bool IsFromActivityDrop
         {
-            get
-            {
-                return _fromActivityDrop;
-            }
+            get => _fromActivityDrop;
             set
             {
                 if (value != _fromActivityDrop)
@@ -78,10 +66,7 @@ namespace Warewolf.Studio.ViewModels
 
         public bool IsRefreshing
         {
-            get
-            {
-                return _isRefreshing;
-            }
+            get => _isRefreshing;
             set
             {
                 _isRefreshing = value;
@@ -93,7 +78,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IExplorerTreeItem SelectedItem
         {
-            get { return _selectedItem; }
+            get => _selectedItem;
             set
             {
                 if (!Equals(_selectedItem, value))
@@ -108,7 +93,7 @@ namespace Warewolf.Studio.ViewModels
 
         public object[] SelectedDataItems
         {
-            get { return _selectedDataItems; }
+            get => _selectedDataItems;
             set
             {
                 _selectedDataItems = value;
@@ -122,10 +107,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual ObservableCollection<IEnvironmentViewModel> Environments
         {
-            get
-            {
-                return _environments;
-            }
+            get => _environments;
             set
             {
                 if (value != null)
@@ -149,14 +131,11 @@ namespace Warewolf.Studio.ViewModels
         }
 
         public IEnvironmentViewModel SelectedEnvironment { get; set; }
-        public IServer SelectedServer => SelectedEnvironment.Server;
+        public IServer SelectedServer => SelectedEnvironment?.Server;
 
         public virtual string SearchText
         {
-            get
-            {
-                return _searchText;
-            }
+            get => _searchText;
             set
             {
                 if (_searchText == value)
@@ -175,24 +154,23 @@ namespace Warewolf.Studio.ViewModels
 
         public string RefreshToolTip => Resources.Languages.Tooltips.ExplorerRefreshToolTip;
 
-        public async void RefreshEnvironment(Guid environmentId)
+        public async Task RefreshEnvironment(Guid environmentId)
         {
             var environmentViewModel = Environments.FirstOrDefault(model => model.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
             {
-
-                await RefreshEnvironment(environmentViewModel, true).ConfigureAwait(true);
+                await RefreshEnvironmentAsync(environmentViewModel, true).ConfigureAwait(true);
             }
         }
 
-        public async Task RefreshSelectedEnvironment()
+        public async Task RefreshSelectedEnvironmentAsync()
         {
             if (SelectedEnvironment != null)
             {
-                await RefreshEnvironment(SelectedEnvironment, true).ConfigureAwait(true);
+                await RefreshEnvironmentAsync(SelectedEnvironment, true).ConfigureAwait(true);
             }
         }
-        protected virtual async Task Refresh(bool refresh)
+        protected virtual async Task RefreshAsync(bool refresh)
         {
             IsRefreshing = true;
             var environmentId = ConnectControlViewModel?.SelectedConnection.EnvironmentID;
@@ -200,14 +178,14 @@ namespace Warewolf.Studio.ViewModels
             var environmentViewModels = Environments.Where(model => resourceName != null && model.Server.EnvironmentID == environmentId && model.Server.DisplayName.Replace("(Connected)", "").Trim() == resourceName);
             foreach (var environmentViewModel in environmentViewModels)
             {
-                await RefreshEnvironment(environmentViewModel, refresh).ConfigureAwait(true);
+                await RefreshEnvironmentAsync(environmentViewModel, refresh).ConfigureAwait(true);
             }
             Environments = new ObservableCollection<IEnvironmentViewModel>(Environments);
             IsRefreshing = false;
 
         }
 
-        private async Task RefreshEnvironment(IEnvironmentViewModel environmentViewModel, bool refresh)
+        async Task RefreshEnvironmentAsync(IEnvironmentViewModel environmentViewModel, bool refresh)
         {
             IsRefreshing = true;
             environmentViewModel.IsConnecting = true;
@@ -216,7 +194,7 @@ namespace Warewolf.Studio.ViewModels
             {
                 isDeploy = environmentViewModel.Children.Any(a => a.AllowResourceCheck);
                 environmentViewModel.ForcedRefresh = true;
-                await environmentViewModel.Load(isDeploy, refresh).ConfigureAwait(true);
+                await environmentViewModel.LoadAsync(isDeploy, refresh).ConfigureAwait(true);
                 if (!string.IsNullOrEmpty(SearchText))
                 {
                     Filter(SearchText);
@@ -275,10 +253,7 @@ namespace Warewolf.Studio.ViewModels
         public ICommand CreateFolderCommand { get; }
         public bool AllowDrag
         {
-            get
-            {
-                return _allowDrag;
-            }
+            get => _allowDrag;
             set
             {
                 _allowDrag = value;
@@ -290,7 +265,6 @@ namespace Warewolf.Studio.ViewModels
         {
             if (id != Guid.Empty)
             {
-
                 foreach (var environmentViewModel in Environments)
                 {
                     environmentViewModel.SelectItem(id, a => SelectedItem = a);
@@ -315,7 +289,7 @@ namespace Warewolf.Studio.ViewModels
         }
         public IConnectControlViewModel ConnectControlViewModel { get; internal set; }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             foreach (var environmentViewModel in Environments)
             {
@@ -330,7 +304,7 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _isLoading;
 
-        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment) 
+        public ExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, bool shouldUpdateActiveEnvironment)
             : this(shellViewModel, aggregator, shouldUpdateActiveEnvironment, null, true)
         {
         }
@@ -346,12 +320,11 @@ namespace Warewolf.Studio.ViewModels
             _selectAction = selectAction;
             localhostEnvironment.SelectAction = selectAction ?? (a => { });
             localhostEnvironment.IsSelected = true;
-            
             Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
             if (loadLocalHost)
             {
 #pragma warning disable CS4014
-                LoadEnvironment(localhostEnvironment,false,false);
+                LoadEnvironmentAsync(localhostEnvironment,false,false);
 #pragma warning restore CS4014
             }
 
@@ -367,14 +340,14 @@ namespace Warewolf.Studio.ViewModels
             ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlViewModelOnSelectedEnvironmentChanged;
         }
 
-        private async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
+        async void ConnectControlViewModelOnSelectedEnvironmentChanged(object sender, Guid environmentId)
         {
-            var environmentViewModel = CreateEnvironmentViewModel(sender, environmentId, true);
+            var environmentViewModel = CreateEnvironmentViewModelAsync(sender, environmentId, true);
             SelectedEnvironment = await environmentViewModel.ConfigureAwait(true);
         }
 
-        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId) => await CreateEnvironmentViewModel(sender, environmentId, false).ConfigureAwait(true);
-        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId, bool shouldLoad)
+        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModel(object sender, Guid environmentId) => await CreateEnvironmentViewModelAsync(sender, environmentId, false).ConfigureAwait(true);
+        public async Task<IEnvironmentViewModel> CreateEnvironmentViewModelAsync(object sender, Guid environmentId, bool shouldLoad)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             if (environmentViewModel == null)
@@ -394,7 +367,7 @@ namespace Warewolf.Studio.ViewModels
                         _environments.Add(environmentModel);
                         if (shouldLoad)
                         {
-                            await environmentModel.Load(false, true).ConfigureAwait(true);
+                            await environmentModel.LoadAsync(false, true).ConfigureAwait(true);
                         }
                         environmentViewModel = environmentModel;
                     }
@@ -414,7 +387,7 @@ namespace Warewolf.Studio.ViewModels
                 _environments.Add(environmentModel);
             }
             Environments = _environments;
-            var result = await LoadEnvironment(environmentModel, IsDeploy).ConfigureAwait(true);
+            var result = await LoadEnvironmentAsync(environmentModel, IsDeploy).ConfigureAwait(true);
             IsLoading = result;
         }
 
@@ -433,7 +406,7 @@ namespace Warewolf.Studio.ViewModels
                         _environments.Add(existing);
                         OnPropertyChanged(() => Environments);
                     }
-                    var result = await LoadEnvironment(existing, IsDeploy).ConfigureAwait(true);
+                    var result = await LoadEnvironmentAsync(existing, IsDeploy).ConfigureAwait(true);
 
                     IsLoading = result;
                     ShowServerDownError = false;
@@ -459,10 +432,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual bool IsLoading
         {
-            get
-            {
-                return _isLoading;
-            }
+            get => _isLoading;
             set
             {
                 _isLoading = value;
@@ -474,7 +444,7 @@ namespace Warewolf.Studio.ViewModels
         {
             Application.Current?.Dispatcher?.Invoke(() =>
             {
-                IPopupController controller = CustomContainer.Get<IPopupController>();
+                var controller = CustomContainer.Get<IPopupController>();
                 ServerDisconnected(_, server);
                 if (!ShowServerDownError)
                 {
@@ -502,7 +472,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void RemoveEnvironmentFromCollection(IServer server)
+        void RemoveEnvironmentFromCollection(IServer server)
         {
             var environmentModel = _environments?.FirstOrDefault(model => model?.Server?.EnvironmentID == server?.EnvironmentID);
             if (environmentModel != null)
@@ -522,11 +492,11 @@ namespace Warewolf.Studio.ViewModels
             OnPropertyChanged(() => Environments);
         }
 
-        protected virtual async Task<bool> LoadEnvironment(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
+        protected virtual async Task<bool> LoadEnvironmentAsync(IEnvironmentViewModel localhostEnvironment, bool isDeploy = false,bool reloadCatalogue = true)
         {
             IsLoading = true;
             localhostEnvironment.Connect();
-            var result = await localhostEnvironment.Load(isDeploy,reloadCatalogue).ConfigureAwait(true);
+            var result = await localhostEnvironment.LoadAsync(isDeploy,reloadCatalogue).ConfigureAwait(true);
             AfterLoad(localhostEnvironment.Server.EnvironmentID);
             IsLoading = false;
             return result;

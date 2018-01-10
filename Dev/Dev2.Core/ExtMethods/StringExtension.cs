@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,7 +24,7 @@ namespace Dev2
     
         public static bool IsDate(this string payload)
         {
-            bool result = false;
+            var result = false;
 
             if (string.IsNullOrEmpty(payload))
             {
@@ -59,8 +59,8 @@ namespace Dev2
                 "yyyy.mm.dd",
                 "yyyy.dd.mm"
             };
-            var d = new DateTimeParser();
-            int count = 0;
+            var d = new Dev2DateTimeParser();
+            var count = 0;
             while (!result && count < acceptedDateFormats.Count)
             {
                 result = d.TryParseDateTime(payload, acceptedDateFormats[count], out IDateTimeResultTO to, out string errorMsg);
@@ -68,11 +68,11 @@ namespace Dev2
             }
             return result;
         }
-        private static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
+        static readonly XmlReaderSettings IsXmlReaderSettings = new XmlReaderSettings { ConformanceLevel = ConformanceLevel.Auto, DtdProcessing = DtdProcessing.Ignore };
 
         public static bool IsXml(this string payload)
         {
-            bool result = false;
+            var result = false;
 
 
             if (IsXml(payload, out bool isFragment))
@@ -106,7 +106,7 @@ namespace Dev2
                 }
 
 
-                catch
+                catch (Exception ex)
                 {
                     return false;
                 }
@@ -127,8 +127,8 @@ namespace Dev2
         /// </summary>
         static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
-            string trimedData = data.Trim();
-            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var trimedData = data.Trim();
+            var result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;

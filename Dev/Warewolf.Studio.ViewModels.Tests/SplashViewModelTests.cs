@@ -14,11 +14,11 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IServer> _serverMock;
-        private Mock<IExternalProcessExecutor> _externalProcessExecutorMock;
+        Mock<IServer> _serverMock;
+        Mock<IExternalProcessExecutor> _externalProcessExecutorMock;
 
-        private List<string> _changedProperties;
-        private SplashViewModel _target;
+        List<string> _changedProperties;
+        SplashViewModel _target;
 
         #endregion Fields
 

@@ -40,9 +40,9 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
         readonly IEventAggregator _eventPublisher;
         readonly IServer _server;
         readonly IAsyncWorker _asyncWorker;
-        private ISourceToolRegion<IExchangeSource> _sourceRegion;
+        ISourceToolRegion<IExchangeSource> _sourceRegion;
 
-        
+
         public RelayCommand TestEmailAccountCommand { get; private set; }
         public ICommand ChooseAttachmentsCommand { get; private set; }
 
@@ -83,19 +83,19 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             HelpText = Warewolf.Studio.Resources.Languages.HelpText.Tool_Email_Exchange_Send;
         }
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             Testing = false;
             AddTitleBarMappingToggle();
             InitialiseViewModel();
         }
-        
+
         void AddTitleBarMappingToggle()
         {
             HasLargeView = true;
         }
 
-        private void InitialiseViewModel()
+        void InitialiseViewModel()
         {
             BuildRegions();
             InitializeProperties();
@@ -129,7 +129,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private string _statusMessage;
+        string _statusMessage;
         public string StatusMessage
         {
             get { return _statusMessage; }
@@ -141,7 +141,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private bool _testing;
+        bool _testing;
 
         public bool Testing
         {
@@ -157,7 +157,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             }
         }
 
-        private IExchangeServiceModel Model { get; set; }
+        IExchangeServiceModel Model { get; set; }
         public override IList<IToolRegion> BuildRegions()
         {
             IList<IToolRegion> regions = new List<IToolRegion>();
@@ -270,7 +270,7 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
             SendEmail(testSource, testMessage);
         }
 
-        private void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
+        void SendEmail(ExchangeSource testSource, ExchangeTestMessage testMessage)
         {
             _asyncWorker.Start(() =>
             {
@@ -333,31 +333,31 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
 
         IEnumerable<IActionableErrorInfo> ValidateThis()
         {
-            foreach (var error in GetRuleSet("EmailSource", GetDatalistString()).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
+            foreach (var error in GetRuleSet("EmailSource", GetDatalistString?.Invoke()).ValidateRules("'Email Source'", () => IsEmailSourceFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Recipients", GetDatalistString()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
+            foreach (var error in GetRuleSet("Recipients", GetDatalistString?.Invoke()).ValidateRules("'To', 'Cc' or 'Bcc'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("To", GetDatalistString()).ValidateRules("'To'", () => IsToFocused = true))
+            foreach (var error in GetRuleSet("To", GetDatalistString?.Invoke()).ValidateRules("'To'", () => IsToFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Cc", GetDatalistString()).ValidateRules("'Cc'", () => IsCcFocused = true))
+            foreach (var error in GetRuleSet("Cc", GetDatalistString?.Invoke()).ValidateRules("'Cc'", () => IsCcFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Bcc", GetDatalistString()).ValidateRules("'Bcc'", () => IsBccFocused = true))
+            foreach (var error in GetRuleSet("Bcc", GetDatalistString?.Invoke()).ValidateRules("'Bcc'", () => IsBccFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("SubjectAndBody", GetDatalistString()).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
+            foreach (var error in GetRuleSet("SubjectAndBody", GetDatalistString?.Invoke()).ValidateRules("'Subject' or 'Body'", () => IsSubjectFocused = true))
             {
                 yield return error;
             }
-            foreach (var error in GetRuleSet("Attachments", GetDatalistString()).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
+            foreach (var error in GetRuleSet("Attachments", GetDatalistString?.Invoke()).ValidateRules("'Attachments'", () => IsAttachmentsFocused = true))
             {
                 yield return error;
             }
@@ -373,22 +373,22 @@ namespace Dev2.Activities.Designers2.ExchangeEmail
                     ruleSet.Add(new IsNullRule(() => SourceRegion.SelectedSource));
                     break;
                 case "To":
-                    var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com");
+                    var toExprRule = new IsValidExpressionRule(() => To, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(toExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => toExprRule.ExpressionValue));
                     break;
                 case "Cc":
-                    var ccExprRule = new IsValidExpressionRule(() => Cc, datalist, "user@test.com");
+                    var ccExprRule = new IsValidExpressionRule(() => Cc, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(ccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => ccExprRule.ExpressionValue));
                     break;
                 case "Bcc":
-                    var bccExprRule = new IsValidExpressionRule(() => Bcc, datalist, "user@test.com");
+                    var bccExprRule = new IsValidExpressionRule(() => Bcc, datalist, "user@test.com", new VariableUtils());
                     ruleSet.Add(bccExprRule);
                     ruleSet.Add(new IsValidEmailAddressRule(() => bccExprRule.ExpressionValue));
                     break;
                 case "Attachments":
-                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, datalist, @"c:\test.txt");
+                    var attachmentsExprRule = new IsValidExpressionRule(() => Attachments, datalist, @"c:\test.txt", new VariableUtils());
                     ruleSet.Add(attachmentsExprRule);
                     ruleSet.Add(new IsValidFileNameRule(() => attachmentsExprRule.ExpressionValue));
                     break;

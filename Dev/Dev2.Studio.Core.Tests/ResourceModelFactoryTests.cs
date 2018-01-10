@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -119,7 +119,7 @@ namespace Dev2.Core.Tests
             var environmentModel = new Mock<IServer>();
 
             //------------Execute Test---------------------------
-            var resourceModel = createResourceModel(environmentModel.Object);
+            var resourceModel = createResourceModel?.Invoke(environmentModel.Object);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(Permissions.Contribute, resourceModel.UserPermissions);
@@ -131,7 +131,7 @@ namespace Dev2.Core.Tests
             var environmentModel = new Mock<IServer>();
 
             //------------Execute Test---------------------------
-            var resourceModel = createResourceModel(environmentModel.Object);
+            var resourceModel = createResourceModel?.Invoke(environmentModel.Object);
 
             //------------Assert Results-------------------------
             Assert.AreEqual(resourceType, resourceModel.ResourceType);

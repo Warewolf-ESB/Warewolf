@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,7 +20,7 @@ namespace Dev2.Tests.Parsing
     [TestClass]
     public class BitVectorTest
     {
-        private TestContext testContextInstance;
+        TestContext testContextInstance;
 
         /// <summary>
         ///Gets or sets the test context which provides
@@ -63,11 +63,11 @@ namespace Dev2.Tests.Parsing
         [TestMethod]
         public void BitVector_Set_Test()
         {
-            BitVector bArray = new BitVector();
-            bool[] sArray = new bool[32];
-            Random random = new Random(15);
+            var bArray = new BitVector();
+            var sArray = new bool[32];
+            var random = new Random(15);
 
-            for(int i = 0; i < sArray.Length; i++)
+            for (int i = 0; i < sArray.Length; i++)
             {
                 sArray[i] = random.Next(0, 2) == 1;
                 bArray[i] = sArray[i];

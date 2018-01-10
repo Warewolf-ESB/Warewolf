@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -14,8 +14,8 @@ using System.Collections.Generic;
 namespace Dev2.DataList.Contract
 {
     public class OutputTO {
-        private readonly string _outPutDescription;
-        private readonly IList<string> _outputStrings;
+        readonly string _outPutDescription;
+        readonly IList<string> _outputStrings;
 
         internal OutputTO(string outputDescription) {
             _outPutDescription = outputDescription;

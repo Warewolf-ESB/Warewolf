@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -40,15 +40,15 @@ namespace Dev2.DataList.Contract
         /// <returns></returns>
         public string Generate()
         {
-            StringBuilder result = new StringBuilder();
+            var result = new StringBuilder();
 
-            XmlDocument xDoc = new XmlDocument();
-            XmlElement rootNode = xDoc.CreateElement(string.Concat(ArgumentType.ToString(), "s"));
+            var xDoc = new XmlDocument();
+            var rootNode = xDoc.CreateElement(string.Concat(ArgumentType.ToString(), "s"));
 
 
-            foreach(IDev2Definition def in Definitions)
+            foreach (IDev2Definition def in Definitions)
             {
-                XmlElement tmp = xDoc.CreateElement(ArgumentType.ToString());
+                var tmp = xDoc.CreateElement(ArgumentType.ToString());
                 tmp.SetAttribute(_nameAttribute, def.Name);
 
                 tmp.SetAttribute(ArgumentType != enDev2ArgumentType.Input ? _mapsToAttribute : _sourceAttribute, def.MapsTo);
@@ -72,7 +72,7 @@ namespace Dev2.DataList.Contract
 
                 if(def.IsRequired && ArgumentType == enDev2ArgumentType.Input)
                 {
-                    XmlElement requiredElm = xDoc.CreateElement(_validateTag);
+                    var requiredElm = xDoc.CreateElement(_validateTag);
                     requiredElm.SetAttribute(_typeAttribute, _requiredValue);
                     tmp.AppendChild(requiredElm);
                 }

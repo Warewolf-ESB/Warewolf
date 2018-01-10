@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,7 +27,7 @@ namespace Dev2.Tests.Activities.FindRecsetOptionsTests
         public void FindRecsetOptions_FindAll_GetAllRecsetOptions_RightNumberOfOptionsAndCorrectOrder()
         {
             //------------Setup for test--------------------------
-            ObservableCollection<string> expected = GlobalConstants.FindRecordsOperations.ToObservableCollection();
+            var expected = GlobalConstants.FindRecordsOperations.ToObservableCollection();
             expected.Remove("There is No Error");
             expected.Remove("There is An Error");
             //------------Execute Test---------------------------

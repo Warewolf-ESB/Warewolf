@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,7 +45,7 @@ namespace Dev2.Activities.Specs.BaseTypes
     [Binding]
     public class CommonSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public CommonSteps(ScenarioContext scenarioContext)
         {
@@ -76,15 +76,15 @@ namespace Dev2.Activities.Specs.BaseTypes
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
-            string fetchErrors = result.Environment.FetchErrors();
-            bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
-            string message = string.Format("expected {0} error but it {1}", anError.ToLower(),
+            var fetchErrors = result.Environment.FetchErrors();
+            var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
+            var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
-            List<string> allErrors = new List<string>();
+            var allErrors = new List<string>();
             allErrors.AddRange(result.Environment.Errors.ToList());
             allErrors.AddRange(result.Environment.AllErrors.ToList());
 
@@ -128,7 +128,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var multipleFilesActivity = baseAct as DsfAbstractMultipleFilesActivity;
                 if (stringAct != null)
                 {
-                    DsfActivityAbstract<string> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
+                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<string>>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -138,7 +138,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (boolAct != null)
                 {
-                    DsfActivityAbstract<bool> dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
+                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfActivityAbstract<bool>>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -148,7 +148,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 }
                 else if (multipleFilesActivity != null)
                 {
-                    DsfAbstractMultipleFilesActivity dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
+                    var dsfActivityAbstract = containsKey ? scenarioContext.Get<DsfAbstractMultipleFilesActivity>("activity") : null;
                     var result = scenarioContext.Get<IDSFDataObject>("result");
                     if (!result.Environment.HasErrors())
                     {
@@ -264,14 +264,14 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 Dev2Logger.Debug(string.Format("Source File: {0}", scenarioContext.Get<string>(ActualSourceHolder)), "Warewolf Debug");
                 var broker = ActivityIOFactory.CreateOperationsBroker();
-                IActivityIOPath source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(ActualSourceHolder),
+                var source = ActivityIOFactory.CreatePathFromString(scenarioContext.Get<string>(ActualSourceHolder),
                     scenarioContext.Get<string>(SourceUsernameHolder),
                     scenarioContext.Get<string>(SourcePasswordHolder),
                     true, "");
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 Enumerable.Range(1, numberOfGuids).ToList().ForEach(x => sb.Append(Guid.NewGuid().ToString()));
                 var ops = ActivityIOFactory.CreatePutRawOperationTO(WriteType.Overwrite, sb.ToString());
-                IActivityIOOperationsEndPoint sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
+                var sourceEndPoint = ActivityIOFactory.CreateOperationEndPointFromIOPath(source);
                 if (sourceEndPoint.PathIs(sourceEndPoint.IOPath) == enPathType.File)
                 {
                     var result = broker.PutRaw(sourceEndPoint, ops);
@@ -391,7 +391,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
         }
 
-        private void FixBreaks(ref string expected, ref string actual)
+        void FixBreaks(ref string expected, ref string actual)
         {
             expected = new StringBuilder(expected).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
             actual = new StringBuilder(actual).Replace(Environment.NewLine, "").Replace("\r", "").Replace("\n", "").ToString().Trim();
@@ -430,7 +430,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             {
                 retryCount++;
                 //Call the service and get the result
-                WebClient webClient = new WebClient
+                var webClient = new WebClient
                 {
                     UseDefaultCredentials = true,
                     Credentials = CredentialCache.DefaultCredentials
@@ -440,7 +440,7 @@ namespace Dev2.Activities.Specs.BaseTypes
             while (webCallResult.Contains("<FatalError>") && retryCount < 10);
             StringAssert.Contains(webCallResult, errorValue);
         }
-        private static WebSource CreateTestWebSource()
+        static WebSource CreateTestWebSource()
         {
             return new WebSource
             {
@@ -458,9 +458,9 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             if (DataListUtil.IsValueRecordset(variable))
             {
-                string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-                string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
-                List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+                var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+                var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+                var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                                out error);
                 recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i) && i != "\"\"").ToList();
                 expectedValue = expectedValue.Replace('"', ' ').Trim();
@@ -507,10 +507,10 @@ namespace Dev2.Activities.Specs.BaseTypes
                     }
                     else
                     {
-                        Type component = Type.GetType("System." + type);
+                        var component = Type.GetType("System." + type);
                         if (component != null)
                         {
-                            TypeConverter converter = TypeDescriptor.GetConverter(component);
+                            var converter = TypeDescriptor.GetConverter(component);
 
                             try
                             {
@@ -542,7 +542,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             var inputFile = new FileInfo(inputFilePath);
             var outputFile = new FileInfo(outputFilePath);
-            double compressionTimesValue = double.Parse(compressionTimes);
+            var compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
                 Math.Round(inputFile.Length / (double)outputFile.Length, 1));
@@ -636,8 +636,8 @@ namespace Dev2.Activities.Specs.BaseTypes
 
         public string RetrieveItemForEvaluation(enIntellisensePartType partType, string value)
         {
-            string rawRef = DataListUtil.StripBracketsFromValue(value);
-            string objRef = string.Empty;
+            var rawRef = DataListUtil.StripBracketsFromValue(value);
+            var objRef = string.Empty;
 
             if (partType == enIntellisensePartType.RecordsetsOnly)
             {
@@ -677,7 +677,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
-            catch
+            catch (Exception ex)
             {
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
@@ -705,7 +705,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
-            catch
+            catch (Exception ex)
             {
 
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
@@ -718,7 +718,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         List<IDebugItemResult> BuildExpectedDebugItems(Table table)
         {
             var columnHeaders = table.Header.ToArray();
-            List<IDebugItemResult> list = new List<IDebugItemResult>();
+            var list = new List<IDebugItemResult>();
 
 
             foreach (TableRow row in table.Rows)
@@ -886,7 +886,7 @@ namespace Dev2.Activities.Specs.BaseTypes
         void Verify(string expectedValue, string actualValue, string name, int index, string variable = "")
         {
             expectedValue = expectedValue.Replace("‡", "=");
-            string type = "";
+            var type = "";
 
             if (!string.IsNullOrEmpty(expectedValue) && !expectedValue.Equals(actualValue, StringComparison.InvariantCultureIgnoreCase))
             {
@@ -932,16 +932,16 @@ namespace Dev2.Activities.Specs.BaseTypes
             }
             else
             {
-                Type component = Type.GetType("System." + type);
+                var component = Type.GetType("System." + type);
                 if (component != null)
                 {
-                    TypeConverter converter = TypeDescriptor.GetConverter(component);
+                    var converter = TypeDescriptor.GetConverter(component);
 
                     try
                     {
                         converter.ConvertFrom(actualValue);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Assert.Fail("Value is not expected type");
                     }

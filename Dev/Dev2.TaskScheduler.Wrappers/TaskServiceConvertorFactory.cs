@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -109,7 +109,7 @@ namespace Dev2.TaskScheduler.Wrappers
         public ITrigger SanitiseTrigger(ITrigger resource)
         {
             ITrigger trigger = new Dev2Trigger(this, resource.Instance);
-            Trigger serialisedTrigger = resource.Instance;
+            var serialisedTrigger = resource.Instance;
             switch (resource.Instance.TriggerType)
             {
                 case TaskTriggerType.Boot:
@@ -217,10 +217,10 @@ namespace Dev2.TaskScheduler.Wrappers
             return trigger;
         }
 
-        private static void ExtractDelay(ITriggerDelay resource, ITriggerDelay trigger)
+        static void ExtractDelay(ITriggerDelay resource, ITriggerDelay trigger)
         {
-            ITriggerDelay daily = trigger;
-            ITriggerDelay dailyr = resource;
+            var daily = trigger;
+            var dailyr = resource;
             if (daily != null && dailyr != null)
             {
                 daily.Delay = dailyr.Delay;

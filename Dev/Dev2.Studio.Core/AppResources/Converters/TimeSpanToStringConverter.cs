@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -27,13 +27,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(!(value is TimeSpan))
-            {
-                return Binding.DoNothing;
-            }
-
-            TimeSpan timeSpan = (TimeSpan)value;
-
+            var timeSpan = value as TimeSpan? ?? throw new ArgumentException("value must be TimeSpan");
             if(string.IsNullOrWhiteSpace(Format))
             {
                 return timeSpan.ToString();
@@ -41,10 +35,7 @@ namespace Dev2.Studio.Core.AppResources.Converters
             return timeSpan.ToString(Format);
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return Binding.DoNothing;
-        }
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => Binding.DoNothing;
 
         #endregion Override Mehods
     }

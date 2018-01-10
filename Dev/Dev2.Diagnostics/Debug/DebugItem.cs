@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,8 +32,8 @@ namespace Dev2.Diagnostics
             + new string(Path.GetInvalidPathChars());
 
         readonly string _tempPath;
-        private readonly Guid _itemId;
-        private readonly StringBuilder _stringBuilder;
+        readonly Guid _itemId;
+        readonly StringBuilder _stringBuilder;
         string _fileName;
         bool _isMoreLinkCreated;
 
@@ -47,7 +47,7 @@ namespace Dev2.Diagnostics
 
         public List<IDebugItemResult> ResultsList { get; set; }
         public static List<DebugItem> EmptyList { get => emptyList; set => emptyList = value; }
-        private static List<DebugItem> emptyList = new List<DebugItem>();
+        static List<DebugItem> emptyList = new List<DebugItem>();
 
         #endregion properties
 
@@ -186,7 +186,7 @@ namespace Dev2.Diagnostics
 
             var path = Path.Combine(_tempPath, fileName);
             File.AppendAllText(path, contents);
-            string linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
+            var linkUri = string.Format(EnvironmentVariables.WebServerUri + "/Services/{0}?DebugItemFilePath={1}", "FetchDebugItemFileService", path);
 
             return linkUri;
         }

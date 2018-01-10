@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
     [Binding]
     public class XPathSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public XPathSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -56,8 +56,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
 
             scenarioContext.TryGetValue("xpathDtos", out List<Tuple<string, string>> xpathDtos);
 
-            int row = 1;
-            foreach(var variable in xpathDtos)
+            var row = 1;
+            foreach (var variable in xpathDtos)
             {
                 xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;
@@ -115,7 +115,7 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         public void WhenTheXpathToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -138,15 +138,15 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
         [Then(@"the xpath result for this varibale ""(.*)"" will be")]
         public void ThenTheXpathResultForThisVaribaleWillBe(string variable, Table table)
         {
-            string recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
-            string column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
+            var recordset = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetsOnly, variable);
+            var column = RetrieveItemForEvaluation(enIntellisensePartType.RecordsetFields, variable);
 
             var result = scenarioContext.Get<IDSFDataObject>("result");
-            List<string> recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
+            var recordSetValues = RetrieveAllRecordSetFieldValues(result.Environment, recordset, column,
                                                                            out string error);
             recordSetValues = recordSetValues.Where(i => !string.IsNullOrEmpty(i)).ToList();
 
-            List<TableRow> tableRows = table.Rows.ToList();
+            var tableRows = table.Rows.ToList();
             Assert.AreEqual(tableRows.Count, recordSetValues.Count);
             for(int i = 0; i < tableRows.Count; i++)
             {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,7 +18,7 @@ namespace Dev2.CustomControls.Converters
 {
     public class RowToIndexConverter : MarkupExtension, IValueConverter
     {
-        private static RowToIndexConverter _converter;
+        static RowToIndexConverter _converter;
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

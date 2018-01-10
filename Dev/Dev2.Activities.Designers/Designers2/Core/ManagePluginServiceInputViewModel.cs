@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -42,18 +42,18 @@ namespace Dev2.Activities.Designers2.Core
         readonly IDotNetViewModel _viewmodel;
         readonly IPluginServiceModel _serverModel;
         bool _isGenerateInputsEmptyRows;
-        private bool _okSelected;
-        private string _testResults;
-        private bool _testResultsAvailable;
-        private bool _isTestResultsEmptyRows;
-        private bool _isTesting;
-        private IPluginService _model;
-        private bool _pasteResponseVisible;
-        private RecordsetList _recordsetList;
-        private bool _outputCountExpandAllowed;
-        private bool _inputCountExpandAllowed;
-        private bool _testPassed;
-        private bool _testFailed;
+        bool _okSelected;
+        string _testResults;
+        bool _testResultsAvailable;
+        bool _isTestResultsEmptyRows;
+        bool _isTesting;
+        IPluginService _model;
+        bool _pasteResponseVisible;
+        RecordsetList _recordsetList;
+        bool _outputCountExpandAllowed;
+        bool _inputCountExpandAllowed;
+        bool _testPassed;
+        bool _testFailed;
 
         public ManagePluginServiceInputViewModel(IDotNetViewModel model, IPluginServiceModel serviceModel)
         {

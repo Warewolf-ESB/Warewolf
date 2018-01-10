@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,12 +36,12 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("Utility-FormatNumber", "Format Number", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Format Number")]
-    public class DsfNumberFormatActivity : DsfActivityAbstract<string>
+    public class DsfNumberFormatActivity : DsfActivityAbstract<string>,IEquatable<DsfNumberFormatActivity>
     {
         #region Class Members
 
-        
-        private static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
+
+        static readonly IDev2NumberFormatter _numberFormatter; //  REVIEW : Should this not be an instance variable....
 
 
 
@@ -142,7 +142,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     var binaryDataListItem = colItr.FetchNextValue(expressionIterator);
                     var val = binaryDataListItem;
                     {
-                        FormatNumberTO formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
+                        var formatNumberTo = new FormatNumberTO(val, RoundingType, roundingDecimalPlacesValue, adjustDecimalPlaces, decimalPlacesToShowValue);
                         result = _numberFormatter.Format(formatNumberTo);
                     }
 
@@ -188,7 +188,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             }
         }
 
-        private void AddDebugInputItems(IDSFDataObject dataObject, int update, string expression, string roundingDecimalPlaces, string decimalPlacesToShow)
+        void AddDebugInputItems(IDSFDataObject dataObject, int update, string expression, string roundingDecimalPlaces, string decimalPlacesToShow)
         {
             if (dataObject.IsDebugMode())
             {
@@ -211,9 +211,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
+        void AddDebugInputItem(string expression, string labelText, IExecutionEnvironment environment, int update)
         {
-            DebugItem itemToAdd = new DebugItem();
+            var itemToAdd = new DebugItem();
             if (environment != null)
             {
                 AddDebugItem(new DebugEvalResult(expression, labelText, environment, update), itemToAdd);
@@ -305,5 +305,39 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion GetForEachInputs/Outputs
+
+        public bool Equals(DsfNumberFormatActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Expression, other.Expression) 
+                && string.Equals(RoundingType, other.RoundingType) 
+                && string.Equals(RoundingDecimalPlaces, other.RoundingDecimalPlaces) 
+                && string.Equals(DecimalPlacesToShow, other.DecimalPlacesToShow) 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfNumberFormatActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Expression != null ? Expression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RoundingType != null ? RoundingType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (RoundingDecimalPlaces != null ? RoundingDecimalPlaces.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DecimalPlacesToShow != null ? DecimalPlacesToShow.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

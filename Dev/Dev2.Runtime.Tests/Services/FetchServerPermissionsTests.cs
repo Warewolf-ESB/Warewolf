@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetAuthorizationContextForService_Returns_Contribute()
         {
             //------------Setup for test-------------------------
-            FetchServerPermissions fetchServerPermissions = new FetchServerPermissions();
+            var fetchServerPermissions = new FetchServerPermissions();
             //------------Execute Test---------------------------
             var authorizationContextForService = fetchServerPermissions.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
@@ -40,7 +40,7 @@ namespace Dev2.Tests.Runtime.Services
         public void CreateServiceEntry_Returns_New_Dynamic_Service()
         {
             //------------Setup for test-------------------------
-            FetchServerPermissions fetchServerPermissions = new FetchServerPermissions();
+            var fetchServerPermissions = new FetchServerPermissions();
             //------------Execute Test---------------------------
             var dynamicService = fetchServerPermissions.CreateServiceEntry();
             var handleType = fetchServerPermissions.HandlesType();
@@ -54,7 +54,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_GivenEmptyArgs_Returns_EmptyGuid()
         {
             //------------Setup for test-------------------------
-            FetchServerPermissions fetchServerPermissions = new FetchServerPermissions();
+            var fetchServerPermissions = new FetchServerPermissions();
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>();
             var resourceID = fetchServerPermissions.GetResourceID(requestArgs);
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_GivenSomeArgs_Returns_Id()
         {
             //------------Setup for test-------------------------
-            FetchServerPermissions fetchServerPermissions = new FetchServerPermissions();
+            var fetchServerPermissions = new FetchServerPermissions();
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>();
             var resourceID = fetchServerPermissions.GetResourceID(requestArgs);
@@ -81,12 +81,12 @@ namespace Dev2.Tests.Runtime.Services
         public void Execute_Returns_Permissions()
         {
             //------------Setup for test-------------------------
-            FetchServerPermissions fetchServerPermissions = new FetchServerPermissions();
+            var fetchServerPermissions = new FetchServerPermissions();
             var workspaceMock = new Mock<IWorkspace>();
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>();
             var executeResults = fetchServerPermissions.Execute(requestArgs, workspaceMock.Object);
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             Assert.IsNotNull(executeResults);
             var deserializedResults = jsonSerializer.Deserialize<PermissionsModifiedMemo>(executeResults);
             //------------Assert Results-------------------------

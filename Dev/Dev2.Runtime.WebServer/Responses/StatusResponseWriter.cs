@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,9 +16,8 @@ namespace Dev2.Runtime.WebServer.Responses
     {
         readonly HttpStatusCode _statusCode;
 
-        public StatusResponseWriter()
+        public StatusResponseWriter() : this (HttpStatusCode.NoContent)
         {
-            _statusCode = HttpStatusCode.NoContent;
         }
 
         public StatusResponseWriter(HttpStatusCode statusCode)

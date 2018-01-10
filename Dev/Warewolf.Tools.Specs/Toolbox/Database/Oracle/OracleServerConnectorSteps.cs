@@ -26,10 +26,10 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
     [Binding]
     public class OracleServerConnectorSteps
     {
-        private DbSourceDefinition _greenPointSource;
-        private DbAction _importOrderAction;
-        private DbSourceDefinition _testingDbSource;
-        private DbAction _getCountriesAction;
+        DbSourceDefinition _greenPointSource;
+        DbAction _importOrderAction;
+        DbSourceDefinition _testingDbSource;
+        DbAction _getCountriesAction;
 
         [Given(@"I drag a Oracle Server database connector")]
         public void GivenIDragAOracleServerDatabaseConnector()
@@ -234,7 +234,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources
         [Then(@"Test Oracle Inputs appear as")]
         public void ThenTestInputsAppearAs(Table table)
         {
-            int rowNum = 0;
+            var rowNum = 0;
             var viewModel = GetViewModel();
             foreach (var row in table.Rows)
             {

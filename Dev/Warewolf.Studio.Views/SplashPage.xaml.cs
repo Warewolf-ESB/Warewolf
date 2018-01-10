@@ -9,16 +9,15 @@ using Warewolf.Studio.Core;
 
 namespace Warewolf.Studio.Views
 {
-    /// <summary>
-    /// Interaction logic for SplashPage.xaml
-    /// </summary>
     public partial class SplashPage : ISplashView
     {
         readonly Grid _blackoutGrid = new Grid();
         bool _isDialog;
+        bool _studioShutdown;
 
         public SplashPage()
         {
+            _studioShutdown = false;
             if (_isDialog)
             {
                 PopupViewManageEffects.AddBlackOutEffect(_blackoutGrid);
@@ -33,8 +32,16 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        public void CloseSplash()
+        public void CloseSplash(bool studioShutDown)
         {
+            if (studioShutDown)
+            {
+                _studioShutdown = true;
+                Dispatcher.BeginInvoke(new Action(() => {
+                    System.Windows.Threading.Dispatcher.CurrentDispatcher.InvokeShutdown();
+                    Close();
+                }));
+            }
             if (_isDialog)
             {
                 PopupViewManageEffects.RemoveBlackOutEffect(_blackoutGrid);
@@ -47,7 +54,7 @@ namespace Warewolf.Studio.Views
                     Close();
                 }));
             }
-        }
+        }        
 
         public void Show(bool isDialog)
         {
@@ -65,8 +72,11 @@ namespace Warewolf.Studio.Views
 
         void SplashPage_OnClosing(object sender, CancelEventArgs e)
         {
-            e.Cancel = true;
-            Visibility = Visibility.Hidden;
+            if (!_studioShutdown)
+            {
+                e.Cancel = true;
+                Visibility = Visibility.Hidden;
+            }
         }
 
         void SplashPage_OnKeyUp(object sender, KeyEventArgs e)
@@ -78,9 +88,9 @@ namespace Warewolf.Studio.Views
             }
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            CloseSplash();
+            CloseSplash(false);
         }
     }
 }

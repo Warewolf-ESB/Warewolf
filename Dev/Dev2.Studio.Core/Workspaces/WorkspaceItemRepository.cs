@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -49,7 +49,7 @@ namespace Dev2.Workspaces
 
         #endregion
 
-        private IList<IWorkspaceItem> _workspaceItems;
+        IList<IWorkspaceItem> _workspaceItems;
 
         public IList<IWorkspaceItem> WorkspaceItems => _workspaceItems ?? (_workspaceItems = Read());
 
@@ -101,19 +101,19 @@ namespace Dev2.Workspaces
 
         #region Read
 
-        private IList<IWorkspaceItem> Read()
+        IList<IWorkspaceItem> Read()
         {
             var result = new List<IWorkspaceItem>();
-            if(File.Exists(RepositoryPath))
+            if (File.Exists(RepositoryPath))
             {
                 try
                 {
                     var xml = XElement.Parse(File.ReadAllText(RepositoryPath));
                     result.AddRange(xml.Elements().Select(x => new WorkspaceItem(x)));
                 }
-                
+
                 catch
-                
+
                 {
                     // corrupt so ignore
                 }
@@ -136,12 +136,12 @@ namespace Dev2.Workspaces
 
             if(!File.Exists(RepositoryPath))
             {
-                FileInfo fileInfo = new FileInfo(RepositoryPath);
-                if(fileInfo.Directory != null)
+                var fileInfo = new FileInfo(RepositoryPath);
+                if (fileInfo.Directory != null)
                 {
-                    string finalDirectoryPath = fileInfo.Directory.FullName;
+                    var finalDirectoryPath = fileInfo.Directory.FullName;
 
-                    if(!Directory.Exists(finalDirectoryPath))
+                    if (!Directory.Exists(finalDirectoryPath))
                     {
                         Directory.CreateDirectory(finalDirectoryPath);
                     }

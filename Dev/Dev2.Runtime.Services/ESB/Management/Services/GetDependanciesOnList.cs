@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,11 +13,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Workspaces;
 using Newtonsoft.Json;
@@ -25,26 +22,10 @@ using ServiceStack.Common.Extensions;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-
     public class GetDependanciesOnList : DefaultEsbManagementEndpoint
     {
-        #region Implementation of ISpookyLoadable<string>
-
-        public override string HandlesType()
-        {
-            return "GetDependanciesOnListService";
-        }
-
-        #endregion
-
         #region Implementation of DefaultEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
+        
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
 
@@ -52,11 +33,11 @@ namespace Dev2.Runtime.ESB.Management.Services
             {
 
          
-            List<string> dependancyNames = new List<string>();
+            var dependancyNames = new List<string>();
 
-            bool dependsOnMe = false;
-            string resourceIdsString = string.Empty;
-            string dependsOnMeString = string.Empty;
+                var dependsOnMe = false;
+                var resourceIdsString = string.Empty;
+                var dependsOnMeString = string.Empty;
                 values.TryGetValue("ResourceIds", out StringBuilder tmp);
                 if (tmp != null)
             {
@@ -68,8 +49,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 dependsOnMeString = tmp.ToString();
             }
 
-            IEnumerable<Guid> resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
-            Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, GlobalConstants.WarewolfInfo);
+            var resourceIds = JsonConvert.DeserializeObject<List<string>>(resourceIdsString).Select(Guid.Parse);
+                Dev2Logger.Info("Get Dependencies On List. " + resourceIdsString, GlobalConstants.WarewolfInfo);
             if(!string.IsNullOrEmpty(dependsOnMeString))
             {
                 if(!bool.TryParse(dependsOnMeString, out dependsOnMe))
@@ -91,8 +72,8 @@ namespace Dev2.Runtime.ESB.Management.Services
                 }
             }
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
-            return serializer.SerializeToBuilder(dependancyNames);
+            var serializer = new Dev2JsonSerializer();
+                return serializer.SerializeToBuilder(dependancyNames);
             }
             catch (Exception e)
             {
@@ -101,42 +82,18 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public override DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><ResourceNames ColumnIODirection=\"Input\"/><GetDependsOnMe ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #endregion
 
         #region Private Methods
 
-        private IEnumerable<string> FetchRecursiveDependancies(Guid resourceId, Guid workspaceId)
+        IEnumerable<string> FetchRecursiveDependancies(Guid resourceId, Guid workspaceId)
         {
-            List<string> results = new List<string>();
+            var results = new List<string>();
             var resource = ResourceCatalog.Instance.GetResource(workspaceId, resourceId);
 
             var dependencies = resource?.Dependencies;
 
-            if(dependencies != null)
+            if (dependencies != null)
             {
 
                 dependencies.ForEach(c =>
@@ -160,14 +117,8 @@ namespace Dev2.Runtime.ESB.Management.Services
 
         #endregion
 
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><ResourceNames ColumnIODirection=\"Input\"/><GetDependsOnMe ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
+        public override string HandlesType() => "GetDependanciesOnListService";
     }
 }

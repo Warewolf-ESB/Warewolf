@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,9 +22,9 @@ namespace Dev2.Runtime.Security
 {
     public class ServerAuthorizationService : AuthorizationServiceBase
     {
-        private static ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
+        static ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>> _cachedRequests = new ConcurrentDictionary<Tuple<string, string, AuthorizationContext>, Tuple<bool, DateTime>>();
 
-        private static Lazy<ServerAuthorizationService> _theInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
+        static Lazy<ServerAuthorizationService> _theInstance = new Lazy<ServerAuthorizationService>(() => new ServerAuthorizationService(new ServerSecurityService()));
 
         public static IAuthorizationService Instance
         {
@@ -37,8 +37,8 @@ namespace Dev2.Runtime.Security
             }
         }
 
-        private readonly TimeSpan _timeOutPeriod;
-        private readonly IPerformanceCounter _perfCounter;
+        readonly TimeSpan _timeOutPeriod;
+        readonly IPerformanceCounter _perfCounter;
 
         protected ServerAuthorizationService(ISecurityService securityService)
             : base(securityService, true)
@@ -69,7 +69,7 @@ namespace Dev2.Runtime.Security
 
             var user = Common.Utilities.OrginalExecutingUser ?? ClaimsPrincipal.Current;
 
-            Tuple<string, string, AuthorizationContext> requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
+            var requestKey = new Tuple<string, string,AuthorizationContext>(user.Identity.Name, resource,context);
             authorized = _cachedRequests.TryGetValue(requestKey, out Tuple<bool, DateTime> authorizedRequest) && DateTime.Now.Subtract(authorizedRequest.Item2) < _timeOutPeriod ? authorizedRequest.Item1 : IsAuthorized(user, context, resource);
 
             if (!authorized)
@@ -121,7 +121,7 @@ namespace Dev2.Runtime.Security
             return authorized;
         }
 
-        private bool IsAuthorizedImpl(IAuthorizationRequest request)
+        bool IsAuthorizedImpl(IAuthorizationRequest request)
         {
             var result = false;
             switch (request.RequestType)
@@ -191,10 +191,10 @@ namespace Dev2.Runtime.Security
             if (!result)
             {
                 var user = "NULL USER";
-                
+
 
                 if (request.User.Identity != null)
-                
+
                 {
                     user = request.User.Identity.Name;
                     DumpPermissionsOnError(request.User);
@@ -205,7 +205,7 @@ namespace Dev2.Runtime.Security
             return result;
         }
 
-        private static string GetResource(IAuthorizationRequest request)
+        static string GetResource(IAuthorizationRequest request)
         {
             var resource = request.QueryString["rid"];
             if (string.IsNullOrEmpty(resource))
@@ -296,13 +296,13 @@ namespace Dev2.Runtime.Security
             base.RaisePermissionsChanged();
         }
 
-        private static string GetWebExecuteName(string absolutePath)
+        static string GetWebExecuteName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);
             return startIndex.HasValue ? HttpUtility.UrlDecode(absolutePath.Substring(startIndex.Value, absolutePath.Length - startIndex.Value)) : null;
         }
 
-        private static string GetWebBookmarkName(string absolutePath)
+        static string GetWebBookmarkName(string absolutePath)
         {
             var startIndex = GetNameStartIndex(absolutePath);
             if (startIndex.HasValue)
@@ -317,7 +317,7 @@ namespace Dev2.Runtime.Security
             return null;
         }
 
-        private static int? GetNameStartIndex(string absolutePath)
+        static int? GetNameStartIndex(string absolutePath)
         {
             var startIndex = absolutePath.IndexOf("services/", StringComparison.InvariantCultureIgnoreCase);
             if (startIndex == -1)
@@ -329,7 +329,7 @@ namespace Dev2.Runtime.Security
             return startIndex;
         }
 
-        private static bool IsWebInvokeServiceSave(string absolutePath)
+        static bool IsWebInvokeServiceSave(string absolutePath)
         {
             return absolutePath.EndsWith("/save", StringComparison.InvariantCultureIgnoreCase);
         }

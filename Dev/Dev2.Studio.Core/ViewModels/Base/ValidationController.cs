@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -20,9 +20,9 @@ namespace Dev2.Studio.Core.ViewModels.Base
 
         protected void AddError(string key, string value)
         {
-            KeyValuePair<string, string> errorInfo = new KeyValuePair<string, string>(key, value);
+            var errorInfo = new KeyValuePair<string, string>(key, value);
 
-            if(!ValidationErrors.ContainsKey(key))
+            if (!ValidationErrors.ContainsKey(key))
             {
                 if(!ValidationErrors.Contains(errorInfo))
                 {

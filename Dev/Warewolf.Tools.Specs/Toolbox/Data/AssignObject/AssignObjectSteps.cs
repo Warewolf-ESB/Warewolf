@@ -16,7 +16,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
     [Binding]
     public class AssignObjectSteps : BaseActivityUnitTest
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public AssignObjectSteps(ScenarioContext scenarioContext)
         {
@@ -90,7 +90,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
         public void WhenTheAssignObjectToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 
@@ -258,7 +258,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
             var data = new XElement("root");
 
             
-            int row = 0;
+            var row = 0;
             scenarioContext.TryGetValue("variableList", out dynamic variableList);
 
             if (variableList != null)
@@ -281,7 +281,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.AssignObject
                 }
             }
 
-            bool isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
+            var isAdded = scenarioContext.TryGetValue("rs", out List<Tuple<string, string>> emptyRecordset);
             if (isAdded)
             {
                 foreach (Tuple<string, string> emptyRecord in emptyRecordset)

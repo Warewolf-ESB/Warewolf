@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -171,7 +171,7 @@ namespace Dev2.Infrastructure.Tests.Collections
             // MUST bind to CollectionView!!
             //
             var observableReadOnlyList = new ObservableReadOnlyList<string> { "item1", "item2" };
-            PrivateObject px = new PrivateObject(observableReadOnlyList);
+            var px = new PrivateObject(observableReadOnlyList);
             px.SetProperty("TestDispatcherFrame", new DispatcherFrame());
 
             var collectionView = CollectionViewSource.GetDefaultView(observableReadOnlyList);
@@ -184,7 +184,7 @@ namespace Dev2.Infrastructure.Tests.Collections
             {
                 try
                 {
-                    action(observableReadOnlyList);
+                    action?.Invoke(observableReadOnlyList);
 
                     exceptionMessage = null;
                 }

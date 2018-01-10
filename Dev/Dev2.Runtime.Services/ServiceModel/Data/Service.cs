@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,7 +26,7 @@ namespace Dev2.Runtime.ServiceModel.Data
     // DO NOT override ToXml() here!
     public class Service : Resource
     {
-        private IOutputDescription _outputDescription;
+        IOutputDescription _outputDescription;
 
         #region CTOR
 
@@ -67,6 +67,7 @@ namespace Dev2.Runtime.ServiceModel.Data
 
         protected XElement CreateXml(enActionType actionType, string actionName, Resource source, RecordsetList recordsets, params object[] actionContent)
         {
+            VerifyArgument.IsNotNull("source", source);
             var action = new XElement("Action",
                 new XAttribute("Name", actionName),
                 new XAttribute("Type", actionType),

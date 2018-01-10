@@ -1,7 +1,7 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
-*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
 *  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
@@ -24,10 +24,7 @@ namespace Dev2.Activities.Designers2.Sequence
             _dropEnabledActivityDesignerUtils = new DropEnabledActivityDesignerUtils();
         }
 
-        protected override IInputElement GetInitialFocusElement()
-        {
-            return InitialFocusElement;
-        }
+        protected override IInputElement GetInitialFocusElement() => InitialFocusElement;
 
         void DropPoint_OnPreviewDrop(object sender, DragEventArgs e)
         {

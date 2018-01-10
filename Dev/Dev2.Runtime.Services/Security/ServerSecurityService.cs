@@ -1,7 +1,7 @@
  
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Runtime.Security
 {
     public class ServerSecurityService : SecurityServiceBase
     {
-        private bool _disposing;
+        bool _disposing;
         FileSystemWatcher _configWatcher = new FileSystemWatcher();
 
         public ServerSecurityService()
@@ -41,7 +41,7 @@ namespace Dev2.Runtime.Security
             var reader = new SecurityRead();
             var result = reader.Execute(null, null);
             var serializer = new Dev2JsonSerializer();
-            SecuritySettingsTO securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
+            var securitySettingsTO = serializer.Deserialize<SecuritySettingsTO>(result);
             TimeOutPeriod = securitySettingsTO.CacheTimeout;
             return securitySettingsTO.WindowsGroupPermissions;
         }

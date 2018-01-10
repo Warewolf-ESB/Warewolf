@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -339,15 +339,15 @@ namespace Dev2.Tests.Activities.TOTests
             dataObject.Environment.Assign("[[rec(2).b]]", "600", 0);
             CheckComplexEvaluatedResultIndexed("[[rec(*).a]],[[rec(*).b]]", "myName", 0, @"{""myName"":[{""a"":50,""b"":500},{""a"":60,""b"":600}]}", dataObject);
         }
-        private void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject)
+        void CheckComplexEvaluatedResultIndexed(string expression, string name, int index, string expected, DsfDataObject dataObject)
         {
             var jsonMappingCompound = new JsonMappingCompoundTo(
                 env: dataObject.Environment,
             compound: new JsonMappingTo
-                {
-                    SourceName = expression,
-                    DestinationName = name
-                }
+            {
+                SourceName = expression,
+                DestinationName = name
+            }
             );
             var a = jsonMappingCompound.ComplexEvaluatedResultIndexed(index);
             if (a is JProperty)
@@ -367,6 +367,6 @@ namespace Dev2.Tests.Activities.TOTests
 
         }
 
-        
+
     }
 }

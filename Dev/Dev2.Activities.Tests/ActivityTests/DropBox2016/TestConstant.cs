@@ -25,7 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests.DropBox2016
         });
 
         public static readonly Lazy<IDropboxClientWrapper> DropboxClientInstance = new Lazy<IDropboxClientWrapper>(() =>  new DropboxClientWrapper(new DropboxClient("random.net")));
-        private const string ErrorMessage = "Error Messege";
+        const string ErrorMessage = "Error Messege";
         public static readonly Lazy<IDownloadResponse<FileMetadata>> FileDownloadResponseInstance = new Lazy<IDownloadResponse<FileMetadata>>(() =>
         {
             var mock = new Mock<IDownloadResponse<FileMetadata>>();

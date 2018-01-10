@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,10 +28,10 @@ namespace Dev2.Tests.Runtime.Services
     [TestClass]
     public class TerminateExecutionTest
     {
-        private static readonly Guid WorkspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
-        private static readonly Guid ResourceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
-        private static readonly object SyncRoot = new object();
-        private const string HandleType = "TerminateExecutionService";
+        static readonly Guid WorkspaceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
+        static readonly Guid ResourceID = Guid.Parse("34c0ce48-1f02-4a47-ad51-19ee3789ed4c");
+        static readonly object SyncRoot = new object();
+        const string HandleType = "TerminateExecutionService";
 
         [TestInitialize]
         public void TerminateExecutionInit()
@@ -143,22 +143,22 @@ namespace Dev2.Tests.Runtime.Services
             //------------Assert Results-------------------------
             Assert.AreEqual(AuthorizationContext.Any, resId);
         }
-        private Dictionary<string, StringBuilder> GetDictionary()
+        Dictionary<string, StringBuilder> GetDictionary()
         {
             var dict = new Dictionary<string, StringBuilder>();
-            
+
             dict["ResourceID"] = new StringBuilder(ResourceID.ToString());
             return dict;
         }
 
-        private Mock<IWorkspace> GetWorkspace()
+        Mock<IWorkspace> GetWorkspace()
         {
             var mock = new Mock<IWorkspace>();
             mock.Setup(w => w.ID).Returns(WorkspaceID);
             return mock;
         }
 
-        private static Mock<IExecutableService> GetExecutableService()
+        static Mock<IExecutableService> GetExecutableService()
         {
             var service = new Mock<IExecutableService>();
             service.SetupGet(s => s.ID).Returns(ResourceID);
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Runtime.Services
             return service;
         }
 
-        private ExecuteMessage ConvertToMsg(string payload)
+        ExecuteMessage ConvertToMsg(string payload)
         {
             return JsonConvert.DeserializeObject<ExecuteMessage>(payload);
         }

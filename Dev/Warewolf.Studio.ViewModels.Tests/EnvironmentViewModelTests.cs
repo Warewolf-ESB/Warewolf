@@ -22,11 +22,12 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private EnvironmentViewModel _target;
+        EnvironmentViewModel _target;
 
-        private Mock<IServer> _serverMock;
-        private Mock<IShellViewModel> _shellViewModelMock;
-        private Mock<IPopupController> _popupControllerMock;
+        Mock<IServer> _serverMock;
+        Mock<IShellViewModel> _shellViewModelMock;
+        Mock<IPopupController> _popupControllerMock;
+        Mock<IExplorerTooltips> _explorerTooltips;
 
         #endregion Fields
 
@@ -43,6 +44,8 @@ namespace Warewolf.Studio.ViewModels.Tests
             CustomContainer.Register(serverRepo.Object);
             var connectControlSingleton = new Mock<IConnectControlSingleton>();
             CustomContainer.Register(connectControlSingleton.Object);
+            _explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(_explorerTooltips.Object);
             _target = new EnvironmentViewModel(_serverMock.Object, _shellViewModelMock.Object);
         }
 
@@ -85,28 +88,9 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
-        public void TestTooltips()
+        public void TestExplorerTooltipsNotNull()
         {
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewServiceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewServerSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewSqlServerSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewMySqlSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewPostgreSqlSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewOracleSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewOdbcSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewWebSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewPluginSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewComPluginSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewEmailSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewExchangeSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewRabbitMqSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewDropboxSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewSharepointSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewWcfSourceTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.NoPermissionsToolTip, _target.NewFolderTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.ViewApisJsonTooltip, _target.ViewApisJsonTooltip);
-            Assert.AreEqual(Resources.Languages.Tooltips.ServerVersionTooltip, _target.ServerVersionTooltip);
-            Assert.AreEqual(Resources.Languages.Core.DeployResourceCheckbox, _target.DeployResourceCheckboxTooltip);
+            Assert.IsNotNull(_target.ExplorerTooltips);
         }
 
         [TestMethod]
@@ -127,7 +111,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             var canCreateNewSharepointSourceSourceCommand = _target.NewSharepointSourceSourceCommand.CanExecute(null);
             var canCreateNewDropboxSourceSourceCommand = _target.NewDropboxSourceSourceCommand.CanExecute(null);
             var canCreateNewComPluginSourceCommand = _target.NewComPluginSourceCommand.CanExecute(null);
-            var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMQSourceSourceCommand.CanExecute(null);
+            var canCreateNewRabbitMQSourceSourceCommand = _target.NewRabbitMqSourceSourceCommand.CanExecute(null);
             var canCreateFolderCommand = _target.CreateFolderCommand.CanExecute(null);
             var canDeployCommand = _target.DeployCommand.CanExecute(null);
             var canCreateNewWcfSourceCommand = _target.NewWcfSourceCommand.CanExecute(null);
@@ -536,6 +520,13 @@ namespace Warewolf.Studio.ViewModels.Tests
         }
 
         [TestMethod]
+        public void TestIsMergeVisible()
+        {
+            //assert
+            Assert.IsFalse(_target.IsMergeVisible);
+        }
+
+        [TestMethod]
         public void TestIsResourceUnchecked()
         {
             //arrange
@@ -633,7 +624,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             child.SetupGet(it => it.ResourcePath).Returns(resourcePath);
             child
                 .Setup(it => it.Apply(It.IsAny<Action<IExplorerItemViewModel>>()))
-                .Callback<Action<IExplorerItemViewModel>>(a => a(child.Object));
+                .Callback<Action<IExplorerItemViewModel>>(a => a?.Invoke(child.Object));
             _target.AddChild(child.Object);
 
             //act
@@ -704,7 +695,6 @@ namespace Warewolf.Studio.ViewModels.Tests
             Assert.IsTrue(isChildrenChanged);
             Assert.IsTrue(_target.IsExpanded);
             Assert.AreEqual(_target.AllowResourceCheck, folder.AllowResourceCheck);
-            Assert.AreEqual(_target.IsResourceChecked, folder.IsResourceChecked);
             Assert.AreEqual(_target.CanCreateFolder, folder.CanCreateFolder);
             Assert.AreEqual(_target.CanCreateSource, folder.CanCreateSource);
             Assert.AreEqual(_target.CanShowVersions, folder.CanShowVersions);
@@ -764,7 +754,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_target.AllowResourceCheck);
-            Assert.IsFalse(_target.IsResourceChecked ?? true);
             Assert.IsTrue(_target.CanCreateSource);
             Assert.IsTrue(_target.CanCreateFolder);
             Assert.IsFalse(_target.CanDelete);
@@ -787,7 +776,6 @@ namespace Warewolf.Studio.ViewModels.Tests
 
             //assert
             Assert.IsFalse(_target.AllowResourceCheck);
-            Assert.IsFalse(_target.IsResourceChecked ?? true);
             Assert.IsFalse(_target.CanCreateSource);
             Assert.IsFalse(_target.CanCreateWorkflowService);
             Assert.IsFalse(_target.ShowContextMenu);
@@ -917,7 +905,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target = new EnvironmentViewModel(_serverMock.Object, _shellViewModelMock.Object);
 
             //act
-            var result = await _target.LoadDialog(selPath);
+            var result = await _target.LoadDialogAsync(selPath);
 
             //assert
             Assert.IsFalse(_target.Children.Any());
@@ -974,7 +962,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target = new EnvironmentViewModel(_serverMock.Object, shellViewModel.Object);
 
             //act
-            var result = await _target.Load();
+            var result = await _target.LoadAsync();
 
             //assert
             Assert.IsFalse(_target.Children.Any());
@@ -1045,7 +1033,7 @@ namespace Warewolf.Studio.ViewModels.Tests
             _target = new EnvironmentViewModel(_serverMock.Object, shellViewModel.Object);
 
             //act
-            var result = await _target.Load();
+            var result = await _target.LoadAsync();
 
             //assert
             Assert.IsFalse(_target.Children.Any());

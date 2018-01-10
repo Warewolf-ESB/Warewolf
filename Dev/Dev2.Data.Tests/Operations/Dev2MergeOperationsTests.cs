@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -19,7 +19,7 @@ namespace Dev2.Data.Tests.Operations
     [TestClass]
     public class Dev2MergeOperationsTests
     {
-        private IDev2MergeOperations _mergeOperations;
+        IDev2MergeOperations _mergeOperations;
 
         /// <summary>
         ///Gets or sets the test context which provides

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -24,20 +24,17 @@ using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Core;
 using Warewolf.Resource.Messages;
 using Warewolf.Storage.Interfaces;
-
-
-
-
+using Dev2.Comparer;
 
 namespace Dev2.Activities
 {
 
     [ToolDescriptorInfo("ControlFlow-Sequence", "Sequence", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Control Flow", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Flow_Sequence")]
-    public class DsfSequenceActivity : DsfActivityAbstract<string>
+    public class DsfSequenceActivity : DsfActivityAbstract<string>,IEquatable<DsfSequenceActivity>
     {
-        private readonly Sequence _innerSequence = new Sequence();
+        readonly Sequence _innerSequence = new Sequence();
         string _previousParentID;
-        private Guid _originalUniqueID;
+        Guid _originalUniqueID;
 
         public DsfSequenceActivity()
         {
@@ -50,7 +47,19 @@ namespace Dev2.Activities
             base.CacheMetadata(metadata);
             metadata.AddChild(_innerSequence);
         }
-
+        
+        public override IEnumerable<IDev2Activity> GetChildrenNodes()
+        {
+            var nextNodes = new List<IDev2Activity>();
+            foreach (var activity in Activities)
+            {
+                if (activity is IDev2Activity act)
+                {
+                    nextNodes.Add(act);
+                }
+            }
+            return nextNodes;
+        }
 
         public Collection<Activity> Activities
         {
@@ -154,7 +163,7 @@ namespace Dev2.Activities
         /// <param name="context">The context to be used.</param>
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             dataObject.ForEachNestingLevel++;
             InitializeDebug(dataObject);
             if (dataObject.IsDebugMode())
@@ -235,9 +244,9 @@ namespace Dev2.Activities
             }
         }
 
-        private static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
+        static void GetFinalTestRunResult(IServiceTestStep serviceTestStep, TestRunResult testRunResult)
         {
-            ObservableCollection<TestRunResult> resultList = new ObservableCollection<TestRunResult>();
+            var resultList = new ObservableCollection<TestRunResult>();
             foreach (var testStep in serviceTestStep.Children)
             {
                 if (testStep.Result != null)
@@ -255,7 +264,7 @@ namespace Dev2.Activities
                 testRunResult.RunTestResult = RunResult.TestInvalid;
 
                 var testRunResults = resultList.Where(runResult => runResult.RunTestResult == RunResult.TestInvalid).ToList();
-                if (testRunResults.Count>0)
+                if (testRunResults.Count > 0)
                 {
                     testRunResult.Message = string.Join(Environment.NewLine, testRunResults.Select(result => result.Message));
                     testRunResult.RunTestResult = RunResult.TestInvalid;
@@ -291,10 +300,39 @@ namespace Dev2.Activities
 
         #endregion
 
-        private void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps, Guid childId)
+        void UpdateDebugStateWithAssertions(IDSFDataObject dataObject, List<IServiceTestStep> serviceTestTestSteps, Guid childId)
         {
             ServiceTestHelper.UpdateDebugStateWithAssertions(dataObject, serviceTestTestSteps, childId.ToString());
             
-        }   
+        }
+
+        public bool Equals(DsfSequenceActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && CommonEqualityOps.CollectionEquals(Activities, other.Activities, new ActivityComparer());
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfSequenceActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (_innerSequence != null ? _innerSequence.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (_previousParentID != null ? _previousParentID.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ _originalUniqueID.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Activities != null ? Activities.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

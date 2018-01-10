@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -16,11 +16,9 @@ using System.Runtime.Serialization;
 using System.Text;
 using Dev2.Common;
 using Dev2.Common.Interfaces.Core.DynamicServices;
-using Dev2.Common.Interfaces.Enums;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Runtime.Hosting;
 using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Workspaces;
@@ -29,39 +27,13 @@ using Warewolf.Resource.Errors;
 
 namespace Dev2.Runtime.ESB.Management.Services
 {
-    // NOTE: Only use for design time in studio as errors will NOT be forwarded!
     public class GetDatabaseTables : DefaultEsbManagementEndpoint
     {
-        public Guid GetResourceID(Dictionary<string, StringBuilder> requestArgs)
-        {
-            return Guid.Empty;
-        }
-
-        public AuthorizationContext GetAuthorizationContextForService()
-        {
-            return AuthorizationContext.Any;
-        }
-
-        #region Implementation of ISpookyLoadable<string>
-
-        public override string HandlesType()
-        {
-            return "GetDatabaseTablesService";
-        }
-
-        #endregion
-
         #region Implementation of DefaultEsbManagementEndpoint
-
-        /// <summary>
-        /// Executes the service
-        /// </summary>
-        /// <param name="values">The values.</param>
-        /// <param name="theWorkspace">The workspace.</param>
-        /// <returns></returns>
+        
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             if (values == null)
             {
@@ -114,31 +86,32 @@ namespace Dev2.Runtime.ESB.Management.Services
             try
             {
                 Dev2Logger.Info("Get Database Tables. " + dbSource.DatabaseName, GlobalConstants.WarewolfInfo);
-                var tables = new DbTableList();
-                DataTable columnInfo;
-                switch (dbSource.ServerType)
+                var tables = new DbTableList();                
+                Common.Utilities.PerformActionInsideImpersonatedContext(Common.Utilities.OrginalExecutingUser, () =>
                 {
-
-                    case enSourceType.SqlDatabase:
-                        {
-                            using (var connection = new SqlConnection(dbSource.ConnectionString))
+                    DataTable columnInfo = null;
+                    switch (dbSource.ServerType)
+                    {
+                        case enSourceType.SqlDatabase:
                             {
-                                connection.Open();
-                                columnInfo = connection.GetSchema("Tables");
+                                using (var connection = new SqlConnection(dbSource.ConnectionString))
+                                {
+                                    connection.Open();
+                                    columnInfo = connection.GetSchema("Tables");
+                                }
+                                break;
                             }
-                            break;
-                        }
-                    default:
-                        {
-                            using (var connection = new MySqlConnection(dbSource.ConnectionString))
+                        default:
                             {
-                                connection.Open();
-                                columnInfo = connection.GetSchema("Tables");
+                                using (var connection = new MySqlConnection(dbSource.ConnectionString))
+                                {
+                                    connection.Open();
+                                    columnInfo = connection.GetSchema("Tables");
+                                }
+                                break;
                             }
-                            break;
-                        }
-                }
-
+                    }
+               
                 if (columnInfo != null)
                 {
                     foreach (DataRow row in columnInfo.Rows)
@@ -154,24 +127,25 @@ namespace Dev2.Runtime.ESB.Management.Services
                         }
                     }
                 }
-                if (tables.Items.Count == 0)
-                {
-                    tables.HasErrors = true;
-                    const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
-                                          + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
+                    if (tables.Items.Count == 0)
+                    {
+                        tables.HasErrors = true;
+                        const string ErrorFormat = "The login provided in the database source uses {0} and most probably does not have permissions to perform the following query: "
+                                              + "\r\n\r\n{1}SELECT * FROM INFORMATION_SCHEMA.TABLES;{2}";
 
-                    if (dbSource.AuthenticationType == AuthenticationType.User)
-                    {
-                        tables.Errors = string.Format(ErrorFormat,
-                            "SQL Authentication (User: '" + dbSource.UserID + "')",
-                            "EXECUTE AS USER = '" + dbSource.UserID + "';\r\n",
-                            "\r\nREVERT;");
+                        if (dbSource.AuthenticationType == AuthenticationType.User)
+                        {
+                            tables.Errors = string.Format(ErrorFormat,
+                                "SQL Authentication (User: '" + dbSource.UserID + "')",
+                                "EXECUTE AS USER = '" + dbSource.UserID + "';\r\n",
+                                "\r\nREVERT;");
+                        }
+                        else
+                        {
+                            tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
+                        }
                     }
-                    else
-                    {
-                        tables.Errors = string.Format(ErrorFormat, "Windows Authentication", "", "");
-                    }
-                }
+                });
                 return serializer.SerializeToBuilder(tables);
             }
             catch (Exception ex)
@@ -181,30 +155,10 @@ namespace Dev2.Runtime.ESB.Management.Services
             }
         }
 
-        /// <summary>
-        /// Creates the service entry.
-        /// </summary>
-        /// <returns></returns>
-        public override DynamicService CreateServiceEntry()
-        {
-            var ds = new DynamicService
-            {
-                Name = HandlesType(),
-                DataListSpecification = new StringBuilder("<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>")
-            };
-
-            var sa = new ServiceAction
-            {
-                Name = HandlesType(),
-                ActionType = enActionType.InvokeManagementDynamicService,
-                SourceMethod = HandlesType()
-            };
-
-            ds.Actions.Add(sa);
-
-            return ds;
-        }
-
         #endregion
+
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Database ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
+
+        public override string HandlesType() => "GetDatabaseTablesService";
     }
 }

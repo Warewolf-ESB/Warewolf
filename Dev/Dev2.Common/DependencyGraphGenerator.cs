@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -121,14 +121,14 @@ namespace Dev2.Common
 
                 return graph;
             }
-            catch
+            catch (Exception ex)
             {
                 return new Graph(ErrorResource.DependencyInormationMalformed);
             }
         }
 
 
-        private IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
+        IDependencyVisualizationNode CreateNode(XElement nodeElm, string resourceName, double width, double height, ref double count)
         {
             var screenWidth = width;
             var screenHeight = height - 150;
@@ -144,10 +144,10 @@ namespace Dev2.Common
             double.TryParse(tmpX, out double x);
             double.TryParse(tmpY, out double y);
 
-            
+
             var id = nodeElm.Attribute("id").Value;
             var isTarget = id == resourceName;
-            
+
             var broken = string.Equals(nodeElm.Attribute("broken").Value, "true", StringComparison.OrdinalIgnoreCase);
 
             if (isTarget)

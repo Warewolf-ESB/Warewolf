@@ -9,8 +9,6 @@ using Dev2.Common.Interfaces.Infrastructure;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Deploy;
 
-
-
 namespace Warewolf.Studio.ViewModels
 {
     public class DeploySourceExplorerViewModel : ExplorerViewModelBase, IDeploySourceExplorerViewModel
@@ -20,12 +18,13 @@ namespace Warewolf.Studio.ViewModels
         readonly Action<IExplorerItemViewModel> _selectAction;
         bool _loaded;
         IEnumerable<IExplorerTreeItem> _preselected;
-        private Version _serverVersion;
-        private object _serverInformation;
-        private readonly IEnvironmentViewModel _selectedEnv;
+        Version _serverVersion;
+        object _serverInformation;
+        readonly IEnvironmentViewModel _selectedEnv;
+        bool _isDeployLoading;
 
         public DeploySourceExplorerViewModel(IShellViewModel shellViewModel, Microsoft.Practices.Prism.PubSubEvents.IEventAggregator aggregator, IDeployStatsViewerViewModel statsArea)
-            :this(shellViewModel, aggregator, statsArea, null)
+            : this(shellViewModel, aggregator, statsArea, null)
         {
         }
 
@@ -39,15 +38,12 @@ namespace Warewolf.Studio.ViewModels
             _shellViewModel = shellViewModel;
             _selectAction = SelectAction;
             _selectedEnv = selectedEnvironment;
-            
-            Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
-            
-            LoadEnvironment(localhostEnvironment);
 
+            Environments = new ObservableCollection<IEnvironmentViewModel> { localhostEnvironment };
+            LoadLocalHostEnvironment(localhostEnvironment);
             ConnectControlViewModel = new ConnectControlViewModel(_shellViewModel.LocalhostServer, aggregator, _shellViewModel.ExplorerViewModel.ConnectControlViewModel.Servers);
 
             ShowConnectControl = true;
-            ConnectControlViewModel.ServerConnected += async (sender, server) => { await ServerConnected(server).ConfigureAwait(false); };
             ConnectControlViewModel.ServerDisconnected += ServerDisconnected;
             _statsArea = statsArea;
             foreach (var environmentViewModel in _environments)
@@ -55,39 +51,72 @@ namespace Warewolf.Studio.ViewModels
                 environmentViewModel.SelectAction = SelectAction;
             }
 
-            if (ConnectControlViewModel.SelectedConnection != null)
+            if (ConnectControlViewModel.SelectedConnection != null && !ConnectControlViewModel.SelectedConnection.IsLocalHost)
             {
                 UpdateItemForDeploy(ConnectControlViewModel.SelectedConnection.EnvironmentID);
             }
             IsRefreshing = false;
             ShowConnectControl = false;
             RefreshCommand = new Microsoft.Practices.Prism.Commands.DelegateCommand(() => RefreshEnvironment(SelectedEnvironment.ResourceId));
-            ConnectControlViewModel.SelectedEnvironmentChanged += async (sender, id) =>
+            ConnectControlViewModel.SelectedEnvironmentChanged += ConnectControlSelectedExplorerEnvironmentChanged;
+            ConnectControlViewModel.ServerConnected += (sender, server) =>
             {
-                await DeploySourceExplorerViewModelSelectedEnvironmentChanged(sender, id).ConfigureAwait(true);
+                IsDeployLoading = true;
+                ServerConnectedAsync(server).ContinueWith(t =>
+                {
+                    IsDeployLoading = false;
+                }, TaskContinuationOptions.ExecuteSynchronously);
             };
             IsDeploy = true;
         }
 
-        async Task DeploySourceExplorerViewModelSelectedEnvironmentChanged(object sender, Guid environmentId)
+        void LoadLocalHostEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
-            var connectControlViewModel = sender as ConnectControlViewModel;
-            if(connectControlViewModel?.SelectedConnection.IsConnected != null && connectControlViewModel.SelectedConnection.IsConnected && _environments.Any(p => p.ResourceId != connectControlViewModel.SelectedConnection.EnvironmentID))
+            if (!localhostEnvironment.IsConnected)
             {
-                var task = Task.Run(async () => { await CreateNewEnvironment(connectControlViewModel.SelectedConnection).ConfigureAwait(true); });
-                task.Wait();
+                localhostEnvironment.Connect();
             }
-            if (_environments.Count == _shellViewModel?.ExplorerViewModel?.Environments?.Count)
+            LoadEnvironment(localhostEnvironment);
+        }
+
+        public bool IsDeployLoading
+        {
+            get => _isDeployLoading;
+            set
             {
-                UpdateItemForDeploy(environmentId);
+                _isDeployLoading = value;
+                OnPropertyChanged(()=>IsDeployLoading);
+            }
+        }
+
+        async void ConnectControlSelectedExplorerEnvironmentChanged(object sender, Guid id)
+        {
+            IsDeployLoading = true;
+
+            var connect = sender as IConnectControlViewModel;
+            IEnvironmentViewModel environmentModel = null;
+            var foundEnvironment = _environments.FirstOrDefault(environmentViewModel => environmentViewModel.ResourceId == id);
+            if (foundEnvironment == null)
+            {
+                environmentModel = CreateEnvironmentFromServer(connect.SelectedConnection, _shellViewModel);
+                if (connect.SelectedConnection.IsConnected)
+                {
+                    _environments.Add(environmentModel);
+                    await environmentModel.LoadAsync(IsDeploy, false).ConfigureAwait(true);
+                    OnPropertyChanged(() => Environments);
+                }
             }
             else
             {
-                var environmentViewModel = _shellViewModel?.ExplorerViewModel?.Environments?.FirstOrDefault(
-                    model => model.ResourceId == environmentId) ?? _environments.FirstOrDefault(p => p.ResourceId == environmentId);
-
-                await CreateNewEnvironment(environmentViewModel?.Server).ConfigureAwait(true);
+                environmentModel = foundEnvironment;
             }
+
+            if (environmentModel != null)
+            {
+                UpdateItemForDeploy(id);
+            }
+
+            IsDeployLoading = false;
         }
 
         protected void AfterLoad(Guid environmentID)
@@ -97,7 +126,6 @@ namespace Warewolf.Studio.ViewModels
             if (environmentViewModel != null)
             {
                 UpdateItemForDeploy(environmentViewModel.Server.EnvironmentID);
-
 
                 if (_serverInformation == null)
                 {
@@ -110,7 +138,6 @@ namespace Warewolf.Studio.ViewModels
                     _serverVersion = serverVersion != Resources.Languages.Core.ServerVersionUnavailable ? Version.Parse(serverVersion) : null;
                 }
                 environmentViewModel.SelectAll = () => _statsArea.Calculate(environmentViewModel.AsList().Where(o => o.IsResourceChecked == true).Select(x => x as IExplorerTreeItem).ToList());
-
             }
             CheckPreselectedItems(environmentID);
             if (ConnectControlViewModel != null)
@@ -127,15 +154,11 @@ namespace Warewolf.Studio.ViewModels
                 if (envId != environmentID)
                 {
                     ConnectControlViewModel.SelectedConnection = ConnectControlViewModel.Servers.FirstOrDefault(a => a.EnvironmentID == envId);
-                    if (ConnectControlViewModel.SelectedConnection != null)
+                    if (ConnectControlViewModel.SelectedConnection?.Permissions == null)
                     {
-                        var server = ConnectControlViewModel.SelectedConnection;
-                        if (server.Permissions == null)
-                        {
-                            server.Permissions = new List<IWindowsGroupPermission>();
-                        }
-                        ConnectControlViewModel.Connect(ConnectControlViewModel.SelectedConnection);
+                        ConnectControlViewModel.SelectedConnection.Permissions = new List<IWindowsGroupPermission>();
                     }
+                    ConnectControlViewModel.ConnectAsync(ConnectControlViewModel.SelectedConnection);
                 }
                 else
                 {
@@ -147,10 +170,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override ObservableCollection<IEnvironmentViewModel> Environments
         {
-            get
-            {
-                return new ObservableCollection<IEnvironmentViewModel>(_environments.Where(a => a.IsVisible));
-            }
+            get => new ObservableCollection<IEnvironmentViewModel>(_environments.Where(a => a.IsVisible));
             set
             {
                 _environments = value;
@@ -158,7 +178,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void UpdateItemForDeploy(Guid environmentId)
+        void UpdateItemForDeploy(Guid environmentId)
         {
             var environmentViewModel = _environments.FirstOrDefault(a => a.Server.EnvironmentID == environmentId);
             if (environmentViewModel != null)
@@ -196,9 +216,9 @@ namespace Warewolf.Studio.ViewModels
 
         void SelectAction(IExplorerItemViewModel ax)
         {
-            if (ax.Parent?.ResourceType == @"Folder" || ax.Parent?.ResourceType == @"ServerSource")
+            if (ax?.Parent?.ResourceType == @"Folder" || ax?.Parent?.ResourceType == @"ServerSource")
             {
-                ax.Parent.IsFolderChecked = ax.IsResourceChecked;
+                ax.Parent.IsFolderChecked = ax.Parent.UnfilteredChildren?.Flatten(a => a.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>()).All(a => a.IsResourceChecked == true);
             }
 
             _statsArea.Calculate(SelectedItems.ToList());
@@ -223,7 +243,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
+        static IEnumerable<IExplorerItemViewModel> FlatUnfilteredChildren(IEnvironmentViewModel itemViewModelsModel)
         {
             var itemViewModels = itemViewModelsModel?.AsList()?.Flatten(model => model.Children ?? new ObservableCollection<IExplorerItemViewModel>());
             var explorerItemViewModels = itemViewModelsModel?.UnfilteredChildren.Flatten(model => model.UnfilteredChildren ?? new ObservableCollection<IExplorerItemViewModel>());
@@ -244,10 +264,7 @@ namespace Warewolf.Studio.ViewModels
 
         public IEnumerable<IExplorerTreeItem> Preselected
         {
-            get
-            {
-                return _preselected;
-            }
+            get => _preselected;
             set
             {
                 _preselected = value;
@@ -270,7 +287,7 @@ namespace Warewolf.Studio.ViewModels
 
         public virtual Version ServerVersion => _serverVersion ?? (_serverVersion = Version.Parse(SelectedServer.GetServerVersion()));
 
-        private void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
+        void SelectItemsForDeploy(IEnumerable<IExplorerTreeItem> selectedItems)
         {
             var count = SelectedEnvironment.AsList().Count + 1;
             var explorerTreeItems = selectedItems as IExplorerTreeItem[] ?? selectedItems.ToArray();
@@ -297,33 +314,40 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        async Task<bool> ServerConnected(IServer server)
+        async Task ServerConnectedAsync(IServer server)
         {
-            var isCreated = await CreateNewEnvironment(server).ConfigureAwait(false);
-            return isCreated;
+            await CreateNewEnvironmentAsync(server).ConfigureAwait(true);
         }
 
-        private async Task<bool> CreateNewEnvironment(IServer server)
+        async Task<bool> CreateNewEnvironmentAsync(IServer server)
         {
             var isLoaded = false;
             if (server == null)
             {
                 return false;
             }
-            var createNew = _environments.All(environmentViewModel => environmentViewModel.ResourceId != server.EnvironmentID);
-            if (createNew)
+            IEnvironmentViewModel environmentModel = null;
+            var foundEnvironment = _environments.FirstOrDefault(environmentViewModel => environmentViewModel.ResourceId == server.EnvironmentID);
+            if (foundEnvironment == null)
             {
-                var environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
-                _environments.Add(environmentModel);
-                isLoaded = await environmentModel.Load(IsDeploy).ConfigureAwait(false);
-                OnPropertyChanged(() => Environments);
-                _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
+                environmentModel = CreateEnvironmentFromServer(server, _shellViewModel);
+                if (server.IsConnected)
+                {
+                    _environments.Add(environmentModel);
+                }
             }
+            else
+            {
+                environmentModel = foundEnvironment;
+            }
+            isLoaded = await environmentModel.LoadAsync(IsDeploy, false).ConfigureAwait(true);
+            OnPropertyChanged(() => Environments);
+            _statsArea.Calculate(environmentModel.AsList().Select(model => model as IExplorerTreeItem).ToList());
             AfterLoad(server.EnvironmentID);
             return isLoaded;
         }
 
-        private bool IsDeploy { get; set; }
+        bool IsDeploy { get; set; }
 
         void ServerDisconnected(object _, IServer server)
         {
@@ -338,18 +362,23 @@ namespace Warewolf.Studio.ViewModels
 
         protected virtual async void LoadEnvironment(IEnvironmentViewModel localhostEnvironment)
         {
-            localhostEnvironment.Connect();
-            await localhostEnvironment.Load(true, true).ConfigureAwait(true);
-            var selectedEnvironment = SelectedEnvironment ?? _selectedEnv;
-            if (selectedEnvironment?.DisplayName == localhostEnvironment.DisplayName)
-            {
-                AfterLoad(localhostEnvironment.Server.EnvironmentID);
-            }
+            await localhostEnvironment.LoadAsync(true, false).ConfigureAwait(true);
+            AfterLoad(localhostEnvironment.Server.EnvironmentID);
         }
 
         IEnvironmentViewModel CreateEnvironmentFromServer(IServer server, IShellViewModel shellViewModel)
         {
             return new EnvironmentViewModel(server, shellViewModel, false, _selectAction);
+        }
+
+        public override void Dispose()
+        {
+            base.Dispose();
+            ConnectControlViewModel.SelectedEnvironmentChanged -= ConnectControlSelectedExplorerEnvironmentChanged;
+            foreach (var environmentViewModel in _environments)
+            {
+                environmentViewModel.IsResourceChecked = false;
+            }
         }
     }
 }

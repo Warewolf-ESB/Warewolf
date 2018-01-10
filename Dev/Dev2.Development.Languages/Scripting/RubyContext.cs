@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,11 +32,11 @@ namespace Dev2.Development.Languages.Scripting
 {
     public class RubyContext:IScriptingContext
     {
-        private readonly IStringScriptSources _sources;
+        readonly IStringScriptSources _sources;
 #if WIN8
             public static readonly bool IsWin8 = true;
-        #else
-            public static readonly bool IsWin8 = false;
+#else
+        public static readonly bool IsWin8 = false;
 #endif
 
         public RubyContext(IStringScriptSources sources)
@@ -47,8 +47,8 @@ namespace Dev2.Development.Languages.Scripting
         public string Execute(string scriptValue)
         {
             var rubyEngine = CreateRubyEngine();
-            string rubyFunc = @"class System::Object"+Environment.NewLine+"def initialize"+Environment.NewLine+"end"+Environment.NewLine+"end"+Environment.NewLine+"def __result__();" + Environment.NewLine +scriptValue+Environment.NewLine + "end;"+Environment.NewLine+" public :__result__";
-            ScriptScope scope = rubyEngine.CreateScope();
+            var rubyFunc = @"class System::Object"+Environment.NewLine+"def initialize"+Environment.NewLine+"end"+Environment.NewLine+"end"+Environment.NewLine+"def __result__();" + Environment.NewLine +scriptValue+Environment.NewLine + "end;"+Environment.NewLine+" public :__result__";
+            var scope = rubyEngine.CreateScope();
             if (_sources?.GetFileScriptSources() != null)
             {
                 foreach(var fileScriptSource in _sources.GetFileScriptSources())
@@ -56,8 +56,8 @@ namespace Dev2.Development.Languages.Scripting
                     rubyEngine.Execute(fileScriptSource.GetReader().ReadToEnd(), scope);
                 }
             }
-            ScriptSource source = rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
-            
+            var source = rubyEngine.CreateScriptSourceFromString(rubyFunc, SourceCodeKind.Statements);
+
             //execute the source
             source.Execute(scope);
 
@@ -67,7 +67,7 @@ namespace Dev2.Development.Languages.Scripting
             return result.Invoke().ToString();
         }
 
-        private ScriptEngine CreateRubyEngine()
+        ScriptEngine CreateRubyEngine()
         {
             RuntimeSetup = ScriptRuntimeSetup.ReadConfiguration();
             var languageSetup = RuntimeSetup.AddRubySetup();
@@ -101,8 +101,8 @@ namespace Dev2.Development.Languages.Scripting
 
         public class TmpHost : ScriptHost
         {
-            private readonly OptionsAttribute/*!*/ _options;
-            private readonly PlatformAdaptationLayer/*!*/ _pal;
+            readonly OptionsAttribute/*!*/ _options;
+            readonly PlatformAdaptationLayer/*!*/ _pal;
 
             public TmpHost(OptionsAttribute/*!*/ options)
             {
@@ -116,11 +116,11 @@ namespace Dev2.Development.Languages.Scripting
 
             public class Win8PAL : PlatformAdaptationLayer
             {
-                private string cwd;
+                string cwd;
 
                 public Win8PAL()
                 {
-                    StringBuilder buffer = new StringBuilder(300);
+                    var buffer = new StringBuilder(300);
                     if (GetCurrentDirectory(buffer.Capacity, buffer) == 0)
                     {
                         throw new IOException();

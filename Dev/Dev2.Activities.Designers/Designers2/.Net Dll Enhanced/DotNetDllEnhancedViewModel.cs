@@ -31,14 +31,14 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 {
     public class DotNetDllEnhancedViewModel : CustomToolWithRegionBase, IDotNetEnhancedViewModel
     {
-        private IOutputsToolRegion _outputsRegion;
-        private IDotNetConstructorInputRegion _inputArea;
-        private ISourceToolRegion<IPluginSource> _sourceRegion;
-        private INamespaceToolRegion<INamespaceItem> _namespaceRegion;
-        private IConstructorRegion<IPluginConstructor> _constructorRegion;
-        private IMethodToolRegion<IPluginAction> _methodRegion;
+        IOutputsToolRegion _outputsRegion;
+        IDotNetConstructorInputRegion _inputArea;
+        ISourceToolRegion<IPluginSource> _sourceRegion;
+        INamespaceToolRegion<INamespaceItem> _namespaceRegion;
+        IConstructorRegion<IPluginConstructor> _constructorRegion;
+        IMethodToolRegion<IPluginAction> _methodRegion;
 
-        private IErrorInfo _worstDesignError;
+        IErrorInfo _worstDesignError;
 
         const string DoneText = "Done";
         const string FixText = "Fix";
@@ -62,7 +62,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         Guid UniqueID => GetProperty<Guid>();
 
-        private void SetupCommonProperties()
+        void SetupCommonProperties()
         {
             AddTitleBarMappingToggle();
             InitialiseViewModel();
@@ -78,7 +78,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             UpdateWorstError();
         }
 
-        private void InitialiseViewModel()
+        void InitialiseViewModel()
         {
             BuildRegions();
 
@@ -105,7 +105,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         }
 
-        private void DeleteAction(DotNetMethodRegion method)
+        void DeleteAction(DotNetMethodRegion method)
         {
             if (method != null)
             {
@@ -245,7 +245,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        private IErrorInfo NoError { get; set; }
+        IErrorInfo NoError { get; set; }
 
         public bool IsWorstErrorReadOnly
         {
@@ -267,13 +267,13 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
         public static readonly DependencyProperty WorstErrorProperty =
             DependencyProperty.Register("WorstError", typeof(ErrorType), typeof(DotNetDllEnhancedViewModel), new PropertyMetadata(ErrorType.None));
 
-        private ServiceInputBuilder _builder;
-        private ObservableCollection<IMethodToolRegion<IPluginAction>> _methodsToRunList;
+        ServiceInputBuilder _builder;
+        ObservableCollection<IMethodToolRegion<IPluginAction>> _methodsToRunList;
 
-        private string Type => GetProperty<string>();
-        
+        string Type => GetProperty<string>();
 
-        private void FixErrors()
+
+        void FixErrors()
         {
         }
 
@@ -375,7 +375,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
                 ConstructorRegion.ErrorsHandler += (sender, list) =>
                 {
-                    List<ActionableErrorInfo> errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
+                    var errorInfos = list.Select(error => new ActionableErrorInfo(new ErrorInfo { ErrorType = ErrorType.Critical, Message = error }, () => { })).ToList();
                     UpdateDesignValidationErrors(errorInfos);
                     Errors = new List<IActionableErrorInfo>(errorInfos);
                 };
@@ -416,7 +416,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             return regions;
         }
 
-        private void ClearToolRegionErrors()
+        void ClearToolRegionErrors()
         {
             if (Regions != null)
             {
@@ -429,7 +429,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             CreateMethodRegion();
         }
 
-        private void CreateMethodRegion()
+        void CreateMethodRegion()
         {
             var methodRegion = new DotNetMethodRegion(Model, ModelItem, SourceRegion, NamespaceRegion)
             {
@@ -443,7 +443,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
                     {
                         methodRegion.SelectedMethod.ID = Guid.NewGuid();
                     }
-                    bool hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
+                    var hasUnselectedValue = MethodsToRunList.Any(methodToolRegion => methodToolRegion.SelectedMethod == null);
                     if (!hasUnselectedValue)
                     {
                         CreateMethodRegion();
@@ -453,7 +453,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             methodRegion.PropertyChanged += DotNetMethodRegionOnPropertyChanged;
             methodRegion.ErrorsHandler += (sender, list) =>
             {
-                List<ActionableErrorInfo> errorInfos =
+                var errorInfos =
                     list.Select(error => new ActionableErrorInfo(new ErrorInfo
                     {
                         ErrorType = ErrorType.Critical,
@@ -465,7 +465,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             AddToMethodsList(methodRegion);
         }
 
-        private void AddToMethodsList(DotNetMethodRegion methodRegion)
+        void AddToMethodsList(DotNetMethodRegion methodRegion)
         {
             if (MethodsToRunList == null)
             {
@@ -497,7 +497,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
 
         public DelegateCommand<DotNetMethodRegion> DeleteActionCommand { get; set; }
 
-        private ObservableCollection<IMethodToolRegion<IPluginAction>> BuildRegionsFromActions(IEnumerable<IPluginAction> pluginActions)
+        ObservableCollection<IMethodToolRegion<IPluginAction>> BuildRegionsFromActions(IEnumerable<IPluginAction> pluginActions)
         {
             var regionCollections = new ObservableCollection<IMethodToolRegion<IPluginAction>>();
             foreach (var pluginAction in pluginActions)
@@ -513,7 +513,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             return regionCollections;
         }
 
-        private void DotNetMethodRegionOnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void DotNetMethodRegionOnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "ObjectName")
             {
@@ -521,12 +521,12 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        private void MethodsToRunListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        void MethodsToRunListOnCollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             AddItemPropertyChangeEvent(e);
             RemoveItemPropertyChangeEvent(e);
         }
-        private void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void AddItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.NewItems == null)
             {
@@ -542,13 +542,13 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
+        void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             var actionsToRun = GetActionsToRun();
             ModelItem.SetProperty("MethodsToRun", actionsToRun);
         }
 
-        private void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
+        void RemoveItemPropertyChangeEvent(NotifyCollectionChangedEventArgs args)
         {
             if (args.OldItems == null)
             {
@@ -695,7 +695,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             return pluginServiceDefinition;
         }
 
-        private List<IPluginAction> GetActionsToRun()
+        List<IPluginAction> GetActionsToRun()
         {
             var pluginActions = MethodsToRunList.Where(region => region.SelectedMethod != null).Select(region => region.SelectedMethod);
             return pluginActions.ToList();
@@ -741,7 +741,7 @@ namespace Dev2.Activities.Designers2.Net_Dll_Enhanced
             }
         }
 
-        private IPluginServiceModel Model { get; set; }
+        IPluginServiceModel Model { get; set; }
 
         #endregion
 

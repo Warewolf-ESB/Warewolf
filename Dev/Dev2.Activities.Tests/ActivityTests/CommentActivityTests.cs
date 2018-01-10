@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -63,7 +63,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             Assert.AreEqual(0, inRes.Count);
             Assert.AreEqual(1, outRes.Count);
-            IList<IDebugItemResult> debugOutput = outRes[0].FetchResultsList();
+            var debugOutput = outRes[0].FetchResultsList();
             Assert.AreEqual(1, debugOutput.Count);
             Assert.AreEqual("SomeText", debugOutput[0].Value);
             Assert.AreEqual(DebugItemResultType.Value, debugOutput[0].Type);

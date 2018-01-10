@@ -24,7 +24,7 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
     [Binding]
     public sealed class DeleteWebConnectorToolSteps
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public DeleteWebConnectorToolSteps(ScenarioContext scenarioContext)
         {
@@ -36,9 +36,9 @@ namespace Dev2.Activities.Specs.Toolbox.Resources.Web
             this.scenarioContext = scenarioContext;
         }
 
-        private WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
-        private WebServiceSourceDefinition _webHelooWebSource;
-        private WebServiceSourceDefinition _googleWebSource;
+        WebServiceSourceDefinition _dev2CountriesWebServiceWebSource;
+        WebServiceSourceDefinition _webHelooWebSource;
+        WebServiceSourceDefinition _googleWebSource;
 
         [Given(@"I drag Web Delete Request Connector Tool onto the design surface")]
         public void GivenIDragWebDeleteRequestConnectorToolOntoTheDesignSurface()

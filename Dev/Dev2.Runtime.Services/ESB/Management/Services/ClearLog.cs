@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -13,10 +13,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using Dev2.Common;
-using Dev2.Common.Interfaces.Core.DynamicServices;
 using Dev2.Communication;
 using Dev2.DynamicServices;
-using Dev2.DynamicServices.Objects;
 using Dev2.Workspaces;
 using Warewolf.Resource.Errors;
 
@@ -26,8 +24,8 @@ namespace Dev2.Runtime.ESB.Management.Services
     {
         public override StringBuilder Execute(Dictionary<string, StringBuilder> values, IWorkspace theWorkspace)
         {
-            ExecuteMessage result = new ExecuteMessage { HasError = false };
-            StringBuilder msg = new StringBuilder();
+            var result = new ExecuteMessage { HasError = false };
+            var msg = new StringBuilder();
             string directory = null;
 
             values.TryGetValue("Directory", out StringBuilder tmp);
@@ -66,33 +64,21 @@ namespace Dev2.Runtime.ESB.Management.Services
 
             result.Message.Append(msg);
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
 
             return serializer.SerializeToBuilder(result);
 
         }
 
-        private static void AppendError(StringBuilder result, string directory, string msg)
+        static void AppendError(StringBuilder result, string directory, string msg)
         {
             result.AppendFormat("Error clearing '{0}'...", directory);
             result.AppendLine();
             result.Append($"Error: {msg}");
         }
 
-        public override DynamicService CreateServiceEntry()
-        {
-            DynamicService findDirectoryService = new DynamicService { Name = HandlesType(), DataListSpecification = new StringBuilder("<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>") };
+        public override DynamicService CreateServiceEntry() => EsbManagementServiceEntry.CreateESBManagementServiceEntry(HandlesType(), "<DataList><Directory ColumnIODirection=\"Input\"/><Dev2System.ManagmentServicePayload ColumnIODirection=\"Both\"></Dev2System.ManagmentServicePayload></DataList>");
 
-            ServiceAction findDirectoryServiceAction = new ServiceAction { Name = HandlesType(), ActionType = enActionType.InvokeManagementDynamicService, SourceMethod = HandlesType() };
-
-            findDirectoryService.Actions.Add(findDirectoryServiceAction);
-
-            return findDirectoryService;
-        }
-
-        public override string HandlesType()
-        {
-            return "ClearLogService";
-        }
+        public override string HandlesType() => "ClearLogService";
     }
 }

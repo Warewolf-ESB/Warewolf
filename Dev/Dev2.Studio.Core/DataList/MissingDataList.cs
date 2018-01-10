@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,10 +17,10 @@ using Dev2.Studio.Interfaces.DataList;
 
 namespace Dev2.Studio.Core.DataList
 {
-    internal class MissingDataList : IMissingDataList
+    class MissingDataList : IMissingDataList
     {
         readonly ObservableCollection<IRecordSetItemModel> _recsetCollection;
-        private readonly ObservableCollection<IScalarItemModel> _scalarCollection;
+        readonly ObservableCollection<IScalarItemModel> _scalarCollection;
         public MissingDataList(ObservableCollection<IRecordSetItemModel> recsetCollection, ObservableCollection<IScalarItemModel> scalarCollection)
         {
             _recsetCollection = recsetCollection;
@@ -85,7 +85,7 @@ namespace Dev2.Studio.Core.DataList
                     select IntellisenseFactory.CreateDataListValidationScalarPart(dataListItem.DisplayName, dataListItem.Description)).ToList();
         }
 
-        private static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
+        static void AddMissingWorkFlowRecordsetPart(List<IDataListVerifyPart> missingWorkflowParts,
         IRecordSetItemModel dataListItem,
         IRecordSetFieldItemModel child = null)
         {

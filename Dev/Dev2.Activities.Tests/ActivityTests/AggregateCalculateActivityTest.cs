@@ -7,7 +7,6 @@ using ActivityUnitTests;
 using Dev2.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
-using System.Globalization;
 
 namespace Dev2.Tests.Activities.ActivityTests
 {
@@ -26,7 +25,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         [TestMethod]
         [Owner("Massimo Guerrera")]
         [TestCategory("DsfCalculateActivity_OnExecute")]
-        public void DsfCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
+        public void AggregateCalculateActivity_OnExecute_GetCurrentDateTime_ResultContainsMilliseconds()
         {
             TestStartNode = new FlowStep
             {
@@ -35,23 +34,23 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><result></result></ADL>";
             TestData = "<root><ADL><result></result></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetScalarValueFromEnvironment(result.Environment, "result", out string entry, out string error);
 
             // remove test datalist ;)
 
-            DateTime res = DateTime.Parse(entry,CultureInfo.InvariantCulture);
+            var res = DateTime.Parse(entry);
 
-            if(res.Second == 0)
+            if (res.Second == 0)
             {
                 Thread.Sleep(10);
                 result = ExecuteProcess();
                 GetScalarValueFromEnvironment(result.Environment, "result", out entry, out error);
                 res = DateTime.Parse(entry);
-                Assert.IsTrue(res.Second != 0);
+                Assert.IsTrue(res.Millisecond != 0);
             }
-            Assert.IsTrue(res.Second != 0);
+            Assert.IsTrue(res.Millisecond != 0);
         }
 
         [TestMethod]
@@ -65,7 +64,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetScalarValueFromEnvironment(result.Environment, "result", out string entry, out string error);
 
@@ -100,7 +99,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             TestData = @"<ADL><scalar></scalar></ADL>";
             //TestData = ActivityStrings.CalculateActivityDataList;
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             GetScalarValueFromEnvironment(result.Environment, "scalar", out string entry, out string error);
 
@@ -121,7 +120,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><RecordSet><Field></Field></RecordSet><scalar></scalar><result></result></ADL>";
             TestData = "<root><ADL><RecordSet><Field>10</Field></RecordSet><RecordSet><Field>20</Field></RecordSet><scalar>2</scalar><result></result></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "32";
 
             GetScalarValueFromEnvironment(result.Environment, "result", out string actual, out string error);
@@ -142,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "ATestmoreText";
 
             GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out string actual, out string error);
@@ -161,7 +160,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "st";
 
             GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out string actual, out string error);
@@ -180,7 +179,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><testVar></testVar><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testVar>ATest</testVar><NewTestVar></NewTestVar></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "AT";
 
             GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out string actual, out string error);
@@ -200,7 +199,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><testRecSet><testField></testField></testRecSet><NewTestVar></NewTestVar></ADL>";
             TestData = "<root><ADL><testRecSet><testField>ATest</testField></testRecSet><NewTestVar></NewTestVar></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "ATestmoreText";
 
             GetScalarValueFromEnvironment(result.Environment, "NewTestVar", out string actual, out string error);
@@ -221,7 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><rec><val></val></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "10";
 
             GetScalarValueFromEnvironment(result.Environment, "sumResult", out string actual, out string error);
@@ -241,7 +240,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val><val2>0</val2></rec><rec><val>3</val><val2>0</val2></rec><rec><val>4</val><val2>0</val2></rec></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "20";
 
             GetScalarValueFromEnvironment(result.Environment, "sumResult", out string actual, out string error);
@@ -261,7 +260,7 @@ namespace Dev2.Tests.Activities.ActivityTests
 
             CurrentDl = "<ADL><rec><val></val><val2/></rec><sumResult></sumResult></ADL>";
             TestData = "<root><ADL><rec><val>1</val><val2>10</val2></rec><rec><val>2</val></rec><rec><val>3</val></rec><rec><val>4</val></rec></ADL></root>";
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             try
             {

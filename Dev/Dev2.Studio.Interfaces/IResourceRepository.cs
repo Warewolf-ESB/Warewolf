@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,18 +22,13 @@ using Dev2.Runtime.ServiceModel.Data;
 using Dev2.Common;
 using Dev2.Studio.Interfaces.Enums;
 
-
-
-
-
 namespace Dev2.Studio.Interfaces
 {
     public interface IResourceRepository : IDisposable
     {
         void UpdateWorkspace();
         void DeployResource(IResourceModel resource, string savePath);
-        ExecuteMessage DeleteResource(IResourceModel resource);
-    
+        ExecuteMessage DeleteResource(IResourceModel resource);    
         void Add(IResourceModel resource);
         void ForceLoad();
         void UpdateServer(IServer server);

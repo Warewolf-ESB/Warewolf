@@ -7,11 +7,11 @@ namespace Warewolf.Studio.ViewModels
 {
     public class ServiceTestInput : BindableBase, IServiceTestInput
     {
-        private string _variable;
-        private string _value;
-        private bool _emptyIsNull;
+        string _variable;
+        string _value;
+        bool _emptyIsNull;
 
-        
+
         public ServiceTestInput()
         {
             

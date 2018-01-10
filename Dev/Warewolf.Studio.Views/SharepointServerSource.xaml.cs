@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ namespace Warewolf.Studio.Views
 
         public string GetHeaderText()
         {
-            BindingExpression be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
+            var be = HeaderTextBlock.GetBindingExpression(TextBlock.TextProperty);
             be?.UpdateTarget();
             return HeaderTextBlock.Text;
         }
@@ -74,14 +74,14 @@ namespace Warewolf.Studio.Views
 
         public Visibility GetUsernameVisibility()
         {
-            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            var be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
             be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
 
         public Visibility GetPasswordVisibility()
         {
-            BindingExpression be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
+            var be = UserNamePasswordContainer.GetBindingExpression(VisibilityProperty);
             be?.UpdateTarget();
             return UserNamePasswordContainer.Visibility;
         }
@@ -99,7 +99,7 @@ namespace Warewolf.Studio.Views
 
         public string GetErrorMessage()
         {
-            BindingExpression be = ErrorTextBlock.GetBindingExpression(TextBox.TextProperty);
+            var be = ErrorTextBlock.GetBindingExpression(TextBox.TextProperty);
             be?.UpdateTarget();
             return ErrorTextBlock.Text;
         }

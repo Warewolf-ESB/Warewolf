@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UITesting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Drawing;
 using System.IO;
 using Warewolf.UI.Tests.DialogsUIMapClasses;
 using Warewolf.UI.Tests.Explorer.ExplorerUIMapClasses;
@@ -52,9 +53,8 @@ namespace Warewolf.UI.Tests.ServerSource
             ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
             ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             //Save Source
-            Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
             UIMap.Save_With_Ribbon_Button_And_Dialog(SourceName);
             ExplorerUIMap.Filter_Explorer(SourceName);
             Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
@@ -71,7 +71,7 @@ namespace Warewolf.UI.Tests.ServerSource
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists, "Server Source Tab does not exist after clicking edit on an explorer server source context menu and waiting 1 minute (60000ms).");
             ServerSourceUIMap.Click_UserButton_On_ServerSourceTab();
             ServerSourceUIMap.Enter_RunAsUser_On_ServerSourceTab("IntegrationTester", "I73573r0");
-            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
             UIMap.Click_Save_Ribbon_Button_With_No_Save_Dialog();
             ServerSourceUIMap.Click_Close_Server_Source_Wizard_Tab_Button();
             ExplorerUIMap.Select_Source_From_ExplorerContextMenu(ExistingSourceName);
@@ -129,8 +129,7 @@ namespace Warewolf.UI.Tests.ServerSource
                 ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("localhost");
                 ServerSourceUIMap.Select_Server_Authentication_Public();
                 Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
-                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
-                Assert.IsTrue(UIMap.MainStudioWindow.SideMenuBar.SaveButton.Enabled, "Save ribbon button is not enabled after successfully testing new source.");
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
                 UIMap.Save_With_Ribbon_Button_And_Dialog(ServerSourceName);
             }
             finally
@@ -185,6 +184,40 @@ namespace Warewolf.UI.Tests.ServerSource
             DialogsUIMap.Click_MessageBox_Yes();
             UIMap.Save_With_Ribbon_Button_And_Dialog("WorkflowSaveError");
             Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        public void ClickingSave_ThenPressEnter_SavesServerResource_AndClosesSaveDialog()
+        {
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Select_http_From_Server_Source_Wizard_Address_Protocol_Dropdown();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("tst-ci-remote");
+            ServerSourceUIMap.Select_Server_Authentication_Public();
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.NewServerSource.TestConnectionButton.Enabled, "Test Connection button not enabled");
+            ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button_For_Valid_Server_Source();
+
+            Mouse.Click(UIMap.MainStudioWindow.SideMenuBar.SaveButton);
+
+            DialogsUIMap.Enter_Valid_Service_Name_Into_Save_Dialog("ClickSaveEnterSavesServerResource");
+            WorkflowTabUIMap.Enter_Using_Shortcut();
+            Point point;
+            DialogsUIMap.SaveDialogWindow.WaitForControlCondition(control => !control.TryGetClickablePoint(out point), 60000);
+            Assert.IsFalse(DialogsUIMap.SaveDialogWindow.Exists);
+        }
+
+        [TestMethod]
+        [TestCategory("Server Sources")]
+        public void DoubleClicking_ErrorMessage_SelectsWholeMessage()
+        {
+            ExplorerUIMap.Select_NewServerSource_From_ExplorerContextMenu();
+            ServerSourceUIMap.Enter_TextIntoAddress_On_ServerSourceTab("invalid address!");
+            while (!ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ContentManager.ErrorTextBlock.TryGetClickablePoint(out Point point))
+            {
+                ServerSourceUIMap.Click_Server_Source_Wizard_Test_Connection_Button();
+            }
+            Mouse.DoubleClick(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ContentManager.ErrorTextBlock);
+            Assert.IsTrue(ServerSourceUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.ServerSourceTab.WorkSurfaceContext.ContentManager.ErrorTextBlock.SelectionText.Length > 10);
         }
 
         #region Additional test attributes

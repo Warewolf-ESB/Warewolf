@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,12 +21,8 @@ namespace Dev2.Runtime.WebServer.Responses
         readonly int _chunkSize;
 
         public StaticFileResponseWriter(string file, string contentType)
+            : this(file, contentType, 1024)
         {
-            VerifyArgument.IsNotNull("file", file);
-            VerifyArgument.IsNotNull("contentType", contentType);
-            _file = file;
-            _contentType = MediaTypeHeaderValue.Parse(contentType);
-            _chunkSize = 1024;
         }
 
         public StaticFileResponseWriter(string file, string contentType, int chunkSize)

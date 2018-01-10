@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -178,7 +178,7 @@ namespace Dev2.Sql.Tests
             var mockCommand = new Mock<IDbCommand>();
             var somethingAdded = false;
            
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
@@ -228,7 +228,7 @@ namespace Dev2.Sql.Tests
             //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, GlobalConstants.SchemaQuery)).Returns(mockCommand.Object);
             //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.StoredProcedure, "Dave.Bob")).Returns(mockCommand.Object);
             //factory.Setup(a => a.CreateCommand(It.IsAny<IDbConnection>(), CommandType.Text, "sp_helptext 'Dave.Bob'")).Returns(helpTextCommand.Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
@@ -286,7 +286,7 @@ namespace Dev2.Sql.Tests
             var somethingAdded = false;
             var funcAdded = false;
             
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
@@ -341,7 +341,7 @@ namespace Dev2.Sql.Tests
             mockCommand.SetupAllProperties();
             var somethingAdded = false;
             var funcAdded = false;
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
             dt.Columns.Add("SPECIFIC_SCHEMA");
@@ -493,7 +493,7 @@ namespace Dev2.Sql.Tests
             //------------Setup for test--------------------------
             var factory = new Mock<IConnectionBuilder>();
             var mockCommand = new Mock<IDbCommand>();
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
 
             dt.Columns.Add("ROUTINE_NAME");
             dt.Columns.Add("ROUTINE_TYPE");
@@ -566,7 +566,7 @@ namespace Dev2.Sql.Tests
 
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");
@@ -611,7 +611,7 @@ namespace Dev2.Sql.Tests
 
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Throws(new DbEx("There is no text for object "));
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");
@@ -661,7 +661,7 @@ namespace Dev2.Sql.Tests
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>()))
                 .Throws(new DbEx("There is no text for object "));
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");
@@ -754,7 +754,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");
@@ -793,7 +793,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");
@@ -828,7 +828,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");
@@ -841,7 +841,7 @@ namespace Dev2.Sql.Tests
             {
                 //------------Execute Test---------------------------
                 sqlServer.Connect("bob", CommandType.StoredProcedure, "select * from ");
-                PrivateObject privateObject = new PrivateObject(sqlServer);
+                var privateObject = new PrivateObject(sqlServer);
                 var commandText = (string)privateObject.GetField("_commantText");
                 var commandType = (CommandType)privateObject.GetField("_commandType");
                 Assert.AreEqual(commandType, CommandType.Text);
@@ -869,7 +869,7 @@ namespace Dev2.Sql.Tests
             mockCommand.Setup(a => a.Parameters).Returns(added);
             var helpTextCommand = new Mock<IDbCommand>();
             helpTextCommand.Setup(a => a.ExecuteReader(It.IsAny<CommandBehavior>())).Returns(new Mock<IDataReader>().Object);
-            DataTable dt = new DataTable();
+            var dt = new DataTable();
             dt.Columns.Add("database_name");
             dt.Rows.Add("Bob");
             dt.Rows.Add("Dave");

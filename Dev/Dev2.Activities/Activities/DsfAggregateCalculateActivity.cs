@@ -6,7 +6,6 @@ using Dev2.Activities;
 using Dev2.Common;
 using Dev2.Common.Common;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data;
 using Dev2.Data.TO;
 using Dev2.Diagnostics;
@@ -14,7 +13,6 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -22,7 +20,6 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-    [ToolDescriptorInfo("Utility-Calculate", "Aggregate Calculate", ToolType.Native, "8889E69B-38A3-43BC-A98F-7190C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Aggregate_Calculate")]
     public class DsfAggregateCalculateActivity : DsfActivityAbstract<string>
     {
 
@@ -57,12 +54,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Override Abstract Methods
 
+        /// <inheritdoc />
         /// <summary>
         /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
         /// </summary> 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
 
             ExecuteTool(dataObject, 0);
         }
@@ -71,8 +69,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         {
 
 
-            ErrorResultTO allErrors = new ErrorResultTO();
-            ErrorResultTO errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
             allErrors.MergeErrors(errors);
             InitializeDebug(dataObject);
             try
@@ -84,7 +82,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     AddDebugInputItem(dataObject.Environment, update);
                 }
 
-                string input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
+                var input = string.IsNullOrEmpty(Expression) ? Expression : Expression.Replace("\\r", string.Empty).Replace("\\n", string.Empty).Replace(Environment.NewLine, "");
                 var warewolfListIterator = new WarewolfListIterator();
                 var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, input);
                 var warewolfEvalResult = dataObject.Environment.Eval(calc, update);
@@ -138,13 +136,13 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #region Private Methods
 
-        private void AddDebugInputItem(IExecutionEnvironment environment,int update)
+        void AddDebugInputItem(IExecutionEnvironment environment, int update)
         {
             var calc = String.Format(GlobalConstants.AggregateCalculateTextConvertFormat, Expression);
             AddDebugInputItem(new DebugEvalResult(calc, "fx =", environment, update));
         }
 
-        private void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
+        void AddDebugOutputItem(string expression, IExecutionEnvironment environment, int update)
         {
             AddDebugOutputItem(new DebugEvalResult(expression, "", environment, update));
         }
@@ -210,5 +208,34 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion
+
+        public bool Equals(DsfAggregateCalculateActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(Expression, other.Expression)
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfAggregateCalculateActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Expression != null ? Expression.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (DisplayName != null ? DisplayName.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

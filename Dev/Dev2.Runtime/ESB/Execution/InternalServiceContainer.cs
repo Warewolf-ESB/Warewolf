@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -32,7 +32,7 @@ namespace Dev2.Runtime.ESB.Execution
     /// </summary>
     public class InternalServiceContainer : EsbExecutionContainer
     {
-        private readonly IEsbManagementServiceLocator _managementServiceLocator;
+        readonly IEsbManagementServiceLocator _managementServiceLocator;
 
         public InternalServiceContainer(ServiceAction sa, IDSFDataObject dataObj, IWorkspace theWorkspace, IEsbChannel esbChannel, EsbExecuteRequest request)
             : this(sa, dataObj, theWorkspace, esbChannel, request, null)
@@ -71,13 +71,13 @@ namespace Dev2.Runtime.ESB.Execution
         {
             errors = new ErrorResultTO();
             var invokeErrors = new ErrorResultTO();
-            Guid result = GlobalConstants.NullDataListID;
+            var result = GlobalConstants.NullDataListID;
 
             try
             {
-                IEsbManagementEndpoint eme = _managementServiceLocator.LocateManagementService(ServiceAction.Name);
+                var eme = _managementServiceLocator.LocateManagementService(ServiceAction.Name);
 
-                if(eme != null)
+                if (eme != null)
                 {
                     // Web request for internal service ;)
                     if(Request.Args == null)
@@ -99,7 +99,7 @@ namespace Dev2.Runtime.ESB.Execution
                     else
                     {
                         var serializer = new Dev2JsonSerializer();
-                        ExecuteMessage msg = new ExecuteMessage { HasError = true };
+                        var msg = new ExecuteMessage { HasError = true };
                         switch (eme.GetAuthorizationContextForService())
                         {
                             case AuthorizationContext.View:
@@ -146,7 +146,7 @@ namespace Dev2.Runtime.ESB.Execution
             return result;
         }
 
-        private bool CanExecute(IEsbManagementEndpoint eme)
+        bool CanExecute(IEsbManagementEndpoint eme)
         {
             return CanExecute(eme.GetResourceID(Request.Args), DataObject, eme.GetAuthorizationContextForService());
         }
@@ -162,10 +162,10 @@ namespace Dev2.Runtime.ESB.Execution
             return null;
         }
 
-        private void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
+        void GenerateRequestDictionaryFromDataObject(out ErrorResultTO errors)
         {
             errors = null;
-            Request.Args = new Dictionary<string, StringBuilder>();            
+            Request.Args = new Dictionary<string, StringBuilder>();
         }
     }
 }

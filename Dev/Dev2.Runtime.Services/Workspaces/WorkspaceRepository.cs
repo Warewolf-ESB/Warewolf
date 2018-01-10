@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -38,8 +38,8 @@ namespace Dev2.Workspaces
         readonly ConcurrentDictionary<Guid, IWorkspace> _items = new ConcurrentDictionary<Guid, IWorkspace>();
         readonly IResourceCatalog _resourceCatalog;
 
-        private static readonly object WorkspaceLock = new object();
-        private static readonly object UserMapLock = new object();
+        static readonly object WorkspaceLock = new object();
+        static readonly object UserMapLock = new object();
 
         #region Singleton Instance
 
@@ -187,8 +187,8 @@ namespace Dev2.Workspaces
             //TODO, 2012-10-24, This is a temporary implementation which brute force 
             //                  refreshes all client workspaces by removing them,
             //                  no changes in the client workspaces are preserved.
-            List<Guid> worksSpacesToRemove = _items.Keys.Where(k => k != ServerWorkspaceID).ToList();
-            foreach(Guid workspaceGuid in worksSpacesToRemove)
+            var worksSpacesToRemove = _items.Keys.Where(k => k != ServerWorkspaceID).ToList();
+            foreach (Guid workspaceGuid in worksSpacesToRemove)
             {
                 _items.TryRemove(workspaceGuid, out IWorkspace workspace);
             }
@@ -201,8 +201,10 @@ namespace Dev2.Workspaces
         public void GetLatest(IWorkspace workspace, IList<string> servicesToIgnore)
         {
             lock(_readLock)
-            {                
-                var filesToIgnore = servicesToIgnore.Select(s => s + ".xml").ToList();                
+            {
+                
+                var filesToIgnore = servicesToIgnore.Select(s => s += ".bite").ToList();
+                
                 var targetPath = EnvironmentVariables.GetWorkspacePath(workspace.ID);
                 _resourceCatalog.SyncTo(ServerWorkspacePath, targetPath, true, true, filesToIgnore);
             }
@@ -259,25 +261,25 @@ namespace Dev2.Workspaces
 
         #region Read
 
-        private IWorkspace Read(Guid workdspaceID)
+        IWorkspace Read(Guid workdspaceID)
         {
             // force a lock on the file system ;)
-            lock(WorkspaceLock)
+            lock (WorkspaceLock)
             {
                 var filePath = GetFileName(workdspaceID);
                 var fileExists = File.Exists(filePath);
-                using(var stream = File.Open(filePath, FileMode.OpenOrCreate))
+                using (var stream = File.Open(filePath, FileMode.OpenOrCreate))
                 {
                     var formatter = new BinaryFormatter();
-                    if(fileExists)
+                    if (fileExists)
                     {
                         try
                         {
                             return (IWorkspace)formatter.Deserialize(stream);
                         }
-                         
-                        catch(Exception ex)
-                        
+
+                        catch (Exception ex)
+
                         {
                             Dev2Logger.Error(ex, GlobalConstants.WarewolfError);
                             // Deserialization failed so overwrite with new one.
@@ -329,14 +331,14 @@ namespace Dev2.Workspaces
 
         string GetFileName(Guid workspaceID)
         {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".xml");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, workspaceID + ".bite");
         }
 
         #endregion
 
         static string GetUserMapFileName()
         {
-            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.xml");
+            return Path.Combine(EnvironmentVariables.WorkspacePath, "workspaces.bite");
         }
 
         static ConcurrentDictionary<string, Guid> ReadUserMap()

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,6 +39,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
         MessageBoxResult ShowCorruptTaskResult(string errorMessage);
         MessageBoxResult ShowNameChangedConflict(string oldName, string newName);
         MessageBoxResult ShowDeployConflict(int conflictCount);
+        MessageBoxResult ShowDeployNoResourcesToDeploy(string header, string description);
         MessageBoxResult ShowDeployServerVersionConflict(string sourceServerVersion, string destinationServerVersion);
         MessageBoxResult ShowConnectServerVersionConflict(string selectedServerVersion, string currentServerVersion);
         MessageBoxResult ShowDeployResourceNameConflict(string conflictResourceName);
@@ -65,5 +66,7 @@ namespace Dev2.Common.Interfaces.Studio.Controller
 
         MessageBoxResult ShowRollbackVersionMessage(string displayName);
         MessageBoxResult ShowResourcesConflict(List<string> resourceDuplicates);
+        MessageBoxResult ShowResourcesNotInCorrectPath();
+        MessageBoxResult ShowCanNotMoveResource();
     }
 }

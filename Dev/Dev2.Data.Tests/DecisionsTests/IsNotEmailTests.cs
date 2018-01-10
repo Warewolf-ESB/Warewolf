@@ -13,10 +13,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isNotEmail = new IsNotEmail();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "something";
             //------------Execute Test---------------------------
-            bool result = isNotEmail.Invoke(cols);
+            var result = isNotEmail.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsTrue(result);
         }
@@ -28,10 +28,10 @@ namespace Dev2.Data.Tests.DecisionsTests
         {
             //------------Setup for test--------------------------
             var isNotEmail = new IsNotEmail();
-            string[] cols = new string[2];
+            var cols = new string[2];
             cols[0] = "soumething@something.com";
             //------------Execute Test---------------------------
-            bool result = isNotEmail.Invoke(cols);
+            var result = isNotEmail.Invoke(cols);
             //------------Assert Results-------------------------
             Assert.IsFalse(result);
         }

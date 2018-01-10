@@ -1,6 +1,6 @@
 namespace Dev2.Runtime.DynamicProxy
 {
-    internal static class Constants
+    static class Constants
     {
         internal static class ErrorMessages
         {

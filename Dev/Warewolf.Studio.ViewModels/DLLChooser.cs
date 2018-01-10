@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -23,17 +23,17 @@ namespace Warewolf.Studio.ViewModels
 {
     public class DLLChooser : BindableBase, IDLLChooser
     {
-        private readonly IManagePluginSourceModel _updateManager;
-        private bool _isLoading;
-        private string _searchTerm;
-        private List<IDllListingModel> _allDllListingModels;
-        private IDllListingModel _selectedDll;
-        private string _assemblyName;
-        private List<IDllListingModel> _dllListingModels;
-        private IChooseDLLView _view;
-        private string _filterTooltip;
-        private string _filesTooltip;
-        private string _selectTooltip;
+        readonly IManagePluginSourceModel _updateManager;
+        bool _isLoading;
+        string _searchTerm;
+        List<IDllListingModel> _allDllListingModels;
+        IDllListingModel _selectedDll;
+        string _assemblyName;
+        List<IDllListingModel> _dllListingModels;
+        IChooseDLLView _view;
+        string _filterTooltip;
+        string _filesTooltip;
+        string _selectTooltip;
 
         public DLLChooser(IManagePluginSourceModel updateManager)
         {
@@ -242,13 +242,13 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void PerformLoadAll()
+        void PerformLoadAll()
         {
             var names = _updateManager.GetDllListings(null).Select(input => new DllListingModel(_updateManager, input)).ToList();
             AllDllListingModels = new List<IDllListingModel>(names);
         }
 
-        private void PerformSearch(string searchTerm)
+        void PerformSearch(string searchTerm)
         {
             if (AllDllListingModels != null)
             {
@@ -260,7 +260,7 @@ namespace Warewolf.Studio.ViewModels
             }
         }
 
-        private void SelectDllFromUsingAssemblyName()
+        void SelectDllFromUsingAssemblyName()
         {
             if (_selectedDll != null)
             {

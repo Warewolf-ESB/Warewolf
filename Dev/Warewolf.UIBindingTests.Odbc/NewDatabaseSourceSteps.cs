@@ -266,8 +266,8 @@ namespace Warewolf.UIBindingTests.Odbc
         {
             DisposeResources();
         }
-        
-        private static void DisposeResources()
+
+        static void DisposeResources()
         {
             var mockUpdateManager = ScenarioContext.Current.Get<Mock<IManageDatabaseSourceModel>>("updateManager");
             var mockRequestServiceNameViewModel = ScenarioContext.Current.Get<Mock<IRequestServiceNameViewModel>>("requestServiceNameViewModel");

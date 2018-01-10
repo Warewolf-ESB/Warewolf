@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -17,7 +17,7 @@ namespace Dev2.Data.Decision
 {
     public class Dev2DataListDecisionHandler
     {
-        private static Dev2DataListDecisionHandler _inst;
+        static Dev2DataListDecisionHandler _inst;
         internal static readonly IDictionary<Guid, IExecutionEnvironment> _environments = new ConcurrentDictionary<Guid, IExecutionEnvironment>();
         public static Dev2DataListDecisionHandler Instance => _inst ?? (_inst = new Dev2DataListDecisionHandler());
 

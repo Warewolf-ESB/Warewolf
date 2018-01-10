@@ -17,19 +17,19 @@ namespace Dev2.Activities.Designers2.Core.Source
 {
     public class ComSourceRegion : ISourceToolRegion<IComPluginSource>
     {
-        private bool _isEnabled;
-        private IComPluginSource _selectedSource;
-        private ICollection<IComPluginSource> _sources;
-        private readonly ModelItem _modelItem;
-        private Guid _sourceId;
-        private Action _sourceChangedAction;
-        private double _labelWidth;
-        private string _newSourceHelpText;
-        private string _editSourceHelpText;
-        private string _sourcesHelpText;
-        private string _newSourceToolText;
-        private string _editSourceToolText;
-        private string _sourcesToolText;
+        bool _isEnabled;
+        IComPluginSource _selectedSource;
+        ICollection<IComPluginSource> _sources;
+        readonly ModelItem _modelItem;
+        Guid _sourceId;
+        Action _sourceChangedAction;
+        double _labelWidth;
+        string _newSourceHelpText;
+        string _editSourceHelpText;
+        string _sourcesHelpText;
+        string _newSourceToolText;
+        string _editSourceToolText;
+        string _sourcesToolText;
 
         public ComSourceRegion(IComPluginServiceModel model, ModelItem modelItem)
         {
@@ -147,7 +147,7 @@ namespace Dev2.Activities.Designers2.Core.Source
             }
         }
 
-        private void SetInitialValues()
+        void SetInitialValues()
         {
             IsEnabled = true;
         }
@@ -246,14 +246,14 @@ namespace Dev2.Activities.Designers2.Core.Source
             {
 
                 SetSelectedSource(value);
-                SourceChangedAction();
+                SourceChangedAction?.Invoke();
                 OnSomethingChanged(this);
                 var delegateCommand = EditSourceCommand as DelegateCommand;
                 delegateCommand?.RaiseCanExecuteChanged();
             }
         }
 
-        private void SetSelectedSource(IComPluginSource value)
+        void SetSelectedSource(IComPluginSource value)
         {
             if (value != null)
             {

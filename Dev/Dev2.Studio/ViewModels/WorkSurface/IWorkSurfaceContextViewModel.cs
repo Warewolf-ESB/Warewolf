@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -46,15 +46,12 @@ namespace Dev2.Studio.ViewModels.WorkSurface
         string DisplayName { get; set; }
         bool IsNotifying { get; set; }
 
-        void Handle(DebugResourceMessage message);
-
         void Handle(ExecuteResourceMessage message);
 
         void Handle(SaveResourceMessage message);
 
         void Handle(UpdateWorksurfaceDisplayName message);
-
-
+        
         void SetDebugStatus(DebugStatus debugStatus);
 
         void Debug(IContextualResourceModel resourceModel, bool isDebug);

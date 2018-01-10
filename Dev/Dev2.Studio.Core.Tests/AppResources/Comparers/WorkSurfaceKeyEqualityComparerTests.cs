@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -12,55 +12,27 @@ using System;
 using System.Linq.Expressions;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
 using Dev2.Core.Tests.Environments;
-using Dev2.Factory;
-using Dev2.Studio.AppResources.Comparers;
 using Dev2.Studio.Core;
 using Dev2.Studio.Interfaces;
 using Dev2.Studio.Interfaces.Enums;
 using Dev2.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using Dev2.Factory;
+using Dev2.Studio.AppResources.Comparers;
 
 namespace Dev2.Core.Tests.AppResources.Comparers
 {
-    /// <summary>
-    /// Summary description for WorkSurfaceKeyEqualityComparerTests
-    /// </summary>
     [TestClass]
     public class WorkSurfaceKeyEqualityComparerTests
     {
-        /// <summary>
-        ///Gets or sets the test context which provides
-        ///information about and functionality for the current test run.
-        ///</summary>
         public TestContext TestContext { get; set; }
 
         [TestInitialize]
         public void Initialize()
         {
-            AppSettings.LocalHost = "http://localhost:3142";
+            AppUsageStats.LocalHost = "http://localhost:3142";
         }
-        #region Additional test attributes
-        //
-        // You can use the following additional attributes as you write your tests:
-        //
-        // Use ClassInitialize to run code before running the first test in the class
-        // [ClassInitialize()]
-        // public static void MyClassInitialize(TestContext testContext) { }
-        //
-        // Use ClassCleanup to run code after all tests in a class have run
-        // [ClassCleanup()]
-        // public static void MyClassCleanup() { }
-        //
-        // Use TestInitialize to run code before running each test 
-        // [TestInitialize()]
-        // public void MyTestInitialize() { }
-        //
-        // Use TestCleanup to run code after each test has run
-        // [TestCleanup()]
-        // public void MyTestCleanup() { }
-        //
-        #endregion
 
         [TestMethod]
         public void CreateKeysExpectedKeysCreated()
@@ -97,7 +69,7 @@ namespace Dev2.Core.Tests.AppResources.Comparers
             var serverId = Guid.NewGuid();
             var enviroId = Guid.NewGuid();
 
-            WorkSurfaceKey key1 = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
+            var key1 = WorkSurfaceKeyFactory.CreateKey(WorkSurfaceContext.DependencyVisualiser) as WorkSurfaceKey;
             Assert.IsNotNull(key1);
             key1.EnvironmentID = enviroId;
             key1.ResourceID = resId;

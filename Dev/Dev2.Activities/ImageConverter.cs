@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,9 +21,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture) {
             try {
-                BitmapImage image = new BitmapImage();
+                var image = new BitmapImage();
                 if (value != null && value.ToString() != string.Empty) {
-                    Uri imageUri = new Uri(value.ToString(), UriKind.RelativeOrAbsolute);
+                    var imageUri = new Uri(value.ToString(), UriKind.RelativeOrAbsolute);
 
                     image = new BitmapImage();
                     image.BeginInit();
@@ -33,8 +33,9 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                 }
                 return image;
             }
-            catch {
-                return new BitmapImage(); 
+            catch (Exception ex)
+            {
+                return new BitmapImage();
             }
 
 

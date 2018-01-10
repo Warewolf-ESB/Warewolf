@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,10 +29,10 @@ namespace Dev2.AppResources.Converters
         /// <param name="values">The array of values that the source bindings in the <see cref="T:System.Windows.Data.MultiBinding"/> produces. The value <see cref="F:System.Windows.DependencyProperty.UnsetValue"/> indicates that the source binding has no value to provide for conversion.</param><param name="targetType">The type of the binding target property.</param><param name="parameter">The converter parameter to use.</param><param name="culture">The culture to use in the converter.</param>
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            bool? isLoading = values[0] as bool?;
-            bool? hasConnectionError = values[1] as bool?;
+            var isLoading = values[0] as bool?;
+            var hasConnectionError = values[1] as bool?;
 
-            if(isLoading.GetValueOrDefault() || hasConnectionError.GetValueOrDefault())
+            if (isLoading.GetValueOrDefault() || hasConnectionError.GetValueOrDefault())
             {
                 return Visibility.Collapsed;
             }

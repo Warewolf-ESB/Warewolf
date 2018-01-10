@@ -401,6 +401,10 @@ namespace Dev2.Core.Tests
         {
             //---------------Set up test pack-------------------
 
+            var explorerTooltips = new Mock<IExplorerTooltips>();
+            CustomContainer.Register(explorerTooltips.Object);
+            var serverRepository = new Mock<IServerRepository>();
+            CustomContainer.Register(serverRepository.Object);
             var aggreMock = new Mock<IEventAggregator>();
             var resourceModel = new Mock<IContextualResourceModel>();
             var depGrap = new Mock<IDependencyGraphGenerator>();
@@ -467,7 +471,7 @@ namespace Dev2.Core.Tests
 
 
 
-        private Task<ExecuteMessage> ValueFunction()
+        Task<ExecuteMessage> ValueFunction()
         {
             var executeMessage = new ExecuteMessage();
             var fromResult = Task.FromResult(executeMessage);

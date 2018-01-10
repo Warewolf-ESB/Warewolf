@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -108,8 +108,8 @@ namespace Dev2.Factory
             if (origin != Guid.Empty)
             {
                 var serverRepository = CustomContainer.Get<IServerRepository>();
-                IServer server = serverRepository.FindSingle(model => model.Connection.WorkspaceID == origin);
-                Guid environmentID = server.EnvironmentID;
+                var server = serverRepository.FindSingle(model => model.Connection.WorkspaceID == origin);
+                var environmentID = server.EnvironmentID;
                 return new WorkSurfaceKey
                 {
                     WorkSurfaceContext = WorkSurfaceContext.Workflow,

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
     [Binding]
     public class ReplaceSteps : RecordSetBases
     {
-        private readonly ScenarioContext scenarioContext;
+        readonly ScenarioContext scenarioContext;
 
         public ReplaceSteps(ScenarioContext scenarioContext)
             : base(scenarioContext)
@@ -35,7 +35,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
             this.scenarioContext = scenarioContext;
         }
 
-        private string _inFields = "[[sentence]]";
+        string _inFields = "[[sentence]]";
 
         protected override void BuildDataList()
         {
@@ -122,7 +122,7 @@ namespace Dev2.Activities.Specs.Toolbox.Data.Replace
         public void WhenTheReplaceToolIsExecuted()
         {
             BuildDataList();
-            IDSFDataObject result = ExecuteProcess(isDebug: true, throwException: false);
+            var result = ExecuteProcess(isDebug: true, throwException: false);
             scenarioContext.Add("result", result);
         }
 

@@ -7,6 +7,7 @@ using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
+using System;
 
 namespace Dev2.Activities.Designers.Tests.AggregateCalculate
 {
@@ -35,6 +36,8 @@ namespace Dev2.Activities.Designers.Tests.AggregateCalculate
         [TestCategory("AggregateCalculateDesignerViewModel_Constructor")]
         public void AggregateCalculateDesignerViewModel_Constructor_Constructed_HasHelpLargeViewToogle()
         {
+            var x = Guid.NewGuid();
+            var y = Guid.NewGuid();
             //------------Setup for test--------------------------
             var modelItem = CreateModelItem();
             //------------Execute Test---------------------------

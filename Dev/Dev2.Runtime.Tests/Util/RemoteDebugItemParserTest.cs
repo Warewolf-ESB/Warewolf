@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,12 +30,12 @@ namespace Dev2.Tests.Runtime.Util
 
         {
             //------------Setup for test--------------------------
-            List<IDebugState> items = new List<IDebugState>
+            var items = new List<IDebugState>
             {
                 new DebugState {ActivityType = ActivityType.Workflow, ClientID = Guid.Empty, DisplayName = "DebugState"}
             };
 
-            Dev2JsonSerializer serializer = new Dev2JsonSerializer();
+            var serializer = new Dev2JsonSerializer();
             var data = serializer.Serialize(items);
 
             //------------Execute Test---------------------------

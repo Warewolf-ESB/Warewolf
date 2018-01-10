@@ -25,20 +25,20 @@ namespace Warewolf.Studio.ViewModels.Tests
     {
         #region Fields
 
-        private Mock<IManageDatabaseSourceModel> _updateManagerMock;
-        private Mock<IEventAggregator> _aggregatorMock;
-        private Mock<IAsyncWorker> _asyncWorkerMock;
-        private Mock<IDbSource> _dbSourceMock;
+        Mock<IManageDatabaseSourceModel> _updateManagerMock;
+        Mock<IEventAggregator> _aggregatorMock;
+        Mock<IAsyncWorker> _asyncWorkerMock;
+        Mock<IDbSource> _dbSourceMock;
 
-        private Mock<IRequestServiceNameViewModel> _requestServiceNameViewMock;
-        private Task<IRequestServiceNameViewModel> _requestServiceNameView;
-        private List<string> _changedPropertiesAsyncWorker;
-        private List<string> _changedPropertiesUpdateManagerAggregatorDbSource;
-        private List<string> _changedUpdateManagerRequestServiceName;
+        Mock<IRequestServiceNameViewModel> _requestServiceNameViewMock;
+        Task<IRequestServiceNameViewModel> _requestServiceNameView;
+        List<string> _changedPropertiesAsyncWorker;
+        List<string> _changedPropertiesUpdateManagerAggregatorDbSource;
+        List<string> _changedUpdateManagerRequestServiceName;
 
-        private ManageSqlServerSourceViewModel _targetAsyncWorker;
-        private ManageSqlServerSourceViewModel _targetUpdateManagerAggregatorDbSource;
-        private ManageSqlServerSourceViewModel _targetUpdateManagerRequestServiceName;
+        ManageSqlServerSourceViewModel _targetAsyncWorker;
+        ManageSqlServerSourceViewModel _targetUpdateManagerAggregatorDbSource;
+        ManageSqlServerSourceViewModel _targetUpdateManagerRequestServiceName;
 
 
         #endregion Fields
@@ -70,11 +70,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         try
                         {
-                            success(progress());
+                            success?.Invoke(progress?.Invoke());
                         }
                         catch (Exception ex)
                         {
-                            fail(ex);
+                            fail?.Invoke(ex);
                         }
                     });
 
@@ -87,7 +87,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<IDbSource>, Action<IDbSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
             _targetAsyncWorker = new ManageSqlServerSourceViewModel(_asyncWorkerMock.Object);
             _changedPropertiesAsyncWorker = new List<string>();
@@ -684,7 +684,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     .Callback<Func<IList<string>>, Action<IList<string>>, CancellationTokenSource, Action<Exception>>(
                         (a1, a2, t, ae) =>
                         {
-                            a2(expectedDatabaseNames);
+                            a2?.Invoke(expectedDatabaseNames);
                         });
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
 
@@ -716,7 +716,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     .Callback<Func<IList<string>>, Action<IList<string>>, CancellationTokenSource, Action<Exception>>(
                         (a1, a2, t, ae) =>
                         {
-                            ae(null);
+                            ae?.Invoke(null);
                         });
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
 
@@ -748,7 +748,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                     .Callback<Func<IList<string>>, Action<IList<string>>, CancellationTokenSource, Action<Exception>>(
                         (a1, a2, t, ae) =>
                         {
-                            ae(new Exception(expectedExceptionMessage));
+                            ae?.Invoke(new Exception(expectedExceptionMessage));
                         });
             _changedPropertiesUpdateManagerAggregatorDbSource.Clear();
 

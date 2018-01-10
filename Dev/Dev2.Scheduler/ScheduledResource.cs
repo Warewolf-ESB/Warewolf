@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,17 +25,17 @@ namespace Dev2.Scheduler
         string _workflowName;
         SchedulerStatus _status;
 
-        private bool _runAsapIfScheduleMissed;
-        private bool _allowMultipleIstances;
+        bool _runAsapIfScheduleMissed;
+        bool _allowMultipleIstances;
         int _numberOfHistoryToKeep;
         IScheduleTrigger _trigger;
         bool _isDirty;
-        private string _userName;
-        private string _password;
+        string _userName;
+        string _password;
         string _oldName;
-        private IErrorResultTO _errors;
+        IErrorResultTO _errors;
         DateTime _nextRunDate;
-        private bool _isNew;
+        bool _isNew;
 
         public ScheduledResource(string name, SchedulerStatus status, DateTime nextRunDate, IScheduleTrigger trigger, string workflowName, string resourceId)
         {
@@ -309,13 +309,13 @@ namespace Dev2.Scheduler
                     && runAsapIfMissedEqual && allowMultipleInstancesEqual && userNameEqual;
         }
 
-        private bool TriggerEqual(IScheduleTrigger otherTrigger, IScheduleTrigger trigger)
+        bool TriggerEqual(IScheduleTrigger otherTrigger, IScheduleTrigger trigger)
         {
             if (otherTrigger.State != trigger.State)
             {
                 return false;
             }
-            if (otherTrigger.Trigger == null && trigger.Trigger!=null)
+            if (otherTrigger.Trigger == null && trigger.Trigger != null)
             {
                 return false;
             }

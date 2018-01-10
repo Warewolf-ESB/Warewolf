@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,7 +28,7 @@ namespace Dev2.Infrastructure.Tests.SharedModels
         public void DbColumn_Constructor_WhenUsingDbTable_ExpectAllPropertiesTransfered()
         {
             //------------Setup for test--------------------------
-            DataColumn dc = new DataColumn { AllowDBNull = true, AutoIncrement = false, ColumnName = "myColumn", MaxLength = 20, DataType = typeof(string) };
+            var dc = new DataColumn { AllowDBNull = true, AutoIncrement = false, ColumnName = "myColumn", MaxLength = 20, DataType = typeof(string) };
             //------------Execute Test---------------------------
             var dbColumn = new DbColumn(dc);
 

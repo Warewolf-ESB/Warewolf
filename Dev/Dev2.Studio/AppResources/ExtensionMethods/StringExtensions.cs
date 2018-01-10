@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -18,23 +18,10 @@ namespace Dev2.Studio.AppResources.ExtensionMethods
 {
     public static class StringExtensions
     {
-        public static string GetManagementPayload(this string payload)
-        {
-            if(payload.Contains("<Dev2System.ManagmentServicePayload>"))
-            {
-                var startIndx = payload.IndexOf("<Dev2System.ManagmentServicePayload>", StringComparison.Ordinal);
-                var length = "<Dev2System.ManagmentServicePayload>".Length;
-                var endIndx = payload.IndexOf("</Dev2System.ManagmentServicePayload>", StringComparison.Ordinal);
-                var l = endIndx - startIndx - length;
-                return payload.Substring(startIndx + length, l);
-            }
-            return string.Empty;
-        }
-
         public static string ExceptChars(this string str, IEnumerable<char> toExclude)
         {
-            StringBuilder sb = new StringBuilder();
-            foreach(char c in str)
+            var sb = new StringBuilder();
+            foreach (char c in str)
             {
                                 if(!toExclude.Contains(c))
                 {

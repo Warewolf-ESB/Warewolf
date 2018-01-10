@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,12 +21,12 @@ namespace Dev2.Services.Sql
 {
     public class ODBCServer : IDbServer
     {
-        private readonly IDbFactory _factory;
-        private OdbcConnection _connection;
-        private IDbTransaction _transaction;
-        private bool _disposed;
-        private IDbCommand _command;
-        private readonly bool Testing;
+        readonly IDbFactory _factory;
+        OdbcConnection _connection;
+        IDbTransaction _transaction;
+        bool _disposed;
+        IDbCommand _command;
+        readonly bool Testing;
 
         public ODBCServer(IDbFactory dbFactory)
         {
@@ -127,7 +127,7 @@ namespace Dev2.Services.Sql
 
         #region VerifyConnection
 
-        private void VerifyConnection()
+        void VerifyConnection()
         {
             if (!IsConnected)
             {
@@ -216,7 +216,7 @@ namespace Dev2.Services.Sql
             {
                 if (e.Message.Contains("There is no text for object "))
                 {
-                    DataTable exceptionDataTable = new DataTable("Error");
+                    var exceptionDataTable = new DataTable("Error");
                     exceptionDataTable.Columns.Add("ErrorText");
                     exceptionDataTable.LoadDataRow(new object[] { e.Message }, true);
                     return handler(new OdbcDataAdapter());
@@ -226,7 +226,7 @@ namespace Dev2.Services.Sql
         }
 
 
-        private static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
+        static T ExecuteReader<T>(IDbCommand command, CommandBehavior commandBehavior, Func<IDataAdapter, T> handler)
         {
             if (command.CommandType == CommandType.StoredProcedure)
             {
@@ -269,7 +269,7 @@ namespace Dev2.Services.Sql
 
         public List<string> GetDSN()
         {
-            List<string> list = new List<string>();
+            var list = new List<string>();
             list.AddRange(EnumDsn(Registry.CurrentUser, false));
             list.AddRange(EnumDsn(Registry.LocalMachine, false));
             if (Environment.Is64BitOperatingSystem)
@@ -280,9 +280,9 @@ namespace Dev2.Services.Sql
             return list;
         }
 
-        private IEnumerable<string> EnumDsn(RegistryKey rootKey, bool is64)
+        IEnumerable<string> EnumDsn(RegistryKey rootKey, bool is64)
         {
-            RegistryKey regKey = rootKey.OpenSubKey(@"Software\ODBC\ODBC.INI\ODBC Data Sources");
+            var regKey = rootKey.OpenSubKey(@"Software\ODBC\ODBC.INI\ODBC Data Sources");
             if (is64)
             {
                 regKey = rootKey.OpenSubKey(@"Software\Wow6432Node\ODBC\ODBC.INI\ODBC Data Sources");

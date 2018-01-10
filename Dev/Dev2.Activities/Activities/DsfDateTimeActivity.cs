@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -21,7 +21,6 @@ using Dev2.Common;
 using Dev2.Common.DateAndTime;
 using Dev2.Common.Interfaces.Core.Convertors.DateAndTime;
 using Dev2.Common.Interfaces.Diagnostics.Debug;
-using Dev2.Common.Interfaces.Toolbox;
 using Dev2.Data.TO;
 using Dev2.Data.Util;
 using Dev2.Diagnostics;
@@ -29,7 +28,6 @@ using Dev2.Interfaces;
 using Dev2.Util;
 using Dev2.Validation;
 using Unlimited.Applications.BusinessDesignStudio.Activities.Utilities;
-using Warewolf.Core;
 using Warewolf.Resource.Errors;
 using Warewolf.Storage;
 using Warewolf.Storage.Interfaces;
@@ -37,8 +35,6 @@ using Warewolf.Storage.Interfaces;
 
 namespace Unlimited.Applications.BusinessDesignStudio.Activities
 {
-
-    [ToolDescriptorInfo("Utility-DateTime", "Date Time", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Utility", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Utility_Date_Time")]
     public class DsfDateTimeActivity : DsfActivityAbstract<string>, IDateTimeOperationTO
     {
 
@@ -111,13 +107,10 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         }
 
         #endregion Ctor
-
-        /// <summary>
-        /// The execute method that is called when the activity is executed at run time and will hold all the logic of the activity
-        /// </summary>       
+        
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -129,9 +122,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
-
-
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
             InitializeDebug(dataObject);
             // Process if no errors
             try
@@ -144,15 +135,25 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         var defaultDateTimeDebugItem = new DebugItem();
                         AddDebugItem(new DebugItemStaticDataParams("System Date Time", "Input"), defaultDateTimeDebugItem);
-                        AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(GlobalConstants.Dev2DotNetDefaultDateTimeFormat), "="), defaultDateTimeDebugItem);
+                        AddDebugItem(new DebugItemStaticDataParams(System.DateTime.Now.ToString(CultureInfo.CurrentCulture), "="), defaultDateTimeDebugItem);
                         _debugInputs.Add(defaultDateTimeDebugItem);
                     }
                     else
                     {
                         AddDebugInputItem(new DebugEvalResult(DateTime, "Input", dataObject.Environment, update));
                     }
-                    
-                    var dateTimePattern = string.Format("{0}", GlobalConstants.Dev2DotNetDefaultDateTimeFormat);
+                    var cultureType = typeof(CultureInfo);
+                    var fieldInfo = cultureType.GetField("s_userDefaultCulture",BindingFlags.NonPublic | BindingFlags.Static);
+                    if (fieldInfo != null)
+                    {
+                        var val = fieldInfo.GetValue(CultureInfo.CurrentCulture);
+                        var newCul = val as CultureInfo;
+                        if (newCul != null)
+                        {
+                            Thread.CurrentThread.CurrentCulture = newCul;      
+                        }
+                    }
+                    var dateTimePattern = string.Format("{0} {1}", Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern, Thread.CurrentThread.CurrentCulture.DateTimeFormat.LongTimePattern);
 
                     if(string.IsNullOrEmpty(InputFormat))
                     {
@@ -214,17 +215,19 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
                     {
                         while(colItr.HasMoreData())
                         {
-                            IDateTimeOperationTO transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
+                            var transObj = ConvertToDateTimeTo(colItr.FetchNextValue(dtItr),
                                 colItr.FetchNextValue(ifItr),
                                 colItr.FetchNextValue(ofItr),
                                 TimeModifierType,
                                 colItr.FetchNextValue(tmaItr)
                                 );
 
-                            IDateTimeFormatter format = DateTimeConverterFactory.CreateFormatter();
-                            if (format.TryFormat(transObj, out string result, out string error))
+                            var format = DateTimeConverterFactory.CreateFormatter();
+                            string result;
+                            string error;
+                            if(format.TryFormat(transObj, out result, out error))
                             {
-                                string expression = Result;
+                                var expression = Result;
                                 dataObject.Environment.Assign(expression, result, update);
                             }
                             else
@@ -271,14 +274,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
         /// <summary>
         /// Used for converting the properties of this activity to a DateTimeTO object
         /// </summary>
-        private IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
+        IDateTimeOperationTO ConvertToDateTimeTo(string evaledDateTime, string evaledInputFormat, string evaledOutputFormat, string timeModifierType, string tTimeModifierAmount)
         {
             //2012.09.27: massimo.guerrera - Added for the new functionality for the time modification
             //Create a DateTimeTO using the DateTimeConverterFactory and send through the properties of this activity.DONE
-            int tmpTimeAmount = 0;
-            if(!string.IsNullOrWhiteSpace(tTimeModifierAmount))
+            var tmpTimeAmount = 0;
+            if (!string.IsNullOrWhiteSpace(tTimeModifierAmount))
             {
-                if(!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
+                if (!int.TryParse(tTimeModifierAmount, out tmpTimeAmount))
                 {
                     throw new Exception(ErrorResource.TimeMustBeNumeric);
                 }
@@ -350,8 +353,6 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
-        #region GetForEachInputs/Outputs
-
         public override IList<DsfForEachItem> GetForEachInputs()
         {
             return GetForEachItems(DateTime, InputFormat, TimeModifierAmountDisplay, OutputFormat);
@@ -362,6 +363,42 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             return GetForEachItems(Result);
         }
 
-        #endregion
+        public bool Equals(DsfDateTimeActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(DateTime, other.DateTime) 
+                && string.Equals(InputFormat, other.InputFormat) 
+                && string.Equals(OutputFormat, other.OutputFormat) 
+                && string.Equals(TimeModifierType, other.TimeModifierType) 
+                && string.Equals(TimeModifierAmountDisplay, other.TimeModifierAmountDisplay)
+                && TimeModifierAmount == other.TimeModifierAmount 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfDateTimeActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (DateTime != null ? DateTime.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (InputFormat != null ? InputFormat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputFormat != null ? OutputFormat.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TimeModifierType != null ? TimeModifierType.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (TimeModifierAmountDisplay != null ? TimeModifierAmountDisplay.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ TimeModifierAmount;
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

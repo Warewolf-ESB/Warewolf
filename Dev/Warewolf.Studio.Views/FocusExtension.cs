@@ -1,31 +1,30 @@
-﻿using System;
-using System.Globalization;
+﻿/*
+*  Warewolf - Once bitten, there's no going back
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
+*  Licensed under GNU Affero General Public License 3.0 or later. 
+*  Some rights reserved.
+*  Visit our website for more information <http://warewolf.io/>
+*  AUTHORS <http://warewolf.io/authors.php> , CONTRIBUTORS <http://warewolf.io/contributors.php>
+*  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
+*/
+
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Input;
-using Dev2.CustomControls.Converters;
 
 namespace Warewolf.Studio.Views
-{
-    
+{    
     public static class FocusExtension
     {
-        public static bool GetIsFocused(DependencyObject obj)
-        {
-            return (bool)obj.GetValue(IsFocusedProperty);
-        }
+        public static bool GetIsFocused(DependencyObject obj) => (bool)obj.GetValue(IsFocusedProperty);
 
-        public static void SetIsFocused(DependencyObject obj, bool value)
-        {
-            obj.SetValue(IsFocusedProperty, value);
-        }
+        public static void SetIsFocused(DependencyObject obj, bool value) => obj.SetValue(IsFocusedProperty, value);
 
         public static readonly DependencyProperty IsFocusedProperty =
             DependencyProperty.RegisterAttached(
                 "IsFocused", typeof(bool), typeof(FocusExtension),
                 new UIPropertyMetadata(false, OnIsFocusedPropertyChanged));
 
-        private static void OnIsFocusedPropertyChanged(DependencyObject d,
+        static void OnIsFocusedPropertyChanged(DependencyObject d,
             DependencyPropertyChangedEventArgs e)
         {
             var uie = (UIElement)d;
@@ -36,25 +35,6 @@ namespace Warewolf.Studio.Views
             }
         }
     }
-
-    public class ConnectedToImageConvertor : IValueConverter
-    {
-        readonly BoolToVisibilityConverter _convertor;
-
-        public ConnectedToImageConvertor()
-        {
-            _convertor = new BoolToVisibilityConverter();
-        }
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return _convertor.Convert(!(bool)value, targetType, parameter, culture);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return _convertor.Convert(!(bool)value, targetType, parameter, culture);
-        }
-    }
+    
     
 }

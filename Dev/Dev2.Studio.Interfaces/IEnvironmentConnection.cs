@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -26,9 +26,8 @@ using Dev2.Common.Interfaces.Studio.Core;
 
 namespace Dev2.Studio.Interfaces
 {
-    public interface IEnvironmentConnection:IDisposable,IEquatable<IEnvironmentConnection>
+    public interface IEnvironmentConnection
     {
-        // PBI 6690 - 2013.07.04 - TWR : added
         IEventPublisher ServerEvents { get; }
 
         Guid ServerID { get; set; }

@@ -10,13 +10,19 @@ using Dev2.Diagnostics;
 using Dev2.Interfaces;
 using Unlimited.Applications.BusinessDesignStudio.Activities;
 using Warewolf.Storage.Interfaces;
+using Dev2.Comparer;
 using Dev2.Common;
+using System.Activities.Statements;
 
 namespace Dev2.Activities
 {
-    public class DsfSwitch : DsfActivityAbstract<string>
+    public class DsfSwitch : DsfActivityAbstract<string>,IEquatable<DsfSwitch>, IAdapterActivity
     {
-        internal readonly DsfFlowSwitchActivity Inner;
+#pragma warning disable IDE1006 // Naming Styles
+#pragma warning disable S2357 // Fields should be private
+        public DsfFlowSwitchActivity Inner;
+#pragma warning restore S2357 // Fields should be private
+#pragma warning restore IDE1006 // Naming Styles
 
         public DsfSwitch(DsfFlowSwitchActivity inner)
       : base("Switch")
@@ -25,16 +31,66 @@ namespace Dev2.Activities
             UniqueID = inner.UniqueID;
         }
 
-        public DsfSwitch() { }
+        public DsfSwitch() { }       
 
         public override List<string> GetOutputs()
         {
             return new List<string>();
         }
 
+        public override FlowNode GetFlowNode()
+        {
+            var swt = new FlowSwitch<string>();                        
+            return swt; 
+        }
+
+        public IFlowNodeActivity GetInnerNode()
+        {
+            return Inner;
+        }
+
         public Dictionary<string, IDev2Activity> Switches { get; set; }
         public IEnumerable<IDev2Activity> Default { get; set; }
 
+        public override string GetDisplayName()
+        {
+            return !string.IsNullOrWhiteSpace(Switch) ? Switch : DisplayName;
+        }
+
+        public override List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)> ArmConnectors()
+        {
+            var armConnectors = new List<(string Description, string Key, string SourceUniqueId, string DestinationUniqueId)>();
+            if (Switches != null)
+            {
+                foreach (var swt in Switches)
+                {
+                    armConnectors.Add(($"{GetDisplayName()}: {swt.Key}->{swt.Value.GetDisplayName()}", swt.Key, UniqueID, swt.Value.UniqueID));
+                }
+            }
+            if (Default != null)
+            {
+                foreach (var dft in Default)
+                {
+                    armConnectors.Add(($"{GetDisplayName()}: Default->{dft.GetDisplayName()}", "Default", UniqueID, dft.UniqueID));
+                }
+            }
+            return armConnectors;
+        }
+
+        public override IEnumerable<IDev2Activity> GetNextNodes()
+        {
+            var nextNodes = new List<IDev2Activity>();            
+            foreach(var swt in Switches)
+            {
+                var currentAct = swt.Value;
+                nextNodes.Add(currentAct);
+            }
+            if (Default != null)
+            {
+                nextNodes.Add(Default.FirstOrDefault());
+            }
+            return nextNodes;
+        }
         public string Switch { get; set; }
 
         /// <summary>
@@ -74,7 +130,7 @@ namespace Dev2.Activities
             NextNodes = new List<IDev2Activity>();
             try
             {
-                Dev2Switch ds = new Dev2Switch { SwitchVariable = Switch };
+                var ds = new Dev2Switch { SwitchVariable = Switch };
                 var firstOrDefault = dataObject.Environment.EvalAsListOfStrings(ds.SwitchVariable, update).FirstOrDefault();
                 if (dataObject.IsDebugMode())
                 {
@@ -130,8 +186,8 @@ namespace Dev2.Activities
             {
                 if (dataObject.IsDebugMode())
                 {
-                    List<DebugItem> result = new List<DebugItem>();
-                    DebugItem itemToAdd = new DebugItem();
+                    var result = new List<DebugItem>();
+                    var itemToAdd = new DebugItem();
                     var debugResult = new DebugItemWarewolfAtomResult(firstOrDefault, "", ds.SwitchVariable, "", "Switch on", "", "=");
                     itemToAdd.AddRange(debugResult.GetDebugItemResult());
                     result.Add(itemToAdd);
@@ -149,15 +205,15 @@ namespace Dev2.Activities
             }
         }
 
-        private void DebugOutput(IDSFDataObject dataObject)
+        void DebugOutput(IDSFDataObject dataObject)
         {
             try
             {
                 if (dataObject.IsDebugMode())
                 {
-                    List<DebugItem> result = new List<DebugItem>();
+                    var result = new List<DebugItem>();
                     var debugOutputBase = new DebugItemStaticDataParams(Result, "");
-                    DebugItem itemToAdd = new DebugItem();
+                    var itemToAdd = new DebugItem();
                     itemToAdd.AddRange(debugOutputBase.GetDebugItemResult());
                     result.Add(itemToAdd);
                     _debugOutputs = result;
@@ -184,11 +240,59 @@ namespace Dev2.Activities
         {
             return _debugOutputs;
         }
+
+        public bool Equals(DsfSwitch other)
+        {
+            if (ReferenceEquals(null, other))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return base.Equals(other) 
+                && string.Equals(Switch, other.Switch) 
+                && string.Equals(Result, other.Result);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj))
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, obj))
+            {
+                return true;
+            }
+
+            if (obj.GetType() != this.GetType())
+            {
+                return false;
+            }
+
+            return Equals((DsfSwitch) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (Switch != null ? Switch.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (Result != null ? Result.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 
     public class TestMockSwitchStep : DsfActivityAbstract<string>
     {
-        private readonly DsfSwitch _dsfSwitch;
+        readonly DsfSwitch _dsfSwitch;
 
         public TestMockSwitchStep(DsfSwitch dsfSwitch)
             : base(dsfSwitch.DisplayName)
@@ -231,7 +335,7 @@ namespace Dev2.Activities
         protected override void ExecuteTool(IDSFDataObject dataObject, int update)
         {
             var dsfSwitchSwitches = _dsfSwitch.Switches;
-            bool hasResult = false;
+            var hasResult = false;
             if (dataObject.IsDebugMode())
             {
                 InitializeDebug(dataObject);

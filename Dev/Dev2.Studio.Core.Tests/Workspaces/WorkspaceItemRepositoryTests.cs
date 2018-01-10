@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -45,7 +45,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage { HasError = false };
+            var msg = new ExecuteMessage { HasError = false };
             msg.SetMessage("Workspace item updated");
 
             var payload = JsonConvert.SerializeObject(msg);
@@ -81,7 +81,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -133,7 +133,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -157,7 +157,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -178,7 +178,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -199,7 +199,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -219,7 +219,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -239,7 +239,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -260,7 +260,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -279,13 +279,13 @@ namespace Dev2.Core.Tests.Workspaces
         [TestMethod]
         public void WorkspaceItemRepositoryAddWorkspaceItemWithNewModelWithSameNameExpectedInvokesWrite()
         {
-            Guid workspaceID = Guid.NewGuid();
-            Guid serverID = Guid.NewGuid();
-            Guid envID = Guid.NewGuid();
+            var workspaceID = Guid.NewGuid();
+            var serverID = Guid.NewGuid();
+            var envID = Guid.NewGuid();
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -316,7 +316,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -339,7 +339,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();
@@ -362,7 +362,7 @@ namespace Dev2.Core.Tests.Workspaces
 
             var mockConn = new Mock<IEnvironmentConnection>();
             mockConn.Setup(c => c.IsConnected).Returns(true);
-            ExecuteMessage msg = new ExecuteMessage();
+            var msg = new ExecuteMessage();
             msg.SetMessage("Workspace item updated");
             var payload = JsonConvert.SerializeObject(msg);
             mockConn.Setup(c => c.ExecuteCommand(It.IsAny<StringBuilder>(), It.IsAny<Guid>())).Returns(new StringBuilder(payload)).Verifiable();

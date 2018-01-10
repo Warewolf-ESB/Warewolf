@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,7 +56,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>();
+            var environmentModels = new List<IServer>();
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             //------------Execute Test---------------------------
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
@@ -74,7 +74,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -94,7 +94,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -103,9 +103,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = false;
 
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
 
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
                 {
@@ -129,7 +129,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -157,7 +157,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -166,9 +166,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = true;
 
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
 
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -192,7 +192,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -201,9 +201,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = false;
 
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -227,7 +227,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -236,9 +236,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = true;
 
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -304,9 +304,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             var selectedIndex = -1;
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
                 actualConnectedState = arg.ConnectedStatus;
@@ -349,9 +349,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             serverProvider.Setup(s => s.Load()).Returns(environmentModels);
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             var selectedIndex = -1;
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
                 actualConnectedState = arg.ConnectedStatus;
@@ -472,7 +472,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -481,9 +481,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = false;
 
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -507,7 +507,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -516,9 +516,9 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = true;
 
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
-            bool actualDoCallback = false;
-            Guid environmentId = Guid.Empty;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Connected;
+            var actualDoCallback = false;
+            var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedStatusChanged += (sender, arg) =>
             {
@@ -542,7 +542,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -551,7 +551,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = false;
 
-            Guid environmentId = Guid.Empty;
+            var environmentId = Guid.Empty;
             var selectedId = selectedServer.Server.EnvironmentID;
             var eventRaised = false;
             connectControlSingleton.ConnectedServerChanged += (sender, arg) =>
@@ -574,7 +574,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
             var environmentRepository = new Mock<IServerRepository>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -583,7 +583,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var selectedServer = connectControlSingleton.Servers[1];
             selectedServer.IsConnected = true;
 
-            Guid environmentId = Guid.NewGuid();
+            var environmentId = Guid.NewGuid();
             var eventRaised = false;
             var selectedId = selectedServer.Server.EnvironmentID;
             connectControlSingleton.ConnectedServerChanged += (sender, arg) =>
@@ -605,7 +605,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
         public void ConnectControlSingleton_SetConnectionState_WhenThereIsASubscriber_RaisesAnEvent()
         {
             var serverProvider = new Mock<IEnvironmentModelProvider>();
-            List<IServer> environmentModels = new List<IServer>
+            var environmentModels = new List<IServer>
                 {
                     new TestServer(new Mock<IEventAggregator>().Object, Guid.NewGuid(), CreateConnection(false).Object, new Mock<IResourceRepository>().Object, false)
                 };
@@ -614,7 +614,7 @@ namespace Dev2.Core.Tests.ConnectionHelpers
             var expectedServerId = Guid.NewGuid();
             var actualId = Guid.Empty;
             const ConnectionEnumerations.ConnectedState expectedConnectedState = ConnectionEnumerations.ConnectedState.Busy;
-            ConnectionEnumerations.ConnectedState actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
+            var actualConnectedState = ConnectionEnumerations.ConnectedState.Disconnected;
             IConnectControlSingleton connectControlSingleton = new ConnectControlSingleton(serverProvider.Object, environmentRepository.Object);
             connectControlSingleton.ConnectedStatusChanged += (s, a) =>
             {

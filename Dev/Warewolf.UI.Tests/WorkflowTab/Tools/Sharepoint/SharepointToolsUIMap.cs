@@ -42,6 +42,13 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapCla
             Mouse.DoubleClick(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile, new Point(218, 11));
         }
 
+        [When(@"I Select Sharepoint Delete File Test Server")]
+        public void Select_Sharepoint_DeleteFile_TestServer()
+        {
+            Mouse.Click(MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.LargeView.Server, new Point(98, 12));
+            Mouse.Click(UIMap.MainStudioWindow.ComboboxListItemAsSharepointTestServer);
+        }
+
         [Given(@"I Open Sharepoint Download File Tool Large View")]
         [When(@"I Open Sharepoint Download File Tool Large View")]
         [Then(@"I Open Sharepoint Download File Tool Large View")]
@@ -94,6 +101,12 @@ namespace Warewolf.UI.Tests.WorkflowTab.Tools.Sharepoint.SharepointToolsUIMapCla
         public void Enter_Sharepoint_Server_Path_From_OnCopyFile_Tool()
         {
             MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointCopyFile.SmallView.FromDirectoryComboBox.TextEdit.Text = "clocks.dat";
+        }
+
+        [When(@"I Enter Some Text Into Sharepoint Server Delete Item Tool")]
+        public void Enter_SomeText_Into_Sharepoint_Server_Delete_Item_Tool()
+        {
+            MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.WorkSurfaceContext.WorkflowDesignerView.DesignerView.ScrollViewerPane.ActivityTypeDesigner.WorkflowItemPresenter.Flowchart.SharepointDeleteFile.LargeView.ServerPathComboBox.TextEdit.Text = "some value";
         }
 
         [When(@"I Enter Sharepoint Server Path From OnMoveFile Tool")]

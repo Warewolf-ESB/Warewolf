@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,8 +35,8 @@ namespace Dev2.Core.Tests.ConverterTests
         public void CalculateIntellisenseTextConverter_Convert_StringWithParameterAllowUserCalculateIsTrue_StringIsConverted()
         {
             var converter = new CalculateIntellisenseTextConverter();
-             string inputText = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
-             var actual = (string)converter.Convert(inputText, typeof(bool), "True", null);
+             var inputText = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
+            var actual = (string)converter.Convert(inputText, typeof(bool), "True", null);
             Assert.AreEqual("=sum(10,10)", actual);
         }
 
@@ -46,7 +46,7 @@ namespace Dev2.Core.Tests.ConverterTests
         public void CalculateIntellisenseTextConverter_Convert_StringWithParameterAllowUserCalculateIsFalse_StringIsNotConverted()
         {
             var converter = new CalculateIntellisenseTextConverter();
-            string expected = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
+            var expected = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
             var actual = (string)converter.Convert(expected, typeof(bool), "False", null);
             Assert.AreEqual(expected, actual);
         }
@@ -78,7 +78,7 @@ namespace Dev2.Core.Tests.ConverterTests
         public void CalculateIntellisenseTextConverter_ConvertBack_StringWithParameterAllowUserCalculateIsTrue_StringIsConverted()
         {
             var converter = new CalculateIntellisenseTextConverter();
-            string expected = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
+            var expected = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
             var actual = (string)converter.ConvertBack("=sum(10,10)", typeof(bool), "True", null);
             Assert.AreEqual(expected, actual);
         }
@@ -89,7 +89,7 @@ namespace Dev2.Core.Tests.ConverterTests
         public void CalculateIntellisenseTextConverter_ConvertBack_StringWithParameterAllowUserCalculateIsFalse_StringIsNotConverted()
         {
             var converter = new CalculateIntellisenseTextConverter();
-            string expected = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
+            var expected = string.Format("{0}sum(10,10){1}", GlobalConstants.CalculateTextConvertPrefix, GlobalConstants.CalculateTextConvertSuffix);
             var actual = (string)converter.ConvertBack(expected, typeof(bool), "False", null);
             Assert.AreEqual(expected, actual);
         }

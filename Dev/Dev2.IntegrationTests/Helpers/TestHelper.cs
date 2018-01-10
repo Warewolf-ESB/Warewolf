@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -35,9 +35,9 @@ namespace Dev2.Integration.Tests.Helpers
         public static string ReturnFragment(string reponseData)
         {
             const string FragmentName = "Dev2System.Fragment";
-            int datastart = reponseData.IndexOf("<" + FragmentName + ">", 0, StringComparison.Ordinal) + ("<" + FragmentName + ">").Length;
-            string decodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">", StringComparison.Ordinal) - datastart);
-            string fragment = decodedFragment.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
+            var datastart = reponseData.IndexOf("<" + FragmentName + ">", 0, StringComparison.Ordinal) + ("<" + FragmentName + ">").Length;
+            var decodedFragment = reponseData.Substring(datastart, reponseData.IndexOf("</" + FragmentName + ">", StringComparison.Ordinal) - datastart);
+            var fragment = decodedFragment.Replace("&amp;amp;lt;", "<").Replace("&amp;amp;gt;", ">");
             return fragment;
         }
 
@@ -62,7 +62,7 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string ExecuteServiceOnLocalhostUsingProxy(string serviceName, Dictionary<string,string> payloadArguments)
         {
-            CommunicationControllerFactory fact = new CommunicationControllerFactory();
+            var fact = new CommunicationControllerFactory();
             var comm = fact.CreateController(serviceName);
             var prx = new ServerProxy("http://localhost:3142", CredentialCache.DefaultNetworkCredentials, AsyncWorkerTests.CreateSynchronousAsyncWorker().Object);
             prx.Connect(Guid.NewGuid());
@@ -111,7 +111,7 @@ namespace Dev2.Integration.Tests.Helpers
         public static IList<IDebugState> FetchRemoteDebugItems(string baseUrl, Guid id)
         {
             var myUri = baseUrl + "FetchRemoteDebugMessagesService?InvokerID=" + id.ToString();
-            WebRequest req = WebRequest.Create(myUri);
+            var req = WebRequest.Create(myUri);
             req.Credentials = CredentialCache.DefaultCredentials;
             req.Method = "GET";
 
@@ -145,9 +145,9 @@ namespace Dev2.Integration.Tests.Helpers
             var len = postandUrl.Split('?').Length;
             if(len == 1)
             {
-                string result = string.Empty;
+                var result = string.Empty;
 
-                WebRequest req = WebRequest.Create(postandUrl);
+                var req = WebRequest.Create(postandUrl);
                 req.Credentials = CredentialCache.DefaultCredentials;
                 req.Method = "GET";
 
@@ -175,13 +175,13 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string ExtractDataBetween(string canidate, string startStr, string endStr)
         {
-            string result = string.Empty;
+            var result = string.Empty;
 
-            int start = canidate.IndexOf(startStr, StringComparison.Ordinal);
-            if(start >= 0)
+            var start = canidate.IndexOf(startStr, StringComparison.Ordinal);
+            if (start >= 0)
             {
-                int end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
-                if(end > start)
+                var end = canidate.LastIndexOf(endStr, StringComparison.Ordinal);
+                if (end > start)
                 {
                     result = canidate.Substring(start, end + endStr.Length - start);
                 }
@@ -195,27 +195,27 @@ namespace Dev2.Integration.Tests.Helpers
             return str.Replace("\r", "").Replace("\n", "").Replace(" ", "");
         }
 
-        private static bool ExecuteGetWorker(string url)
+        static bool ExecuteGetWorker(string url)
         {
-            GetWorker target = new GetWorker(url);
+            var target = new GetWorker(url);
             target.DoWork();
             _responseData = target.GetResponseData();
 
             return target.WasHTTPS;
         }
 
-        private static void ExecutePostWorker(string postDataWithUrl)
+        static void ExecutePostWorker(string postDataWithUrl)
         {
-            PostWorker target = new PostWorker(postDataWithUrl);
+            var target = new PostWorker(postDataWithUrl);
             target.DoWork();
             _responseData = target.GetResponseData();
         }
 
         public static List<string> BreakHtmlElement(string payload)
         {
-            List<string> htmlElems = new List<string>();
-            XElement elements = XElement.Parse(payload);
-            if(elements.HasElements)
+            var htmlElems = new List<string>();
+            var elements = XElement.Parse(payload);
+            if (elements.HasElements)
             {
                 foreach(XElement elem in elements.Descendants())
                 {
@@ -246,7 +246,7 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static string RemoveWhiteSpaceBetweenTags(string payload)
         {
-            Regex regex = new Regex(@">\s*<");
+            var regex = new Regex(@">\s*<");
 
             payload = regex.Replace(payload, "><");
             return payload;
@@ -254,7 +254,7 @@ namespace Dev2.Integration.Tests.Helpers
 
         public static HttpWebResponse GetResponseFromServer(string path)
         {
-            GetWorker target = new GetWorker(path);
+            var target = new GetWorker(path);
             target.DoWork();
             return target.GetResponse();
         }

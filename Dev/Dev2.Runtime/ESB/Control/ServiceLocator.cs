@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Runtime.ESB.Control
     public class ServiceLocator : IServiceLocator
     {
         readonly IPerformanceCounter _perfCounter = CustomContainer.Get<IWarewolfPerformanceCounterLocater>().GetCounter("Count of requests for workflows which don't exist");
-        private readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
+        readonly IResourceCatalog _resourceCatalog = ResourceCatalog.Instance;
         #region New Mgt Methods
 
         /// <summary>

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -30,7 +30,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetAuthorizationContextForService_Returns_Contribute()
         {
             //------------Setup for test-------------------------
-            DeleteAllTests deleteAllTests = new DeleteAllTests();
+            var deleteAllTests = new DeleteAllTests();
             //------------Execute Test---------------------------
             var authorizationContextForService = deleteAllTests.GetAuthorizationContextForService();
             //------------Assert Results-------------------------
@@ -41,7 +41,7 @@ namespace Dev2.Tests.Runtime.Services
         public void CreateServiceEntry_Returns_New_Dynamic_Service_DeleteAllTestsService()
         {
             //------------Setup for test-------------------------
-            DeleteAllTests deleteAllTests = new DeleteAllTests();
+            var deleteAllTests = new DeleteAllTests();
             //------------Execute Test---------------------------
             var dynamicService = deleteAllTests.CreateServiceEntry();
             var handleType = deleteAllTests.HandlesType();
@@ -55,7 +55,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_GivenEmptyArgs_Returns_EmptyGuid()
         {
             //------------Setup for test-------------------------
-            DeleteAllTests deleteAllTests = new DeleteAllTests();
+            var deleteAllTests = new DeleteAllTests();
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>();
             var resourceID = deleteAllTests.GetResourceID(requestArgs);
@@ -68,7 +68,7 @@ namespace Dev2.Tests.Runtime.Services
         public void GetResourceID_GivenSomeArgs_Returns_Id()
         {
             //------------Setup for test-------------------------
-            DeleteAllTests deleteAllTests = new DeleteAllTests();
+            var deleteAllTests = new DeleteAllTests();
             var resId = Guid.NewGuid();
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(resId);
@@ -87,12 +87,12 @@ namespace Dev2.Tests.Runtime.Services
         public void Execute_GivenNoArgs_Exception()
         {
             //------------Setup for test-------------------------
-            DeleteAllTests deleteAllTests = new DeleteAllTests();
+            var deleteAllTests = new DeleteAllTests();
             var workspaceMock = new Mock<IWorkspace>();
             //------------Execute Test---------------------------
             var requestArgs = new Dictionary<string, StringBuilder>();
             var executeResults = deleteAllTests.Execute(requestArgs, workspaceMock.Object);
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             Assert.IsNotNull(executeResults);
             var deserializedResults = jsonSerializer.Deserialize<CompressedExecuteMessage>(executeResults);
             //------------Assert Results-------------------------
@@ -105,7 +105,7 @@ namespace Dev2.Tests.Runtime.Services
         public void Execute_GivenSomeArgs_Returns_Id()
         {
             //------------Setup for test-------------------------
-            DeleteAllTests deleteAllTests = new DeleteAllTests();
+            var deleteAllTests = new DeleteAllTests();
             var workspaceMock = new Mock<IWorkspace>();
             //------------Execute Test---------------------------
             var value = new List<string> { "Test1", "Test2" }.SerializeToJsonStringBuilder();
@@ -114,7 +114,7 @@ namespace Dev2.Tests.Runtime.Services
                 { "excludeList", value }
             };
             var executeResults = deleteAllTests.Execute(requestArgs, workspaceMock.Object);
-            Dev2JsonSerializer jsonSerializer = new Dev2JsonSerializer();
+            var jsonSerializer = new Dev2JsonSerializer();
             Assert.IsNotNull(executeResults);
             var deserializedResults = jsonSerializer.Deserialize<CompressedExecuteMessage>(executeResults);
             //------------Assert Results-------------------------

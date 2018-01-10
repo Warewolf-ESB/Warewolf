@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -28,9 +28,9 @@ namespace Dev2.Tests.Runtime.ServiceModel
         [TestMethod]
         public void ToStringFullySetupObjectExpectedJsonSerializedObjectReturnedAsString()
         {
-            DbSource testDbSource = SetupDefaultDbSource();
-            string actualDbSourceToString = testDbSource.ToString();
-            string expected = JsonConvert.SerializeObject(testDbSource);
+            var testDbSource = SetupDefaultDbSource();
+            var actualDbSourceToString = testDbSource.ToString();
+            var expected = JsonConvert.SerializeObject(testDbSource);
             Assert.AreEqual(expected, actualDbSourceToString);
         }
 
@@ -38,8 +38,8 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ToStringEmptyObjectExpected()
         {
             var testDbSource = new DbSource();
-            string actualSerializedDbSource = testDbSource.ToString();
-            string expected = JsonConvert.SerializeObject(testDbSource);
+            var actualSerializedDbSource = testDbSource.ToString();
+            var expected = JsonConvert.SerializeObject(testDbSource);
             Assert.AreEqual(expected, actualSerializedDbSource);
         }
 
@@ -132,11 +132,11 @@ namespace Dev2.Tests.Runtime.ServiceModel
         public void ToXmlEmptyObjectExpectedXElementContainingNoInformationRegardingSource()
         {
             var testDbSource = new DbSource();
-            XElement expectedXml = testDbSource.ToXml();
+            var expectedXml = testDbSource.ToXml();
 
-            IEnumerable<XAttribute> attrib = expectedXml.Attributes();
-            IEnumerator<XAttribute> attribEnum = attrib.GetEnumerator();
-            while(attribEnum.MoveNext())
+            var attrib = expectedXml.Attributes();
+            var attribEnum = attrib.GetEnumerator();
+            while (attribEnum.MoveNext())
             {
                 if(attribEnum.Current.Name == "Name")
                 {
@@ -150,7 +150,7 @@ namespace Dev2.Tests.Runtime.ServiceModel
 
         #region Private Test Methods
 
-        private DbSource SetupDefaultDbSource()
+        DbSource SetupDefaultDbSource()
         {
             var testDbSource = new DbSource
             {
