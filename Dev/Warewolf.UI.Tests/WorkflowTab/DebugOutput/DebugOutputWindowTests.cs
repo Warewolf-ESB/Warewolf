@@ -123,6 +123,17 @@ namespace Warewolf.UI.Tests.DebugOutputTests
             Assert.IsTrue(dropboxListHasFocus, "Dropbox list tool is not selected on the design surface after it was executed with the F6 keyboard shortcut.");
         }
 
+        [TestMethod]
+        [TestCategory("Database Tools")]
+        public void Executing_Sql_Procedure_With_Errors()
+        {
+            ExplorerUIMap.Filter_Explorer("Raise_Hell_Procedure");
+            Assert.IsTrue(ExplorerUIMap.MainStudioWindow.DockManager.SplitPaneLeft.Explorer.ExplorerTree.localhost.FirstItem.Exists, "Source did not save in the explorer UI.");
+            ExplorerUIMap.DoubleClick_Explorer_Localhost_First_Item();
+            UIMap.Press_F6();
+            Assert.IsTrue(WorkflowTabUIMap.MainStudioWindow.DockManager.SplitPaneMiddle.TabManSplitPane.TabMan.WorkflowTab.ContentPane.ContentDockManager.SplitPaneRight.DebugOutput.DebugOutputTree.UISQLServerDatabaseTreeItem.UISQLErrorError15700seText.Exists);
+        }
+
         #region Additional test attributes
 
         [TestInitialize]
