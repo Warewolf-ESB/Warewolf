@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -159,9 +159,9 @@ namespace Dev2.Studio.InterfaceImplementors
             if(value != null)
             {
                 var text = (string)value;
-                bool allowUserCalculateMode = (string)parameter == "True";
+                var allowUserCalculateMode = (string)parameter == "True";
 
-                if(allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0)
                 {
                     if(text.StartsWith(GlobalConstants.CalculateTextConvertPrefix))
                     {
@@ -183,9 +183,9 @@ namespace Dev2.Studio.InterfaceImplementors
             if(value != null)
             {
                 var text = (string)value;
-                bool allowUserCalculateMode = (string)parameter == "True";
+                var allowUserCalculateMode = (string)parameter == "True";
 
-                if(allowUserCalculateMode && text.Length > 0)
+                if (allowUserCalculateMode && text.Length > 0)
                 {
                     if(text[0] == '=')
                     {

@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -76,11 +76,11 @@ namespace Dev2.Activities.Specs.BaseTypes
         [When(@"the execution has ""(.*)"" error")]
         public void ThenTheExecutionHasError(string anError)
         {
-            bool expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
+            var expectedError = anError.Equals("AN", StringComparison.OrdinalIgnoreCase);
             var result = scenarioContext.Get<IDSFDataObject>("result");
 
             var fetchErrors = result.Environment.FetchErrors();
-            bool actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
+            var actuallyHasErrors = result.Environment.Errors.Count > 0 || result.Environment.AllErrors.Count > 0;
             var message = string.Format("expected {0} error but it {1}", anError.ToLower(),
                                            actuallyHasErrors ? "did not occur" : "did occur" + fetchErrors);
 
@@ -542,7 +542,7 @@ namespace Dev2.Activities.Specs.BaseTypes
 
             var inputFile = new FileInfo(inputFilePath);
             var outputFile = new FileInfo(outputFilePath);
-            double compressionTimesValue = double.Parse(compressionTimes);
+            var compressionTimesValue = double.Parse(compressionTimes);
             Assert.AreEqual(
                 Math.Round(compressionTimesValue, 1),
                 Math.Round(inputFile.Length / (double)outputFile.Length, 1));
@@ -677,7 +677,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                 var activity = scenarioContext.Get<DsfActivityAbstract<string>>("activity");
                 return DebugItemResults(activity, env);
             }
-            catch
+            catch (Exception ex)
             {
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
                 return activity.GetDebugInputs(result.Environment, 0)
@@ -705,7 +705,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     .SelectMany(r => r.ResultsList)
                     .ToList();
             }
-            catch
+            catch (Exception ex)
             {
 
                 var activity = scenarioContext.Get<DsfActivityAbstract<bool>>("activity");
@@ -941,7 +941,7 @@ namespace Dev2.Activities.Specs.BaseTypes
                     {
                         converter.ConvertFrom(actualValue);
                     }
-                    catch
+                    catch (Exception ex)
                     {
                         Assert.Fail("Value is not expected type");
                     }

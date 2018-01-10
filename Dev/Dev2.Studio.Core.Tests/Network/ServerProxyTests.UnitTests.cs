@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -87,14 +87,14 @@ namespace Dev2.Core.Tests.Network
         public void ServerProxy_StateChange_FromConnectedToReconnecting_IsAuthorizedFalse()
         {
             //------------Setup for test--------------------------
-            bool _permissionsChangedFired = false;
+            var _permissionsChangedFired = false;
 
             var serverProxy = new TestServerProxy();
             serverProxy.PermissionsChanged += (sender, args) =>
                 {
                     _permissionsChangedFired = true;
                 };
-            bool authorisedBeforeStateChange = serverProxy.IsAuthorized;
+            var authorisedBeforeStateChange = serverProxy.IsAuthorized;
             //------------Execute Test---------------------------
             serverProxy.CallHubConnectionChanged(new StateChangeWrapped(ConnectionStateWrapped.Connected, ConnectionStateWrapped.Reconnecting));
             //------------Assert Results-------------------------

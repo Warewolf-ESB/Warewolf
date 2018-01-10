@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -447,7 +447,7 @@ namespace Dev2.Core.Tests.Environments
             var c1 = CreateMockConnection();
             var e1 = new Server(Guid.NewGuid(), c1.Object);
             var source = new Mock<IServer>();
-            bool _eventFired = false;
+            var _eventFired = false;
             var repo = new TestServerRespository(source.Object);
             repo.ItemAdded += (sender, args) =>
             {

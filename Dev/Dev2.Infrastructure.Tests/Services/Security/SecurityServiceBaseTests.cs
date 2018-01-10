@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -175,7 +175,7 @@ namespace Dev2.Infrastructure.Tests.Services.Security
         public void SecurityServiceBase_Read_ChangeEvent_Fired()
         {
             //------------Setup for test--------------------------
-            bool changedEventWasFired = false;
+            var changedEventWasFired = false;
             var securityServiceBase = new TestSecurityServiceBase();
             securityServiceBase.PermissionsChanged += (sender, args) => changedEventWasFired = true;
 

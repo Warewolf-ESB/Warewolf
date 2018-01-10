@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -80,7 +80,7 @@ namespace Dev2.Settings
             SaveCommand = new RelayCommand(o => SaveSettings(), o => IsDirty);
 
             ToEnvironmentModel = toEnvironmentModel??( a=>a.ToEnvironmentModel());
-            CurrentEnvironment= ToEnvironmentModel(server);
+            CurrentEnvironment= ToEnvironmentModel?.Invoke(server);
             LoadSettings();
             // ReSharper disable once VirtualMemberCallInContructor
             DisplayName = StringResources.SettingsTitle + " - " + Server.DisplayName;

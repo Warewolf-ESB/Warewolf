@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -193,7 +193,7 @@ namespace Dev2.Studio.ViewModels.DependencyVisualization
                 throw new Exception(string.Format(GlobalConstants.NetworkCommunicationErrorTextFormat, "GetDependenciesXml"));
             }
 
-            int nestingLevel = int.Parse(NestingLevel ?? "0");
+            var nestingLevel = int.Parse(NestingLevel ?? "0");
             var graphGenerator = _graphGenerator ?? new DependencyGraphGenerator();
             var graph = graphGenerator.BuildGraph(graphData.Message, ResourceModel.ResourceName, AvailableWidth, AvailableHeight, nestingLevel);
 

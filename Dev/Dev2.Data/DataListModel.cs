@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -55,7 +55,7 @@ namespace Dev2.Data
             {
                 xDoc.LoadXml(toLoad);
             }
-            catch
+            catch (Exception ex)
             {
                 // Append new root tags ;)
                 toLoad = "<root>" + toLoad + "</root>";
@@ -107,7 +107,7 @@ namespace Dev2.Data
                             if (recSet != null && shapeRecSet != null)
                             {
                                 // fetch recordset index
-                                int idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1; // recset index
+                                var idx = indexCache.TryGetValue(c.Name, out int fetchIdx) ? fetchIdx : 1; // recset index
                                 // process recordset
                                 var scalars = shapeRecSet.Columns[1];
                                 var colToIoDirection = scalars.ToDictionary(scalar1 => scalar1.Name, scalar1 => scalar1.IODirection);

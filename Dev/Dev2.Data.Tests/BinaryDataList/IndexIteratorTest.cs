@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -22,7 +22,7 @@ namespace Dev2.Data.Tests.BinaryDataList
         {
             var gaps = new HashSet<int>();
             var ii = new IndexIterator(gaps, 100);
-            int cnt = 0;
+            var cnt = 0;
             while (ii.HasMore())
             {
                 ii.FetchNextIndex();
@@ -38,11 +38,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             var gaps = new HashSet<int>(new List<int>{1});
             const int maxValue = 100;
             var ii = new IndexIterator(gaps, 100);
-            int cnt = 0;
-            int firstIdx = -1;
+            var cnt = 0;
+            var firstIdx = -1;
             while (ii.HasMore())
             {
-                int val = ii.FetchNextIndex();
+                var val = ii.FetchNextIndex();
                 if (cnt == 0)
                 {
                     firstIdx = val;
@@ -60,11 +60,11 @@ namespace Dev2.Data.Tests.BinaryDataList
             var gaps = new HashSet<int>(new List<int> { 1, 11, 21, 31, 41, 51, 61, 71, 81, 91 });
             const int maxValue = 100;
             var ii = new IndexIterator(gaps, 100);
-            int cnt = 0;
-            int firstIdx = -1;
+            var cnt = 0;
+            var firstIdx = -1;
             while (ii.HasMore())
             {
-                int val = ii.FetchNextIndex();
+                var val = ii.FetchNextIndex();
                 if (cnt == 0)
                 {
                     firstIdx = val;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -57,7 +57,7 @@ namespace Dev2.Activities.Designers2.GatherSystemInformation
                 yield break;
             }
 
-            foreach (var error in dto.GetRuleSet("Result", _getDatalistString()).ValidateRules("", () => mi.SetProperty("IsResultFocused", true)))
+            foreach (var error in dto.GetRuleSet("Result", _getDatalistString?.Invoke()).ValidateRules("", () => mi.SetProperty("IsResultFocused", true)))
             {
                 yield return error;
             }

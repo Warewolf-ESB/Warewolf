@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -29,7 +29,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
 {
     [ToolDescriptorInfo("RecordSet-SortRecords", "Sort", ToolType.Native, "8999E59A-38A3-43BB-A98F-6090C5C9EA1E", "Dev2.Acitivities", "1.0.0.0", "Legacy", "Recordset", "/Warewolf.Studio.Themes.Luna;component/Images.xaml", "Tool_Recordset_Sort")]
-    public class DsfSortRecordsActivity : DsfActivityAbstract<string>
+    public class DsfSortRecordsActivity : DsfActivityAbstract<string>,IEquatable<DsfSortRecordsActivity>
     {
 
         /// <summary>
@@ -83,8 +83,8 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
             try
             {
-                bool descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
-                if(dataObject.IsDebugMode())
+                var descOrder = String.IsNullOrEmpty(SelectedSort) || SelectedSort.Equals("Backwards");
+                if (dataObject.IsDebugMode())
                 {
                     AddDebugInputItem(SortField, "Sort Field", dataObject.Environment, update);
                 }
@@ -234,5 +234,32 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         #endregion
 
+        public bool Equals(DsfSortRecordsActivity other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return base.Equals(other) 
+                && string.Equals(SortField, other.SortField) 
+                && string.Equals(SelectedSort, other.SelectedSort);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DsfSortRecordsActivity) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = base.GetHashCode();
+                hashCode = (hashCode * 397) ^ (SortField != null ? SortField.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (SelectedSort != null ? SelectedSort.GetHashCode() : 0);
+                return hashCode;
+            }
+        }
     }
 }

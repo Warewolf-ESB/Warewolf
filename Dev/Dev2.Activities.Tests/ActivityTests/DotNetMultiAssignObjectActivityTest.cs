@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -39,7 +39,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "somevalue";
             GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
@@ -74,9 +74,9 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
-            string expected1 = "Iris";
-            string expected2 = "30";
+            var result = ExecuteProcess();
+            var expected1 = "Iris";
+            var expected2 = "30";
             GetScalarValueFromEnvironment(result.Environment, "@test.Name", out string actual1, out string error);
             GetScalarValueFromEnvironment(result.Environment, "@test.Age", out string actual2, out error);
 
@@ -97,7 +97,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "somevalue@#";
             GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
@@ -118,7 +118,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "somevalue2";
             GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
@@ -141,7 +141,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
             GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual1, out string error);
             GetScalarValueFromEnvironment(result.Environment, "@test.value2", out string actual2, out error);
@@ -167,7 +167,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "@test.value", out string actual, out string error);
 
             Assert.IsTrue(actual == string.Empty);
@@ -182,7 +182,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                             ActivityStrings.NewScalarShape
                           , ActivityStrings.NewScalarShape
                           , fieldCollection);
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             GetScalarValueFromEnvironment(result.Environment, "@testName1.date", out string actual, out string error);
 
             // remove test datalist
@@ -202,7 +202,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             Assert.IsTrue(result.Environment.HasErrors());
         }
@@ -220,7 +220,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
 
             Assert.IsTrue(result.Environment.HasErrors());
         }
@@ -238,7 +238,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "somevalue";
             GetScalarValueFromEnvironment(result.Environment, "@test.value1.value2.value3.value4", out string actual, out string error);
 
@@ -258,7 +258,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "7";
             GetScalarValueFromEnvironment(result.Environment, "@test.value1", out string actual, out string error);
 
@@ -283,7 +283,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "7";
             GetScalarValueFromEnvironment(result.Environment, "@test.total1", out string actual, out string error);
 
@@ -306,7 +306,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected1 = "somevalue1", expected2 = "somevalue2", expected3 = "somevalue3", expected4 = "somevalue4";
             GetScalarValueFromEnvironment(result.Environment, "@test.value(1)", out string actual1, out string error);
             GetScalarValueFromEnvironment(result.Environment, "@test.value(2)", out string actual2, out error);
@@ -336,7 +336,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "4";
             GetScalarValueFromEnvironment(result.Environment, "@test.total1", out string actual, out string error);
 
@@ -365,7 +365,7 @@ namespace Dev2.Tests.Activities.ActivityTests
                          , ActivityStrings.scalarShape
                          , fieldCollection);
 
-            IDSFDataObject result = ExecuteProcess();
+            var result = ExecuteProcess();
             const string expected = "Bob";
             GetScalarValueFromEnvironment(result.Environment, "@Pet.Owner(1).Name", out string actual, out string error);
             Assert.AreEqual(expected, actual);
@@ -409,12 +409,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignObjectActivity_UpdateForEachInputs_WhenContainsMatchingStarAndOtherData_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            var fieldsCollection = new List<AssignObjectDTO>
             {
                 new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", 1),
             };
 
-            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -435,12 +435,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignObjectActivity_UpdateForEachOutputs_WhenContainsMatchingStar_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            var fieldsCollection = new List<AssignObjectDTO>
             {
                 new AssignObjectDTO("[[@Pet.Owner(1).Name]]", "Bob", 1),
             };
 
-            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -461,12 +461,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_GetForEachInputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            var fieldsCollection = new List<AssignObjectDTO>
             {
                 new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
             };
 
-            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 
@@ -483,12 +483,12 @@ namespace Dev2.Tests.Activities.ActivityTests
         public void DsfMultiAssignActivity_GetForEachOutputs_Normal_UpdateSuccessful()
         {
             //------------Setup for test--------------------------
-            List<AssignObjectDTO> fieldsCollection = new List<AssignObjectDTO>
+            var fieldsCollection = new List<AssignObjectDTO>
             {
                 new AssignObjectDTO("[[@Pet.Name]]", "[[result]]", 1),
             };
 
-            DsfDotNetMultiAssignObjectActivity act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
+            var act = new DsfDotNetMultiAssignObjectActivity { FieldsCollection = fieldsCollection };
 
             //------------Execute Test---------------------------
 

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -521,7 +521,7 @@ You need Administrator permission.", viewModel.Errors);
         {
             //------------Setup for test--------------------------
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            bool _wasCalled = false;
+            var _wasCalled = false;
             viewModel.SecurityViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsDirty")
@@ -544,7 +544,7 @@ You need Administrator permission.", viewModel.Errors);
         {
             //------------Setup for test--------------------------
             var viewModel = CreateSettingsViewModel(CreateSettings().ToString());
-            bool _wasCalled = false;
+            var _wasCalled = false;
             viewModel.PerfmonViewModel.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "IsDirty")
@@ -947,7 +947,7 @@ You need Administrator permission.", viewModel.Errors);
             var securityViewModel = new TestSecurityViewModel { IsDirty = true };
             var viewModel = CreateSettingsViewModel(mockPopupController.Object, CreateSettings().ToString(), "Success", securityViewModel);
             viewModel.IsDirty = true;
-            bool propertyChanged = false;
+            var propertyChanged = false;
             const string propertyName = "SecurityHeader";
             //------------Execute Test---------------------------
             viewModel.PropertyChanged += (sender, args) =>

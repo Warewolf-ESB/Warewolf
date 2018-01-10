@@ -1,6 +1,6 @@
 ﻿/*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -98,7 +98,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
         [TestMethod]
         public void TextContaningTabIsPasedIntoAnIntellisenseTextBoxExpectedTabInsertedEventIsRaised()
         {
-            bool eventRaised = false;
+            var eventRaised = false;
             IntellisenseTextBox sender = null;
             EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                               new RoutedEventHandler((s, e) =>
@@ -127,7 +127,7 @@ namespace Dev2.Core.Tests.Custom_Dev2_Controls.Intellisense
             var preserveClipboard = System.Windows.Clipboard.GetText();
             try
             {
-                bool eventRaised = false;
+                var eventRaised = false;
                 EventManager.RegisterClassHandler(typeof(IntellisenseTextBox), IntellisenseTextBox.TabInsertedEvent,
                                                   new RoutedEventHandler((s, e) =>
                                                   {

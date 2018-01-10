@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -298,9 +298,9 @@ namespace Dev2.Scheduler
 
         ScheduleRunStatus GetRunStatus(int eventId, string debugHistoryPath, string key)
         {
-            bool debugExists = DebugHistoryExists(debugHistoryPath, key);
-            bool debugHasErrors = DebugHasErrors(debugHistoryPath, key);
-            bool winSuccess = eventId < 103;
+            var debugExists = DebugHistoryExists(debugHistoryPath, key);
+            var debugHasErrors = DebugHasErrors(debugHistoryPath, key);
+            var winSuccess = eventId < 103;
             if (debugExists && !debugHasErrors && winSuccess)
             {
                 return ScheduleRunStatus.Success;

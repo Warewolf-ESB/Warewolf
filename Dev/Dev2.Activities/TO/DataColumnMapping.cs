@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -8,15 +8,18 @@
 *  @license GNU Affero General Public License <http://www.gnu.org/licenses/agpl-3.0.html>
 */
 
+using System;
+using System.Collections.Generic;
 using Dev2.Common.Interfaces.Infrastructure.Providers.Validation;
 using Dev2.Common.Interfaces.Infrastructure.SharedModels;
 using Dev2.Common.Interfaces.Interfaces;
+using Dev2.Comparer;
 using Dev2.Providers.Validation.Rules;
 using Dev2.Util;
 
 namespace Dev2.TO
 {
-    public class DataColumnMapping : ValidatedObject, IDev2TOFn
+    public class DataColumnMapping : ValidatedObject, IDev2TOFn, IEquatable<DataColumnMapping>
     {
         int _indexNumber;
         string _inputColumn;
@@ -52,6 +55,42 @@ namespace Dev2.TO
         public override IRuleSet GetRuleSet(string propertyName, string datalist)
         {
             return new RuleSet();
+        }
+
+        public bool Equals(DataColumnMapping other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            var outputColumnSame = OutputColumn == null && other.OutputColumn == null;
+
+            if (OutputColumn != null)
+            {
+                outputColumnSame = OutputColumn.Equals(other.OutputColumn);
+            }
+            return IndexNumber == other.IndexNumber
+                && string.Equals(InputColumn, other.InputColumn)
+                && outputColumnSame
+                && Inserted == other.Inserted;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((DataColumnMapping)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = IndexNumber;
+                hashCode = (hashCode * 397) ^ (InputColumn != null ? InputColumn.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ (OutputColumn != null ? OutputColumn.GetHashCode() : 0);
+                hashCode = (hashCode * 397) ^ Inserted.GetHashCode();
+                return hashCode;
+            }
         }
     }
 }

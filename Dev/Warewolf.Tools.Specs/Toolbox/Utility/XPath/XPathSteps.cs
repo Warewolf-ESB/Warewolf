@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -56,8 +56,8 @@ namespace Dev2.Activities.Specs.Toolbox.Utility.XPath
 
             scenarioContext.TryGetValue("xpathDtos", out List<Tuple<string, string>> xpathDtos);
 
-            int row = 1;
-            foreach(var variable in xpathDtos)
+            var row = 1;
+            foreach (var variable in xpathDtos)
             {
                 xPath.ResultsCollection.Add(new XPathDTO(variable.Item1, variable.Item2, row, true));
                 row++;

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -25,7 +25,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetOperation_NonExistingPath_FriendlyError()
         {
-            bool pass = false;
+            var pass = false;
             var testProvider = new Dev2FileSystemProvider();
             var path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try
@@ -51,7 +51,7 @@ namespace Dev2.Data.Tests.PathOperations
         [TestCategory("Dev2FileSystemProvider_CRUDOperationTests")]
         public void Dev2FileSystemProvider_GetDirectoryOperation_NonExistingPath_FriendlyError()
         {
-            bool pass = false;
+            var pass = false;
             var testProvider = new Dev2FileSystemProvider();
             var path = ActivityIOFactory.CreatePathFromString("C:/dadsdascasxxxacvaawqf", false);
             try

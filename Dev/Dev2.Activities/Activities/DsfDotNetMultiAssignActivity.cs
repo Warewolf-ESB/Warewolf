@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -75,7 +75,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
 
         protected override void OnExecute(NativeActivityContext context)
         {
-            IDSFDataObject dataObject = context.GetExtension<IDSFDataObject>();
+            var dataObject = context.GetExtension<IDSFDataObject>();
             ExecuteTool(dataObject, 0);
         }
 
@@ -85,14 +85,14 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             _debugInputs.Clear();
 
             InitializeDebug(dataObject);
-            ErrorResultTO errors = new ErrorResultTO();
-            ErrorResultTO allErrors = new ErrorResultTO();
+            var errors = new ErrorResultTO();
+            var allErrors = new ErrorResultTO();
 
             try
             {
                 if (!errors.HasErrors())
                 {
-                    int innerCount = 1;
+                    var innerCount = 1;
                     foreach (ActivityDTO t in FieldsCollection)
                     {
                         try
@@ -392,7 +392,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldValue) && c.FieldValue.Contains(t1.Item1));
 
                 // issues updates
@@ -408,7 +408,7 @@ namespace Unlimited.Applications.BusinessDesignStudio.Activities
             foreach (Tuple<string, string> t in updates)
             {
                 // locate all updates for this tuple
-                Tuple<string, string> t1 = t;
+                var t1 = t;
                 var items = FieldsCollection.Where(c => !string.IsNullOrEmpty(c.FieldName) && c.FieldName.Contains(t1.Item1));
 
                 // issues updates

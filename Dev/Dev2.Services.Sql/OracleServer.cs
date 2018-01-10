@@ -448,7 +448,7 @@ namespace Dev2.Services.Sql
                 var parameterName = row["ARGUMENT_NAME"] as string;
                 var InOut = row["IN_OUT"] as string;
 
-                bool isout = GetIsout(InOut);
+                var isout = GetIsout(InOut);
                 if (isout)
                 {
                     continue;
@@ -487,7 +487,7 @@ namespace Dev2.Services.Sql
                 var parameterName = row["ARGUMENT_NAME"] as string;
                 var InOut = row["IN_OUT"] as string;
 
-                bool isout = GetIsout(InOut);
+                var isout = GetIsout(InOut);
                 const ParameterDirection direction = ParameterDirection.Output;
 
                 if (!String.IsNullOrEmpty(parameterName))
@@ -607,7 +607,7 @@ namespace Dev2.Services.Sql
 
         bool GetIsout(string InOut)
         {
-            bool isout = !(InOut != null && InOut.Contains("IN/OUT"));
+            var isout = !(InOut != null && InOut.Contains("IN/OUT"));
             if (InOut != null && InOut.Trim().ToUpper() == "IN ".Trim().ToUpper())
             {
                 return false;

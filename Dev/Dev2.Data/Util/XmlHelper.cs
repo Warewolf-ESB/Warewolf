@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -31,7 +31,7 @@ namespace Dev2.Data.Util
         public static bool IsXml(string data, out bool isFragment, out bool isHtml)
         {
             var trimedData = data.Trim();
-            bool result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
+            var result = trimedData.StartsWith("<") && !trimedData.StartsWith("<![CDATA[");
 
             isFragment = false;
             isHtml = false;
@@ -96,7 +96,7 @@ namespace Dev2.Data.Util
                 {
                     result = CleanupNaughtyTags(veryNaughtyTags, result);
                 }
-                int start = result.IndexOf("<", StringComparison.Ordinal);
+                var start = result.IndexOf("<", StringComparison.Ordinal);
                 if (start >= 0)
                 {
                     result = result.Substring(start);
@@ -122,7 +122,7 @@ namespace Dev2.Data.Util
 
         static string CleanupNaughtyTags(string[] toRemove, string payload)
         {
-            bool foundOpen = false;
+            var foundOpen = false;
             var result = payload;
 
             for (int i = 0; i < toRemove.Length; i++)
@@ -138,11 +138,11 @@ namespace Dev2.Data.Util
                     {
                         if (foundOpen)
                         {
-                            int loc = i - 1;
+                            var loc = i - 1;
                             if (loc >= 0)
                             {
-                                int start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
-                                int end = result.IndexOf(myTag, StringComparison.Ordinal);
+                                var start = result.IndexOf(toRemove[loc], StringComparison.Ordinal);
+                                var end = result.IndexOf(myTag, StringComparison.Ordinal);
                                 if (start < end && start >= 0)
                                 {
                                     var canidate = result.Substring(start, end - start + myTag.Length);

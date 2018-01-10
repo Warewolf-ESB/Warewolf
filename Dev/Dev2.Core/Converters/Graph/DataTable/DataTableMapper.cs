@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -54,8 +54,8 @@ namespace Dev2.Converters.Graph.DataTable
         /// <param name="result">The result.</param>
         void BuildSampleData(System.Data.DataTable tmp, int totalCols, ref List<IPath> result)
         {
-            int totalRows = tmp.Rows.Count - 1;
-            int rowCnt = 0;
+            var totalRows = tmp.Rows.Count - 1;
+            var rowCnt = 0;
             // now set sample data ;)
 
             foreach (DataRow row in tmp.Rows)

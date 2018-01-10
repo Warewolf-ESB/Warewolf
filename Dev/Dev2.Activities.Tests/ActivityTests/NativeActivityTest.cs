@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -132,7 +132,7 @@ namespace Dev2.Tests.Activities.ActivityTests
         
         protected static void Run(Activity activity, DsfDataObject dataObject, Action completed)
         {
-            Run(activity, dataObject, null, (ex, outputs) => completed());
+            Run(activity, dataObject, null, (ex, outputs) => completed?.Invoke());
         }
 
         public static void Run(Activity activity, DsfDataObject dataObject, Dictionary<string, object> inputArgs, Action<Exception, IDictionary<string, object>> completed)
@@ -143,10 +143,10 @@ namespace Dev2.Tests.Activities.ActivityTests
             {
                 wfApp.Extensions.Add(dataObject);
             }
-            wfApp.Completed += args => completed(null, args.Outputs);
+            wfApp.Completed += args => completed?.Invoke(null, args.Outputs);
             wfApp.OnUnhandledException += args =>
             {
-                completed(args.UnhandledException, null);
+                completed?.Invoke(args.UnhandledException, null);
                 return UnhandledExceptionAction.Cancel;
             };
             wfApp.Run();

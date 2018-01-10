@@ -316,7 +316,7 @@ namespace Dev2.Core.Tests
             testViewModel.SelectedServiceTest.TestName = "New Test Name";
             vm.ViewModel = testViewModel;
 
-            bool wasCalled = false;
+            var wasCalled = false;
             vm.PropertyChanged += (sender, args) =>
             {
                 if (args.PropertyName == "DisplayName")

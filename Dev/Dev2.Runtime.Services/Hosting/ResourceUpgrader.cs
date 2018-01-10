@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -34,11 +34,11 @@ namespace Dev2.Runtime.Hosting
             var available = AvailableUpgrades.Where(a => a.CanUpgrade(sourceVersion)).OrderBy(a=>a.UpgradesFrom).Select(a=>a.Upgrade.UpgradeFunc).ToList();
             if (available.Any())
             {
-                var outputLang = available.Aggregate((a, b) => (x => b(a(x))));
+                var outputLang = available.Aggregate((a, b) => (x => b?.Invoke(a?.Invoke(x))));
                 
                 var output =  outputLang(sourceVersion);
                 output.SetAttributeValue("ServerVersion",GetVersion());
-                onUpgrade(output);
+                onUpgrade?.Invoke(output);
                 return output;
             }
           

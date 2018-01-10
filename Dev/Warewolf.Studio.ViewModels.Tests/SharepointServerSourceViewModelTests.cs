@@ -69,12 +69,12 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         try
                         {
-                            progress();
-                            success();
+                            progress?.Invoke();
+                            success?.Invoke();
                         }
                         catch (Exception ex)
                         {
-                            errorAction(ex);
+                            errorAction?.Invoke(ex);
                         }
                     });
             
@@ -89,11 +89,11 @@ namespace Warewolf.Studio.ViewModels.Tests
                     {
                         try
                         {
-                            success(progress());
+                            success?.Invoke(progress?.Invoke());
                         }
                         catch (Exception ex)
                         {
-                            errorAction(ex);
+                            errorAction?.Invoke(ex);
                         }
                     });
            
@@ -110,7 +110,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                             .Callback<Func<ISharepointServerSource>, Action<ISharepointServerSource>>((func, action) =>
                             {
                                 var dbSource = func.Invoke();
-                                action(dbSource);
+                                action?.Invoke(dbSource);
                             });
 
             _changedProperties = new List<string>();
@@ -317,7 +317,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Action, Action, CancellationTokenSource, Action<Exception>>(
                     (progress, success, token, errorAction) =>
                     {
-                        errorAction(null);
+                        errorAction?.Invoke(null);
                     });
             //act
             _target.TestCommand.Execute(null);
@@ -343,7 +343,7 @@ namespace Warewolf.Studio.ViewModels.Tests
                 .Callback<Action, Action, CancellationTokenSource, Action<Exception>>(
                     (progress, success, token, errorAction) =>
                     {
-                        errorAction(new Exception(expectedExceptionMessage));
+                        errorAction?.Invoke(new Exception(expectedExceptionMessage));
                     });
 
             //act

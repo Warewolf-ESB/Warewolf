@@ -141,9 +141,9 @@ namespace WarewolfParserInterop
       public bool Apply (Func<T,T> action )
       {
           for(int i = 0; i < _count; i++)
-          {
-              _values[i] = action(_values[i]);
-          }
+            {
+                _values[i] = action(_values[i]);
+            }
           return true;
       }
 
@@ -213,7 +213,7 @@ namespace WarewolfParserInterop
 
           for (int i = 0; i < _count; i++)
           {
-              if (func(_values[i]))
+              if (func?.Invoke(_values[i]) ?? default(bool))
               {
                   yield return i;
 

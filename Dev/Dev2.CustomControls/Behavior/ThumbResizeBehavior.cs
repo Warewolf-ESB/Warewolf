@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -99,16 +99,16 @@ namespace Dev2.Studio.AppResources.Behaviors
             }
 
             // Check for legacy usage - adorner framework MUST always use ContentElement - DO NOT REMOVE!!!
-            double minWidth = ContentElement?.MinWidth ?? TargetElement.MinWidth;
-            double maxWidth = ContentElement?.MaxWidth ?? TargetElement.MaxWidth;
-            double minHeight = ContentElement?.MinHeight ?? TargetElement.MinHeight;
-            double maxHeight = ContentElement?.MaxHeight ?? TargetElement.MaxHeight;
+            var minWidth = ContentElement?.MinWidth ?? TargetElement.MinWidth;
+            var maxWidth = ContentElement?.MaxWidth ?? TargetElement.MaxWidth;
+            var minHeight = ContentElement?.MinHeight ?? TargetElement.MinHeight;
+            var maxHeight = ContentElement?.MaxHeight ?? TargetElement.MaxHeight;
 
             if (TargetElement.Height + e.VerticalChange > 0)
             {
                 if (Math.Abs(e.VerticalChange) > ChangeThreshold)
                 {
-                    double newHeight = TargetElement.Height + e.VerticalChange;
+                    var newHeight = TargetElement.Height + e.VerticalChange;
 
                     if ((minHeight.Equals(0D) || newHeight > minHeight + MinHeightOffset) &&
                         (maxHeight.Equals(double.PositiveInfinity) || newHeight < maxHeight))
@@ -122,7 +122,7 @@ namespace Dev2.Studio.AppResources.Behaviors
             {
                 if (Math.Abs(e.HorizontalChange) > ChangeThreshold)
                 {
-                    double newWidth = TargetElement.Width + e.HorizontalChange;
+                    var newWidth = TargetElement.Width + e.HorizontalChange;
                     if ((minWidth.Equals(0D) || newWidth > minWidth + MinWidthOffset) &&
                         (maxWidth.Equals(double.PositiveInfinity) || newWidth < maxWidth))
                     {

@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -78,8 +78,8 @@ namespace Dev2.Data.Operations
                 #region Calculate the index according to what the user enterd
 
                 var comparisonType = matchCase ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-                int firstIndex = stringToSearchIn.IndexOf(charsToSearchFor, startIndex, comparisonType);
-                int lastIndex = stringToSearchIn.LastIndexOf(charsToSearchFor, stringToSearchIn.Length - 1, comparisonType);
+                var firstIndex = stringToSearchIn.IndexOf(charsToSearchFor, startIndex, comparisonType);
+                var lastIndex = stringToSearchIn.LastIndexOf(charsToSearchFor, stringToSearchIn.Length - 1, comparisonType);
 
                 result = direction == enIndexFinderDirection.RightToLeft ? RightToLeftIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
                                                     comparisonType) : LeftToRightIndexSearch(occurrence, firstIndex, lastIndex, stringToSearchIn, charsToSearchFor,
@@ -96,7 +96,7 @@ namespace Dev2.Data.Operations
 
         IEnumerable<int> RightToLeftIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
         {
-            int index = -1;
+            var index = -1;
             IEnumerable<int> result;
             switch (occurrence)
             {
@@ -119,7 +119,7 @@ namespace Dev2.Data.Operations
                 case enIndexFinderOccurrence.AllOccurrences:
                     var foundIndexes = new List<int>();
                     stringToSearchIn = stringToSearchIn.ReverseString();
-                    int currentIndex = firstIndex;
+                    var currentIndex = firstIndex;
                     while (currentIndex != -1 && currentIndex != stringToSearchIn.Length)
                     {
                         currentIndex = stringToSearchIn.IndexOf(charsToSearchFor, currentIndex, comparisonType);
@@ -141,7 +141,7 @@ namespace Dev2.Data.Operations
 
         IEnumerable<int> LeftToRightIndexSearch(enIndexFinderOccurrence occurrence, int firstIndex, int lastIndex, string stringToSearchIn, string charsToSearchFor, StringComparison comparisonType)
         {
-            int index = -1;
+            var index = -1;
             IEnumerable<int> result;
             switch (occurrence)
             {
@@ -166,7 +166,7 @@ namespace Dev2.Data.Operations
                     if (firstIndex != -1)
                     {
                         foundIndexes = new List<int> { firstIndex + 1 };
-                        int currentIndex = firstIndex;
+                        var currentIndex = firstIndex;
                         while (currentIndex != -1)
                         {
 

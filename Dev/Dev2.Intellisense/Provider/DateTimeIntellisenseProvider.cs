@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later. 
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -36,7 +36,7 @@ namespace Dev2.Studio.InterfaceImplementors
         {
             Optional = false;
             IntellisenseProviderType = IntellisenseProviderType.NonDefault;
-            IDateTimeParser dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
+            var dateTimeParser = DateTimeConverterFactory.CreateStandardParser();
             _intellisenseResults = dateTimeParser.DateTimeFormatParts.Select(p => 
                 {
                     var intellisenseResult = IntellisenseFactory.CreateDateTimeResult(IntellisenseFactory.CreateDateTimePart(p.Value, p.Description));
@@ -128,7 +128,7 @@ namespace Dev2.Studio.InterfaceImplementors
         /// </summary>
         public static bool InLiteralRegion(string inputText, int caretPosition)
         {
-            bool inLiteralRegion = false;
+            var inLiteralRegion = false;
 
             var text = inputText;
             if (caretPosition <= text.Length)
