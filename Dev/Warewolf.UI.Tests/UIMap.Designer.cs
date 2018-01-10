@@ -19981,7 +19981,7 @@ namespace Warewolf.UI.Tests
                 {
                     this.mFirstOption = new WpfListItem(this);
                     #region Search Criteria
-                    this.mFirstOption.SearchProperties[WpfListItem.PropertyNames.Name] = "[[val]]";
+                    this.mFirstOption.SearchProperties[WpfListItem.PropertyNames.Instance] = "1";
                     this.mFirstOption.WindowTitles.Add("Warewolf (DEV2\\ASHLEY.LEWIS)");
                     #endregion
                 }
