@@ -11590,9 +11590,9 @@
                     <WindowTitle>Warewolf (DEV2\ASHLEY.LEWIS)</WindowTitle>
                   </WindowTitles>
                   <AndCondition>
-                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
                     <PropertyCondition Name="ControlType">ListItem</PropertyCondition>
-                    <PropertyCondition Name="Name">[[val]]</PropertyCondition>
+                    <PropertyCondition Name="FrameworkId">WPF</PropertyCondition>
+                    <PropertyCondition Name="Instance">1</PropertyCondition>
                   </AndCondition>
                   <SupportLevel>0</SupportLevel>
                   <Descendants />

@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Dev2.Common;
 using Dev2.Studio.Interfaces;
 
 namespace Warewolf.Studio.ViewModels
@@ -14,7 +15,16 @@ namespace Warewolf.Studio.ViewModels
         {
             _selectedId = selectedId;
             environmentViewModel.SetPropertiesForDialog();
-            
+
+            var versions = environmentViewModel.Children.Flatten(a => a.Children).Where(a => a.AreVersionsVisible);
+            if (versions != null)
+            {
+                foreach (var version in versions)
+                {
+                    version.AreVersionsVisible = false;
+                }
+            }
+
             Environments = new ObservableCollection<IEnvironmentViewModel>
             {
                 environmentViewModel
@@ -29,10 +39,7 @@ namespace Warewolf.Studio.ViewModels
 
         public override string SearchText
         {
-            get
-            {
-                return base.SearchText;
-            }
+            get => base.SearchText;
             set
             {
                 base.SearchText = value;
