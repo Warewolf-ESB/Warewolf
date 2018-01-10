@@ -17,6 +17,7 @@
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterPositive" TrueValue="Visible" FalseValue="Collapsed" />
     <converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverterNegative" TrueValue="Collapsed" FalseValue="Visible" />
     <converters1:ErrorTypeToImageConverter x:Key="ErrorTypeToImageConverter"/>
+    <converters1:ErrorTypeToTooltipConverter x:Key="ErrorTypeToTooltipConverter"/>
 
     <Color x:Key="WarewolfHeaderGrey">#FFE7E4E0</Color>
     <Color x:Key="WarewolfPanelGrey">#FFF4F2EE</Color>
