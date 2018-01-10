@@ -3339,6 +3339,15 @@ namespace Warewolf.Resource.Errors {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed: Switch must have a Default arm connected..
+        /// </summary>
+        public static string SwitchNoDefaultError {
+            get {
+                return ResourceManager.GetString("SwitchNoDefaultError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Add Time amount must be numeric.
         /// </summary>
         public static string TimeMustBeNumeric {
