@@ -264,7 +264,8 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                errors.AddError($"SQL Error: {ex.StackTrace}");
+                Dev2Logger.Error("SQL Error:", ex.StackTrace);
+                errors.AddError($"SQL Error: {ex.Message}");
             }
             finally
             {
