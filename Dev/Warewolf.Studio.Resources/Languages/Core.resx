@@ -576,7 +576,4 @@ Please note that tabs are fully supported at runtime, in variables and when read
   <data name="MergeSelectionViewInformationLabel" xml:space="preserve">
     <value>Below is a list of the selected workflow versions to merge with. Select from the radio button and press Enter or click Merge to continue with the merge process. If you are nor sure which version to merge with, press Escape or click Cancel, then find the Workflow in the Explorer, right-click and select 'Show Version History' to view the previous versions.</value>
   </data>
-  <data name="SwitchNoDefaultError" xml:space="preserve">
-    <value>Failed: Switch must have a Default arm connected.</value>
-  </data>
 </root>

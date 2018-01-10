@@ -1309,15 +1309,6 @@ namespace Warewolf.Studio.Resources.Languages {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed: Switch must have a Default arm connected..
-        /// </summary>
-        public static string SwitchNoDefaultError {
-            get {
-                return ResourceManager.GetString("SwitchNoDefaultError", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Test Connection.
         /// </summary>
         public static string TestConnectionLabel {

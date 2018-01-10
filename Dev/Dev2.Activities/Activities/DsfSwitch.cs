@@ -163,7 +163,7 @@ namespace Dev2.Activities
                     {
                         if (Default == null)
                         {
-                            dataObject.Environment.Errors.Add(Warewolf.Studio.Resources.Languages.Core.SwitchNoDefaultError);
+                            dataObject.Environment.Errors.Add(Warewolf.Resource.Errors.ErrorResource.SwitchNoDefaultError);
                         }
                         else
                         {
