@@ -76,18 +76,22 @@ namespace Dev2.Activities.Specs.Merge
                 remoteServer.Connect();
                 remoteServer.ResourceRepository.ForceLoad();
                 var remoteResource = remoteServer.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-                Assert.IsNotNull(remoteResource, "Version \"" + versionNo + "\" does not exist for resource \"" + resourceName + "\" on remote server \"" + serverName + "\".");
+                Assert.IsNotNull(remoteResource, "Resource \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
                 var versions = remoteServer.ExplorerRepository.GetVersions(remoteResource.ID);
-                var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
+                Assert.IsTrue(versions.Count > 0, "No versions found for resource \"" + resourceName + "\".");
+                var version = versions.FirstOrDefault(a => a.VersionNumber == versionNo.ToString());
+                Assert.IsNotNull(version, "Version \"" + versionNo + "\" of \"" + resourceName + "\" not found on remote server \"" + serverName + "\".");
                 var remoteResourceVersion = version.ToContextualResourceModel(remoteServer, remoteResource.ID);
                 _scenarioContext.Add(remoteResourceString, remoteResourceVersion);
             }
             else
             {
                 var localResource = localHost.ResourceRepository.FindSingle(p => p.ResourceName.Equals(resourceName, StringComparison.InvariantCultureIgnoreCase));
-                Assert.IsNotNull(localResource, "Version \"" + versionNo + "\" does not exist for resource \"" + resourceName + "\".");
+                Assert.IsNotNull(localResource, "Resource \"" + resourceName + "\" not found.");
                 var versions = localHost.ExplorerRepository.GetVersions(localResource.ID);
+                Assert.IsTrue(versions.Count > 0, "No versions found for resource \"" + resourceName + "\" on remote server \"" + serverName + "\".");
                 var version = versions.Single(a => a.VersionNumber == versionNo.ToString());
+                Assert.IsNotNull(version, "Version \"" + versionNo + "\" of \"" + resourceName + "\" not found.");
                 var localResourceVersion = version.ToContextualResourceModel(localHost, localResource.ID);
                 _scenarioContext.Add(localResourceString, localResourceVersion);
             }
