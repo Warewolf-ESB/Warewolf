@@ -1,6 +1,6 @@
 /*
 *  Warewolf - Once bitten, there's no going back
-*  Copyright 2017 by Warewolf Ltd <alpha@warewolf.io>
+*  Copyright 2018 by Warewolf Ltd <alpha@warewolf.io>
 *  Licensed under GNU Affero General Public License 3.0 or later.
 *  Some rights reserved.
 *  Visit our website for more information <http://warewolf.io/>
@@ -264,7 +264,8 @@ namespace Dev2.Services.Execution
             catch (Exception ex)
             {
                 Dev2Logger.Error("SQL Error:", ex, GlobalConstants.WarewolfError);
-                errors.AddError($"SQL Error: {ex.StackTrace}");
+                Dev2Logger.Error("SQL Error:", ex.StackTrace);
+                errors.AddError($"SQL Error: {ex.Message}");
             }
             finally
             {

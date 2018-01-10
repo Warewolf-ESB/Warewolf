@@ -1,4 +1,5 @@
 using Dev2.Common.Interfaces.Data;
+using Dev2.Common.Interfaces.Studio.Controller;
 using Dev2.Common.Interfaces.Wrappers;
 using Dev2.Studio.Interfaces;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -16,14 +17,14 @@ namespace Dev2.Studio
         [TestMethod]
         public void HandleResourceNotInResourceFolderAsync_Given_MoveCancel_On_Popup_MessageBox_Has_Null_ViewModel()
         {
-            var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.ShowResourcesNotInCorrectPath()).Returns(System.Windows.MessageBoxResult.Cancel);
             var shellViewModel = new Mock<IShellViewModel>().Object;
             var file = new Mock<IFile>();
             var path = new Mock<IFilePath>();
             path.Setup(p => p.GetFileName(It.IsAny<string>())).Returns(It.IsAny<string>());
             var serverRepository = new Mock<IServerRepository>();
-            var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(It.IsAny<string>(), It.IsAny<string>(), popupController.Object, shellViewModel, file.Object, path.Object, serverRepository.Object);
+            var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync("", popupController.Object, shellViewModel, file.Object, path.Object, serverRepository.Object);
             Assert.IsNull(results.Result);
         }
 
@@ -39,13 +40,13 @@ namespace Dev2.Studio
             resource.Setup(p => p.ResourceID).Returns(Guid.Parse("e7ea5196-33f7-4e0e-9d66-44bd67528a96"));
             resource.Setup(p => p.ResourceName).Returns("AssignOutput");
             resource.Setup(p => p.ResourceType).Returns("Workflow");
-            var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = new Mock<IPopupController>();
             popupController.Setup(p => p.ShowResourcesNotInCorrectPath()).Returns(System.Windows.MessageBoxResult.OK);
             var shellViewModel = new Mock<IShellViewModel>();
             shellViewModel.Setup(p => p.CreateResourceFromStreamContent(It.IsAny<string>())).Returns(resource.Object);
             file.Setup(p => p.OpenRead(It.IsAny<string>())).Returns(content);
             serverRepository.Setup(p => p.ActiveServer).Returns(new Mock<IServer>().Object);
-            var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(It.IsAny<string>(), It.IsAny<string>(), popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
+            var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync("", popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
             Assert.IsNotNull(results);
             Assert.AreEqual("AssignOutput", results.Result.ResourceName);
         }
@@ -61,7 +62,7 @@ namespace Dev2.Studio
             var shellViewModel = new Mock<IShellViewModel>();
             var serverRepository = new Mock<IServerRepository>();
             var explorerViewModel = new Mock<IExplorerViewModel>();
-            var popupController = new Mock<Common.Interfaces.Studio.Controller.IPopupController>();
+            var popupController = new Mock<IPopupController>();
             var contextualResourceModel = new Mock<IContextualResourceModel>();
             contextualResourceModel.Setup(p => p.ResourceName).Returns("WebPutServiceSource");
             var resource = new Mock<IResource>();
@@ -78,7 +79,7 @@ namespace Dev2.Studio
             resourceRepo.Setup(p => p.LoadContextualResourceModel(It.IsAny<Guid>())).Returns(contextualResourceModel.Object);
             activeServer.Setup(p => p.ResourceRepository).Returns(resourceRepo.Object);
             serverRepository.Setup(p => p.ActiveServer).Returns(activeServer.Object);
-            var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync(It.IsAny<string>(), It.IsAny<string>(), popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
+            var results = ResourceExtensionHelper.HandleResourceNotInResourceFolderAsync("", popupController.Object, shellViewModel.Object, file.Object, path.Object, serverRepository.Object);
             Assert.IsNotNull(results);
             Assert.AreEqual("WebPutServiceSource", results.Result.ResourceName);
         }
